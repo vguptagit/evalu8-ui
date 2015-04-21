@@ -113,21 +113,21 @@
 	padding-bottom: 10px;
 }
 
-img {
+.navbar img {
 	border: 0;
 	background-color: black;
 	padding-top: 5px;
 }
 
-a {
+.navbar a {
 	color: #2A2A25;
 	text-decoration: none;
-	background-color: #F8F8F8;
+	 
 }
 
-a:hover, a:focus {
+.navbar a:hover, .navbar a:focus {
 	color: #fffff;
-	text-decoration:overline;
+	text-decoration:none;
 }
 
 .nav-tabs>li>a {
