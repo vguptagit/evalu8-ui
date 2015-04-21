@@ -1,0 +1,107 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 30px;
+}
+
+.devider {
+    background-color: #505050;
+    background-image: url("/images/divider.png");
+    background-repeat-y: no-repeat;
+    background-position-y: 50%;
+    height: 94.4vh;
+    position: absolute;
+    width: 13px;
+    z-index: 1;
+}
+
+.left-frame {
+    padding-right: 0px;
+}
+
+    .left-frame > div.row {
+        padding-top: 3px;
+    }
+
+.right-frame {
+    padding-left: 0px;
+}
+
+    .right-frame > div.row {
+        margin-left: 0px;
+        padding-top: 5px;
+    }
+
+.header-text {
+    left: 43%;
+    position: absolute;
+}
+
+.navbar-inverse {
+    border-bottom: 4px #49BDDF solid;
+}
+
+/*login*/
+.panel {
+    margin-top: 35%;
+}
+
+.panel-heading {
+    padding: 5px 15px;
+}
+
+.panel-footer {
+    padding: 1px 15px;
+    color: #A0A0A0;
+}
+
+.profile-img {
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 10px;
+    display: block;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+}
+
+.center-block h4 {
+    color: #707070;
+    font-size: 29px;
+    text-align: center;
+    /* font-weight: bold; */
+    padding-bottom: 20px;
+}
+
+.btn-login {
+    color: #FFFFFF;
+    background-color: #0080ff;
+    border-color: #006A8D;
+    height: 35px;
+    padding-left: 20px;
+    font-family: Helvetica;
+    padding-right: 20px;
+    border-radius: 0px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    width: 100%;
+    font-size: 16px;
+}
+
+/* resource-tabs*/
+.resources-tabs-content {
+    padding-top: 5px;
+}
+
+.resources-tabs {
+    margin-left: -15px;
+    padding-left: 30px;
+}
+
+    .resources-tabs li.active > a {
+        line-height: 1.6;
+    }
+
+/* new css of testGen.css*/
+#MyTest-tree-root, #tree-root {
+    position: inherit;
+}

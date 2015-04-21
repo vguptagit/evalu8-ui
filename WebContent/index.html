@@ -1,0 +1,103 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <link href="css/bootstrap.css" rel="stylesheet" />
+
+     
+    <title>evalu8</title>
+    
+
+    <!--<link href="styles/externals/bootstrap/css/bootstrap.min.css" rel="stylesheet">-->
+    
+    <!--TODO : need to check this and remove-->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+    <link href="styles/userSettings.css" rel="stylesheet" />
+    <link href="styles/icons.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="styles/angular-ui-tree.min.css">
+    <link href="styles/angular-block-ui.css" rel="stylesheet" />
+    <link href="styles/block-ui.css" rel="stylesheet" />
+    <link href="styles/icon-fonts/style.css" rel="stylesheet" />
+    <link href="styles/testGenMain.css" rel="stylesheet" />
+    <link href="styles/styles.css" rel="stylesheet" />	
+    <link href="styles/main.css" rel="stylesheet" />
+</head>
+<body role="document" ng-app="evalu8Demo">
+    <!-- Fixed navbar -->
+    <div ng-include="'views/partials/navigation-bar.html'" ng-controller="NavigationBarController"></div>
+    <div class="container-fluid" role="main">
+        <div ui-view></div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="scripts/externals/jquery.min.js"></script>
+    <script src="scripts/externals/bootstrap.js"></script>
+ 
+    
+    <script src="scripts/externals/angular.min.js"></script>
+    <script src="scripts/externals/angular-route.js"></script>
+    <script src="scripts/externals/angular-cookies.js"></script>
+
+    <script src="scripts/app.js"></script>
+    <script src="scripts/config.js"></script>
+    
+    <script src="scripts/services/authservices.js"></script>
+    <script src="scripts/services/disciplineService.js"></script>
+    <script src="scripts/services/bookService.js"></script>
+    <script src="scripts/services/userService.js"></script>
+    <script src="scripts/services/userFolderService.js"></script>
+    <script src="scripts/services/testService.js"></script>
+    <script src="scripts/services/sharedTabService.js"></script>
+    <script src="scripts/services/archiveService.js"></script>
+    <script src="scripts/services/customQuestionBanksService.js"></script>
+
+    <script src="scripts/controllers/e8-login-controller.js"></script>
+    <!--<script src="scripts/controllesr/e8-books-controller.js"></script>-->
+
+    <script src="scripts/controllers/e8-selectDisciplines-controller.js"></script>
+    <script src="scripts/controllers/e8-selectBooks-controller.js"></script>
+    <script src="scripts/controllers/e8-selectQuestionMetadata-controller.js"></script>
+    <script src="scripts/controllers/e8-selectPrintSettings-controller.js"></script>
+
+    <script src="scripts/controllers/e8-chapters-controller.js"></script>
+
+    <script src="scripts/controllers/e8-myTests-controller.js"></script>
+    <script src="scripts/controllers/e8-publisherTests-controller.js"></script>
+    <script src="scripts/controllers/e8-questionBanks-controller.js"></script>
+    <script src="scripts/controllers/e8-customQuestionBanks-controller.js"></script>
+
+    <script src="scripts/controllers/e8-testCreationFrame-controller.js"></script>
+    <script src="scripts/controllers/e8-exportTest-controller.js"></script>
+    <script src="scripts/controllers/e8-saveConfirmation-controller.js"></script>
+    <script src="scripts/controllers/e8-testWizardErrorPopup-controller.js"></script>
+    <script src="scripts/controllers/e8-alertMessage-controller.js"></script>
+
+    <script src="scripts/externals/qti-player.js"></script>
+
+
+    <script src="scripts/externals/angular-ui-tree.js"></script>
+    <script src="scripts/externals/checklist-model.js"></script>
+
+    <script src="scripts/externals/ui-bootstrap-tpls-0.12.1.min.js"></script>
+    <script src="scripts/externals/angular-block-ui.js"></script>
+
+    <script src="scripts/externals/angular-ui-router.js"></script>
+
+    <script src="scripts/controllers/main.js"></script>
+    <script src="scripts/controllers/about.js"></script>
+    <script src="scripts/controllers/home.js"></script>
+    <script src="scripts/controllers/navigation-bar-controller.js"></script>
+    <script src="scripts/controllers/resources-tabs-controller.js"></script>
+    <script src="scripts/services/enums.js"></script>>
+    <script src="scripts/directives/ngEnter.js"></script>
+</body>
+</html>

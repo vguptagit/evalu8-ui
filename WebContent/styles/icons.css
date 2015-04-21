@@ -1,0 +1,38 @@
+.iconButtons
+{
+  display: inline-block;
+  color: #333;
+  border: none;
+  background: none;  
+  outline:0 !important;
+}
+
+.iconButtons:before
+{
+  font-size: 1.2em;
+  pointer-events: none;
+}
+
+.fa-rotate-45 {
+-webkit-transform: rotate(110deg);
+-moz-transform: rotate(110deg);
+-ms-transform: rotate(110deg);
+-o-transform: rotate(110deg);
+transform: rotate(110deg);
+}
+
+.add:before    { content: "\271A"; }
+
+.edit:before   { 
+	content: "\270E";
+	-webkit-transform: rotate(110deg);
+	-moz-transform: rotate(110deg);
+	-ms-transform: rotate(110deg);
+	-o-transform: rotate(110deg);
+	transform: rotate(110deg);	
+}
+
+.delete:before { content: "\2718";}
+.save:before   { content: "\2714";}
+.email:before  { content: "\2709";}
+.cross:before  { content: "\2716"; }

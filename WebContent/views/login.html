@@ -1,0 +1,63 @@
+﻿<div class="row">
+    <div class="col-sm-6 col-md-4 col-md-offset-4">
+        <div class="panel panel-default">
+
+            <div class="panel-body">
+
+                <fieldset>
+                    <div class="row">
+                        <div class="center-block">
+                            <h4>Sign In</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-10  col-md-offset-1 loginError text-center" data-ng-show="error">
+                            {{error}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-10  col-md-offset-1 ">
+                            <form name="form" data-ng-submit="login()" role="form">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <i class="glyphicon glyphicon-user"></i>
+                                        </span>
+                                        <input data-ng-model="username" required class="form-control" placeholder="Username" name="loginname" type="text" autofocus>
+                                        <span data-ng-show="form.username.$dirty && form.username.$error.required"
+                                              class="loginError">Username is required</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <i class="glyphicon glyphicon-lock"></i>
+                                        </span>
+                                        <input data-ng-model="password" required class="form-control" placeholder="Password" name="password" type="password" value="">
+                                        <span data-ng-show="form.password.$dirty && form.password.$error.required"
+                                              class="loginError">Password is required</span>
+                                    </div>
+                                </div>
+                                <div class="input-group">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="login-remember" type="checkbox" name="remember" value="1"> Remember me
+                                        </label>
+                                    </div>
+                                </div><br />
+                                <div class="form-group">
+                                    <input type="submit" name="signin" value="Sign in" class="btn btn-login" data-ng-disabled="form.$invalid || dataLoading" />
+                                    <!--<a  class="btn btn-login" data-ng-disabled="form.$invalid || dataLoading">Sign in</a>-->
+                                </div>
+                                <div id="tabs" data-tabs="tabs">
+                                    <p class="text-center">or &nbsp;&nbsp; <a href="#">Create Account</a></p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </fieldset>
+
+            </div>
+        </div>
+    </div>
+</div>

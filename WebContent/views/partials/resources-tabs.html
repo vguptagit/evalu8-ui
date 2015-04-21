@@ -1,0 +1,5 @@
+﻿<ul class="nav nav-tabs resources-tabs">
+    <li ng-repeat="resourcesTab in resourcesTabs" ng-class="{'active':resourcesTab.active}">
+        <a ui-sref="{{resourcesTab.path}}">{{resourcesTab.text}}</a>
+    </li>
+</ul>

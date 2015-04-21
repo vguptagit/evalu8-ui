@@ -1,0 +1,56 @@
+﻿<div class="row">
+    <div class="col-md-6 left-frame">
+        <div class="row">
+            <div class="col-md-4">
+                <h4>Resources</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div ng-include="'views/partials/resources-tabs.html'" ng-controller="ResourcesTabsController"></div>
+            </div>
+            <div class="col-md-12">
+                <div ui-view class="resources-tabs-content"></div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-6 right-frame">
+        <div class="devider visible-md visible-lg"></div>
+        <div class="row">
+            <div class="col-md-12">
+                        <div ng-include="'views/partials/test-creation-frame.html'" ng-controller="TestCreationFrameController"></div>
+                <!--<div class="row">
+
+                    <div class="col-md-4">
+                        <h4>Create or Edit Tests</h4>
+                    </div>
+                    <div class="col-md-8">
+                        <button type="button" class="btn btn-default">Default</button>
+                        <button type="button" class="btn btn-primary">Primary</button>
+                        <button type="button" class="btn btn-success">Success</button>
+                        <button type="button" class="btn btn-info">Info</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <ul class="nav nav-tabs">
+                            <li role="presentation" class="active"><a  >Untitled test</a></li>
+                            <li role="presentation"><a  >Untitled test</a></li>
+                            <li role="presentation"><a  >Untitled test</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <ul>
+                    <li ng-repeat="dog in dogs">{{ dog }}</li>
+                </ul>-->
+
+
+            </div>
+
+
+        </div>
+    </div>
+
+
+</div>
