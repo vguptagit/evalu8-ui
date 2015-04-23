@@ -30,7 +30,8 @@ angular.module('evalu8Demo', [
     'ngCookies',
 //  'blockUI',
     'ui.bootstrap',
-    'ui.router'
+    'ui.router',
+    'angularFileUpload'
 ])/*.config(function(blockUIConfig) {
 	//blockUIConfig.message = "<div class='loader'>Loading...</div>";
 	blockUIConfig.autoInjectBodyBlock = false;

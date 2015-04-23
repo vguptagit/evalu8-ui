@@ -27,8 +27,8 @@
         </div>
     </div>
 
-    <div id="NewVersion" ng-show="ShowNewVersion"
-         class="form-inline  panel panel-default container-full newVersion-container">
+    <!-- <div id="NewVersion" ng-show="ShowNewVersion"
+        class="form-inline  panel panel-default container-full newVersion-container">
         <div>
             <h4>Create New Version(s) of Test</h4>
         </div>
@@ -37,37 +37,33 @@
                 <label><h5>Scramble:</h5></label>
 
                 <div class="checkbox vsQuestion">
-                    <label>
-                        <input type="checkbox" ng-model="isQuestions">
+                    <label> <input type="checkbox" ng-model="isQuestions">
                         Questions
                     </label>
                 </div>
                 <div class="checkbox vsAnswers">
-                    <label>
-                        <input type="checkbox" ng-model="isAnswers">
+                    <label> <input type="checkbox" ng-model="isAnswers">
                         Answers
                     </label>
                 </div>
             </div>
             <div class="vnSelectDiv-container">
-                <label for="selectNumber"><h5>Number:</h5></label> <select id="selectNumber" data-role="listview" class="form-control"
-                                                                           data-inset="true" ng-model="selectedVersions"
-                                                                           ng-options="version as version.text for version in versions "
-                                                                           x-ng-change="selectVersion(selectedVersions)"></select>
+                <label for="selectNumber"><h5>Number:</h5></label> <select
+                    id="selectNumber" data-role="listview" class="form-control"
+                    data-inset="true" ng-model="selectedVersions"
+                    ng-options="version as version.text for version in versions "
+                    x-ng-change="selectVersion(selectedVersions)"></select>
 
                 <div class="checkbox vsQuestion">
-                    <label>
-                        <input type="checkbox" ng-model="isViewVersions">
+                    <label> <input type="checkbox" ng-model="isViewVersions">
                         View Versions
                     </label>
                 </div>
                 <button ng-click="createNewVersion()"
-                        class="btn btn-primary pull-right">
-                    Create Version
-                </button>
+                    class="btn btn-primary pull-right">Create Version</button>
             </div>
         </div>
-    </div>
+    </div> -->
 </div>
 
 <div id="content">
@@ -93,7 +89,7 @@
     <!-- Bootstrap css main container -->
     <div class="row">
         <div class="questionFeature col-lg-12">
-            <button ng-click="ShowNewVersion = ! ShowNewVersion ; newVersionBtnCss='disabled'"
+            <button ng-click="TestVersion_open()"
                     class="btn btn-primary pull-right {{newVersionBtnCss}}">
                 New
                 Version
@@ -299,7 +295,7 @@
             </div>
             <ol droppable="true" ui-tree-nodes id="QuestArea" class="questIndex"
                 type="1" ng-model="tests[currentIndex].questions">
-                <li quiztype={{node.quizType}} class="questIndex displayQuestionLI" printmode="{{!IsEditView}}"
+                <li quiztype={{node.quizType}} class="questIndex displayQuestionLI" printmode="{{!node.IsEditView}}"
                     templateqstn="{{node.templateQstn}}" ng-mouseover="hoverIn(this)" ng-mouseleave="hoverOut()"
                     optionsview={{node.optionsView}}
                     ng-repeat="node in tests[currentIndex].questions" ui-tree-node
@@ -315,10 +311,10 @@
                         Correct Answer
                     </div>
                     <a class="qstnViewLink" ng-click="showQstnPrintOrEditMode(this)"
-                       ng-show="showQstnEditIcon">{{qstnLinkText}}</a>
+                       ng-show="showQstnEditIcon">{{node.qstnLinkText}}</a>
                 </div>
                 <div ui-tree-handle class="tree-node tree-node-content questionList">
-                    <div ng-class="IsEditView ? 'editViewContainer' : 'printViewContainer' "
+                    <div ng-class="node.IsEditView ? 'editViewContainer' : 'printViewContainer' "
                          bind-qti="getHTML(this)"></div>
                 </div>
 
@@ -331,7 +327,7 @@
                             metadata
                         </div>
                     </div>
-                    <div>
+                    <div id="viewHeader">
                         <span class="captionMetadata">Format</span><span class="normalText">
                             (visible
                             in Print View)
@@ -354,6 +350,9 @@
                 <div>
 
         </script>
-
+        <div id="uploadImage" class="uploadImage" ng-show="imageClicked" ng-file-drop ng-accept="'image/*'" data-ng-file-change="upload($files)" drag-over-class="{accept:'dragover', reject:'dragover-err', delay:100}">
+            <div>Drag picture here or browse to upload.</div>
+            <input class="uploadBtn" type="button" value="Browse" data-ng-file-select data-ng-file-change="upload($files)" ng-accept="'*.jpg,*.png'" />
+        </div>
     </div>
 </div>

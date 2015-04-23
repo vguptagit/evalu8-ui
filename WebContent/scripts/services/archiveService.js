@@ -94,6 +94,35 @@ angular.module('evalu8Demo')
 
 				})				
 			};
+			
+			this.deleteFolder = function(folderId, callback) {								
+
+				$http.delete(evalu8config.host + '/my/delete/folders/' + folderId, config)
+				.success(function(response) {									
+					if(callback) callback();
+				})
+				.error(function(error, status) {
+
+				})				
+			};
+			
+            this.deleteTest = function(testId, folderId, callback) {                                
+
+                var url;
+                if(folderId) {
+                    url = '/my/delete/folders/' + folderId + '/tests/' + testId;
+                } else {
+                    url = '/my/delete/tests/' + testId;
+                }
+                
+                $http.delete(evalu8config.host + url, config)
+                .success(function(response) {                                    
+                    if(callback) callback();
+                })
+                .error(function(error, status) {
+
+                })                
+            };
 						
 		}
 ])			

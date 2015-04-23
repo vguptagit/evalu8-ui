@@ -11,6 +11,7 @@ angular.module('evalu8Demo')
 		     sharedTabService.masterTests = []; // is to track isDirty.
 		     sharedTabService.currentTab;
 		     sharedTabService.currentTabIndex = 0;
+		     sharedTabService.IsAnyQstnEditMode = false;
 
 		     sharedTabService.menu = { "myTest": 1, "questionBanks": 2 };
 		     sharedTabService.selectedMenu;
@@ -230,7 +231,7 @@ angular.module('evalu8Demo')
 
 		     sharedTabService.TestWizardErrorPopup_Open = function (errorMessages) {
 		         $modal.open({
-		             templateUrl: 'views/partials/test-wizard-error-popup.html',
+		             templateUrl: 'views/partials/testWizardErrorPopup.html',
 		             controller: 'TestWizardErrorPopupController',
 		             backdrop: 'static',
 		             keyboard: false,

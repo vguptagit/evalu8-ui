@@ -8,13 +8,14 @@ var QTI = {};
 
 QTI.initialized = false;
 
-QTI.play = function(qtiXML, displayNode,editable,templateQstn) {
+QTI.play = function(qtiXML, displayNode,editable,templateQstn,questionType) {
 
 	var state = {};
 	state.practice = false;
 	state.correct = undefined;
 	state.templateQstn=templateQstn;
 	state.editable=editable;
+	state.questionType=questionType;
 
 	if (state.practice == undefined) {
 		state.practice = true;
@@ -1585,20 +1586,48 @@ QTI.Elements.Paragraph.play = function(qtiNode, displayNode, state) {
 			$("<p class='optionLabelView'></p>"));
 	$(displayNode).append(elementDisplayNode);
 	this.extend.play(qtiNode, elementDisplayNode, state);
-	this.processChildren(qtiNode, elementDisplayNode, state);
+//	this.processChildren(qtiNode, elementDisplayNode, state);
+	elementDisplayNode.html(qtiNode.get(0).innerHTML);
+	
 
-	var qstnCaption=elementDisplayNode.html();
-	//if (editable) {
+	var qstnCaption=QTI.replaceImage(elementDisplayNode);
+	
+	var contentsDisplayNode2 = $(
+	"<div class='textBoxContainer editView' ></div>")
+	.attr({			
+		"class":'textBoxContainer editView'				
+	})
+	$(displayNode).append(contentsDisplayNode2);
+	
 		var textBox = $("<div contenteditable='true'  class='editablediv editView' type='text' id='qtiCaption'></div>");
 		
 		if((state.templateQstn)&&(qstnCaption=="")){
-				textBox.attr("data-placeholder",CustomQuestionTemplate.caption);
-				$(elementDisplayNode).html(CustomQuestionTemplate.caption);
+				textBox.attr("data-placeholder",CustomQuestionTemplate[state.questionType].editCaption);
+				$(elementDisplayNode).html(CustomQuestionTemplate[state.questionType].printCaption);
 		}else{
 				textBox.html(qstnCaption);
 		}			
 			
-		$(displayNode).append(textBox);
+		
+		
+		$(displayNode).find("div.textBoxContainer").append(
+				$("<div></div>").attr({			
+					"class" : "iconContainer editView"
+				}));
+		
+		$(displayNode).find("div.textBoxContainer").append(textBox);
+//		$(displayNode).append(textBox);
+		
+		$(displayNode).find("div.iconContainer").append(
+				$("<button></button>").attr({
+					"id" : "id",				
+					"name" : "image",				
+					"class" : "iconButtons fa fa-image",
+					"ng-click" : "addImage(this,$event,'div.textBoxContainer')"
+				}));
+		
+		
+		
 	//}
 
 }
@@ -1816,11 +1845,13 @@ QTI.Elements.SimpleChoice.play = function(qtiNode, displayNode, state) {
 				"data---qti-content-container" : "true"				
 			}));
 	
+	var qtiNodeHTML = QTI.replaceImage(qtiNode);
+	
 	if((state.templateQstn)&&(qtiNode.html()=="")){
-			containerDisplayNode.find("div.optionTextEditablediv").attr("data-placeholder",CustomQuestionTemplate.editOption);
-			containerDisplayNode.find("label.optionLabelView").html(CustomQuestionTemplate.printOption);
+			containerDisplayNode.find("div.optionTextEditablediv").attr("data-placeholder",CustomQuestionTemplate[state.questionType].editOption);
+			containerDisplayNode.find("label.optionLabelView").html(CustomQuestionTemplate[state.questionType].printOption);
 		}else{
-			containerDisplayNode.find("div.optionTextEditablediv").html(qtiNode.html());
+			containerDisplayNode.find("div.optionTextEditablediv").html(qtiNodeHTML);
 		}
 	
 	
@@ -1835,7 +1866,7 @@ QTI.Elements.SimpleChoice.play = function(qtiNode, displayNode, state) {
 				"id" : id,				
 				"name" : "image",				
 				"class" : "iconButtons fa fa-image",
-				"ng-click" : "addOptions12(this)"
+				"ng-click" : "addImage(this,$event,'div.qti-simpleChoice')"
 			}));
 	
 	containerDisplayNode.find("div.optionOperationdiv").append(
@@ -2404,9 +2435,62 @@ var matchIndex = {
 	"4" : "D) ",
 	"5" : "E) "
 }
-var CustomQuestionTemplate = {
-			caption: "Multiple Choice Question (Single Response)",
-			printOption: "Answer Choice" ,
-			editOption: "Enter Answer"    
-       
+
+
+var CustomQuestionTemplate = 						
+{
+		 
+		 "3":									
+				
+					 {"printCaption": "Multiple Choice Question" ,
+			 		  "editCaption": "Enter Multiple Choice Question",
+					  "printOption": "Answer Choice" ,
+					  "editOption": "Enter Answer" }
+				
+		,
+		
+		"4":
+			    
+				     {"printCaption": "True/False Question" ,
+					  "editCaption": "Enter True or False Question",
+					  "printOption": "True",
+					  "editOption":  "True" }
+				
+		
+		
+}
+
+QTI.getCaretPosition = function(element){
+	var ie = (typeof document.selection != "undefined" && document.selection.type != "Control") && true;
+	var w3 = (typeof window.getSelection != "undefined") && true;
+    var caretOffset = 0;
+    if (w3) {
+    	if(window.getSelection().type == "None")
+			return 0;
+        var range = window.getSelection().getRangeAt(0);
+        var preCaretRange = range.cloneRange();
+        preCaretRange.selectNodeContents(element);
+        preCaretRange.setEnd(range.endContainer, range.endOffset);
+        caretOffset = preCaretRange.toString().length;
+    } else if (ie) {
+        var textRange = document.selection.createRange();
+        var preCaretTextRange = document.body.createTextRange();
+        preCaretTextRange.moveToElementText(element);
+        preCaretTextRange.setEndPoint("EndToEnd", textRange);
+        caretOffset = preCaretTextRange.text.length;
     }
+    return caretOffset;
+}
+
+QTI.replaceImage = function(qtiNode){
+	var qtiNodeHTML = qtiNode.html();
+	var images = qtiNode.find("img");
+	images.each(function(){
+		var url = $(this).attr("src");
+		var splittedUrl = url.split("/")
+		fileName = splittedUrl[splittedUrl.length - 1]
+		fileName = fileName.split("?")[0]
+		qtiNodeHTML = qtiNodeHTML.replace($(this).get(0).outerHTML,"<u contenteditable='false' url='" + url + "'><i>" + fileName + "</i></u>")
+	})
+	return qtiNodeHTML;
+}

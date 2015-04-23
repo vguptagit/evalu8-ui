@@ -3,8 +3,8 @@
 angular.module('evalu8Demo')
 
 .service('TestService', 
-		['$http', '$rootScope', '$location', '$cookieStore', 
-		 function($http, $rootScope, $location, $cookieStore) {
+		['$http', '$rootScope', '$location', '$cookieStore', '$upload',
+		 function($http, $rootScope, $location, $cookieStore,$upload) {
 			
 			$rootScope.globals = $cookieStore.get('globals') || {};
 			
@@ -222,6 +222,23 @@ angular.module('evalu8Demo')
 				        $location.path('/login');
 				}) 
 			};
+			
+			this.uploadImage = function(file,element,cursorPosition,callback){
+				$upload.upload({
+                    url: evalu8config.host + '/image/upload',
+                    headers: {
+						'x-authorization' : $rootScope.globals.authToken,
+						'Accept' : 'application/json;odata=verbose'
+					},
+                    file: file
+                }).progress(function (evt) {
+                    var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                    console.log('progress: ' + progressPercentage + '% ' + evt.config.file.name);
+                }).success(function (data, status, headers, config) {
+
+                    callback(data,element,cursorPosition);
+                });
+			}
 		}
 			
 			

@@ -1,1 +1,26 @@
-﻿<h2>Custom Questions</h2>
+﻿<div class="questionTemplateContainer">
+    <div>
+        <p>
+            Drag question to right and add your content.
+        </p>
+    </div>
+    <div class="tree-node tree-node-content">
+        <div data-ui-tree id="tree-root">
+            <ol data-nodrop data-ui-tree-nodes data-ng-model="questionTemplates">
+                <li qstntemplate={{node.qstnTemplate}} quiztype={{node.quizType}} printmode="true" class="questionTemplates" optionsview={{node.optionsView}} data-ng-repeat="node in questionTemplates" data-ui-tree-node
+                    data-ng-include="'question_renderer.html'"></li>
+            </ol>
+        </div>
+
+        <script type="text/ng-template" id="question_renderer.html">
+            <div ui-tree-handle class="questionTemplate tree-node tree-node-content">
+                <div class='printViewContainer' ng-if="node" ng-bind-html="getCustomQuestionHTML(this)">
+                </div>
+            </div>
+        </script>
+
+
+
+    </div>
+
+</div>

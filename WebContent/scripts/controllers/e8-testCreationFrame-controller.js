@@ -19,46 +19,44 @@ angular.module('e8MyTests')
 
 
         /*****************************************Start Question edit ****************************************/
-        $scope.showQstnEditIcon=false;
-        $scope.IsAnyQstnEditMode=false;
-        $scope.qstnLinkText="Edit";
+        $scope.showQstnEditIcon=false;        
         
-        $scope.hoverIn = function(selectedQstn){
-        	 if(selectedQstn.node.IsEditMode){
+        $scope.hoverIn = function(selectedQstn){        	
         		 this.showQstnEditIcon = true;            
-        	 }else if(!$scope.IsAnyQstnEditMode){
-        		 this.showQstnEditIcon = true;        
-        	 }
-           
         };
 
         $scope.hoverOut = function(){
             this.showQstnEditIcon = false;            
         };
-        
-        $scope.IsEditView=false;        
-      
-        $scope.showQstnPrintOrEditMode = function (selectedQstnNode){      
+                
+        $scope.showQstnPrintOrEditMode = function (selectedQstnNode){ 
+        	 if(SharedTabService.IsAnyQstnEditMode && !selectedQstnNode.node.IsEditView){
+             	$scope.IsConfirmation=false;        	
+        		 	$scope.alert("A question is already in Edit mode, save it before editing another question.");
+        		 	return;
+             }
         	var qstnHtml = selectedQstnNode.node.textHTML;            	
         	this.showQstnEditIcon=!this.showQstnEditIcon;      
-        	this.qstnLinkText=this.IsEditView ? "Edit":"Print";         		
-        	if (this.IsEditView){        		
+        	selectedQstnNode.node.qstnLinkText=selectedQstnNode.node.IsEditView ? "Edit":"View";         		
+        	if (selectedQstnNode.node.IsEditView){     
+        		$scope.imageClicked = false;
+        		var p = $(angular.element(document.querySelector("#uploadImage"))).detach();
+            	$("#qstnArra").append(p);
         		convertHtmlToXmlNode(selectedQstnNode);         
-        		selectedQstnNode.node.IsEditMode=false;
-        		 $scope.IsAnyQstnEditMode=false;
+        		SharedTabService.IsAnyQstnEditMode=false;
         	 }else{
-        		 selectedQstnNode.node.IsEditMode=true;
-        		 $scope.IsAnyQstnEditMode=true;
+        		 SharedTabService.IsAnyQstnEditMode=true;
         	 }
-        	this.IsEditView=!this.IsEditView;             	
+        	selectedQstnNode.node.IsEditView=!selectedQstnNode.node.IsEditView;             	
         }
         
                 
         function convertHtmlToXmlNode(selectedQstnNode) {       
         	var xml = jQuery.parseXML(selectedQstnNode.node.data);
     		var qstnHTML=$(selectedQstnNode.$element);
-    		var qstnCaption = qstnHTML.find('#qtiCaption').html() ;  
-    		$(xml).find('itemBody').find('p').text(qstnCaption);    		
+    		var qstnCaption = replaceImage(qstnHTML.find('#qtiCaption'));  
+    		
+    		$(xml).find('itemBody').find('p').html(qstnCaption);    		
     		
     			$(xml).find('itemBody').find('choiceInteraction').find("simpleChoice").remove();    			
     			var htmlNewOptions = qstnHTML.find('.qti-simpleChoice');  
@@ -66,7 +64,8 @@ angular.module('e8MyTests')
         		var optionTag = '<simpleChoice identifier="@RESPONSE" fixed="false">@val</simpleChoice>';
         			
         					for (var i = 0; i < htmlNewOptions.length; i++) {
-        						optionText = $(htmlNewOptions).eq(i)[0].innerText;						
+        						optionText = replaceImage(htmlNewOptions.eq(i).find("div.optionTextEditablediv"));
+        						
         						var optionTagAppend = optionTag.replace('@RESPONSE', 'RESPONSE_' + (i+1));						
         						optionTagAppend = optionTagAppend.replace('@val', optionText);
         						var item = $.parseXML(optionTagAppend); //returns DOM element		
@@ -108,7 +107,17 @@ angular.module('e8MyTests')
                 	var element = Qtiscope.$element.children();
                 	directiveQtiService.bindNewQti(Qtiscope, element, attrs);
     				
-    	}      
+    	}     
+        
+        var replaceImage = function(textBox){
+        	var htmlText = textBox.html().replace(/&nbsp;/," ");
+        	var images = textBox.find("u[contenteditable]");
+			images.each(function(){
+				var url = $(this).attr("url");
+				htmlText = htmlText.replace($(this).get(0).outerHTML,"<img width='300px' src='"+ url +"' \/>")
+			})
+			return htmlText;
+        }
         
         $scope.removOption = function (selectedNode,event){        	
         	var qstnOptionContainer=$(selectedNode.$element).find('form.qti-choiceInteraction');
@@ -174,7 +183,39 @@ angular.module('e8MyTests')
 
          }
         
-       
+        $scope.imageClicked = false;
+        var Option = null;
+        var CursorPosition = 0;
+        $scope.addImage = function(selectedOption,event,parentText){
+        	Option = $(event.target).parents(parentText).find("div[contenteditable='true']").eq(0);
+        	CursorPosition = QTI.getCaretPosition(Option.get(0));
+        	if($(event.target).parents(parentText).next("#uploadImage").length == 1)
+    		{
+        		$scope.imageClicked = !$scope.imageClicked;
+        		return;
+    		}
+        	$scope.imageClicked = true;
+//        	angular.element("#uploadImage").css("top")
+        	var p = $(angular.element(document.querySelector("#uploadImage"))).detach();
+        	$(event.target).parents(parentText).after(p);
+        }
+        
+        $scope.upload = function(files){
+        	var returnValue;
+        	if (files && files.length) {
+                for (var i = 0; i < files.length; i++) {
+                    var file = files[i];
+                    returnValue = TestService.uploadImage(file,Option,CursorPosition,function(data,element,cursorPosition){
+                        var optionText = element.html().replace(/&nbsp;/g," ");
+                        element.html(optionText.substring(0,cursorPosition) + "<u contenteditable='false' url='"+ data +"'><i>"+ file.name +"</i></u>&nbsp;" + optionText.substring(cursorPosition + 1,optionText.length))
+                        $scope.imageClicked = false;
+                    });
+                   
+                }
+
+            }
+        	
+        }
         /*****************************************End Question edit ****************************************/
 
 
@@ -303,10 +344,14 @@ angular.module('e8MyTests')
         }
         
         $scope.$on('dropQuestion', function (event, source, destIndex, sourceTabName) {
-
+        	if(SharedTabService.IsAnyQstnEditMode){
+            	$scope.IsConfirmation=false;        	
+       		 	$scope.alert("A question is already in Edit mode, save it before adding or reordering questions.");
+       		 	return;
+            }
+        	
           var newNode = angular.copy(source.node);
-         
-                        
+                                 
             var QuestionEnvelop = {
         		metadata : {      
         			guid: newNode.guid,
@@ -331,15 +376,17 @@ angular.module('e8MyTests')
             		return true;
             });
             templateQstnGUID = templateQuestionsList.length + 1;
-            if (sourceTabName == "CustomQuestions") {            	
+            if (sourceTabName == "CustomQuestions") {  
+            	newNode.IsEditView=true;                
+            	SharedTabService.IsAnyQstnEditMode=true;
                 if (!newNode.guid) {
                     newNode.guid = templateQstnGUID;
                 }
             }else{
-            	 var qstnMasterdata =  buildQstnMasterDetails(newNode);
-                 newNode.qstnMasterData=qstnMasterdata;
+            	newNode.IsEditView=false;      
+                newNode.qstnMasterData=buildQstnMasterDetails(newNode);
             }
-
+            newNode.qstnLinkText=newNode.IsEditView ? "View":"Edit";     
             var nodeAlreadyExist = false;
             if (tests.length == 0) {
                 tests.push(newNode);
@@ -516,7 +563,7 @@ angular.module('e8MyTests')
         //$scope.tree2 = [];
 
         //versioning
-        $scope.versions = SharedTabService.versions;
+        /*$scope.versions = SharedTabService.versions;
         $scope.isQuestions = true;
         $scope.isAnswers = true;
 
@@ -526,17 +573,17 @@ angular.module('e8MyTests')
         $scope.noOfVersions = SharedTabService.versions[1].number;
         $scope.selectVersion = function (version) {
             $scope.noOfVersions = version.number;
-        };
-        $scope.createNewVersion = function () {
-            var self = this;
+        };*/
+        $scope.createNewVersion = function (scope) {
+            //var self = this;
             $scope.currentTab = SharedTabService.tests[SharedTabService.currentTabIndex];
 
             var scrambleType;
-            if (this.isQuestions && this.isAnswers) {
+            if (scope.isQuestions && scope.isAnswers) {
                 scrambleType = 2;
-            } else if (this.isQuestions) {
+            } else if (scope.isQuestions) {
                 scrambleType = 0;
-            } else if (this.isAnswers) {
+            } else if (scope.isAnswers) {
                 scrambleType = 1;
             }
             if (scrambleType == undefined) {
@@ -545,8 +592,8 @@ angular.module('e8MyTests')
                 return false;
             }
 
-            $scope.versioningOptions = { "scrambleType": scrambleType, "noOfVersions": $scope.noOfVersions };
-            $scope.isViewVersions = this.isViewVersions;
+            $scope.versioningOptions = { "scrambleType": scrambleType, "noOfVersions": scope.noOfVersions };
+            $scope.isViewVersions = scope.isViewVersions;
 
             TestService.createVersions(this, function (scope, testResult) {
 
@@ -571,7 +618,7 @@ angular.module('e8MyTests')
                     }
 
 
-                    /*if($scope.currentTab.folderGuid== null){
+                    if($scope.currentTab.folderGuid== null){
                     	$scope.selectedFolder=$scope.defaultFolders;
                     	
                     	//$scope.selectedFolder = angular.element($('#' + $scope.currentTab.testId).closest('li').parent()).scope();
@@ -590,7 +637,7 @@ angular.module('e8MyTests')
 	                            break;
 	                        }
 	                    }
-                    }*/
+                    }
 
                 }
 
@@ -612,7 +659,7 @@ angular.module('e8MyTests')
                     $scope.versionedTests.forEach(function (node) {
                         var result = $scope.maping[node.guid];
                         //update MyTest tree
-                        node.testId = $scope.currentTab.testId;
+                       /* node.testId = $scope.currentTab.testId;
                         node.folderGuid = $scope.currentTab.folderGuid;
                         node.nodeType = "test";
                         node.title = result.title;
@@ -621,12 +668,17 @@ angular.module('e8MyTests')
 
                         if (SharedTabService.selectedMenu == SharedTabService.menu.myTest) {
                             if ($scope.currentTab.folderGuid == null) {
-                                $scope.selectedFolder.splice($scope.selectedTestIndex, 0, node);
+                            	for(var j=$scope.selectedFolder.length-1; j>=0; j--){
+                            		$scope.selectedFolder[j].parentNode.removeChild($scope.selectedTestIndex + parseInt(result.version), 0, node);
+                            	}
                             }
                             else {
+                            	for(var j=$scope.selectedFolder.length-1; j>=0; j--){
+                            		$scope.selectedFolder[j].parentNode.removeChild($scope.selectedTestIndex + parseInt(result.version), 0, node);
+                            	}
                                 $scope.selectedFolder.splice($scope.selectedTestIndex + parseInt(result.version), 0, node);
                             }
-                        }
+                        }*/
                         //create tabs
                         if ($scope.isViewVersions) {
                             var newTestTab = new SharedTabService.Test(SharedTabService.tests[SharedTabService.currentTabIndex]);
@@ -643,6 +695,24 @@ angular.module('e8MyTests')
             });
         }
 
+       
+        
+        $scope.TestVersion_open = function () {
+
+            $modal.open({
+                templateUrl: 'views/partials/testVersionPopup.html',
+                controller: 'TestVersionCreationController',
+                size: 'md',
+                backdrop: 'static',
+                keyboard: false,
+                resolve: {
+                    parentScope: function () {
+                        return $scope;
+                    }
+                }
+            });
+        };
+        
         $scope.open = function () {
 
             $modal.open({

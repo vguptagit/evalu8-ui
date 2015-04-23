@@ -3,8 +3,8 @@
 angular.module('e8CustomQuestionBanks')
 
 .controller('CustomQuestionBanksController',
-    ['$scope', '$rootScope', '$location', '$cookieStore', '$http', '$sce', 'CustomQuestionBanksService', 'EnumService',
-    function ($scope, $rootScope, $location, $cookieStore, $http, $sce, CustomQuestionBanksService, EnumService) {
+    ['$scope', '$rootScope', '$location', '$cookieStore', '$http', '$sce','CustomQuestionBanksService','EnumService', 
+function ($scope, $rootScope, $location, $cookieStore, $http, $sce,CustomQuestionBanksService,EnumService) {
   
     	
     //binding all Question format template to the "questionTemplates" Model.
@@ -29,9 +29,8 @@ angular.module('e8CustomQuestionBanks')
      	$scope.$broadcast("dropQuestion", source,  destIndex, "CustomQuestions");
      });
 
-     
-        // evalu8-ui new code
-        //to set Active Resources Tab , handled in ResourcesTabsController
+    // evalu8-ui new code
+    //to set Active Resources Tab , handled in ResourcesTabsController
      $rootScope.$broadcast('handleBroadcast_setActiveResourcesTab', EnumService.RESOURCES_TABS.customquestions);
      
      

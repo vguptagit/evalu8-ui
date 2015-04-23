@@ -4,7 +4,7 @@ angular.module('e8MyTests')
 
 .controller('MyTestsController',
     ['$scope', '$rootScope', '$location', '$cookieStore', '$http', '$sce',
-     'UserFolderService', 'TestService', 'SharedTabService', 'ArchiveService', 'EnumService',
+     'UserFolderService', 'TestService', 'SharedTabService', 'ArchiveService','EnumService',
      function ($scope, $rootScope, $location, $cookieStore, $http, $sce,
     		UserFolderService, TestService, SharedTabService, ArchiveService, EnumService) {
     	
@@ -411,7 +411,8 @@ angular.module('e8MyTests')
                 $scope.showAddFolderPanel = false;
             });
 
-        }        
+        }
+
          // evalu8-ui new code
          //to set Active Resources Tab , handled in ResourcesTabsController
         $rootScope.$broadcast('handleBroadcast_setActiveResourcesTab', EnumService.RESOURCES_TABS.yourtests);

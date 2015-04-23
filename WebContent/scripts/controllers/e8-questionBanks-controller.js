@@ -3,8 +3,8 @@
 angular.module('e8QuestionBanks')
 
 .controller('QuestionBanksController',
-    ['$scope', '$rootScope', '$location', '$cookieStore', '$http', '$sce', 'DisciplineService', 'TestService', 'SharedTabService', 'EnumService',
-    function ($scope, $rootScope, $location, $cookieStore, $http, $sce, DisciplineService, TestService, SharedTabService, EnumService) {
+    ['$scope', '$rootScope', '$location', '$cookieStore', '$http', '$sce', 'DisciplineService', 'TestService', 'SharedTabService','EnumService',
+function ($scope, $rootScope, $location, $cookieStore, $http, $sce, DisciplineService, TestService, SharedTabService,EnumService) {
         SharedTabService.selectedMenu = SharedTabService.menu.questionBanks;
         $rootScope.globals = $cookieStore.get('globals') || {};
         var config = {
@@ -318,7 +318,7 @@ angular.module('e8QuestionBanks')
         $scope.$on('handleBroadcast_deselectedNode', function (handler, node) {
             $scope.selectNode(node);
         });
-        
+
         // evalu8-ui new code
         //to set Active Resources Tab , handled in ResourcesTabsController
         $rootScope.$broadcast('handleBroadcast_setActiveResourcesTab', EnumService.RESOURCES_TABS.questionbanks);

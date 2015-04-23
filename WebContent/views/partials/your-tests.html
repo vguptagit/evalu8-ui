@@ -1,16 +1,25 @@
-﻿<div class="row">
-    <div class="col-lg-3 pull-right no-padding">
-        <a ng-model="showAddFolderPanel" ng-click='showAddFolderPanel= !showAddFolderPanel'>New Folder</a>
+﻿<div class="row testContainer">
+    <div class="col-lg-11 text-right no-padding">
+        <!-- <a data-click="toggle()" data-toggle="collapse" data-model="mySwitch" data-target="#createFolder">New Folder</a> -->
+        <a class="newFolder" ng-model="showAddFolderPanel" ng-click='showAddFolderPanel= !showAddFolderPanel'>New Folder</a><span class="newFolder"> | Import</span>
     </div>
-</div>
-<div class="row testContainer" >
-    <div ng-show="showAddFolderPanel" id="createFolder">
+
+
+    <div class="col-lg-12" ng-show="showAddFolderPanel">
 
         <label class="createNewNode">
             <input type="text" data-ng-model="folderName" id="txtFolderName" class="form-control"
                    placeholder="Enter new folder name " ng-enter="addNewFolder()">
         </label>
         <!-- data-ng-click="addNewFolder(this)" -->
+    </div>
+
+    <div class="col-lg-12" data-ui-tree id="MyTest-tree-root">
+        <ol data-ui-tree-nodes data-ng-model="defaultFolders">
+            <li data-ng-repeat="node in defaultFolders" data-ui-tree-node
+                x-collapsed="true" data-ng-include="'defaultfolder_renderer.html'"
+                draggable="{{node.nodeType == 'archiveRoot' && 'false' || 'true'}}" />
+        </ol>
     </div>
 
     <!-- 	<div class="row" >
@@ -193,12 +202,5 @@
         </div>
     </script>
 
-    <div data-ui-tree id="MyTest-tree-root">
-        <ol data-ui-tree-nodes data-ng-model="defaultFolders">
-            <li data-ng-repeat="node in defaultFolders" data-ui-tree-node
-                x-collapsed="true" data-ng-include="'defaultfolder_renderer.html'"
-                draggable="{{node.nodeType == 'archiveRoot' && 'false' || 'true'}}" />
-        </ol>
-    </div>
-</div>
 
+</div>

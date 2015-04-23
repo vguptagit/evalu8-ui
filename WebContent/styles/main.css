@@ -24,6 +24,7 @@
 
 .right-frame {
     padding-left: 0px;
+    top:-50px;
 }
 
     .right-frame > div.row {
