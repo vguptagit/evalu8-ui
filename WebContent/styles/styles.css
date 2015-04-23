@@ -151,10 +151,6 @@
   background-color: #fff;
   border: 1px solid #ddd;
   border-bottom-color: transparent;
-  width: 100px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .nav>li>a {
@@ -458,7 +454,7 @@ a.fa.fa-user{
   border-radius:3px;
   box-shadow: 0px -3px 0px #006A8D;
 }
-.form-control{
+.createNewNode .form-control{
 	width: 40%;
   	height: 26px;
   }
