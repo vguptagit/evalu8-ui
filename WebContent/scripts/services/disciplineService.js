@@ -23,7 +23,7 @@ angular.module('evalu8Demo')
 								function(response) {
 									
 									response.forEach (function(item) {    							
-										allDisciplines.push({"item": item});    							    							
+										allDisciplines.push(item);    							    							
 									});									
 								});
 				return allDisciplines;

@@ -163,15 +163,14 @@
     </div>
     <div class="row"
          ng-show="tests[currentIndex].isTestWizard &&  tests[currentIndex].criterias.length != 0" ">
-		<!--{{tests[currentIndex].criterias}}-->
-		<!--<button type=" button" class="btn btn-default" ng-click="addTestWizardCriteria()">
-        <span class="icon-magic"></span>Add Test wizard</button>-->
+        <!--{{tests[currentIndex].criterias}}-->
+        <!--<button type="button" class="btn btn-default" ng-click="addTestWizardCriteria()"><span class="icon-magic"></span>Add Test wizard</button>-->
         <div class="test-wizard-container">
             <div class="row"
-                 ng-repeat="criteria in tests[currentIndex].criterias">
+                 ng-repeat="criteria in tests[currentIndex].criterias" ng-show="$first || !isApplySameCriteriaToAll">
                 <div class="col-lg-11  form-inline  panel panel-default bg-gray-lighter">
                     <button type="button" class="close"
-                            ng-click="closeCriteria(criteria)" aria-label="Close">
+                            ng-click="closeCriteria(criteria,true)" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                     <!-- <div>
@@ -182,8 +181,8 @@
                         <div class="col-lg-5">
                             <b>Selected Questions :</b>
                         </div>
-                        <div class="col-lg-6">
-                            <input type="checkbox" ng-model="isApplySameCriteriaToAll"
+                        <div class="col-lg-6" ng-show="$first && !$last">
+                            <input id="applyCriteria" type="checkbox" ng-model="isApplySameCriteriaToAll"
                                    ng-change='toggleApplySameCriteria(this)'>Use same
                             criteria for all topics
                         </div>
@@ -191,7 +190,13 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <ul>
-                                <li>{{criteria.folderTitle}} ({{criteria.totalQuestions}} Questions)</li>
+                                <li ng-repeat="topic in tests[currentIndex].criterias" ng-if="topic.folderTitle == criteria.folderTitle || isApplySameCriteriaToAll">
+                                    <span>{{topic.folderTitle}} ({{topic.totalQuestions}} Questions)</span>
+                                    <button type="button" class="close btnChapterClose" ng-show="isApplySameCriteriaToAll"
+                                            ng-click="closeCriteria(topic,false)" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -208,7 +213,7 @@
                                             <input type="radio" name="{{criteria.id}}"
                                                    ng-model="criteria.numberOfQuestionsSelected "
                                                    value="{{defaultNumberOfQuestion}}"
-                                                   ng-change="criteria.numberOfQuestionsEntered=null"
+                                                   ng-change="fillQuestionCount(criteria)"
                                                    ng-disabled='criteria.totalQuestions < defaultNumberOfQuestion'>{{defaultNumberOfQuestion}}
                                         </div>
                                         <div class="col-lg-2">
@@ -237,7 +242,8 @@
                                                     <input type="checkbox"
                                                            ng-disabled='criteria.questiontypes.indexOf(questiontype.key) == -1'
                                                            ng-model="value" value="{{questiontype.key}}"
-                                                           ng-change='toggleQuestiontypeSelection(criteria,questiontype.key)'><span>{{questiontype.value}}</span>
+                                                           ng-click='toggleQuestiontypeSelection(criteria,questiontype.key)'
+                                                           ng-checked="criteria.selectedQuestiontypes.indexOf(questiontype.key) != -1"><span>{{questiontype.value}}</span>
                                                 </label>
                                             </div>
                                         </div>
@@ -287,7 +293,7 @@
             <span class="testCreationName">Name:</span>
         </div>
     -->
-    <div id="qstnArra" ng-show="!tests[currentIndex].isTestWizard">
+    <div id="qstnArea" ng-show="!tests[currentIndex].isTestWizard">
         <div data-ui-tree id="tree2-root">
             <div ng-show="isLoading">
                 <span class="glyphicon glyphicon-refresh spinning"></span>
@@ -295,7 +301,7 @@
             </div>
             <ol droppable="true" ui-tree-nodes id="QuestArea" class="questIndex"
                 type="1" ng-model="tests[currentIndex].questions">
-                <li quiztype={{node.quizType}} class="questIndex displayQuestionLI" printmode="{{!node.IsEditView}}"
+                <li draggable="{{!node.IsEditView}}" quiztype={{node.quizType}} class="questIndex displayQuestionLI" printmode="{{!node.IsEditView}}"
                     templateqstn="{{node.templateQstn}}" ng-mouseover="hoverIn(this)" ng-mouseleave="hoverOut()"
                     optionsview={{node.optionsView}}
                     ng-repeat="node in tests[currentIndex].questions" ui-tree-node
@@ -352,7 +358,7 @@
         </script>
         <div id="uploadImage" class="uploadImage" ng-show="imageClicked" ng-file-drop ng-accept="'image/*'" data-ng-file-change="upload($files)" drag-over-class="{accept:'dragover', reject:'dragover-err', delay:100}">
             <div>Drag picture here or browse to upload.</div>
-            <input class="uploadBtn" type="button" value="Browse" data-ng-file-select data-ng-file-change="upload($files)" ng-accept="'*.jpg,*.png'" />
+            <input class="uploadBtn" type="button" value="Browse" data-ng-file-select data-ng-file-change="upload($files)" ng-accept="'*.jpg,*.png,*.tif,*.tiff,*.gif,*.jpeg,*.bmp'" />
         </div>
     </div>
 </div>

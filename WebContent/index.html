@@ -31,9 +31,14 @@
 </head>
 <body role="document" ng-app="evalu8Demo">
     <!-- Fixed navbar -->
-    <div ng-include="'views/partials/navigation-bar.html'" ng-controller="NavigationBarController"></div>
     <div class="container-fluid" role="main">
-        <div ui-view></div>
+    <div class="row">
+    
+    	<div class="col-lg-12" ng-include="'views/partials/navigation-bar.html'" ng-controller="NavigationBarController"></div>
+    </div>	
+        <div class="row">
+        <div  class="col-lg-12" ui-view></div>
+        </div>
     </div>
 
     <!-- Bootstrap core JavaScript
@@ -59,6 +64,7 @@
     <script src="scripts/services/sharedTabService.js"></script>
     <script src="scripts/services/archiveService.js"></script>
     <script src="scripts/services/customQuestionBanksService.js"></script>
+    <script src="scripts/services/userQuestionsService.js"></script>
 
     <script src="scripts/controllers/e8-login-controller.js"></script>
     <!--<script src="scripts/controllesr/e8-books-controller.js"></script>-->

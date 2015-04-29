@@ -10,8 +10,7 @@ angular.module('evalu8Demo')
 		     sharedTabService.tests = [];
 		     sharedTabService.masterTests = []; // is to track isDirty.
 		     sharedTabService.currentTab;
-		     sharedTabService.currentTabIndex = 0;
-		     sharedTabService.IsAnyQstnEditMode = false;
+		     sharedTabService.currentTabIndex = 0;		    
 
 		     sharedTabService.menu = { "myTest": 1, "questionBanks": 2 };
 		     sharedTabService.selectedMenu;
@@ -28,6 +27,7 @@ angular.module('evalu8Demo')
 		             this.questions = test.questions;
 		             this.criterias = test.criterias;
 		             this.metadata = test.metadata;
+		             this.IsAnyQstnEditMode = false;
 		         } else {
 		             this.id = "tab" + (new Date).getTime();
 		             this.testId = null;
@@ -39,6 +39,7 @@ angular.module('evalu8Demo')
 		             this.questions = [];
 		             this.criterias = [];
 		             this.scope;
+		             this.IsAnyQstnEditMode = false;
 		         }
 		         this.masterQuestions = [];
 		         this.isSaveAndClose = false;
@@ -447,15 +448,46 @@ angular.module('evalu8Demo')
 		     sharedTabService.closeCriteria = function (criteria, scope) {
 		         $.each(sharedTabService.tests[scope.currentIndex].criterias, function (i) {
 		             if (sharedTabService.tests[scope.currentIndex].criterias[i].id === criteria.id) {
-		                 sharedTabService.tests[scope.currentIndex].criterias[i].treeNode.showTestWizardIcon = true;
-		                 //sharedTabService.tests[scope.currentIndex].criterias[i].treeNode.isNodeSelected=false;
-		                 $rootScope.$broadcast("handleBroadcast_deselectedNode", sharedTabService.tests[scope.currentIndex].criterias[i].treeNode);
+		            	 sharedTabService.tests[scope.currentIndex].criterias[i].treeNode.showTestWizardIcon=true;
+		            	 //sharedTabService.tests[scope.currentIndex].criterias[i].treeNode.isNodeSelected=false;
+		            	 $rootScope.$broadcast("handleBroadcast_deselectedNode", sharedTabService.tests[scope.currentIndex].criterias[i].treeNode);
 		                 sharedTabService.tests[scope.currentIndex].criterias.splice(i, 1);
 		                 return false;
 		             }
 		         });
 		     }
+		     
+		     sharedTabService.closeAllCriteria = function (criteria, scope) {
+		    	 var criterias = sharedTabService.tests[scope.currentIndex].criterias;
+		    	 while(criterias.length > 0){
+		    		 sharedTabService.tests[scope.currentIndex].criterias[0].treeNode.showTestWizardIcon = true;
+	                 //sharedTabService.tests[scope.currentIndex].criterias[i].treeNode.isNodeSelected=false;
+	                 $rootScope.$broadcast("handleBroadcast_deselectedNode", sharedTabService.tests[scope.currentIndex].criterias[0].treeNode);
+	                 sharedTabService.tests[scope.currentIndex].criterias.splice(0, 1);
+		    	 }
+		     }
+		     
+		     sharedTabService.propagateCriteria = function(scope){
+		    	 var criterias = sharedTabService.tests[scope.currentIndex].criterias;
+		    	 for (var i = 1; i < criterias.length; i++) {
+		    		 criterias[i].numberOfQuestionsSelected = criterias[0].numberOfQuestionsSelected;
+		    		 criterias[i].selectedQuestiontypes.splice(0,criterias[i].selectedQuestiontypes.length);// = criterias[0].selectedQuestiontypes;
+		    		 for ( var questionType in criterias[0].selectedQuestiontypes) {
+		    			 if(criterias[i].questiontypes.indexOf(criterias[0].selectedQuestiontypes[questionType]) != -1)
+		    				 criterias[i].selectedQuestiontypes.push(criterias[0].selectedQuestiontypes[questionType])
+					}
+		    		 
+				}
+		     }
 
+		     sharedTabService.resetCriteriaToDefault = function(scope){
+		    	 var criterias = sharedTabService.tests[scope.currentIndex].criterias;
+		    	 for (var i = 1; i < criterias.length; i++) {
+		    		 criterias[i].numberOfQuestionsSelected = sharedTabService.setDefault_numberOfQuestionsSelected(criterias[i].totalQuestions);
+		    		 criterias[i].selectedQuestiontypes.splice(0,criterias[i].selectedQuestiontypes.length);// = criterias[0].selectedQuestiontypes;
+				}
+		     }
+		     
 		     sharedTabService.versions = [
 		         { number: 1, text: '1 Version' },
                  { number: 2, text: '2 Versions' },

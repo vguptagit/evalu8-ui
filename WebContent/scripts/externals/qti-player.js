@@ -1593,13 +1593,13 @@ QTI.Elements.Paragraph.play = function(qtiNode, displayNode, state) {
 	var qstnCaption=QTI.replaceImage(elementDisplayNode);
 	
 	var contentsDisplayNode2 = $(
-	"<div class='textBoxContainer editView' ></div>")
+	"<div class='textBoxContainer editView editablediv' ></div>")
 	.attr({			
-		"class":'textBoxContainer editView'				
+		"class":'textBoxContainer editView editablediv'				
 	})
 	$(displayNode).append(contentsDisplayNode2);
 	
-		var textBox = $("<div contenteditable='true'  class='editablediv editView' type='text' id='qtiCaption'></div>");
+		var textBox = $("<div contenteditable='true'  class='editView' type='text' id='qtiCaption'></div>");
 		
 		if((state.templateQstn)&&(qstnCaption=="")){
 				textBox.attr("data-placeholder",CustomQuestionTemplate[state.questionType].editCaption);
@@ -2445,8 +2445,7 @@ var CustomQuestionTemplate =
 					 {"printCaption": "Multiple Choice Question" ,
 			 		  "editCaption": "Enter Multiple Choice Question",
 					  "printOption": "Answer Choice" ,
-					  "editOption": "Enter Answer" }
-				
+					  "editOption": "Enter Answer" }		
 		,
 		
 		"4":
@@ -2455,6 +2454,13 @@ var CustomQuestionTemplate =
 					  "editCaption": "Enter True or False Question",
 					  "printOption": "True",
 					  "editOption":  "True" }
+		,
+		"5":									
+			
+		{"printCaption": "Multiple Response Question" ,
+		  "editCaption": "Enter Multiple Response Question",
+		 "printOption": "Answer Choice" ,
+		 "editOption": "Enter Answer" }
 				
 		
 		

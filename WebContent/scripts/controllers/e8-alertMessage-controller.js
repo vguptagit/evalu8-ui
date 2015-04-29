@@ -4,11 +4,8 @@ angular.module('e8MyTests').controller('AlertMessageController',
     $scope.message=parentScope.message;
     $scope.IsConfirmation=parentScope.IsConfirmation;
     
-    $scope.Ok = function () {
-    	if(parentScope.IsConfirmation){
-    		 parentScope.callbackAlert();
-    	}    	
-    	$modalInstance.dismiss('cancel');    
+    $scope.Ok = function () {    	
+    	$modalInstance.close(true);    
     };
     
     $scope.cancel = function () {

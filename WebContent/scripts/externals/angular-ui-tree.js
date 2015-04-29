@@ -163,9 +163,9 @@
                 	return;
                 } */
                 
-                if($rootScope.tree.mouseOverNode) {
+/*                if($rootScope.tree.mouseOverNode) {
                 	return;
-                } 
+                }*/ 
                 
                 if(this.source.node.nodeType=="archiveRoot"
                 	|| this.source.node.nodeType=="archiveTest" 
@@ -756,7 +756,7 @@
           };
 
           callbacks.beforeDrop = function(event) {
-
+        	  scope.$emit("beforeDrop");        	 
           };
 
           scope.$watch(attrs.uiTree, function(newVal, oldVal){
@@ -1193,27 +1193,35 @@
               e.preventDefault();
 
           	// prevent dropping into nodes having droppable == 'false'; 
-              /*
+              
               if(dragInfo) {
             	  
             	  var destination = dragInfo.eventArgs().dest.nodesScope;
-	              if(! 
+            	  var editModeQuestions=$(destination.$parent.$element).find("li[printmode=false]");
+	              if(
 	              		(destination.$parent &&  
 	        				(
-	        					$(destination.$parent.$element).find("ol").attr('droppable') == 'true' ||
-	        					$(dragInfo.eventArgs().dest.nodesScope.$parent.$element).closest("ol").attr('droppable') == 'true'
+	        					$(destination.$parent.$element).find("ol").attr('droppable') == 'false' ||
+	        					$(dragInfo.eventArgs().dest.nodesScope.$parent.$element).closest("ol").attr('droppable') == 'false'
 	        				)          					
 	              		)
 	          		) {
 	            	  	scope.$emit("dragCancel");
 	                	scope.$$apply = false;
 	                }  
-              } */              
+              }               
               
           	
               if (dragElm) {
                 scope.$treeScope.$apply(function() {
-                  scope.$callbacks.beforeDrop(dragInfo.eventArgs(elements, pos));
+                	 if (scope.$$apply) {
+					                  scope.$callbacks.beforeDrop(dragInfo.eventArgs(elements, pos));
+					                  if(editModeQuestions.length>0){
+					            			scope.$emit("dragCancel");
+					  	                	scope.$$apply = false;
+					                  }
+                	 }
+  	                	
                 });
                 // roll back elements changed
                 hiddenPlaceElm.replaceWith(scope.$element);

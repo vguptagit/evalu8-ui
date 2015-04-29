@@ -33,10 +33,13 @@ angular.module('e8MyTests')
 		        $scope.selectVersion = function (version) {
 		            $scope.noOfVersions = version.number;
 		        };
+		        
 		        $scope.createNewVersion = function () {
 		        	
-		        	parentScope.createNewVersion($scope);
-		        	$modalInstance.dismiss('cancel');
+		        	var isValid=	parentScope.createNewVersion($scope);
+			        if(isValid){
+			        	$modalInstance.dismiss('cancel');
+			        }	
 		       }
 		
 		}]);

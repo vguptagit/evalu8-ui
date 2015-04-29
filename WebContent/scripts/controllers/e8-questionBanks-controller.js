@@ -3,8 +3,8 @@
 angular.module('e8QuestionBanks')
 
 .controller('QuestionBanksController',
-    ['$scope', '$rootScope', '$location', '$cookieStore', '$http', '$sce', 'DisciplineService', 'TestService', 'SharedTabService','EnumService',
-function ($scope, $rootScope, $location, $cookieStore, $http, $sce, DisciplineService, TestService, SharedTabService,EnumService) {
+    ['$scope', '$rootScope', '$location', '$cookieStore', '$http', '$sce', 'DisciplineService', 'TestService', 'SharedTabService','UserQuestionsService','EnumService',
+    function ($scope, $rootScope, $location, $cookieStore, $http, $sce, DisciplineService, TestService, SharedTabService, UserQuestionsService,EnumService) {
         SharedTabService.selectedMenu = SharedTabService.menu.questionBanks;
         $rootScope.globals = $cookieStore.get('globals') || {};
         var config = {
@@ -14,22 +14,46 @@ function ($scope, $rootScope, $location, $cookieStore, $http, $sce, DisciplineSe
             }
         };
         $scope.selectedNodes = [];
-        $scope.$on('dragEnd', function (event, destParent, source, sourceParent, sourceIndex, destIndex) {
-            $scope.$broadcast("dropQuestion", source, destIndex);
+        
+        $scope.dragStarted = false;
+        
+        $scope.$on('dragStarted', function () {
+            $scope.dragStarted = true;
         });
+        
+        $scope.$on('dragEnd', function (event, destParent, source, sourceParent, sourceIndex, destIndex) {
+        	if($scope.dragStarted) {
+        		$scope.dragStarted = false;
+                $scope.$broadcast("dropQuestion", source.node, destIndex);
+                source.node.showEditQuestionIcon = false;
+        	}
+        });
+        
+        $scope.$on('beforeDrop', function (event) {
+       		$scope.$broadcast("beforeDropQuestion");     
+       });
 
         $scope.isTestWizard = false;
         //Broadcast from SharedTabService.onClickTab()
         $scope.$on('handleBroadcastCurrentTabIndex', function () {
             $scope.currentIndex = SharedTabService.currentTabIndex;
             $scope.isTestWizard = SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard;
-        });
-
+        });        
+        
+        $scope.userQuestions = [];
+        
         //Fetch user disciplines and populate the drop down			
         DisciplineService.userDisciplines(function (userDisciplines) {
-
+        	
             $scope.disciplines = userDisciplines;
 
+            UserQuestionsService.userQuestions(function(userQuestions){
+            	if(userQuestions.length) {
+            		$scope.userQuestions = 	userQuestions;
+            		$scope.disciplines.unshift({"item": "Your Questions"});
+            	}            		
+            })
+        	
             DisciplineService.disciplineDropdownOptions(userDisciplines, "Question Banks", function (disciplinesOptions, selectedValue) {
 
                 $scope.disciplinesOptions = disciplinesOptions;
@@ -41,6 +65,10 @@ function ($scope, $rootScope, $location, $cookieStore, $http, $sce, DisciplineSe
         $scope.disciplineFilterChange = function (option) {
 
             $scope.disciplines = DisciplineService.disciplineDropdownChange(option);
+            
+            if($scope.userQuestions.length) {
+            	$scope.disciplines.unshift({"item": "Your Questions"});
+            }
         }
 
         $scope.testTitle = "New Test";
@@ -62,14 +90,39 @@ function ($scope, $rootScope, $location, $cookieStore, $http, $sce, DisciplineSe
                 else {
                     //blockLeftpanel.start();
                     discipline.expand();
+                    
+                    var ep;
+                    
+                    if(discipline.node.item == 'Your Questions') {
+                    	
+                    	discipline.node.nodes = [];                    	                                                		
 
-                    var ep = evalu8config.host + "/books?discipline=" + discipline.node.item;
+			            //qti player initialisation
+			            QTI.initialize();
+			            
+			            var yourQuestions = [];
+			            $scope.userQuestions.forEach(function(xmlString) {
+							
+							var yourQuestion = {};
+						    var displayNode = $("<div></div>")
+						    QTI.play(xmlString, displayNode, false, false);
+						    yourQuestion.isQuestion = true;
+						    yourQuestion.questionXML = true;
+						    yourQuestion.textHTML = displayNode.html();	
+						    yourQuestions.push(yourQuestion);
+						})
+						
+						discipline.node.nodes = yourQuestions;										                        
+                    } else {
+                    	ep = evalu8config.host + "/books?discipline=" + discipline.node.item;	
+                    	
+                        $http.get(ep, config).success(
+    							function (response) {
+    							    discipline.node.nodes = response;
+    							    //blockLeftpanel.stop();
+    							});
+                    }                    
 
-                    $http.get(ep, config).success(
-							function (response) {
-							    discipline.node.nodes = response;
-							    //blockLeftpanel.stop();
-							});
                 }
             }
         }
@@ -100,6 +153,14 @@ function ($scope, $rootScope, $location, $cookieStore, $http, $sce, DisciplineSe
 								.forEach(book.node.nodes, function (item) {
 								    item.showTestWizardIcon = true;
 								    item.isNodeSelected = false;
+								    if($scope.selectedNodes.length > 0)
+								    	for (var i = 0; i < $scope.selectedNodes.length; i++) {
+								    		if($scope.selectedNodes[i].guid == item.guid){
+								    			item.showTestWizardIcon = $scope.selectedNodes[i].showTestWizardIcon;
+								    			item.isNodeSelected = $scope.selectedNodes[i].isNodeSelected;
+								    			$scope.selectedNodes[i] = item;
+								    		}
+										}
 								    item.nodeType = "chapter";
 								})
 							});
@@ -126,15 +187,22 @@ function ($scope, $rootScope, $location, $cookieStore, $http, $sce, DisciplineSe
                 SharedTabService.TestWizardErrorPopup_Open();
                 return false;
             }
+            var selectedNodesLength = $scope.selectedNodes.length;
+            var nodeCounter = 0;
             for (var i = 0; i < $scope.selectedNodes.length; i++) {
                 currentNode = $scope.selectedNodes[i];
                 if (currentNode.showTestWizardIcon) {
                     currentNode.showTestWizardIcon = false;
-                    getQuestions(currentNode);
+                    getQuestions(currentNode,function(){
+                    	nodeCounter++;
+                    	if(nodeCounter == selectedNodesLength)
+                    		if(SharedTabService.errorMessages.length > 0)
+                    			SharedTabService.TestWizardErrorPopup_Open();
+                    });
                 }
             }
         }
-        function getQuestions(currentNode) {
+        function getQuestions(currentNode,callBack) {
             $http
 			.get(
 					evalu8config.host
@@ -146,12 +214,14 @@ function ($scope, $rootScope, $location, $cookieStore, $http, $sce, DisciplineSe
 			.success(
 					function (response) {
 					    $scope.$broadcast("handleBroadcast_createTestWizardCriteria", response, currentNode);
+					    callBack()
 					})
 			.error(function () {
 			    SharedTabService.addErrorMessage(currentNode.title, SharedTabService.errorMessageEnum.NoQuestionsAvailable);
-			    SharedTabService.TestWizardErrorPopup_Open();
+			    callBack()
 			    currentNode.showTestWizardIcon = true;
-			    currentNode.isNodeSelected = false;
+//			    currentNode.isNodeSelected = false;
+			    $scope.selectNode(currentNode);
 			})
         }
 
@@ -195,6 +265,14 @@ function ($scope, $rootScope, $location, $cookieStore, $http, $sce, DisciplineSe
 												    item.template = 'nodes_renderer.html';
 												    item.showTestWizardIcon = true;
 												    item.isNodeSelected = false;
+												    if($scope.selectedNodes.length > 0)
+												    	for (var i = 0; i < $scope.selectedNodes.length; i++) {
+												    		if($scope.selectedNodes[i].guid == item.guid){
+												    			item.showTestWizardIcon = $scope.selectedNodes[i].showTestWizardIcon;
+												    			item.isNodeSelected = $scope.selectedNodes[i].isNodeSelected;
+												    			$scope.selectedNodes[i] = item;
+												    		}
+														}
 												    item.nodeType = "topic";
 												})
 							    //blockLeftpanel.stop();
@@ -216,6 +294,59 @@ function ($scope, $rootScope, $location, $cookieStore, $http, $sce, DisciplineSe
 							    var responseQuestions = response;
 							    $(currentNode.$element).find(".captiondiv").addClass('iconsChapterVisible');
 							    currentNode.$element.children(0).addClass('expandChapter');
+
+							    var sortedNodes = sortNodes(response, currentNode);
+
+							    currentNode.node.nodes = currentNode.node.nodes.concat(sortedNodes);
+
+							    angular
+										.forEach(
+												responseQuestions,
+												function (item) {
+												    item.nodeType = "question";
+												    item.showEditQuestionIcon = false;
+												    item.isNodeSelected = false;
+												    $scope
+															.renderQuestion(
+																	item
+																	);
+												})
+							    //blockLeftpanel.stop();
+
+							})
+							.error(function () {
+							    //blockLeftpanel.stop(); 
+							});;
+                }
+            }
+        }
+        
+        $scope.getQuestions = function (currentNode) {
+            //var blockLeftpanel = blockUI.instances.get('BlockLeftpanel');
+            if ($rootScope.globals.authToken == '') {
+                $location.path('/login');
+            } else {
+                if (!currentNode.collapsed) {
+                    currentNode.collapse();
+                }
+                else {
+                    //blockLeftpanel.start();
+                    currentNode.expand();
+                    currentNode.node.nodes = [];
+
+                    $http
+					.get(
+							evalu8config.host
+									+ "/books/"
+									+ $scope.bookID
+									+ "/nodes/"
+									+ currentNode.node.guid
+									+ "/questions",
+							config)
+					.success(
+							function (response) {
+
+							    var responseQuestions = response;
 
 							    var sortedNodes = sortNodes(response, currentNode);
 
@@ -261,7 +392,7 @@ function ($scope, $rootScope, $location, $cookieStore, $http, $sce, DisciplineSe
 							   
 							    item.textHTML = displayNode
 										.html();
-							    item.template = 'questions_renderer.html';
+							    item.template = 'qb_questions_renderer.html';
 
 							})
 
@@ -303,12 +434,14 @@ function ($scope, $rootScope, $location, $cookieStore, $http, $sce, DisciplineSe
             if (!node.isNodeSelected) {
                 $scope.selectedNodes.push(node);
                 node.isNodeSelected = !node.isNodeSelected;
+                node.showEditQuestionIcon = node.showEditQuestionIcon != undefined ?  true : node.showEditQuestionIcon;
             }
             else {
                 for (var i = 0; i < $scope.selectedNodes.length; i++) {
-                    if ($scope.selectedNodes[i].guid == node.guid && node.showTestWizardIcon) {
+                	if ($scope.selectedNodes[i].guid == node.guid && (node.showTestWizardIcon || node.showEditQuestionIcon)) {
                         $scope.selectedNodes.splice(i, 1);
                         node.isNodeSelected = !node.isNodeSelected;
+                        node.showEditQuestionIcon = node.showEditQuestionIcon != undefined ?  false : node.showEditQuestionIcon;
                         break;
                     }
                 }
@@ -318,8 +451,14 @@ function ($scope, $rootScope, $location, $cookieStore, $http, $sce, DisciplineSe
         $scope.$on('handleBroadcast_deselectedNode', function (handler, node) {
             $scope.selectNode(node);
         });
-
-        // evalu8-ui new code
-        //to set Active Resources Tab , handled in ResourcesTabsController
-        $rootScope.$broadcast('handleBroadcast_setActiveResourcesTab', EnumService.RESOURCES_TABS.questionbanks);
+        $scope.editQuestion=function(question){     
+        	for (var i = 0; i < $scope.selectedNodes.length; i++) {
+                if ($scope.selectedNodes[i].showEditQuestionIcon) {
+                	$scope.selectedNodes[i].showEditQuestionIcon = false;
+                	$scope.$broadcast("dropQuestion", $scope.selectedNodes[i], 0);
+                }
+            }
+        }
+      //evalu8-ui : to set Active Resources Tab , handled in ResourcesTabsController
+      $rootScope.$broadcast('handleBroadcast_setActiveResourcesTab', EnumService.RESOURCES_TABS.questionbanks);
     }]);

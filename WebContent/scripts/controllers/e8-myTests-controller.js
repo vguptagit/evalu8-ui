@@ -3,10 +3,10 @@
 angular.module('e8MyTests')
 
 .controller('MyTestsController',
-    ['$scope', '$rootScope', '$location', '$cookieStore', '$http', '$sce',
+    ['$scope', '$rootScope', '$location', '$cookieStore', '$http', '$sce', '$modal',
      'UserFolderService', 'TestService', 'SharedTabService', 'ArchiveService','EnumService',
-     function ($scope, $rootScope, $location, $cookieStore, $http, $sce,
-    		UserFolderService, TestService, SharedTabService, ArchiveService, EnumService) {
+     function ($scope, $rootScope, $location, $cookieStore, $http, $sce, $modal,
+    		UserFolderService, TestService, SharedTabService, ArchiveService,EnumService) {
     	
     	SharedTabService.selectedMenu = SharedTabService.menu.myTest;
         $scope.testTitle = "New Test";
@@ -112,7 +112,7 @@ angular.module('e8MyTests')
             		$scope.removeTestBindingFromSource(sourceParent, item.guid);            		
             		$scope.addTestToDest(destParent);
             	}
-            	else {
+            	else if(item.nodeType == "folder") {
 
             		if(prev) {
             			$scope.getFolderNodeSequence(prev.node);
@@ -339,8 +339,20 @@ angular.module('e8MyTests')
         };
         
         $scope.archiveFolder = function(folder) {
-        	ArchiveService.archiveFolder(folder.node.guid, function() {
-        		folder.remove();
+        	ArchiveService.archiveFolder(folder.node.guid, function(archivedFolder) {
+        		folder.remove();        		
+        		
+        		archivedFolder.nodeType = "archiveFolder";
+        		var archivedNode;
+        		
+        		$scope.defaultFolders.forEach(function(node) {
+        			if(node.nodes) {
+            			archivedNode = node.nodes.filter(function( obj ) {  return obj.guid == archivedFolder.parentId; });
+            			if(archivedNode.length)
+            				archivedNode[0].nodes.push(archivedFolder);        				
+        			}
+        		})
+
         	});        	
         }
 
@@ -363,17 +375,45 @@ angular.module('e8MyTests')
         	});        	
         }
         
+        var confirmObject = {
+                templateUrl: 'views/partials/alert.html',
+                controller: 'AlertMessageController',
+                backdrop: 'static',
+                keyboard: false,
+                resolve: {
+                    parentScope: function () {
+                        return $scope;
+                    }
+                }
+            };
+        
         $scope.deleteFolder = function(folder) {
-        	ArchiveService.deleteFolder(folder.node.guid, function() {
-        		folder.remove();
-        	});        	
-        }
+
+    		$scope.IsConfirmation = true;        		
+    		$scope.message="Are you sure you want to permanently delete this folder. This action cannot be undone. Click OK if you want to delete this folder";
+    		
+    		$modal.open(confirmObject).result.then(function(ok) {
+	    		if(ok) {
+        			ArchiveService.deleteFolder(folder.node.guid, function() {
+        				folder.remove(); 
+	                }); 
+	    		}
+    		})    		
+        };
         
         $scope.deleteTest = function(test) {
-            ArchiveService.deleteTest(test.node.guid, test.$parentNodeScope.node.guid, function() {
-                test.remove();
-            });            
-        }
+
+    		$scope.IsConfirmation=true;        		    		
+    		$scope.message="Are you sure you want to permanently delete this test. This action cannot be undone. Click OK if you want to delete this test";
+
+    		$modal.open(confirmObject).result.then(function(ok) {
+	    		if(ok) {
+	                ArchiveService.deleteTest(test.node.guid, test.$parentNodeScope.node.guid, function() {
+	                    test.remove();
+	                }); 
+	    		}
+    		})
+        };                
         
         //Rendering the question as html		
         $scope.getHTML = function (datanode) {
@@ -412,8 +452,7 @@ angular.module('e8MyTests')
             });
 
         }
-
-         // evalu8-ui new code
-         //to set Active Resources Tab , handled in ResourcesTabsController
-        $rootScope.$broadcast('handleBroadcast_setActiveResourcesTab', EnumService.RESOURCES_TABS.yourtests);
+         
+      //evalu8-ui : to set Active Resources Tab , handled in ResourcesTabsController
+      $rootScope.$broadcast('handleBroadcast_setActiveResourcesTab', EnumService.RESOURCES_TABS.yourtests);
     }]);

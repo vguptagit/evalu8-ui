@@ -37,6 +37,23 @@ angular.module('evalu8Demo')
 				})				
 			};
 			
+            this.saveQuestions = function(editedQstns, callback) {
+                
+                $http.post(evalu8config.host + '/my/questions', editedQstns, config)
+                .success(function(response) {    
+                    var questionsResult = response;
+                    callback(questionsResult);
+                    //blockRightPanel.stop();
+                })
+                .error(function(error, status) {
+
+                    if(status == 403)
+                        $location.path('/login');
+                    //blockRightPanel.stop();
+                })                
+                
+            };
+			
 			this.updateTestMetaData = function(testData,folderId,callback) {				
 			
 				var testMetadata = {

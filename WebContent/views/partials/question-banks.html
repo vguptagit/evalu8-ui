@@ -14,7 +14,8 @@
             <div class="treeDiv">
                 <div class="maindiv">
                     <div class="imagediv">
-                        <input ng-click="getBooks(this)" type="image" class="collapseImg" src="images/right_arrow2.png"></input>
+                        <input ng-click="getBooks(this)" type="image" class="collapseImg"
+                               ng-src="{{collapsed && 'images/right_arrow2.png' || 'images/right_arrow.png'}}"></input>
                     </div>
                     <div class="captiondiv">
                         <label class="captionLabel">{{node.item}}</label>
@@ -24,8 +25,8 @@
         </div>
 
         <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}" droppable="false">
-            <li draggable="false" ng-repeat="node in node.nodes" collapsed="true" ui-tree-node ng-include="'book_renderer.html'">
-            </li>
+            <li ng-if="!node.isQuestion" draggable="false" ng-repeat="node in node.nodes" collapsed="true" ui-tree-node ng-include="'book_renderer.html'"></li>
+            <li class="questIndex" ng-if="node.isQuestion" draggable="false" ng-repeat="node in node.nodes" collapsed="true" ui-tree-node ng-include="'questions_renderer.html'"></li>
         </ol>
     </script>
     <script type="text/ng-template" id="book_renderer.html">
@@ -63,8 +64,8 @@
                         <label class="captionLabel">{{node.title}}</label>
                     </div>
                     <div class="iconsChapter">
-                        <span class="qEditiconButtons glyphicon glyphicon-pencil"></span>
-                        <span class="icon-magic test-wizard-icon-white pull-right" ng-show="node.showTestWizardIcon" ng-click="createTestWizardCriteria(this)" title="Auto-create test with wizard"></span>
+                        <span class="action-icon-bg glyphicon glyphicon-pencil"></span>
+                        <span class="icon-magic action-icon-bg pull-right" ng-show="node.showTestWizardIcon" ng-click="createTestWizardCriteria(this)" title="Auto-create test with wizard"></span>
                         <!--
                         <span class="settingsChapter"></span>
                         <span class="printChapter"></span>
@@ -77,19 +78,20 @@
         </div>
         <ol ui-tree-nodes="" type="1" ng-model="node.nodes" ng-class="{hidden: collapsed}" droppable="false">
 
-            <li class="questIndex" printmode="true" ng-repeat="node in node.nodes" collapsed="true" ui-tree-node draggable="{{node.nodeType=='question'}}" ng-include="node.template">
+            <li class="questIndex" printmode="true" ng-repeat="node in node.nodes" ng-class="{questionSelected:node.isNodeSelected}" collapsed="true" ui-tree-node draggable="{{node.nodeType=='question'}}" ng-include="node.template">
             </li>
         </ol>
     </script>
 
-    <script type="text/ng-template" id="questions_renderer.html">
-        <div ui-tree-handle class="printViewContainer tree-node tree-node-content questionList" ng-class="{questionTitleInTree: node.questionXML}">
+    <script type="text/ng-template" id="qb_questions_renderer.html">
+        <div ng-mousedown="selectNode(this.node);" ui-tree-handle class="printViewContainer tree-node tree-node-content questionList" ng-class="{questionTitleInTree: node.questionXML}">
+            <span ng-show="node.showEditQuestionIcon" class="newTest-close action-icon-bg glyphicon glyphicon-pencil" ng-mousedown="editQuestion(this)"></span>
             <div class="printViewContainer" ng-if="node.textHTML" ng-bind-html="getHTML(this)">
             </div>
         </div>
     </script>
 
-    <div data-ui-tree id="tree-root">
+    <div data-ui-tree id="tree-root" class="question_bank_scrollbar">
         <ol data-ui-tree-nodes data-ng-model="disciplines" droppable="false">
             <li data-ng-repeat="node in disciplines" data-ui-tree-node
                 collapsed="true" draggable="false"
@@ -97,5 +99,6 @@
         </ol>
     </div>
 </div>
+
 
 

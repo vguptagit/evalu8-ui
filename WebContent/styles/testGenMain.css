@@ -253,22 +253,27 @@ div.resource {
 }
 */
 .createNewNode {
-	width: 96%;
-	text-align: left;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-weight: bold;
-	white-space: normal;
-	background-color: #DDDDDD;
-	font-size: 12px;
-	line-height: 1;
-	padding: 3px 2px;
-	border-radius: 2px;
-	cursor: default;
-	height: 30px;
-	margin-left: 2%;
-	padding-left: 20px;
-	
+  width: 96%;
+  text-align: left;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  margin-left: 2%;
+  margin-right: 2%;
+  white-space: normal;
+  background-color: #F0EFEF;
+  font-size: 12px;
+  line-height: 0.75;
+  padding: 0.5px 1px;
+  border-radius: 2px;
+  position: relative;
+  cursor: default;
+  height: 39px;
+  padding-right: 6px;
+  padding-left: 20px;
+  border-bottom: 1px white solid;
 }
+
+
 .treeDiv {
 	width: 96%;
 	text-align: left;
@@ -277,23 +282,31 @@ div.resource {
 	margin-left: 2%;
 	margin-right: 2%;
 	white-space: normal;
-	background-color: #DDDDDD;
+	background-color: #F4F4EF;
 	font-size: 12px;
 	line-height: 0.75;
 	padding: 0.5px 1px;
 	border-radius: 2px;
 	cursor: default;
 	height: 40px;
-	margin-top: 3.5px;
+	/* margin-top: 3.5px; */
 }
+
+.treeDiv:hover {
+  background-color: #C0C0C0;
+}
+
+
 .newFolder {
 	color: #3399FF;
 }
+
 a.newFolder:hover {
-text-decoration: none;
-color: #3399FF;
-cursor:pointer;
+	text-decoration: none;
+	color: #3399FF;
+	cursor: pointer;
 }
+
 .sectionLineDiv {
 	width: 96%;
 	margin-left: 2%;
@@ -349,6 +362,7 @@ cursor:pointer;
 	display: table;
 	background: #fff;
 	vertical-align: middle;
+	border-left: 5px #C0C0C0 solid;
 }
 
 .imagediv {
@@ -388,9 +402,10 @@ cursor:pointer;
 
 .iconsChapter {
 	float: right;
-	margin-top: 15px;
-	vertical-align: middle;
-	width: 40px;
+	width: 83px;
+	margin: 3px;
+	position: absolute;
+	right:15px;
 }
 
 .iconsChapterVisible {
@@ -405,7 +420,15 @@ cursor:pointer;
 	height: 90px;
 }
 
-#tree-root, #MyTest-tree-root {
+.question_bank_scrollbar{
+	overflow-y: auto;
+	position: absolute;
+	top: 268px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+}
+.myTest_scrollbar{
 	overflow-y: auto;
 	position: absolute;
 	top: 268px;
@@ -414,6 +437,14 @@ cursor:pointer;
 	right: 0px;
 }
 
+.publisher_test_scrollbar{
+	overflow-y: auto;
+	position: absolute;
+	top: 268px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+}
 .qti-simpleChoice span.tick {
 	visibility: hidden;
 	/* display: none; */
@@ -486,17 +517,18 @@ html, body {
 	margin-left: 8px;
 }
 
-ol{    
-    list-style: none;
-    position: relative;
-    counter-reset: list;
+ol {
+	list-style: none;
+	position: relative;
+	counter-reset: list;
 }
-.questionList:before {    
-    counter-reset:none;
-    counter-increment: list;
-    content: counter(list) ") ";
-    position: absolute;
-    margin-left : -15px;
+
+.questionList:before {
+	counter-reset: none;
+	counter-increment: list;
+	content: counter(list) ") ";
+	position: absolute;
+	margin-left: -15px;
 }
 
 .matchRight {
@@ -778,14 +810,22 @@ ol{
 .testHighlight {
 	background-color: #007FA9 !important;
 	color: #FFFFFF;
-	Border-Left: 4px #007FA9;
+	border-left: 5px #0B6786 solid;
 	Border-Bottom: 2px #FFFFFF;
+}
+
+.testHighlight:hover {
+  background-color: #007FA9 !important;
+  color: #FFFFFF;
+  border-left: 5px #0B6786 solid;
+  Border-Bottom: 2px #FFFFFF;
 }
 
 .maindivTest:hover {
 	background-color: #e2e0e1;
 	border-bottom: 1px #E0E0E0;
 	Border-Left: 4px #E0E0E0;
+	border-left: 5px #C0C0C0 solid;
 }
 
 .testHighlightSelected div {
@@ -818,22 +858,24 @@ ol{
 .vsAnswers {
 	padding-left: 35px !important;
 	position: absolute;
-  	left: 36%;
-  	top: 23%;
+	left: 36%;
+	top: 23%;
 }
+
 .version {
-  position: absolute;
-  left: 42%;
-  top: 56%;
+	position: absolute;
+	left: 42%;
+	top: 56%;
 }
+
 .vsViewVersions {
 	padding-left: 3px !important;
 }
 
 .versionBox {
-  width: 96%;
-  height: 36px;
-  border-radius: 4px;
+	width: 96%;
+	height: 36px;
+	border-radius: 4px;
 }
 
 .vsViewVersions {
@@ -1023,7 +1065,7 @@ li[printmode='true'] .qti-simpleChoice span:first-child {
 	
 }
 
-li[printmode='true'] .qti-simpleChoice .radio {
+li[printmode='true'] .qti-simpleChoice .radio,li[printmode='true'] .qti-simpleChoice .checkbox {
 	padding-left: 0px;
 	padding-right: 15px;
 	margin-top: 0px;
@@ -1095,8 +1137,8 @@ li[printmode='false'] .questionList {
 	padding-left: 10px;
 }
 
-li[qstnTemplate='true'] .radio span.tick{
-     visibility: hidden !important;     
+li[qstnTemplate='true'] .radio span.tick,li[qstnTemplate='true'] .checkbox span.tick {
+	visibility: hidden !important;
 }
 
 li[quiztype='4'] .vhDiv {
@@ -1117,7 +1159,7 @@ li[quiztype='4'] #viewHeader {
 	border: 2px solid #D0D0D0;
 	border-radius: 4px;
 	min-height: 27px;
-	padding-left: 10px;
+	padding-left: 0px;
 	margin-bottom: 15px;
 }
 
@@ -1130,7 +1172,7 @@ li[quiztype='4'] #viewHeader {
 	border-top-left-radius: 0em;
 	border-bottom-left-radius: 0em;
 	min-height: 24px;
-	padding-left: 2px;
+	padding-left: 1px;
 	float: left;
 	font-weight: normal;
 	font-size: 12px;
@@ -1169,30 +1211,30 @@ li[quiztype='4'] #viewHeader {
 	color: gray
 }
 
-li .editViewContainer #qtiCaption{    
-    font-family: Verdana, Arial, Helvetica, sans-serif;
-    font-weight: normal;
-    font-size: 12px;
+li .editViewContainer #qtiCaption {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: normal;	
+	padding-top: 3px;
+	font-size: 12px;
     display: block;    
-    line-height: 1.5;   
-    padding-top: 3px;
+    line-height: 1.8;   
+    padding-left: 4px;
 }
 
-li.questIndex .angular-ui-tree-handle{
+li.questIndex .angular-ui-tree-handle {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
-    font-weight: normal !important;
-    font-size: 12px;
+	font-weight: normal !important;
+	font-size: 12px;
 }
 
 li.questionTemplates {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
-    font-weight: normal !important;
-    font-size: 12px;
+	font-weight: normal !important;
+	font-size: 12px;
 }
 
-
-
-.optionSelectionDiv input[type=radio] {
+.optionSelectionDiv input[type=radio], .optionSelectionDiv input[type=checkbox]
+	{
 	margin-left: 7px;
 	margin-top: 6px;
 }
@@ -1317,8 +1359,8 @@ li[quiztype='4'] .qti-simpleChoice .radio {
 /* Welcome Screen CSS  Starts*/
 .welcome {
 	box-shadow: 0px 0px 8px #C0C0C0;
-	width: 100%;	
-	padding: 111px; 
+	width: 100%;
+	padding: 111px;
 	/*position: absolute;
 	  top: 13%;
   right: 32%; */
@@ -1326,7 +1368,7 @@ li[quiztype='4'] .qti-simpleChoice .radio {
 }
 
 .welcomeText {
-	font-family: Helvetica;
+	font-family: Helvetica Neue Light;
 	font-size: 34px;
 	vertical-align: middle;
 	line-height: 1em;
@@ -1339,7 +1381,7 @@ li[quiztype='4'] .qti-simpleChoice .radio {
 }
 
 .welcomeText1 {
-	font-family: Helvetica;
+	font-family: Helvetica Neue Light;
 	font-size: 18px;
 	padding: 10px 10px 10px 10px;
 	position: initial;
@@ -1354,7 +1396,9 @@ li[quiztype='4'] .qti-simpleChoice .radio {
 	height: 40px;
 	font-family: Helvetica;
 	font-size: 18px;
-	width: 100%; 
+	width: 100%;
+	border: 0px;
+	border-radius: 5px;
 }
 
 .one, .two, .three {
@@ -1369,7 +1413,7 @@ li[quiztype='4'] .qti-simpleChoice .radio {
 }
 
 .welcomeText2 {
-	font-family: Helvetica;
+	font-family: Helvetica Neue Light;
 	font-size: 18px;
 	padding: 10px 10px 10px 10px;
 	position: initial;
@@ -1378,7 +1422,7 @@ li[quiztype='4'] .qti-simpleChoice .radio {
 }
 
 .welcomeText3 {
-	font-family: Helvetica;
+	font-family: Helvetica Neue Light;
 	font-size: 14px;
 	padding: 15px 15px 15px 15px;
 	position: initial;
@@ -1386,9 +1430,8 @@ li[quiztype='4'] .qti-simpleChoice .radio {
 	line-height: 1em;
 }
 
-
 .selectedSteps {
-	font-family: Helvetica;
+	font-family: Helvetica Neue Light;
 	color: #FFFFFF;
 	border-radius: 30px;
 	background: #2D2E2D;
@@ -1398,9 +1441,8 @@ li[quiztype='4'] .qti-simpleChoice .radio {
 	width: 62px;
 }
 
-
 .steps {
-	font-family: Helvetica;
+	font-family: Helvetica Neue Light;
 	color: #FFFFFF;
 	border-radius: 30px;
 	background: #999C98;
@@ -1411,11 +1453,13 @@ li[quiztype='4'] .qti-simpleChoice .radio {
 }
 
 .selectDiscipline {
-	font-family: Helvetica;
-	font-size: 14px;
+	font-family: Helvetica Neue Light;
+	font-size: 20px;
 	padding: 15px 15px 15px 5px;
 	position: initial;
 	color: #4D4D4D;
+	line-height: 1em;
+	margin-left: 25px;
 	line-height: 1em;
 }
 
@@ -1426,7 +1470,22 @@ li[quiztype='4'] .qti-simpleChoice .radio {
 	height: 40px;
 	font-family: Helvetica;
 	font-size: 18px;
-	width: 50px 
+	width: 100px;
+	border: 0px;
+	
+}
+
+.backButton {
+	color: #5C5C5E;
+	background-color: #e4e4e7;
+	border-radius: 5px;
+	height: 40px;
+	font-family: Helvetica;
+	font-size: 18px;
+	width: 100px;
+	border: 1px solid;
+	border-color: #b7b7b9;
+	
 }
 
 .searchDiscpline {
@@ -1442,7 +1501,7 @@ li[quiztype='4'] .qti-simpleChoice .radio {
 	margin-top: 10px;
 	border: 1px solid;
 	border-color: #9E9E92;
-	border-radius : 5px;
+	border-radius: 5px;
 	height: 40px;
 	border-radius: 5px;
 	width: 95%;
@@ -1451,7 +1510,8 @@ li[quiztype='4'] .qti-simpleChoice .radio {
 
 .searchIcon {
 	float: right;
-	margin-right: 5px; background-image : url("../images/search.png");
+	margin-right: 5px;
+	background-image: url("../images/search.png");
 	background-position: right;
 	background-repeat: no-repeat;
 	height: 40px;
@@ -1461,9 +1521,9 @@ li[quiztype='4'] .qti-simpleChoice .radio {
 }
 
 .setup {
-	font-family: Helvetica;
+	font-family: Helvetica Neue Light;
 	font-size: 18px;
-	font-weight:bold;
+	font-weight: bold;
 	padding: 15px 15px 15px 15px;
 	position: initial;
 	color: #4D4D4D;
@@ -1471,42 +1531,76 @@ li[quiztype='4'] .qti-simpleChoice .radio {
 }
 
 .setup1 {
-	font-family: Helvetica;
+	font-family: Helvetica Neue Light;
 	font-size: 14px;
-	font-weight:bold;
+	font-weight: bold;
 	padding: 15px 15px 15px 15px;
 	position: initial;
 	color: #4D4D4D;
 	line-height: 1em;
 }
 
-ul.a {list-style-type: disc;}	
+ul.a {
+	list-style-type: disc;
+}
 
-.discplineText{
-	font-family: Helvetica;
+.discription {
+	margin-top: 10px;
+	font-family: Helvetica Neue Light;
+	font-size: 14px;
+}
+
+.discplineText {
+	font-family: Helvetica Neue Light;
 	font-size: 16px;
 	padding: 10px;
 	position: initial;
 	color: #4D4D4D;
 	line-height: 1em;
+	cursor: pointer;
+}
+
+.discplineText1 {
+	font-family: Helvetica Neue Light;
+	font-size: 16px;
+	padding: 10px;
+	position: initial;
+	color: #4D4D4D;
+	line-height: 1em;
+	background-color: #F6F7F5;
+}
+
+.setupHeader {
+	background-color: #F6F7F5;
+	vertical-align: middle;
+	height: 60px;
+	border-bottom: 1px;
+	border-bottom-color: #D9D9DB;
 }
 
 .selectedDisc div {
-	background-color: #a9a9a9 !important;
+	background-color: #007FA9 !important;
+	color: #FFFFFF;
+	cursor: pointer;
 }
-/* Welcome Screen CSS  ends*/
 
-.uploadImage{
+.btnDisbled {
+	background-color: #A0D1E1;
+}
+
+/* Welcome Screen CSS  ends*/
+.uploadImage {
 	height: 100px;
 	width: 420px;
 	background-color: #CADDEE;
 	position: relative;
-	top:-4px;
-	left:30px;
+	top: -4px;
+	left: 30px;
 	display: table-cell;
-	border:solid 1px #A9A9A9
+	border: solid 1px #A9A9A9
 }
-.uploadImage div{
+
+.uploadImage div {
 	float: left;
 	margin-top: 34px;
 	font-size: large;
@@ -1514,30 +1608,92 @@ ul.a {list-style-type: disc;}
 	font-weight: 500;
 	width: 100%
 }
-.uploadImage div:before{
-	font-family:Glyphicons Halflings;
+
+.uploadImage div:before {
+	font-family: Glyphicons Halflings;
 	content: "\e086 ";
 	position: relative;
-	top:3px;
+	top: 3px;
 	padding-right: 5px;
 }
-.uploadImage .uploadBtn{
+
+.uploadImage .uploadBtn {
 	position: relative;
 	border-radius: 5px;
-	border :solid 1px #DEDEDE;
+	border: solid 1px #DEDEDE;
 	background-color: #fff;
 	left: 340px;
 }
-.textBoxContainer{
+
+.textBoxContainer {
 	min-height: 27px;
 	display: inline-block;
 }
-.iconContainer{
+
+.iconContainer {
 	float: right;
 	padding-top: 3px;
 	margin-right: 2px;
+}
 
-	}
-.questionTemplateContainer #tree-root{
-    top: 157px;
+.textBoxContainer #qtiCaption {
+	width: 410px;
+}
+
+.questionTemplateContainer #tree-root {
+	top: 157px;
+}
+
+.disciplineContainer {
+	height: 700px;
+	overflow: auto;
+}
+
+.btnChapterClose {
+	float: none;
+}
+
+.newFolderDiv {
+  width: 96%;
+  text-align: left;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  margin-left: 2%;
+  margin-right: 2%;
+  white-space: normal;
+  background-color: #DDDDDD;
+  font-size: 12px;
+  line-height: 0.75;
+  padding: 0.5px 1px;
+  border-radius: 2px;
+  left: 4.5%;
+  top: 6px;
+  cursor: default;
+  height: 40px;
+}
+
+.addFolder {
+  color: #808080;
+  border: 0px;
+  font-size: 15px;
+  position: relative;
+  left: 1%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #DDDDDD;
+}
+.import{
+  color: #808080;
+  border: 0px;
+  font-size: 15px;
+  position: relative;
+  left: 4%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #DDDDDD;
+}
+.questionSelected{
+	-webkit-box-shadow: 0 0 10px 2px rgba(169, 169, 169, 1);
+  -moz-box-shadow: 0 0 10px 2px rgba(169, 169, 169, 1);
+  box-shadow: 0 0 10px 2px rgba(169, 169, 169, 1);
 }

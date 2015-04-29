@@ -30,10 +30,13 @@ angular.module('e8MyTests')
         };
                 
         $scope.showQstnPrintOrEditMode = function (selectedQstnNode){ 
-        	 if(SharedTabService.IsAnyQstnEditMode && !selectedQstnNode.node.IsEditView){
+        	 if(SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode && !selectedQstnNode.node.IsEditView){
              	$scope.IsConfirmation=false;        	
-        		 	$scope.alert("A question is already in Edit mode, save it before editing another question.");
-        		 	return;
+        		$scope.message = "A question is already in Edit mode, save it before editing another question.";
+        		
+        		$modal.open(confirmObject);
+
+        		return;
              }
         	var qstnHtml = selectedQstnNode.node.textHTML;            	
         	this.showQstnEditIcon=!this.showQstnEditIcon;      
@@ -41,66 +44,69 @@ angular.module('e8MyTests')
         	if (selectedQstnNode.node.IsEditView){     
         		$scope.imageClicked = false;
         		var p = $(angular.element(document.querySelector("#uploadImage"))).detach();
-            	$("#qstnArra").append(p);
+            	$("#qstnArea").append(p);
         		convertHtmlToXmlNode(selectedQstnNode);         
-        		SharedTabService.IsAnyQstnEditMode=false;
+        		SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode=false;
         	 }else{
-        		 SharedTabService.IsAnyQstnEditMode=true;
+        		 SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode=true;
         	 }
         	selectedQstnNode.node.IsEditView=!selectedQstnNode.node.IsEditView;             	
         }
-        
                 
         function convertHtmlToXmlNode(selectedQstnNode) {       
         	var xml = jQuery.parseXML(selectedQstnNode.node.data);
     		var qstnHTML=$(selectedQstnNode.$element);
-    		var qstnCaption = replaceImage(qstnHTML.find('#qtiCaption'));  
+    		var qstnCaption = replaceImage(qstnHTML.find('#qtiCaption'));      		  
     		
-    		$(xml).find('itemBody').find('p').html(qstnCaption);    		
     		
+            $(xml).find('itemBody').find('p').html(qstnCaption);   
+            $(xml).find('assessmentItem').attr('identifier','QUESTION-X');
+            var optionVew=selectedQstnNode.node.optionsView==true?'Vertical':'Horizontal';
+            $(xml).find('itemBody').find('choiceInteraction').attr('orientation',optionVew);
+            
     			$(xml).find('itemBody').find('choiceInteraction').find("simpleChoice").remove();    			
-    			var htmlNewOptions = qstnHTML.find('.qti-simpleChoice');  
+    			var htmlOptions = qstnHTML.find('.qti-simpleChoice');  
         		var optionText='';
         		var optionTag = '<simpleChoice identifier="@RESPONSE" fixed="false">@val</simpleChoice>';
         			
-        					for (var i = 0; i < htmlNewOptions.length; i++) {
-        						optionText = replaceImage(htmlNewOptions.eq(i).find("div.optionTextEditablediv"));
+        					for (var i = 0; i < htmlOptions.length; i++) {
+        						optionText = replaceImage(htmlOptions.eq(i).find("div.optionTextEditablediv"));
         						
         						var optionTagAppend = optionTag.replace('@RESPONSE', 'RESPONSE_' + (i+1));						
         						optionTagAppend = optionTagAppend.replace('@val', optionText);
         						var item = $.parseXML(optionTagAppend); //returns DOM element		
         						$(xml).find('itemBody').find('choiceInteraction').append($(item).children(0));
         					}
-        			
-        		$(xml).find('responseCondition').children().slice(3).remove();
+        			        					
+        		var maxChoices=$(xml).find('itemBody').find('choiceInteraction').attr('maxChoices');	
+        		appendResponseProcessingTag(xml,htmlOptions.length);
+        		var optionCntrol = (maxChoices == 1 ? 'radio' : 'checkbox');
+    			var optionsHtmlControl = qstnHTML.find("input[type='"+optionCntrol+"'][name='RESPONSE']");
         		
-        		var $responseElseIf = '<responseElseIf><match><variable identifier=\"RESPONSE\"/><baseValue baseType=\"identifier\">RESPONSE_1</baseValue></match><setOutcomeValue identifier=\"SCORE\"><baseValue baseType=\"float\">0</baseValue></setOutcomeValue><setOutcomeValue identifier=\"FEEDBACK\"><baseValue baseType=\"identifier\">FEEDBACK_1</baseValue></setOutcomeValue></responseElseIf>';
-        		for (var i = 3; i < htmlNewOptions.length; i++) {		
-					$(xml).find("responseCondition").append($responseElseIf.replace("RESPONSE_1","RESPONSE_"+(i+1)));
-    			}
-        		
-        		$(xml).find('setOutcomeValue[identifier="SCORE"] baseValue').text("0");
-    			var controllerArray = qstnHTML.find("input[type='radio'][name='RESPONSE']")
-    			for (var index = 0; index < controllerArray.length; index++) {    			
-					if(controllerArray[index].checked == true){						
-						$(xml).find('setOutcomeValue[identifier="SCORE"] baseValue').eq(index).text("1");
-					}		
-						
-				}
+    			if(maxChoices==2){
+        			updateMapEntryTag(xml,optionsHtmlControl);	
+        		}else{
+        			setIdentifierScore(xml,optionsHtmlControl);	
+        		}
+        	
     			if(selectedQstnNode.node.qstnTemplate){
     				selectedQstnNode.node.IsEdited=true;
     			}else{
     				var qstnModifiedData = buildQstnModifiedDetails($(xml));
     				selectedQstnNode.node.IsEdited=!angular.equals(selectedQstnNode.node.qstnMasterData, qstnModifiedData);
     			}
-    			
-    		
+    			    		
     			QTI.initialize();
     				QTI.Attribute.id = 1;		
     				 QTI.id=1;		
     	    		var displayNode = $("<div></div>")
     				QTI.play(xml,displayNode,true,true,selectedQstnNode.node.quizType);		    	    	
     	    		selectedQstnNode.node.textHTML=displayNode.html();    
+    	    		                       
+                    var serializer = new XMLSerializer();
+                    var editedXML = serializer.serializeToString(xml);
+                    selectedQstnNode.node.data=editedXML;
+                    
     				var attrs = {};
                 	attrs.bindQti = "getHTML(this)";
                 	var Qtiscope = angular.element($(selectedQstnNode.$element).find("div[class*='questionList']")).scope();                	
@@ -108,6 +114,44 @@ angular.module('e8MyTests')
                 	directiveQtiService.bindNewQti(Qtiscope, element, attrs);
     				
     	}     
+        
+        var appendResponseProcessingTag = function (xml,htmlOptionsCnt){
+        	$(xml).find('responseCondition').children().slice(3).remove();
+    		
+    		var $responseElseIf = '<responseElseIf><match><variable identifier=\"RESPONSE\"/><baseValue baseType=\"identifier\">RESPONSE_1</baseValue></match><setOutcomeValue identifier=\"SCORE\"><baseValue baseType=\"float\">0</baseValue></setOutcomeValue><setOutcomeValue identifier=\"FEEDBACK\"><baseValue baseType=\"identifier\">FEEDBACK_1</baseValue></setOutcomeValue></responseElseIf>';
+    		for (var i = 3; i < htmlOptionsCnt; i++) {		
+				$(xml).find("responseCondition").append($responseElseIf.replace("RESPONSE_1","RESPONSE_"+(i+1)));
+			}      
+        }
+        
+        var updateMapEntryTag = function (xml,optionsHtmlControl){
+        	
+        	var $mapEntry = '<mapEntry mapKey=\"RESPONSE_1\" mappedValue=\"0\" />';
+    		$(xml).find("responseDeclaration mapping").children().slice(3).remove();
+    		for (var i = 3; i < optionsHtmlControl.length; i++) {		
+    				$(xml).find("responseDeclaration mapping").append($mapEntry.replace("RESPONSE_1","RESPONSE_"+(i+1)));
+    		}     
+    		
+    		
+    		$(xml).find('responseDeclaration mapEntry').attr("mappedValue","0");
+			for (var index = 0; index < optionsHtmlControl.length; index++) {    			
+				if(optionsHtmlControl[index].checked == true){						
+					$(xml).find('responseDeclaration mapEntry').eq(index).attr("mappedValue","1");
+				}		    						
+			}        			
+			
+        }
+        
+        var setIdentifierScore = function (xml,optionsHtmlControl){
+        	$(xml).find('setOutcomeValue[identifier="SCORE"] baseValue').text("0");
+			for (var index = 0; index < optionsHtmlControl.length; index++) {    			
+				if(optionsHtmlControl[index].checked == true){						
+					$(xml).find('setOutcomeValue[identifier="SCORE"] baseValue').eq(index).text("1");
+				}		
+					
+			}	
+        }
+        
         
         var replaceImage = function(textBox){
         	var htmlText = textBox.html().replace(/&nbsp;/," ");
@@ -119,39 +163,46 @@ angular.module('e8MyTests')
 			return htmlText;
         }
         
+        var confirmObject = {
+                templateUrl: 'views/partials/alert.html',
+                controller: 'AlertMessageController',
+                backdrop: 'static',
+                keyboard: false,
+                resolve: {
+                    parentScope: function () {
+                        return $scope;
+                    }
+                }
+            };
+        
         $scope.removOption = function (selectedNode,event){        	
         	var qstnOptionContainer=$(selectedNode.$element).find('form.qti-choiceInteraction');
     		var tagCnt = qstnOptionContainer.find('div.qti-simpleChoice').length;
     		if(tagCnt>3 && !$(event.currentTarget).parents(".qti-simpleChoice").eq(0).attr("checked")){
         		$scope.selectedNode=selectedNode;
         		$scope.event=event;
-        		$scope.IsConfirmation=true;        		
-        		$scope.alert("Are you sure you want to delete this answer?");
-        	}else{
-        		$scope.IsConfirmation=false;        	
-        		 $scope.alert("Minimum answer required is 3.");
+        		
+        		$scope.IsConfirmation = true;        		
+        		
+        		$scope.message="Are you sure you want to delete this answer?";
+		        $modal.open(confirmObject).result.then(function(ok) {
+		    		if(ok) {
+
+		    			var SelectedRadio = $($scope.event.srcElement).parents(".qti-simpleChoice").find('Input[type=radio]:checked').length == 1 ? true:false;
+						qstnOptionContainer.find('#uploadImage').hide();
+   
+                          $($scope.event.srcElement).parents(".qti-simpleChoice").eq(0).remove();                    
+                                 if(SelectedRadio == true){
+                                        qstnOptionContainer.find('Input[type=radio]').eq(0).prop("checked",true);                
+                                 }     
+	                }; 		    		
+	    		});
+        	} else{
+        		$scope.IsConfirmation = false;  
+        		$scope.message = "Minimum answer required is 3."
+		        $modal.open(confirmObject);
         	}       
-    	}
-        
-        $scope.callbackAlert = function (){   
-        	$(this.event.srcElement).parents(".qti-simpleChoice").eq(0).remove();
-        }
-        
-       	    $scope.alert = function (message,size) {       	    	
-        		$scope.message=message
-    		        $modal.open({
-    		            templateUrl: 'views/partials/alert.html',
-    		            controller: 'AlertMessageController',
-    		            size: size,
-    		            backdrop: 'static',
-    		            keyboard: false,
-    		            resolve: {
-    		            	parentScope: function () {
-    		                    return $scope;
-    		                }
-    		            }
-    		        });
-    		    };        	
+    	}        	
         	
       
         
@@ -197,15 +248,25 @@ angular.module('e8MyTests')
         	$scope.imageClicked = true;
 //        	angular.element("#uploadImage").css("top")
         	var p = $(angular.element(document.querySelector("#uploadImage"))).detach();
+        	p.show();
         	$(event.target).parents(parentText).after(p);
         }
         
         $scope.upload = function(files){
         	var returnValue;
         	if (files && files.length) {
+        		CursorPosition = QTI.getCaretPosition(Option.get(0));
                 for (var i = 0; i < files.length; i++) {
                     var file = files[i];
                     returnValue = TestService.uploadImage(file,Option,CursorPosition,function(data,element,cursorPosition){
+                    	if(element.attr("id").startsWith("simpleChoice")){
+                    		if(element.find("u[contenteditable='false']").length == 1){
+                    			element.find("u[contenteditable='false']").eq(0).attr("url",data);
+                    			element.find("u[contenteditable='false'] i").eq(0).text(file.name);
+                    			$scope.imageClicked = false;
+                    			return;
+                    		}
+                    	}
                         var optionText = element.html().replace(/&nbsp;/g," ");
                         element.html(optionText.substring(0,cursorPosition) + "<u contenteditable='false' url='"+ data +"'><i>"+ file.name +"</i></u>&nbsp;" + optionText.substring(cursorPosition + 1,optionText.length))
                         $scope.imageClicked = false;
@@ -226,9 +287,18 @@ angular.module('e8MyTests')
             $scope.newVersionBtnCss = "disabled";
             $scope.exportBtnCss = "disabled";
         }
+        
         $scope.addNewTest = function () {
+            var editedElement =  document.querySelector("div#qstnArea li[printmode=false]")
+            if(editedElement)
+        	{
+            	var scopeElement = angular.element(editedElement).scope()
+            	convertHtmlToXmlNode(scopeElement);
+        	}
+            
             SharedTabService.addNewTest($scope);
-        }
+        }        
+        
         $scope.addTestWizard = function () {
             SharedTabService.addTestWizard($scope);
         }
@@ -238,7 +308,14 @@ angular.module('e8MyTests')
 
         $scope.isLoading = false;
         $scope.onClickTab = function (test) {
-            SharedTabService.onClickTab(test, $scope);
+        	var editedElement =  document.querySelector("div#qstnArea li[printmode=false]")
+            if(editedElement)
+         	{
+             	var scopeElement = angular.element(editedElement).scope()
+             	convertHtmlToXmlNode(scopeElement);
+         	}
+        	
+        	SharedTabService.onClickTab(test, $scope);
             if (SharedTabService.tests[SharedTabService.currentTabIndex].testId) {
                 $scope.newVersionBtnCss = "";
                 $scope.exportBtnCss = "";
@@ -272,8 +349,18 @@ angular.module('e8MyTests')
         $scope.closeTabWithConfirmation = function (tab) {
             SharedTabService.closeTabWithConfirmation(tab, $scope);
         }
-        $scope.closeCriteria = function (folder) {
-            SharedTabService.closeCriteria(folder, $scope);
+        $scope.closeCriteria = function (folder,isWizardCloseBtnClicked) {
+        	var scope = angular.element($("input[type=checkbox][id=applyCriteria]").eq(0)).scope();
+        	if(isWizardCloseBtnClicked && scope.isApplySameCriteriaToAll)
+	    		 isWizardCloseBtnClicked = true
+    		 if(isWizardCloseBtnClicked)
+    			 SharedTabService.closeAllCriteria(folder, $scope);
+    		 else
+    			 SharedTabService.closeCriteria(folder, $scope);
+            if(SharedTabService.tests[SharedTabService.currentTabIndex].criterias.length <= 1){
+            	scope.isApplySameCriteriaToAll = false;
+            	$scope.isApplySameCriteriaToAll = false;
+            }
         }
 
         $scope.$on('handleBroadcastTests', function () {
@@ -331,60 +418,46 @@ angular.module('e8MyTests')
 				.each(function(i, e) { 
 					
 				optionList.push($(this).text().trim());  
-		  });
-      	  
+		  });      	       	  
+      
+         var xmlOrientation=$(xml).find('itemBody').find('choiceInteraction').attr("orientation");
+      	 var nodeOptionsView = (xmlOrientation==undefined)||(xmlOrientation=='Vertical')?true:false;      		
+       
           var qstnMasterData={
               	caption:$(xml).find('itemBody').find('p').html().trim(),
               	options:optionList,
               	optionCount:$(xml).find('itemBody').find('choiceInteraction').find("simpleChoice").length,
-              	correctAnswer:correctAnswerList              			
+              	correctAnswer:correctAnswerList,
+              	optionsView:nodeOptionsView
           }
               	
           return qstnMasterData;
         }
+       
+       $scope.$on('beforeDropQuestion', function (event) {
+           
+           if(SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode){
+                   $scope.IsConfirmation=false;
+                   $scope.message = "A question is already in Edit mode, save it before adding or reordering questions.";
+                   $modal.open(confirmObject);
+                   $scope.dragStarted = false;
+           }
+     
+       });
         
-        $scope.$on('dropQuestion', function (event, source, destIndex, sourceTabName) {
-        	if(SharedTabService.IsAnyQstnEditMode){
-            	$scope.IsConfirmation=false;        	
-       		 	$scope.alert("A question is already in Edit mode, save it before adding or reordering questions.");
-       		 	return;
-            }
+        $scope.$on('dropQuestion', function (event, node, destIndex, sourceTabName) {        	
         	
-          var newNode = angular.copy(source.node);
-                                 
-            var QuestionEnvelop = {
-        		metadata : {      
-        			guid: newNode.guid,
-        			title: newNode.title,
-            		description: newNode.description,
-            		quizType: newNode.quizType,
-            		subject: newNode.subject,
-            		timeRequired: newNode.timeRequired,            	
-            		crawlable: newNode.crawlable,      		
-            		keywords: newNode.keywords,          		
-            		versionOf: newNode.versionOf,            		
-            		version: newNode.version        		            		          		            		
-                },            	
-            	body: newNode.data
-            }
+          var newNode = angular.copy(node);                                
             
-            var tests = SharedTabService.tests[SharedTabService.currentTabIndex].questions;
-
-            var templateQstnGUID = 0;
-            var templateQuestionsList = $.grep(tests, function (element, index) {
-            	if (element.optionsView != undefined)
-            		return true;
-            });
-            templateQstnGUID = templateQuestionsList.length + 1;
+          var tests = SharedTabService.tests[SharedTabService.currentTabIndex].questions;
+          
             if (sourceTabName == "CustomQuestions") {  
             	newNode.IsEditView=true;                
-            	SharedTabService.IsAnyQstnEditMode=true;
-                if (!newNode.guid) {
-                    newNode.guid = templateQstnGUID;
-                }
+            	SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode=true;               
             }else{
             	newNode.IsEditView=false;      
                 newNode.qstnMasterData=buildQstnMasterDetails(newNode);
+                newNode.optionsView = newNode.qstnMasterData.optionsView;
             }
             newNode.qstnLinkText=newNode.IsEditView ? "View":"Edit";     
             var nodeAlreadyExist = false;
@@ -510,42 +583,65 @@ angular.module('e8MyTests')
             testcreationdata.metadata.title = $scope.testTitle;
 
             var index = 0;
+            
             //binding the dragged question details. 
             var editedQstns= $.grep(test.questions, function(qstn) {
                 return qstn.IsEdited;
             });
             
-            angular
-			.forEach(
-                    test.questions,
-					function (tree) {
-					    testcreationdata.body.assignmentContents.binding.push(
-							    { guid: tree.guid, activityFormat: "application/vnd.pearson.qti.v2p1.asi+xml", bindingIndex: index });
-					    index = index + 1;
+            var QuestionEnvelops = [];
+            
+            var editedQstns= $.grep(test.questions, function(qstn) {
+                var QuestionEnvelop = {
+                        metadata : {      
+                            guid: qstn.IsEdited ? null : qstn.guid,
+                            title: qstn.title,
+                            description: qstn.description,
+                            quizType: qstn.quizType,
+                            subject: qstn.subject,
+                            timeRequired: qstn.timeRequired,                
+                            crawlable: qstn.crawlable,              
+                            keywords: qstn.keywords,                  
+                            versionOf: qstn.versionOf,                    
+                            version: qstn.version                                                                          
+                        },                
+                        body: qstn.IsEdited ? qstn.data : null 
+                    };
+                QuestionEnvelops.push(QuestionEnvelop);
+            });
+            
+            TestService.saveQuestions(QuestionEnvelops, function(questionsResult) {
+                questionsResult.forEach(function(questionItem) {
+                    var question = JSON.parse(questionItem);
+                    var guid = question[0].guid;
+                    
+                    testcreationdata.body.assignmentContents.binding.push(
+                                { guid: guid, activityFormat: "application/vnd.pearson.qti.v2p1.asi+xml", bindingIndex: index });
+                    index = index + 1;
+                })
+                
+                TestService.saveTestData(testcreationdata, test.folderGuid, function (testResult) {
 
-					});
+                    SharedTabService.tests[SharedTabService.currentTabIndex].testId = testResult.guid;
+                    SharedTabService.tests[SharedTabService.currentTabIndex].id = testResult.guid;
+                    SharedTabService.tests[SharedTabService.currentTabIndex].tabTitle = test.title;
+                    SharedTabService.currentTab = SharedTabService.tests[SharedTabService.currentTabIndex];
+                    $scope.newVersionBtnCss = "";
+                    $scope.exportBtnCss = "";
 
-            TestService.saveTestData(testcreationdata, test.folderGuid, function (testResult) {
-
-                SharedTabService.tests[SharedTabService.currentTabIndex].testId = testResult.guid;
-                SharedTabService.tests[SharedTabService.currentTabIndex].id = testResult.guid;
-                SharedTabService.tests[SharedTabService.currentTabIndex].tabTitle = test.title;
-                SharedTabService.currentTab = SharedTabService.tests[SharedTabService.currentTabIndex];
-                $scope.newVersionBtnCss = "";
-                $scope.exportBtnCss = "";
-
-                if ($('.maindivTest[id=' + testResult.guid + ']').length) {
-                    var selectedNode = angular.element($('.maindivTest[id=' + testResult.guid + ']')).scope().node;
-                    selectedNode.title = test.title;
-                    selectedNode.modified = (new Date()).toJSON();
-                }
-                if (SharedTabService.tests[SharedTabService.currentTabIndex].isSaveAndClose) {
-                    SharedTabService.closeTab(SharedTabService.currentTab, $scope);
-                    SharedTabService.removeMasterTest(SharedTabService.currentTab);
-                } else {
-                    SharedTabService.removeMasterTest(SharedTabService.currentTab);
-                    SharedTabService.addMasterTest(SharedTabService.tests[SharedTabService.currentTabIndex]);
-                }
+                    if ($('.maindivTest[id=' + testResult.guid + ']').length) {
+                        var selectedNode = angular.element($('.maindivTest[id=' + testResult.guid + ']')).scope().node;
+                        selectedNode.title = test.title;
+                        selectedNode.modified = (new Date()).toJSON();
+                    }
+                    if (SharedTabService.tests[SharedTabService.currentTabIndex].isSaveAndClose) {
+                        SharedTabService.closeTab(SharedTabService.currentTab, $scope);
+                        SharedTabService.removeMasterTest(SharedTabService.currentTab);
+                    } else {
+                        SharedTabService.removeMasterTest(SharedTabService.currentTab);
+                        SharedTabService.addMasterTest(SharedTabService.tests[SharedTabService.currentTabIndex]);
+                    }
+                });
             });
 
         }
@@ -588,7 +684,9 @@ angular.module('e8MyTests')
             }
             if (scrambleType == undefined) {
             	$scope.IsConfirmation=false;
-                this.alert("Please select scramble choice");
+            	$scope.message = "Please select scramble choice";
+        		$modal.open(confirmObject);
+                /*this.alert("Please select scramble choice");*/
                 return false;
             }
 
@@ -618,7 +716,7 @@ angular.module('e8MyTests')
                     }
 
 
-                    if($scope.currentTab.folderGuid== null){
+                    /*if($scope.currentTab.folderGuid== null){
                     	$scope.selectedFolder=$scope.defaultFolders;
                     	
                     	//$scope.selectedFolder = angular.element($('#' + $scope.currentTab.testId).closest('li').parent()).scope();
@@ -637,7 +735,7 @@ angular.module('e8MyTests')
 	                            break;
 	                        }
 	                    }
-                    }
+                    }*/
 
                 }
 
@@ -659,7 +757,7 @@ angular.module('e8MyTests')
                     $scope.versionedTests.forEach(function (node) {
                         var result = $scope.maping[node.guid];
                         //update MyTest tree
-                       /* node.testId = $scope.currentTab.testId;
+                        node.testId = $scope.currentTab.testId;
                         node.folderGuid = $scope.currentTab.folderGuid;
                         node.nodeType = "test";
                         node.title = result.title;
@@ -668,17 +766,19 @@ angular.module('e8MyTests')
 
                         if (SharedTabService.selectedMenu == SharedTabService.menu.myTest) {
                             if ($scope.currentTab.folderGuid == null) {
-                            	for(var j=$scope.selectedFolder.length-1; j>=0; j--){
+                            	$scope.selectedFolder.splice($scope.selectedTestIndex + parseInt(result.version), 0, node);
+                            	/*for(var j=$scope.selectedFolder.length-1; j>=0; j--){
                             		$scope.selectedFolder[j].parentNode.removeChild($scope.selectedTestIndex + parseInt(result.version), 0, node);
-                            	}
+                            	}*/
                             }
                             else {
-                            	for(var j=$scope.selectedFolder.length-1; j>=0; j--){
+                            	$scope.selectedFolder.splice($scope.selectedTestIndex + parseInt(result.version), 0, node);
+                            	/*for(var j=$scope.selectedFolder.length-1; j>=0; j--){
                             		$scope.selectedFolder[j].parentNode.removeChild($scope.selectedTestIndex + parseInt(result.version), 0, node);
-                            	}
-                                $scope.selectedFolder.splice($scope.selectedTestIndex + parseInt(result.version), 0, node);
+                            	}*/
+                                
                             }
-                        }*/
+                        }
                         //create tabs
                         if ($scope.isViewVersions) {
                             var newTestTab = new SharedTabService.Test(SharedTabService.tests[SharedTabService.currentTabIndex]);
@@ -693,6 +793,7 @@ angular.module('e8MyTests')
                     });
                 }
             });
+            return true;
         }
 
        
@@ -757,6 +858,14 @@ angular.module('e8MyTests')
             }*/
         }
 
+        $scope.fillQuestionCount = function(criteria){
+        	criteria.numberOfQuestionsEntered=null;
+        	if($scope.isApplySameCriteriaToAll)
+			{
+        		$($scope.tests[$scope.sharedTabService.currentTabIndex].criterias).attr("numberOfQuestionsEntered",null);
+        		$($scope.tests[$scope.sharedTabService.currentTabIndex].criterias).attr("numberOfQuestionsSelected",criteria.numberOfQuestionsSelected);
+    		}
+        }
 
         $scope.toggleQuestiontypeSelection = function (criteria, questiontype) {
             var idx = criteria.selectedQuestiontypes.indexOf(questiontype);
@@ -769,7 +878,13 @@ angular.module('e8MyTests')
         };
         $scope.isApplySameCriteriaToAll = false;
         $scope.toggleApplySameCriteria = function (criteria) {
-
+        	$scope.isApplySameCriteriaToAll = !$scope.isApplySameCriteriaToAll
+        	if($scope.isApplySameCriteriaToAll){
+            	$scope.sharedTabService.propagateCriteria($scope);
+        	}
+        	else{
+        		$scope.sharedTabService.resetCriteriaToDefault($scope)
+        	}
         };
 
         $scope.previevTest = function () {
@@ -843,6 +958,7 @@ angular.module('e8MyTests')
             QTI.initialize();
             //$scope.BlockRightPanel = blockUI.instances.get('BlockRightPanel');
             //$scope.BlockRightPanel.start();
+            $scope.saveTest()
             $scope.render(metadatas);
         }
         function randomize(a, b) {

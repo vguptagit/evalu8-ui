@@ -54,8 +54,8 @@ angular.module('evalu8Demo')
 			this.archiveFolder = function(folderId, callback) {								
 				var archiveItem = {"id": folderId};
 				$http.post(evalu8config.host + '/my/archive/folders', archiveItem, config)
-				.success(function(response) {									
-					if(callback) callback();
+				.success(function(archivedFolder) {									
+					if(callback) callback(archivedFolder);
 				})
 				.error(function(error, status) {
 

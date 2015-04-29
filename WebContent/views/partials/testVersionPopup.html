@@ -1,0 +1,75 @@
+
+<div class="modal-header">
+	<!-- <button type="button" class="close" ng-click="cancel()" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
+	<button type="button" class="close" data-ng-click="cancel()"
+		aria-label="Close">
+		<span aria-hidden="true">&times;</span>
+	</button>
+	<h4 class="modal-default-header-title" id="myModalLabel">Randomize
+		Versions Of Test</h4>
+</div>
+<div class="modal-body">
+	<section>
+		<div class="row">
+			<div class="col-md-2">
+				<label><h5>Scramble:</h5></label>
+			</div>
+			<div class="col-md-3 checkbox vsQuestion">
+				<label><input type="checkbox" ng-model="isQuestions">
+					Questions </label>
+
+			</div>
+			<div class="col-md-3 checkbox vsAnswers">
+				<label> <input type="checkbox" ng-model="isAnswers">
+					Answers
+				</label>
+			</div>
+		</div>
+	</section>
+	<!-- <section>	
+			<div class="row">
+			<div class="col-md-2"></div>
+			<div class="col-md-8">
+				<div class="checkbox vsQuestionType">
+					<label> 
+					<input type="checkbox" style="margin-top: 0px;" data-ng-model="isQuestionsTypes" >
+					Keep same question types together
+					</label>
+				</div>
+				</div>
+			</div>
+		</section> -->
+	<section>
+		<div class="row">
+			<div class="col-md-2">
+				<label for="selectNumber"><h5>Number:</h5></label>
+			</div>
+			<div class="col-md-3 checkbox">
+
+				<select id="selectNumber" data-role="listview" class="versionBox"
+					data-inset="true" ng-model="selectedVersions"
+					ng-options="version as version.text for version in versions "
+					x-ng-change="selectVersion(selectedVersions)"></select>
+			</div>
+			<p class="version">
+				<input type="checkbox" ng-model="isViewVersions"> View
+				Versions
+			</p>
+
+
+		</div>
+
+
+	</section>
+
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-default" data-dismiss="modal"
+		data-ng-click="cancel()">Cancel</button>
+	<button ng-click="createNewVersion()"
+		class="btn btn-primary pull-right">Create</button>
+</div>
+
+
+
+
