@@ -1,4 +1,4 @@
-﻿<div class="row testContainer">
+<div class="row testContainer">
     <div class="col-lg-12  myTest_scrollbar">
         <div>
             <div class="newFolderDiv">
@@ -127,7 +127,7 @@
                     </div>
                     <div class="iconsChapter">
                         <span>
-                            <button ng-click="deleteFolder(this)" class="removeIcon fa fa-trash-o" />
+                            <button ng-click="deleteFolder(this)" class="removeIcon fa fa-remove" />
                             <button ng-click="restoreFolder(this)" class="restoreicon fa fa-undo" />
                         </span>
                     </div>
@@ -165,7 +165,7 @@
                     <div class="testimagesdiv" ng-class="{testHighlight: node.selectTestNode}">
                         <span ng-show="node.selectTestNode">
                             <button ng-click="deleteTest(this)" class="removeIcon fa fa-remove" />
-                            <button ng-click="restoreTest(this)" class="restoreicon fa fa-arrow-up" />
+                            <button ng-click="restoreTest(this)" class="restoreicon fa fa-undo" />
                         </span>
                     </div>
                 </div>
