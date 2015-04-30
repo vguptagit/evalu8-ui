@@ -1,5 +1,0 @@
-eclipse.preferences.version=1
-extraProperties=sonar.jdbc.username\=sonar\r\nsonar.host.url\=http\://192.168.3.128\:9000\r\nsonar.jdbc.password\=sonar\r\nsonar.jdbc.url\=jdbc\:mysql\://192.168.3.128\:3306/sonar?useUnicode\=true&characterEncoding\=utf8
-projectKey=evalu8-ui\:evalu8-ui
-serverUrl=http\://192.168.3.128\:9000
-version=2
