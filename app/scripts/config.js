@@ -1,6 +1,6 @@
 (function(ns) {
 	
-	ns.host =  window.location.protocol + "//" + window.location.host + "/mytest";
+	ns.host =  window.location.protocol + "//localhost:8080/mytest";
 	ns.homeEndpoint = "/home/questionbanks";
 	ns.homeTestGen = "/questionBanks";
 		

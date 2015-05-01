@@ -454,11 +454,6 @@ a.newFolder:hover {
 	margin-bottom: 2px;
 }
 
-html, body {
-	height: 100%;
-	overflow: hidden;
-}
-
 .leftCollapse, .rightCollapse {
 	background-image: url("../images/close-icon.png");
 	height: 26px;
