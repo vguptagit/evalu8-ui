@@ -14,9 +14,20 @@
 
         <div id="navbar" class="navbar-collapse collapse pull-right">
             <ul class="nav navbar-nav">
-                <li ng-show="userName!=''">
-                    <a  ><div class="glyphicon glyphicon-user"></div> {{userName}}<div class="glyphicon glyphicon-chevron-down"></div> </a>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">John <span class="glyphicon glyphicon-chevron-down"></span><span class="border-right margin-border"></span></a>
+                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                        <label class="margin-lft-20"><strong>John Smith</strong></label>
+                        <label class="margin-lft-20">john.smith@nyu.edu</label>
+                        <li><a tabindex="-1" href="#">Profile</a></li>
+                        <li><a tabindex="-1" href="#">Settings</a></li>
+                        <li class="divider"></li>
+                        <button type="button" class="btn btn-primary width100">Sign Out</button>
+                    </ul>
                 </li>
+                <!--<li ng-show="userName!=''">
+                    <a  ><div class="glyphicon glyphicon-user"></div> {{userName}}<div class="glyphicon glyphicon-chevron-down"></div> </a>
+                </li>-->
                 <li><a href="#/usersettings/disciplines" class='glyphicon glyphicon-question-sign'> </a></li>
             </ul>
         </div><!--/.nav-collapse -->
