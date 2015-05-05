@@ -8,6 +8,7 @@ angular.module('e8MyTests')
      function ($scope, $rootScope, $location, $cookieStore, $http, $sce, $modal,
     		UserFolderService, TestService, SharedTabService, ArchiveService,EnumService) {
     	
+        $scope.controller = EnumService.CONTROLLERS.myTest;
     	SharedTabService.selectedMenu = SharedTabService.menu.myTest;
         $scope.testTitle = "New Test";
 
@@ -63,7 +64,16 @@ angular.module('e8MyTests')
 
         $scope.$on('dragEnd', function (event, destParent, source, sourceParent,
   			  sourceIndex, destIndex, prev, next) {
-
+        	          
+  			if(!$scope.dragStarted) {
+                return false;
+            }
+            if(source.node.nodeType==='test' && destParent.controller === EnumService.CONTROLLERS.testCreationFrame){        
+                source.node.showEditIcon=false;
+                $scope.$broadcast("dropTest", source, destIndex);
+                return false;
+            }
+            
             $scope.dragStarted = false;
 
             if (sourceIndex != destIndex) {
@@ -93,10 +103,11 @@ angular.module('e8MyTests')
                     })                	
                 }
                 else {
-            		$scope.removeTestBindingFromSource(sourceParent, item.guid);
-            		$scope.insertTestBindingToDest(mouseOverNode, item.guid);            		              	               	
+                	var sourceFolder = $scope.removeTestBindingFromSource(sourceParent, item.guid);
+                	UserFolderService.saveUserFolder(sourceFolder, function() {
+                		$scope.insertTestBindingToDest(mouseOverNode, item.guid);                		
+                	});            		              	               	
                 }
-
                 
             } else {
 
@@ -109,8 +120,10 @@ angular.module('e8MyTests')
             	$scope.deleteEmptyNode(prev, next, destParent);
             	
             	if(item.nodeType == "test") {
-            		$scope.removeTestBindingFromSource(sourceParent, item.guid);            		
-            		$scope.addTestToDest(destParent);
+            		var sourceFolder = $scope.removeTestBindingFromSource(sourceParent, item.guid);   
+            		UserFolderService.saveUserFolder(sourceFolder, function() {
+            			$scope.addTestToDest(destParent);
+            		});            		            		
             	}
             	else if(item.nodeType == "folder") {
 
@@ -174,12 +187,13 @@ angular.module('e8MyTests')
         	var sequence = 1.0;
         	destNodes.forEach(function(test) {
         		if(test.nodeType == 'test') {
-        			sequence = sequence + 1;
+        			
             		var testBinding = {
                 			testId: test.guid,
                 			sequence: sequence  
             		}
-                	testBindings.push(testBinding);        			
+                	testBindings.push(testBinding);
+            		sequence = sequence + 1.0;
         		}        		 
         	})
         	
@@ -214,7 +228,8 @@ angular.module('e8MyTests')
         	
         	testBindings.splice(indexToRemove, 1);
         	sourceNode.testBindings = testBindings;
-        	UserFolderService.saveUserFolder(sourceNode);
+        	
+        	return sourceNode;
     	}
         
         $scope.deleteEmptyNode = function(prev, next, destParent) {
@@ -278,6 +293,7 @@ angular.module('e8MyTests')
         		$scope.getArchiveFolders(defaultFolder);
         	}
         	if(defaultFolder.node.nodeType == 'archiveRoot') {
+        		$scope.archiveRoot = defaultFolder;
         		$scope.getArchiveFolders(defaultFolder);
         	}        	
         }
@@ -342,36 +358,123 @@ angular.module('e8MyTests')
         	ArchiveService.archiveFolder(folder.node.guid, function(archivedFolder) {
         		folder.remove();        		
         		
+        		if(angular.element($('[id=' + archivedFolder.guid + ']')).scope()) {
+        			return; // return if archived node is already displayed in Archive Section
+        		}
+        		        		
         		archivedFolder.nodeType = "archiveFolder";
-        		var archivedNode;
+        		var archivedFolderParent;        		
         		
-        		$scope.defaultFolders.forEach(function(node) {
-        			if(node.nodes) {
-            			archivedNode = node.nodes.filter(function( obj ) {  return obj.guid == archivedFolder.parentId; });
-            			if(archivedNode.length)
-            				archivedNode[0].nodes.push(archivedFolder);        				
-        			}
-        		})
+        		if(archivedFolder.parentId == null) {
+        			
+        			if($scope.archiveRoot && $scope.archiveRoot.node && $scope.archiveRoot.node.nodes && $scope.archiveRoot.node.nodes.length)
+        				if($scope.archiveRoot.node.nodes[0].nodeType == "empty") {
+        					$scope.archiveRoot.node.nodes.splice(0,1);
+        				}
+        				$scope.archiveRoot.node.nodes.unshift(archivedFolder)	        				        				    
+        		} else {
+        			
+        			archivedFolderParent = angular.element($('[id=' + archivedFolder.parentId + ']')).scope()
+        			if(archivedFolderParent && archivedFolderParent.node) {
+        				if(archivedFolderParent.node.nodes[0] && archivedFolderParent.node.nodes[0].nodeType == "empty") {
+        					archivedFolderParent.node.nodes.splice(0,1);
+        				}
+        				archivedFolderParent.node.nodes.unshift(archivedFolder);
+        			}        			
+        		}        		        
 
         	});        	
         }
 
         $scope.archiveTest = function(test) {
         	var parentFolderId = (test.$parentNodeScope == null) ? null : test.$parentNodeScope.node.guid; 
-        	ArchiveService.archiveTest(test.node.guid, parentFolderId, function() {
-        		test.remove();
+        	ArchiveService.archiveTest(test.node.guid, parentFolderId, function(archivedFolder) {
+        		test.remove();  
+        		
+        		test.node.nodeType= "archiveTest";
+        		
+        		if(archivedFolder == null || archivedFolder == "") {
+        			if($scope.archiveRoot && $scope.archiveRoot.node && $scope.archiveRoot.node.nodes && $scope.archiveRoot.node.nodes.length)
+        				if($scope.archiveRoot.node.nodes[0].nodeType == "empty") {
+        					$scope.archiveRoot.node.nodes.splice(0,1);
+        				}
+        				$scope.archiveRoot.node.nodes.push(test.node);	    
+        		} else {
+        			
+        			var testParent = angular.element($('[id=' + archivedFolder.guid + ']')).scope();
+        			if(testParent && testParent.node) {
+        				if(testParent.node.nodes[0] && testParent.node.nodes[0].nodeType == "empty") {
+        					testParent.node.nodes.splice(0,1);
+        				}
+        				
+        				testParent.node.nodes.push(test.node);
+        			}
+        		}
         	});        	
         }
         
         $scope.restoreFolder = function(folder) {
-        	ArchiveService.restoreFolder(folder.node.guid, function() {
+        	ArchiveService.restoreFolder(folder.node.guid, function(restoredFolder) {
         		folder.remove();
+        		
+        		if(angular.element($('[id=' + restoredFolder.guid + ']')).scope()) {
+        			return; // return if restored node is already displayed in User Section
+        		}
+        		
+        		restoredFolder.nodeType = "folder";
+        		var restoredFolderParent;
+        		
+        		if(restoredFolder.parentId == null) {
+        			var restoreIndex = 0;
+        			$scope.defaultFolders.forEach(function(item){
+        				if(item.sequence < restoredFolder.sequence) {
+        					restoreIndex = restoreIndex + 1;        					
+        				}
+        			}) 
+        			$scope.defaultFolders.splice(restoreIndex, 0, restoredFolder);        			       				    
+        		} else {
+
+        			restoredFolderParent = angular.element($('[id=' + restoredFolder.parentId + ']')).scope()
+        			if(restoredFolderParent && restoredFolderParent.node) {
+        				if(restoredFolderParent.node.nodes[0] && restoredFolderParent.node.nodes[0].nodeType == "empty") {
+        					restoredFolderParent.node.nodes.splice(0,1);
+        				}
+        				restoredFolderParent.node.nodes.unshift(restoredFolder);
+        			}         				
+        		}
         	});        	
         }        
         
         $scope.restoreTest = function(test) {
-        	ArchiveService.restoreTest(test.node.guid, test.$parentNodeScope.node.guid, function() {
+        	ArchiveService.restoreTest(test.node.guid, test.$parentNodeScope.node.guid, function(restoredFolder) {
         		test.remove();
+        		
+        		test.node.nodeType= "test";
+
+                test.node.selectTestNode = false;//to show the edit icon
+                test.node.disableEdit = false;//to disable the edit icon
+                
+        		if(restoredFolder == null || restoredFolder == "") {
+        			
+        			var index = 0, restoreIndex = 0;
+        			$scope.defaultFolders.forEach(function(item){
+
+        				if(item.nodeType == "archiveRoot") {
+        					restoreIndex = index;        					
+        				}
+        				index = index + 1;
+        			})
+        			$scope.defaultFolders.splice(restoreIndex, 0, test.node);	    
+        		} else {
+        			
+        			var testParent = angular.element($('[id=' + restoredFolder.guid + ']')).scope();
+        			if(testParent && testParent.node) {
+        				if(testParent.node.nodes[0] && testParent.node.nodes[0].nodeType == "empty") {
+        					testParent.node.nodes.splice(0,1);
+        				}
+        				testParent.node.nodes.push(test.node);
+        			}
+        		}        		
         	});        	
         }
         
@@ -444,8 +547,15 @@ angular.module('e8MyTests')
 
             UserFolderService.saveUserFolder(userFolder, function () {
 
-            	$scope.loadTree();
+            	//$scope.loadTree();
+            	
+            	userFolder.nodeType = "folder";
+            	$scope.defaultFolders.unshift(userFolder);
                 
+            	if($scope.defaultFolders.length == 1) {
+            		$scope.defaultFolders.push({'guid': null, 'nodeType': 'archiveRoot', "title": "Archive"});
+            	}
+            	
                 $scope.folderName = "";
                
                 $scope.showAddFolderPanel = false;

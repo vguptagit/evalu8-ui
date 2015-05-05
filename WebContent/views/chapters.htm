@@ -1,0 +1,108 @@
+
+<div class="ng-scope content mappingContainer">
+	<div class="content chapterContainer">
+
+		<!--  Filter Section -->
+		<div class="chapterHeader">Chapters</div>
+		<div>
+			<a data-ng-click="toggleFilter()" class="searchLink">Click here
+				to filter</a> <a class="searchLink" data-ng-click="clearFilter()"
+				data-ng-show="clear">Clear Filter</a>
+		</div>
+		<div data-ng-show="filterview" class="searchPanel">
+			<hr>
+			<form name="form" data-ng-submit="questionFilter()" role="form">
+				<div class="searchFieldContainer">
+					<span class="searchLabel">difficulty :</span> <input type="text"
+						name="Difficulty" id="difficulty" class="searchInput"
+						data-ng-model="Difficulty" placeholder="Difficulty" />
+				</div>
+				<div class="searchFieldContainer">
+					<span class="searchLabel">topic :</span> <input type="text"
+						name="Topic" id="Topic" class="searchInput" data-ng-model="Topic"
+						placeholder="Topic" />
+				</div>
+				<div class="searchFieldContainer">
+					<span class="searchLabel">keywords :</span> <input type="text"
+						name="keywords" id="keywords" class="searchInput"
+						data-ng-model="keywords" placeholder="Keywords" />
+				</div>
+				<div class="searchFieldContainer">
+					<span class="searchLabel">multimediaLink :</span> <input
+						type="text" name="multimediaLink" id="multimediaLink"
+						class="searchInput" data-ng-model="multimediaLink"
+						placeholder="MultimediaLink" />
+				</div>
+				<div class="searchFieldContainer">
+					<span class="searchLabel">notes :</span> <input type="text"
+						name="notes" id="notes" class="searchInput" data-ng-model="notes"
+						placeholder="Notes" />
+				</div>
+				<div class="searchFieldContainer">
+					<span class="searchLabel">stateStandard :</span> <input type="text"
+						name="stateStandard" id="stateStandard" class="searchInput"
+						data-ng-model="stateStandard" placeholder="StateStandard" />
+				</div>
+				<div class="searchFieldContainer">
+					<span class="searchLabel">nationalStandard :</span> <input
+						type="text" name="nationalStandard" id="nationalStandard"
+						class="searchInput" data-ng-model="nationalStandard"
+						placeholder="NationalStandard" />
+				</div>
+				<div class="searchFieldContainer">
+					<span class="searchLabel">pageReference :</span> <input type="text"
+						name="pageReference" id="pageReference" class="searchInput"
+						data-ng-model="pageReference" placeholder="PageReference" />
+				</div>
+				<div class="searchFieldContainer">
+					<span class="searchLabel">skill :</span> <input type="text"
+						name="skill" id="skill" class="searchInput" data-ng-model="skill"
+						placeholder="Skill" />
+				</div>
+				<div class="searchFieldContainer">
+					<span class="searchLabel">localStandard :</span> <input type="text"
+						name="localStandard" id="localStandard" class="searchInput"
+						data-ng-model="localStandard" placeholder="LocalStandard" />
+				</div>
+				<div class="searchFieldContainer">
+					<span class="searchLabel">miscellaneous :</span> <input type="text"
+						name="miscellaneous" id="miscellaneous" class="searchInput"
+						data-ng-model="miscellaneous" placeholder="Miscellaneous" />
+				</div>
+				<div class="searchFieldContainer">
+					<a data-ng-click="questionFilter()" class="filterLink">Filter</a>
+				</div>
+			</form>
+			<hr>
+		</div>
+
+		<!--  Filter Section -->
+		<script type="text/ng-template" id="nodes_renderer.html">
+          <div ui-tree-handle class="tree-node tree-node-content" ng-class="{questionTitleInTree: node.questionXML}">
+			<button class="btn btn-xs" ng-click="getNodes(this)">{{node.title}}</button>                          
+          </div>
+			
+          <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}">
+            <li ng-repeat="node in node.nodes" ui-tree-node ng-include="node.template">
+            </li>
+          </ol>
+        </script>
+
+		<script type="text/ng-template" id="questions_renderer.html">
+          <div ui-tree-handle class="tree-node tree-node-content" ng-class="{questionTitleInTree: node.questionXML}">
+			<div>{{node.title}}</div>    
+			<div ng-if="node.textHTML" ng-bind-html="getHTML(this)">
+			</div>                        
+          </div>
+        </script>
+
+		<div data-ui-tree id="tree-root">
+			<ol data-ui-tree-nodes data-ng-model="data">
+				<li data-ng-repeat="node in data" data-ui-tree-node
+					data-collapsed="node.collapsed"
+					data-ng-include="'nodes_renderer.html'"></li>
+			</ol>
+		</div>
+	</div>
+	<div class="content testContainer" data-ng-include="renderHTML"></div>
+</div>

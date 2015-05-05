@@ -471,6 +471,7 @@ angular.module('evalu8Demo')
 		    	 var criterias = sharedTabService.tests[scope.currentIndex].criterias;
 		    	 for (var i = 1; i < criterias.length; i++) {
 		    		 criterias[i].numberOfQuestionsSelected = criterias[0].numberOfQuestionsSelected;
+		    		 criterias[i].numberOfQuestionsEntered = criterias[0].numberOfQuestionsEntered;
 		    		 criterias[i].selectedQuestiontypes.splice(0,criterias[i].selectedQuestiontypes.length);// = criterias[0].selectedQuestiontypes;
 		    		 for ( var questionType in criterias[0].selectedQuestiontypes) {
 		    			 if(criterias[i].questiontypes.indexOf(criterias[0].selectedQuestiontypes[questionType]) != -1)
@@ -480,9 +481,25 @@ angular.module('evalu8Demo')
 				}
 		     }
 
+		     sharedTabService.propagateSelectedQuestionTypes = function(scope,idx,questiontype,isNew){
+		    	 var criterias = sharedTabService.tests[scope.currentIndex].criterias;
+		    	 if(isNew){
+		    		 for (var i = 1; i < criterias.length; i++) {
+		    			 criterias[i].selectedQuestiontypes.push(questiontype);
+		    		 }
+		    	 }
+		    	 else{
+			    	 for (var i = 1; i < criterias.length; i++) {
+			    		 criterias[i].selectedQuestiontypes.splice(idx,1);
+			    	 }
+		    	 }
+
+		     }
+		     
 		     sharedTabService.resetCriteriaToDefault = function(scope){
 		    	 var criterias = sharedTabService.tests[scope.currentIndex].criterias;
 		    	 for (var i = 1; i < criterias.length; i++) {
+		    		 criterias[i].numberOfQuestionsEntered = null;
 		    		 criterias[i].numberOfQuestionsSelected = sharedTabService.setDefault_numberOfQuestionsSelected(criterias[i].totalQuestions);
 		    		 criterias[i].selectedQuestiontypes.splice(0,criterias[i].selectedQuestiontypes.length);// = criterias[0].selectedQuestiontypes;
 				}

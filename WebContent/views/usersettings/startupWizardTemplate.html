@@ -1,0 +1,24 @@
+<div>
+	<div class="row setupHeader">
+		<div class="col-md-5" style="margin-top: 15px;">
+			<span class="selectDiscipline">{{currentStepNumber()}} of
+				{{steps.length}}: Choose Your {{steps[currentStepNumber()-1].title
+				|| steps[currentStepNumber()-1].wzTitle}}</span>
+			<!-- <ul>
+                <li ng-repeat="step in steps">
+                    <a ng-click="goTo(step)" ng-if="step.selected">{{step.title || step.wzTitle}}</a>
+                </li>
+            </ul> -->
+		</div>
+		<div class="col-md-7" style="margin-top: 7px;">
+			<div style="float: right">
+				<input type="button" class="backButton"
+					ng-if="currentStepNumber() > 1" wz-previous value="Previous" /> <input
+					type="button" class="nextButton" wz-next value="Next"
+					ng-disabled="isDesciplineEmpty()"
+					ng-class="{btnDisbled:isDesciplineEmpty()}" />
+			</div>
+		</div>
+	</div>
+	<div class="row" ng-transclude></div>
+</div>

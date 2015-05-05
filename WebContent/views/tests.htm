@@ -1,0 +1,33 @@
+<div class="chapterHeader testHeader">Tests</div>
+
+<script type="text/ng-template" id="tests_renderer.html">
+	<div ui-tree-handle class="tree-node tree-node-content" ng-class="{questionTitleInTree: node.questionXML}">
+		<button class="btn btn-xs" ng-click="getTestNode(this)" >{{node.title}}</button>                          
+	</div>
+</script>
+
+<script type="text/ng-template" id="testQuestion_renderer.html">
+	<div class="chapterHeader testHeader">Tests</div>
+	<div><a data-ng-click="back()" class="searchLink">Back</a></div>
+	<hr />
+	<div class="testTitle">{{testTitle}}</div>
+	<div data-ui-tree id="tree-root-questions" class="questionPaper">
+		<ol data-ui-tree-nodes data-ng-model="testQuestions">
+			<li data-ng-repeat="node in testQuestions" data-ui-tree-node>
+          		<div ui-tree-handle class="tree-node tree-node-content questionTitleInTree qti-itemBody">
+					<div ng-bind-html="getTestHTML(this)">
+					</div>                        
+          		</div>
+			</li>
+		</ol>
+	</div>
+</script>
+
+
+<div data-ui-tree id="tree-root">
+	<ol data-ui-tree-nodes data-ng-model="testData">
+		<li data-ng-repeat="node in testData" data-ui-tree-node
+			data-collapsed="node.collapsed"
+			data-ng-include="'tests_renderer.html'"></li>
+	</ol>
+</div>

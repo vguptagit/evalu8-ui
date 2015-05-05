@@ -13,7 +13,7 @@ angular.module('e8Login')
             AuthenticationService.Login($scope.username, $scope.password, function(response) {
                 if(response.success) {                	
                     AuthenticationService.SetCredentials($scope.username, $scope.password, response.message);
-                    $location.path(evalu8config.homeEndpoint);
+                    $location.path(evalu8config.welcome);
                 } else {
                     $scope.error = response.message;
                     $scope.dataLoading = false;

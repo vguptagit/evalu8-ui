@@ -8,4 +8,10 @@ angular.module('evalu8Demo')
         questionbanks: '.questionbanks',
         customquestions: '.customquestions'
     };
+    
+    this.CONTROLLERS={
+    		myTest: 'MyTestsController',
+            questionBanks: 'QuestionBanksController',
+            testCreationFrame: 'TestCreationFrameController'
+    };
 });

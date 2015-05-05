@@ -1,0 +1,112 @@
+<div id="leftPanel" class="leftPanel"  block-ui="BlockLeftpanel">
+	<div class="resource">
+		<span class="resource">Resources</span>
+		<span class="download"></span>
+	</div>
+	<div x-ng-include="'views/partials/tabs.htm'" onload="var='questionBanks'"></div>
+
+	<div class="filter">
+		<div class="filterQuest">
+			<span>&#10148;</span><span>Filter Questions</span>
+		</div>
+		<input type="search" placeHolder="Search Topic" class="form-control searchTopic">
+	</div>
+
+	<div x-ng-include="'views/partials/disciplineFilter.htm'"></div>
+	
+	<div class="testContainer">
+		<script type="text/ng-template" id="discipline_renderer.html">
+          <div ui-tree-handle class="tree-node tree-node-content">
+			<div class="treeDiv"  >
+				<div class="maindiv">
+					<div class="imagediv">
+						<input ng-click="getBooks(this)" type="image" class="collapseImg" 
+						ng-src="{{collapsed && 'images/right_arrow2.png' || 'images/right_arrow.png'}}" ></input>
+					</div>
+					<div class="captiondiv">
+						<label class="captionLabel" >{{node.item}}</label> 
+					</div>
+				</div>
+			 </div>                          
+          </div>
+			
+          <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}" droppable="false" >
+            <li ng-if="!node.isQuestion" draggable="false" ng-repeat="node in node.nodes" collapsed="true" ui-tree-node ng-include="'book_renderer.html'"></li>
+			<li class="questIndex" ng-if="node.isQuestion" draggable="false" ng-repeat="node in node.nodes" collapsed="true" ui-tree-node ng-include="'questions_renderer.html'"></li>
+          </ol>		
+        </script>       
+        <script type="text/ng-template" id="book_renderer.html">
+         <div ui-tree-handle class="tree-node tree-node-content" ng-class="{questionTitleInTree: node.questionXML}">
+			<div class="treeDiv"  >
+				<div class="maindiv">
+					<div class="imagediv">
+						<input ng-click="getNodes(this)" type="image" class="collapseImg" src="images/right_arrow2.png" ></input>
+					</div>
+					<div class="captiondiv">
+						<label class="captionLabel" >{{node.title}}</label> 
+					</div>
+					<!--
+					<div  class="iconsChapter">
+						<span class="icon-magic test-wizard-icon-white pull-right" ng-click="createTestWizardCriteria(this)" title="Autocreate test with wizard."></span>
+					</div>
+					-->
+				</div>
+			 </div>    		                       
+          </div>    
+			
+          <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}" droppable="false" >
+            <li draggable="false" ng-repeat="node in node.nodes" collapsed="true" ui-tree-node ng-include="'nodes_renderer.html'">
+            </li>
+          </ol>
+        </script>
+        <script type="text/ng-template" id="nodes_renderer.html">
+          <div ui-tree-handle class="tree-node tree-node-content" ng-class="">
+			<div class="treeDiv" ng-class="{activeFolder: !node.showTestWizardIcon , activeFolder: node.isNodeSelected}" >
+				<div class="maindivChapter">
+					<div class="imagediv">
+						<input ng-click="getNodesWithQuestion(this)" type="image" class="collapseImg" src="images/right_arrow2.png" ></input>
+					</div>
+			    	<div class="captiondiv"   ng-click="selectNode(this.node)">
+						<label class="captionLabel" >{{node.title}}</label> 	
+					</div>	
+					<div  class="iconsChapter">
+						<span class="action-icon-bg glyphicon glyphicon-pencil"></span>						
+						<span class="icon-magic action-icon-bg pull-right" ng-show="node.showTestWizardIcon" ng-click="createTestWizardCriteria(this)" title="Auto-create test with wizard"></span>
+						<!--
+						<span class="settingsChapter"></span>    
+						<span class="printChapter"></span>
+  						--> 
+					</div>
+				 </div>
+
+				
+			</div>                          
+          </div>
+			<ol ui-tree-nodes="" type="1" ng-model="node.nodes"  ng-class="{hidden: collapsed}" droppable="false" >
+          
+            <li  class="questIndex" printMODE="true" ng-repeat="node in node.nodes" ng-class="{questionSelected:node.isNodeSelected}" collapsed="true" ui-tree-node draggable="{{node.nodeType=='question'}}" ng-include="node.template">
+            </li>
+          </ol>
+        </script>
+        
+        <script type="text/ng-template" id="qb_questions_renderer.html">
+          <div  ng-mousedown="selectNode(this.node);" ui-tree-handle class="printViewContainer tree-node tree-node-content questionList" ng-class="{questionTitleInTree: node.questionXML}">
+			<span ng-show="node.showEditQuestionIcon" class="newTest-close action-icon-bg glyphicon glyphicon-pencil" ng-mousedown="editQuestion(this)"></span>
+			<div class="printViewContainer" ng-if="node.textHTML" ng-bind-html="getHTML(this)">
+			</div>                        
+          </div>
+        </script>        
+        
+		<div data-ui-tree id="tree-root" class="question_bank_scrollbar">
+			<ol data-ui-tree-nodes data-ng-model="disciplines" droppable="false">
+				<li data-ng-repeat="node in disciplines" data-ui-tree-node
+					collapsed="true" draggable="false"
+					data-ng-include="'discipline_renderer.html'"></li>
+			</ol>
+		</div>
+	</div>
+</div>
+<div id="midPanel" class="midPanel"></div>
+<div id="rightPanel" class="rightPanel" block-ui="BlockRightPanel">
+	<div x-ng-include="'views/partials/testCreationFrame.htm'" x-ng-controller="TestCreationFrameController"></div>
+</div>

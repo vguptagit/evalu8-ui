@@ -1,0 +1,74 @@
+<div class="content bookContainer">
+
+	<table class="booksTable">
+		<tr class="booksHeader">
+			<th>Books</th>
+		</tr>
+		<tr>
+			<td class="bookSearchCell">
+				<div>
+					<input data-ng-model="searchparam" id="searchparam" type="text"
+						class="bookFilter" placeholder="Search by Book title" /><a
+						data-ng-click="searchBooks()" class="searchLink">Go</a><a
+						data-ng-click="toggleSerchView()" class="searchLink">[Advanced]</a><a
+						data-ng-show="clearSearch" data-ng-click="clearSerch()" class="searchLink">Clear
+						Search</a>
+						<a href="#/usersettings"><img src="images/user.png" width='20px' /></a>
+				</div>
+
+				<div data-ng-show="searchview" class="searchPanel">
+					<hr>
+					<form name="form" data-ng-submit="booksSearch()" role="form">
+
+						<span class="searchLabel">ID :</span><input type="text" name="id"
+							id="id" class="searchInput" data-ng-model="id" placeholder="Id" /><br/>
+						<span class="searchLabel">Title :</span> <input type="text"
+							name="title" id="title" class="searchInput" data-ng-model="title"
+							placeholder="Title" /><br/> <span class="searchLabel">ISBN :</span> <input
+							type="text" name="isbn" id="isbn" class="searchInput"
+							data-ng-model="isbn" placeholder="ISBN" /><br/> <span
+							class="searchLabel">Author :</span> <input type="text"
+							name="authors" id="authors" class="searchInput"
+							data-ng-model="authors" placeholder="Author" /><br/> <span
+							class="searchLabel">Discipline :</span> <input type="text"
+							name="discipline" id="discipline" class="searchInput"
+							data-ng-model="discipline" placeholder="Discipline" /><br/> <span
+							class="searchLabel">Publisher :</span> <input type="text"
+							name="publisher" id="publisher" class="searchInput"
+							data-ng-model="publisher" placeholder="Publisher" /> <a
+							data-ng-click="booksSearch()" class="searchLink">Search</a>
+					</form>
+					<hr>
+				</div>
+			</td>
+		</tr>
+		<tr data-ng-repeat="x in books" class="booksContent">
+			<td><a class="bookTitle" href="#/books/{{ x.guid }}/nodes">{{
+					x.title }}</a>
+				<div class="bookDetails">
+					<div>
+						<span class="bookDetailHead">by: </span><span
+							class="bookDetailTxt"><span
+							data-ng-repeat="author in x.authors">{{author}}</span> </span>
+					</div>
+					<div>
+						<span class="bookDetailHead">ID: </span><span
+							class="bookDetailTxt">{{ x.guid }}</span>
+					</div>
+					<div>
+						<span class="bookDetailHead">ISBN: </span><span
+							class="bookDetailTxt">{{x.isbn }}</span>
+					</div>
+					<div>
+						<span class="bookDetailHead">Discipline: </span><span
+							class="bookDetailTxt">{{ x.discipline }}</span>
+					</div>
+					<div>
+						<span class="bookDetailHead">Publisher: </span><span
+							class="bookDetailTxt">{{ x.publisher }}</span>
+					</div>
+				</div></td>
+		</tr>
+	</table>
+
+</div>

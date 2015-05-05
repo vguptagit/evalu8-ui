@@ -31,7 +31,8 @@ angular.module('evalu8Demo', [
 //  'blockUI',
     'ui.bootstrap',
     'ui.router',
-    'angularFileUpload'
+    'angularFileUpload',
+    'mgo-angular-wizard'
 ])/*.config(function(blockUIConfig) {
 	//blockUIConfig.message = "<div class='loader'>Loading...</div>";
 	blockUIConfig.autoInjectBodyBlock = false;
@@ -69,6 +70,23 @@ angular.module('evalu8Demo', [
             templateUrl: 'views/partials/custom-questions.html',
             controller: 'CustomQuestionBanksController'
         })
+         .state('welcome', {
+             url: '/welcome',
+             controller: 'WelcomeController',
+             templateUrl: 'views/welcome.html'
+         })
+        .state('startup', {
+            url: '/startup',
+            controller: 'startupWizardController',
+            templateUrl: 'views/usersettings/startupWizard.html'
+        })
+
+        //reference
+        // nested list with just some random string data
+        .state('home.paragraph', {
+            url: '/paragraph',
+            template: 'I could sure use a drink right now.'
+        })
         // nested list with custom controller
         .state('home.list', {
             url: '/list',
@@ -77,13 +95,6 @@ angular.module('evalu8Demo', [
                 $scope.dogs = ['Bernese', 'Husky', 'Goldendoodle'];
             }
         })
-
-        // nested list with just some random string data
-        .state('home.paragraph', {
-            url: '/paragraph',
-            template: 'I could sure use a drink right now.'
-        })
-
         // ABOUT PAGE AND MULTIPLE NAMED VIEWS =================================
         .state('about', {
             url: '/about',

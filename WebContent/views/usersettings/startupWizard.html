@@ -1,0 +1,99 @@
+<div class="container-fluid" style="margin-top: 44px;">
+	<wizard on-finish="finishWizard()"
+		template="views/usersettings/startupWizardTemplate.html"> <wz-step
+		title="Discipline" canexit="exitDiscipline">
+
+	<div class="row"
+		style="vertical-align: middle; middle; margin-top: 20px;">
+		<div class="col-lg-5">
+			<div>
+				<ul class="a">
+					<li class="discription">Pick the discipline(s) on the right in
+						which you create tests</li>
+					<li class="discription">This will make the questions banks and
+						tests in these disciplines available to you.</li>
+					<li class="discription">You can select more than one
+						discipline by clicking or tapping multiple selections. Tap again
+						to deselect.</li>
+				</ul>
+			</div>
+		</div>
+		<div class="col-lg-7">
+			<div class="row">
+				<div class="col-lg-12" style="margin-left: 10px;">
+					<div class="searchPanel">
+						<input type="text" placeHolder="Search Discipline"
+							class="searchDiscpline" ng-model="searched"
+							typeahead="discipline for discipline in disciplines.all.sort() | filter:$viewValue"
+							ng-keyup="searchedDiscipline($event)"> <span
+							class="searchIcon" ng-click="searchedDisciplineOnClick()"
+							tooltip="Search"></span>
+					</div>
+				</div>
+			</div>
+			<div class="row" style="margin-top: 20px;">
+				<div class="col-lg-12">
+					<div class="disciplineContainer">
+						<div data-ng-repeat="discipline in disciplines.all.sort()"
+							ng-click="selectDiscipline(this)"
+							ng-class="{selectedDisc: isSelectedDiscipline(this)}">
+							<div class="discplineText">{{discipline}}</div>
+							<hr style="margin-bottom: 0px; margin-top: 0px;">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	</wz-step> <wz-step title="Books">
+	<div class="row"
+		style="vertical-align: middle; middle; margin-top: 20px;">
+		<div class="col-lg-5">
+			<div>
+				<ul class="a">
+					<li class="discription">Pick the textbooks or topics on the
+						right from which you create tests.</li>
+					<li class="discription">Topics are Question banks drawn from
+						multiple resources.</li>
+					<li class="discription">You can select more than one textbook
+						by clicking or tapping multiple selections. Tap again to deselect.</li>
+				</ul>
+			</div>
+		</div>
+		<div class="col-lg-7">
+			<div class="row">
+				<div class="col-lg-12" style="margin-left: 10px;">
+					<div class="searchPanel">
+						<input type="text" placeHolder="Search Book"
+							class="searchBook" ng-model="searchedBook"
+							typeahead="book.title for book in books.all | filter:$viewValue"
+							ng-keyup="searchedBookOnEnter($event)"> <span
+							class="searchIcon" ng-click="searchedBookOnClick()"
+							tooltip="Search"></span>
+					</div>
+				</div>
+			</div>
+			<div class="row" style="margin-top: 20px;">
+				<div class="col-lg-12">
+					<div class="bookContainer">
+						<div data-ng-repeat="discipline in disciplines.userSelected.sort()">
+							<div class="discplineText1" style="font-weight: bold;">{{discipline}}</div>
+							<hr
+								style="Border: 1px solid #E8E8E8; margin-bottom: 0px; margin-top: 0px;">
+
+							<div
+								data-ng-repeat="book in getBooksByDiscipline(discipline).sort()"
+								ng-click="selectBook(book.guid)"
+								ng-class="{selectedDisc: isSelectedBook(book.guid)}">
+								<div class="discplineText" style="margin-left: 25px;">{{book.title}}</div>
+								<hr style="margin-bottom: 0px; margin-top: 0px;">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</wz-step>
+</div>

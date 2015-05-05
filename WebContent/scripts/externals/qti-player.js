@@ -2500,3 +2500,21 @@ QTI.replaceImage = function(qtiNode){
 	})
 	return qtiNodeHTML;
 }
+
+QTI.getActualCursorPosition = function(cursorPosition,element){
+	var images = element.find("u[contenteditable=false]");
+	var actualLenght;
+	var actualText;
+	images.each(function(){
+		if(actualText == null)
+			actualText = element.html().substring(0,element.html().indexOf($(this).get(0).outerHTML)) + $(this).text();
+		else
+			actualText = actualText + element.html().substring(actualText.length,element.html().indexOf($(this).get(0).outerHTML)) + $(this).text();
+		if(cursorPosition >= actualText.length)
+		{
+			cursorPosition = cursorPosition + $(this).get(0).outerHTML.length - $(this).text().length;
+			return cursorPosition;
+		}
+	})
+	return cursorPosition;
+} 

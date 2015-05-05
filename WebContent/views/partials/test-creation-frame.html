@@ -163,8 +163,9 @@
     </div>
     <div class="row"
          ng-show="tests[currentIndex].isTestWizard &&  tests[currentIndex].criterias.length != 0" ">
-        <!--{{tests[currentIndex].criterias}}-->
-        <!--<button type="button" class="btn btn-default" ng-click="addTestWizardCriteria()"><span class="icon-magic"></span>Add Test wizard</button>-->
+		<!--{{tests[currentIndex].criterias}}-->
+		<!--<button type=" button" class="btn btn-default" ng-click="addTestWizardCriteria()">
+        <span class="icon-magic"></span>Add Test wizard</button>-->
         <div class="test-wizard-container">
             <div class="row"
                  ng-repeat="criteria in tests[currentIndex].criterias" ng-show="$first || !isApplySameCriteriaToAll">
@@ -270,7 +271,7 @@
                 </div>
                 <div class="col-lg-2 pull-right">
                     <button class="btn btn-default"
-                            ng-click="closeTabWithConfirmation(tests[currentIndex])">
+                            ng-click="closeTab(tests[currentIndex])">
                         Cancel
                     </button>
                 </div>

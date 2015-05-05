@@ -65,8 +65,8 @@ angular.module('evalu8Demo')
 			this.archiveTest = function(testId,folderId, callback) {								
 				var archiveItem = {"id": testId, "folderId": folderId};
 				$http.post(evalu8config.host + '/my/archive/tests', archiveItem, config)
-				.success(function(response) {									
-					if(callback) callback();
+				.success(function(archivedFolder) {									
+					if(callback) callback(archivedFolder);
 				})
 				.error(function(error, status) {
 
@@ -76,8 +76,8 @@ angular.module('evalu8Demo')
 			this.restoreFolder = function(folderId, callback) {								
 				var archiveItem = {"id": folderId};
 				$http.post(evalu8config.host + '/my/restore/folders', archiveItem, config)
-				.success(function(response) {									
-					if(callback) callback();
+				.success(function(restoredFolder) {									
+					if(callback) callback(restoredFolder);
 				})
 				.error(function(error, status) {
 
@@ -87,8 +87,8 @@ angular.module('evalu8Demo')
 			this.restoreTest = function(testId,folderId, callback) {								
 				var archiveItem = {"id": testId, "folderId": folderId};
 				$http.post(evalu8config.host + '/my/restore/tests', archiveItem, config)
-				.success(function(response) {									
-					if(callback) callback();
+				.success(function(restoredFolder) {									
+					if(callback) callback(restoredFolder);
 				})
 				.error(function(error, status) {
 

@@ -1,0 +1,22 @@
+
+<div class="content loginContainer">
+	<div class="loginHeader">Login to continue...</div>
+	<hr style="color: #E1DCD2" />
+	<div data-ng-show="error" class="loginError">{{error}}</div>
+	<div class="loginContent">
+		<form name="form" data-ng-submit="login()" role="form">
+
+			<input type="text" name="username" id="username" class="loginInput"
+				data-ng-model="username" placeholder="Username" required /> <span
+				data-ng-show="form.username.$dirty && form.username.$error.required"
+				class="loginError">Username is required</span> <input
+				type="password" name="password" id="password" class="loginInput"
+				data-ng-model="password" placeholder="Password" required /> <span
+				data-ng-show="form.password.$dirty && form.password.$error.required"
+				class="loginError">Password is required</span>
+			<button type="submit" data-ng-disabled="form.$invalid || dataLoading"
+				class="loginButton">Login</button>
+		</form>		
+	</div>
+
+</div>
