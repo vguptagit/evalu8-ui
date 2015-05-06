@@ -28,31 +28,19 @@ angular
 							this.disciplineBooks = function(discipline,
 									callback) {
 
-								var disciplineBooks = [];
-								$
-										.ajax({
-											type : 'GET',
-											async : false,
-											url : evalu8config.host
-													+ "/books?discipline="
-													+ discipline,
-											headers : {
-												'x-authorization' : $rootScope.globals.authToken,
-												'Accept' : 'application/json;odata=verbose'
-											},
-											success : function(response) {
-												response
-														.forEach(function(item) {
-															disciplineBooks
-																	.push(item);
-														});
-												callback(disciplineBooks);
-
-											},
-											error : function(error) {
-
-											}
-										});
+								var disciplineBooks = [];				
+								 
+								$http.get(
+										evalu8config.host + "/books?discipline=" + discipline, config)
+										.success(
+												function(response) {
+													
+													response.forEach (function(item) {    							
+														disciplineBooks.push(item);    							    							
+													});
+													
+													callback(disciplineBooks);
+												});
 							};
 
 						} ])

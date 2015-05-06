@@ -1585,8 +1585,29 @@ ul.a {
 	cursor: pointer;
 }
 
+.autocompleTitle{
+font-size:15px;
+	
+}
+
+.autocompleteField{
+font-size:12px;
+margin-left:10px;
+}
+
+.autocompleteValue{
+font-size:12px;
+}
+font-size:12px;
+
 .btnDisbled {
 	background-color: #A0D1E1;
+}
+
+.autocompleteList{
+	max-width : 700px;
+	overflow: auto;
+	max-height: 720;
 }
 
 /* Welcome Screen CSS  ends*/

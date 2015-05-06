@@ -96,24 +96,14 @@ angular
 
 							this.saveUserBooks = function(userBookIDs) {
 
-								$http
-										.post(
-												evalu8config.host
-														+ '/settings/books',
-												userBookIDs, config)
-										.success(
-												function(response) {
-													document
-															.getElementById("divSaveMessage").innerHTML = "<span style='color:green'>Settings saved successfully<span>";
-												})
-										.error(
-												function(error, status) {
-													document
-															.getElementById("divSaveMessage").innerText = error.message;
-													if (status == 403)
-														$location
-																.path('/login');
-												})
+								$http.post(
+										evalu8config.host + '/settings/books',
+										userBookIDs, config).success(
+										function(response) {
+										}).error(function(error, status) {
+									if (status == 403)
+										$location.path('/login');
+								})
 							}
 
 							this.saveUserDisciplines = function(userDisciplines) {

@@ -1,5 +1,39 @@
 angular
 		.module('e8MyTests')
+		.filter(
+				'searchFields',
+				function() {
+					return function(books, searchText) {
+
+						var filteredBooks = [];
+						books
+								.forEach(function(book) {
+									if (book.title.toLowerCase().indexOf(
+											searchText) > -1
+
+											|| (book.isbn != null && book.isbn
+													.toLowerCase().indexOf(
+															searchText) > -1)
+											|| (book.isbn13 != null && book.isbn13
+													.toLowerCase().indexOf(
+															searchText) > -1)
+											|| (book.isbn10 != null && book.isbn10
+													.toLowerCase().indexOf(
+															searchText) > -1)
+											|| (book.publisher != null && book.publisher
+													.toLowerCase().indexOf(
+															searchText) > -1)
+											|| (book.authors != null && book.authors
+													.toString().toLowerCase()
+													.indexOf(searchText) > -1)) {
+
+										filteredBooks.push(jQuery.extend(true,
+												{}, book));
+									}
+								});
+						return filteredBooks;
+					};
+				})
 		.controller(
 				'startupWizardController',
 				[
@@ -238,6 +272,9 @@ angular
 							}
 
 							$scope.searchedBookOnEnter = function(event) {
+								$(".dropdown-menu")
+								.addClass("autocompleteList");
+								
 								$scope.searchedBook = $(".searchBook").val();
 								if ($scope.searchedBook == undefined
 										|| $scope.searchedBook == "") {

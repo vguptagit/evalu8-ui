@@ -1,3 +1,13 @@
+<script type="text/ng-template" id="customTemplate.html">
+  <a>
+    <span class="autocompleTitle" bind-html-unsafe="match.model.title | typeaheadHighlight:query"></span><br>
+	<span class="autocompleteField">ISBN10 : </span><span class="autocompleteValue" bind-html-unsafe="match.model.isbn10 | typeaheadHighlight:query"></span>
+	<span class="autocompleteField">ISBN13 : </span><span class="autocompleteValue" bind-html-unsafe="match.model.isbn13 | typeaheadHighlight:query"></span><br>
+	<span class="autocompleteField">Publisher : </span><span class="autocompleteValue" bind-html-unsafe="match.model.publisher | typeaheadHighlight:query"></span><br>
+	<span class="autocompleteField">Authors : </span><span class="autocompleteValue" bind-html-unsafe="match.model.authors.toString() | typeaheadHighlight:query"></span>
+  </a>
+</script>
+
 <div class="container-fluid" style="margin-top: 44px;">
 	<wizard on-finish="finishWizard()"
 		template="views/usersettings/startupWizardTemplate.html"> <wz-step
@@ -67,7 +77,9 @@
 					<div class="searchPanel">
 						<input type="text" placeHolder="Search Book"
 							class="searchBook" ng-model="searchedBook"
-							typeahead="book.title for book in books.all | filter:$viewValue"
+							placeholder="Custom template"
+							typeahead-template-url="customTemplate.html"
+							typeahead="book.title for book in books.all | searchFields:$viewValue"
 							ng-keyup="searchedBookOnEnter($event)"> <span
 							class="searchIcon" ng-click="searchedBookOnClick()"
 							tooltip="search" tooltip-placement="bottom"></span>
