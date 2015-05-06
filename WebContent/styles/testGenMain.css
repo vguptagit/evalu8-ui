@@ -1094,8 +1094,7 @@ li[printmode='false'].displayQuestionLI {
 	padding-left: 23px;
 }
 
-.qstnView {
-	text-align: right;
+.qstnView {	
 	font-size: 11px;
 	cursor: pointer;
 	padding-right: 15px;
@@ -1142,11 +1141,11 @@ li[qstnTemplate='true'] .radio span.tick,li[qstnTemplate='true'] .checkbox span.
 	visibility: hidden !important;
 }
 
-li[quiztype='4'] .vhDiv {
+li[quiztype='TrueFalse'] .vhDiv {
 	display: none;
 }
 
-li[quiztype='4'] #viewHeader {
+li[quiztype='TrueFalse'] #viewHeader {
 	display: none;
 }
 
@@ -1187,7 +1186,7 @@ li[quiztype='4'] #viewHeader {
 }
 
 .editViewContainer .iconButtons {
-	height: 21px;
+	height: 17px;
 	width: 26px;
 	position: inherit;
 }
@@ -1269,26 +1268,28 @@ li[printmode='false'].displayQuestionLI .questionEditCaption {
 	padding-top: 2px;
 	margin: 5px;
 	padding-bottom: 10px;
+	width: 350px;
+	margin-left: -17px;
 }
 
 li[printmode='true'] .editMetdata {
 	display: none;
 }
 
-li[quiztype='4'] .radio div {
+li[quiztype='TrueFalse'] .radio div {
 	border: 0px;
 }
 
-li[quiztype='4'] .radio div.optionOperationdiv {
+li[quiztype='TrueFalse'] .radio div.optionOperationdiv {
 	display: none;
 }
 
-li[quiztype='4'] .radio div.optionTextEditablediv {
+li[quiztype='TrueFalse'] .radio div.optionTextEditablediv {
 	-webkit-user-modify: read-only;
 	cursor: default;
 }
 
-li[quiztype='4'] .qti-simpleChoice .radio {
+li[quiztype='TrueFalse'] .qti-simpleChoice .radio {
 	padding-left: 0px;
 	padding-right: 15px;
 	margin-top: 0px;
@@ -1296,6 +1297,7 @@ li[quiztype='4'] .qti-simpleChoice .radio {
 
 .qstnViewLink {
 	text-align: top;
+	float:right;
 	text-decoration: none !important;
 }
 
@@ -1890,3 +1892,67 @@ font-size:12px;
   overflow: hidden;
   text-overflow: ellipsis;
   }
+  
+  
+.optionsMaindiv{    
+    margin-top: 10px;
+}
+
+.optionTextBoxContainer,.matchOptionTextEditablediv {
+    min-width: 345px;
+    display: inline-block;
+    line-height: 24px;
+    height: 100%;
+}
+
+.matchOptionTextEditablediv {
+    min-width: 385px;
+}
+
+
+li[qstntemplate='true'] .indChar { 
+    display:none;
+
+    }
+
+.mainOptionEditablediv {
+    cursor: pointer;
+    min-width: 455px;
+    border: 2px solid #D0D0D0;
+    border-radius: 4px;
+    min-height: 27px;
+    padding-left: 0px;
+    margin-bottom: 10px;
+    font-weight: normal;
+    font-size: 12px;
+}
+
+
+.mainOptionOperationdiv,.matchOptionOperation {
+    display: inline-block;
+    float:right;
+    border: 0px solid #D0D0D0;
+    border-left: 0px solid #D0D0D0;
+    border-radius: 4px;
+    padding-top: 3px;
+}
+
+.mainOptionIndexdiv,.matchOptionIndexdiv {
+    min-width: 27px;
+    border: 0px solid #D0D0D0;
+    border-right: 2px solid #D0D0D0;
+    border-radius: 1px;    
+    display: inline-block;
+    min-height: 26px;
+    float: left;
+    text-align: center;
+    padding-top: 2px;
+}
+
+.imageIconContainer {
+    float: right;    
+    margin-right: 2px;
+}
+.printViewOption{
+    padding-left: 7px;
+}

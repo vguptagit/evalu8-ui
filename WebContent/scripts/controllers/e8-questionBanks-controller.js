@@ -489,7 +489,7 @@ angular
 
 								// qti player initialisation
 								QTI.initialize();
-
+								
 								$http
 										.get(
 												evalu8config.host
@@ -498,6 +498,7 @@ angular
 										.success(
 												function(response) {
 													item.data = response;
+													QTI.BLOCKQUOTE.id = 0;
 													var displayNode = $("<div></div>")
 													QTI.play(response,
 															displayNode, false,

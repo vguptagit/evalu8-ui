@@ -549,6 +549,18 @@ QTI.Attribute.generateId = function(prefix) {
 }
 QTI.Attribute.id = 1;
 
+QTI.BLOCKQUOTE = {};
+
+QTI.BLOCKQUOTE.generateId = function() {
+    return QTI.BLOCKQUOTE.id++;
+}
+
+QTI.BLOCKQUOTE.getId = function() {
+    return QTI.BLOCKQUOTE.id;
+}
+
+QTI.BLOCKQUOTE.id = 0;
+
 // class
 
 QTI.Class = {};
@@ -1581,7 +1593,150 @@ QTI.Elements.Paragraph.GET_ALLOWED_CONTENT = function() {
 }
 
 QTI.Elements.Paragraph.play = function(qtiNode, displayNode, state) {
+	
+	
+if(state.questionType=="Matching"){
+		
+	    var qstnCaption='';
+	    var elementDisplayNode ='';
+	    
+	    if($(displayNode)[0].nodeName!="BLOCKQUOTE"){
+	    	
+	    	 elementDisplayNode = QTI.prepare(qtiNode,
+					$("<p class='optionLabelView'></p>"));
+		 
+	    	qstnCaption = qtiNode.text().trim();
+	    	
+	    }else{
+	    	
+	    	 elementDisplayNode = QTI.prepare(qtiNode,$("<p></p>"));
+		  
+		    
+	    	var optionPtext=$(qtiNode).html();
+	    	optionPtext = optionPtext.substring(0, optionPtext.indexOf("<")).trim();
+	    	qstnCaption=optionPtext;	    	
+	    }
+	    
+	    $(displayNode).append(elementDisplayNode);
+	    
 
+		this.extend.play(qtiNode, elementDisplayNode, state);
+		this.processChildren(qtiNode, elementDisplayNode, state);
+		
+		
+		if($(displayNode)[0].nodeName=="BLOCKQUOTE"){
+			
+			var BLOCKQUOTE_ID = QTI.BLOCKQUOTE.getId();				
+				
+			var mainContentsDisplayNode = $(
+			"<div class='optionTextBoxMainContainer mainOptionEditablediv' ></div>");
+			
+			$(mainContentsDisplayNode).append($("<div></div>").attr({			
+				"class" : "mainOptionIndexdiv"
+			}));	
+			
+		
+			var contentsDisplayNode2 = $(
+			"<div class='optionTextBoxContainer' ></div>")
+			.attr({			
+				"class":'optionTextBoxContainer editView',
+				"contenteditable" : true,
+				"data---qti-content-container" : true			
+			})
+			
+					contentsDisplayNode2.attr("data-placeholder",CustomQuestionTemplate[state.questionType].editOption_Column_A.replace("#", "#"+BLOCKQUOTE_ID) + "A");
+		
+			$(mainContentsDisplayNode).find("div.mainOptionIndexdiv").append("A"+BLOCKQUOTE_ID);
+			
+			if(optionPtext==""){
+				contentsDisplayNode2.attr("data-placeholder",CustomQuestionTemplate[state.questionType].editOption_Column_A.replace("#", "#"+BLOCKQUOTE_ID) + "A");
+			}else{
+				contentsDisplayNode2.text(optionPtext);
+			}
+				
+			
+			$(mainContentsDisplayNode).append(contentsDisplayNode2);		
+			
+			
+			$(mainContentsDisplayNode).append(
+					$("<div></div>").attr({			
+						"class" : "mainOptionOperationdiv"
+					}));
+			
+			$(displayNode).find("div.optionsMaindiv").prepend(mainContentsDisplayNode);
+				
+			$(displayNode).find("div.mainOptionOperationdiv").append(
+					$("<button></button>").attr({						
+						"name" : "image",				
+						"class" : "iconButtons glyphicon glyphicon-picture",
+						"ng-click" : "addImage(this,$event,'div.qti-simpleChoice')"
+					}));
+			
+			$(displayNode).find("div.mainOptionOperationdiv").append(
+					$("<button></button>").attr({							
+						"name" : "Add",				
+						"class" : "iconButtons glyphicon glyphicon-plus",				
+						"ng-click" : "addBlockquote(this,$event)"
+					}));
+			
+			$(displayNode).find("div.mainOptionOperationdiv").append(
+					$("<button></button>").attr({					
+						"name" : "delete",				
+						"class" : "iconButtons glyphicon glyphicon-remove",
+						"ng-click" : "deleteBlockquote(this,$event)"
+					}));
+			
+		}else{
+			
+			var contentsDisplayNode2 = $(
+			"<div class='textBoxContainer editView editablediv' ></div>")
+			.attr({			
+				"class":'textBoxContainer editView editablediv'				
+			})
+			
+			$(displayNode).append(contentsDisplayNode2);
+		}
+		
+		
+var textBox = $("<div contenteditable='true'  class='editView' type='text' id='qtiCaption'></div>");
+		
+		if((state.templateQstn)&&(qstnCaption=="")){				
+				if($(displayNode)[0].nodeName=="BLOCKQUOTE"){
+					var BLOCKQUOTE_ID = QTI.BLOCKQUOTE.getId();
+					var blockQuoteVAL=CustomQuestionTemplate[state.questionType].printOption + " "+ BLOCKQUOTE_ID + "__";
+					$(elementDisplayNode).append($("<span class='printView printViewOption'></span>").text(
+							blockQuoteVAL));
+				}else{
+					textBox.attr("data-placeholder",CustomQuestionTemplate[state.questionType].editCaption);
+					$(elementDisplayNode).append(CustomQuestionTemplate[state.questionType].printCaption);
+				}
+				
+		}else{
+				textBox.html(qstnCaption);
+		}			
+			
+			
+		$(displayNode).find("div.textBoxContainer").append(
+				$("<div></div>").attr({			
+					"class" : "imageIconContainer editView"
+				}));
+		
+		$(displayNode).find("div.textBoxContainer").append(textBox);
+//		$(displayNode).append(textBox);
+		
+		$(displayNode).find("div.imageIconContainer").append(
+				$("<button tooltip='Upload picture' tooltip-placement='bottom'></button>").attr({
+					"id" : "id",				
+					"name" : "image",				
+					"class" : "iconButtons glyphicon glyphicon-picture",
+					"ng-click" : "addImage(this,$event,'div.textBoxContainer')"
+				}));
+		
+		
+		
+	}else{
+
+	
 	var elementDisplayNode = QTI.prepare(qtiNode,
 			$("<p class='optionLabelView'></p>"));
 	$(displayNode).append(elementDisplayNode);
@@ -1622,13 +1777,13 @@ QTI.Elements.Paragraph.play = function(qtiNode, displayNode, state) {
 				$("<button tooltip='Upload picture' tooltip-placement='bottom'></button>").attr({
 					"id" : "id",				
 					"name" : "image",				
-					"class" : "iconButtons fa fa-image",
+					"class" : "iconButtons glyphicon glyphicon-picture",
 					"ng-click" : "addImage(this,$event,'div.textBoxContainer')"
 				}));
 		
 		
 		
-	//}
+	}
 
 }
 
@@ -1865,7 +2020,7 @@ QTI.Elements.SimpleChoice.play = function(qtiNode, displayNode, state) {
 			$("<button tooltip='Upload picture' tooltip-placement='bottom'></button>").attr({
 				"id" : id,				
 				"name" : "image",				
-				"class" : "iconButtons fa fa-image",
+				"class" : "iconButtons glyphicon glyphicon-picture",
 				"ng-click" : "addImage(this,$event,'div.qti-simpleChoice')"
 			}));
 	
@@ -1873,7 +2028,7 @@ QTI.Elements.SimpleChoice.play = function(qtiNode, displayNode, state) {
 			$("<button tooltip='Add answer' tooltip-placement='bottom'></button>").attr({
 				"id" : id,				
 				"name" : "Add",				
-				"class" : "iconButtons fa fa-plus",				
+				"class" : "iconButtons glyphicon glyphicon-plus",				
 				"ng-click" : "addOptions(this,$event)"
 			}));
 	
@@ -1881,7 +2036,7 @@ QTI.Elements.SimpleChoice.play = function(qtiNode, displayNode, state) {
 			$("<button tooltip='Delete this answer' tooltip-placement='bottom'></button>").attr({
 				"id" : id,				
 				"name" : "delete",				
-				"class" : "iconButtons fa fa-remove",
+				"class" : "iconButtons glyphicon glyphicon-remove",
 				"ng-click" : "removOption(this,$event)"
 			}));
 	
@@ -2390,18 +2545,90 @@ QTI.Elements.InlineChoiceInteraction.GET_ALLOWED_CONTENT = function() {
 
 QTI.Elements.InlineChoiceInteraction.play = function(qtiNode, displayNode,
 		state) {
-	var elementDisplayNode = QTI.prepare(qtiNode,
-			$("<span class='matchRight'></span>"));
-	displayNode.prepend("<div style='float:left'>"
-			+ matchIndex[qtiNode.attr("responseIdentifier").substring(9)]
-			+ "</div>");
-	$(displayNode).append(elementDisplayNode);
-	elementDisplayNode.text(matchIndex[qtiNode.attr("responseIdentifier")
-			.substring(9)])
-	qtiNode = qtiNode.find("inlineChoice:nth-child("
-			+ qtiNode.attr("responseIdentifier").substring(9) + ") ");
-	this.extend.play(qtiNode, elementDisplayNode, state);
-	this.processChildren(qtiNode, elementDisplayNode, state);
+
+
+	var inrText=$(displayNode)[0].innerText;
+
+	$(displayNode)[0].innerText="";
+
+		var elementDisplayNode = QTI.prepare(qtiNode,
+				$("<span class='matchRight printView'></span>"));
+		displayNode.prepend("<div  class='printView indChar' style='float:left'>"
+				+ matchIndex[qtiNode.attr("responseIdentifier").substring(9)]
+				+ "</div>").append($("<span class='printView'></span>").text(inrText));
+				
+	
+		$(displayNode).append(elementDisplayNode);
+		
+		
+		elementDisplayNode.text(matchIndex[qtiNode.attr("responseIdentifier")
+				.substring(9)])
+		qtiNode = qtiNode.find("inlineChoice:nth-child("
+				+ qtiNode.attr("responseIdentifier").substring(9) + ") ");
+		
+		var matchText = qtiNode.text();
+		
+		this.extend.play(qtiNode, elementDisplayNode, state);
+		this.processChildren(qtiNode, elementDisplayNode, state);
+		
+		
+		var optionsMaindiv = $(
+		"<div class='optionsMaindiv editView' ></div>")
+		.attr({			
+			"class":'optionsMaindiv editView'				
+		});
+		$(displayNode).append(optionsMaindiv);
+		
+		
+		$(displayNode).find("div.optionsMaindiv").append(
+				$("<div></div>").attr({			
+					"class" : "matchOptionMaindiv mainOptionEditablediv"
+						
+				}));
+		
+		$(displayNode).find("div.matchOptionMaindiv").append($("<div></div>").attr({			
+			"class" : "matchOptionIndexdiv"
+		}));	
+		
+		$(displayNode).find("div.matchOptionMaindiv").append(
+		$("<div></div>").attr({			
+			"class" : "matchOptionTextEditablediv editView",
+			"contenteditable" : "true",
+			"data---qti-content-container" : "true"				
+		}));
+		
+		$(displayNode).find("div.matchOptionMaindiv").append(
+				$("<div></div>").attr({			
+					"class" : "matchOptionOperation"				
+				}));	
+
+		
+		$(displayNode).find("div.matchOptionOperation").append(
+				$("<button></button>").attr({						
+					"name" : "image",				
+					"class" : "iconButtons glyphicon glyphicon-picture",
+					"ng-click" : "addImage(this,$event,'div.qti-simpleChoice')"
+				}));
+
+		QTI.BLOCKQUOTE.generateId();
+		var BLOCKQUOTE_ID = QTI.BLOCKQUOTE.getId();
+		var blockQuoteVAL=CustomQuestionTemplate[state.questionType].printOption + " "+ BLOCKQUOTE_ID + "__";
+		var blockQuoteVAL_edit=CustomQuestionTemplate[state.questionType].editOption_Column_B.replace("A", "A"+BLOCKQUOTE_ID);
+		
+		$(displayNode).find("div.matchOptionIndexdiv").append("B"+BLOCKQUOTE_ID);
+
+	if(state.templateQstn&&(matchText=="")){
+		$(displayNode).find("div.matchOptionTextEditablediv").attr("data-placeholder",blockQuoteVAL_edit);
+		$(elementDisplayNode).append('Match');
+		
+		$(displayNode).find("label.optionLabelView").html(blockQuoteVAL);
+	}else{
+		$(displayNode).find("div.matchOptionTextEditablediv").attr("data-placeholder",blockQuoteVAL_edit);
+		$(displayNode).find("div.matchOptionTextEditablediv").html(matchText);
+	}
+
+	
+	
 }
 
 QTI.customize = function(xml) {
@@ -2429,41 +2656,53 @@ QTI.correctResponse = {};
 var indexResponse = [ "A) ", "B) ", "C) ", "D) ", "E) ","F) ","G) ","H) ","I) ", "J) ","K) ","L) ","M) "];
 
 var matchIndex = {
-	"1" : "A) ",
-	"2" : "B) ",
-	"3" : "C) ",
-	"4" : "D) ",
-	"5" : "E) "
-}
+		"1" : "A) ",
+		"2" : "B) ",
+		"3" : "C) ",
+		"4" : "D) ",
+		"5" : "E) ",
+		"6" : "F) ",
+		"7" : "G) ",
+		"8" : "H) "
+	}
 
 
 var CustomQuestionTemplate = 						
 {
 		 
-		 "3":									
-				
-					 {"printCaption": "Multiple Choice Question" ,
-			 		  "editCaption": "Enter Multiple Choice Question",
-					  "printOption": "Answer Choice" ,
-					  "editOption": "Enter Answer" }		
+		 "MultipleChoice":
+						 {"printCaption": "Multiple Choice Question" ,
+						  "editCaption": "Enter Multiple Choice Question",
+						  "printOption": "Answer Choice" ,
+						  "editOption": "Enter Answer",
+						  "editMainText":"Enter Text & Select Correct Answer"}		
 		,
 		
-		"4":
-			    
-				     {"printCaption": "True/False Question" ,
-					  "editCaption": "Enter True or False Question",
-					  "printOption": "True",
-					  "editOption":  "True" }
+		"TrueFalse":
+						{"printCaption": "True/False Question" ,
+						  "editCaption": "Enter True or False Question",
+						  "printOption": "True",
+						  "editOption":  "True" ,
+						  
+						  "editMainText":"Enter Text & Select Correct Answer"}
 		,
-		"5":									
-			
-		{"printCaption": "Multiple Response Question" ,
-		  "editCaption": "Enter Multiple Response Question",
-		 "printOption": "Answer Choice" ,
-		 "editOption": "Enter Answer" }
+		
+		"MultipleResponse":	
+						{"printCaption": "Multiple Response Question" ,
+						  "editCaption": "Enter Multiple Response Question",
+						 "printOption": "Answer Choice" ,
+						 "editOption": "Enter Answer",
+						 "editMainText":"Enter Text & Select Correct Answer"}
+		,
+		
+		"Matching":	
+						{"printCaption": "Matching Question" ,
+						  "editCaption": "Enter Matching Question",
+						 "printOption": "Option" ,
+						 "editOption_Column_A": "Enter item # in column ",
+						 "editOption_Column_B": "Enter match in column B for A",
+						 "editMainText":"Enter Column A Items and Correct Column B Match System will scramble Column B in Print View"}
 				
-		
-		
 }
 
 QTI.getCaretPosition = function(element){

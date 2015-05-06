@@ -89,6 +89,66 @@ angular
 										qstnCaption);
 								$(xml).find('assessmentItem').attr(
 										'identifier', 'QUESTION-X');
+								
+								if (selectedQstnNode.node.quizType =="Matching"){
+									
+									
+									$(xml).find('itemBody').find('blockquote').remove();
+									
+									var htmlBlockquote = qstnHTML.find('blockquote');
+									
+									var matchArray= htmlBlockquote.find('.matchOptionTextEditablediv');
+									var optionArray= htmlBlockquote.find('.optionTextBoxContainer');
+									
+									var optionText = '';
+									
+									var optionTag = '<blockquote><p>@p<inlineChoiceInteraction responseIdentifier="@RESPONSE" shuffle="true">'
+										+'</inlineChoiceInteraction></p></blockquote>';	
+									
+									var inlineChoiceTags = '<inlineChoiceInteraction responseIdentifier="@RESPONSE" shuffle="true">'
+										+'</inlineChoiceInteraction>';	
+									
+									var inlineChoiceTag = '<inlineChoice identifier="@RESP">@RESP_Val</inlineChoice>';   
+									
+									var xmlDoc = $.parseXML( inlineChoiceTags )
+									inlineChoiceTags = $( xmlDoc )
+									
+									for (var i = 0; i < htmlBlockquote.length; i++) {
+										optionText = replaceImage(matchArray.eq(i))
+										
+										var optionTagAppend = inlineChoiceTag.replace(
+												'@RESP', 'RESP_' + (i + 1));
+										
+										optionTagAppend = optionTagAppend.replace(
+												'@RESP_Val', optionText);
+										
+										var item = $.parseXML(optionTagAppend); 
+									
+										inlineChoiceTags.find( "inlineChoiceInteraction" ).append($(item).children(0));
+										
+									}
+									
+									for (var i = 0; i < htmlBlockquote.length; i++) {
+													
+										optionText = replaceImage(optionArray.eq(i));
+										
+										var optionTagAppend = (optionTag).replace(
+												'@RESPONSE', 'RESPONSE_' + (i + 1));
+										optionTagAppend = optionTagAppend.replace(
+												'@p', optionText);										
+										
+										var item = $.parseXML(optionTagAppend); 
+										
+										$(item).find( "inlineChoiceInteraction" ).append(inlineChoiceTags.find( "inlineChoiceInteraction" ).html());
+										
+										$(xml).find('itemBody').append(
+										$(item).children(0));
+									}
+												
+												
+									
+								}else{
+									
 								var optionVew = selectedQstnNode.node.optionsView == true ? 'Vertical'
 										: 'Horizontal';
 								$(xml).find('itemBody').find(
@@ -140,9 +200,12 @@ angular
 										.equals(
 												selectedQstnNode.node.qstnMasterData,
 												qstnModifiedData);
+								
+							}
 
 								QTI.initialize();
 								QTI.Attribute.id = 1;
+								QTI.BLOCKQUOTE.id = 0;
 								QTI.id = 1;
 								var displayNode = $("<div></div>")
 								QTI.play(xml, displayNode, true, true,
@@ -273,7 +336,7 @@ angular
 												if (ok) {
 
 													var SelectedRadio = $(
-															$scope.event.srcElement)
+															$scope.event.currentTarget)
 															.parents(
 																	".qti-simpleChoice")
 															.find(
@@ -283,7 +346,7 @@ angular
 															'#uploadImage')
 															.hide();
 
-													$($scope.event.srcElement)
+													$($scope.event.currentTarget)
 															.parents(
 																	".qti-simpleChoice")
 															.eq(0).remove();
@@ -351,6 +414,113 @@ angular
 															"checked");
 
 										}, 50);
+
+							}
+							
+							
+							$scope.deleteBlockquote = function(selectedNode, event) {
+								
+								var qstnBlockquote = $(selectedNode.$element).find('blockquote');
+								var tagCnt = qstnBlockquote.length;
+								
+								if (tagCnt > 3) {
+									$scope.selectedNode = selectedNode;
+									$scope.event = event;
+									$scope.IsConfirmation = true;
+									$scope.message = "Are you sure you want to delete this Options/Match pair?";
+									$modal.open(confirmObject).result
+											.then(function(ok) {
+												if (ok) {
+													
+													var index = $(qstnBlockquote).index($($scope.event.currentTarget).parents("blockquote").eq(0).next())
+													
+													var iterator = $($scope.event.currentTarget).parents("blockquote").eq(0);
+													var placeHolder;
+													
+									
+													while(iterator.next().length == 1){
+														iterator = iterator.next();
+														placeHolder = iterator.find(".optionTextBoxContainer").attr("data-placeholder")
+														iterator.find(".optionTextBoxContainer").attr("data-placeholder",placeHolder.replace((index+1), (index)));
+														placeHolder = iterator.find(".matchOptionTextEditablediv").attr("data-placeholder")
+														iterator.find(".matchOptionTextEditablediv").attr("data-placeholder",placeHolder.replace((index+1), (index)));
+														
+														placeHolder = iterator.find(".mainOptionIndexdiv").html();
+														iterator.find(".mainOptionIndexdiv").html(placeHolder.replace((index+1), (index)));
+														
+														placeHolder = iterator.find(".matchOptionIndexdiv").html();
+														iterator.find(".matchOptionIndexdiv").html(placeHolder.replace((index+1), (index)));
+														
+														index = index + 1;														
+													}
+													
+													
+													$($scope.event.currentTarget).parents("blockquote").eq(0).remove();
+													
+													
+												}
+												;
+											});
+								} else {
+									$scope.IsConfirmation = false;
+									$scope.message = "Minimum Options/Match pairs required is 3."
+									$modal.open(confirmObject);
+								}	
+								
+								
+								
+								
+								
+							}
+							
+							
+							
+							$scope.addBlockquote = function(selectedOption, event) {
+								
+								var cloneOption = $(event.currentTarget)
+										.parents("blockquote").clone();
+								
+								cloneOption.find(".optionTextBoxContainer").html('');
+								cloneOption.find(".matchOptionTextEditablediv").html('');
+								
+								var BLOCKQUOTE_ID = QTI.BLOCKQUOTE.getId();		
+								var optionText = CustomQuestionTemplate["Matching"].editOption_Column_A + "A"
+								
+								$(event.currentTarget).parents(
+										"blockquote").eq(0).after(
+										cloneOption)
+								
+								var htmlOptionCnt = selectedOption.$element.find('blockquote');
+								var index = $(htmlOptionCnt).index($(event.currentTarget).parents("blockquote").eq(0).next())
+								var iterator = $(event.currentTarget).parents("blockquote").eq(0);
+								var placeHolder;
+								
+								while(iterator.next().length == 1){
+									iterator = iterator.next();
+									placeHolder = iterator.find(".optionTextBoxContainer").attr("data-placeholder")
+									iterator.find(".optionTextBoxContainer").attr("data-placeholder",placeHolder.replace(index, (index + 1)));
+									placeHolder = iterator.find(".matchOptionTextEditablediv").attr("data-placeholder")
+									iterator.find(".matchOptionTextEditablediv").attr("data-placeholder",placeHolder.replace(index, (index + 1)));
+									
+									placeHolder = iterator.find(".mainOptionIndexdiv").html();
+									iterator.find(".mainOptionIndexdiv").html(placeHolder.replace(index, (index + 1)));
+									
+									placeHolder = iterator.find(".matchOptionIndexdiv").html();
+									iterator.find(".matchOptionIndexdiv").html(placeHolder.replace(index, (index + 1)));
+									
+									index = index + 1;
+								}
+								
+
+								selectedOption.node.textHTML = selectedOption.$element
+										.children().html();
+								var attrs = {};
+								attrs.bindQti = "getHTML1(this)";
+								var qstnHTML = $(selectedOption.$element);
+								
+								directiveQtiService.bindNewQti(selectedOption,
+										selectedOption.$element, attrs);
+								
 
 							}
 
@@ -683,11 +853,13 @@ angular
 
 												if (sourceTabName == "CustomQuestions") {
 													newNode.IsEditView = true;
+													newNode.editMainText = CustomQuestionTemplate[newNode.quizType].editMainText;
 													newNode.IsEdited = true;
 													newNode.IsDefaultEditView = true ;
 													SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode = true;
 												} else {
 													newNode.IsEditView = false;
+													newNode.editMainText = CustomQuestionTemplate["MultipleChoice"].editMainText;
 													newNode.qstnMasterData = buildQstnMasterDetails(newNode);
 													newNode.optionsView = newNode.qstnMasterData.optionsView;
 												}
@@ -1053,12 +1225,10 @@ angular
 
 							// Rendering the question as html
 							$scope.getHTML = function(datanode) {
-								if (datanode.node.length) {
-									debugger;
+								if (datanode.node.length) {								
 									return $sce
 											.trustAsHtml(datanode.node[0].innerHTML);
-								} else if (datanode.node) {
-									debugger;
+								} else if (datanode.node) {								
 									return $sce
 									.trustAsHtml( datanode.node.textHTML);
 								}
@@ -1552,8 +1722,7 @@ angular
 angular.module('e8MyTests').directive('bindQti',
 		[ 'directiveQtiService', function(directiveQtiService) {
 
-			return function(scope, element, attrs) {
-				debugger;
+			return function(scope, element, attrs) {				
 				directiveQtiService.bindNewQti(scope, element, attrs);
 			}
 
@@ -1585,8 +1754,11 @@ angular.module('e8MyTests').service("directiveQtiService",
 				}, function(value) {
 					// when the 'bindUnsafeHtml' expression changes
 					// assign it into the current DOM
-
-					element.html(value.$$unwrapTrustedValue());
+						if(value!=undefined){
+							element.html(value.$$unwrapTrustedValue());
+						}
+							
+					
 
 					// compile the new DOM and link it to the current
 					// scope.
