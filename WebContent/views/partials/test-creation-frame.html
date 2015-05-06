@@ -3,24 +3,24 @@
         <div id="caption" class="col-md-4">
             <h4>Create or Edit Tests</h4>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-3">
             <button type="button" class="btn btn-primary"
                     ng-disabled="sharedTabService.isTestWizardTabPresent"
-                    ng-click="addTestWizard()">
+                    ng-click="addTestWizard()" tooltip="Test Creation Wizard" tooltip-placement="bottom">
                 <span class="icon-magic"></span> Test wizard
             </button>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-5">
             <div class="btn-group pull-right" role="group" aria-label="...">
 
                 <button type="button" class="btn btn-primary" ng-click="saveTest()"
-                        ng-disabled="tests[currentIndex].isTestWizard && tests[currentIndex].testId == null">
+                        ng-disabled="tests[currentIndex].isTestWizard && tests[currentIndex].testId == null" tooltip="Save your tests" tooltip-placement="bottom">
                     Save
                 </button>
-                <button type="button" class="btn btn-primary">Print</button>
+                <button type="button" class="btn btn-primary" tooltip="Print and Format Tests" tooltip-placement="bottom">Print</button>
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-primary {{exportBtnCss}}"
-                        ng-click="open()">
+                        ng-click="open()" tooltip="Export Test Files" tooltip-placement="bottom">
                     Export
                 </button>
             </div>
@@ -80,7 +80,7 @@
             </li>
             <li ng-click="addNewTest()">
                 <button type="button"
-                        class="btn btn-default glyphicon glyphicon-plus addNewTab"></button>
+                        class="btn btn-default glyphicon glyphicon-plus addNewTab" tooltip="New tab" tooltip-placement="bottom"></button>
             </li>
         </ul>
     </div>
@@ -171,7 +171,7 @@
                  ng-repeat="criteria in tests[currentIndex].criterias" ng-show="$first || !isApplySameCriteriaToAll">
                 <div class="col-lg-11  form-inline  panel panel-default bg-gray-lighter">
                     <button type="button" class="close"
-                            ng-click="closeCriteria(criteria,true)" aria-label="Close">
+                            ng-click="closeCriteria(criteria,true)" aria-label="Close" tooltip="Delete this section" tooltip-placement="bottom">
                         <span aria-hidden="true">&times;</span>
                     </button>
                     <!-- <div>
@@ -194,7 +194,7 @@
                                 <li ng-repeat="topic in tests[currentIndex].criterias" ng-if="topic.folderTitle == criteria.folderTitle || isApplySameCriteriaToAll">
                                     <span>{{topic.folderTitle}} ({{topic.totalQuestions}} Questions)</span>
                                     <button type="button" class="close btnChapterClose" ng-show="isApplySameCriteriaToAll"
-                                            ng-click="closeCriteria(topic,false)" aria-label="Close">
+                                            ng-click="closeCriteria(topic,false)" aria-label="Close" tooltip="Delete this section" tooltip-placement="bottom">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </li>
@@ -318,7 +318,7 @@
                         Correct Answer
                     </div>
                     <a class="qstnViewLink" ng-click="showQstnPrintOrEditMode(this)"
-                       ng-show="showQstnEditIcon">{{node.qstnLinkText}}</a>
+                       ng-show="showQstnEditIcon" tooltip="{{node.qstnLinkTitle}}" tooltip-placement="bottom">{{node.qstnLinkText}}</a>
                 </div>
                 <div ui-tree-handle class="tree-node tree-node-content questionList">
                     <div ng-class="node.IsEditView ? 'editViewContainer' : 'printViewContainer' "

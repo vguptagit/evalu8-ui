@@ -3,7 +3,7 @@
         <div>
             <div class="newFolderDiv">
                 <!-- <label class=" treeDiv1"> -->
-                <button class="addFolder fa fa-plus" ng-click='showAddFolderPanel= !showAddFolderPanel' value="Add Folder">Add Folder</button>
+                <button class="addFolder fa fa-plus" ng-click='showAddFolderPanel= !showAddFolderPanel' value="Add Folder" tooltip="Add new folder" tooltip-placement="bottom">Add Folder</button>
                 <button class="import fa fa-download">Import</button>
                 <!-- </label> -->
             </div>
@@ -56,8 +56,8 @@
                         <span ng-show="node.selectTestNode">
                             <button ng-show="node.showEditIcon" id="editTestbtn"
                                     ng-click="editTest(this)"
-                                    class="editiconButtons glyphicon glyphicon-pencil" />
-                            <button ng-click="archiveTest(this)" class="archiveIconButtons fa fa-archive" />
+                                    class="editiconButtons glyphicon glyphicon-pencil" tooltip="Open in right edit panel" tooltip-placement="bottom"/>
+                            <button ng-click="archiveTest(this)" class="archiveIconButtons fa fa-archive" tooltip="Move to Archive folder at bottom of screen" tooltip-placement="bottom"/>
                         </span>
                     </div>
                 </div>
@@ -78,7 +78,7 @@
                     <div class="iconsCourseNode">
                         <span>
                             <button data-ng-if="node.nodeType == 'folder'" ng-click="archiveFolder(this)"
-                                    class="iconButtons fa fa-archive" />
+                                    class="iconButtons fa fa-archive" tooltip="Move to Archive folder at bottom of screen" tooltip-placement="bottom"/>
                         </span>
                     </div>
                 </div>
@@ -128,8 +128,8 @@
                     </div>
                     <div class="iconsChapter">
                         <span>
-                            <button ng-click="deleteFolder(this)" class="removeIcon fa fa-trash-o" />
-                            <button ng-click="restoreFolder(this)" class="restoreicon fa fa-undo" />
+                            <button ng-click="deleteFolder(this)" class="removeIcon fa fa-trash-o" tooltip="Delete. Cannot be undone" tooltip-placement="bottom"/>
+                            <button ng-click="restoreFolder(this)" class="restoreicon fa fa-undo" tooltip="Restore to main directory" tooltip-placement="bottom"/>
                         </span>
                     </div>
                 </div>
@@ -165,8 +165,8 @@
                     </div>
                     <div class="testimagesdiv" ng-class="{testHighlight: node.selectTestNode}">
                         <span ng-show="node.selectTestNode">
-                            <button ng-click="deleteTest(this)" class="removeIcon fa fa-remove" />
-                            <button ng-click="restoreTest(this)" class="restoreicon fa fa-arrow-up" />
+                            <button ng-click="deleteTest(this)" class="removeIcon fa fa-remove" tooltip="Delete. Cannot be undone" tooltip-placement="bottom"/>
+                            <button ng-click="restoreTest(this)" class="restoreicon fa fa-arrow-up" tooltip="Restore to main directory" tooltip-placement="bottom"/>
                         </span>
                     </div>
                 </div>

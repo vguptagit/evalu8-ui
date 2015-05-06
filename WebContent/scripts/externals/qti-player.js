@@ -1619,7 +1619,7 @@ QTI.Elements.Paragraph.play = function(qtiNode, displayNode, state) {
 //		$(displayNode).append(textBox);
 		
 		$(displayNode).find("div.iconContainer").append(
-				$("<button></button>").attr({
+				$("<button tooltip='Upload picture' tooltip-placement='bottom'></button>").attr({
 					"id" : "id",				
 					"name" : "image",				
 					"class" : "iconButtons fa fa-image",
@@ -1760,7 +1760,7 @@ QTI.Elements.SimpleChoice.play = function(qtiNode, displayNode, state) {
 		var multiple = hasInteraction ? (maxChoices == 1 ? false : true) : true;
 
 		containerDisplayNode.addClass(multiple ? "checkbox" : "radio");
-		containerDisplayNode.append($("<span class='tick printView'></span>")
+		containerDisplayNode.append($("<span class='tick printView' tooltip='correct answer' tooltip-placement='bottom'></span>")
 				.html("&#10004"));
 		// containerDisplayNode.append("</div>");
 
@@ -1862,7 +1862,7 @@ QTI.Elements.SimpleChoice.play = function(qtiNode, displayNode, state) {
 	
 		
 	containerDisplayNode.find("div.optionOperationdiv").append(
-			$("<button></button>").attr({
+			$("<button tooltip='Upload picture' tooltip-placement='bottom'></button>").attr({
 				"id" : id,				
 				"name" : "image",				
 				"class" : "iconButtons fa fa-image",
@@ -1870,7 +1870,7 @@ QTI.Elements.SimpleChoice.play = function(qtiNode, displayNode, state) {
 			}));
 	
 	containerDisplayNode.find("div.optionOperationdiv").append(
-			$("<button></button>").attr({
+			$("<button tooltip='Add answer' tooltip-placement='bottom'></button>").attr({
 				"id" : id,				
 				"name" : "Add",				
 				"class" : "iconButtons fa fa-plus",				
@@ -1878,7 +1878,7 @@ QTI.Elements.SimpleChoice.play = function(qtiNode, displayNode, state) {
 			}));
 	
 	containerDisplayNode.find("div.optionOperationdiv").append(
-			$("<button></button>").attr({
+			$("<button tooltip='Delete this answer' tooltip-placement='bottom'></button>").attr({
 				"id" : id,				
 				"name" : "delete",				
 				"class" : "iconButtons fa fa-remove",

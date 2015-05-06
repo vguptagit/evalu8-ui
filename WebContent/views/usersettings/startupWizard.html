@@ -27,7 +27,7 @@
 							typeahead="discipline for discipline in disciplines.all.sort() | filter:$viewValue"
 							ng-keyup="searchedDiscipline($event)"> <span
 							class="searchIcon" ng-click="searchedDisciplineOnClick()"
-							tooltip="Search"></span>
+							tooltip="search" tooltip-placement="bottom"></span>
 					</div>
 				</div>
 			</div>
@@ -70,7 +70,7 @@
 							typeahead="book.title for book in books.all | filter:$viewValue"
 							ng-keyup="searchedBookOnEnter($event)"> <span
 							class="searchIcon" ng-click="searchedBookOnClick()"
-							tooltip="Search"></span>
+							tooltip="search" tooltip-placement="bottom"></span>
 					</div>
 				</div>
 			</div>

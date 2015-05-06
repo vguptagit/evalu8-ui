@@ -36,7 +36,7 @@
                     </div>
                     <!--
                     <div  class="iconsChapter">
-                        <span class="icon-magic test-wizard-icon-white pull-right" ng-click="createTestWizardCriteria(this)" title="Autocreate test with wizard."></span>
+                        <span class="icon-magic test-wizard-icon-white pull-right" ng-click="createTestWizardCriteria(this)" tooltip="Auto create test with wizard" tooltip-placement="bottom"></span>
                     </div>
                     -->
                 </div>
@@ -59,8 +59,8 @@
                         <label class="captionLabel">{{node.title}}</label>
                     </div>
                     <div class="iconsChapter">
-                        <span class="action-icon-bg glyphicon glyphicon-pencil"></span>
-                        <span class="icon-magic action-icon-bg pull-right" ng-show="node.showTestWizardIcon" ng-click="createTestWizardCriteria(this)" title="Auto-create test with wizard"></span>
+                        <span class="action-icon-bg glyphicon glyphicon-pencil" tooltip="Move question to right for editing" tooltip-placement="bottom"></span>
+                        <span class="icon-magic action-icon-bg pull-right" ng-show="node.showTestWizardIcon" ng-click="createTestWizardCriteria(this)" tooltip="Auto create test with wizard" tooltip-placement="bottom"></span>
                         <!--
                         <span class="settingsChapter"></span>
                         <span class="printChapter"></span>
@@ -80,7 +80,7 @@
 
     <script type="text/ng-template" id="qb_questions_renderer.html">
         <div ng-mousedown="selectNode(this.node);" ui-tree-handle class="printViewContainer tree-node tree-node-content questionList" ng-class="{questionTitleInTree: node.questionXML}">
-            <span ng-show="node.showEditQuestionIcon" class="newTest-close action-icon-bg glyphicon glyphicon-pencil" ng-mousedown="editQuestion(this)"></span>
+            <span ng-show="node.showEditQuestionIcon" class="newTest-close action-icon-bg glyphicon glyphicon-pencil" ng-mousedown="editQuestion(this)" tooltip="Move question to right for editing" tooltip-placement="bottom" ></span>
             <div class="printViewContainer" ng-if="node.textHTML" ng-bind-html="getHTML(this)">
             </div>
         </div>
