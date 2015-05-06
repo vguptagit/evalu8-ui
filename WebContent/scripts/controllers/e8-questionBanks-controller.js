@@ -412,6 +412,7 @@ angular
 																				item.nodeType = "question";
 																				item.showEditQuestionIcon = false;
 																				item.isNodeSelected = false;
+																				addToQuestionsArray(item);
 																				$scope
 																						.renderQuestion(item);
 																			})
@@ -573,11 +574,34 @@ angular
 								for (var i = 0; i < $scope.selectedNodes.length; i++) {
 									if ($scope.selectedNodes[i].showEditQuestionIcon) {
 										$scope.selectedNodes[i].showEditQuestionIcon = false;
-										$scope.$broadcast("dropQuestion",
+										$rootScope.$broadcast("dropQuestion",
 												$scope.selectedNodes[i], 0);
 									}
 								}
 							}
+							$scope.questions = [];
+							var addToQuestionsArray = function (item) {
+							    $scope.questions.push(item);
+							};
+							$scope.$on('handleBroadcast_onClickTab',
+									function (handler, tab) {
+									    for (var i = 0; i < $scope.questions.length; i++) {
+									        $scope.questions[i].isNodeSelected = false;
+									        $scope.questions[i].showEditQuestionIcon = false;
+									        for (var j = 0; j < tab.questions.length; j++) {
+									            if ($scope.questions[i].guid===tab.questions[j].guid) {
+									                $scope.questions[i].isNodeSelected = true;
+									                break;
+									            }
+									        }
+									    }
+									});
+							$scope.$on('handleBroadcast_closeTab',
+									function (handler, tab) {
+									    for (var i = 0; i < $scope.questions.length; i++) {
+									        $scope.questions[i].isNodeSelected = false;
+									    }
+									});
 							// evalu8-ui : to set Active Resources Tab , handled
 							// in ResourcesTabsController
 							$rootScope.$broadcast(

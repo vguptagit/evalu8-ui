@@ -289,6 +289,7 @@ angular.module('evalu8Demo')
 		             if (scope.tests[i].id === test.id) {
 		                 sharedTabService.currentTabIndex = i;
 		                 sharedTabService.prepForBroadcastCurrentTabIndex(i);
+		                 $rootScope.$broadcast("handleBroadcast_onClickTab", test);
 		                 return false;
 		             }
 		         });
@@ -402,6 +403,7 @@ angular.module('evalu8Demo')
 		         if (sharedTabService.tests.length == 0) {
 		             sharedTabService.addNewTest(scope);
 		         }
+		         $rootScope.$broadcast("handleBroadcast_closeTab", test);
 		     }
 
 		     var removeMasterTestByIndex = function (index) {
