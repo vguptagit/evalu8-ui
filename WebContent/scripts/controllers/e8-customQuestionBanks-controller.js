@@ -29,7 +29,7 @@ angular.module('e8CustomQuestionBanks')
     });
     
     $scope.$on('beforeDrop', function (event) {
-   		$scope.$broadcast("beforeDropQuestion");     
+    	$rootScope.$broadcast("beforeDropQuestion");     
    });
     
 	 //broad casting event when a question template is dropped to the test creation frame.
@@ -38,7 +38,7 @@ angular.module('e8CustomQuestionBanks')
     		   return;
      	if($scope.dragStarted) {
     		$scope.dragStarted = false;
-    		$scope.$broadcast("dropQuestion", source.node,  destIndex, "CustomQuestions");
+    		$rootScope.$broadcast("dropQuestion", source.node,  destIndex, "CustomQuestions");
      	}
      });
 

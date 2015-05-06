@@ -567,7 +567,7 @@ angular
 											function() {
 												$scope.currentIndex = SharedTabService.currentTabIndex;
 											});
-							$scope.$on('handleBroadcast_AddTestWizard',
+							$rootScope.$on('handleBroadcast_AddTestWizard',
 									function() {
 										SharedTabService.addTestWizard($scope);
 									});
@@ -651,7 +651,7 @@ angular
 								return qstnMasterData;
 							}
 
-							$scope
+						    $rootScope
 									.$on(
 											'beforeDropQuestion',
 											function(event) {
@@ -664,11 +664,11 @@ angular
 												}
 
 											});
-							$scope.$on('dropTest',function(event, selectedTest, destIndex) {
+						    $rootScope.$on('dropTest', function (event, selectedTest, destIndex) {
 											$scope.editTest(selectedTest);
 									});
 
-							$scope
+						    $rootScope
 									.$on(
 											'dropQuestion',
 											function(event, node, destIndex,
@@ -713,11 +713,11 @@ angular
 												$scope.tests[$scope.currentIndex].questions = tests;
 											});
 
-							$scope.$on('editTest',
+							$rootScope.$on('editTest',
 									function(event, selectedTest) {
 										$scope.editTest(selectedTest);
 									});
-							$scope
+						    $rootScope
 									.$on(
 											'handleBroadcast_createTestWizardCriteria',
 											function(event, response,
@@ -1052,11 +1052,13 @@ angular
 							// Rendering the question as html
 							$scope.getHTML = function(datanode) {
 								if (datanode.node.length) {
+									debugger;
 									return $sce
 											.trustAsHtml(datanode.node[0].innerHTML);
 								} else if (datanode.node) {
+									debugger;
 									return $sce
-											.trustAsHtml(datanode.node.textHTML);
+									.trustAsHtml( datanode.node.textHTML);
 								}
 							}
 
@@ -1549,6 +1551,7 @@ angular.module('e8MyTests').directive('bindQti',
 		[ 'directiveQtiService', function(directiveQtiService) {
 
 			return function(scope, element, attrs) {
+				debugger;
 				directiveQtiService.bindNewQti(scope, element, attrs);
 			}
 
@@ -1581,7 +1584,7 @@ angular.module('e8MyTests').service("directiveQtiService",
 					// when the 'bindUnsafeHtml' expression changes
 					// assign it into the current DOM
 
-					element.html(value);
+					element.html(value.$$unwrapTrustedValue());
 
 					// compile the new DOM and link it to the current
 					// scope.

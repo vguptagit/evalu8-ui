@@ -44,14 +44,14 @@ angular
 									destIndex) {
 								if ($scope.dragStarted) {
 									$scope.dragStarted = false;
-									$scope.$broadcast("dropQuestion",
+									$rootScope.$broadcast("dropQuestion",
 											source.node, destIndex);
 									source.node.showEditQuestionIcon = false;
 								}
 							});
 
 							$scope.$on('beforeDrop', function(event) {
-								$scope.$broadcast("beforeDropQuestion");
+							    $rootScope.$broadcast("beforeDropQuestion");
 							});
 
 							$scope.isTestWizard = false;
@@ -282,7 +282,7 @@ angular
 												config)
 										.success(
 												function(response) {
-													$scope
+												    $rootScope
 															.$broadcast(
 																	"handleBroadcast_createTestWizardCriteria",
 																	response,

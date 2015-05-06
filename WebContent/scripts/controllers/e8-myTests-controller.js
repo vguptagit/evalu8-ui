@@ -70,7 +70,7 @@ angular.module('e8MyTests')
             }
             if(source.node.nodeType==='test' && destParent.controller === EnumService.CONTROLLERS.testCreationFrame){        
                 source.node.showEditIcon=false;
-                $scope.$broadcast("dropTest", source, destIndex);
+                $rootScope.$broadcast("dropTest", source, destIndex);
                 return false;
             }
             
@@ -282,7 +282,7 @@ angular.module('e8MyTests')
         //to disable the edit icon once it clicked  
         $scope.editTest = function (selectedTest) {
         	selectedTest.node.showEditIcon=false;
-        	$scope.$broadcast("editTest", selectedTest);
+        	$rootScope.$broadcast("editTest", selectedTest);
         }
 
         $scope.getFolders = function(defaultFolder) {
