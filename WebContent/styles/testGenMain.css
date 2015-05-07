@@ -1588,7 +1588,7 @@ ul.a {
 }
 
 .selectedDisc div {
-	background-color: #007FA9 !important;
+	background-color: #007FA9;
 	color: #FFFFFF;
 	cursor: pointer;
 }
@@ -1621,11 +1621,13 @@ font-size:12px;
 .expandBookEdition{
 	height:16px;
 	width:16px;
+	margin-right:-2px;
     content:url("../images/right_arrow2.png");
 }
 .collapseBookEdition{
 	height:16px;
 	width:16px;
+	margin-right:-2px;
     content:url("../images/right_arrow.png");
 }
 

@@ -10,10 +10,6 @@ angular
 								.forEach(function(book) {
 									if (book.title.toLowerCase().indexOf(
 											searchText) > -1
-
-											|| (book.isbn != null && book.isbn
-													.toLowerCase().indexOf(
-															searchText) > -1)
 											|| (book.isbn13 != null && book.isbn13
 													.toLowerCase().indexOf(
 															searchText) > -1)
@@ -209,14 +205,13 @@ angular
 												$scope.books.userSelected = userBookIDs;
 
 												$scope.disciplines.userSelected
-														.forEach(
-																function(
-																		discipline) {
-																	$scope
-																			.getBooks(
-																					discipline,
-																					$scope.books.userSelected);
-																});
+														.forEach(function(
+																discipline) {
+															$scope
+																	.getBooks(
+																			discipline,
+																			$scope.books.userSelected);
+														});
 											});
 
 									return true;
@@ -247,13 +242,12 @@ angular
 																disciplineBooks
 																		.forEach(function(
 																				filtBook) {
-																			if (book.isbn == filtBook.isbn
-																					&& book.isbn10 == filtBook.isbn10
+																			if (book.isbn10 == filtBook.isbn10
 																					&& book.isbn13 == filtBook.isbn13
 																					&& book.editionNumber > filtBook.editionNumber) {
 
 																				book.hasEdition = true;
-																				filtBook.isLatestEdition = false;
+																				filtBook.showEdition = false;
 																				filtBook.parentBookID = book.guid;
 
 																			}
@@ -318,6 +312,7 @@ angular
 										$scope.addBookToSelectedList(bookguid,
 												true);
 
+										var parentbookid;
 										$scope.disciplineBooks
 												.forEach(function(discipline) {
 													discipline.books
@@ -326,9 +321,19 @@ angular
 																if (book.guid == bookguid
 																		&& book.isSelected == false) {
 																	book.isSelected = true;
+																	book.showEdition = true;
+																	parentbookid = book.parentBookID
+																} else if (book.guid == bookguid
+																		&& book.isSelected == true) {
+																	book.showEdition = true;
+																	parentbookid = book.parentBookID
 																}
 															});
 												});
+										if (book.isSelected) {
+											$('#' + parentbookid).toggleClass(
+													'collapseBookEdition');
+										}
 
 									} else {
 										$scope.trackEnterKey = 1;
@@ -351,15 +356,29 @@ angular
 
 								$scope.addBookToSelectedList(bookguid, true);
 
+								var parentbookid;
+
 								$scope.disciplineBooks.forEach(function(
 										discipline) {
 									discipline.books.forEach(function(book) {
 										if (book.guid == bookguid
 												&& book.isSelected == false) {
 											book.isSelected = true;
+											book.showEdition = true;
+											parentbookid = book.parentBookID
+										} else if (book.guid == bookguid
+												&& book.isSelected == true) {
+											book.showEdition = true;
+											parentbookid = book.parentBookID
 										}
 									});
 								});
+
+								if (book.isSelected) {
+									$('#' + parentbookid).toggleClass(
+											'collapseBookEdition');
+								}
+
 							}
 
 							$scope.addBookToSelectedList = function(book,
@@ -437,8 +456,20 @@ angular
 							};
 
 							$scope.showOldEdition = function(parentbookid) {
-								$("div[parentbookid='" + parentbookid + "']")
-										.css("display", "block");
+								$scope.disciplineBooks
+										.forEach(function(discipline) {
+											discipline.books
+													.forEach(function(book) {
+														if (book.parentBookID == parentbookid
+																&& book.showEdition == false) {
+															book.showEdition = true;
+														} else if (book.parentBookID == parentbookid
+																&& book.showEdition == true) {
+															book.showEdition = false;
+														}
+													});
+										});
+
 								$('#' + parentbookid).toggleClass(
 										'collapseBookEdition');
 

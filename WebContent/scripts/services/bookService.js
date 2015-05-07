@@ -37,7 +37,7 @@ angular
 													
 													response.forEach (function(item) {
 														item.hasEdition = false;
-														item.isLatestEdition = true;
+														item.showEdition = true;
 														item.isSelected = false;
 														disciplineBooks.push(item);    							    							
 													});
