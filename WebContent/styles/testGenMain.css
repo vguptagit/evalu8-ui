@@ -1612,6 +1612,17 @@ font-size:12px;
 	max-height: 720;
 }
 
+.expandBookEdition{
+	height:16px;
+	width:16px;
+    content:url("../images/right_arrow2.png");
+}
+.collapseBookEdition{
+	height:16px;
+	width:16px;
+    content:url("../images/right_arrow.png");
+}
+
 /* Welcome Screen CSS  ends*/
 .uploadImage {
 	height: 100px;

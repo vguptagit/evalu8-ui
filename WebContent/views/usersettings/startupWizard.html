@@ -75,9 +75,8 @@
 			<div class="row">
 				<div class="col-lg-12" style="margin-left: 10px;">
 					<div class="searchPanel">
-						<input type="text" placeHolder="Search Book"
-							class="searchBook" ng-model="searchedBook"
-							placeholder="Custom template"
+						<input type="text" placeHolder="Search Book" class="searchBook"
+							ng-model="searchedBook" placeholder="Custom template"
 							typeahead-template-url="customTemplate.html"
 							typeahead="book.title for book in books.all | searchFields:$viewValue"
 							ng-keyup="searchedBookOnEnter($event)"> <span
@@ -89,16 +88,24 @@
 			<div class="row" style="margin-top: 20px;">
 				<div class="col-lg-12">
 					<div class="bookContainer">
-						<div data-ng-repeat="discipline in disciplines.userSelected.sort()">
-							<div class="discplineText1" style="font-weight: bold;">{{discipline}}</div>
+						<div
+							data-ng-repeat="discipline in disciplineBooks">
+							<div class="discplineText1" style="font-weight: bold;">{{discipline.name}}</div>
 							<hr
 								style="Border: 1px solid #E8E8E8; margin-bottom: 0px; margin-top: 0px;">
 
-							<div
-								data-ng-repeat="book in getBooksByDiscipline(discipline).sort()"
-								ng-click="selectBook(book.guid)"
-								ng-class="{selectedDisc: isSelectedBook(book.guid)}">
-								<div class="discplineText" style="margin-left: 25px;">{{book.title}}</div>
+							<div data-ng-repeat="book in discipline.books"
+								ng-click="selectBook(book.guid,discipline.name)"
+								ng-class="{selectedDisc: book.isSelected}"
+								ng-show="book.isLatestEdition"
+								parentbookid="{{book.parentBookID}}">
+
+								<div class="discplineText" style="margin-left: 25px;">
+									<span
+										style="float: left; margin-right: 5px; vertical-align: middle;"
+										ng-show="book.hasEdition" ng-click="showOldEdition(book.guid)"><img
+										alt="" id="{{book.guid}}" src="" class="expandBookEdition"></span>{{book.title}}
+								</div>
 								<hr style="margin-bottom: 0px; margin-top: 0px;">
 							</div>
 						</div>

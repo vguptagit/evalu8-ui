@@ -35,7 +35,10 @@ angular
 										.success(
 												function(response) {
 													
-													response.forEach (function(item) {    							
+													response.forEach (function(item) {
+														item.hasEdition = false;
+														item.isLatestEdition = true;
+														item.isSelected = false;
 														disciplineBooks.push(item);    							    							
 													});
 													
