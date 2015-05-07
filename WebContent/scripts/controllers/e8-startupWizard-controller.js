@@ -6,6 +6,7 @@ angular
 					return function(books, searchText) {
 
 						var filteredBooks = [];
+						searchText = searchText.toLowerCase();
 						books
 								.forEach(function(book) {
 									if (book.title.toLowerCase().indexOf(
@@ -60,14 +61,6 @@ angular
 								}
 							}
 
-							$scope.disciplines.all = DisciplineService
-									.allDisciplines();
-
-							UserService
-									.userDisciplines(function(userDisciplines) {
-										$scope.disciplines.userSelected = userDisciplines;
-									});
-
 							$scope.isDesciplineEmpty = function() {
 								if ($scope.disciplines.userSelected.length > 0)
 									return false;
@@ -76,10 +69,17 @@ angular
 
 							}
 
-							/*
-							 * $scope.enableDisableNextButton($scope
-							 * .isDesciplineEmpty());
-							 */
+							$scope.disciplines.all = DisciplineService
+									.allDisciplines();
+
+							UserService
+									.userDisciplines(function(userDisciplines) {
+										$scope.disciplines.userSelected = userDisciplines;
+
+										$scope.enableDisableNextButton($scope
+												.isDesciplineEmpty());
+
+									});
 
 							$scope.selectDiscipline = function(discipline) {
 								$scope.addToselectedDiscipline(
@@ -184,48 +184,45 @@ angular
 										.saveUserDisciplines($scope.disciplines.userSelected);
 							};
 
+							$scope.exitDiscipline = function() {
+								if ($scope.disciplines.userSelected.length > 0) {
+									return true
+								} else {
+									$scope.enableDisableNextButton(true);
+									return false;
+								}
+							}
+
 							/* books related starts */
 							$scope.searchedBook = undefined;
 							$scope.trackEnterKey = 0;
 
-							$scope.exitDiscipline = function() {
+							$scope.enterBook = function() {
 
 								$scope.disciplineBooks = [];
 
 								$scope.books = {
 									all : [],
-									userSelected : []
+									userSelected : [],
+									currentlySelected : []
 								};
 
-								if ($scope.disciplines.userSelected.length > 0) {
+								// Getting User selected books
+								UserService
+										.userBookIDs(function(userBookIDs) {
+											$scope.books.userSelected = userBookIDs;
 
-									// Getting User selected books
-									UserService
-											.userBookIDs(function(userBookIDs) {
-												$scope.books.userSelected = userBookIDs;
+											$scope.disciplines.userSelected
+													.forEach(function(
+															discipline) {
+														$scope
+																.getBooks(
+																		discipline,
+																		$scope.books.userSelected);
+													});
+										});
 
-												$scope.disciplines.userSelected
-														.forEach(function(
-																discipline) {
-															$scope
-																	.getBooks(
-																			discipline,
-																			$scope.books.userSelected);
-														});
-											});
-
-									return true;
-								} else {
-									return false;
-								}
-							}
-
-							$scope.isBookEmpty = function() {
-								if ($scope.books.userSelected.length > 0) {
-									return false;
-								} else {
-									return true;
-								}
+								return true;
 							}
 
 							// To get books for the given discipline.
@@ -256,6 +253,8 @@ angular
 																if (useSelectedBooks
 																		.indexOf(book.guid) > -1) {
 																	book.isSelected = true;
+																	$scope.books.currentlySelected
+																			.push(book.guid)
 																}
 
 																$scope.books.all
@@ -383,18 +382,19 @@ angular
 
 							$scope.addBookToSelectedList = function(book,
 									isSearched) {
-								var index = $scope.books.userSelected
+								var index = $scope.books.currentlySelected
 										.indexOf(book);
 								if (index > -1) {
 									if (!isSearched) {
-										$scope.books.userSelected.splice(index,
-												1);
+										$scope.books.currentlySelected.splice(
+												index, 1);
 									}
 									$scope.setBookScrollBar();
 
 								} else {
 									if ($scope.validateBook(book)) {
-										$scope.books.userSelected.push(book);
+										$scope.books.currentlySelected
+												.push(book);
 										$scope.setBookScrollBar();
 									}
 
@@ -452,7 +452,7 @@ angular
 
 							$scope.saveBooks = function() {
 								UserService
-										.saveUserBooks($scope.books.userSelected);
+										.saveUserBooks($scope.books.currentlySelected);
 							};
 
 							$scope.showOldEdition = function(parentbookid) {
@@ -475,6 +475,14 @@ angular
 
 								event.stopPropagation();
 
+							}
+
+							$scope.isBookEmpty = function() {
+								if ($scope.books.currentlySelected.length > 0) {
+									return false;
+								} else {
+									return true;
+								}
 							}
 
 							$scope.finishWizard = function() {

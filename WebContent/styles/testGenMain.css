@@ -1606,10 +1606,10 @@ margin-left:10px;
 .autocompleteValue{
 font-size:12px;
 }
-font-size:12px;
+
 
 .btnDisbled {
-	background-color: #A0D1E1;
+	background-color: #A0D1E1 !important;
 }
 
 .autocompleteList{

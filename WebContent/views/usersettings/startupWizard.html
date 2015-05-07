@@ -55,7 +55,7 @@
 	</div>
 </div>
 
-</wz-step> <wz-step title="Books">
+</wz-step> <wz-step title="Books" canenter="enterBook">
 <div class="row"
 	style="vertical-align: middle; middle; margin-top: 20px;">
 	<div class="col-lg-5">
@@ -95,8 +95,7 @@
 						<div data-ng-repeat="book in discipline.books"
 							ng-click="selectBook(book.guid,discipline.name)"
 							ng-class="{selectedDisc: book.isSelected}"
-							ng-show="book.showEdition"
-							parentbookid="{{book.parentBookID}}">
+							ng-show="book.showEdition" parentbookid="{{book.parentBookID}}">
 							<div
 								style="float: left; margin-right: 5px; vertical-align: middle; margin-top: 7px; background-color: #FFFFFF;"
 								ng-show="book.hasEdition" ng-click="showOldEdition(book.guid)">
