@@ -12,6 +12,7 @@
     position: absolute;
     width: 13px;
     z-index: 1;
+    top:40px;
 }
 
 .left-frame {

@@ -605,7 +605,9 @@ angular
 									});
 							// evalu8-ui : to set Active Resources Tab , handled
 							// in ResourcesTabsController
-							$rootScope.$broadcast(
-									'handleBroadcast_setActiveResourcesTab',
-									EnumService.RESOURCES_TABS.questionbanks);
+							$rootScope.$broadcast('handleBroadcast_setActiveResourcesTab', EnumService.RESOURCES_TABS.questionbanks);
+
+						    //TODO : set container height, need revesit
+							$('.question_bank_scrollbar').height(($(document).height() - $('.question_bank_scrollbar').offset().top)-40);
+
 						} ]);
