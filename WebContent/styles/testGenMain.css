@@ -423,6 +423,7 @@ a.newFolder:hover {
 	bottom: 0px;
 	left: 0px;
 	right: 0px;
+    padding-right:2px;
 }
 .qti-simpleChoice span.tick {
 	visibility: hidden;
@@ -501,7 +502,12 @@ ol {
 	position: relative;
 	counter-reset: list;
 }
-
+.testContainer ol li {
+	 margin-left: -5px;
+}
+.testContainer ol li .questionList {
+	 padding-left: 15px;
+}
 .questionList:before {
 	counter-reset: none;
 	counter-increment: list;
@@ -1729,9 +1735,9 @@ font-size:12px;
   background-color: #DDDDDD;
 }
 .questionSelected{
-	-webkit-box-shadow: 0 0 10px 2px rgba(169, 169, 169, 1);
-  -moz-box-shadow: 0 0 10px 2px rgba(169, 169, 169, 1);
-  box-shadow: 0 0 10px 2px rgba(169, 169, 169, 1);
+	-webkit-box-shadow: 0 0 10px 2px rgba(169, 169, 169, 0.8);
+  -moz-box-shadow: 0 0 10px 2px rgba(169, 169, 169, 0.8);
+  box-shadow: 0 0 10px 2px rgba(169, 169, 169, 0.8);
 }
 .editiconButtons {
   display: inline-block;
