@@ -1604,8 +1604,15 @@ if(state.questionType=="Matching"){
 	    	
 	    	 elementDisplayNode = QTI.prepare(qtiNode,
 					$("<p class='optionLabelView'></p>"));
-		 
-	    	qstnCaption = qtiNode.text().trim();
+	    	 
+	    	 $(displayNode).append(elementDisplayNode);
+	    	 
+	    	 this.extend.play(qtiNode, elementDisplayNode, state);
+
+	    	 elementDisplayNode.html(qtiNode.get(0).innerHTML);
+	    	 
+	    	  qstnCaption=QTI.replaceImage(elementDisplayNode);		 
+	    	
 	    	
 	    }else{
 	    	
@@ -1613,15 +1620,29 @@ if(state.questionType=="Matching"){
 		  
 		    
 	    	var optionPtext=$(qtiNode).html();
-	    	optionPtext = optionPtext.substring(0, optionPtext.indexOf("<")).trim();
-	    	qstnCaption=optionPtext;	    	
-	    }
-	    
-	    $(displayNode).append(elementDisplayNode);
-	    
+	    	optionPtext = optionPtext.substring(0, optionPtext.indexOf("<inlineChoiceInteraction")).trim();
+	    	qstnCaption=optionPtext;	   	
+	    	
+	    	$(displayNode).append(elementDisplayNode);
+	    	 
+	    	 this.extend.play(qtiNode, elementDisplayNode, state);
+	  		this.processChildren(qtiNode, elementDisplayNode, state);
+	  		
+	  		if(qstnCaption!=""){
+	  			
+	  		var	contentsDisplayNode = $("<label class='optionLabelView'></label>").attr({	  				
+	  				"data---qti-content-container" : "true"
+	  			});
+	  	
+	  		contentsDisplayNode.append(optionPtext);
+	  		
+	  		$(elementDisplayNode).append(contentsDisplayNode);
+	  		optionPtext=QTI.replaceImage($(contentsDisplayNode));	
 
-		this.extend.play(qtiNode, elementDisplayNode, state);
-		this.processChildren(qtiNode, elementDisplayNode, state);
+	  		}
+	  	
+	  		 
+	    }
 		
 		
 		if($(displayNode)[0].nodeName=="BLOCKQUOTE"){
@@ -1629,19 +1650,19 @@ if(state.questionType=="Matching"){
 			var BLOCKQUOTE_ID = QTI.BLOCKQUOTE.getId();				
 				
 			var mainContentsDisplayNode = $(
-			"<div class='optionTextBoxMainContainer mainOptionEditablediv' ></div>");
+			"<div class='optionTextBoxMainContainer mainOptionEditablediv qti-simpleChoice' ></div>");
 			
 			$(mainContentsDisplayNode).append($("<div></div>").attr({			
 				"class" : "mainOptionIndexdiv"
 			}));	
-			
-		
+					
 			var contentsDisplayNode2 = $(
 			"<div class='optionTextBoxContainer' ></div>")
 			.attr({			
 				"class":'optionTextBoxContainer editView',
 				"contenteditable" : true,
-				"data---qti-content-container" : true			
+				"data---qti-content-container" : true	,
+				"id":"simpleChoice_Matching"
 			})
 			
 					contentsDisplayNode2.attr("data-placeholder",CustomQuestionTemplate[state.questionType].editOption_Column_A.replace("#", "#"+BLOCKQUOTE_ID) + "A");
@@ -1651,7 +1672,7 @@ if(state.questionType=="Matching"){
 			if(optionPtext==""){
 				contentsDisplayNode2.attr("data-placeholder",CustomQuestionTemplate[state.questionType].editOption_Column_A.replace("#", "#"+BLOCKQUOTE_ID) + "A");
 			}else{
-				contentsDisplayNode2.text(optionPtext);
+				contentsDisplayNode2.html(optionPtext);
 			}
 				
 			
@@ -2552,24 +2573,46 @@ QTI.Elements.InlineChoiceInteraction.play = function(qtiNode, displayNode,
 	$(displayNode)[0].innerText="";
 
 		var elementDisplayNode = QTI.prepare(qtiNode,
-				$("<span class='matchRight printView'></span>"));
+				$("<div class='matchRight printView'></div>"));
+		
 		displayNode.prepend("<div  class='printView indChar' style='float:left'>"
 				+ matchIndex[qtiNode.attr("responseIdentifier").substring(9)]
-				+ "</div>").append($("<span class='printView'></span>").text(inrText));
+				+ "</div>")
 				
-	
+			
 		$(displayNode).append(elementDisplayNode);
 		
+		var matchOptionsIndex = $("<label></label>");
+		matchOptionsIndex.append(matchIndex[qtiNode.attr("responseIdentifier")
+		        			  				.substring(9)]	);
+		elementDisplayNode.append(matchOptionsIndex);
 		
-		elementDisplayNode.text(matchIndex[qtiNode.attr("responseIdentifier")
-				.substring(9)])
+	
+				
 		qtiNode = qtiNode.find("inlineChoice:nth-child("
 				+ qtiNode.attr("responseIdentifier").substring(9) + ") ");
 		
-		var matchText = qtiNode.text();
+		var matchText = qtiNode.get(0).innerHTML;
+		
+		
 		
 		this.extend.play(qtiNode, elementDisplayNode, state);
 		this.processChildren(qtiNode, elementDisplayNode, state);
+		
+		if(qtiNode.get(0).innerHTML!=""){
+				
+				
+				var	contentsDisplayNodeImage = $("<label class='matchOptionImage'></label>").attr({	  				
+		  				"data---qti-content-container" : "true"
+		  			});
+  	
+					contentsDisplayNodeImage.append(qtiNode.get(0).innerHTML);
+			  		
+			  		$(elementDisplayNode).append(contentsDisplayNodeImage);
+			  		matchText=QTI.replaceImage($(contentsDisplayNodeImage));	
+
+
+	  		}
 		
 		
 		var optionsMaindiv = $(
@@ -2582,7 +2625,7 @@ QTI.Elements.InlineChoiceInteraction.play = function(qtiNode, displayNode,
 		
 		$(displayNode).find("div.optionsMaindiv").append(
 				$("<div></div>").attr({			
-					"class" : "matchOptionMaindiv mainOptionEditablediv"
+					"class" : "matchOptionMaindiv mainOptionEditablediv qti-simpleChoice"
 						
 				}));
 		
@@ -2594,7 +2637,8 @@ QTI.Elements.InlineChoiceInteraction.play = function(qtiNode, displayNode,
 		$("<div></div>").attr({			
 			"class" : "matchOptionTextEditablediv editView",
 			"contenteditable" : "true",
-			"data---qti-content-container" : "true"				
+			"data---qti-content-container" : "true",
+			"id":"simpleChoice_Matching"
 		}));
 		
 		$(displayNode).find("div.matchOptionMaindiv").append(
@@ -2617,11 +2661,11 @@ QTI.Elements.InlineChoiceInteraction.play = function(qtiNode, displayNode,
 		
 		$(displayNode).find("div.matchOptionIndexdiv").append("B"+BLOCKQUOTE_ID);
 
+		
+		
 	if(state.templateQstn&&(matchText=="")){
 		$(displayNode).find("div.matchOptionTextEditablediv").attr("data-placeholder",blockQuoteVAL_edit);
-		$(elementDisplayNode).append('Match');
-		
-		$(displayNode).find("label.optionLabelView").html(blockQuoteVAL);
+		$(elementDisplayNode).append('Match');		
 	}else{
 		$(displayNode).find("div.matchOptionTextEditablediv").attr("data-placeholder",blockQuoteVAL_edit);
 		$(displayNode).find("div.matchOptionTextEditablediv").html(matchText);

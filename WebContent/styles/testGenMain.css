@@ -1975,3 +1975,7 @@ li[qstntemplate='true'] .indChar {
 .printViewOption{
     padding-left: 7px;
 }
+
+.qstnContainer .qti-blockquote{
+    display: block;
+}

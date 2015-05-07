@@ -85,7 +85,7 @@ angular
 								var qstnCaption = replaceImage(qstnHTML
 										.find('#qtiCaption'));
 
-								$(xml).find('itemBody').find('p').html(
+								$(xml).find('itemBody').find('p').eq(0).html(
 										qstnCaption);
 								$(xml).find('assessmentItem').attr(
 										'identifier', 'QUESTION-X');
