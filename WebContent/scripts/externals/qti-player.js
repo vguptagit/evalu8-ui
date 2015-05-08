@@ -1689,21 +1689,21 @@ if(state.questionType=="Matching"){
 			$(displayNode).find("div.optionsMaindiv").prepend(mainContentsDisplayNode);
 				
 			$(displayNode).find("div.mainOptionOperationdiv").append(
-					$("<button></button>").attr({						
+					$("<button tooltip='Upload picture' tooltip-placement='bottom'></button>").attr({						
 						"name" : "image",				
 						"class" : "iconButtons glyphicon glyphicon-picture",
 						"ng-click" : "addImage(this,$event,'div.qti-simpleChoice')"
 					}));
 			
 			$(displayNode).find("div.mainOptionOperationdiv").append(
-					$("<button></button>").attr({							
+					$("<button tooltip='Add answer' tooltip-placement='bottom'></button>").attr({							
 						"name" : "Add",				
 						"class" : "iconButtons glyphicon glyphicon-plus",				
 						"ng-click" : "addBlockquote(this,$event)"
 					}));
 			
 			$(displayNode).find("div.mainOptionOperationdiv").append(
-					$("<button></button>").attr({					
+					$("<button tooltip='Delete this answer' tooltip-placement='bottom'></button>").attr({					
 						"name" : "delete",				
 						"class" : "iconButtons glyphicon glyphicon-remove",
 						"ng-click" : "deleteBlockquote(this,$event)"
@@ -2655,7 +2655,7 @@ QTI.Elements.InlineChoiceInteraction.play = function(qtiNode, displayNode,
 
 		
 		$(displayNode).find("div.matchOptionOperation").append(
-				$("<button></button>").attr({						
+				$("<button tooltip='Upload picture' tooltip-placement='bottom'></button>").attr({						
 					"name" : "image",				
 					"class" : "iconButtons glyphicon glyphicon-picture",
 					"ng-click" : "addImage(this,$event,'div.qti-simpleChoice')"
