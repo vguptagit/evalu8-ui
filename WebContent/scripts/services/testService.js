@@ -99,6 +99,7 @@ angular.module('evalu8Demo')
 						test.nodeType = "test";
 						test.parentId = folderId;
 						test.showEditIcon=true;
+						test.showArchiveIcon=true;
 					})
 					callback(tests)
 					//blockLeftpanel.stop();

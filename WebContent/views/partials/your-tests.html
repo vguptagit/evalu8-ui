@@ -22,7 +22,6 @@
             </ol>
         </div>
     </div>
-
     <script type="text/ng-template" id="defaultfolder_renderer.html">
         <div ui-tree-handle class="tree-node tree-node-content">
             <div data-ng-if="node.nodeType == 'archiveRoot'" style="margin-bottom:2px">
@@ -57,7 +56,7 @@
                             <button ng-show="node.showEditIcon" id="editTestbtn"
                                     ng-click="editTest(this)"
                                     class="editiconButtons glyphicon glyphicon-pencil" tooltip="Open in right edit panel" tooltip-placement="bottom"/>
-                            <button ng-click="archiveTest(this)" class="archiveIconButtons fa fa-archive" tooltip="Move to Archive folder at bottom of screen" tooltip-placement="bottom"/>
+                            <button ng-show="node.showArchiveIcon" ng-click="archiveTest(this)" class="archiveIconButtons fa fa-archive" tooltip="Move to Archive folder at bottom of screen" tooltip-placement="bottom"/>
                         </span>
                     </div>
                 </div>
@@ -148,8 +147,8 @@
                         <span ng-show="node.selectTestNode">
                             <button ng-disabled="node.disableEdit" id="editTestbtn"
                                     ng-click="editTest(this)" ng-class="{disableEditIcon: node.disableEdit}"
-                                    class="foldertestediticon glyphicon glyphicon-pencil" />
-                            <button ng-click="archiveTest(this)" class="iconButtons fa fa-archive" />
+                                    class="foldertestediticon glyphicon glyphicon-pencil" tooltip="Open in right edit panel" tooltip-placement="bottom"/>
+                            <button ng-click="archiveTest(this)" class="iconButtons fa fa-archive" tooltip="Move to Archive folder at bottom of screen" tooltip-placement="bottom"/>
                         </span>
                     </div>
                 </div>

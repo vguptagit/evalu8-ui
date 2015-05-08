@@ -4,9 +4,9 @@ angular.module('e8MyTests')
 
 .controller('MyTestsController',
     ['$scope', '$rootScope', '$location', '$cookieStore', '$http', '$sce', '$modal',
-     'UserFolderService', 'TestService', 'SharedTabService', 'ArchiveService','EnumService',
+     'UserFolderService', 'TestService', 'SharedTabService', 'ArchiveService','EnumService','notify',
      function ($scope, $rootScope, $location, $cookieStore, $http, $sce, $modal,
-    		UserFolderService, TestService, SharedTabService, ArchiveService,EnumService) {
+    		UserFolderService, TestService, SharedTabService, ArchiveService,EnumService,notify) {
     	
         $scope.controller = EnumService.CONTROLLERS.myTest;
     	SharedTabService.selectedMenu = SharedTabService.menu.myTest;
@@ -53,7 +53,6 @@ angular.module('e8MyTests')
         }
         
         $scope.loadTree();
-        
         $scope.$on('dragStarted', function () {
             $scope.dragStarted = true;
         });
@@ -70,6 +69,7 @@ angular.module('e8MyTests')
             }
             if(source.node.nodeType==='test' && destParent.controller === EnumService.CONTROLLERS.testCreationFrame){        
                 source.node.showEditIcon=false;
+                source.node.showArchiveIcon=false;
                 $rootScope.$broadcast("dropTest", source, destIndex);
                 return false;
             }
@@ -282,6 +282,7 @@ angular.module('e8MyTests')
         //to disable the edit icon once it clicked  
         $scope.editTest = function (selectedTest) {
         	selectedTest.node.showEditIcon=false;
+        	selectedTest.node.showArchiveIcon=false;
         	$rootScope.$broadcast("editTest", selectedTest);
         }
 
