@@ -276,7 +276,7 @@
             <span class="testCreationName">Name:</span>
         </div>
     -->
-		<div id="qstnArea" ng-show="!tests[currentIndex].isTestWizard">
+		<div id="qstnArea1" ng-show="!tests[currentIndex].isTestWizard">
 		<div data-ui-tree id="tree2-root">
 			<div ng-show="isLoading">
 				<span class="glyphicon glyphicon-refresh spinning"></span>
@@ -295,8 +295,9 @@
 		<script type="text/ng-template" id="question_renderer.html">
 <div class="qstnContainer">
 	<div  class="qstnView">
-		<div class="questionEditCaption editView">Enter Text & Select
+		<div class="questionEditCaption editView" >Enter Text & Select
 			Correct Answer</div>
+       
 		<a class="qstnViewLink" ng-click="showQstnPrintOrEditMode(this)"
 			ng-show="showQstnEditIcon" title="{{node.qstnLinkText}}">{{node.qstnLinkText}}</a>
 	</div>
@@ -317,7 +318,7 @@
 			<span class="captionMetadata">Format</span><span class="normalText">(visible
 				in Print View)</span>
 		</div>
-		<div class="vhDiv">
+		<div class="vhDiv" ng-show=" node.quizType == 'MultipleChoice' || node.quizType == 'MultipleResponse' ">
 			<span class="viewOptionDiv normalText">Questions:</span>
 			<div class="viewOptionDiv viewOptionHV">
 				<input class="radioView" checked={{node.optionsView}}  name="radioView{{node.guid}}" ng-click="qstnOptionsView(this,true)"  type="radio">Vertical Display </input>
@@ -326,12 +327,25 @@
 				<input name="radioView{{node.guid}}" ng-click="qstnOptionsView(this,false)"  type="radio">Horizontal Display </input>
 			</div>
 		</div>
+		<div class="EssaySpaceDiv" ng-show="node.quizType == 'Essay'">
+			<span class="viewOptionDiv normalText">Essay Space:</span>
+			<div class="viewOptionDiv viewOptionHV">
+				<input class="radioView" checked={{node.optionsView}}  name="radioView{{node.guid}}" ng-click="qstnOptionsView(this,true)"  type="radio">None</input>
+			</div>
+			<div class="viewOptionDiv viewOptionHV">
+				<input name="radioView{{node.guid}}" ng-click="qstnOptionsView(this,false)"  type="radio">1/4 page</input>
+			</div>
+			<div class="viewOptionDiv viewOptionHV" >
+				<input name="radioView{{node.guid}}" ng-click="qstnOptionsView(this,false)"  type="radio">1/2 page</input>
+			</div>
+			<div class="viewOptionDiv viewOptionHV">
+				<input name="radioView{{node.guid}}" ng-click="qstnOptionsView(this,false)"  type="radio">1 page</input>
+			</div>
+		</div>
 		<div>Metddata</div>
 		<div>ID: 89-786-AL</div>
 	</div>
 
-
-	<div>
 
         </script>
         <div id="uploadImage" class="uploadImage" ng-show="imageClicked" ng-file-drop ng-accept="'image/*'" data-ng-file-change="upload($files)" drag-over-class="{accept:'dragover', reject:'dragover-err', delay:100}">

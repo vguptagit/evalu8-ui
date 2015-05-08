@@ -15,7 +15,7 @@ QTI.play = function(qtiXML, displayNode,editable,templateQstn,questionType) {
 	state.correct = undefined;
 	state.templateQstn=templateQstn;
 	state.editable=editable;
-	state.questionType=questionType;
+	state.questionType=QTI.getQuestionType(qtiXML,questionType);
 
 	if (state.practice == undefined) {
 		state.practice = true;
@@ -60,6 +60,7 @@ QTI.play = function(qtiXML, displayNode,editable,templateQstn,questionType) {
 	QTI.customize(xml);
 	QTI.process("play", xml, displayNode, state);
 	QTI.onRenderComplete(xml, displayNode, state);
+	QTI.reorderElements(state,displayNode);
 }
 QTI.status = function(displayNode) {
 	return QTI.state(displayNode);
@@ -1088,6 +1089,7 @@ QTI.Elements.CorrectResponse.GET_ALLOWED_CONTENT = function() {
 }
 
 QTI.Elements.CorrectResponse.play = function(qtiNode, displayNode, state) {
+	this.DISPLAY = CustomQuestionTemplate[state.questionType].DISPLAY;
 	var elementDisplayNode = QTI.prepare(qtiNode, $("<div></div>"));
 
 	$(displayNode).append(elementDisplayNode);
@@ -1853,6 +1855,9 @@ QTI.Elements.ResponseDeclaration.GET_ALLOWED_CONTENT = function() {
 }
 
 QTI.Elements.ResponseDeclaration.play = function(qtiNode, displayNode, state) {
+	if(state.questionType)
+		CustomQuestionTemplate[state.questionType].makeExtra(null,this,qtiNode);
+		
 	var elementDisplayNode = QTI.prepare(qtiNode, $("<div></div>"));
 
 	$(displayNode).append(elementDisplayNode);
@@ -2545,12 +2550,14 @@ QTI.Elements.Value.GET_ALLOWED_CONTENT = function() {
 }
 
 QTI.Elements.Value.play = function(qtiNode, displayNode, state) {
-	var elementDisplayNode = QTI.prepare(qtiNode, $("<div></div>"));
+	this.DISPLAY = CustomQuestionTemplate[state.questionType].DISPLAY;
+	var elementDisplayNode = QTI.prepare(qtiNode, $("<div contenteditable='true' class='valueView editView editablediv'></div>"));
 
 	$(displayNode).append(elementDisplayNode);
 
 	this.extend.play(qtiNode, elementDisplayNode, state);
 	this.processChildren(qtiNode, elementDisplayNode, state);
+	CustomQuestionTemplate[state.questionType].makeExtra(elementDisplayNode,this,null);
 }
 
 // Inline Choice Interaction
@@ -2719,16 +2726,19 @@ var CustomQuestionTemplate =
 						  "editCaption": "Enter Multiple Choice Question",
 						  "printOption": "Answer Choice" ,
 						  "editOption": "Enter Answer",
-						  "editMainText":"Enter Text & Select Correct Answer"}		
+						  "editMainText":"Enter Text & Select Correct Answer",
+						  "DISPLAY": false,
+							 makeExtra: function(element,tag,xml){}}	
 		,
 		
 		"TrueFalse":
 						{"printCaption": "True/False Question" ,
 						  "editCaption": "Enter True or False Question",
 						  "printOption": "True",
-						  "editOption":  "True" ,
-						  
-						  "editMainText":"Enter Text & Select Correct Answer"}
+						  "editOption":  "True" ,						  
+						  "editMainText":"Enter Text & Select Correct Answer",
+						  "DISPLAY": false,
+							 makeExtra: function(element,tag,xml){}}
 		,
 		
 		"MultipleResponse":	
@@ -2736,7 +2746,9 @@ var CustomQuestionTemplate =
 						  "editCaption": "Enter Multiple Response Question",
 						 "printOption": "Answer Choice" ,
 						 "editOption": "Enter Answer",
-						 "editMainText":"Enter Text & Select Correct Answer"}
+						 "editMainText":"Enter Text & Select Correct Answer",
+						 "DISPLAY": false,
+						 makeExtra: function(element,tag,xml){}}
 		,
 		
 		"Matching":	
@@ -2745,9 +2757,33 @@ var CustomQuestionTemplate =
 						 "printOption": "Option" ,
 						 "editOption_Column_A": "Enter item # in column ",
 						 "editOption_Column_B": "Enter match in column B for A",
-						 "editMainText":"Enter Column A Items and Correct Column B Match System will scramble Column B in Print View"}
-				
-}
+						 "editMainText":"Enter Column A Items and Correct Column B Match System will scramble Column B in Print View",
+						 "DISPLAY": false,
+						 makeExtra: function(element,tag,xml){}}
+		,
+		"Essay":	
+						{"printCaption": "Essay Question" ,
+						  "editCaption": "Enter Essay Question",
+						 "printOption": "Recommended Answer" ,
+						 "editOption": "Enter Essay Recommended Answer",
+						 "editMainText":"Enter Essay Question",
+						 "DISPLAY": true,
+						 makeExtra : function(element,tag,xml){
+							 	switch(tag.TAG){
+							 	case "value":
+									if(element.html() == ""){
+										element.attr("data-placeholder",this.editOption)
+									}
+									$("<div class = 'editView EssayHeader'>Recommended Answer</div>").insertBefore(element);
+									break;
+							 	case "responseDeclaration":
+							 		if(xml.find("correctResponse").length == 0)
+							 			xml.append("<correctResponse><value></value></correctResponse>");
+							 		tag.DISPLAY = true;
+							 	}
+
+						 }}		
+				}
 
 QTI.getCaretPosition = function(element){
 	var ie = (typeof document.selection != "undefined" && document.selection.type != "Control") && true;
@@ -2801,3 +2837,36 @@ QTI.getActualCursorPosition = function(cursorPosition,element){
 	})
 	return cursorPosition;
 } 
+QTI.reorderElements = function(state,displayNode){	
+	if(state.questionType == 'Essay'){
+		var qtiDeclare = $(displayNode).find("div.qti-responseDeclaration");
+		var qtiItemBody = $(displayNode).find("div.qti-itemBody");
+		qtiDeclare.insertAfter(qtiItemBody);
+	}
+	
+}
+
+QTI.getQuestionType = function(qtiXML,questionType){
+	if(questionType)
+		return questionType;
+	if(QTI.format(qtiXML).find("extendedTextInteraction").length > 0){
+		return "Essay";
+	}
+}
+QTI.getQuizType = function(quiztype){
+	switch(quiztype){
+	case "Essay":
+			return "6";
+			break;
+	case "MultipleResponse":
+			return "5";
+			break;
+	case "TrueFalse":
+			return "4";
+			break;
+	case "MultipleChoice":
+			return "3";
+			break;
+		
+	}
+}

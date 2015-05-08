@@ -1981,3 +1981,10 @@ li[qstntemplate='true'] .indChar {
 .qstnContainer .qti-blockquote{
     display: block;
 }
+  .EssayHeader{
+  font-size: 14px;    
+  font-weight: bold;
+  }
+  .valueView{
+  width: 450px;
+  }

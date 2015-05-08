@@ -339,7 +339,7 @@
                             in Print View)
                         </span>
                     </div>
-                    <div class="vhDiv">
+                    <div class="vhDiv" ng-show=" node.quizType == 'MultipleChoice' || node.quizType == 'MultipleResponse' ">
                         <span class="viewOptionDiv normalText">Questions:</span>
                         <div class="viewOptionDiv viewOptionHV">
                             <input class="radioView" checked={{node.optionsView}} name="radioView{{node.guid}}" ng-click="qstnOptionsView(this,true)" type="radio">Vertical Display </input>
@@ -348,6 +348,21 @@
                             <input name="radioView{{node.guid}}" ng-click="qstnOptionsView(this,false)" type="radio">Horizontal Display </input>
                         </div>
                     </div>
+		<div class="EssaySpaceDiv" ng-show="node.quizType == 'Essay'">
+			<span class="viewOptionDiv normalText">Essay Space:</span>
+			<div class="viewOptionDiv viewOptionHV">
+				<input class="radioView" checked={{node.optionsView}}  name="radioView{{node.guid}}" ng-click="qstnOptionsView(this,true)"  type="radio">None</input>
+			</div>
+			<div class="viewOptionDiv viewOptionHV">
+				<input name="radioView{{node.guid}}" ng-click="qstnOptionsView(this,false)"  type="radio">1/4 page</input>
+			</div>
+			<div class="viewOptionDiv viewOptionHV" >
+				<input name="radioView{{node.guid}}" ng-click="qstnOptionsView(this,false)"  type="radio">1/2 page</input>
+			</div>
+			<div class="viewOptionDiv viewOptionHV">
+				<input name="radioView{{node.guid}}" ng-click="qstnOptionsView(this,false)"  type="radio">1 page</input>
+			</div>
+		</div>
                     <div>Metddata</div>
                     <div>ID: 89-786-AL</div>
                 </div>
