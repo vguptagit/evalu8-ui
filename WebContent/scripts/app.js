@@ -32,7 +32,8 @@ angular.module('evalu8Demo', [
     'ui.bootstrap',
     'ui.router',
     'angularFileUpload',
-    'mgo-angular-wizard'
+    'mgo-angular-wizard',
+    'cgNotify'
 ])/*.config(function(blockUIConfig) {
 	//blockUIConfig.message = "<div class='loader'>Loading...</div>";
 	blockUIConfig.autoInjectBodyBlock = false;

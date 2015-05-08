@@ -398,7 +398,6 @@ a.newFolder:hover {
 
 .iconsChapter {
 	float: right;
-	width: 83px;
 	margin: 3px;
 	position: absolute;
 	right:15px;
@@ -501,6 +500,9 @@ ol {
 	list-style: none;
 	position: relative;
 	counter-reset: list;
+}
+.testContainer{
+    margin-right: 0px;
 }
 .testContainer ol li {
 	 margin-left: -5px;
