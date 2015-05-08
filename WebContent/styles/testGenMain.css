@@ -1704,6 +1704,18 @@ font-size:12px;
 	width:98%;
 }
 
+.disciplineContainerInLightBox, .bookContainerInLightBox {
+    height: 400px;
+    overflow: auto;
+    width:98%;
+}
+
+.btn-textonly {
+    background: none;
+    padding: 12px 22px;
+    color: cornflowerblue;    
+}
+
 .btnChapterClose {
 	float: none;
 }
