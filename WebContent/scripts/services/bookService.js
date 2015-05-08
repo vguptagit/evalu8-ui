@@ -39,6 +39,7 @@ angular
 														item.hasEdition = false;
 														item.showEdition = true;
 														item.isSelected = false;
+														item.isCollasped = false;
 														disciplineBooks.push(item);    							    							
 													});
 													

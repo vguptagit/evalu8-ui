@@ -1486,6 +1486,10 @@ li[quiztype='TrueFalse'] .qti-simpleChoice .radio {
 	
 }
 
+.nextButton:hover{
+	background-color:#006A8D
+}
+
 .backButton {
 	color: #5C5C5E;
 	background-color: #e4e4e7;
@@ -1497,6 +1501,10 @@ li[quiztype='TrueFalse'] .qti-simpleChoice .radio {
 	border: 1px solid;
 	border-color: #b7b7b9;
 	
+}
+
+.backButton:hover{
+	background-color:#D0D0D0
 }
 
 .searchDiscpline, .searchBook {
@@ -1612,6 +1620,7 @@ font-size:12px;
 
 .btnDisbled {
 	background-color: #A0D1E1 !important;
+	color:#EEF8FC
 }
 
 .autocompleteList{

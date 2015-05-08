@@ -11,7 +11,7 @@
 
 <wizard on-finish="finishWizard()"
 	template="views/usersettings/startupWizardTemplate.html"> <wz-step
-	title="Discipline" canexit="exitDiscipline">
+	title="Discipline" canenter="enterDiscipline" canexit="exitDiscipline">
 
 <div class="row"
 	style="vertical-align: middle; middle; margin-top: 20px;">
@@ -98,9 +98,9 @@
 							ng-show="book.showEdition" parentbookid="{{book.parentBookID}}">
 							<div
 								style="float: left; margin-right: 5px; vertical-align: middle; margin-top: 7px; background-color: #FFFFFF;"
-								ng-show="book.hasEdition" ng-click="showOldEdition(book.guid)">
+								ng-show="book.hasEdition" ng-click="showOldEdition(book.guid,discipline.name)">
 								<img alt="Editions" id="{{book.guid}}" src=""
-									class="expandBookEdition">
+									ng-class="book.isCollasped?'collapseBookEdition':'expandBookEdition'">
 							</div>
 							<div class="discplineText" style="margin-left: 20px;">
 								{{book.title}}</div>

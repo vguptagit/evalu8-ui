@@ -193,10 +193,19 @@ angular
 								}
 							}
 
+							$scope.enterDiscipline = function() {
+								if ($scope.disciplines.userSelected.length > 0) {
+									$scope.enableDisableNextButton(false);
+									return true
+								} else {
+									$scope.enableDisableNextButton(true);
+									return false;
+								}
+							}
+
 							/* books related starts */
 							$scope.searchedBook = undefined;
 							$scope.trackEnterKey = 0;
-
 							$scope.enterBook = function() {
 
 								$scope.disciplineBooks = [];
@@ -219,6 +228,7 @@ angular
 																.getBooks(
 																		discipline,
 																		$scope.books.userSelected);
+
 													});
 										});
 
@@ -246,6 +256,12 @@ angular
 																				book.hasEdition = true;
 																				filtBook.showEdition = false;
 																				filtBook.parentBookID = book.guid;
+
+																				if (useSelectedBooks
+																						.indexOf(filtBook.guid) > -1) {
+																					filtBook.showEdition = true;
+																					book.isCollasped = true;
+																				}
 
 																			}
 
@@ -329,11 +345,17 @@ angular
 																}
 															});
 												});
-										if (book.isSelected) {
-											$('#' + parentbookid).toggleClass(
-													'collapseBookEdition');
-										}
-
+										$scope.disciplineBooks
+												.forEach(function(discipline) {
+													discipline.books
+															.forEach(function(
+																	book) {
+																if (book.guid == parentbookid
+																		&& book.isCollasped == false) {
+																	book.isCollasped = true;
+																}
+															})
+												});
 									} else {
 										$scope.trackEnterKey = 1;
 									}
@@ -373,10 +395,15 @@ angular
 									});
 								});
 
-								if (book.isSelected) {
-									$('#' + parentbookid).toggleClass(
-											'collapseBookEdition');
-								}
+								$scope.disciplineBooks.forEach(function(
+										discipline) {
+									discipline.books.forEach(function(book) {
+										if (book.guid == parentbookid
+												&& book.isCollasped == false) {
+											book.isCollasped = true;
+										}
+									})
+								});
 
 							}
 
@@ -455,23 +482,48 @@ angular
 										.saveUserBooks($scope.books.currentlySelected);
 							};
 
-							$scope.showOldEdition = function(parentbookid) {
+							$scope.showOldEdition = function(parentbookid,
+									disciplineName) {
+								var parentBook = null;
+								var oldEditions = [];
+								var isAnyOldEditionsSelected = false;
+
 								$scope.disciplineBooks
 										.forEach(function(discipline) {
-											discipline.books
-													.forEach(function(book) {
-														if (book.parentBookID == parentbookid
-																&& book.showEdition == false) {
-															book.showEdition = true;
-														} else if (book.parentBookID == parentbookid
-																&& book.showEdition == true) {
-															book.showEdition = false;
-														}
-													});
+											if (discipline.name == disciplineName) {
+												discipline.books
+														.forEach(function(book) {
+															if (book.parentBookID == parentbookid) {
+																oldEditions
+																		.push(book);
+																if ($scope.books.currentlySelected
+																		.indexOf(book.guid) > -1) {
+																	isAnyOldEditionsSelected = true;
+																}
+															}
+															if (book.guid == parentbookid) {
+																parentBook = book;
+															}
+														});
+											}
 										});
 
-								$('#' + parentbookid).toggleClass(
-										'collapseBookEdition');
+								if (!isAnyOldEditionsSelected) {
+									oldEditions.forEach(function(book) {
+										if (book.showEdition == false) {
+											book.showEdition = true;
+										} else if (book.showEdition == true) {
+											book.showEdition = false;
+										}
+									});
+
+									if (parentBook.isCollasped == false) {
+										parentBook.isCollasped = true;
+									} else if (parentBook.isCollasped == true) {
+										parentBook.isCollasped = false;
+									}
+
+								}
 
 								event.stopPropagation();
 
