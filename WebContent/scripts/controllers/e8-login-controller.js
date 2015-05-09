@@ -11,8 +11,9 @@ angular.module('e8Login')
         $scope.login = function () {
             $scope.dataLoading = true;
             AuthenticationService.Login($scope.username, $scope.password, function(response) {
-                if(response.success) {                	
-                    AuthenticationService.SetCredentials($scope.username, $scope.password, response.message);
+                if(response.success) {       
+                	
+                    AuthenticationService.SetCredentials($scope.username, $scope.password, response.token, response.loginCount);
                     $location.path(evalu8config.welcome);
                 } else {
                     $scope.error = response.message;
@@ -26,7 +27,8 @@ angular.module('e8Login')
             $scope.dataLoading = true;
             AuthenticationService.Login($scope.username, $scope.password, function(response) {
                 if(response.success) {                	
-                    AuthenticationService.SetCredentials($scope.username, $scope.password, response.message);
+                    
+                	AuthenticationService.SetCredentials($scope.username, $scope.password, response.token, response.loginCount);
                     $location.path(evalu8config.welcome);
                 } else {
                     $scope.error = response.message;
