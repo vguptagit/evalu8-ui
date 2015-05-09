@@ -810,7 +810,7 @@ angular
 									optionList.push($(this).text().trim());
 								});
 
-								var xmlOrientation = $(xml).find('itemBody')
+								var xmlOrientation = $(qstnXML).find('itemBody')
 										.find('choiceInteraction').attr(
 												"orientation");
 								var nodeOptionsView = (xmlOrientation == undefined)
