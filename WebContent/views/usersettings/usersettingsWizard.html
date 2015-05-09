@@ -123,10 +123,10 @@
 		<div class="row"
 			style="border-bottom: 1px solid #ddd; padding-top: 15px;">&nbsp;</div>
 		<div class="row" style="padding-top: 12px;">
-			<div class="col-md-8"></div>
-			<div class="col-md-4 text-right">
-				<button ng-click="cancel()">Cancel</button>
-				<button ng-if="step == '2'" ng-click="finishWizard()">Save</button>
+			<div class="col-md-7"></div>
+			<div class="col-md-5 text-right">
+				<button ng-click="cancel()" class="backButton">Cancel</button>
+				<button class="nextButton" ng-if="step == '2'"  ng-click="finishWizard()">Save</button>
 			</div>
 		</div>
 
