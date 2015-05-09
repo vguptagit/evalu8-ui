@@ -321,11 +321,11 @@
                     templateqstn="{{node.templateQstn}}" ng-mouseover="hoverIn(this)" ng-mouseleave="hoverOut()"
                     optionsview={{node.optionsView}}
                     ng-repeat="node in tests[currentIndex].questions" ui-tree-node
-                    ng-include="'question_renderer.html'"></li>
+                    ng-include="'rf_question_renderer.html'"></li>
             </ol>
         </div>
 
-        <script type="text/ng-template" id="question_renderer.html">
+        <script type="text/ng-template" id="rf_question_renderer.html">
             <div class="qstnContainer">
                 <div class="qstnView">
                     <div class="questionEditCaption editView">
