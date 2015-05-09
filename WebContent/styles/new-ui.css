@@ -311,7 +311,7 @@ a.fa.fa-user{
   border-radius: 3px;
   height: 30px;
   width: 40px;
-  right: 37px;
+  right: 54px;
   top: 5px;
 }
 
@@ -395,7 +395,7 @@ a.fa.fa-user{
   border-radius: 3px;
   height: 30px;
   width: 40px;
-  right: 63px;
+  right: 65px;
   position: absolute;
   top: 5px;
   padding-top: 2px;
@@ -470,5 +470,21 @@ a.fa.fa-user{
   width: 100px;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
+   text-overflow: ellipsis; 
   }
+ /*new css */
+ span.fa.fa-lightbulb-o {
+  color:rgb(255, 126, 0);
+  font-size: 20px;
+}
+.TestcreationInfo {
+  background-color: #f8f8f8;
+  left: 30px;
+  border-radius: 5px;
+} 
+.tabs-content{
+	background-color: #FFF;
+}
+.left-frame{
+	background-color: #F8F8F8;
+}
