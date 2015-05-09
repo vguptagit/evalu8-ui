@@ -64,9 +64,12 @@ angular
 							$scope.step = step;
 
 							$scope.setStep = function(step) {
-								$scope.step = step;
-								if (step == '2') {
+
+								if (step == '2' && !$scope.isDesciplineEmpty()) {
 									$scope.exitDiscipline()
+									$scope.step = step;
+								} else if (step == '1') {
+									$scope.step = step;
 								}
 							}
 
@@ -413,14 +416,15 @@ angular
 										.indexOf(book);
 								if (index > -1) {
 									if (!isSearched) {
-										$scope.books.currentlySelected.splice(index,
-												1);
+										$scope.books.currentlySelected.splice(
+												index, 1);
 									}
 									$scope.setBookScrollBar();
 
 								} else {
 									if ($scope.validateBook(book)) {
-										$scope.books.currentlySelected.push(book);
+										$scope.books.currentlySelected
+												.push(book);
 										$scope.setBookScrollBar();
 									}
 
@@ -526,15 +530,13 @@ angular
 									return true;
 								}
 							}
-							
+
 							$scope.finishWizard = function() {
-
-								$scope.exitDiscipline();
-
-								$scope.saveDiscpline();
-								$scope.saveBooks();
-								$modalInstance.close();
-
+								if (!$scope.isBookEmpty()) {
+									$scope.saveDiscpline();
+									$scope.saveBooks();
+									$modalInstance.close();
+								}
 							}
 
 						} ]);
