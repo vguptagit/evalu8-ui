@@ -1,9 +1,9 @@
 <div class="modal-header">
-		<div class="col-md-12 text-right">
-			<button ng-click="cancel()">Cancel</button>
-			<button ng-click="finishWizard()">Save</button>
-		</div>
-	<h4 class="modal-default-header-title" id="myModalLabel">Settings</h4>	
+	<div class="col-md-12 text-right">
+		<button ng-click="cancel()" class="backButton">Cancel</button>
+		<button ng-click="finishWizard()" class="nextButton">Save</button>
+	</div>
+	<h4 class="modal-default-header-title" id="myModalLabel">Settings</h4>
 
 </div>
 
@@ -12,68 +12,76 @@
 	<div class="row">
 		<div class="col-md-12">
 
-				<ul class="nav nav-tabs ng-scope">
-					<li ng-class="{'active': activeTab == 'questionBanks'}">
-		        		<a class="ng-binding" href="#" ng-click="showQuestionBank(this)">Question Banks</a>
-		    		</li>
-					<li ng-class="{'active': activeTab == 'metadata'}">
-		        		<a class="ng-binding" href="#" ng-click="showMetadata(this)">Metadata</a>
-		    		</li>		    		        			        		
-				</ul>
-				
-				<div style="padding-top:15px;" ng-show="activeTab == 'questionBanks'">
-        		
-        			<div class="col-md-12">
-        			The Question Banks area provides publisher test banks based on your selections.
-        			</div>
+			<ul class="nav nav-tabs ng-scope">
+				<li ng-class="{'active': activeTab == 'questionBanks'}"><a
+					class="ng-binding" href="#" ng-click="showQuestionBank(this)">Question
+						Banks</a></li>
+				<li ng-class="{'active': activeTab == 'metadata'}"><a
+					class="ng-binding" href="#" ng-click="showMetadata(this)">Metadata</a>
+				</li>
+			</ul>
 
-					<div class="col-md-12" style="margin:25px;">
-						<button ng-click="edit(1)"><i class="glyphicon glyphicon-pencil"></i> Edit Disciplines </button>
-						<button ng-click="edit(2)"><i class="glyphicon glyphicon-pencil"></i> Edit Question Banks </button></div>
+			<div style="padding-top: 15px;"
+				ng-show="activeTab == 'questionBanks'">
+
+				<div class="col-md-12">The Question Banks area provides
+					publisher test banks based on your selections.</div>
+
+				<div class="col-md-12" style="margin: 25px;">
+					<button ng-click="edit(1)">
+						<i class="glyphicon glyphicon-pencil"></i> Edit Disciplines
+					</button>
+					<button ng-click="edit(2)">
+						<i class="glyphicon glyphicon-pencil"></i> Edit Question Banks
+					</button>
+				</div>
+			</div>
+
+
+			<div style="padding-top: 15px; margin-top: 25px;">
+				<div
+					style="float: left; background-color: #c8c8c8; padding-top: 8px; padding-bottom: 8px"
+					class="col-md-12">
+					<div class="col-md-4">Disciplines</div>
+					<div class="col-md-8">Test Banks</div>
+				</div>
+				<div style="clear: left;">&nbsp;</div>
+				<div ng-repeat="book in books | orderBy: 'discipline'">
+
+					<div style="float: left;" class="col-md-12">
+						<hr
+							ng-show="books[$index-1].discipline != book.discipline && $index > 0" />
 					</div>
+					<div style="clear: left;"></div>
 
-
-					<div style="padding-top:15px; margin-top:25px;">
-						<div style="float:left; background-color: #c8c8c8; padding-top: 8px; padding-bottom: 8px" class="col-md-12">
-							<div class="col-md-4">Disciplines</div>
-							<div class="col-md-8">Test Banks</div>
-						</div>        						
-						<div style="clear:left;">&nbsp;</div>
-						<div ng-repeat="book in books | orderBy: 'discipline'">
-						
-							<div style="float:left;" class="col-md-12">
-								<hr ng-show="books[$index-1].discipline != book.discipline && $index > 0" />
-							</div>        						
-							<div style="clear:left;"></div>
-							
-							<div style="float:left;" class="col-md-12">
-								<div class="col-md-4"><span 
-									ng-show="books[$index-1].discipline != book.discipline">{{book.discipline}}</span>&nbsp;</div>
-								<div class="col-md-8">{{book.title}} </div>
-							</div>        						
-							<div style="clear:left;">&nbsp;</div>
+					<div style="float: left;" class="col-md-12">
+						<div class="col-md-4">
+							<span ng-show="books[$index-1].discipline != book.discipline">{{book.discipline}}</span>&nbsp;
 						</div>
+						<div class="col-md-8">{{book.title}}</div>
 					</div>
-       				 	
-       			        				
+					<div style="clear: left;">&nbsp;</div>
+				</div>
+			</div>
 
-        		
-        		</div>
-        		
-        		<div style="padding-top:15px" ng-show="activeTab == 'metadata'">
-        		
-        			<div class="col-md-12">
-        			Select the information you want available when you create questions.
-        			</div>
-        			<div style="padding-top:15px" class="col-md-5">
-        			<ul class="list-group">
-        				<li class="list-group-item" ng-repeat="metadata in metadatas">{{metadata}}</li>
-        			</ul>        		
-        			</div>
-        		</div>
-        		
+
+
 
 		</div>
+
+		<div style="padding-top: 15px" ng-show="activeTab == 'metadata'">
+
+			<div class="col-md-12">Select the information you want
+				available when you create questions.</div>
+			<div style="padding-top: 15px" class="col-md-5">
+				<ul class="list-group">
+					<li class="list-group-item" ng-repeat="metadata in metadatas">{{metadata}}</li>
+				</ul>
+			</div>
+		</div>
+
+
 	</div>
+</div>
 
 </div>
