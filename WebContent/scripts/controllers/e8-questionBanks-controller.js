@@ -17,10 +17,11 @@ angular
 						'SharedTabService',
 						'UserQuestionsService',
 						'EnumService',
+						'$modal',
 						function($scope, $rootScope, $location, $cookieStore,
 								$http, $sce, DisciplineService, TestService,
 								SharedTabService, UserQuestionsService,
-								EnumService) {
+								EnumService, $modal) {
 							SharedTabService.selectedMenu = SharedTabService.menu.questionBanks;
 							$rootScope.globals = $cookieStore.get('globals')
 									|| {};
@@ -51,7 +52,7 @@ angular
 							});
 
 							$scope.$on('beforeDrop', function(event) {
-							    $rootScope.$broadcast("beforeDropQuestion");
+								$rootScope.$broadcast("beforeDropQuestion");
 							});
 
 							$scope.isTestWizard = false;
@@ -282,7 +283,7 @@ angular
 												config)
 										.success(
 												function(response) {
-												    $rootScope
+													$rootScope
 															.$broadcast(
 																	"handleBroadcast_createTestWizardCriteria",
 																	response,
@@ -489,7 +490,7 @@ angular
 
 								// qti player initialisation
 								QTI.initialize();
-								
+
 								$http
 										.get(
 												evalu8config.host
@@ -581,33 +582,58 @@ angular
 								}
 							}
 							$scope.questions = [];
-							var addToQuestionsArray = function (item) {
-							    $scope.questions.push(item);
+							var addToQuestionsArray = function(item) {
+								$scope.questions.push(item);
 							};
-							$scope.$on('handleBroadcast_onClickTab',
-									function (handler, tab) {
-									    for (var i = 0; i < $scope.questions.length; i++) {
-									        $scope.questions[i].isNodeSelected = false;
-									        $scope.questions[i].showEditQuestionIcon = false;
-									        for (var j = 0; j < tab.questions.length; j++) {
-									            if ($scope.questions[i].guid===tab.questions[j].guid) {
-									                $scope.questions[i].isNodeSelected = true;
-									                break;
-									            }
-									        }
-									    }
-									});
-							$scope.$on('handleBroadcast_closeTab',
-									function (handler, tab) {
-									    for (var i = 0; i < $scope.questions.length; i++) {
-									        $scope.questions[i].isNodeSelected = false;
-									    }
-									});
+							$scope
+									.$on(
+											'handleBroadcast_onClickTab',
+											function(handler, tab) {
+												for (var i = 0; i < $scope.questions.length; i++) {
+													$scope.questions[i].isNodeSelected = false;
+													$scope.questions[i].showEditQuestionIcon = false;
+													for (var j = 0; j < tab.questions.length; j++) {
+														if ($scope.questions[i].guid === tab.questions[j].guid) {
+															$scope.questions[i].isNodeSelected = true;
+															break;
+														}
+													}
+												}
+											});
+							$scope
+									.$on(
+											'handleBroadcast_closeTab',
+											function(handler, tab) {
+												for (var i = 0; i < $scope.questions.length; i++) {
+													$scope.questions[i].isNodeSelected = false;
+												}
+											});
 							// evalu8-ui : to set Active Resources Tab , handled
 							// in ResourcesTabsController
-							$rootScope.$broadcast('handleBroadcast_setActiveResourcesTab', EnumService.RESOURCES_TABS.questionbanks);
+							$rootScope.$broadcast(
+									'handleBroadcast_setActiveResourcesTab',
+									EnumService.RESOURCES_TABS.questionbanks);
 
-						    //TODO : set container height, need revesit
-							$('.question_bank_scrollbar').height(($(document).height() - $('.question_bank_scrollbar').offset().top)-40);
+							// TODO : set container height, need revesit
+							$('.question_bank_scrollbar').height(
+									($(document).height() - $(
+											'.question_bank_scrollbar')
+											.offset().top) - 40);
+
+							$scope.openUserSettings = function(step) {
+								$modal
+										.open({
+											templateUrl : 'views/usersettings/usersettingsWizard.html',
+											controller : 'usersettingsWizardController',
+											size : 'md',
+											backdrop : 'static',
+											keyboard : false,
+											resolve : {
+												step : function() {
+													return step;
+												}
+											}
+										})
+							}
 
 						} ]);

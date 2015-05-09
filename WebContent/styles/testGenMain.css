@@ -1475,10 +1475,10 @@ li[quiztype='TrueFalse'] .qti-simpleChoice .radio {
 .nextButton {
 	color: #FFFFFF;
 	background-color: #007FA9;
-	border-radius: 5px;
-	height: 40px;
-	font-family: Helvetica;
-	font-size: 18px;
+	border-radius: 3px;
+	height: 30px;
+	font-family: Helvetica Neue Light;
+	font-size: 20px;
 	width: 100px;
 	border: 0px;
 	
@@ -1491,10 +1491,10 @@ li[quiztype='TrueFalse'] .qti-simpleChoice .radio {
 .backButton {
 	color: #5C5C5E;
 	background-color: #e4e4e7;
-	border-radius: 5px;
-	height: 40px;
-	font-family: Helvetica;
-	font-size: 18px;
+	border-radius: 3px;
+	height: 30px;
+	font-family: Helvetica Neue Light;
+	font-size: 20px;
 	width: 100px;
 	border: 1px solid;
 	border-color: #b7b7b9;
