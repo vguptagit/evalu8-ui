@@ -1618,7 +1618,8 @@ font-size:12px;
 
 .btnDisbled {
 	background-color: #A0D1E1 !important;
-	color:#EEF8FC
+	color:#EEF8FC;
+	cursor:default !important;
 }
 
 .autocompleteList{
