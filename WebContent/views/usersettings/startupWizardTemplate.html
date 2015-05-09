@@ -1,11 +1,11 @@
 <div>
 	<div class="row setupHeader">
-		<div class="col-md-5" style="margin-top: 22px;">
+		<div class="col-lg-5" style="margin-top: 22px;">
 			<span class="selectDiscipline">{{currentStepNumber()}} of
 				{{steps.length}}: Choose Your {{steps[currentStepNumber()-1].title
 				|| steps[currentStepNumber()-1].wzTitle}}</span>
 		</div>
-		<div class="col-md-7" style="margin-top: 17px;">
+		<div class="col-lg-7" style="margin-top: 17px;">
 			<div style="float: right">
 				<input type="button" class="backButton"
 					ng-if="currentStepNumber() > 1" wz-previous value="Back" /> <input

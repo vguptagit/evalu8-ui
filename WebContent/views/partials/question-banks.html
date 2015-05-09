@@ -1,10 +1,16 @@
 <div class="row">
-    <div class="col-lg-3 pull-right no-padding">
-        <a href="" ng-click="openUserSettings(2)">Add Question Banks</a>
-    </div>
+	<div class="col-lg-12" style="margin-top: 15px;">
+		<div class="addFolderContainer">
+			<div class="glyphicon glyphicon-plus addFolderIcon"
+				ng-click="openUserSettings(2)"></div>
+			<a href="" class="addFolderText" ng-click="openUserSettings(2)">Add
+				Question Banks</a>
+		</div>
+
+	</div>
 </div>
 <div class="testContainer">
-    <script type="text/ng-template" id="discipline_renderer.html">
+	<script type="text/ng-template" id="discipline_renderer.html">
         <div ui-tree-handle class="tree-node tree-node-content">
             <div class="treeDiv">
                 <div class="maindiv">
@@ -24,7 +30,7 @@
             <li class="questIndex" ng-if="node.isQuestion" draggable="false" ng-repeat="node in node.nodes" collapsed="true" ui-tree-node ng-include="'questions_renderer.html'"></li>
         </ol>
     </script>
-    <script type="text/ng-template" id="book_renderer.html">
+	<script type="text/ng-template" id="book_renderer.html">
         <div ui-tree-handle class="tree-node tree-node-content" ng-class="{questionTitleInTree: node.questionXML}">
             <div class="treeDiv">
                 <div class="maindiv">
@@ -48,7 +54,7 @@
             </li>
         </ol>
     </script>
-    <script type="text/ng-template" id="nodes_renderer.html">
+	<script type="text/ng-template" id="nodes_renderer.html">
         <div ui-tree-handle class="tree-node tree-node-content" ng-class="">
             <div class="treeDiv" ng-class="{activeFolder: !node.showTestWizardIcon , activeFolder: node.isNodeSelected}">
                 <div class="maindivChapter">
@@ -78,7 +84,7 @@
         </ol>
     </script>
 
-    <script type="text/ng-template" id="qb_questions_renderer.html">
+	<script type="text/ng-template" id="qb_questions_renderer.html">
         <div ng-mousedown="selectNode(this.node);" ui-tree-handle class="printViewContainer tree-node tree-node-content questionList" ng-class="{questionTitleInTree: node.questionXML}">
             <span ng-show="node.showEditQuestionIcon" class="newTest-close action-icon-bg glyphicon glyphicon-pencil" ng-mousedown="editQuestion(this)" tooltip="Move question to right for editing" tooltip-placement="bottom" ></span>
             <div class="printViewContainer" ng-if="node.textHTML" ng-bind-html="getHTML(this)">
@@ -86,13 +92,13 @@
         </div>
     </script>
 
-    <div data-ui-tree id="tree-root" class="question_bank_scrollbar">
-        <ol data-ui-tree-nodes data-ng-model="disciplines" droppable="false">
-            <li data-ng-repeat="node in disciplines" data-ui-tree-node
-                collapsed="true" draggable="false"
-                data-ng-include="'discipline_renderer.html'"></li>
-        </ol>
-    </div>
+	<div data-ui-tree id="tree-root" class="question_bank_scrollbar">
+		<ol data-ui-tree-nodes data-ng-model="disciplines" droppable="false">
+			<li data-ng-repeat="node in disciplines" data-ui-tree-node
+				collapsed="true" draggable="false"
+				data-ng-include="'discipline_renderer.html'"></li>
+		</ol>
+	</div>
 </div>
 
 
