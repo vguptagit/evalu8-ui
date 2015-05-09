@@ -46,5 +46,18 @@ angular
 													callback(disciplineBooks);
 												});
 							};
+							
+							this.userBooks = function(callback) {
+								
+								var url = evalu8config.host
+								+ "/books?userBooks=true";
+
+								$http.get(url, config)
+								.success(
+										function(response) {
+											
+											callback(response);
+										});
+							};
 
 						} ])

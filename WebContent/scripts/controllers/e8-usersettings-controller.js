@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('evalu8Demo')
-  .controller('UserSettingsController', ['$scope', '$rootScope', '$modalInstance', '$modal',
-     function ($scope, $rootScope, $modalInstance, $modal) {
+  .controller('UserSettingsController', ['$scope', '$rootScope', '$modalInstance', '$modal', 'UserService', 'BookService',
+     function ($scope, $rootScope, $modalInstance, $modal, UserService, BookService) {
 
 	  $scope.activeTab = "questionBanks";
 	  
@@ -19,20 +19,21 @@ angular.module('evalu8Demo')
 		  $scope.activeTab = "metadata";
 	  }
 	  
-	  $scope.disciplines = ['Art', 'Law'];
+	  $scope.books = [];
+	  UserService.userDisciplines(function(userDisciplines) {
+		 
+		  $scope.disciplines = userDisciplines;		  	  		  
+	  });
 	  
-	  $scope.books = [
-	                  {'title': 'Algebra 2, 2e (Brown)', 'discipline': 'Art'}, 
-	                  {'title': 'Algebra 1, 3e (Smith)', 'discipline': 'Art'},
-	                  {'title': 'Numeric 7, 1e (Kej)', 'discipline': 'Law'}
-	                  ];
-	  
+	  BookService.userBooks(function(response) {
+		  $scope.books= response;
+	  })
+	  	  
 	  $scope.metadatas = ['Difficulty', 'Topic', 'Objective', 'Page reference', 'Skill', 'Question id (provided by Evalu8)'];
 	  
 		
 	  $scope.edit = function(step) {
-			$modal
-			.open({
+		  var modalInstance = $modal.open({
 				templateUrl : 'views/usersettings/usersettingsWizard.html',
 				controller : 'usersettingsWizardController',
 				size : 'md',
@@ -43,7 +44,14 @@ angular.module('evalu8Demo')
 			           return step;
 			         }
 			       }
-			})
+			});
+			
+		  modalInstance.result.then(function () {
+			  UserService.userDisciplines(function(userDisciplines) {
+				  //$scope.disciplines = ['Art', 'Law'];
+				  $scope.disciplines = userDisciplines;
+			  });
+		    });
 	  }
 	  
   }]);

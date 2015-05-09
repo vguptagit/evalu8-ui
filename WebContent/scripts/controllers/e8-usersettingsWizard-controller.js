@@ -84,6 +84,10 @@ angular
 							UserService
 									.userDisciplines(function(userDisciplines) {
 										$scope.disciplines.userSelected = userDisciplines;
+										
+										if($scope.step == '2') {
+											$scope.exitDiscipline();
+										}
 									});
 
 							$scope.isDesciplineEmpty = function() {
@@ -461,14 +465,15 @@ angular
 							}
 
 							$scope.finishWizard = function() {
-								if ($scope.isBookEmpty()) {
-									return false
-								} else {
+								
+								$scope.exitDiscipline();
+								
 									$scope.saveDiscpline();
 									$scope.saveBooks();
 									$modalInstance.close();
-								}
+							
 
-							}									
+							}								
+
 							
 						} ]);

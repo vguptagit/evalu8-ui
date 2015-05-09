@@ -25,26 +25,27 @@
         			<div class="col-md-12">
         			The Question Banks area provides publisher test banks based on your selections.
         			</div>
-        			<div style="padding-top:15px">
-        				<ol>
-        				<li ng-repeat="discipline in disciplines">
-        					<div style="padding-top:20px" class="col-md-12">
-        					<div class="text-left col-md-4">Discipline: </div>
-        					<div class="text-left col-md-4">{{discipline}} </div>
-        					<div class="text-left col-md-4"><span ng-if="$index==0"><a href="#" ng-click="edit(1)">Edit Disciplines </span></a></div>
+
+
+       				<div style="padding-top:21px; margin-top:21px;" ng-repeat="discipline in disciplines">
+       					<div>
+       						<div class="text-left col-md-4"><b>Discipline: </b></div>
+       						<div class="text-left col-md-4">{{discipline}} </div>
+       						<div class="text-left col-md-4"><span ng-if="$index==0"><a href="#" ng-click="edit(1)">Edit Disciplines </span></a></div>
+       				 	</div>
+
+      				 	<div style="padding-top:15px; margin-top:15px;" ng-repeat="book in books | filter: {discipline: discipline}">
+      				 		<div>
+        						<div class="text-left col-md-4"><span ng-if="$index==0"><b>Question Bank(s): </b></span></div>
+        						<div class="text-left col-md-4">{{book.title}} </div>
+        						<div class="text-left col-md-4"><span ng-if="$parent.$index==0 && $index==0"><a href="#" ng-click="edit(2)">Edit Question Banks </a></span></div>
         				 	</div>
-        				 	<ol>
-        				 		<li ng-repeat="book in books | filter: {discipline: discipline}">
-       				 			<div style="padding-top:12px" class="col-md-12">
-	        					<div class="text-left col-md-4"><span ng-if="$index==0">Question Bank(s): </span></div>
-	        					<div class="text-left col-md-4">{{book.title}} </div>
-	        					<div class="text-left col-md-4"><span ng-if="$index==0"><a href="#" ng-click="edit(2)">Edit Question Banks </a></span></div>
-	        				 	</div>
-        				 		</li>
-        				 	</ol>
-        				</li>        				
-        				</ol>
-        			</div>
+       				 	</div>
+
+       				 	
+       				</div>        				
+
+        		
         		</div>
         		
         		<div style="padding-top:15px" ng-show="activeTab == 'metadata'">
@@ -66,8 +67,8 @@
 	<div class="row" style="padding-top: 12px;">
 		<div class="col-md-8"></div>
 		<div class="col-md-4 text-right">
-			<button>Cancel</button>
-			<button>Save</button>
+			<button ng-click="cancel()">Cancel</button>
+			<button ng-click="finishWizard()">Save</button>
 		</div>
 	</div>
 </div>
