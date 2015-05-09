@@ -1,6 +1,4 @@
 angular.module('e8MyTests').controller('WelcomeController',
-		function($scope, $rootScope, $modalInstance) {
+		function($scope, $rootScope) {
 
-			$scope.message = "dsfdsfdsfsd";
-			
 		});
