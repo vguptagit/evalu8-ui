@@ -13,111 +13,121 @@
 		aria-label="Close">
 		<span aria-hidden="true">&times;</span>
 	</button>
-	<h4 ng-if="step == '2'" class="modal-default-header-title" id="myModalLabel">Add Question Banks</h4>
-	<h4 ng-if="step == '1'" class="modal-default-header-title" id="myModalLabel">Add Disciplines</h4>
+	<h4 ng-if="step == '2'" class="modal-default-header-title"
+		id="myModalLabel">Add Question Banks</h4>
+	<h4 ng-if="step == '1'" class="modal-default-header-title"
+		id="myModalLabel">Add Disciplines</h4>
 </div>
 
 <div class="modal-body">
-<div class="container-fluid" style="margin-top: 14px;">
+	<div class="container-fluid" style="margin-top: 14px;">
 
-		
-			<div class="row">
-		<div class="col-md-12" style="margin-top: 7px;">
-			<div>
-				<span><button ng-if="step == '2'" ng-click="setStep('1')" class="btn btn-textonly"><i class="glyphicon glyphicon-arrow-left"></i> Change Discipline</button></span>
- 				<span style="float: right"><button ng-if="step == '1'" ng-click="setStep('2')" class="btn btn-textonly"><i class="glyphicon glyphicon-arrow-right"></i> Change Books</button></span>
-			</div>
-		</div>
-	</div>
-	 
-<div ng-if="step == '1'">
 
-	<div class="row"
-		style="vertical-align: middle; middle; margin-top: 20px;">
-		<div class="col-lg-12">
-			<div class="row">
-				<div class="col-lg-12" style="margin-left: 10px;">
-					<div class="searchPanel">
-						<input type="text" placeHolder="Search Discipline"
-							class="searchDiscpline" ng-model="searched"
-							typeahead="discipline for discipline in disciplines.all.sort() | filter:$viewValue"
-							ng-keyup="searchedDiscipline($event)"> <span
-							class="searchIcon" ng-click="searchedDisciplineOnClick()"
-							tooltip="search" tooltip-placement="bottom"></span>
-					</div>
+		<div class="row">
+			<div class="col-md-12" style="margin-top: 7px;">
+				<div>
+					<span><button ng-if="step == '2'" ng-click="setStep('1')"
+							class="btn btn-textonly">
+							<i class="glyphicon glyphicon-arrow-left"></i> Change Discipline
+						</button></span> <span style="float: right"><button ng-if="step == '1'"
+							ng-click="setStep('2')" class="btn btn-textonly">
+							<i class="glyphicon glyphicon-arrow-right"></i> Change Books
+						</button></span>
 				</div>
 			</div>
-			<div class="row" style="margin-top: 20px;">
+		</div>
+
+		<div ng-if="step == '1'">
+
+			<div class="row"
+				style="vertical-align: middle; middle; margin-top: 20px;">
 				<div class="col-lg-12">
-					<div class="disciplineContainerInLightBox">
-						<div data-ng-repeat="discipline in disciplines.all.sort()"
-							ng-click="selectDiscipline(this)"
-							ng-class="{selectedDisc: isSelectedDiscipline(this)}">
-							<div class="discplineText">{{discipline}}</div>
-							<hr style="margin-bottom: 0px; margin-top: 0px;">
+					<div class="row">
+						<div class="col-lg-12" style="margin-left: 10px;">
+							<div class="searchPanel">
+								<input type="text" placeHolder="Search Discipline"
+									class="searchDiscpline" ng-model="searched"
+									typeahead="discipline for discipline in disciplines.all.sort() | filter:$viewValue"
+									ng-keyup="searchedDiscipline($event)"> <span
+									class="searchIcon" ng-click="searchedDisciplineOnClick()"
+									tooltip="search" tooltip-placement="bottom"></span>
+							</div>
+						</div>
+					</div>
+					<div class="row" style="margin-top: 20px;">
+						<div class="col-lg-12">
+							<div class="disciplineContainerInLightBox">
+								<div data-ng-repeat="discipline in disciplines.all.sort()"
+									ng-click="selectDiscipline(this)"
+									ng-class="{selectedDisc: isSelectedDiscipline(this)}">
+									<div class="discplineText">{{discipline}}</div>
+									<hr style="margin-bottom: 0px; margin-top: 0px;">
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+
 		</div>
-	</div>
-
-</div> 
-<div ng-if="step == '2'">
-	<div class="row"
-		style="vertical-align: middle; middle; margin-top: 20px;">
-		<div class="col-lg-12">
-			<div class="row">
-				<div class="col-lg-12" style="margin-left: 10px;">
-					<div class="searchPanel">
-						<input type="text" placeHolder="Search Book" class="searchBook"
-							ng-model="searchedBook" placeholder="Custom template"
-							typeahead-template-url="customTemplate.html"
-							typeahead="book.title for book in books.all | searchFields22:$viewValue"
-							ng-keyup="searchedBookOnEnter($event)"> <span
-							class="searchIcon" ng-click="searchedBookOnClick()"
-							tooltip="search" tooltip-placement="bottom"></span>
-					</div>
-				</div>
-			</div>
-			<div class="row" style="margin-top: 20px;">
+		<div ng-if="step == '2'">
+			<div class="row"
+				style="vertical-align: middle; middle; margin-top: 20px;">
 				<div class="col-lg-12">
-					<div class="bookContainerInLightBox">
-						<div data-ng-repeat="discipline in disciplineBooks">
-							<div class="discplineText1" style="font-weight: bold;">{{discipline.name}}</div>
-							<hr
-								style="Border: 1px solid #E8E8E8; margin-bottom: 0px; margin-top: 0px;">
+					<div class="row">
+						<div class="col-lg-12" style="margin-left: 10px;">
+							<div class="searchPanel">
+								<input type="text" placeHolder="Search Book" class="searchBook"
+									ng-model="searchedBook" placeholder="Custom template"
+									typeahead-template-url="customTemplate.html"
+									typeahead="book.title for book in books.all | searchFields22:$viewValue"
+									ng-keyup="searchedBookOnEnter($event)"> <span
+									class="searchIcon" ng-click="searchedBookOnClick()"
+									tooltip="search" tooltip-placement="bottom"></span>
+							</div>
+						</div>
+					</div>
+					<div class="row" style="margin-top: 20px;">
+						<div class="col-lg-12">
+							<div class="bookContainerInLightBox">
+								<div data-ng-repeat="discipline in disciplineBooks">
+									<div class="discplineText1" style="font-weight: bold;">{{discipline.name}}</div>
+									<hr
+										style="Border: 1px solid #E8E8E8; margin-bottom: 0px; margin-top: 0px;">
 
-							<div data-ng-repeat="book in discipline.books"
-								ng-click="selectBook(book.guid,discipline.name)"
-								ng-class="{selectedDisc: book.isSelected}"
-								ng-show="book.showEdition"
-								parentbookid="{{book.parentBookID}}">
-
-								<div class="discplineText" style="margin-left: 25px;">
-									<span
-										style="float: left; margin-right: 5px; vertical-align: middle;"
-										ng-show="book.hasEdition" ng-click="showOldEdition(book.guid)"><img
-										alt="" id="{{book.guid}}" src="" class="expandBookEdition"></span>{{book.title}}
+									<div data-ng-repeat="book in discipline.books"
+										ng-click="selectBook(book.guid,discipline.name)"
+										ng-class="{selectedDisc: book.isSelected}"
+										ng-show="book.showEdition"
+										parentbookid="{{book.parentBookID}}">
+										<div
+											style="float: left; margin-right: 5px; vertical-align: middle; vertical-align: middle; margin-top: 7px; background-color: #FFFFFF;"
+											ng-show="book.hasEdition"
+											ng-click="showOldEdition(book.guid,discipline.name)">
+											<img alt="Editions" id="{{book.guid}}" src=""
+												ng-class="book.isCollasped?'collapseBookEdition':'expandBookEdition'">
+										</div>
+										<div class="discplineText" style="margin-left: 25px;">
+											{{book.title}}</div>
+										<hr style="margin-bottom: 0px; margin-top: 0px;">
+									</div>
 								</div>
-								<hr style="margin-bottom: 0px; margin-top: 0px;">
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-</div>
 
-	<div class="row" style="border-bottom: 1px solid #ddd; padding-top: 15px;">&nbsp;</div>
-	<div class="row" style="padding-top: 12px;">
-		<div class="col-md-8"></div>
-		<div class="col-md-4 text-right">
-			<button ng-click="cancel()">Cancel</button>
-			<button ng-click="finishWizard()">Save</button>
+		<div class="row"
+			style="border-bottom: 1px solid #ddd; padding-top: 15px;">&nbsp;</div>
+		<div class="row" style="padding-top: 12px;">
+			<div class="col-md-8"></div>
+			<div class="col-md-4 text-right">
+				<button ng-click="cancel()">Cancel</button>
+				<button ng-click="finishWizard()">Save</button>
+			</div>
 		</div>
+
 	</div>
-	
-</div>
 </div>

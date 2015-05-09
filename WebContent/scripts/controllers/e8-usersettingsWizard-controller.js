@@ -6,6 +6,7 @@ angular
 					return function(books, searchText) {
 
 						var filteredBooks = [];
+						searchText = searchText.toLowerCase();
 						books
 								.forEach(function(book) {
 									if (book.title.toLowerCase().indexOf(
@@ -44,10 +45,14 @@ angular
 						'$http',
 						'UserService',
 						'BookService',
-						'DisciplineService', 'WizardHandler', '$modalInstance', 'step',
+						'DisciplineService',
+						'WizardHandler',
+						'$modalInstance',
+						'step',
 						function($scope, $rootScope, $location, $routeParams,
 								$http, UserService, BookService,
-								DisciplineService, WizardHandler, $modalInstance, step) {
+								DisciplineService, WizardHandler,
+								$modalInstance, step) {
 
 							$scope.searched = "";
 							$scope.trackEnterKey = 0;
@@ -55,28 +60,20 @@ angular
 								all : [],
 								userSelected : []
 							};
-							
-							$scope.step = step;							
-							
+
+							$scope.step = step;
+
 							$scope.setStep = function(step) {
 								$scope.step = step;
-								if(step == '2') {
+								if (step == '2') {
 									$scope.exitDiscipline()
 								}
 							}
 
-                              $scope.cancel = function () {
-                                  $modalInstance.dismiss('cancel');
+							$scope.cancel = function() {
+								$modalInstance.dismiss('cancel');
 
-                              };
-
-							$scope.enableDisableNextButton = function(state) {
-								if (state) {
-									$(".nextButton").addClass("btnDisbled");
-								} else {
-									$(".nextButton").removeClass("btnDisbled");
-								}
-							}
+							};
 
 							$scope.disciplines.all = DisciplineService
 									.allDisciplines();
@@ -84,8 +81,8 @@ angular
 							UserService
 									.userDisciplines(function(userDisciplines) {
 										$scope.disciplines.userSelected = userDisciplines;
-										
-										if($scope.step == '2') {
+
+										if ($scope.step == '2') {
 											$scope.exitDiscipline();
 										}
 									});
@@ -97,11 +94,6 @@ angular
 									return true;
 
 							}
-
-							/*
-							 * $scope.enableDisableNextButton($scope
-							 * .isDesciplineEmpty());
-							 */
 
 							$scope.selectDiscipline = function(discipline) {
 								$scope.addToselectedDiscipline(
@@ -167,12 +159,11 @@ angular
 							$scope.setDisciplineScroll = function(
 									disciplineName) {
 
-								$scope.enableDisableNextButton($scope
-										.isDesciplineEmpty());
-
-								var vtop = $(".disciplineContainerInLightBox").find(
-										"div:contains('" + disciplineName
-												+ "')").position().top;
+								var vtop = $(".disciplineContainerInLightBox")
+										.find(
+												"div:contains('"
+														+ disciplineName + "')")
+										.position().top;
 								if (vtop > $(".disciplineContainerInLightBox")[0].clientHeight
 										|| vtop < 0) {
 									$(".disciplineContainerInLightBox")[0].scrollTop = vtop;
@@ -216,7 +207,8 @@ angular
 
 								$scope.books = {
 									all : [],
-									userSelected : []
+									userSelected : [],
+									currentlySelected : []
 								};
 
 								if ($scope.disciplines.userSelected.length > 0) {
@@ -227,27 +219,18 @@ angular
 												$scope.books.userSelected = userBookIDs;
 
 												$scope.disciplines.userSelected
-														.forEach(
-																function(
-																		discipline) {
-																	$scope
-																			.getBooks(
-																					discipline,
-																					$scope.books.userSelected);
-																});
+														.forEach(function(
+																discipline) {
+															$scope
+																	.getBooks(
+																			discipline,
+																			$scope.books.userSelected);
+														});
 											});
 
 									return true;
 								} else {
 									return false;
-								}
-							}
-
-							$scope.isBookEmpty = function() {
-								if ($scope.books.userSelected.length > 0) {
-									return false;
-								} else {
-									return true;
 								}
 							}
 
@@ -274,12 +257,20 @@ angular
 																				filtBook.showEdition = false;
 																				filtBook.parentBookID = book.guid;
 
+																				if (useSelectedBooks
+																						.indexOf(filtBook.guid) > -1) {
+																					filtBook.showEdition = true;
+																					book.isCollasped = true;
+																				}
+
 																			}
 
 																		});
 																if (useSelectedBooks
 																		.indexOf(book.guid) > -1) {
 																	book.isSelected = true;
+																	$scope.books.currentlySelected
+																			.push(book.guid)
 																}
 
 																$scope.books.all
@@ -336,6 +327,7 @@ angular
 										$scope.addBookToSelectedList(bookguid,
 												true);
 
+										var parentbookid;
 										$scope.disciplineBooks
 												.forEach(function(discipline) {
 													discipline.books
@@ -344,8 +336,25 @@ angular
 																if (book.guid == bookguid
 																		&& book.isSelected == false) {
 																	book.isSelected = true;
+																	book.showEdition = true;
+																	parentbookid = book.parentBookID
+																} else if (book.guid == bookguid
+																		&& book.isSelected == true) {
+																	book.showEdition = true;
+																	parentbookid = book.parentBookID
 																}
 															});
+												});
+										$scope.disciplineBooks
+												.forEach(function(discipline) {
+													discipline.books
+															.forEach(function(
+																	book) {
+																if (book.guid == parentbookid
+																		&& book.isCollasped == false) {
+																	book.isCollasped = true;
+																}
+															})
 												});
 
 									} else {
@@ -369,31 +378,49 @@ angular
 
 								$scope.addBookToSelectedList(bookguid, true);
 
+								var parentbookid;
+
 								$scope.disciplineBooks.forEach(function(
 										discipline) {
 									discipline.books.forEach(function(book) {
 										if (book.guid == bookguid
 												&& book.isSelected == false) {
 											book.isSelected = true;
+											book.showEdition = true;
+											parentbookid = book.parentBookID
+										} else if (book.guid == bookguid
+												&& book.isSelected == true) {
+											book.showEdition = true;
+											parentbookid = book.parentBookID
 										}
 									});
+								});
+
+								$scope.disciplineBooks.forEach(function(
+										discipline) {
+									discipline.books.forEach(function(book) {
+										if (book.guid == parentbookid
+												&& book.isCollasped == false) {
+											book.isCollasped = true;
+										}
+									})
 								});
 							}
 
 							$scope.addBookToSelectedList = function(book,
 									isSearched) {
-								var index = $scope.books.userSelected
+								var index = $scope.books.currentlySelected
 										.indexOf(book);
 								if (index > -1) {
 									if (!isSearched) {
-										$scope.books.userSelected.splice(index,
+										$scope.books.currentlySelected.splice(index,
 												1);
 									}
 									$scope.setBookScrollBar();
 
 								} else {
 									if ($scope.validateBook(book)) {
-										$scope.books.userSelected.push(book);
+										$scope.books.currentlySelected.push(book);
 										$scope.setBookScrollBar();
 									}
 
@@ -401,15 +428,14 @@ angular
 							}
 
 							$scope.setBookScrollBar = function() {
-								$scope.enableDisableNextButton($scope
-										.isBookEmpty());
 
 								if ($scope.searchedBook != undefined
 										&& $scope.searchedBook != "") {
-									var vtop = $(".bookContainerInLightBox").find(
-											"div:contains('"
-													+ $scope.searchedBook
-													+ "')").position().top;
+									var vtop = $(".bookContainerInLightBox")
+											.find(
+													"div:contains('"
+															+ $scope.searchedBook
+															+ "')").position().top;
 									if (vtop > $(".bookContainerInLightBox")[0].clientHeight
 											|| vtop < 0) {
 										$(".bookContainerInLightBox")[0].scrollTop = vtop;
@@ -441,39 +467,74 @@ angular
 								return bookGUID;
 							}
 
-							$scope.enableDisableNextButton = function(state) {
-								if (state) {
-									$(".nextButton").addClass("btnDisbled");
-								} else {
-									$(".nextButton").removeClass("btnDisbled");
-								}
-							}
-
 							$scope.saveBooks = function() {
 								UserService
-										.saveUserBooks($scope.books.userSelected);
+										.saveUserBooks($scope.books.currentlySelected);
 							};
 
-							$scope.showOldEdition = function(parentbookid) {
-								$("div[parentbookid='" + parentbookid + "']")
-										.css("display", "block");
-								$('#' + parentbookid).toggleClass(
-										'collapseBookEdition');
+							$scope.showOldEdition = function(parentbookid,
+									disciplineName) {
+								var parentBook = null;
+								var oldEditions = [];
+								var isAnyOldEditionsSelected = false;
+
+								$scope.disciplineBooks
+										.forEach(function(discipline) {
+											if (discipline.name == disciplineName) {
+												discipline.books
+														.forEach(function(book) {
+															if (book.parentBookID == parentbookid) {
+																oldEditions
+																		.push(book);
+																if ($scope.books.currentlySelected
+																		.indexOf(book.guid) > -1) {
+																	isAnyOldEditionsSelected = true;
+																}
+															}
+															if (book.guid == parentbookid) {
+																parentBook = book;
+															}
+														});
+											}
+										});
+
+								if (!isAnyOldEditionsSelected) {
+									oldEditions.forEach(function(book) {
+										if (book.showEdition == false) {
+											book.showEdition = true;
+										} else if (book.showEdition == true) {
+											book.showEdition = false;
+										}
+									});
+
+									if (parentBook.isCollasped == false) {
+										parentBook.isCollasped = true;
+									} else if (parentBook.isCollasped == true) {
+										parentBook.isCollasped = false;
+									}
+
+								}
 
 								event.stopPropagation();
 
 							}
 
+							$scope.isBookEmpty = function() {
+								if ($scope.books.currentlySelected.length > 0) {
+									return false;
+								} else {
+									return true;
+								}
+							}
+							
 							$scope.finishWizard = function() {
-								
+
 								$scope.exitDiscipline();
-								
-									$scope.saveDiscpline();
-									$scope.saveBooks();
-									$modalInstance.close();
-							
 
-							}								
+								$scope.saveDiscpline();
+								$scope.saveBooks();
+								$modalInstance.close();
 
-							
+							}
+
 						} ]);
