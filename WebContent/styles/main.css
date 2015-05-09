@@ -119,3 +119,6 @@
 .save-dropdown a{
     cursor:pointer;
 }
+.header-nav-bar .dropdown-menu{
+    width :312px;
+}

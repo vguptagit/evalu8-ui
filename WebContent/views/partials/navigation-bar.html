@@ -1,4 +1,4 @@
-<nav class="navbar navbar-inverse navbar-fixed-top">
+<nav class="navbar navbar-inverse navbar-fixed-top header-nav-bar">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -9,19 +9,19 @@
             </button>
             <a class="navbar-brand" href="">Evalu8 from Pearson</a>
         </div>
-
-
         <div id="navbar" class="navbar-collapse collapse pull-right">
             <ul class="nav navbar-nav">
                 <li class="dropdown">
                     <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">John <span class="glyphicon glyphicon-chevron-down" tooltip="Logout and Account Information" tooltip-placement="bottom"></span><span class="border-right margin-border"></span></a>
                     <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                        <label class="margin-lft-20"><strong>John Smith</strong></label>
-                        <label class="margin-lft-20">john.smith@nyu.edu</label>
-                        <li><a tabindex="-1" href="#">Profile</a></li>
-                        <li><button ng-click="settings_open()">Settings</button>
+                        <li class="text-center"><label class="margin-lft-20"><strong>John Smith</strong></label></li>
+                        <li class ="text-center"><label class="margin-lft-20">john.smith@nyu.edu</label></li>
                         <li class="divider"></li>
-                        <button type="button" class="btn btn-primary width100">Sign Out</button>
+                        <li>
+                            <button type="button" class="btn btn-default" ng-click="settings_open()">Settings</button>
+                            <button type="button" class="btn btn-default">Profile</button>
+                            <button type="button" class="btn btn-default">Sign Out</button>
+                        </li>
                     </ul>
                 </li>
                 <!--<li ng-show="userName!=''">
