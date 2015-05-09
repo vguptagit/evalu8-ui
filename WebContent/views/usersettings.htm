@@ -1,16 +1,17 @@
 <div class="modal-header">
-	<button type="button" class="close" data-ng-click="cancel()"
-		aria-label="Close">
-		<span aria-hidden="true">&times;</span>
-	</button>
-	<h4 class="modal-default-header-title" id="myModalLabel">Settings</h4>
+		<div class="col-md-12 text-right">
+			<button ng-click="cancel()">Cancel</button>
+			<button ng-click="finishWizard()">Save</button>
+		</div>
+	<h4 class="modal-default-header-title" id="myModalLabel">Settings</h4>	
+
 </div>
 
 <div class="modal-body">
 	<div class="row"></div>
 	<div class="row">
 		<div class="col-md-12">
-			<section>
+
 				<ul class="nav nav-tabs ng-scope">
 					<li ng-class="{'active': activeTab == 'questionBanks'}">
 		        		<a class="ng-binding" href="#" ng-click="showQuestionBank(this)">Question Banks</a>
@@ -20,30 +21,41 @@
 		    		</li>		    		        			        		
 				</ul>
 				
-				<div style="padding-top:15px" ng-show="activeTab == 'questionBanks'">
+				<div style="padding-top:15px;" ng-show="activeTab == 'questionBanks'">
         		
         			<div class="col-md-12">
         			The Question Banks area provides publisher test banks based on your selections.
         			</div>
 
+					<div class="col-md-12" style="margin:25px;">
+						<button ng-click="edit(1)"><i class="glyphicon glyphicon-pencil"></i> Edit Disciplines </button>
+						<button ng-click="edit(2)"><i class="glyphicon glyphicon-pencil"></i> Edit Question Banks </button></div>
+					</div>
 
-       				<div style="padding-top:21px; margin-top:21px;" ng-repeat="discipline in disciplines">
-       					<div>
-       						<div class="text-left col-md-4"><b>Discipline: </b></div>
-       						<div class="text-left col-md-4">{{discipline}} </div>
-       						<div class="text-left col-md-4"><span ng-if="$index==0"><a href="#" ng-click="edit(1)">Edit Disciplines </span></a></div>
-       				 	</div>
 
-      				 	<div style="padding-top:15px; margin-top:15px;" ng-repeat="book in books | filter: {discipline: discipline}">
-      				 		<div>
-        						<div class="text-left col-md-4"><span ng-if="$index==0"><b>Question Bank(s): </b></span></div>
-        						<div class="text-left col-md-4">{{book.title}} </div>
-        						<div class="text-left col-md-4"><span ng-if="$parent.$index==0 && $index==0"><a href="#" ng-click="edit(2)">Edit Question Banks </a></span></div>
-        				 	</div>
-       				 	</div>
-
+					<div style="padding-top:15px; margin-top:25px;">
+						<div style="float:left; background-color: #c8c8c8; padding-top: 8px; padding-bottom: 8px" class="col-md-12">
+							<div class="col-md-4">Disciplines</div>
+							<div class="col-md-8">Test Banks</div>
+						</div>        						
+						<div style="clear:left;">&nbsp;</div>
+						<div ng-repeat="book in books | orderBy: 'discipline'">
+						
+							<div style="float:left;" class="col-md-12">
+								<hr ng-show="books[$index-1].discipline != book.discipline && $index > 0" />
+							</div>        						
+							<div style="clear:left;"></div>
+							
+							<div style="float:left;" class="col-md-12">
+								<div class="col-md-4"><span 
+									ng-show="books[$index-1].discipline != book.discipline">{{book.discipline}}</span>&nbsp;</div>
+								<div class="col-md-8">{{book.title}} </div>
+							</div>        						
+							<div style="clear:left;">&nbsp;</div>
+						</div>
+					</div>
        				 	
-       				</div>        				
+       			        				
 
         		
         		</div>
@@ -60,15 +72,8 @@
         			</div>
         		</div>
         		
-			</section>
+
 		</div>
 	</div>
-	<div class="row" style="border-bottom: 1px solid #ddd; padding-top: 15px;">&nbsp;</div>
-	<div class="row" style="padding-top: 12px;">
-		<div class="col-md-8"></div>
-		<div class="col-md-4 text-right">
-			<button ng-click="cancel()">Cancel</button>
-			<button ng-click="finishWizard()">Save</button>
-		</div>
-	</div>
+
 </div>
