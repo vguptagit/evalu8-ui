@@ -119,6 +119,18 @@
 .save-dropdown a{
     cursor:pointer;
 }
+.save-dropdown ul{
+    min-width:100px;
+}
 .header-nav-bar .dropdown-menu{
     width :312px;
+}
+
+.test-creation-frame .dropdown-menu:before,
+.test-creation-frame .dropdown-menu:after {
+  display:none;
+}
+
+.test-creation-frame-btn-group{
+    margin-left:-10px;
 }

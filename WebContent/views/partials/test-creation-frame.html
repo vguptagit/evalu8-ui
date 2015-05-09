@@ -1,4 +1,4 @@
-<div id="TestCreationArea">
+<div id="TestCreationArea" class="test-creation-frame">
     <div class="row">
         <div id="caption" class="col-md-4">
             <h4>Create or Edit Tests</h4>
@@ -11,9 +11,11 @@
             </button>
         </div>
         <div class="col-md-5">
-            <div class="btn-group" role="group" aria-label="...">
-                <!--<div class="dropdown save-dropdown">
-                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+
+            <div class="btn-group test-creation-frame-btn-group" role="group" aria-label="...">
+                <div class="btn-group save-dropdown" role="group">
+                    <button class="btn btn-primary dropdown-toggle" type="button" ng-disabled="tests[currentIndex].isTestWizard && tests[currentIndex].testId == null"
+                            id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
                         Save
                         <span class="caret"></span>
                     </button>
@@ -21,15 +23,15 @@
                         <li role="presentation"><a ng-click="saveTest()" ng-disabled="tests[currentIndex].isTestWizard && tests[currentIndex].testId == null" tooltip="Save your tests" tooltip-placement="bottom" role="menuitem" tabindex="-1">Save</a></li>
                         <li role="presentation"><a ng-click="saveAsTest()" ng-disabled="tests[currentIndex].isTestWizard && tests[currentIndex].testId == null" tooltip="Save your tests as" tooltip-placement="bottom" role="menuitem" tabindex="-1">Save As</a></li>
                     </ul>
-                </div>-->
-                <button type="button" class="btn btn-primary" ng-click="saveTest()"
-                        ng-disabled="tests[currentIndex].isTestWizard && tests[currentIndex].testId == null" tooltip="Save your tests" tooltip-placement="bottom">
-                    Save
-                </button>
+                </div>
+                <!--<button type="button" class="btn btn-primary" ng-click="saveTest()"
+                ng-disabled="tests[currentIndex].isTestWizard && tests[currentIndex].testId == null" tooltip="Save your tests" tooltip-placement="bottom">
+            Save
+        </button>-->
                 <!--<button type="button" class="btn btn-primary" ng-click="saveAsTest()"
-                        ng-disabled="tests[currentIndex].isTestWizard && tests[currentIndex].testId == null" tooltip="Save your tests" tooltip-placement="bottom">
-                    Save As
-                </button>-->
+                ng-disabled="tests[currentIndex].isTestWizard && tests[currentIndex].testId == null" tooltip="Save your tests" tooltip-placement="bottom">
+            Save As
+        </button>-->
                 <button type="button" class="btn btn-primary" tooltip="Print and Format Tests" tooltip-placement="bottom">Print</button>
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-primary {{exportBtnCss}}"
