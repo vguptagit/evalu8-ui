@@ -116,3 +116,6 @@
       position: relative;
       top: 10px;
 }
+.save-dropdown a{
+    cursor:pointer;
+}

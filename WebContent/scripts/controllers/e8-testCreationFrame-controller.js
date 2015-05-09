@@ -1860,7 +1860,23 @@ angular
 													}
 												});
 							};
-							// #endregion Test wizard *************************
+						    // #endregion Test wizard *************************
+
+						    //Open Save-As Test dialog model popup.
+							$scope.saveAsTest = function () {
+							    $modal.open({
+							        templateUrl: 'views/partials/save-test-dialog-popup.html',
+							        controller: 'SaveTestDialogController',
+							        size: 'lg',
+							        backdrop: 'static',
+							        keyboard: false,
+							        resolve: {
+							            parentScope: function () {
+							                return $scope;
+							            }
+							        }
+							    });
+							}
 						} ]);
 
 angular.module('e8MyTests').directive('bindQti',

@@ -11,12 +11,25 @@
             </button>
         </div>
         <div class="col-md-5">
-            <div class="btn-group pull-right" role="group" aria-label="...">
-
+            <div class="btn-group" role="group" aria-label="...">
+                <!--<div class="dropdown save-dropdown">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                        Save
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                        <li role="presentation"><a ng-click="saveTest()" ng-disabled="tests[currentIndex].isTestWizard && tests[currentIndex].testId == null" tooltip="Save your tests" tooltip-placement="bottom" role="menuitem" tabindex="-1">Save</a></li>
+                        <li role="presentation"><a ng-click="saveAsTest()" ng-disabled="tests[currentIndex].isTestWizard && tests[currentIndex].testId == null" tooltip="Save your tests as" tooltip-placement="bottom" role="menuitem" tabindex="-1">Save As</a></li>
+                    </ul>
+                </div>-->
                 <button type="button" class="btn btn-primary" ng-click="saveTest()"
                         ng-disabled="tests[currentIndex].isTestWizard && tests[currentIndex].testId == null" tooltip="Save your tests" tooltip-placement="bottom">
                     Save
                 </button>
+                <!--<button type="button" class="btn btn-primary" ng-click="saveAsTest()"
+                        ng-disabled="tests[currentIndex].isTestWizard && tests[currentIndex].testId == null" tooltip="Save your tests" tooltip-placement="bottom">
+                    Save As
+                </button>-->
                 <button type="button" class="btn btn-primary" tooltip="Print and Format Tests" tooltip-placement="bottom">Print</button>
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-primary {{exportBtnCss}}"
