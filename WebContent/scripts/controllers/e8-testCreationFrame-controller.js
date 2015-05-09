@@ -80,40 +80,50 @@ angular
 
 							function convertHtmlToXmlNode(selectedQstnNode) {
 								var xml = jQuery
-										.parseXML(selectedQstnNode.node.data);
+								.parseXML(selectedQstnNode.node.data);
 								var qstnHTML = $(selectedQstnNode.$element);
 								var qstnCaption = replaceImage(qstnHTML
 										.find('#qtiCaption'));
-
+		
 								$(xml).find('itemBody').find('p').eq(0).html(
 										qstnCaption);
-								
-								if($(xml).find('responseDeclaration').find('correctResponse').find('value').length >= 1){
-									 $(xml).find('responseDeclaration').find('correctResponse').find('value').html(replaceImage(qstnHTML.find('div.valueView')));
-									 }
-								else if(qstnHTML.find('div.qti-correctResponse div.valueView').length > 0 && $(xml).find('responseDeclaration').find('correctResponse').length == 0){
-									var responseDeclaration = $(xml).find('responseDeclaration');
-									var response = responseDeclaration.append("<correctResponse></correctResponse>").children();
-									var value = response.append("<value></value>").children();
-									value.html(replaceImage(qstnHTML.find('div.valueView')))
-								}
-								
 								$(xml).find('assessmentItem').attr(
 										'identifier', 'QUESTION-X');
 								
 								if (selectedQstnNode.node.quizType =="Matching"){
 									
+									var htmlBlockquote = qstnHTML.find('blockquote');
+									
+									var responseDeclaration = $(xml).find('responseDeclaration');
+									
+									var responseTag = ' <responseDeclaration identifier="@RESPONSE" cardinality="single" baseType="identifier">'
+								        +'<mapping defaultValue="0"><mapEntry mapKey="@RESP" mappedValue="1"/></mapping></responseDeclaration>';	
+																		
+									for (var i = responseDeclaration.length; i < htmlBlockquote.length; i++) {
+										
+									
+										responseTag = responseTag.replace(
+												'@RESPONSE', 'RESPONSE_'+(i+1));
+										
+										responseTag = responseTag.replace(
+												'@RESP', 'RESP_'+(i+1));
+										
+										var item = $.parseXML(responseTag); 
+									
+										$(xml).find( "responseDeclaration:last" ).after($(item).children(0));
+										
+									}
 									
 									$(xml).find('itemBody').find('blockquote').remove();
 									
-									var htmlBlockquote = qstnHTML.find('blockquote');
+									
 									
 									var matchArray= htmlBlockquote.find('.matchOptionTextEditablediv');
 									var optionArray= htmlBlockquote.find('.optionTextBoxContainer');
 									
 									var optionText = '';
 									
-									var optionTag = '<blockquote><p>@p<inlineChoiceInteraction responseIdentifier="@RESPONSE" shuffle="true">'
+									var optionTag = '<blockquote><p>@p<inlineChoiceInteraction xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1" responseIdentifier="@RESPONSE" shuffle="true">'
 										+'</inlineChoiceInteraction></p></blockquote>';	
 									
 									var inlineChoiceTags = '<inlineChoiceInteraction responseIdentifier="@RESPONSE" shuffle="true">'
@@ -156,7 +166,13 @@ angular
 										$(item).children(0));
 									}
 												
-												
+								
+									var qstnModifiedData = getMatchingQstn_Details($(xml));
+									selectedQstnNode.node.IsEdited = !angular
+											.equals(
+													selectedQstnNode.node.qstnMasterData,
+													qstnModifiedData);
+									
 									
 								}else{
 									
@@ -206,14 +222,19 @@ angular
 									setIdentifierScore(xml, optionsHtmlControl);
 								}
 
-								var qstnModifiedData = buildQstnModifiedDetails($(xml));
+								var qstnModifiedData = getMultipleChoiceQstn_MasterDetails($(xml));
 								selectedQstnNode.node.IsEdited = !angular
 										.equals(
 												selectedQstnNode.node.qstnMasterData,
 												qstnModifiedData);
 								
 							}
-
+								
+								var serializer = new XMLSerializer();
+								var editedXML = serializer
+										.serializeToString(xml);
+								selectedQstnNode.node.data = editedXML;
+								
 								QTI.initialize();
 								QTI.Attribute.id = 1;
 								QTI.BLOCKQUOTE.id = 0;
@@ -224,10 +245,7 @@ angular
 								selectedQstnNode.node.textHTML = displayNode
 										.html();
 
-								var serializer = new XMLSerializer();
-								var editedXML = serializer
-										.serializeToString(xml);
-								selectedQstnNode.node.data = editedXML;
+								
 
 								var attrs = {};
 								attrs.bindQti = "getHTML(this)";
@@ -463,11 +481,9 @@ angular
 														iterator.find(".matchOptionIndexdiv").html(placeHolder.replace((index+1), (index)));
 														
 														index = index + 1;														
-													}
+													}													
 													
-													
-													$($scope.event.currentTarget).parents("blockquote").eq(0).remove();
-													
+													$($scope.event.currentTarget).parents("blockquote").eq(0).remove();													
 													
 												}
 												;
@@ -477,10 +493,6 @@ angular
 									$scope.message = "Minimum Options/Match pairs required is 3."
 									$modal.open(confirmObject);
 								}	
-								
-								
-								
-								
 								
 							}
 							
@@ -522,7 +534,6 @@ angular
 									index = index + 1;
 								}
 								
-
 								selectedOption.node.textHTML = selectedOption.$element
 										.children().html();
 								var attrs = {};
@@ -756,47 +767,33 @@ angular
 									});
 							$scope.testTitle = "New Test";
 
-							function buildQstnModifiedDetails(xml) {
-								var optionList = [];
-								var correctAnswerList = [];
-
-								$(xml)
-										.find(
-												'setOutcomeValue[identifier="SCORE"] baseValue')
-										.each(function(i, e) {
-
-											if ($(this).text() == "1") {
-												correctAnswerList.push(i);
-											}
-										});
-
-								$(xml).find('itemBody').find(
-										'choiceInteraction').find(
-										"simpleChoice").each(function(i, e) {
-
-									optionList.push($(this).text().trim());
-								});
-
-								var qstnModifiedData = {
-									caption : $(xml).find('itemBody').find('p')
-											.html().trim(),
-									options : optionList,
-									optionCount : $(xml).find('itemBody').find(
-											'choiceInteraction').find(
-											"simpleChoice").length,
-									correctAnswer : correctAnswerList
-								}
-
-								return qstnModifiedData;
-							}
 							function buildQstnMasterDetails(qstnNode) {
-								var xml = jQuery.parseXML(qstnNode.data);
+								
+								var qstnXML = jQuery.parseXML(qstnNode.data);
+								
+									switch(qstnNode.quizType) {		
+									
+										 case "MultipleResponse","MultipleChoice","Essay","FillInBlanks","TrueFalse":
+											 
+											 return getMultipleChoiceQstn_MasterDetails(qstnXML);										 
+									         break;
+									         
+									      case "Matching":
+									    	 return getMatchingQstn_Details(qstnXML);
+									         break;
+									     
+									      default:
+									    	  
+									    	  return getMultipleChoiceQstn_MasterDetails(qstnXML);
+								      
+								     }
+																
+							}
+							
+							function getMultipleChoiceQstn_MasterDetails(qstnXML) {								
 								var optionList = [];
 								var correctAnswerList = [];
-								// $(xml).find('setOutcomeValue[identifier="SCORE"]
-								// baseValue').index($(xml).find('setOutcomeValue[identifier="SCORE"]
-								// baseValue:contains("1")'));
-								$(xml)
+								$(qstnXML)
 										.find(
 												'setOutcomeValue[identifier="SCORE"] baseValue')
 										.each(function(i, e) {
@@ -806,7 +803,7 @@ angular
 											}
 										});
 
-								$(xml).find('itemBody').find(
+								$(qstnXML).find('itemBody').find(
 										'choiceInteraction').find(
 										"simpleChoice").each(function(i, e) {
 
@@ -821,14 +818,44 @@ angular
 										: false;
 
 								var qstnMasterData = {
-									caption : $(xml).find('itemBody').find('p')
+									caption : $(qstnXML).find('itemBody').find('p')
 											.html().trim(),
 									options : optionList,
-									optionCount : $(xml).find('itemBody').find(
+									optionCount : $(qstnXML).find('itemBody').find(
 											'choiceInteraction').find(
 											"simpleChoice").length,
 									correctAnswer : correctAnswerList,
 									optionsView : nodeOptionsView
+								}
+
+								return qstnMasterData;
+							}
+							
+							function getMatchingQstn_Details(qstnXML) {								
+								var leftOptionList = [];
+								var rightOptionList = [];
+								
+								$(qstnXML).find('itemBody').find(
+								'blockquote').each(function(i, e) {
+
+									leftOptionList.push($(this).find("p").eq(0).html());
+								});
+								
+								$(qstnXML).find('itemBody').find(
+								'blockquote').eq(0).find("inlineChoiceInteraction inlineChoice").each(function(i, e) {
+
+									rightOptionList.push($(this).html());
+								});
+																
+								
+
+								var qstnMasterData = {
+									caption : $(qstnXML).find('itemBody').find('p').eq(0).html(),
+									leftOptions: leftOptionList ,
+									rightOptions: rightOptionList,									
+									optionCount : $(qstnXML).find('itemBody').find(
+											'blockquote').length,
+									optionsView : true
 								}
 
 								return qstnMasterData;
@@ -1013,7 +1040,109 @@ angular
 										$scope.currentIndex);
 							}
 							
-							
+							 function updateMatchingTemplatePrefilledtext(qstnNode) {
+	                                var xml = jQuery.parseXML(qstnNode.data);
+	
+	                                if ($(xml).find('itemBody').find('p').eq(0)
+	                                        .html() == "") {
+	                                    if (qstnNode.IsDefaultEditView) {                    
+
+	                                        var captionHtml = replaceImage($(document
+	                                                .querySelector("li[printmode = false] #qtiCaption")));
+	                                        if (captionHtml == "") {
+	                                            captionHtml = CustomQuestionTemplate[qstnNode.quizType].printCaption;
+	                                        }
+
+	                                        $(xml).find('itemBody').find('p').eq(0)
+	                                                .html(captionHtml);
+	                                    }else{
+	                                        $(xml).find('itemBody').find('p').eq(0)
+	                                        .html(CustomQuestionTemplate[qstnNode.quizType].printCaption);
+	                                    }
+	                                }
+	                                
+	                                
+	                                        
+	                                var matchOptionsHtml = $(
+	                                        document
+	                                                .querySelector("li[printmode = false] .qti-itemBody"))
+	                                        .find('div.matchOptionTextEditablediv');
+	                                
+	                                
+	                                var matchOptionsTxt = [];
+	                                 $.grep(matchOptionsHtml,
+	                                        function(matchOption) {
+	                                     matchOptionsTxt.push(replaceImage($(matchOption)));
+	                                });
+	                                
+	                                
+	                                $(xml).find('inlineChoiceInteraction').each(function(i,e){
+	                                    
+	                                   $(this).children().each(function(i,e){
+	                                   
+	                                        if ($(this).text() == "") {
+	                                            $(this).text("Match");
+	                                            if (qstnNode.IsDefaultEditView) {
+	                                                $(this).html(matchOptionsTxt[i]);
+	                                                if ( matchOptionsTxt[i] == "") {
+	                                                    $(this).text("Match");
+	                                                }
+	                                            } 
+	                                        }
+	                                        
+	                                        
+	                                    })
+	                                });
+	                                
+	                                
+	                                
+	                                
+	                                var optionsHtml = $(
+	                                        document
+	                                                .querySelector("li[printmode = false] .qti-itemBody"))
+	                                        .find('div.optionTextBoxContainer');
+	                                
+	                                var optionHtmlText = '';
+
+	                                $(xml).find('itemBody').find('blockquote').each(function(i, e) {
+	                                    
+	                                    var pTag = $(this).find('p').eq(0).clone();
+	                                    $(pTag).find('inlineChoiceInteraction').remove();
+	                                
+	                                                    if (pTag.html() == "") {
+	                                                        if (qstnNode.IsDefaultEditView) {
+
+	                                                            optionHtmlText = replaceImage(optionsHtml
+	                                                                    .eq(i));
+
+	                                                            if (optionHtmlText == "") {
+	                                                                optionHtmlText = CustomQuestionTemplate[qstnNode.quizType].printOption+ " "+ (i+1) + "__";;
+	                                                            }
+
+	                                                            $(this).find('p').eq(0)
+	                                                                    .prepend(
+	                                                                            optionHtmlText);
+
+	                                                        } else {
+
+	                                                            $(this).find('p').eq(0)
+	                                                                    .prepend(
+	                                                                            CustomQuestionTemplate[qstnNode.quizType].printOption);
+
+	                                                        }
+	                                                    }
+
+	                                                });
+
+	                                var serializer = new XMLSerializer();
+	                                var editedXML = serializer
+	                                        .serializeToString(xml);
+	                                qstnNode.data = editedXML;
+	                                
+	                                return qstnNode;
+	                                
+	                            }
+							 
 							function updateTemplatePrefilledtext(qstnNode) {
 								var xml = jQuery.parseXML(qstnNode.data);
 
@@ -1145,7 +1274,11 @@ angular
 												function(qstn) {
 
 													if (qstn.qstnTemplate) {
+														if(qstn.quizType=="Matching"){															
+															qstn =  updateMatchingTemplatePrefilledtext(qstn);
+														}else{														
 														qstn =  updateTemplatePrefilledtext(qstn);
+														}
 													}
 
 													var QuestionEnvelop = {

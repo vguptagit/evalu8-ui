@@ -2851,6 +2851,8 @@ QTI.getQuestionType = function(qtiXML,questionType){
 		return questionType;
 	if(QTI.format(qtiXML).find("extendedTextInteraction").length > 0){
 		return "Essay";
+	}else if(QTI.format(qtiXML).find("inlineChoiceInteraction").length > 0){
+		return "Matching";
 	}
 }
 QTI.getQuizType = function(quiztype){
