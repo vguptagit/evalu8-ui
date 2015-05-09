@@ -1370,11 +1370,9 @@ li[quiztype='TrueFalse'] .qti-simpleChoice .radio {
 /* Welcome Screen CSS  Starts*/
 .welcome {
 	box-shadow: 0px 0px 8px #C0C0C0;
-	width: 100%;
+	width: 470px;
 	padding: 111px;
-	/*position: absolute;
-	  top: 13%;
-  right: 32%; */
+	float:none;
 	padding: 40px 40px 40px 40px;
 }
 
