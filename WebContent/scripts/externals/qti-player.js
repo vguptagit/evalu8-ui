@@ -2589,7 +2589,7 @@ QTI.Elements.InlineChoiceInteraction.play = function(qtiNode, displayNode,
 			
 		$(displayNode).append(elementDisplayNode);
 		
-		var matchOptionsIndex = $("<label></label>");
+		var matchOptionsIndex = $("<label class='matchIndex' ></label>");
 		matchOptionsIndex.append(matchIndex[qtiNode.attr("responseIdentifier")
 		        			  				.substring(9)]	);
 		elementDisplayNode.append(matchOptionsIndex);

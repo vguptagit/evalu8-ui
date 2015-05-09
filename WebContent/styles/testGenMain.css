@@ -1988,6 +1988,9 @@ li[qstntemplate='true'] .indChar {
     float: left;
     text-align: center;
     padding-top: 2px;
+    font-size:11px;
+    font-weight: bold;
+    background-color: #EFEFEF;
 }
 
 .imageIconContainer {
@@ -1998,8 +2001,9 @@ li[qstntemplate='true'] .indChar {
     padding-left: 7px;
 }
 
-.qstnContainer .qti-blockquote{
-    display: block;
+.qstnContainer .qti-blockquote{    
+    display: table;
+    width: 100%;
 }
   .EssayHeader{
   font-size: 14px;    
@@ -2007,4 +2011,12 @@ li[qstntemplate='true'] .indChar {
   }
   .valueView{
   width: 450px;
+  }
+  
+ .printViewContainer  .qti-blockquote .matchIndex{
+    margin-right:10px;
+    vertical-align: top;
+   }
+  .printViewContainer .questionImage{
+      max-width: 200px;
   }

@@ -326,7 +326,7 @@ angular
 									var url = $(this).attr("url");
 									htmlText = htmlText.replace(
 											$(this).get(0).outerHTML,
-											"<img width='300px' src='" + url
+											"<img class='questionImage' src='" + url
 													+ "' \/>")
 								})
 								return htmlText;
