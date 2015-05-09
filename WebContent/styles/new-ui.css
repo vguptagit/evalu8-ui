@@ -428,7 +428,7 @@ a.fa.fa-user{
   right: 64px;
   position: absolute;
   font-size: 15px;
-  top: 5px;
+  top: 1px;
 }
 .removeIcon{
   display: inline-block;
@@ -442,7 +442,7 @@ a.fa.fa-user{
   right: 20px;
   position: absolute;
   font-size: 15px;
-  top: 5px
+  top: 1px
 }
 .removeIcon:hover,.restoreicon:hover{
   border: 1px solid #3C85C2;
@@ -476,7 +476,7 @@ a.fa.fa-user{
  /*new css */
  span.fa.fa-lightbulb-o {
   color:rgb(255, 126, 0);
-  font-size: 20px;
+  font-size: 25px;
 }
 .TestcreationInfo {
   background-color: #f8f8f8;
