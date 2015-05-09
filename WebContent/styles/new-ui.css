@@ -136,11 +136,12 @@
 	border: 1px solid transparent;
 	border-radius: 4px 4px 0 0;
 	Padding: 10px 15px;
+	color:#808080;
 }
 
 .nav-tabs>li>a:hover {
 	border-color: #eee #eee #ddd;
-	color: #007FA9;
+	color: #808080;
 	Border: 4pxsolid #A9DCED;
 	border-bottom: 4px #A9DCED solid;
 }
@@ -487,4 +488,8 @@ a.fa.fa-user{
 }
 .left-frame,.right-frame{
 	background-color: #F8F8F8;
+}
+.nav-tabs.resources-tabs {
+  border-bottom: 4px solid #ddd;
+  height: 44px;
 }

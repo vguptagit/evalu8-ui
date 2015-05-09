@@ -302,7 +302,7 @@ a.newFolder:hover {
 }
 
 .sectionLineDiv {
-	width: 96%;
+	width: 98%;
 	margin-left: 2%;
 	margin-right: 2%;
 	background-color: #DDDDDD;
@@ -815,15 +815,15 @@ ol {
 .testHighlight {
 	background-color: #007FA9 !important;
 	color: #FFFFFF;
-	border-left: 5px #0B6786 solid;
+	border-left: 2px #0B6786 solid;
 	Border-Bottom: 2px #FFFFFF;
 }
 
 .testHighlight:hover {
-	background-color: #007FA9 !important;
-	color: #FFFFFF;
-	border-left: 5px #0B6786 solid;
-	Border-Bottom: 2px #FFFFFF;
+  background-color: #007FA9 !important;
+  color: #FFFFFF;
+  border-left: 2px #0B6786 solid;
+  Border-Bottom: 2px #FFFFFF;
 }
 
 .maindivTest:hover {
@@ -1721,22 +1721,22 @@ ul.a {
 }
 
 .newFolderDiv {
-	width: 98%;
-	text-align: left;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-weight: bold;
-	margin-left: 2%;
-	margin-right: 2%;
-	white-space: normal;
-	background-color: #DDDDDD;
-	font-size: 12px;
-	line-height: 0.75;
-	padding: 0.5px 1px;
-	border-radius: 2px;
-	left: 4.5%;
-	top: 6px;
-	cursor: default;
-	height: 40px;
+  width: 99%;
+  text-align: left;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  margin-left: 1%;
+  margin-right: 2%;
+  white-space: normal;
+  background-color: #DDDDDD;
+  font-size: 12px;
+  line-height: 0.75;
+  padding: 0.5px 1px;
+  border-radius: 2px;
+  left: 4.5%;
+  top: 6px;
+  cursor: default;
+  height: 40px;
 }
 
 .addFolder {
