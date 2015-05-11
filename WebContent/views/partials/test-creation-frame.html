@@ -377,18 +377,45 @@
          <input name="radioView{{node.guid}}" ng-click="qstnOptionsView(this,false)"  type="radio">1 page</input>
       </div>
    </div>
-   <div class="metadataSection">
-		<div>Metadata</div>
-		  <div>ID: 89-786-AL</div>
-		  <div> Hint: <input type="textbox" ></input> </div>
-		   <div>Level: <input type="textbox"></input>
-		   </div>
-		   <div>Topic:   <input type="textbox"></input>
-		   </div>
-		   <div>Objective: <input type="textbox"></input>
-		   </div>
-		   <div>Page: <input type="textbox"/></input>  </div>
-		</div>
+    <div class="metadataSection">
+    <div class='metadataSectionCaption'>Metadata</div>
+    <div class='metadatarow'><span class='metdatalabel'>ID:</span>
+        <div class='metdataVal'> 89-786-AL</div>
+    </div>
+    <div class='metadatarow'><span class='metdatalabel'>Hint:</span>
+        <div class="metdataVal">
+            <input class='metdataInput' type="textbox"></input>
+        </div>
+    </div>
+    <div class='metadatarow'><span class='metdatalabel'>Level:</span>
+
+        <div class="metdataVal">
+            <select class='metadataQlvl'>
+                <option value="0" selected="selected">Select level</option>
+                <option value="1">High Level</option>
+                <option value="2">Medium Level</option>
+                <option value="3">Low Level</option>
+            </select>
+        </div>
+
+    </div>
+
+    <div class='metadatarow'><span class='metdatalabel'>Topic:</span>
+        <div class="metdataVal">
+            <input class='metdataInput' type="textbox"></input>
+        </div>
+    </div>
+    <div class='metadatarow'><span class='metdatalabel'>Objective:</span>
+        <div class="metdataVal">
+            <input class='metdataInput' type="textbox"></input>
+        </div>
+    </div>
+    <div class='metadatarow'><span class='metdatalabel'> Page:</span>
+        <div class="metdataVal">
+            <input class='metdataInput' type="textbox" /></input>
+        </div>
+    </div>
+</div>
    
 </div>
 
