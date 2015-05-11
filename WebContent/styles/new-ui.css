@@ -475,7 +475,7 @@ a.fa.fa-user{
   }
  /*new css */
  span.fa.fa-lightbulb-o {
-  color:rgb(255, 126, 0);
+  color:white;
   font-size: 25px;
 }
 .TestcreationInfo {
@@ -493,7 +493,19 @@ a.fa.fa-user{
   border-bottom: 4px solid #ddd;
   height: 44px;
 }
-
+.restoreicon.fa-arrow-up {
+  top: 5px;
+}
+.removeIcon.fa-remove {
+  top: 5px;
+}
+.circle-icon {
+  background-color: rgb(255, 165, 0);
+  padding: 5px;
+  border-radius: 50%;
+  width: 35px;
+  text-align: center;
+}
 /*save-as page starts */
 .folder-main {
         min-height: 20px;
