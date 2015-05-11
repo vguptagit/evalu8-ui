@@ -2092,14 +2092,11 @@ li[qstntemplate=true] .printViewContainer  .qti-blockquote .matchIndex {
 	font-size: 14px;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 }
-.printViewContainer .mOptionLabelView {
+.printViewContainer .mOptionLabel {
 	display: table;
-	padding-left: 10px;
-	font-size: 11px;
-	font-weight: bold;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	padding-left: 10px;	
 }
-.editViewContainer .mOptionLabelView {
+.editViewContainer .mOptionLabel {
 	display: none;
 }
 

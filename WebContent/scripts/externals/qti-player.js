@@ -1624,8 +1624,8 @@ if(state.questionType=="Matching"){
 	    	var optionPtext=$(qtiNode).html();
 	    	var optiontext=$(qtiNode).text();
 	    	optionPtext = optionPtext.substring(0, optionPtext.indexOf("<inlineChoiceInteraction")).trim();
-	    	qstnCaption=optionPtext;	   	
-	    	
+	    	qstnCaption=optionPtext;
+	    
 	    	$(displayNode).append(elementDisplayNode);
 	    	 
 	    	 this.extend.play(qtiNode, elementDisplayNode, state);
@@ -1633,18 +1633,13 @@ if(state.questionType=="Matching"){
 	  		
 	  		if(qstnCaption!=""){
 	  			
-	  		var	contentsDisplayNode = $("<div class='mOptionLabelView'></div>").attr({	  				
-	  				"data---qti-content-container" : "true"
-	  			});
+	              var    contentsDisplayNode = $("<label class='mOptionLabel'></label>").attr({                      
+                      "data---qti-content-container" : "true"
+                  });
+
 	  		
-	  		var	optionDisplayNode = $("<label class='mOptionLabel' ></div>").attr({	  				
-  				"data---qti-content-container" : "true"
-  			});
-	  	
-	  		optionDisplayNode.append(optiontext);
-	  		contentsDisplayNode.append(optionDisplayNode);
-	  		contentsDisplayNode.append($(qtiNode).find('img').length >0?$(qtiNode).find('img')[0].outerHTML:"");
-	  		
+            contentsDisplayNode.append(optionPtext);
+
 	  		$(elementDisplayNode).append(contentsDisplayNode);
 	  		optionPtext=QTI.replaceImage($(contentsDisplayNode));	
 
