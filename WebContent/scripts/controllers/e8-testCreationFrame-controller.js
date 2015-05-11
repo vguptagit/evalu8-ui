@@ -16,10 +16,10 @@ angular
 						'SharedTabService',
 						'$modal',
 						'$compile',
-						'directiveQtiService','EnumService',
+						'directiveQtiService','EnumService','UserService',
 						function($scope, $rootScope, $location, $cookieStore,
 								$http, $sce, TestService, SharedTabService,
-								$modal, $compile, directiveQtiService,EnumService) {
+								$modal, $compile, directiveQtiService,EnumService,UserService) {
 
 							// $scope.tree2 =
 							// SharedTabService.tests[SharedTabService.currentTabIndex].questions;
@@ -886,9 +886,20 @@ angular
 
 												var newNode = angular
 														.copy(node);
+												
+												 UserService.userQuestionMetadata(function(userQuestionMetadata){
+													 newNode.questionMetadata = {};
+													 $.each(userQuestionMetadata, function( index, value ) {	
+														 newNode['questionMetadata'][value]='';																										
+														});													 
+												
+												 });
+												
 
 												var tests = SharedTabService.tests[SharedTabService.currentTabIndex].questions;
 
+											
+												 
 												if (sourceTabName == "CustomQuestions") {
 													newNode.IsEditView = true;
 													newNode.editMainText = CustomQuestionTemplate[newNode.quizType].editMainText;
@@ -900,9 +911,27 @@ angular
 													newNode.editMainText = CustomQuestionTemplate["MultipleChoice"].editMainText;
 													newNode.qstnMasterData = buildQstnMasterDetails(newNode);
 													newNode.optionsView = newNode.qstnMasterData.optionsView;
+													
+													setTimeout(
+															function() {
+																
+																$.each(newNode.extendedMetadata, function(index, item){																	
+																	 newNode['questionMetadata'][item['name']]=item['value'];												       
+																    });
+																 
+
+															}, 50);
+												
+													
 												}
 												newNode.qstnLinkText = newNode.IsEditView ? "View"
 														: "Edit";
+												
+												
+												 
+												 
+														
+												
 												var nodeAlreadyExist = false;
 												if (tests.length == 0) {
 													tests.push(newNode);
@@ -924,7 +953,7 @@ angular
 												}
 												$scope.tests[$scope.currentIndex].questions = tests;
 											});
-
+			
 							$rootScope.$on('editTest',
 									function(event, selectedTest) {
 										$scope.editTest(selectedTest);
