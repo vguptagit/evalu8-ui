@@ -31,6 +31,19 @@ angular
 						return filteredBooks;
 					};
 				})
+		.directive(
+				'resize',
+				function($window) {
+					return function(scope, element) {
+						var divHeight = ($(document).height() - $(
+								'.searchPanel').offset().top) + 60;
+
+						$('.disciplineContainer').height(divHeight);
+
+						$('.bookContainer').height(divHeight);
+
+					}
+				})
 		.controller(
 				'startupWizardController',
 				[
