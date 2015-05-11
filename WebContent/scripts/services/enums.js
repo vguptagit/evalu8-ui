@@ -14,4 +14,11 @@ angular.module('evalu8Demo')
             questionBanks: 'QuestionBanksController',
             testCreationFrame: 'TestCreationFrameController'
     };
+
+    this.CONTENT_TYPE = {
+        folder: 'folder',
+        test: 'test',
+        emptyFolder: 'empty',
+        archiveRoot: 'archiveRoot'
+    };
 });

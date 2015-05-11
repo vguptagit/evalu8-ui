@@ -1,12 +1,10 @@
 ﻿angular.module('e8MyTests')
 .controller('SaveTestDialogController',
-		['$scope', '$rootScope', '$modalInstance', 'parentScope', '$modal', 'UserFolderService',
-		 function ($scope, $rootScope, $modalInstance, parentScope, $modal, UserFolderService) {
-		     //angular.module('e8MyTests').controller('SaveAsPopupController', ['$modal', function ($scope, $rootScope, $modalInstance, $modal, parentScope) {
+		['$scope', '$rootScope', '$modalInstance', 'parentScope', '$modal', 'UserFolderService', 'EnumService',
+		 function ($scope, $rootScope, $modalInstance, parentScope, $modal, UserFolderService, EnumService) {
 
-
-		     $scope.loadTree = function () {
-
+		     $scope.selectedfolder = null;
+		     $scope.loadRootFolders = function () {
 		         UserFolderService.myTestRootFolder(function (myTestRoot) {
 		             $scope.myTestRoot = myTestRoot;
 		         });
@@ -16,9 +14,10 @@
 		         });
 		     }
 
-		     $scope.loadTree();
+		     $scope.loadRootFolders();
 		     $scope.getFolders = function (defaultFolder) {
-		         if (defaultFolder.node.nodeType == 'folder') {
+		         $scope.selectedfolder = defaultFolder.node;
+		         if (defaultFolder.node.nodeType === EnumService.CONTENT_TYPE.folder) {
 		             if ($.isArray(defaultFolder.$parent.node)) {
 		                 for (var i = 0; i < defaultFolder.$parent.node.length; i++) {
 		                     defaultFolder.$parent.node[i].nodes = []
@@ -32,14 +31,38 @@
 		         }
 		     }
 		     $scope.getUserFolders = function (defaultFolder, callback) {
-		         //defaultFolder.toggle();
-		         //if (!defaultFolder.collapsed) {
 		         UserFolderService.userFolders(defaultFolder.node, function (userFolders) {
 		             defaultFolder.node.nodes = userFolders;
 		             if (callback) callback();
 		         });
-		         //}
 		     };
+		     $scope.addNewFolder = function (folderName, callback) {
+		         if (folderName == null || folderName.trim().length == 0) { return; }
+		         var lastFolder = $scope.selectedfolder.nodes[$scope.selectedfolder.nodes.length - 1];
+		         var sequence = 1;
+		         if (lastFolder.nodeType != EnumService.CONTENT_TYPE.emptyFolder) {
+		             sequence = lastFolder.sequence + (lastFolder.sequence / 2);
+		         }
+
+		         var newFolder = {
+		             "parentId": $scope.selectedfolder === null ? null : $scope.selectedfolder.guid,
+		             "sequence": sequence,
+		             "title": folderName
+		         };
+
+		         UserFolderService.saveUserFolder(newFolder, function () {
+		             newFolder.nodeType = EnumService.CONTENT_TYPE.folder;
+		             if ($scope.selectedfolder) {
+		                 $scope.selectedfolder.nodes.push(newFolder);
+		             }
+		             else {
+		                 $scope.node.push(newFolder);
+		             }
+		             $rootScope.$broadcast('handleBroadcast_AddNewFolder', newFolder);
+
+		             if (callback) callback();
+		         });
+		     }
 
 		     /*****************************************************************************/
 		     $scope.curresnTest = parentScope.tests[parentScope.currentIndex];
@@ -62,7 +85,7 @@
 		         parentScope.closeTab($scope.curresnTest);
 		         $modalInstance.dismiss('cancel');
 		     };
-		     $scope.addNewFolder = function () {
+		     $scope.openAddNewFolderPopup = function () {
 		         $modal.open({
 		             templateUrl: 'addNewFolder.html',
 		             controller: 'AddNewFolderController',
@@ -81,14 +104,12 @@
 		 }]);
 angular.module('e8MyTests').controller('AddNewFolderController', function ($scope, $modalInstance, parentScope) {
 
-    //$scope.items = items;
-    //$scope.selected = {
-    //    item: $scope.items[0]
-    //};
+    $scope.folderName = "";
+    $scope.selectedfolder = parentScope.selectedfolder;
+    $scope.createFolder = function () {
+        if ($scope.folderName == null || $scope.folderName.trim().length == 0) { return; }
 
-    $scope.ok = function () {
-        parentScope.cancel();
-        //$modalInstance.close($scope.selected.item);
+        parentScope.addNewFolder($scope.folderName, $modalInstance.dismiss('cancel'));
     };
 
     $scope.cancel = function () {

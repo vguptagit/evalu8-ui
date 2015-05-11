@@ -569,4 +569,41 @@ angular.module('e8MyTests')
          //TODO : set container height, need revesit
         $('.myTest_scrollbar ').height(($(document).height() - $('.myTest_scrollbar ').offset().top) - 40);
 
+        //#region Save-as test
+        $scope.$on('handleBroadcast_AddNewFolder', function (handler, newFolder) {
+            var parentFolder = search($scope.defaultFolders, newFolder);                          
+            var parentFolderNodes = null;
+            if (parentFolder) {
+                parentFolderNodes = parentFolder.nodes;
+            }
+            else {
+                parentFolderNodes = $scope.defaultFolders.nodes;
+            }
+
+            var numberOfFolders = 0;
+            $.each(parentFolderNodes, function (i, item) {
+                if (item.nodeType === 'folder') {
+                    numberOfFolders++;
+                }
+            });
+            parentFolderNodes.splice(numberOfFolders, 0, newFolder)
+        });
+
+        function search(values, searchItem) {
+            var parentFolder = null;
+		    $.each(values, function (i, v) {
+		        if (v.guid == searchItem.parentId) {
+		            console.log('found', v);
+		            parentFolder = v;
+		            return false;
+		        }
+		        if (v.nodes) {
+		            search(v.nodes);
+		        }
+		    });
+		    return parentFolder;
+        }
+
+        //#endregion
+
     }]);
