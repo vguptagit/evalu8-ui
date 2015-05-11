@@ -326,64 +326,73 @@
         </div>
 
         <script type="text/ng-template" id="rf_question_renderer.html">
-            <div class="qstnContainer">
-                <div class="qstnView">
-                    <div class="questionEditCaption editView">
-                        {{node.editMainText}}
-                    </div>
-                    <a class="qstnViewLink" ng-click="showQstnPrintOrEditMode(this)"
-                       ng-show="showQstnEditIcon" tooltip="{{node.qstnLinkTitle}}" tooltip-placement="bottom">{{node.qstnLinkText}}</a>
-                </div>
-                <div ui-tree-handle class="tree-node tree-node-content questionList">
-                    <div ng-class="node.IsEditView ? 'editViewContainer' : 'printViewContainer' "
-                         bind-qti="getHTML(this)"></div>
-                </div>
-
-                <div class="editMetdata editView">
-                    <div class="imagecaptionMetadata">
-                        <input class="downArrowImage allignimage" type="image"
-                               src="images/right_arrow.png" />
-                        <div class="captionMetadata downArrowImage">
-                            Format and add
-                            metadata
-                        </div>
-                    </div>
-                    <div id="viewHeader">
-                        <span class="captionMetadata">Format</span><span class="normalText">
-                            (visible
-                            in Print View)
-                        </span>
-                    </div>
-                    <div class="vhDiv" ng-show=" node.quizType == 'MultipleChoice' || node.quizType == 'MultipleResponse' ">
-                        <span class="viewOptionDiv normalText">Questions:</span>
-                        <div class="viewOptionDiv viewOptionHV">
-                            <input class="radioView" checked={{node.optionsView}} name="radioView{{node.guid}}" ng-click="qstnOptionsView(this,true)" type="radio">Vertical Display </input>
-                        </div>
-                        <div class="viewOptionDiv viewOptionHV">
-                            <input name="radioView{{node.guid}}" ng-click="qstnOptionsView(this,false)" type="radio">Horizontal Display </input>
-                        </div>
-                    </div>
-		<div class="EssaySpaceDiv" ng-show="node.quizType == 'Essay'">
-			<span class="viewOptionDiv normalText">Essay Space:</span>
-			<div class="viewOptionDiv viewOptionHV">
-				<input class="radioView" checked={{node.optionsView}}  name="radioView{{node.guid}}" ng-click="qstnOptionsView(this,true)"  type="radio">None</input>
-			</div>
-			<div class="viewOptionDiv viewOptionHV">
-				<input name="radioView{{node.guid}}" ng-click="qstnOptionsView(this,false)"  type="radio">1/4 page</input>
-			</div>
-			<div class="viewOptionDiv viewOptionHV" >
-				<input name="radioView{{node.guid}}" ng-click="qstnOptionsView(this,false)"  type="radio">1/2 page</input>
-			</div>
-			<div class="viewOptionDiv viewOptionHV">
-				<input name="radioView{{node.guid}}" ng-click="qstnOptionsView(this,false)"  type="radio">1 page</input>
-			</div>
+           <div class="qstnContainer">
+<div class="qstnView">
+   <div class="questionEditCaption editView">
+      {{node.editMainText}}
+   </div>
+   <a class="qstnViewLink" ng-click="showQstnPrintOrEditMode(this)"
+      ng-show="showQstnEditIcon" tooltip="{{node.qstnLinkTitle}}" tooltip-placement="bottom">{{node.qstnLinkText}}</a>
+</div>
+<div ui-tree-handle class="tree-node tree-node-content questionList">
+   <div ng-class="node.IsEditView ? 'editViewContainer' : 'printViewContainer' "
+      bind-qti="getHTML(this)"></div>
+</div>
+<div class="editMetdata editView">
+   <div class="imagecaptionMetadata">
+      <input class="downArrowImage allignimage" type="image"
+         src="images/right_arrow.png" />
+      <div class="captionMetadata downArrowImage">
+         Format and add
+         metadata
+      </div>
+   </div>
+   <div id="viewHeader">
+      <span class="captionMetadata">Format</span><span class="normalText">
+      (visible
+      in Print View)
+      </span>
+   </div>
+   <div class="vhDiv" ng-show=" node.quizType == 'MultipleChoice' || node.quizType == 'MultipleResponse' ">
+      <span class="viewOptionDiv normalText">Questions:</span>
+      <div class="viewOptionDiv viewOptionHV">
+         <input class="radioView" checked={{node.optionsView}} name="radioView{{node.guid}}" ng-click="qstnOptionsView(this,true)" type="radio">Vertical Display </input>
+      </div>
+      <div class="viewOptionDiv viewOptionHV">
+         <input name="radioView{{node.guid}}" ng-click="qstnOptionsView(this,false)" type="radio">Horizontal Display </input>
+      </div>
+   </div>
+   <div class="EssaySpaceDiv" ng-show="node.quizType == 'Essay'">    
+   <span class="viewOptionDiv normalText">Essay Space:</span>
+      <div class="viewOptionDiv viewOptionHV">
+         <input class="radioView" checked={{node.optionsView}}  name="radioView{{node.guid}}" ng-click="qstnOptionsView(this,true)"  type="radio">None</input>
+      </div>
+      <div class="viewOptionDiv viewOptionHV">
+         <input name="radioView{{node.guid}}" ng-click="qstnOptionsView(this,false)"  type="radio">1/4 page</input>
+      </div>
+      <div class="viewOptionDiv viewOptionHV" >
+         <input name="radioView{{node.guid}}" ng-click="qstnOptionsView(this,false)"  type="radio">1/2 page</input>
+      </div>
+      <div class="viewOptionDiv viewOptionHV">
+         <input name="radioView{{node.guid}}" ng-click="qstnOptionsView(this,false)"  type="radio">1 page</input>
+      </div>
+   </div>
+   <div class="metadataSection">
+		<div>Metadata</div>
+		  <div>ID: 89-786-AL</div>
+		  <div> Hint: <input type="textbox" ></input> </div>
+		   <div>Level: <input type="textbox"></input>
+		   </div>
+		   <div>Topic:   <input type="textbox"></input>
+		   </div>
+		   <div>Objective: <input type="textbox"></input>
+		   </div>
+		   <div>Page: <input type="textbox"/></input>  </div>
 		</div>
-                    <div>Metddata</div>
-                    <div>ID: 89-786-AL</div>
-                </div>
+   
+</div>
 
-
-                <div>
+</div>
 
         </script>
         <div id="uploadImage" class="uploadImage" ng-show="imageClicked" ng-file-drop ng-accept="'image/*'" data-ng-file-change="upload($files)" drag-over-class="{accept:'dragover', reject:'dragover-err', delay:100}">

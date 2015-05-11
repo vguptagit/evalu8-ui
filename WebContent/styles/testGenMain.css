@@ -521,10 +521,7 @@ ol {
 	margin-left: -15px;
 }
 
-.matchRight {
-	float: right;
-	width: 60%;
-}
+
 
 .blank {
 	padding-left: 12px;
@@ -565,7 +562,7 @@ ol {
 	padding: 0px;
 	margin-bottom: 0px;
 	border-left: 0px;
-	font-size: 14px;
+	font-size: 14px;	
 }
 
 .qti-assessmentItem blockquote:before, .qti-assessmentItem blockquote:after
@@ -2018,7 +2015,8 @@ li[qstntemplate='true'] .indChar {
 
 .qstnContainer .qti-blockquote {
 	display: table;
-	width: 100%;
+	width: 100%; 
+	
 }
 
 .EssayHeader {
@@ -2030,11 +2028,11 @@ li[qstntemplate='true'] .indChar {
 	width: 450px;
 }
 
-.printViewContainer  .qti-blockquote .matchIndex {
+ .qti-blockquote .matchIndex {
 	margin-right: 10px;
 }
 
-.qstnContainer .printViewContainer  .qti-blockquote .matchIndex {
+.printViewContainer  .qti-blockquote .matchIndex {
 	font-size: 11px;
 	font-weight: bold;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
@@ -2044,11 +2042,16 @@ li[qstntemplate='true'] .indChar {
 
 .printViewContainer .questionImage {
 	max-width: 200px;
+	vertical-align: text-top;
 }
 
 .printViewContainer .indChar {
 	font-size: 11px;
 	font-weight: bold;
+}
+
+li[qstntemplate=true] .printViewContainer  .qti-blockquote .matchIndex {	
+	font-weight: normal;
 }
 
 .TestcreationInfo {
@@ -2083,4 +2086,29 @@ li[qstntemplate='true'] .indChar {
 	font-family: Helvetica;
 	font-size: 14px;
 	text-decoration: none !important;
+}
+.mOptionLabel{
+	max-width: 240px;
+	font-size: 14px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+.printViewContainer .mOptionLabelView {
+	display: table;
+	padding-left: 10px;
+	font-size: 11px;
+	font-weight: bold;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+.editViewContainer .mOptionLabelView {
+	display: none;
+}
+
+.matchRight {
+	float: right;
+	max-width: 200px;
+	min-width: 50%;
+}
+
+.optionTextBoxContainer,.matchOptionTextEditablediv  {
+	width:345px;
 }
