@@ -134,3 +134,6 @@
 .test-creation-frame-btn-group{
     margin-left:-10px;
 }
+.custom-qstn-tree-root{
+    overflow-y:scroll;
+}

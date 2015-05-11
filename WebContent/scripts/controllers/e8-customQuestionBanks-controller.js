@@ -44,6 +44,8 @@ angular.module('e8CustomQuestionBanks')
 
    //to set Active Resources Tab , handled in ResourcesTabsController
    $rootScope.$broadcast('handleBroadcast_setActiveResourcesTab', EnumService.RESOURCES_TABS.customquestions);
-     
+    
+   // TODO : set container height, need revesit
+   $('.custom-qstn-tree-root').height(($(document).height() - $('.custom-qstn-tree-root').offset().top) - 40);
     
 }]);
