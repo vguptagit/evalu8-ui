@@ -170,6 +170,7 @@ angular
 												
 								
 									var qstnModifiedData = getMatchingQstn_Details($(xml));
+									qstnModifiedData.questionMetadata = selectedQstnNode.node.questionMetadata;
 									selectedQstnNode.node.IsEdited = !angular
 											.equals(
 													selectedQstnNode.node.qstnMasterData,
@@ -225,6 +226,7 @@ angular
 								}
 
 								var qstnModifiedData = getMultipleChoiceQstn_MasterDetails($(xml));
+								qstnModifiedData.questionMetadata = selectedQstnNode.node.questionMetadata;
 								selectedQstnNode.node.IsEdited = !angular
 										.equals(
 												selectedQstnNode.node.qstnMasterData,
@@ -772,24 +774,28 @@ angular
 							function buildQstnMasterDetails(qstnNode) {
 								
 								var qstnXML = jQuery.parseXML(qstnNode.data);
+							
+								var qstnMasterData ;
 								
 									switch(qstnNode.quizType) {		
 									
 										 case "MultipleResponse","MultipleChoice","Essay","FillInBlanks","TrueFalse":
 											 
-											 return getMultipleChoiceQstn_MasterDetails(qstnXML);										 
+											 qstnMasterData = getMultipleChoiceQstn_MasterDetails(qstnXML);										 
 									         break;
 									         
 									      case "Matching":
-									    	 return getMatchingQstn_Details(qstnXML);
+									    	  qstnMasterData = getMatchingQstn_Details(qstnXML);
 									         break;
 									     
 									      default:
 									    	  
-									    	  return getMultipleChoiceQstn_MasterDetails(qstnXML);
+									    	  qstnMasterData = getMultipleChoiceQstn_MasterDetails(qstnXML);
 								      
 								     }
-																
+									var questionMetadata = angular.copy(qstnNode.questionMetadata);
+									qstnMasterData.questionMetadata = questionMetadata;
+									return qstnMasterData;																
 							}
 							
 							function getMultipleChoiceQstn_MasterDetails(qstnXML) {								
@@ -915,14 +921,16 @@ angular
 														} else {
 															newNode.IsEditView = false;
 															newNode.editMainText = CustomQuestionTemplate["MultipleChoice"].editMainText;
-															newNode.qstnMasterData = buildQstnMasterDetails(newNode);
-															newNode.optionsView = newNode.qstnMasterData.optionsView;
-																		
+																																	
 															$.each(newNode.extendedMetadata, function(index, item){																	
 																			 newNode['questionMetadata'][item['name']]=item['value'];																				
 																		    });	
 														
+															
 															newNode.questionMetadata.selectedLevel = newNode.questionMetadata['Difficulty']==undefined?{name:'Select Level',value:'0'}:{name:newNode.questionMetadata['Difficulty'],value:newNode.questionMetadata['Difficulty']};
+															
+															newNode.qstnMasterData = buildQstnMasterDetails(newNode);
+															newNode.optionsView = newNode.qstnMasterData.optionsView;
 														
 														}
 														

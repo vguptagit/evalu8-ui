@@ -11,7 +11,9 @@ angular
 								.forEach(function(book) {
 									if (book.title.toLowerCase().indexOf(
 											searchText) > -1
-
+											|| (book.guid != null && book.guid
+													.toLowerCase().indexOf(
+															searchText) > -1)
 											|| (book.isbn != null && book.isbn
 													.toLowerCase().indexOf(
 															searchText) > -1)
@@ -36,18 +38,18 @@ angular
 					};
 				})
 		.directive(
-                'resize',
-                function($window) {
-                    return function(scope, element) {
-                        var divHeight = ($(document).height() - $(
-                                '.searchPanel').offset().top) + 60;
+				'resize',
+				function($window) {
+					return function(scope, element) {
+						var divHeight = ($(document).height() - $(
+								'.searchPanel').offset().top) + 60;
 
-                        $('.disciplineContainerInLightBox').height(divHeight);
+						$('.disciplineContainerInLightBox').height(divHeight);
 
-                        $('.bookContainerInLightBox').height(divHeight);
+						$('.bookContainerInLightBox').height(divHeight);
 
-                    }
-                })
+					}
+				})
 
 		.controller(
 				'usersettingsWizardController',
@@ -176,6 +178,9 @@ angular
 							$scope.setDisciplineScroll = function(
 									disciplineName) {
 
+								$scope.buttonEnableDisable($scope
+										.isDesciplineEmpty());
+
 								var vtop = $(".disciplineContainerInLightBox")
 										.find(
 												"div:contains('"
@@ -265,10 +270,14 @@ angular
 																disciplineBooks
 																		.forEach(function(
 																				filtBook) {
-																			if (book.isbn == filtBook.isbn
-																					&& book.isbn10 == filtBook.isbn10
-																					&& book.isbn13 == filtBook.isbn13
-																					&& book.editionNumber > filtBook.editionNumber) {
+																			if ((book.isbn10 != null
+																					&& filtBook.isbn10 != null && book.isbn10 == filtBook.isbn10)
+																					&& (book.isbn13 != null
+																							&& filtBook.isbn13 != null && book.isbn13 == filtBook.isbn13)
+																					&& (book.created != null
+																							&& filtBook.created != null && new Date(
+																							book.created) > new Date(
+																							filtBook.created))) {
 
 																				book.hasEdition = true;
 																				filtBook.showEdition = false;
@@ -447,6 +456,10 @@ angular
 
 							$scope.setBookScrollBar = function() {
 
+								$scope
+										.buttonEnableDisable($scope
+												.isBookEmpty());
+
 								if ($scope.searchedBook != undefined
 										&& $scope.searchedBook != "") {
 									var vtop = $(".bookContainerInLightBox")
@@ -550,6 +563,27 @@ angular
 									$scope.saveDiscpline();
 									$scope.saveBooks();
 									$modalInstance.close();
+								}
+							}
+
+							$scope.buttonEnableDisable = function(state) {
+								if (state) {
+									if ($scope.step == '1') {
+										$(".btnGotoDispBook").addClass(
+												"btnDisbledGotoDispBook");
+									} else {
+										$(".nextButton").addClass("btnDisbled");
+									}
+
+								} else {
+									if ($scope.step == '1') {
+										$(".btnGotoDispBook").removeClass(
+												"btnDisbledGotoDispBook");
+									} else {
+										$(".nextButton").removeClass(
+												"btnDisbled");
+									}
+
 								}
 							}
 

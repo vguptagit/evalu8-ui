@@ -210,6 +210,7 @@ angular
 							}
 
 							$scope.enterDiscipline = function() {
+								$(".searchDiscpline").val("");
 								if ($scope.disciplines.userSelected.length > 0) {
 									$scope.enableDisableNextButton(false);
 									return true

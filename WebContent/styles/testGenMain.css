@@ -521,8 +521,6 @@ ol {
 	margin-left: -15px;
 }
 
-
-
 .blank {
 	padding-left: 12px;
 	font-size: 12px;
@@ -562,7 +560,7 @@ ol {
 	padding: 0px;
 	margin-bottom: 0px;
 	border-left: 0px;
-	font-size: 14px;	
+	font-size: 14px;
 }
 
 .qti-assessmentItem blockquote:before, .qti-assessmentItem blockquote:after
@@ -817,10 +815,10 @@ ol {
 }
 
 .testHighlight:hover {
-  background-color: #007FA9 !important;
-  color: #FFFFFF;
-  border-left: 2px #0B6786 solid;
-  Border-Bottom: 2px #FFFFFF;
+	background-color: #007FA9 !important;
+	color: #FFFFFF;
+	border-left: 2px #0B6786 solid;
+	Border-Bottom: 2px #FFFFFF;
 }
 
 .maindivTest:hover {
@@ -1468,7 +1466,7 @@ li[quiztype='TrueFalse'] .qti-simpleChoice .radio {
 	position: initial;
 	color: #4D4D4D;
 	line-height: 1em;
-	margin-left: 25px;
+	margin-left: 2px;
 	line-height: 1em;
 }
 
@@ -1505,7 +1503,7 @@ li[quiztype='TrueFalse'] .qti-simpleChoice .radio {
 
 .searchDiscpline, .searchBook {
 	float: left;
-	margin-left: 5px;
+	padding-left: 5px;
 	height: 38px;
 	border: 0px solid;
 	border-radius: 5px;
@@ -1620,9 +1618,9 @@ ul.a {
 }
 
 .autocompleteList {
+	max-height: 700px;
 	max-width: 700px;
 	overflow: auto;
-	max-height: 720;
 }
 
 .expandBookEdition {
@@ -1641,7 +1639,6 @@ ul.a {
 
 .instructionsHeader {
 	margin-left: 24px;
-	font-weight: bold;
 	font-family: Helvetica;
 }
 
@@ -1711,6 +1708,7 @@ ul.a {
 	height: 400px;
 	overflow: auto;
 	width: 98%;
+	border: solid 1px #DEDEDE;
 }
 
 .btn-textonly {
@@ -1724,22 +1722,22 @@ ul.a {
 }
 
 .newFolderDiv {
-  width: 99%;
-  text-align: left;
-  font-family: Verdana, Arial, Helvetica, sans-serif;
-  font-weight: bold;
-  margin-left: 1%;
-  margin-right: 2%;
-  white-space: normal;
-  background-color: #DDDDDD;
-  font-size: 12px;
-  line-height: 0.75;
-  padding: 0.5px 1px;
-  border-radius: 2px;
-  left: 4.5%;
-  top: 6px;
-  cursor: default;
-  height: 40px;
+	width: 99%;
+	text-align: left;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	margin-left: 1%;
+	margin-right: 2%;
+	white-space: normal;
+	background-color: #DDDDDD;
+	font-size: 12px;
+	line-height: 0.75;
+	padding: 0.5px 1px;
+	border-radius: 2px;
+	left: 4.5%;
+	top: 6px;
+	cursor: default;
+	height: 40px;
 }
 
 .addFolder {
@@ -2021,8 +2019,7 @@ li[qstntemplate='true'] .indChar {
 
 .qstnContainer .qti-blockquote {
 	display: table;
-	width: 100%; 
-	
+	width: 100%;
 }
 
 .EssayHeader {
@@ -2034,7 +2031,7 @@ li[qstntemplate='true'] .indChar {
 	width: 450px;
 }
 
- .qti-blockquote .matchIndex {
+.qti-blockquote .matchIndex {
 	margin-right: 10px;
 }
 
@@ -2056,7 +2053,7 @@ li[qstntemplate='true'] .indChar {
 	font-weight: bold;
 }
 
-li[qstntemplate=true] .printViewContainer  .qti-blockquote .matchIndex {	
+li[qstntemplate=true] .printViewContainer  .qti-blockquote .matchIndex {
 	font-weight: normal;
 }
 
@@ -2093,15 +2090,18 @@ li[qstntemplate=true] .printViewContainer  .qti-blockquote .matchIndex {
 	font-size: 14px;
 	text-decoration: none !important;
 }
-.mOptionLabel{
+
+.mOptionLabel {
 	max-width: 240px;
 	font-size: 14px;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 }
+
 .printViewContainer .mOptionLabel {
 	display: table;
-	padding-left: 10px;	
+	padding-left: 10px;
 }
+
 .editViewContainer .mOptionLabel {
 	display: none;
 }
@@ -2112,48 +2112,77 @@ li[qstntemplate=true] .printViewContainer  .qti-blockquote .matchIndex {
 	min-width: 50%;
 }
 
-.optionTextBoxContainer,.matchOptionTextEditablediv  {
-	width:345px;
-}
-.metadataSection{
-  margin-top: 10px;
-  display: table;
-  width: 100%;
+.optionTextBoxContainer, .matchOptionTextEditablediv {
+	width: 345px;
 }
 
-.metadataSectionCaption{
- font-size: 12px;
- font-weight: bold;
- font-family: Verdana, Arial, Helvetica, sans-serif;
- padding-bottom: 10px;
+.metadataSection {
+	margin-top: 10px;
+	display: table;
+	width: 100%;
 }
 
-.metadatarow{
+.metadataSectionCaption {
+	font-size: 12px;
+	font-weight: bold;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	padding-bottom: 10px;
+}
+
+.metadatarow {
 	padding-bottom: 10px;
 	font-size: 14px;
 	font-weight: normal;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 }
 
-.metadataQlvl{	
+.metadataQlvl {
 	font-size: 13px;
 	font-weight: normal;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 }
 
-.metdataVal{
+.metdataVal {
 	margin-left: 80px;
 }
-.metdatalabel{
+
+.metdatalabel {
 	float: left;
 }
-.metdataInput{
+
+.metdataInput {
 	width: 410px;
-	border: 1px solid #D0D0D0; 
-	border-radius: 4px;	
-	
+	border: 1px solid #D0D0D0;
+	border-radius: 4px;
 }
+
 .bottomonlyborder {
-  border-bottom: 1px solid;
-  padding-bottom: 9px;
+	border-bottom: 1px solid;
+	padding-bottom: 9px;
+}
+
+.btnGotoDispBook {
+	background: none;
+	color: #007FA9;
+	cursor: pointer;
+}
+
+.btnGotoDispBook:hover {
+	color: #006A8D
+}
+
+.btnDisbledGotoDispBook {
+	color: #A0D1E1 !important;
+	cursor: default !important;
+}
+
+.searchPanelPopup {
+	margin-top: 10px;
+	border: 1px solid;
+	border-color: #9E9E92;
+	border-radius: 5px;
+	height: 40px;
+	border-radius: 5px;
+	width: 98%;
+	border-radius: 5px;
 }
