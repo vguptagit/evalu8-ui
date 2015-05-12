@@ -380,7 +380,7 @@
 
     <div ng-show={{node.questionMetadata['Difficulty']==undefined?false:true}} class='metadatarow'><span class='metdatalabel'>Level:</span>
         <div class="metdataVal">
-			<select class='metadataQlvl' ng-model="node.questionMetadata.selectedLevel"  ng-options="level.name for level in Difficulty  track by level.value">
+			<select class='metadataQlvl' ng-model="node.selectedLevel"  ng-options="level.name for level in Difficulty  track by level.value">
        		</select>           
         </div>
     </div>	

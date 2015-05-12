@@ -928,7 +928,7 @@ angular
 															newNode.IsEdited = true;
 															newNode.IsDefaultEditView = true ;
 															SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode = true;
-															newNode.questionMetadata.selectedLevel = {name:'Select Level',value:'0'};
+															newNode.selectedLevel = {name:'Select Level',value:'0'};
 															
 														} else {
 															newNode.IsEditView = false;
@@ -936,10 +936,9 @@ angular
 																																	
 															$.each(newNode.extendedMetadata, function(index, item){																	
 																			 newNode['questionMetadata'][item['name']]=item['value'];																				
-																		    });	
-														
+																		    });															
 															
-															newNode.questionMetadata.selectedLevel = newNode.questionMetadata['Difficulty']==undefined?{name:'Select Level',value:'0'}:{name:newNode.questionMetadata['Difficulty'],value:newNode.questionMetadata['Difficulty']};
+															newNode.selectedLevel = newNode.questionMetadata['Difficulty']==undefined?{name:'Select Level',value:'0'}:{name:newNode.questionMetadata['Difficulty'],value:newNode.questionMetadata['Difficulty']};
 															
 															newNode.qstnMasterData = buildQstnMasterDetails(newNode);
 															newNode.optionsView = newNode.qstnMasterData.optionsView;
@@ -1057,6 +1056,15 @@ angular
 													displayNode.IsEditView = false;
 													displayNode.qstnLinkText = displayNode.IsEditView ? "View"
 															: "Edit";
+													
+													$.each(displayNode.extendedMetadata, function(index, item){																	
+														displayNode['questionMetadata'][item['name']]=item['value'];																				
+													    });	
+									
+										
+													displayNode.selectedLevel = displayNode.questionMetadata['Difficulty']==undefined?{name:'Select Level',value:'0'}:{name:displayNode.questionMetadata['Difficulty'],value:displayNode.questionMetadata['Difficulty']};
+										
+										
 													displayNode.data=response;
 
 													// $scope.tree2.push(displayNode);
@@ -1332,12 +1340,21 @@ angular
 														qstn =  updateTemplatePrefilledtext(qstn);
 														}
 													}
-
+													
+													var qstnExtMetadata=[];													
+												
+													$.each(qstn.questionMetadata, function(KeyName, KeyValue){	
+														if(KeyName=="Difficulty"){
+															KeyValue=qstn.selectedLevel.value;
+														}
+														qstnExtMetadata.push({name:KeyName,value:KeyValue}) 	;
+													});	
+													
 													var QuestionEnvelop = {
 														metadata : {
 															guid : qstn.IsEdited ? null
 																	: qstn.guid,
-															title : qstn.title,
+		                                                    title : qstn.title,
 															description : qstn.description,
 															quizType : qstn.quizType,
 															subject : qstn.subject,
@@ -1345,7 +1362,8 @@ angular
 															crawlable : qstn.crawlable,
 															keywords : qstn.keywords,
 															versionOf : qstn.versionOf,
-															version : qstn.version
+															version : qstn.version,
+															extendedMetadata : qstnExtMetadata
 														},
 														body : qstn.IsEdited ? qstn.data
 																: null
