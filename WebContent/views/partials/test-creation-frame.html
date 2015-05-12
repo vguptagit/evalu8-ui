@@ -20,8 +20,8 @@
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                        <li role="presentation"><a ng-click="saveTest()" ng-disabled="tests[currentIndex].isTestWizard && tests[currentIndex].testId == null" tooltip="Save your tests" tooltip-placement="bottom" role="menuitem" tabindex="-1">Save</a></li>
-                        <li role="presentation"><a ng-click="saveAsTest()" ng-disabled="tests[currentIndex].isTestWizard && tests[currentIndex].testId == null" tooltip="Save your tests as" tooltip-placement="bottom" role="menuitem" tabindex="-1">Save As</a></li>
+                        <li role="presentation"><a ng-click="saveTest()" ng-disabled="tests[currentIndex].isTestWizard && tests[currentIndex].testId == null" tooltip="Save your tests" tooltip-placement="left" role="menuitem" tabindex="-1">Save</a></li>
+                        <li role="presentation"><a ng-click="saveAsTest()" ng-disabled="tests[currentIndex].isTestWizard && tests[currentIndex].testId == null" tooltip="Save your tests as" tooltip-placement="left" role="menuitem" tabindex="-1">Save As</a></li>
                     </ul>
                 </div>
                 <!--<button type="button" class="btn btn-primary" ng-click="saveTest()"
@@ -109,9 +109,6 @@
                 New
                 Version
             </button>
-            <button class="btn btn-primary pull-right">Add Guide</button>
-            <button class="btn btn-primary pull-right ">Reorder</button>
-
         </div>
     </div>
     <div class="row" ng-show=" tests[currentIndex].isTestWizard">
