@@ -12,7 +12,7 @@
 	<div class="row">
 		<div class="col-md-12">
 
-			<ul class="nav nav-tabs ng-scope">
+			<ul class="nav nav-tabs resources-tabs ng-scope">
 				<li ng-class="{'active': activeTab == 'questionBanks'}"><a class="ng-binding" 
 				ng-click="showQuestionBank(this)">Question Banks</a></li>
 				<li ng-class="{'active': activeTab == 'metadata'}"><a class="ng-binding" 
@@ -41,7 +41,7 @@
 					</div>        						
 					<div style="clear:left;">&nbsp;</div>
 					
-					<div ng-repeat="(key, value) in books | groupBy: 'discipline'">
+					<div ng-repeat="(key, value) in userBooks | groupBy: 'discipline'">
 				
 						<div ng-repeat = "book in value">
 					

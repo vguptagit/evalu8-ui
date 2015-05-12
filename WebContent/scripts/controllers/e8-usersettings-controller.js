@@ -19,14 +19,14 @@ angular.module('evalu8Demo')
 		  $scope.activeTab = "metadata";
 	  }
 	  
-	  $scope.books = [];
+	  $scope.userBooks = [];
 	  UserService.userDisciplines(function(userDisciplines) {
 		 
 		  $scope.disciplines = userDisciplines;		  	  		  
 	  });
 	  
 	  BookService.userBooks(function(response) {
-		  $scope.books= response;
+		  $scope.userBooks= response;
 	  })
 	  	  
 	  //$scope.metadatas = ['Difficulty', 'Topic', 'Objective', 'Page reference', 'Skill', 'Question id (provided by Evalu8)'];
@@ -56,19 +56,13 @@ angular.module('evalu8Demo')
 				size : 'md',
 				backdrop : 'static',
 				keyboard : false,
+				scope: $scope,
 				resolve: {
 			         step: function () {
 			           return step;
 			         }
 			       }
-			});
-			
-		  modalInstance.result.then(function () {
-
-				  BookService.userBooks(function(response) {
-					  $scope.books= response;
-				  })
-		    });
+			});			
 	  }
 	  
   }]);

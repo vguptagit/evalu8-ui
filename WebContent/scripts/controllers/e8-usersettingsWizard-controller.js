@@ -558,13 +558,29 @@ angular
 								}
 							}
 
-							$scope.finishWizard = function() {
-								if (!$scope.isBookEmpty()) {
-									$scope.saveDiscpline();
-									$scope.saveBooks();
-									$modalInstance.close();
-								}
-							}
+                            $scope.save = function() {
+                                if (!$scope.isBookEmpty()) {
+                                    
+                                    UserService
+                                    .saveUserDisciplines($scope.disciplines.userSelected, function() {
+                                        UserService
+                                        .saveUserBooks($scope.books.currentlySelected, function() {
+                                            BookService.userBooks(function(response) {
+                                                $scope.$parent.userBooks = response;
+                                                
+                                                DisciplineService.userDisciplines(function(userDisciplines) {
+            										$scope.$parent.disciplines = userDisciplines;
+                                                    $modalInstance.close();
+            									})
+ 
+                                              })
+                                        });
+                                    });
+
+                                }
+                            }
+                            
+
 
 							$scope.buttonEnableDisable = function(state) {
 								if (state) {

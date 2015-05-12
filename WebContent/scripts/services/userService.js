@@ -94,25 +94,29 @@ angular
 
 							};
 
-							this.saveUserBooks = function(userBookIDs) {
+							this.saveUserBooks = function(userBookIDs, callback) {
 
 								$http.post(
 										evalu8config.host + '/settings/books',
 										userBookIDs, config).success(
 										function(response) {
+											if(callback)
+												callback();
 										}).error(function(error, status) {
 									if (status == 403)
 										$location.path('/login');
 								})
 							}
 
-							this.saveUserDisciplines = function(userDisciplines) {
+							this.saveUserDisciplines = function(userDisciplines, callback) {
 
 								$http.post(
 										evalu8config.host
 												+ '/settings/disciplines',
 										userDisciplines, config).success(
 										function(response) {
+											if(callback)
+												callback();
 										}).error(function(error, status) {
 
 									if (status == 403)
