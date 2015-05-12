@@ -3,7 +3,8 @@
     <span class="autocompleTitle" bind-html-unsafe="match.model.title | typeaheadHighlight:query"></span><br>
 	<span class="autocompleteField">ISBN10 : </span><span class="autocompleteValue" bind-html-unsafe="match.model.isbn10 | typeaheadHighlight:query"></span>
 	<span class="autocompleteField">ISBN13 : </span><span class="autocompleteValue" bind-html-unsafe="match.model.isbn13 | typeaheadHighlight:query"></span><br>
-	<span class="autocompleteField">Publisher : </span><span class="autocompleteValue" bind-html-unsafe="match.model.publisher | typeaheadHighlight:query"></span><br>
+	<span class="autocompleteField">Publisher : </span><span class="autocompleteValue" bind-html-unsafe="match.model.publisher | typeaheadHighlight:query"></span>
+	<span class="autocompleteField">BookID : </span><span class="autocompleteValue" bind-html-unsafe="match.model.guid | typeaheadHighlight:query"></span><br>
 	<span class="autocompleteField">Authors : </span><span class="autocompleteValue" bind-html-unsafe="match.model.authors.toString() | typeaheadHighlight:query"></span>
   </a>
 </script>
@@ -16,14 +17,15 @@
 <div class="row"
 	style="vertical-align: middle; middle; margin-top: 20px;">
 	<div class="col-lg-5">
+		<div class="instructionsHeader">Pick the
+			discipline(s) on the right in which you create tests</div>
 		<div>
 			<ul class="a">
-				<li class="discription">Pick the discipline(s) on the right in
-					which you create tests</li>
-				<li class="discription">This will make the questions banks and
-					tests in these disciplines available to you.</li>
-				<li class="discription">You can select more than one discipline
-					by clicking or tapping multiple selections. Tap again to deselect.</li>
+				<li class="discription">Publisher question banks in these
+					disciplines will become available to you.</li>
+				<li class="discription">Can select multiple disciplines.</li>
+				<li class="discription">To deselect a discipline, select it
+					again.</li>
 			</ul>
 		</div>
 	</div>
@@ -74,8 +76,10 @@
 		<div class="row">
 			<div class="col-lg-12" style="margin-left: 10px;">
 				<div class="searchPanel" resize>
-					<input type="text" placeHolder="Search Book" class="searchBook"
-						ng-model="searchedBook" placeholder="Custom template"
+					<input type="text"
+						placeHolder="Enter title, author, publisher, bookid or ISBN"
+						class="searchBook" ng-model="searchedBook"
+						placeholder="Custom template"
 						typeahead-template-url="customTemplate.html"
 						typeahead="book.title for book in books.all | searchFields:$viewValue"
 						ng-keyup="searchedBookOnEnter($event)"> <span
@@ -98,7 +102,8 @@
 							ng-show="book.showEdition" parentbookid="{{book.parentBookID}}">
 							<div
 								style="float: left; margin-right: 5px; vertical-align: middle; margin-top: 7px; background-color: #FFFFFF;"
-								ng-show="book.hasEdition" ng-click="showOldEdition(book.guid,discipline.name)">
+								ng-show="book.hasEdition"
+								ng-click="showOldEdition(book.guid,discipline.name)">
 								<img alt="Editions" id="{{book.guid}}" src=""
 									ng-class="book.isCollasped?'collapseBookEdition':'expandBookEdition'">
 							</div>
@@ -106,7 +111,7 @@
 								{{book.title}}</div>
 							<hr style="margin-bottom: 0px; margin-top: 0px;">
 						</div>
-						<div style="margin-top: 40px;"></div>
+						<div style="height: 30px;"></div>
 					</div>
 				</div>
 			</div>

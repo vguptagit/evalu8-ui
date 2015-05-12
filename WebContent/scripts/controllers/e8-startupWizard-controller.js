@@ -11,6 +11,9 @@ angular
 								.forEach(function(book) {
 									if (book.title.toLowerCase().indexOf(
 											searchText) > -1
+											|| (book.guid != null && book.guid
+													.toLowerCase().indexOf(
+															searchText) > -1)
 											|| (book.isbn13 != null && book.isbn13
 													.toLowerCase().indexOf(
 															searchText) > -1)
@@ -221,6 +224,7 @@ angular
 							$scope.trackEnterKey = 0;
 							$scope.enterBook = function() {
 
+								$(".searchBook").val("");
 								$scope.disciplineBooks = [];
 
 								$scope.books = {
@@ -235,14 +239,15 @@ angular
 											$scope.books.userSelected = userBookIDs;
 
 											$scope.disciplines.userSelected
-													.forEach(function(
-															discipline) {
-														$scope
-																.getBooks(
-																		discipline,
-																		$scope.books.userSelected);
+													.sort()
+													.forEach(
+															function(discipline) {
+																$scope
+																		.getBooks(
+																				discipline,
+																				$scope.books.userSelected);
 
-													});
+															});
 										});
 
 								return true;
@@ -262,9 +267,14 @@ angular
 																disciplineBooks
 																		.forEach(function(
 																				filtBook) {
-																			if (book.isbn10 == filtBook.isbn10
-																					&& book.isbn13 == filtBook.isbn13
-																					&& book.editionNumber > filtBook.editionNumber) {
+																			if ((book.isbn10 != null
+																					&& filtBook.isbn10 != null && book.isbn10 == filtBook.isbn10)
+																					&& (book.isbn13 != null
+																							&& filtBook.isbn13 != null && book.isbn13 == filtBook.isbn13)
+																					&& (book.created != null
+																							&& filtBook.created != null && new Date(
+																							book.created) > new Date(
+																							filtBook.created))) {
 
 																				book.hasEdition = true;
 																				filtBook.showEdition = false;
@@ -296,6 +306,12 @@ angular
 
 													$scope.disciplineBooks
 															.push($scope.disciplineBookMaping);
+
+													$scope.disciplineBooks
+															.sort(function(a, b) {
+																return a.name
+																		.localeCompare(b.name)
+															});
 												});
 
 							}

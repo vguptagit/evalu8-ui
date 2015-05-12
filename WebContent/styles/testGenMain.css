@@ -1639,6 +1639,12 @@ ul.a {
 	content: url("../images/right_arrow.png");
 }
 
+.instructionsHeader {
+	margin-left: 24px;
+	font-weight: bold;
+	font-family: Helvetica;
+}
+
 /* Welcome Screen CSS  ends*/
 .uploadImage {
 	height: 100px;
