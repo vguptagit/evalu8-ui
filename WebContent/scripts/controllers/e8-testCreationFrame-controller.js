@@ -884,74 +884,63 @@ angular
 											function(event, node, destIndex,
 													sourceTabName) {
 
-												var newNode = angular
-														.copy(node);
+												var newNode = angular.copy(node);
 												
 												 UserService.userQuestionMetadata(function(userQuestionMetadata){
 													 newNode.questionMetadata = {};
 													 $.each(userQuestionMetadata, function( index, value ) {	
 														 newNode['questionMetadata'][value]='';																										
-														});													 
+														});			
+													 
+														var tests = SharedTabService.tests[SharedTabService.currentTabIndex].questions;
+																											 
+														if (sourceTabName == "CustomQuestions") {
+															newNode.IsEditView = true;
+															newNode.editMainText = CustomQuestionTemplate[newNode.quizType].editMainText;
+															newNode.IsEdited = true;
+															newNode.IsDefaultEditView = true ;
+															SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode = true;
+														} else {
+															newNode.IsEditView = false;
+															newNode.editMainText = CustomQuestionTemplate["MultipleChoice"].editMainText;
+															newNode.qstnMasterData = buildQstnMasterDetails(newNode);
+															newNode.optionsView = newNode.qstnMasterData.optionsView;
+																		
+															$.each(newNode.extendedMetadata, function(index, item){																	
+																			 newNode['questionMetadata'][item['name']]=item['value'];												       
+																		    });																
+															
+														}
+														
+														newNode.qstnLinkText = newNode.IsEditView ? "View"
+																: "Edit";
+														
+														
+														var nodeAlreadyExist = false;
+														if (tests.length == 0) {
+															tests.push(newNode);
+														} else {
+															if (sourceTabName != "CustomQuestions") {
+																tests
+																		.forEach(function(
+																				item) {
+																			if (item.guid == newNode.guid) {
+																				nodeAlreadyExist = true;
+																			}
+																		});
+															}
+
+															if (!nodeAlreadyExist) {
+																tests.splice(destIndex,
+																		0, newNode);
+															}
+														}
+														$scope.tests[$scope.currentIndex].questions = tests;
+														
 												
 												 });
 												
 
-												var tests = SharedTabService.tests[SharedTabService.currentTabIndex].questions;
-
-											
-												 
-												if (sourceTabName == "CustomQuestions") {
-													newNode.IsEditView = true;
-													newNode.editMainText = CustomQuestionTemplate[newNode.quizType].editMainText;
-													newNode.IsEdited = true;
-													newNode.IsDefaultEditView = true ;
-													SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode = true;
-												} else {
-													newNode.IsEditView = false;
-													newNode.editMainText = CustomQuestionTemplate["MultipleChoice"].editMainText;
-													newNode.qstnMasterData = buildQstnMasterDetails(newNode);
-													newNode.optionsView = newNode.qstnMasterData.optionsView;
-													
-													setTimeout(
-															function() {
-																
-																$.each(newNode.extendedMetadata, function(index, item){																	
-																	 newNode['questionMetadata'][item['name']]=item['value'];												       
-																    });
-																 
-
-															}, 50);
-												
-													
-												}
-												newNode.qstnLinkText = newNode.IsEditView ? "View"
-														: "Edit";
-												
-												
-												 
-												 
-														
-												
-												var nodeAlreadyExist = false;
-												if (tests.length == 0) {
-													tests.push(newNode);
-												} else {
-													if (sourceTabName != "CustomQuestions") {
-														tests
-																.forEach(function(
-																		item) {
-																	if (item.guid == newNode.guid) {
-																		nodeAlreadyExist = true;
-																	}
-																});
-													}
-
-													if (!nodeAlreadyExist) {
-														tests.splice(destIndex,
-																0, newNode);
-													}
-												}
-												$scope.tests[$scope.currentIndex].questions = tests;
 											});
 			
 							$rootScope.$on('editTest',
