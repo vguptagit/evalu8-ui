@@ -36,6 +36,8 @@ angular
 							 * ***************************************
 							 */
 							$scope.showQstnEditIcon = false;
+							
+						
 
 							$scope.hoverIn = function(selectedQstn) {
 								this.showQstnEditIcon = true;
@@ -878,6 +880,14 @@ angular
 											$scope.editTest(selectedTest);
 									});
 
+							  $scope.Difficulty = [{name:'Select Level',value:'0'},
+							                       {name:'high',value:'high'},
+							                       {name:'medium',value:'medium'},
+							                       {name:'low',value:'low'}
+							                      ];
+							 
+							                 
+							  
 						    $rootScope
 									.$on(
 											'dropQuestion',
@@ -900,6 +910,8 @@ angular
 															newNode.IsEdited = true;
 															newNode.IsDefaultEditView = true ;
 															SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode = true;
+															newNode.questionMetadata.selectedLevel = {name:'Select Level',value:'0'};
+															
 														} else {
 															newNode.IsEditView = false;
 															newNode.editMainText = CustomQuestionTemplate["MultipleChoice"].editMainText;
@@ -907,9 +919,11 @@ angular
 															newNode.optionsView = newNode.qstnMasterData.optionsView;
 																		
 															$.each(newNode.extendedMetadata, function(index, item){																	
-																			 newNode['questionMetadata'][item['name']]=item['value'];												       
-																		    });																
-															
+																			 newNode['questionMetadata'][item['name']]=item['value'];																				
+																		    });	
+														
+															newNode.questionMetadata.selectedLevel = newNode.questionMetadata['Difficulty']==undefined?{name:'Select Level',value:'0'}:{name:newNode.questionMetadata['Difficulty'],value:newNode.questionMetadata['Difficulty']};
+														
 														}
 														
 														newNode.qstnLinkText = newNode.IsEditView ? "View"
