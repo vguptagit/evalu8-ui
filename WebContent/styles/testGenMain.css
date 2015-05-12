@@ -1708,6 +1708,7 @@ ul.a {
 	height: 400px;
 	overflow: auto;
 	width: 98%;
+	border: solid 1px #DEDEDE;
 }
 
 .btn-textonly {
@@ -2162,7 +2163,6 @@ li[qstntemplate=true] .printViewContainer  .qti-blockquote .matchIndex {
 
 .btnGotoDispBook {
 	background: none;
-	padding: 12px 22px;
 	color: #007FA9;
 	cursor: pointer;
 }
@@ -2174,4 +2174,15 @@ li[qstntemplate=true] .printViewContainer  .qti-blockquote .matchIndex {
 .btnDisbledGotoDispBook {
 	color: #A0D1E1 !important;
 	cursor: default !important;
+}
+
+.searchPanelPopup {
+	margin-top: 10px;
+	border: 1px solid;
+	border-color: #9E9E92;
+	border-radius: 5px;
+	height: 40px;
+	border-radius: 5px;
+	width: 98%;
+	border-radius: 5px;
 }
