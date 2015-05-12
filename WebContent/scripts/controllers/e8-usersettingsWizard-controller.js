@@ -178,6 +178,9 @@ angular
 							$scope.setDisciplineScroll = function(
 									disciplineName) {
 
+								$scope.buttonEnableDisable($scope
+										.isDesciplineEmpty());
+
 								var vtop = $(".disciplineContainerInLightBox")
 										.find(
 												"div:contains('"
@@ -453,6 +456,10 @@ angular
 
 							$scope.setBookScrollBar = function() {
 
+								$scope
+										.buttonEnableDisable($scope
+												.isBookEmpty());
+
 								if ($scope.searchedBook != undefined
 										&& $scope.searchedBook != "") {
 									var vtop = $(".bookContainerInLightBox")
@@ -556,6 +563,27 @@ angular
 									$scope.saveDiscpline();
 									$scope.saveBooks();
 									$modalInstance.close();
+								}
+							}
+
+							$scope.buttonEnableDisable = function(state) {
+								if (state) {
+									if ($scope.step == '1') {
+										$(".btnGotoDispBook").addClass(
+												"btnDisbledGotoDispBook");
+									} else {
+										$(".nextButton").addClass("btnDisbled");
+									}
+
+								} else {
+									if ($scope.step == '1') {
+										$(".btnGotoDispBook").removeClass(
+												"btnDisbledGotoDispBook");
+									} else {
+										$(".nextButton").removeClass(
+												"btnDisbled");
+									}
+
 								}
 							}
 

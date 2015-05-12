@@ -2159,3 +2159,19 @@ li[qstntemplate=true] .printViewContainer  .qti-blockquote .matchIndex {
 	border-bottom: 1px solid;
 	padding-bottom: 9px;
 }
+
+.btnGotoDispBook {
+	background: none;
+	padding: 12px 22px;
+	color: #007FA9;
+	cursor: pointer;
+}
+
+.btnGotoDispBook:hover {
+	color: #006A8D
+}
+
+.btnDisbledGotoDispBook {
+	color: #A0D1E1 !important;
+	cursor: default !important;
+}
