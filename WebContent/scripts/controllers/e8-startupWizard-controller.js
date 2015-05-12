@@ -6,9 +6,54 @@ angular
 					return function(books, searchText) {
 
 						var filteredBooks = [];
+						var isAuthorExists = false;
+						var authorName = [];
+
 						searchText = searchText.toLowerCase();
 						books
 								.forEach(function(book) {
+
+									if (book.authors != null
+											&& book.authors.length > 0) {
+										book.authors
+												.forEach(function(author) {
+													if (author != "") {
+														JSON
+																.parse(author)
+																.forEach(
+																		function(
+																				authorDetail) {
+																			if (authorDetail.FirstName
+																					.toLowerCase()
+																					.indexOf(
+																							searchText) > -1
+																					|| authorDetail.middleName
+																							.toLowerCase()
+																							.indexOf(
+																									searchText) > -1
+																					|| authorDetail.lastName
+																							.toLowerCase()
+																							.indexOf(
+																									searchText) > -1) {
+																				isAuthorExists = true;
+
+																				authorName
+																						.push(authorDetail.FirstName
+																								+ " "
+																								+ authorDetail.middleName
+																								+ " "
+																								+ authorDetail.lastName)
+																			}
+																		});
+													}
+
+												});
+									}
+
+									if (isAuthorExists) {
+										book.authorName = authorName;
+									}
+
 									if (book.title.toLowerCase().indexOf(
 											searchText) > -1
 											|| (book.guid != null && book.guid
@@ -23,13 +68,14 @@ angular
 											|| (book.publisher != null && book.publisher
 													.toLowerCase().indexOf(
 															searchText) > -1)
-											|| (book.authors != null && book.authors
-													.toString().toLowerCase()
-													.indexOf(searchText) > -1)) {
+											|| (isAuthorExists)) {
 
 										filteredBooks.push(jQuery.extend(true,
 												{}, book));
+
 									}
+									isAuthorExists = false;
+									authorName = [];
 								});
 						return filteredBooks;
 					};

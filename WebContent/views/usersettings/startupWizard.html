@@ -5,7 +5,7 @@
 	<span class="autocompleteField">ISBN13 : </span><span class="autocompleteValue" bind-html-unsafe="match.model.isbn13 | typeaheadHighlight:query"></span><br>
 	<span class="autocompleteField">Publisher : </span><span class="autocompleteValue" bind-html-unsafe="match.model.publisher | typeaheadHighlight:query"></span>
 	<span class="autocompleteField">BookID : </span><span class="autocompleteValue" bind-html-unsafe="match.model.guid | typeaheadHighlight:query"></span><br>
-	<span class="autocompleteField">Authors : </span><span class="autocompleteValue" bind-html-unsafe="match.model.authors.toString() | typeaheadHighlight:query"></span>
+	<span class="autocompleteField">Authors : </span><span class="autocompleteValue" bind-html-unsafe="match.model.authorName.toString() | typeaheadHighlight:query"></span>
   </a>
 </script>
 
