@@ -29,9 +29,26 @@ angular.module('evalu8Demo')
 		  $scope.books= response;
 	  })
 	  	  
-	  $scope.metadatas = ['Difficulty', 'Topic', 'Objective', 'Page reference', 'Skill', 'Question id (provided by Evalu8)'];
-	  
-		
+	  //$scope.metadatas = ['Difficulty', 'Topic', 'Objective', 'Page reference', 'Skill', 'Question id (provided by Evalu8)'];
+	  		
+		 
+	 $scope.questionMetadata = {
+			 all: [
+                   'Difficulty', 'Topic', 'Objective',                    
+                   'Page Reference', 'Skill', 'Question ID'
+                   ],
+              userSelected: []     
+	 };		
+	 
+	 UserService.userQuestionMetadata(function(userQuestionMetadata){
+		 $scope.questionMetadata.userSelected = userQuestionMetadata;
+	 });
+	 
+	 $scope.savePref = function() {								 
+		 
+		 UserService.saveUserQuestionMetadata($scope.questionMetadata.userSelected);	
+	 };
+	 
 	  $scope.edit = function(step) {
 		  var modalInstance = $modal.open({
 				templateUrl : 'views/usersettings/usersettingsWizard.html',
@@ -47,10 +64,10 @@ angular.module('evalu8Demo')
 			});
 			
 		  modalInstance.result.then(function () {
-			  UserService.userDisciplines(function(userDisciplines) {
-				  //$scope.disciplines = ['Art', 'Law'];
-				  $scope.disciplines = userDisciplines;
-			  });
+
+				  BookService.userBooks(function(response) {
+					  $scope.books= response;
+				  })
 		    });
 	  }
 	  

@@ -2147,3 +2147,7 @@ li[qstntemplate=true] .printViewContainer  .qti-blockquote .matchIndex {
 	border-radius: 4px;	
 	
 }
+.bottomonlyborder {
+  border-bottom: 1px solid;
+  padding-bottom: 9px;
+}
