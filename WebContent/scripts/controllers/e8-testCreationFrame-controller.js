@@ -899,9 +899,9 @@ angular
 									});
 
 							  $scope.Difficulty = [{name:'Select Level',value:'0'},
-							                       {name:'high',value:'high'},
-							                       {name:'medium',value:'medium'},
-							                       {name:'low',value:'low'}
+							                       {name:'Easy',value:'high'},
+							                       {name:'Moderate',value:'medium'},
+							                       {name:'Difficult',value:'low'}
 							                      ];
 							 
 							                 
@@ -1041,50 +1041,76 @@ angular
 									// $scope.BlockRightPanel.stop();
 									return false;
 								}
+								
+								 UserService.userQuestionMetadata(function(userQuestionMetadata){	
+									 
+									 var question = qBindings.shift();
+									 
+									 var userSettings= {};	
+									 userSettings.questionMetadata = {};
+									 
+									 $.each(userQuestionMetadata, function( index, value ) {	
+										 userSettings['questionMetadata'][value]='';																										
+										});			
+									 
+									 
+									 TestService
+										.getMetadata(
+												question.guid,
+												function(questionMetadataResponse) {		
+											
+										TestService
+												.getQuestion(
+														question.boundActivity,
+														function(response) {
+															var displayNode = $("<div></div>")
+															displayNode.guid = question.guid;														
+															displayNode.quizType = questionMetadataResponse.quizType;
+															QTI.play(response,
+																	displayNode, false);
+															
+															displayNode.IsEditView = false;
+															displayNode.qstnLinkText = displayNode.IsEditView ? "View"
+																	: "Edit";
+															displayNode.extendedMetadata =  questionMetadataResponse.extendedMetadata;
+															displayNode.questionMetadata = userSettings.questionMetadata;
+															
+															$.each(displayNode.extendedMetadata, function(index, item){																	
+																displayNode['questionMetadata'][item['name']]=item['value'];																				
+															    });	
+											
+												
+															displayNode.selectedLevel = displayNode.questionMetadata['Difficulty']==undefined?{name:'Select Level',value:'0'}:{name:displayNode.questionMetadata['Difficulty'],value:displayNode.questionMetadata['Difficulty']};
+												
+												
+															displayNode.data=response;
 
-								var question = qBindings.shift();
+															// $scope.tree2.push(displayNode);
+															$scope.isLoading = false;
+															SharedTabService.tests[currentIndex].questions
+																	.push(displayNode);
+															SharedTabService.masterTests[currentIndex].masterQuestions
+																	.push(displayNode);// is
+																						// to
+																						// check
+																						// for
+																						// dirty.
+															if (qBindings.length > 0) {
+																$scope.renderQuestions(
+																		qBindings,
+																		currentIndex);
+															} else {
+																// $scope.BlockRightPanel.stop();
+															}
+														});
+											});
+									 
+									 
+									 
+								 });
 
-								TestService
-										.getQuestion(
-												question.boundActivity,
-												function(response) {
-													var displayNode = $("<div></div>")
-													displayNode.guid = question.guid;
-													QTI.play(response,
-															displayNode, false);
-													
-													displayNode.IsEditView = false;
-													displayNode.qstnLinkText = displayNode.IsEditView ? "View"
-															: "Edit";
-													
-													$.each(displayNode.extendedMetadata, function(index, item){																	
-														displayNode['questionMetadata'][item['name']]=item['value'];																				
-													    });	
-									
-										
-													displayNode.selectedLevel = displayNode.questionMetadata['Difficulty']==undefined?{name:'Select Level',value:'0'}:{name:displayNode.questionMetadata['Difficulty'],value:displayNode.questionMetadata['Difficulty']};
-										
-										
-													displayNode.data=response;
-
-													// $scope.tree2.push(displayNode);
-													$scope.isLoading = false;
-													SharedTabService.tests[currentIndex].questions
-															.push(displayNode);
-													SharedTabService.masterTests[currentIndex].masterQuestions
-															.push(displayNode);// is
-																				// to
-																				// check
-																				// for
-																				// dirty.
-													if (qBindings.length > 0) {
-														$scope.renderQuestions(
-																qBindings,
-																currentIndex);
-													} else {
-														// $scope.BlockRightPanel.stop();
-													}
-												});
+								
+								
 							};
 
 							$scope.renderTest = function(questionBindings,
@@ -1343,12 +1369,13 @@ angular
 													
 													var qstnExtMetadata=[];													
 												
-													$.each(qstn.questionMetadata, function(KeyName, KeyValue){	
-														if(KeyName=="Difficulty"){
-															KeyValue=qstn.selectedLevel.value;
+													$.each(qstn.questionMetadata, function(KeyName, KeyValue){		
+														if(KeyName == "Difficulty"){
+															KeyValue = qstn.selectedLevel.value;
 														}
-														qstnExtMetadata.push({name:KeyName,value:KeyValue}) 	;
-													});	
+														qstnExtMetadata.push({name:KeyName,value:KeyValue}) ;
+													});													
+												
 													
 													var QuestionEnvelop = {
 														metadata : {

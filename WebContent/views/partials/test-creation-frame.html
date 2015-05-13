@@ -378,7 +378,7 @@
 
 <div class='metadataSectionCaption'>Metadata</div>
 
-    <div ng-show={{node.questionMetadata['Difficulty']==undefined?false:true}} class='metadatarow'><span class='metdatalabel'>Level:</span>
+    <div ng-show={{node.questionMetadata['Difficulty']==undefined?false:true}} class='metadatarow'><span class='metdatalabel'>Difficulty:</span>
         <div class="metdataVal">
 			<select class='metadataQlvl' ng-model="node.selectedLevel"  ng-options="level.name for level in Difficulty  track by level.value">
        		</select>           
@@ -394,7 +394,7 @@
             <input class='metdataInput' data-ng-model="node.questionMetadata.Objective" type="textbox"></input>
         </div>
     </div>
-	<div ng-show={{node.questionMetadata["Pagereference"]==undefined?false:true}} class='metadatarow'><span class='metdatalabel'>Page:</span>
+	<div ng-show={{node.questionMetadata["Pagereference"]==undefined?false:true}} class='metadatarow'><span class='metdatalabel'>Page Reference:</span>
         <div class="metdataVal">
             <input class='metdataInput' data-ng-model="node.questionMetadata['Pagereference']" type="textbox" /></input>
         </div>
@@ -405,7 +405,7 @@
         </div>
     </div>
 
-   	<div ng-show={{node.guid==undefined?false:true}} class='metadatarow'><span class='metdatalabel'>ID:</span>
+   	<div ng-show={{node.guid==undefined?false:true}} class='metadatarow'><span class='metdatalabel'>Question ID:</span>
         <div class='metdataVal'>{{node.guid}}</div>
     </div>   
 	
