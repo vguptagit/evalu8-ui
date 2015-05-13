@@ -337,13 +337,15 @@
 </div>
 <div class="editMetdata editView">
    <div class="imagecaptionMetadata">
-      <input class="downArrowImage allignimage" type="image"
-         src="images/right_arrow.png" />
-      <div class="captionMetadata downArrowImage">
+      <input ng-src="{{isReplyFormOpen && 'images/right_arrow.png' || 'images/right_arrow2.png' }}" ng-click="isReplyFormOpen = !isReplyFormOpen" class="downArrowImage allignimage" type="image" /> 
+       <!--  src="images/right_arrow.png" /> -->
+	 </div>
+	<div  class="mainClass" >
+      <div  class="captionMetadata	">
          Format and add
          metadata
       </div>
-   </div>
+  <div ng-show="isReplyFormOpen">
    <div id="viewHeader">
       <span class="captionMetadata">Format</span><span class="normalText">
       (visible
@@ -374,8 +376,8 @@
          <input name="radioView{{node.guid}}" ng-click="qstnOptionsView(this,false)"  type="radio">1 page</input>
       </div>
    </div>
-   <div class="metadataSection">
 
+<div ng-show={{node.IsUserMetdataAvailable}} class="metadataSection">
 <div class='metadataSectionCaption'>Metadata</div>
 
     <div ng-show={{node.questionMetadata['Difficulty']==undefined?false:true}} class='metadatarow'><span class='metdatalabel'>Difficulty:</span>
@@ -394,7 +396,7 @@
             <input class='metdataInput' data-ng-model="node.questionMetadata.Objective" type="textbox"></input>
         </div>
     </div>
-	<div ng-show={{node.questionMetadata["Pagereference"]==undefined?false:true}} class='metadatarow'><span class='metdatalabel'>Page Reference:</span>
+	<div ng-show={{node.questionMetadata["PageReference"]==undefined?false:true}} class='metadatarow'><span class='metdatalabel'>Page Reference:</span>
         <div class="metdataVal">
             <input class='metdataInput' data-ng-model="node.questionMetadata['Pagereference']" type="textbox" /></input>
         </div>
@@ -408,7 +410,8 @@
    	<div ng-show={{node.guid==undefined?false:true}} class='metadatarow'><span class='metdatalabel'>Question ID:</span>
         <div class='metdataVal'>{{node.guid}}</div>
     </div>   
-	
+</div>
+</div>
 </div>
    
 </div>

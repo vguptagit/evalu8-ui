@@ -1313,6 +1313,8 @@ li[quiztype='TrueFalse'] .qti-simpleChoice .radio {
 
 .editMetdata {
 	display: inline-block;
+	float: left;
+	
 }
 
 .captionMetadata {
@@ -1339,12 +1341,12 @@ li[quiztype='TrueFalse'] .qti-simpleChoice .radio {
 }
 
 .downArrowImage {
-	float: left;
+	float: left;	
 }
 
-.imagecaptionMetadata {
-	display: inline-block;
-	margin-left: -16px;
+.imagecaptionMetadata {	
+	float:left;
+	margin-left: -18px;
 }
 
 .allignimage {
@@ -2185,4 +2187,8 @@ li[qstntemplate=true] .printViewContainer  .qti-blockquote .matchIndex {
 	border-radius: 5px;
 	width: 98%;
 	border-radius: 5px;
+}
+
+.mainClass{
+	padding-left: 3px;
 }

@@ -914,8 +914,15 @@ angular
 
 												var newNode = angular.copy(node);
 												
+												if (sourceTabName == "CustomQuestions") {													
+													SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode = true;
+												}
+												newNode.IsUserMetdataAvailable = false;
 												 UserService.userQuestionMetadata(function(userQuestionMetadata){
 													 newNode.questionMetadata = {};
+													 if (userQuestionMetadata.length>0){
+														 newNode.IsUserMetdataAvailable = true;
+													 }
 													 $.each(userQuestionMetadata, function( index, value ) {	
 														 newNode['questionMetadata'][value]='';																										
 														});			
@@ -926,9 +933,8 @@ angular
 															newNode.IsEditView = true;
 															newNode.editMainText = CustomQuestionTemplate[newNode.quizType].editMainText;
 															newNode.IsEdited = true;
-															newNode.IsDefaultEditView = true ;
-															SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode = true;
-															newNode.selectedLevel = {name:'Select Level',value:'0'};
+															newNode.IsDefaultEditView = true ;															
+															newNode.selectedLevel = {name:'Select Level',value:'0'};															
 															
 														} else {
 															newNode.IsEditView = false;
@@ -1042,7 +1048,7 @@ angular
 									return false;
 								}
 								
-								 UserService.userQuestionMetadata(function(userQuestionMetadata){	
+								 UserService.userQuestionMetadata(function(userQuestionMetadata){		
 									 
 									 var question = qBindings.shift();
 									 
@@ -1066,6 +1072,10 @@ angular
 															var displayNode = $("<div></div>")
 															displayNode.guid = question.guid;														
 															displayNode.quizType = questionMetadataResponse.quizType;
+															displayNode.IsUserMetdataAvailable = false;
+															 if (userQuestionMetadata.length>0){
+																 displayNode.IsUserMetdataAvailable = true;
+															 }
 															QTI.play(response,
 																	displayNode, false);
 															
