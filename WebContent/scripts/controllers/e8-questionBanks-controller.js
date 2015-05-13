@@ -628,6 +628,7 @@ angular
 											size : 'md',
 											backdrop : 'static',
 											keyboard : false,
+											scope: $scope,
 											resolve : {
 												step : function() {
 													return step;
