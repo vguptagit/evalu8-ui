@@ -32,13 +32,13 @@ angular
 																		response.token,
 																		response.loginCount);
 
-														if (response.loginCount > 1) {
+														/*if (response.loginCount > 1) {
 															$location
 																	.path(evalu8config.homeEndpoint);
-														} else {
+														} else {*/
 															$location
 																	.path(evalu8config.welcome);
-														}
+														//}
 
 													} else {
 														$scope.error = response.message;
@@ -65,14 +65,14 @@ angular
 																		response.token,
 																		response.loginCount);
 
-														if (response.loginCount > 1) {
+														/*if (response.loginCount > 1) {
 															$location
 																	.path(evalu8config.homeEndpoint);
-														} else {
+														} else {*/
 
 															$location
 																	.path(evalu8config.welcome);
-														}
+														//}
 													} else {
 														$scope.error = response.message;
 														$scope.dataLoading = false;
