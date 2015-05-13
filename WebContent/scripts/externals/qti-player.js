@@ -38,16 +38,47 @@ QTI.play = function(qtiXML, displayNode,editable,templateQstn,questionType) {
 		var decodeChar = function(text, encodedValue, decodedValue) {
 			return text.replace(new RegExp(encodedValue, "ig"), decodedValue);
 		}
+		
+		var decodeBRTag = function(text, tag) {
+			text = text.replace(new RegExp("[&]lt[;]\\s*" + tag
+					+ "\\s*(.*?)\\s*[&]gt[;]", "ig"), function(match, p1) {
+				if(p1.lastIndexOf("/") == (p1.length - 1))
+					return "<" + tag + p1 + ">"
+				else
+					return "<" + tag + p1 + "/>"
+			});
+			text = text.replace(new RegExp("[&]lt[;]\\s*\\/\\s*" + tag
+					+ "\\s*[&]gt[;]", "ig"), "</" + tag + ">");
+			return text;
+		}
+		
+		var decodeImgTag = function(text, tag) {
+			text = text.replace(new RegExp("[&]lt[;]\\s*" + tag
+					+ "\\s*(.*?)\\s*[&]gt[;]", "ig"), function(match, p1) {
+				var p2 = p1.replace(/&#39;/g, "'");
+				if(p2.lastIndexOf("/") == (p2.length - 1))
+					return "<" + tag + " " + p2.replace(/&amp;quot;/,"'") + ">"
+				else
+					return "<" + tag + " " + p2.replace(/&amp;quot;/,"'") + "/>"
+			});
+			text = text.replace(new RegExp("[&]lt[;]\\s*\\/\\s*" + tag
+					+ "\\s*[&]gt[;]", "ig"), "</" + tag + ">");
+			return text;
+		}
 
 		if (state && state.turnOffDecoder) {
 		} else {
+			qtiXML = decodeImgTag(qtiXML, "img");
 			qtiXML = decodeTag(qtiXML, "i");
+			qtiXML = decodeBRTag(qtiXML, "br")
 			qtiXML = decodeTag(qtiXML, "b");
 			qtiXML = decodeTag(qtiXML, "u");
 			qtiXML = decodeTag(qtiXML, "font");
 			qtiXML = decodeTag(qtiXML, "span");
 			qtiXML = decodeTag(qtiXML, "em");
 			qtiXML = decodeTag(qtiXML, "p");
+			qtiXML = decodeTag(qtiXML, "sup");
+			qtiXML = decodeTag(qtiXML, "sub");
 
 			qtiXML = decodeChar(qtiXML, "[&]amp[;][#]8216[;]", "&#8216;");
 			qtiXML = decodeChar(qtiXML, "[&]amp[;][#]8217[;]", "&#8217;");
