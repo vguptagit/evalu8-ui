@@ -84,11 +84,12 @@ angular
 										.success(
 												function(response) {
 
-													response.forEach(function(
-															item) {
-														userQuestionMetadata
-																.push(item);
-													});
+													if(response != "") {
+														response.forEach(function(item) {
+															userQuestionMetadata.push(item);
+														});
+													}
+													
 													callback(userQuestionMetadata);
 												});
 
