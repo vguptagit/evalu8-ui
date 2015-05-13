@@ -35,7 +35,7 @@ angular.module('evalu8Demo')
 	 $scope.questionMetadata = {
 			 all: [
                    'Difficulty', 'Topic', 'Objective',                    
-                   'Page Reference', 'Skill', 'Question ID'
+                   'PageReference', 'Skill', 'Question id (provided by Evalu8)'
                    ],
               userSelected: []     
 	 };		
@@ -46,7 +46,8 @@ angular.module('evalu8Demo')
 	 
 	 $scope.savePref = function() {								 
 		 
-		 UserService.saveUserQuestionMetadata($scope.questionMetadata.userSelected);	
+		 UserService.saveUserQuestionMetadata($scope.questionMetadata.userSelected);
+		 $modalInstance.close();
 	 };
 	 
 	  $scope.edit = function(step) {
