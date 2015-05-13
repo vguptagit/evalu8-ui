@@ -8,16 +8,17 @@ angular
 						var filteredBooks = [];
 						var isAuthorExists = false;
 						var authorName = [];
-
 						searchText = searchText.toLowerCase();
 						books
 								.forEach(function(book) {
-
+									book.authorName="";
 									if (book.authors != null
 											&& book.authors.length > 0) {
 										book.authors
 												.forEach(function(author) {
-													if (author != "") {
+													if (author != ""
+															&& author
+																	.indexOf("{") > -1) {
 														JSON
 																.parse(author)
 																.forEach(
@@ -45,6 +46,15 @@ angular
 																								+ authorDetail.lastName)
 																			}
 																		});
+													} else {
+														if (author
+																.toLowerCase()
+																.indexOf(
+																		searchText) > -1) {
+															isAuthorExists = true;
+															authorName
+																	.push(author);
+														}
 													}
 
 												});

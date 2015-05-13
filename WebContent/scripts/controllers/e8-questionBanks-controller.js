@@ -73,6 +73,10 @@ angular
 
 										$scope.disciplines = userDisciplines;
 
+										$scope.disciplines.sort(function(a, b) {
+											return a.item.localeCompare(b.item)
+										});
+
 										UserQuestionsService
 												.userQuestions(function(
 														userQuestions) {
@@ -628,7 +632,7 @@ angular
 											size : 'md',
 											backdrop : 'static',
 											keyboard : false,
-											scope: $scope,
+											scope : $scope,
 											resolve : {
 												step : function() {
 													return step;
