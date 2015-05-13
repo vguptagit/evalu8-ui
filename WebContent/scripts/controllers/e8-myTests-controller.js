@@ -571,15 +571,14 @@ angular.module('e8MyTests')
 
         //#region Save-as test
         $scope.$on('handleBroadcast_AddNewFolder', function (handler, newFolder) {
-            var parentFolder = search($scope.defaultFolders, newFolder);                          
-            var parentFolderNodes = null;
-            if (parentFolder) {
+            var parentFolder = null, parentFolderNodes=null;
+            if (newFolder.parentId == null) {
+                parentFolderNodes = $scope.defaultFolders
+            } else {
+                parentFolder = search($scope.defaultFolders, newFolder.parentId);
                 parentFolderNodes = parentFolder.nodes;
             }
-            else {
-                parentFolderNodes = $scope.defaultFolders.nodes;
-            }
-
+            
             var numberOfFolders = 0;
             $.each(parentFolderNodes, function (i, item) {
                 if (item.nodeType === 'folder') {
@@ -588,11 +587,39 @@ angular.module('e8MyTests')
             });
             parentFolderNodes.splice(numberOfFolders, 0, newFolder)
         });
-
-        function search(values, searchItem) {
+        $scope.$on('handleBroadcast_AddNewTest', function (handler, newTest,containerFolder) {
+            var parentFolder = null, parentFolderNodes = null;
+            if (containerFolder == null) {
+                parentFolderNodes = $scope.defaultFolders
+            } else {
+                parentFolder = search($scope.defaultFolders, containerFolder.guid);
+                parentFolderNodes = parentFolder.nodes;
+            }
+            TestService.getMetadata(newTest.guid, function (test) {
+                test.nodeType = "test";
+                test.showEditIcon = true;
+                test.showArchiveIcon = true;
+                if (containerFolder) {
+                    test.parentId =  containerFolder.guid;
+                    parentFolderNodes.push(test);
+                }
+                else {
+                    test.parentId = null;
+                    var position = 0;
+                    $.each(parentFolderNodes, function (i,item) {
+                        if (item.nodeType == 'archiveRoot') {
+                            return false;
+                        }
+                        position++;
+                    });
+                    parentFolderNodes.splice(position, 0, test)
+                }
+            });
+        });
+        function search(values, id) {
             var parentFolder = null;
 		    $.each(values, function (i, v) {
-		        if (v.guid == searchItem.parentId) {
+		        if (v.guid == id) {
 		            console.log('found', v);
 		            parentFolder = v;
 		            return false;

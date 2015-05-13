@@ -128,7 +128,7 @@ angular.module('evalu8Demo')
 				
 				$http.post(evalu8config.host + '/my/folders', folder, config)
 				.success(function(response) {									
-					if(callback) callback();
+				    if (callback) callback(response);
 				})
 				.error(function(error, status) {
 

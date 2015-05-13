@@ -1296,7 +1296,16 @@ angular
 								return qstnNode;
 								
 							}
-
+							$scope.saveAs_Test = function (title, containerFolder) {
+							    var test = SharedTabService.tests[SharedTabService.currentTabIndex];
+							    test.testId = null;
+							    test.title = title;
+							    test.folderGuid = containerFolder == null ? null : containerFolder.guid;
+							    $scope.testTitle = title;
+							    $scope.containerFolder = containerFolder;
+							    $scope.testGuid = null;
+							    $scope.saveTest();
+							}
 							// Function is to save the Test details with the
 							// questions.
 							$scope.saveTest = function() {
@@ -1310,10 +1319,7 @@ angular
 									$modal.open(confirmObject);
 									return;
 								}
-								
-								
 
-								$scope.testTitle = $("#testCaption").val();
 								// Building the json to create the test.
 								var testcreationdata = {
 									"metadata" : {
@@ -1432,7 +1438,7 @@ angular
 //																		SharedTabService.currentTab = SharedTabService.tests[SharedTabService.currentTabIndex];
 																		$scope.newVersionBtnCss = "";
 																		$scope.exportBtnCss = "";
-
+																		$rootScope.$broadcast('handleBroadcast_AddNewTest', testResult, $scope.containerFolder);
 																		if ($('.maindivTest[id='
 																				+ testResult.guid
 																				+ ']').length) {

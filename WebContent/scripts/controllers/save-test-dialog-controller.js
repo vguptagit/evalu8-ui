@@ -38,10 +38,12 @@
 		     };
 		     $scope.addNewFolder = function (folderName, callback) {
 		         if (folderName == null || folderName.trim().length == 0) { return; }
-		         var lastFolder = $scope.selectedfolder.nodes[$scope.selectedfolder.nodes.length - 1];
 		         var sequence = 1;
-		         if (lastFolder.nodeType != EnumService.CONTENT_TYPE.emptyFolder) {
-		             sequence = lastFolder.sequence + (lastFolder.sequence / 2);
+		         if ($scope.selectedfolder) {
+		             var lastFolder = $scope.selectedfolder.nodes[$scope.selectedfolder.nodes.length - 1];
+		             if (lastFolder.nodeType != EnumService.CONTENT_TYPE.emptyFolder) {
+		                 sequence = lastFolder.sequence + (lastFolder.sequence / 2);
+		             }
 		         }
 
 		         var newFolder = {
@@ -50,7 +52,8 @@
 		             "title": folderName
 		         };
 
-		         UserFolderService.saveUserFolder(newFolder, function () {
+		         UserFolderService.saveUserFolder(newFolder, function (response) {
+		             newFolder.guid = response.guid;
 		             newFolder.nodeType = EnumService.CONTENT_TYPE.folder;
 		             if ($scope.selectedfolder) {
 		                 $scope.selectedfolder.nodes.push(newFolder);
@@ -65,26 +68,23 @@
 		     }
 
 		     /*****************************************************************************/
-		     $scope.curresnTest = parentScope.tests[parentScope.currentIndex];
+		     $scope.currentTest = parentScope.tests[parentScope.currentIndex];
+		     $scope.title = "";
 		     $scope.isErrorMessage = false;
 
 		     $scope.save = function () {
-		         if ($scope.curresnTest.title == "" || $scope.curresnTest.title == null) {
+		         if ($scope.title == "" || $scope.title == null) {
 		             $scope.errorMessage = 'please enter the test title.';
 		             $scope.isErrorMessage = true;
 		             return false;
 		         }
-		         parentScope.saveTest();
-		         parentScope.tests[parentScope.currentIndex].isSaveAndClose = true;
+		         parentScope.saveAs_Test($scope.title, $scope.selectedfolder);
 		         $modalInstance.dismiss('cancel');
 		     };
 		     $scope.cancel = function () {
 		         $modalInstance.dismiss('cancel');
 		     };
-		     $scope.closeTab = function () {
-		         parentScope.closeTab($scope.curresnTest);
-		         $modalInstance.dismiss('cancel');
-		     };
+
 		     $scope.openAddNewFolderPopup = function () {
 		         $modal.open({
 		             templateUrl: 'addNewFolder.html',
