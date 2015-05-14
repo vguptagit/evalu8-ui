@@ -421,6 +421,11 @@ angular
 									qstnOptionView) {
 								selectedNode.node.optionsView = qstnOptionView;
 							}
+							
+							$scope.qstnEssayPageSize = function(selectedNode,
+									pageSize) {
+								selectedNode.node.EssayPageSize = pageSize;
+							}
 
 							$scope.addOptions = function(selectedOption, event) {
 								var htmlOptionCnt = selectedOption.$element
@@ -933,13 +938,18 @@ angular
 													 if (userQuestionMetadata.length>0){
 														 newNode.IsUserMetdataAvailable = true;
 													 }
-													 $.each(userQuestionMetadata, function( index, value ) {	
-														 newNode['questionMetadata'][value]='';																										
-														});			
+														
 													 
 														var tests = SharedTabService.tests[SharedTabService.currentTabIndex].questions;
 																											 
 														if (sourceTabName == "CustomQuestions") {
+															
+															 $.each(userQuestionMetadata, function( index, value ) {	
+																 if(value!='QuestionId'){
+																 newNode['questionMetadata'][value]='';
+																 }
+															});		
+															 
 															newNode.IsEditView = true;
 															newNode.editMainText = CustomQuestionTemplate[newNode.quizType].editMainText;
 															newNode.IsEdited = true;
@@ -948,6 +958,11 @@ angular
 															newNode.EssayPageSize = '0';
 															
 														} else {
+															
+															 $.each(userQuestionMetadata, function( index, value ) {																	
+																 newNode['questionMetadata'][value]='';																
+															});		
+															 
 															newNode.IsEditView = false;
 															newNode.editMainText = CustomQuestionTemplate["MultipleChoice"].editMainText;
 																																	
