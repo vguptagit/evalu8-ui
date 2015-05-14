@@ -287,7 +287,7 @@ angular.module('e8MyTests')
     	        	$('.testMessagetip').show()
     	        	setTimeout(function(){ 
     	        		$('.testMessagetip').hide();
-    	        	}, 4000000);
+    	        	}, 5000);
             	}
             }
             SharedTabService.showSelectedTestTab(test.node.guid);

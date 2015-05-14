@@ -559,11 +559,11 @@ angular
 							 $('.questionMessagetip').offset({'top':($(window).height()/2)-$('.questionMessagetip').height()});
 						        $('.questionMessagetip').hide();
 							$scope.selectNode = function(node) {
-								if(node.isNodeSelected==false && $rootScope.globals.loginCount<=10){
+								if(node.isNodeSelected==false && $rootScope.globals.loginCount<=12){
 									$('.questionMessagetip').show()
 				    	        	setTimeout(function(){ 
 				    	        		$('.questionMessagetip').hide();
-				    	        	}, 400000);
+				    	        	}, 5000);
 								}
 								if (!node.isNodeSelected) {
 									$scope.selectedNodes.push(node);
