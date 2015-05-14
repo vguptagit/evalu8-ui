@@ -21,12 +21,15 @@
 		             if ($.isArray(defaultFolder.$parent.node)) {
 		                 for (var i = 0; i < defaultFolder.$parent.node.length; i++) {
 		                     defaultFolder.$parent.node[i].nodes = []
+		                     defaultFolder.$parent.node[i].isSelected = false;
 		                 }
-		             } else {
+		             } else if (defaultFolder.$parent.node.nodes) {
 		                 for (var i = 0; i < defaultFolder.$parent.node.nodes.length; i++) {
 		                     defaultFolder.$parent.node.nodes[i].nodes = []
+		                     defaultFolder.$parent.node.nodes[i].nodes.isSelected = false;
 		                 }
 		             }
+		             $scope.selectedfolder.isSelected = true;
 		             $scope.getUserFolders(defaultFolder);
 		         }
 		     }
@@ -69,7 +72,7 @@
 
 		     /*****************************************************************************/
 		     $scope.currentTest = parentScope.tests[parentScope.currentIndex];
-		     $scope.title = "";
+		     $scope.title = $scope.currentTest.title;
 		     $scope.isErrorMessage = false;
 
 		     $scope.save = function () {
@@ -89,7 +92,7 @@
 		         $modal.open({
 		             templateUrl: 'addNewFolder.html',
 		             controller: 'AddNewFolderController',
-		             size: 'sm',
+		             size: 'md',
 		             backdrop: 'static',
 		             keyboard: false,
 		             resolve: {

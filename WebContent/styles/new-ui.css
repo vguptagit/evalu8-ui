@@ -461,28 +461,3 @@ span.glyphicon.glyphicon-info-sign {
 .tips{
   font-size: large;
 }
-/*save-as page starts */
-.folder-main {
-        min-height: 20px;
-        width: 100%;
-        display: table;
-    }
-
-    .folder-caption {
-        margin-top: 15px;
-        cursor: pointer;
-        float: left;
-        width: 87%;
-    }
-
-    .folder-template-container {
-        position: relative;
-    }
-
-    .folder-template {
-        position: absolute;
-        width: 100px;
-        left: 100px;
-        top: 0;
-    }
-/*save-as page ends */

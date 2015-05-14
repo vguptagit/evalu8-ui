@@ -1999,7 +1999,7 @@ angular
 							    $modal.open({
 							        templateUrl: 'views/partials/save-test-dialog-popup.html',
 							        controller: 'SaveTestDialogController',
-							        size: 'lg',
+							        size: 'md',
 							        backdrop: 'static',
 							        keyboard: false,
 							        resolve: {
