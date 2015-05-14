@@ -1144,6 +1144,8 @@ li[printmode='false'] .questionList {
 .printViewContainer .optionLabelView {
 	display: inline-block;
 	padding-left: 10px;
+	max-width: 91%;
+	vertical-align: middle;
 }
 
 li[qstnTemplate='true'] .radio span.tick, li[qstnTemplate='true'] .checkbox span.tick
