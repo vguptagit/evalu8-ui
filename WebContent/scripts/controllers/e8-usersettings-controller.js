@@ -27,15 +27,12 @@ angular.module('evalu8Demo')
 	  
 	  BookService.userBooks(function(response) {
 		  $scope.userBooks= response;
-	  })
-	  	  
-	  //$scope.metadatas = ['Difficulty', 'Topic', 'Objective', 'Page reference', 'Skill', 'Question id (provided by Evalu8)'];
-	  		
+	  })	  	  	  		
 		 
 	 $scope.questionMetadata = {
 			 all: [
                    'Difficulty', 'Topic', 'Objective',                    
-                   'PageReference', 'Skill', 'Question id (provided by Evalu8)'
+                   'PageReference', 'Skill', 'QuestionId'
                    ],
               userSelected: []     
 	 };		

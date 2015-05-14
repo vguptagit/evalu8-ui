@@ -65,7 +65,10 @@
 						<div class="checkboxDiv">
 							<input type="checkbox" data-checklist-model="questionMetadata.userSelected" data-checklist-value="filter">
 						</div>
-						<div style="padding: 5px;" class="checkboxLabelDiv">{{filter}}</div>
+						<div ng-if="filter == 'PageReference'" style="padding: 5px;" class="checkboxLabelDiv">Page Reference</div>
+						<div ng-if="filter == 'QuestionId'" style="padding: 5px;" class="checkboxLabelDiv">Question Id (provided by Evalu8)</div>						
+						<div ng-if = "filter != 'PageReference' && filter != 'QuestionId'" style="padding: 5px;" class="checkboxLabelDiv">{{filter}}</div>
+						
 					</div>
 				</div>
 
