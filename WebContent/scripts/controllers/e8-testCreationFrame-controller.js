@@ -1724,7 +1724,7 @@ angular
 											keyboard : false,
 											resolve : {
 												testId : function() {
-													return SharedTabService.currentTab.testId;
+													return SharedTabService.tests[SharedTabService.currentTabIndex].testId;
 												}
 											}
 										});
