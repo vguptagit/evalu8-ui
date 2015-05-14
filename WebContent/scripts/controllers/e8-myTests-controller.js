@@ -480,12 +480,23 @@ angular.module('e8MyTests')
         		} else {
         			
         			var testParent = angular.element($('[id=' + restoredFolder.guid + ']')).scope();
-        			if(testParent && testParent.node) {
-        				if(testParent.node.nodes[0] && testParent.node.nodes[0].nodeType == "empty") {
-        					testParent.node.nodes.splice(0,1);
+        			if(testParent && testParent.node && testParent.node.nodes && testParent.node.nodes.length) {
+        				
+        				for(var tesstItemIndex=testParent.node.nodes.length-1; tesstItemIndex>=0; tesstItemIndex--) {
+        					if(testParent.node.nodes[tesstItemIndex].nodeType == 'test') {
+        						testParent.node.nodes.splice(tesstItemIndex, 1);
+        					}
         				}
-        				testParent.node.nodes.push(test.node);
         			}
+        			
+                    TestService.getTests(restoredFolder.guid, function (tests) {
+                        tests.forEach(function (test) {
+                            test.selectTestNode = false;//to show the edit icon
+                            test.disableEdit = false;//to disable the edit icon
+
+                            testParent.node.nodes.push(test);
+                        })
+                    });
         		}        		
         	});        	
         }
@@ -557,7 +568,7 @@ angular.module('e8MyTests')
                 "title": $scope.folderName
             };
 
-            UserFolderService.saveUserFolder(userFolder, function () {
+            UserFolderService.saveUserFolder(userFolder, function (userFolder) {
 
             	//$scope.loadTree();
             	
