@@ -11,8 +11,8 @@
 
 
 <wizard on-finish="finishWizard()"
-	template="views/usersettings/startupWizardTemplate.html"> <wz-step
-	title="Discipline" canenter="enterDiscipline" canexit="exitDiscipline">
+	template="views/usersettings/startupWizardTemplate.html"> <wz-step title="Discipline"
+	canenter="enterDiscipline" canexit="exitDiscipline">
 
 <div class="row"
 	style="vertical-align: middle; middle; margin-top: 20px;">
@@ -30,8 +30,6 @@
 		</div>
 	</div>
 	<div class="col-lg-7">
-		<div class="row">
-			<div class="col-lg-12" style="margin-left: 10px;">
 				<div class="input-group searchdiv">
 					<input type="text" placeHolder="Search Discipline"
 						class="searchDiscpline form-control" ng-model="searched"
@@ -39,26 +37,18 @@
 						ng-keyup="searchedDiscipline($event)"> <span class="glyphicon glyphicon-search searchicon" ng-click="searchedDisciplineOnClick()"
 						tooltip="Search" tooltip-placement="bottom"></span>
 				</div>
-			</div>
-		</div>
-		<div class="row" style="margin-top: 20px;">
-			<div class="col-lg-12">
-				<div class="disciplineContainer" resize>
+				<div class="discplineheight">
 					<div data-ng-repeat="discipline in disciplines.all.sort()"
 						ng-click="selectDiscipline(this)"
 						ng-class="{selectedDisc: isSelectedDiscipline(this)}">
-						<div class="discplineText">{{discipline}}</div>
-						<hr style="margin-bottom: 0px; margin-top: 0px;">
+						<div class="discplineText">{{discipline}}</div>						
 					</div>
 				</div>
-			</div>
-		</div>
 	</div>
 </div>
 
 </wz-step> <wz-step title="Books" canenter="enterBook">
-<div class="row"
-	style="vertical-align: middle; middle; margin-top: 20px;">
+<div class="row margin-top-20">
 	<div class="col-lg-5">
 		<div>
 			<ul class="a">
@@ -72,49 +62,35 @@
 		</div>
 	</div>
 	<div class="col-lg-7">
-		<div class="row">
-			<div class="col-lg-12" style="margin-left: 10px;">
-				<div class="searchPanel" resize>
+				<div class="input-group searchdiv">
 					<input type="text"
 						placeHolder="Enter title, author, publisher, bookid or ISBN"
-						class="searchBook" ng-model="searchedBook"
+						class="searchDiscpline form-control searchBook" ng-model="searchedBook"
 						placeholder="Custom template"
 						typeahead-template-url="customTemplate.html"
 						typeahead="book.title for book in books.all | searchFields:$viewValue"
-						ng-keyup="searchedBookOnEnter($event)"> <span
-						class="searchIcon" ng-click="searchedBookOnClick()"
+						ng-keyup="searchedBookOnEnter($event)"> <span class="glyphicon glyphicon-search searchicon" ng-click="searchedBookOnClick()"
 						tooltip="Search" tooltip-placement="bottom"></span>
 				</div>
-			</div>
-		</div>
-		<div class="row" style="margin-top: 20px;">
-			<div class="col-lg-12">
-				<div class="bookContainer">
+				<div class="bookContainer margin-top-10">
 					<div data-ng-repeat="discipline in disciplineBooks">
-						<div class="discplineText1" style="font-weight: bold;">{{discipline.name}}</div>
-						<hr
-							style="Border: 1px solid #E8E8E8; margin-bottom: 0px; margin-top: 0px;">
-
+						<div class="discplineText1" style="font-weight: bold;">{{discipline.name}}</div>					
 						<div data-ng-repeat="book in discipline.books"
 							ng-click="selectBook(book.guid,discipline.name)"
 							ng-class="{selectedDisc: book.isSelected}"
 							ng-show="book.showEdition" parentbookid="{{book.parentBookID}}">
-							<div
-								style="float: left; margin-right: 5px; vertical-align: middle; margin-top: 7px; background-color: #FFFFFF;"
+							<div					
 								ng-show="book.hasEdition"
 								ng-click="showOldEdition(book.guid,discipline.name)">
 								<img alt="Editions" id="{{book.guid}}" src=""
 									ng-class="book.isCollasped?'collapseBookEdition':'expandBookEdition'">
 							</div>
-							<div class="discplineText" style="margin-left: 20px;">
+							<div class="discplineText">
 								{{book.title}}</div>
-							<hr style="margin-bottom: 0px; margin-top: 0px;">
 						</div>
-						<div style="height: 30px;"></div>
+						<div></div>
 					</div>
 				</div>
-			</div>
-		</div>
 	</div>
 </div>
 </wz-step>

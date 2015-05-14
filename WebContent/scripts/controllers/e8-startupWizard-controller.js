@@ -97,7 +97,7 @@ angular
 						var divHeight = ($(document).height() - $(
 								'.searchdiv').offset().top) + 60;
 
-						$('.disciplineContainer').height(divHeight);
+						$('.discplineheight').height(divHeight);
 
 						$('.bookContainer').height(divHeight);
 
@@ -177,7 +177,7 @@ angular
 								$scope.searched = $(".searchDiscpline").val();
 								if ($scope.searched == undefined
 										|| $scope.searched == "") {
-									$(".disciplineContainer")[0].scrollTop = 0;
+									$(".discplineheight")[0].scrollTop = 0;
 									return false;
 
 								}
@@ -224,12 +224,12 @@ angular
 								$scope.enableDisableNextButton($scope
 										.isDesciplineEmpty());
 
-								var vtop = $(".disciplineContainer").find(
+								var vtop = $(".discplineheight").find(
 										"div:contains('" + disciplineName
 												+ "')").position().top;
-								if (vtop > $(".disciplineContainer")[0].clientHeight
+								if (vtop > $(".discplineheight")[0].clientHeight
 										|| vtop < 0) {
-									$(".disciplineContainer")[0].scrollTop = vtop;
+									$(".discplineheight")[0].scrollTop = vtop;
 								}
 							}
 
