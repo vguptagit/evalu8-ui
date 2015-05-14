@@ -1348,6 +1348,7 @@ angular
 									$modal.open(confirmObject);
 									return;
 								}
+								$scope.testTitle = test.title;
 
 								// Building the json to create the test.
 								var testcreationdata = {
