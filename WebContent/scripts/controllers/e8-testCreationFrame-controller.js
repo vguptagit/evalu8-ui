@@ -27,6 +27,7 @@ angular
 							$scope.tests = SharedTabService.tests;
 							$scope.currentIndex = SharedTabService.currentTabIndex;
 							$scope.criterias = SharedTabService.tests[SharedTabService.currentTabIndex].criterias;
+							
 							// $scope.isTestWizardTabPresent = false;
 							$scope.sharedTabService = SharedTabService;
 
@@ -37,7 +38,6 @@ angular
 							 */
 							$scope.showQstnEditIcon = false;
 							
-						
 
 							$scope.hoverIn = function(selectedQstn) {
 								this.showQstnEditIcon = true;
@@ -196,6 +196,9 @@ angular
 								$(xml).find('itemBody').find(
 										'choiceInteraction').attr(
 										'orientation', optionVew);
+								
+								if($(xml).find('itemBody').find("extendedTextInteraction").length > 0)
+									$(xml).find('itemBody').find("extendedTextInteraction").eq(0).attr("expectedLines",$(".EssaySpaceDiv input[type=radio]:checked").attr("pageSize"))
 
 								$(xml).find('itemBody').find(
 										'choiceInteraction').find(
@@ -836,6 +839,12 @@ angular
 								var nodeOptionsView = (xmlOrientation == undefined)
 										|| (xmlOrientation == 'Vertical') ? true
 										: false;
+								
+								var nodeEssayPageSize = '0';
+								if($(qstnXML).find('itemBody').find("extendedTextInteraction").length > 0)
+									nodeEssayPageSize = $(qstnXML).find('itemBody').find("extendedTextInteraction").eq(0).attr("expectedLines")
+
+								
 
 								var qstnMasterData = {
 									caption : $(qstnXML).find('itemBody').find('p')
@@ -845,7 +854,8 @@ angular
 											'choiceInteraction').find(
 											"simpleChoice").length,
 									correctAnswer : correctAnswerList,
-									optionsView : nodeOptionsView
+									optionsView : nodeOptionsView,
+									EssayPageSize : nodeEssayPageSize
 								}
 
 								return qstnMasterData;
@@ -934,7 +944,8 @@ angular
 															newNode.editMainText = CustomQuestionTemplate[newNode.quizType].editMainText;
 															newNode.IsEdited = true;
 															newNode.IsDefaultEditView = true ;															
-															newNode.selectedLevel = {name:'Select Level',value:'0'};															
+															newNode.selectedLevel = {name:'Select Level',value:'0'};	
+															newNode.EssayPageSize = '0';
 															
 														} else {
 															newNode.IsEditView = false;
@@ -948,6 +959,7 @@ angular
 															
 															newNode.qstnMasterData = buildQstnMasterDetails(newNode);
 															newNode.optionsView = newNode.qstnMasterData.optionsView;
+															newNode.EssayPageSize = newNode.qstnMasterData.EssayPageSize;															
 														
 														}
 														
@@ -1070,7 +1082,7 @@ angular
 														question.boundActivity,
 														function(response) {
 															var displayNode = $("<div></div>")
-															displayNode.guid = question.guid;														
+															displayNode.guid = question.guid;	
 															displayNode.quizType = questionMetadataResponse.quizType;
 															displayNode.IsUserMetdataAvailable = false;
 															 if (userQuestionMetadata.length>0){
@@ -1085,16 +1097,23 @@ angular
 															displayNode.extendedMetadata =  questionMetadataResponse.extendedMetadata;
 															displayNode.questionMetadata = userSettings.questionMetadata;
 															
-															$.each(displayNode.extendedMetadata, function(index, item){																	
-																displayNode['questionMetadata'][item['name']]=item['value'];																				
-															    });	
+															$.each(displayNode.extendedMetadata, function(index, item){				
+																if(typeof(displayNode['questionMetadata'][item['name']])!='undefined'){
+																displayNode['questionMetadata'][item['name']]=item['value'];	
+																}
+															});	
 											
 												
 															displayNode.selectedLevel = displayNode.questionMetadata['Difficulty']==undefined?{name:'Select Level',value:'0'}:{name:displayNode.questionMetadata['Difficulty'],value:displayNode.questionMetadata['Difficulty']};
 												
 												
 															displayNode.data=response;
-
+															
+															displayNode.qstnMasterData = buildQstnMasterDetails(displayNode);
+															displayNode.optionsView = displayNode.qstnMasterData.optionsView;
+															displayNode.EssayPageSize = displayNode.qstnMasterData.EssayPageSize;	
+															
+													
 															// $scope.tree2.push(displayNode);
 															$scope.isLoading = false;
 															SharedTabService.tests[currentIndex].questions
@@ -1724,7 +1743,7 @@ angular
 											keyboard : false,
 											resolve : {
 												testId : function() {
-													return SharedTabService.tests[SharedTabService.currentTabIndex].testId;
+                                                    return SharedTabService.tests[SharedTabService.currentTabIndex].testId;
 												}
 											}
 										});
