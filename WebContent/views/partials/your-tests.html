@@ -144,7 +144,7 @@
                 <div class="maindivTest" id={{node.guid}} ng-class="{testHighlight: node.selectTestNode}">
                     <div class="imagediv"></div>
                     <div class="testCaptionDiv">
-                        <div ng-mousedown="selectTestNode(this);" id="testButtonDiv"
+                        <div ng-mousedown="selectTestNode($event,this);" id="testButtonDiv"
                              ng-class="{testHighlight: node.selectTestNode}" class="testInputbuttonClass">
                             {{node.title}} &nbsp;&nbsp;&nbsp;&nbsp; {{node.modified | date:'MM/dd/yy'}}
                         </div>
@@ -163,7 +163,7 @@
                 <div ng-class="{testHighlight: node.selectTestNode}" class="maindivTest" id={{node.guid}}>
                     <div class="imagediv"></div>
                     <div class="testCaptionDiv">
-                        <div ng-mousedown="selectTestNode(this);" id="testButtonDiv"
+                        <div ng-mousedown="selectTestNode($event,this);" id="testButtonDiv"
                              ng-class="{testHighlight: node.selectTestNode}" class="testInputbuttonClass">
                             {{node.title}} &nbsp;&nbsp;&nbsp;&nbsp; {{node.modified | date:'MM/dd/yy'}}
                         </div>
