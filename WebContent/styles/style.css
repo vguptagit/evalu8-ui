@@ -121,6 +121,9 @@ label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D;
         left: 220px;
         top: 0;
     }
+.new-folder-modal-footer{
+    margin:0;
+}
 /*save-as page ends */
 
 /* Border CSS */
