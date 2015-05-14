@@ -1514,7 +1514,6 @@ li[quiztype='TrueFalse'] .qti-simpleChoice .radio {
 	float: left;
 	padding-left: 5px;
 	height: 38px;
-	border: 0px solid;
 	border-radius: 5px;
 	width: 93%;
 }

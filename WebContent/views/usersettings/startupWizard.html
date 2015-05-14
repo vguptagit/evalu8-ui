@@ -32,12 +32,11 @@
 	<div class="col-lg-7">
 		<div class="row">
 			<div class="col-lg-12" style="margin-left: 10px;">
-				<div class="searchPanel">
+				<div class="input-group searchdiv">
 					<input type="text" placeHolder="Search Discipline"
-						class="searchDiscpline" ng-model="searched"
+						class="searchDiscpline form-control" ng-model="searched"
 						typeahead="discipline for discipline in disciplines.all.sort() | filter:$viewValue"
-						ng-keyup="searchedDiscipline($event)"> <span
-						class="searchIcon" ng-click="searchedDisciplineOnClick()"
+						ng-keyup="searchedDiscipline($event)"> <span class="glyphicon glyphicon-search searchicon" ng-click="searchedDisciplineOnClick()"
 						tooltip="Search" tooltip-placement="bottom"></span>
 				</div>
 			</div>
