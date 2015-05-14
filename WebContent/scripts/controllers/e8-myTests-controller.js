@@ -4,9 +4,9 @@ angular.module('e8MyTests')
 
 .controller('MyTestsController',
     ['$scope', '$rootScope', '$location', '$cookieStore', '$http', '$sce', '$modal',
-     'UserFolderService', 'TestService', 'SharedTabService', 'ArchiveService','EnumService','notify',
+     'UserFolderService', 'TestService', 'SharedTabService', 'ArchiveService','EnumService',
      function ($scope, $rootScope, $location, $cookieStore, $http, $sce, $modal,
-    		UserFolderService, TestService, SharedTabService, ArchiveService,EnumService,notify) {
+    		UserFolderService, TestService, SharedTabService, ArchiveService,EnumService) {
     	
         $scope.controller = EnumService.CONTROLLERS.myTest;
     	SharedTabService.selectedMenu = SharedTabService.menu.myTest;
@@ -272,9 +272,20 @@ angular.module('e8MyTests')
 
         // To show the Edit icon,on click of test
         // node.
-        $scope.selectTestNode = function (test) {
+        $('.testMessagetip').offset({'top':($(window).height()/2)-$('.testMessagetip').height()});
+        $('.testMessagetip').hide();
+        $scope.selectTestNode = function ($event,test) {
+        	
+        	//$('.messagetip').offset({top:$($event.target).offset().top+50});
             if (!test.node.disableEdit) {
-                test.node.selectTestNode = !test.node.selectTestNode;
+                test.node.selectTestNode = !test.node.selectTestNode; 
+                if(test.node.selectTestNode && $rootScope.globals.loginCount<=2){
+    	        	//$scope.notify=true;
+    	        	$('.testMessagetip').show()
+    	        	setTimeout(function(){ 
+    	        		$('.testMessagetip').hide();
+    	        	}, 4000);
+            	}
             }
             SharedTabService.showSelectedTestTab(test.node.guid);
         }

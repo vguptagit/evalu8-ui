@@ -551,8 +551,16 @@ angular
 								}
 								return sortedNodes;
 							}
-
+							
+							 $('.questionMessagetip').offset({'top':($(window).height()/2)-$('.questionMessagetip').height()});
+						        $('.questionMessagetip').hide();
 							$scope.selectNode = function(node) {
+								if(node.isNodeSelected==false && $rootScope.globals.loginCount<=2){
+									$('.questionMessagetip').show()
+				    	        	setTimeout(function(){ 
+				    	        		$('.questionMessagetip').hide();
+				    	        	}, 4000);
+								}
 								if (!node.isNodeSelected) {
 									$scope.selectedNodes.push(node);
 									node.isNodeSelected = !node.isNodeSelected;

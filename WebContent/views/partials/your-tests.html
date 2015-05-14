@@ -16,6 +16,10 @@
         </div>
         <div data-ui-tree id="MyTest-tree-root">
             <ol data-ui-tree-nodes data-ng-model="defaultFolders">
+				<div class="testMessagetip"  style="position: absolute;top:0px">
+				<div><span class="glyphicon glyphicon-info-sign"></span>&nbsp;<strong>Tips:</strong> Drag test to right to edit OR select pencil icon
+				Select Archive box icon to move test to Archive directory.</div>
+				</div>
                 <li data-ng-repeat="node in defaultFolders" data-ui-tree-node
                     x-collapsed="true" data-ng-include="'defaultfolder_renderer.html'"
                     draggable="{{node.nodeType != 'archiveRoot' && node.showEditIcon }}" />
@@ -46,7 +50,7 @@
                 <div class="maindivTest" ng-class="{testHighlight: node.selectTestNode}" id={{node.guid}}>
                     <div class="imagediv"></div>
                     <div class="testCaptionDiv">
-                        <div ng-mousedown="selectTestNode(this);" id="testButtonDiv"
+                        <div ng-mousedown="selectTestNode($event,this);" id="testButtonDiv"
                              class="testInputbuttonClass">
                             {{node.title}} &nbsp;&nbsp;&nbsp;&nbsp; {{node.modified | date:'MM/dd/yy'}}
                         </div>
