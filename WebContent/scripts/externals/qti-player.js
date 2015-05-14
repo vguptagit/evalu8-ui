@@ -1722,21 +1722,21 @@ if(state.questionType=="Matching"){
 			$(displayNode).find("div.optionsMaindiv").prepend(mainContentsDisplayNode);
 				
 			$(displayNode).find("div.mainOptionOperationdiv").append(
-					$("<button tooltip='Upload picture' tooltip-placement='bottom'></button>").attr({						
+					$("<button title='Upload picture'></button>").attr({						
 						"name" : "image",				
 						"class" : "iconButtons glyphicon glyphicon-picture",
 						"ng-click" : "addImage(this,$event,'div.qti-simpleChoice')"
 					}));
 			
 			$(displayNode).find("div.mainOptionOperationdiv").append(
-					$("<button tooltip='Add answer' tooltip-placement='bottom'></button>").attr({							
+					$("<button title='Add answer'></button>").attr({							
 						"name" : "Add",				
 						"class" : "iconButtons glyphicon glyphicon-plus",				
 						"ng-click" : "addBlockquote(this,$event)"
 					}));
 			
 			$(displayNode).find("div.mainOptionOperationdiv").append(
-					$("<button tooltip='Delete this answer' tooltip-placement='bottom'></button>").attr({					
+					$("<button title='Delete this answer'></button>").attr({					
 						"name" : "delete",				
 						"class" : "iconButtons glyphicon glyphicon-remove",
 						"ng-click" : "deleteBlockquote(this,$event)"
@@ -1781,7 +1781,7 @@ var textBox = $("<div contenteditable='true'  class='editView' type='text' id='q
 //		$(displayNode).append(textBox);
 		
 		$(displayNode).find("div.imageIconContainer").append(
-				$("<button tooltip='Upload picture' tooltip-placement='bottom'></button>").attr({
+				$("<button title='Upload picture'></button>").attr({
 					"id" : "id",				
 					"name" : "image",				
 					"class" : "iconButtons glyphicon glyphicon-picture",
@@ -1830,7 +1830,7 @@ var textBox = $("<div contenteditable='true'  class='editView' type='text' id='q
 //		$(displayNode).append(textBox);
 		
 		$(displayNode).find("div.iconContainer").append(
-				$("<button tooltip='Upload picture' tooltip-placement='bottom'></button>").attr({
+				$("<button title='Upload picture'></button>").attr({
 					"id" : "id",				
 					"name" : "image",				
 					"class" : "iconButtons glyphicon glyphicon-picture",
@@ -2076,7 +2076,7 @@ QTI.Elements.SimpleChoice.play = function(qtiNode, displayNode, state) {
 	
 		
 	containerDisplayNode.find("div.optionOperationdiv").append(
-			$("<button tooltip='Upload picture' tooltip-placement='bottom'></button>").attr({
+			$("<button title='Upload picture'></button>").attr({
 				"id" : id,				
 				"name" : "image",				
 				"class" : "iconButtons glyphicon glyphicon-picture",
@@ -2084,7 +2084,7 @@ QTI.Elements.SimpleChoice.play = function(qtiNode, displayNode, state) {
 			}));
 	
 	containerDisplayNode.find("div.optionOperationdiv").append(
-			$("<button tooltip='Add answer' tooltip-placement='bottom'></button>").attr({
+			$("<button title='Add answer'></button>").attr({
 				"id" : id,				
 				"name" : "Add",				
 				"class" : "iconButtons glyphicon glyphicon-plus",				
@@ -2092,7 +2092,7 @@ QTI.Elements.SimpleChoice.play = function(qtiNode, displayNode, state) {
 			}));
 	
 	containerDisplayNode.find("div.optionOperationdiv").append(
-			$("<button tooltip='Delete this answer' tooltip-placement='bottom'></button>").attr({
+			$("<button title='Delete this answer'></button>").attr({
 				"id" : id,				
 				"name" : "delete",				
 				"class" : "iconButtons glyphicon glyphicon-remove",
@@ -2688,7 +2688,7 @@ QTI.Elements.InlineChoiceInteraction.play = function(qtiNode, displayNode,
 
 		
 		$(displayNode).find("div.matchOptionOperation").append(
-				$("<button tooltip='Upload picture' tooltip-placement='bottom'></button>").attr({						
+				$("<button title='Upload picture'></button>").attr({						
 					"name" : "image",				
 					"class" : "iconButtons glyphicon glyphicon-picture",
 					"ng-click" : "addImage(this,$event,'div.qti-simpleChoice')"
