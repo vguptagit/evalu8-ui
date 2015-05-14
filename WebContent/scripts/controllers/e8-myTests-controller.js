@@ -272,6 +272,9 @@ angular.module('e8MyTests')
 
         // To show the Edit icon,on click of test
         // node.
+        $scope.closeTip=function(){
+        	$('.testMessagetip').hide();
+        }
         $('.testMessagetip').offset({'top':($(window).height()/2)-$('.testMessagetip').height()});
         $('.testMessagetip').hide();
         $scope.selectTestNode = function ($event,test) {
@@ -279,12 +282,12 @@ angular.module('e8MyTests')
         	//$('.messagetip').offset({top:$($event.target).offset().top+50});
             if (!test.node.disableEdit) {
                 test.node.selectTestNode = !test.node.selectTestNode; 
-                if(test.node.selectTestNode && $rootScope.globals.loginCount<=2){
+                if(test.node.selectTestNode && $rootScope.globals.loginCount<=12){
     	        	//$scope.notify=true;
     	        	$('.testMessagetip').show()
     	        	setTimeout(function(){ 
     	        		$('.testMessagetip').hide();
-    	        	}, 4000);
+    	        	}, 4000000);
             	}
             }
             SharedTabService.showSelectedTestTab(test.node.guid);

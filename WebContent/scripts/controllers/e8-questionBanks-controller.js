@@ -552,14 +552,18 @@ angular
 								return sortedNodes;
 							}
 							
+							//Message tip
+							$scope.closeTip=function(){
+					        	$('.questionMessagetip').hide();
+					        }
 							 $('.questionMessagetip').offset({'top':($(window).height()/2)-$('.questionMessagetip').height()});
 						        $('.questionMessagetip').hide();
 							$scope.selectNode = function(node) {
-								if(node.isNodeSelected==false && $rootScope.globals.loginCount<=2){
+								if(node.isNodeSelected==false && $rootScope.globals.loginCount<=10){
 									$('.questionMessagetip').show()
 				    	        	setTimeout(function(){ 
 				    	        		$('.questionMessagetip').hide();
-				    	        	}, 4000);
+				    	        	}, 400000);
 								}
 								if (!node.isNodeSelected) {
 									$scope.selectedNodes.push(node);
