@@ -18,6 +18,7 @@ label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D;
 #Discpline ul li {height:40px; list-style:none;  border-bottom:1px solid #E0E0E0; padding-left:20px;}
 .discplineText {height:40px; list-style:none;  border-bottom:1px solid #E0E0E0; padding-left:20px;}
 .discplineheight{height:650px; overflow:auto; overflow-x:hidden; width: 98%;}
+.bookContainer{height:650px; overflow:auto; overflow-x:hidden; width: 98%;}
 .form-group{position:relative;}
 .form-control + .glyphicon { position: absolute; left: 0; top: 13%; padding: 8px 0 0 12px; }
 .input-lg{padding:10px 35px;}
@@ -129,6 +130,7 @@ label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D;
 
 
 .bgcolorgray{background-color: #f8f8f8; height: 100%;}
+.bgcolorwhite{background-color: #fff; height: 100%;}
 
 .tooltip{
     width:200px;    
@@ -138,20 +140,24 @@ label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D;
 @media (max-width: 767px)
 { 	.container{width:750px;}
 	.discplineheight{height: 200px;}
+	.bookContainer{height: 200px;}
 	}
 
 @media (min-width: 768px)
 { 	.container{width:750px;}
 	.discplineheight{height: 350px;}
+	.bookContainer{height: 350px;}
 	}
 	
 @media (min-width: 992px)
 { .container{width:970px;}
 .discplineheight{height: 550px;}
+.bookContainer{height: 550px;}
 	}
-@media (min-width: 1200px)
+@media (min-width: 1300px)
 { .container{width:1260px;}
-.discplineheight{height: 650px;}
+.discplineheight{height: 410px;}
+.bookContainer{height: 410px;}
 	}
 
 .btn-default.glyphicon{
