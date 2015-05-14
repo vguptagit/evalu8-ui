@@ -198,7 +198,7 @@ angular
 										'orientation', optionVew);
 								
 								if($(xml).find('itemBody').find("extendedTextInteraction").length > 0)
-									$(xml).find('itemBody').find("extendedTextInteraction").eq(0).attr("expectedLines",$(".EssaySpaceDiv input[type=radio]:checked").attr("pageSize"))
+									$(xml).find('itemBody').find("extendedTextInteraction").eq(0).attr("expectedLines",qstnHTML.find(".EssaySpaceDiv input[type=radio]:checked").attr("pageSize"))
 
 								$(xml).find('itemBody').find(
 										'choiceInteraction').find(

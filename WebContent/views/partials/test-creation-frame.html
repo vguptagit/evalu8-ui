@@ -347,25 +347,25 @@
    <div class="vhDiv" ng-show=" node.quizType == 'MultipleChoice' || node.quizType == 'MultipleResponse' ">
       <span class="viewOptionDiv normalText">Questions:</span>
       <div class="viewOptionDiv viewOptionHV">
-         <input class="radioView" ng-checked="node.optionsView" name="radioView{{node.guid}}_HV" ng-click="qstnOptionsView(this,true)" type="radio">Vertical Display </input>
+         <input class="radioView" ng-checked="node.optionsView" name="radioView_{{$index}}_HV" ng-click="qstnOptionsView(this,true)" type="radio">Vertical Display </input>
       </div>
       <div class="viewOptionDiv viewOptionHV">
-         <input name="radioView{{node.guid}}_HV" ng-checked="!node.optionsView" ng-click="qstnOptionsView(this,false)" type="radio">Horizontal Display </input>
+         <input name="radioView_{{$index}}_HV" ng-checked="!node.optionsView" ng-click="qstnOptionsView(this,false)" type="radio">Horizontal Display </input>
       </div>
    </div>
    <div class="EssaySpaceDiv" ng-show="node.quizType == 'Essay'">    
    <span class="viewOptionDiv normalText">Essay Space:</span>
       <div class="viewOptionDiv viewOptionHV">
-         <input class="radioView" ng-checked="node.EssayPageSize == '0'" pageSize='0'  name="radioView{{node.guid}}" ng-click="qstnEssayPageSize(this,'0')"  type="radio">None</input>
+         <input class="radioView" ng-checked="node.EssayPageSize == '0'" pageSize='0'  name="radioView_{{$index}}_PV" ng-click="qstnEssayPageSize(this,'0')"  type="radio">None</input>
       </div>
       <div class="viewOptionDiv viewOptionHV">
-         <input name="radioView{{node.guid}}"  ng-checked="node.EssayPageSize == '10'" ng-click="qstnEssayPageSize(this,'10')" pageSize='10'  type="radio">1/4 page</input>
+         <input name="radioView_{{$index}}_PV"  ng-checked="node.EssayPageSize == '10'" ng-click="qstnEssayPageSize(this,'10')" pageSize='10'  type="radio">1/4 page</input>
       </div>
       <div class="viewOptionDiv viewOptionHV" >
-         <input name="radioView{{node.guid}}"  ng-checked="node.EssayPageSize == '20'" ng-click="qstnEssayPageSize(this,'20')" pageSize='20'  type="radio">1/2 page</input>
+         <input name="radioView_{{$index}}_PV"  ng-checked="node.EssayPageSize == '20'" ng-click="qstnEssayPageSize(this,'20')" pageSize='20'  type="radio">1/2 page</input>
       </div>
       <div class="viewOptionDiv viewOptionHV">
-         <input name="radioView{{node.guid}}"  ng-checked="node.EssayPageSize == '40'" ng-click="qstnEssayPageSize(this,'40')" pageSize='40'  type="radio">1 page</input>
+         <input name="radioView_{{$index}}_PV"  ng-checked="node.EssayPageSize == '40'" ng-click="qstnEssayPageSize(this,'40')" pageSize='40'  type="radio">1 page</input>
       </div>
    </div>
 
