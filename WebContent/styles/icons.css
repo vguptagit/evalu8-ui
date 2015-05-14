@@ -50,3 +50,16 @@ transform: rotate(110deg);
   padding-left: 12px;
   font-size: 14px;
 }
+.action-icon-bg:hover{
+	border: 1px solid #3C85C2;
+	background: #FDFAFA;
+	color: #2A86C8;
+	border-radius: 3px;
+}
+.action-icon-bg:active{
+	color: #FFF;
+	background-color: #006A8D;
+	border-radius: 3px;
+	outline: 0 !important;
+	Box-Shadow: Inset top-2px;
+}
