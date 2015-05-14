@@ -11,7 +11,7 @@ angular
 						searchText = searchText.toLowerCase();
 						books
 								.forEach(function(book) {
-									book.authorName="";
+									book.authorName = "";
 									if (book.authors != null
 											&& book.authors.length > 0) {
 										book.authors
@@ -145,11 +145,15 @@ angular
 									.allDisciplines();
 
 							UserService
-									.userDisciplines(function(userDisciplines) {
-										$scope.disciplines.userSelected = userDisciplines;
-
-										$scope.enableDisableNextButton($scope
-												.isDesciplineEmpty());
+									.userDisciplines(function(userDisciplines,
+											status) {
+										if (status == "404") {
+											$scope
+													.enableDisableNextButton($scope
+															.isDesciplineEmpty());
+										} else {
+											$scope.disciplines.userSelected = userDisciplines;
+										}
 
 									});
 
@@ -292,8 +296,15 @@ angular
 
 								// Getting User selected books
 								UserService
-										.userBookIDs(function(userBookIDs) {
-											$scope.books.userSelected = userBookIDs;
+										.userBookIDs(function(userBookIDs,
+												status) {
+											if (userBookIDs.length == 0) {
+												$scope
+														.enableDisableNextButton($scope
+																.isBookEmpty());
+											} else {
+												$scope.books.userSelected = userBookIDs;
+											}
 
 											$scope.disciplines.userSelected
 													.sort()

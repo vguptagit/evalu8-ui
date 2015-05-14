@@ -38,21 +38,30 @@ angular
 							this.userDisciplines = function(callback) {
 
 								var userDisciplines = [];
-								$http.get(
-										evalu8config.host
-												+ "/settings/disciplines/",
-										config).success(function(response) {
+								$http
+										.get(
+												evalu8config.host
+														+ "/settings/disciplines/",
+												config)
+										.success(
+												function(response, status) {
 
-									if (response != "") {
-										response.forEach(function(item) {
-											userDisciplines.push(item);
-										});
+													if (response != "") {
+														response
+																.forEach(function(
+																		item) {
+																	userDisciplines
+																			.push(item);
+																});
 
-									}
+													}
 
-									callback(userDisciplines);
-								});
-
+													callback(userDisciplines,
+															status);
+												}).error(
+												function(error, status) {
+													callback(error, status);
+												});
 							};
 
 							this.userBookIDs = function(callback) {
@@ -84,12 +93,15 @@ angular
 										.success(
 												function(response) {
 
-													if(response != "") {
-														response.forEach(function(item) {
-															userQuestionMetadata.push(item);
-														});
+													if (response != "") {
+														response
+																.forEach(function(
+																		item) {
+																	userQuestionMetadata
+																			.push(item);
+																});
 													}
-													
+
 													callback(userQuestionMetadata);
 												});
 
@@ -101,7 +113,7 @@ angular
 										evalu8config.host + '/settings/books',
 										userBookIDs, config).success(
 										function(response) {
-											if(callback)
+											if (callback)
 												callback();
 										}).error(function(error, status) {
 									if (status == 403)
@@ -109,14 +121,15 @@ angular
 								})
 							}
 
-							this.saveUserDisciplines = function(userDisciplines, callback) {
+							this.saveUserDisciplines = function(
+									userDisciplines, callback) {
 
 								$http.post(
 										evalu8config.host
 												+ '/settings/disciplines',
 										userDisciplines, config).success(
 										function(response) {
-											if(callback)
+											if (callback)
 												callback();
 										}).error(function(error, status) {
 
