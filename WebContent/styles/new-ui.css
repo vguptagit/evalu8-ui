@@ -511,16 +511,16 @@ span.glyphicon.glyphicon-info-sign {
 }
 .testMessagetip {
   height: 60px;
-  width: 96%;
+  width: 98%;
   background-color: #B0DFF7;
   position: absolute;
-  left: 20px;
+  left: 12px;
   color: #0E0E0F;
   display: inline-block;
   border: solid 1px #A9A9A9;
   text-align: center;
   font-size: 14px;
-  font-weight: bold;
+  font-weight: 600;
   padding-bottom: 30px;
   box-shadow: 0 6px 12px rgba(0,0,0,.175);
   padding-top: 15px;
@@ -536,14 +536,18 @@ span.glyphicon.glyphicon-info-sign {
   color: #0E0E0F;
   display: inline-block;
   border: solid 1px #A9A9A9;
-  text-align: center;
+  text-align: left;
   font-size: 14px;
-  font-weight: bold;
+  font-weight: 600;
   padding-bottom: 30px;
+  padding-left: 25px;
   box-shadow: 0 6px 12px rgba(0,0,0,.175);
   padding-top: 15px;
   border-radius: 4px;
   z-index: 9999;
+}
+.tips{
+  font-size: large;
 }
 /*save-as page starts */
 .folder-main {
