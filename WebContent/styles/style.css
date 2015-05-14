@@ -89,13 +89,12 @@ label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D;
 #ex4::-webkit-scrollbar-thumb { background-color:#909192;border-radius:10px; }
 #ex4::-webkit-scrollbar-thumb:hover { background-color:#b0b0b0;border:1px solid #888889; }
 #ex4::-webkit-scrollbar-thumb:active { background-color:#b0b0b0;border:1px solid #888889; }
-#scroll { width: 570px; height: 160px; border-radius:2px; overflow: auto; overflow-y: hidden; box-shadow: 0 0 3px #ccc;}  
+#scroll { width: 468px; height: 250px; border-radius:2px; overflow: auto; box-shadow: 0 0 3px #ccc;}  
 #scroll ul { display: table; white-space: nowrap; list-style: none; padding:0;border-right:1px solid #ccc;}   
-#scroll li { display: table-cell; text-align: center; width:286px; }
-#scroll .folder-template-container li {display: table; text-align: center; width:286px; text-align: left;}
+#scroll li { display: table-cell; text-align: center; width:220px; }
+#scroll .folder-template-container li {display: table; text-align: center; width:220px; text-align: left;}
 #scroll li a { margin: 15px 15px 0 15px;}   
 #scroll li ul li {display: table; text-align: left; color:#000; line-height:30px;}
-#scroll .triangle-icon {position:absolute; right:0px;}
 #scroll span.active{ display:inline-block; width:100%; background-color:#d5d5d5; line-height:30px; color:#000;}
 #scroll .node-text{ padding-left:10px; cursor:pointer;}
 
@@ -118,8 +117,8 @@ label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D;
 
     .folder-template {
         position: absolute;
-        width: 286px;
-        left: 286px;
+        width: 220px;
+        left: 220px;
         top: 0;
     }
 /*save-as page ends */
@@ -132,9 +131,9 @@ label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D;
 .bgcolorgray{background-color: #f8f8f8; height: 100%;}
 .bgcolorwhite{background-color: #fff; height: 100%;}
 
-.tooltip{
+/*.tooltip{
     width:200px;    
-}
+}*/
 
 
 @media (max-width: 767px)

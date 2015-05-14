@@ -21,17 +21,9 @@
                     </button>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                         <li role="presentation"><a ng-click="saveTest()" ng-disabled="tests[currentIndex].isTestWizard && tests[currentIndex].testId == null" tooltip="Save your tests" tooltip-placement="left" role="menuitem" tabindex="-1">Save</a></li>
-                        <li role="presentation"><a ng-click="saveAsTest()" ng-disabled="tests[currentIndex].isTestWizard && tests[currentIndex].testId == null" tooltip="Save your tests as" tooltip-placement="left" role="menuitem" tabindex="-1">Save As</a></li>
+                        <li role="presentation"><a ng-click="openSaveAsTestDialog()" ng-disabled="tests[currentIndex].isTestWizard && tests[currentIndex].testId == null" tooltip="Save your tests as" tooltip-placement="left" role="menuitem" tabindex="-1">Save As</a></li>
                     </ul>
-                </div>
-                <!--<button type="button" class="btn btn-primary" ng-click="saveTest()"
-                ng-disabled="tests[currentIndex].isTestWizard && tests[currentIndex].testId == null" tooltip="Save your tests" tooltip-placement="bottom">
-            Save
-        </button>-->
-                <!--<button type="button" class="btn btn-primary" ng-click="saveAsTest()"
-                ng-disabled="tests[currentIndex].isTestWizard && tests[currentIndex].testId == null" tooltip="Save your tests" tooltip-placement="bottom">
-            Save As
-        </button>-->
+                </div>                
                 <button type="button" class="btn btn-primary" tooltip="Print and Format Tests" tooltip-placement="bottom">Print</button>
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-primary {{exportBtnCss}}"

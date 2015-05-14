@@ -2011,7 +2011,7 @@ angular
 						    // #endregion Test wizard *************************
 
 						    //Open Save-As Test dialog model popup.
-							$scope.saveAsTest = function () {
+							$scope.openSaveAsTestDialog = function () {
 							    $modal.open({
 							        templateUrl: 'views/partials/save-test-dialog-popup.html',
 							        controller: 'SaveTestDialogController',
