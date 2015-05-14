@@ -401,6 +401,11 @@ a.newFolder:hover {
 	right: 15px;
 }
 
+.iconsChapter span:first-child{
+	margin-right: 4px;
+	top:0px;
+}
+
 .iconsChapterVisible {
 	width: 80%;
 }
