@@ -432,7 +432,7 @@ span.glyphicon.glyphicon-info-sign {
   border: solid 1px #A9A9A9;
   text-align: center;
   font-size: 14px;
-  font-weight: 600;
+  font-family:Helvetica;
   padding-bottom: 30px;
   box-shadow: 0 6px 12px rgba(0,0,0,.175);
   padding-top: 15px;
@@ -450,7 +450,7 @@ span.glyphicon.glyphicon-info-sign {
   border: solid 1px #A9A9A9;
   text-align: left;
   font-size: 14px;
-  font-weight: 600;
+  font-family:Helvetica;
   padding-bottom: 30px;
   padding-left: 25px;
   box-shadow: 0 6px 12px rgba(0,0,0,.175);
