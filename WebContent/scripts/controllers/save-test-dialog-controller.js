@@ -1,7 +1,7 @@
 ﻿angular.module('e8MyTests')
 .controller('SaveTestDialogController',
-		['$scope', '$rootScope', '$modalInstance', 'parentScope', '$modal', 'UserFolderService', 'EnumService',
-		 function ($scope, $rootScope, $modalInstance, parentScope, $modal, UserFolderService, EnumService) {
+		['$scope', '$rootScope', '$modalInstance', 'parentScope', '$modal', 'UserFolderService', 'EnumService', 'CommonService',
+		 function ($scope, $rootScope, $modalInstance, parentScope, $modal, UserFolderService, EnumService, CommonService) {
 
 		     $scope.selectedfolder = null;
 		     $scope.loadRootFolders = function () {
@@ -27,7 +27,7 @@
 		     //chieldFolder : is a child folders
 		     function clearNodes(node, chieldFolder) {
 		         $scope.selectedfolder = node;
-		         var parentFolder = search($scope.node, node.parentId);
+		         var parentFolder = CommonService.SearchFolder($scope.node, node.parentId);
 		         if (parentFolder) {
 		             for (var i = 0; i < parentFolder.nodes.length; i++) {
 		                 parentFolder.nodes[i].nodes = []
@@ -109,22 +109,6 @@
 		             }
 		         });
 		     };
-
-		     //TODO : need to move this to common place
-		     function search(values, id) {
-		         var searchItem = null;
-		         $.each(values, function (i, v) {
-		             if (v.guid == id) {
-		                 console.log('found', v);
-		                 searchItem = v;
-		                 return false;
-		             }
-		             if (v.nodes) {
-		                 search(v.nodes);
-		             }
-		         });
-		         return searchItem;
-		     }
 		 }]);
 angular.module('e8MyTests').controller('AddNewFolderController', function ($scope, $modalInstance, parentScope) {
 

@@ -4,9 +4,9 @@ angular.module('e8MyTests')
 
 .controller('MyTestsController',
     ['$scope', '$rootScope', '$location', '$cookieStore', '$http', '$sce', '$modal',
-     'UserFolderService', 'TestService', 'SharedTabService', 'ArchiveService','EnumService',
+     'UserFolderService', 'TestService', 'SharedTabService', 'ArchiveService', 'EnumService', 'CommonService',
      function ($scope, $rootScope, $location, $cookieStore, $http, $sce, $modal,
-    		UserFolderService, TestService, SharedTabService, ArchiveService,EnumService) {
+    		UserFolderService, TestService, SharedTabService, ArchiveService, EnumService, CommonService) {
     	
         $scope.controller = EnumService.CONTROLLERS.myTest;
     	SharedTabService.selectedMenu = SharedTabService.menu.myTest;
@@ -600,7 +600,7 @@ angular.module('e8MyTests')
             if (newFolder.parentId == null) {
                 parentFolderNodes = $scope.defaultFolders
             } else {
-                parentFolder = search($scope.defaultFolders, newFolder.parentId);
+                parentFolder = CommonService.SearchFolder($scope.defaultFolders, newFolder.parentId);
                 parentFolderNodes = parentFolder.nodes;
             }
             
@@ -617,7 +617,7 @@ angular.module('e8MyTests')
             if (containerFolder == null) {
                 parentFolderNodes = $scope.defaultFolders
             } else {
-                parentFolder = search($scope.defaultFolders, containerFolder.guid);
+                parentFolder = CommonService.SearchFolder($scope.defaultFolders, containerFolder.guid);
                 parentFolderNodes = parentFolder.nodes;
             }
             TestService.getMetadata(newTest.guid, function (test) {
@@ -641,22 +641,6 @@ angular.module('e8MyTests')
                 }
             });
         });
-         //TODO : need to move this to common place
-        function search(values, id) {
-            var parentFolder = null;
-		    $.each(values, function (i, v) {
-		        if (v.guid == id) {
-		            console.log('found', v);
-		            parentFolder = v;
-		            return false;
-		        }
-		        if (v.nodes) {
-		            search(v.nodes);
-		        }
-		    });
-		    return parentFolder;
-        }
-
         //#endregion
 
     }]);
