@@ -614,8 +614,9 @@ angular.module('e8MyTests')
         });
         $scope.$on('handleBroadcast_AddNewTest', function (handler, newTest,containerFolder) {
             var parentFolder = null, parentFolderNodes = null;
+            //if containerFolder is null, it considered as root
             if (containerFolder == null) {
-                parentFolderNodes = $scope.defaultFolders
+                parentFolderNodes = $scope.defaultFolders;
             } else {
                 parentFolder = CommonService.SearchFolder($scope.defaultFolders, containerFolder.guid);
                 parentFolderNodes = parentFolder.nodes;
@@ -642,5 +643,23 @@ angular.module('e8MyTests')
             });
         });
         //#endregion
-
+        $scope.$on('handleBroadcast_CreateVersion', function (handler, test, newTest) {
+            var testFolder = CommonService.SearchFolder($scope.defaultFolders, test.folderGuid);
+            var treeItems = null;
+            if (testFolder==null) {
+                treeItems = $scope.defaultFolders;
+            }
+            else {
+                treeItems = testFolder.nodes;
+            }
+            addVersionTest(treeItems, test, newTest);
+        })
+        var addVersionTest = function (treeItems, test, newTest) {
+            $.each(treeItems, function (i, v) {
+                if (v.guid == test.id) {
+                    treeItems.splice(i + 1, 0, newTest)
+                    return false;
+                }
+            });
+        }
     }]);

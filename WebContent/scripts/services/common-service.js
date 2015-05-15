@@ -2,7 +2,7 @@
 
 angular.module('evalu8Demo')
 
-.service('CommonService', function () {
+.service('CommonService', ['EnumService',function (EnumService) {
     var commonService = {};
     //search folder by giving guid or parentid;
     commonService.SearchFolder = function (folders, id) {
@@ -17,8 +17,11 @@ angular.module('evalu8Demo')
                 commonService.SearchFolder(v.nodes);
             }
         });
+        if (searchItem != null && searchItem.nodeType === EnumService.CONTENT_TYPE.archiveRoot) {
+            return null;
+        }
         return searchItem;
     }
 
     return commonService;
-});
+}]);

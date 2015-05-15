@@ -16,10 +16,10 @@ angular
 						'SharedTabService',
 						'$modal',
 						'$compile',
-						'directiveQtiService','EnumService','UserService',
+						'directiveQtiService', 'EnumService', 'UserService', 'CommonService',
 						function($scope, $rootScope, $location, $cookieStore,
 								$http, $sce, TestService, SharedTabService,
-								$modal, $compile, directiveQtiService,EnumService,UserService) {
+								$modal, $compile, directiveQtiService, EnumService, UserService, CommonService) {
 
 							// $scope.tree2 =
 							// SharedTabService.tests[SharedTabService.currentTabIndex].questions;
@@ -1484,6 +1484,8 @@ angular
 																		$scope.newVersionBtnCss = "";
 																		$scope.exportBtnCss = "";
 																		$rootScope.$broadcast('handleBroadcast_AddNewTest', testResult, $scope.containerFolder);
+																		$scope.containerFolder = null; //clear selected folder in save as dialog popup.
+
 																		if ($('.maindivTest[id='
 																				+ testResult.guid
 																				+ ']').length) {
@@ -1583,59 +1585,29 @@ angular
 													$scope.currentTab = SharedTabService.tests[SharedTabService.currentTabIndex];
 													$scope.currentTab.modified = (new Date())
 															.toJSON();
-													if (SharedTabService.selectedMenu == SharedTabService.menu.myTest) {
+													//if (SharedTabService.selectedMenu == SharedTabService.menu.myTest) {
 
-														$scope.selectedTestIndex = 0;
-														if ($scope.currentTab.folderGuid == null) {
-															$scope.selectedFolder = $scope.defaultFolders;
-														} else {
-															$scope.selectedFolder = angular
-																	.element(
-																			$(
-																					'#'
-																							+ $scope.currentTab.testId)
-																					.closest(
-																							'ol'))
-																	.scope().node.nodes;
-														}
-														for (var i = 0; i < $scope.selectedFolder.length; i++) {
-															if ($scope.selectedFolder[i].guid === $scope.currentTab.testId) {
-																$scope.selectedTestIndex = i + 1;
-																break;
-															}
-														}
+													//	$scope.selectedTestIndex = 0;
+													//	if ($scope.currentTab.folderGuid == null) {
+													//		$scope.selectedFolder = $scope.defaultFolders;
+													//	} else {
+													//		$scope.selectedFolder = angular
+													//				.element(
+													//						$(
+													//								'#'
+													//										+ $scope.currentTab.testId)
+													//								.closest(
+													//										'ol'))
+													//				.scope().node.nodes;
+													//	}
+													//	for (var i = 0; i < $scope.selectedFolder.length; i++) {
+													//		if ($scope.selectedFolder[i].guid === $scope.currentTab.testId) {
+													//			$scope.selectedTestIndex = i + 1;
+													//			break;
+													//		}
+													//	}
 
-														/*
-														 * if($scope.currentTab.folderGuid==
-														 * null){
-														 * $scope.selectedFolder=$scope.defaultFolders;
-														 * 
-														 * //$scope.selectedFolder =
-														 * angular.element($('#' +
-														 * $scope.currentTab.testId).closest('li').parent()).scope();
-														 * for (var i = 0; i <
-														 * $scope.defaultFolders.childNodes().length;
-														 * i++) { if
-														 * ($scope.defaultFolders.childNodes()[i].node.guid
-														 * ===
-														 * $scope.currentTab.testId) {
-														 * $scope.selectedTestIndex =
-														 * i + 1; break; } } }
-														 * else{
-														 * $scope.selectedFolder =
-														 * angular.element($('#' +
-														 * $scope.currentTab.testId).closest('ol')).scope().node;
-														 * for (var i = 0; i <
-														 * $scope.selectedFolder.nodes.length;
-														 * i++) { if
-														 * ($scope.selectedFolder.nodes[i].guid
-														 * ===
-														 * $scope.currentTab.testId) {
-														 * $scope.selectedTestIndex =
-														 * i + 1; break; } } }
-														 */
-
-													}
+													//}
 
 													$scope.maping = {};
 													$scope.count = 0;
@@ -1674,42 +1646,24 @@ angular
 																	node.modified = $scope.currentTab.modified;
 
 																	if (SharedTabService.selectedMenu == SharedTabService.menu.myTest) {
-																		if ($scope.currentTab.folderGuid == null) {
-																			$scope.selectedFolder
-																					.splice(
-																							$scope.selectedTestIndex
-																									+ parseInt(result.version),
-																							0,
-																							node);
-																			/*
-																			 * for(var
-																			 * j=$scope.selectedFolder.length-1;
-																			 * j>=0;
-																			 * j--){
-																			 * $scope.selectedFolder[j].parentNode.removeChild($scope.selectedTestIndex +
-																			 * parseInt(result.version),
-																			 * 0,
-																			 * node); }
-																			 */
-																		} else {
-																			$scope.selectedFolder
-																					.splice(
-																							$scope.selectedTestIndex
-																									+ parseInt(result.version),
-																							0,
-																							node);
-																			/*
-																			 * for(var
-																			 * j=$scope.selectedFolder.length-1;
-																			 * j>=0;
-																			 * j--){
-																			 * $scope.selectedFolder[j].parentNode.removeChild($scope.selectedTestIndex +
-																			 * parseInt(result.version),
-																			 * 0,
-																			 * node); }
-																			 */
+																	    $rootScope.$broadcast('handleBroadcast_CreateVersion', SharedTabService.tests[SharedTabService.currentTabIndex], node);
 
-																		}
+																		//if ($scope.currentTab.folderGuid == null) {
+																		//	$scope.selectedFolder
+																		//			.splice(
+																		//					$scope.selectedTestIndex
+																		//							+ parseInt(result.version),
+																		//					0,
+																		//					node);
+																			 
+																		//} else {
+																		//	$scope.selectedFolder
+																		//			.splice(
+																		//					$scope.selectedTestIndex
+																		//							+ parseInt(result.version),
+																		//					0,
+																		//					node);
+																		//}
 																	}
 																	// create
 																	// tabs
