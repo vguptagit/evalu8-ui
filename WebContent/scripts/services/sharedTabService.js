@@ -3,8 +3,8 @@
 angular.module('evalu8Demo')
 
 .service('SharedTabService',
-		['$rootScope', '$modal',
-		 function ($rootScope, $modal) {
+		['$rootScope', '$modal','UserService',
+		 function ($rootScope, $modal,UserService) {
 
 		     var sharedTabService = {};
 		     sharedTabService.tests = [];
@@ -520,6 +520,13 @@ angular.module('evalu8Demo')
                  { number: 9, text: '9 Versions' },
                  { number: 10, text: '10 Versions' },
 		     ];
-
+		     
+		     sharedTabService.userQuestionSettings={};
+			 UserService.userQuestionMetadata(function(userQuestionMetadata){
+					$.each(userQuestionMetadata, function(index, item){		
+						sharedTabService['userQuestionSettings'][item]='';						
+					});
+				
+			});
 		     return sharedTabService;
 		 }]);

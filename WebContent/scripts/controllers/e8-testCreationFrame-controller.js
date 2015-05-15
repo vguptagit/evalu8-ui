@@ -1426,8 +1426,7 @@ angular
 														}
 														qstnExtMetadata.push({name:KeyName,value:KeyValue}) ;
 													});													
-												
-													
+																									
 													var QuestionEnvelop = {
 														metadata : {
 															guid : qstn.IsEdited ? null
@@ -1937,8 +1936,18 @@ angular
 										.getQuestionById(
 												question.guid,
 												function(response) {
-													var displayNode = $("<div></div>")
+													var displayNode = $("<div></div>");													
 													displayNode.guid = question.guid;
+													displayNode.questionMetadata = SharedTabService.userQuestionSettings;
+													displayNode.extendedMetadata = question.extendedMetadata;
+													$.each(displayNode.extendedMetadata, function(index, item){	
+														if(typeof(displayNode['questionMetadata'][item['name']])!='undefined'){															
+															displayNode['questionMetadata'][item['name']]=item['value'];	
+															}														
+													});	
+													
+													displayNode.selectedLevel = displayNode.questionMetadata['Difficulty']==undefined?{name:'Select Level',value:'0'}:{name:displayNode.questionMetadata['Difficulty'],value:displayNode.questionMetadata['Difficulty']};
+																							
 													QTI.play(response,
 															displayNode, false);
 
