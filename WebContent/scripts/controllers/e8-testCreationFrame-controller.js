@@ -87,18 +87,18 @@ angular
 								var qstnCaption = replaceImage(qstnHTML
 										.find('#qtiCaption'));
 		
-								$(xml).find('itemBody').find('p').eq(0).html(
-										qstnCaption);
+								$(xml).find('itemBody').find('p').eq(0).html("<![CDATA[" +
+										qstnCaption + "]]>");
 								
 
 								if($(xml).find('responseDeclaration').find('correctResponse').find('value').length >= 1){
-									 $(xml).find('responseDeclaration').find('correctResponse').find('value').html(replaceImage(qstnHTML.find('div.valueView')));
+									 $(xml).find('responseDeclaration').find('correctResponse').find('value').html("<![CDATA[" + replaceImage(qstnHTML.find('div.valueView')) + "]]>");
 									 }
 								else if(qstnHTML.find('div.qti-correctResponse div.valueView').length > 0 && $(xml).find('responseDeclaration').find('correctResponse').length == 0){
 									var responseDeclaration = $(xml).find('responseDeclaration');
 									var response = responseDeclaration.append("<correctResponse></correctResponse>").children();
 									var value = response.append("<value></value>").children();
-									value.html(replaceImage(qstnHTML.find('div.valueView')))
+									value.html("<![CDATA[" + replaceImage(qstnHTML.find('div.valueView')) + "]]>")
 								}
 								
 								$(xml).find('assessmentItem').attr(
@@ -155,7 +155,7 @@ angular
 												'@RESP', 'RESP_' + (i + 1));
 										
 										optionTagAppend = optionTagAppend.replace(
-												'@RESP_Val', optionText);
+												'@RESP_Val', "<![CDATA[" + optionText + "]]>");
 										
 										var item = $.parseXML(optionTagAppend); 
 									
@@ -170,7 +170,7 @@ angular
 										var optionTagAppend = (optionTag).replace(
 												'@RESPONSE', 'RESPONSE_' + (i + 1));
 										optionTagAppend = optionTagAppend.replace(
-												'@p', optionText);										
+												'@p', "<![CDATA[" + optionText + "]]>");										
 										
 										var item = $.parseXML(optionTagAppend); 
 										
@@ -215,7 +215,7 @@ angular
 									var optionTagAppend = optionTag.replace(
 											'@RESPONSE', 'RESPONSE_' + (i + 1));
 									optionTagAppend = optionTagAppend.replace(
-											'@val', optionText);
+											'@val', "<![CDATA[" + optionText + "]]>");
 									var item = $.parseXML(optionTagAppend); // returns
 																			// DOM
 																			// element

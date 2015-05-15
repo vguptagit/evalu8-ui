@@ -2201,3 +2201,6 @@ li[qstntemplate=true] .printViewContainer  .qti-blockquote .matchIndex {
 button[disabled] + .tooltip {
   display: none !important;
 }
+label.matchOptionImage{
+	max-width: 90%;
+}

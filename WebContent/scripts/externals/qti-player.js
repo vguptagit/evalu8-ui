@@ -1642,7 +1642,10 @@ if(state.questionType=="Matching"){
 	    	 
 	    	 this.extend.play(qtiNode, elementDisplayNode, state);
 
-	    	 elementDisplayNode.html(qtiNode.get(0).innerHTML);
+	    		if(qtiNode.get(0).innerHTML.indexOf("<![CDATA[") > -1)
+	    			elementDisplayNode.html(qtiNode.eq(0).text());
+	    		else
+	    			elementDisplayNode.html(qtiNode.get(0).innerHTML);
 	    	 
 	    	  qstnCaption=QTI.replaceImage(elementDisplayNode);		 
 	    	
@@ -1652,9 +1655,19 @@ if(state.questionType=="Matching"){
 	    	 elementDisplayNode = QTI.prepare(qtiNode,$("<p></p>"));
 		  
 		    
-	    	var optionPtext=$(qtiNode).html();
+	    	 var optionPtext
+/*	    		if(qtiNode.get(0).innerHTML.indexOf("<![CDATA[") > -1){
+	    			optionPtext = qtiNode.eq(0).text();
+	    		}
+	    		else
+    			{
+	    			optionPtext = qtiNode.html();
+	    			optionPtext = optionPtext.substring(0, optionPtext.indexOf("<inlineChoiceInteraction")).trim();
+    			}*/
+	    	 
+	    	optionPtext = $(qtiNode.get(0).childNodes[0]).text()
 	    	var optiontext=$(qtiNode).text();
-	    	optionPtext = optionPtext.substring(0, optionPtext.indexOf("<inlineChoiceInteraction")).trim();
+	    	
 	    	qstnCaption=optionPtext;
 	    
 	    	$(displayNode).append(elementDisplayNode);
@@ -1798,7 +1811,10 @@ var textBox = $("<div contenteditable='true'  class='editView' type='text' id='q
 	$(displayNode).append(elementDisplayNode);
 	this.extend.play(qtiNode, elementDisplayNode, state);
 //	this.processChildren(qtiNode, elementDisplayNode, state);
-	elementDisplayNode.html(qtiNode.get(0).innerHTML);
+	if(qtiNode.get(0).innerHTML.indexOf("<![CDATA[") > -1)
+		elementDisplayNode.html(qtiNode.eq(0).text());
+	else
+		elementDisplayNode.html(qtiNode.get(0).innerHTML);
 	
 
 	var qstnCaption=QTI.replaceImage(elementDisplayNode);
@@ -2040,7 +2056,17 @@ QTI.Elements.SimpleChoice.play = function(qtiNode, displayNode, state) {
 	$(displayNode).append(elementDisplayNode);
 
 	this.extend.play(qtiNode, elementDisplayNode, state);
-	contentsDisplayNode.append(qtiNode.html());
+	var qtiNodeContent;
+	var contentNode;
+	if(qtiNode.get(0).innerHTML.indexOf("<![CDATA[") > -1){
+		qtiNodeContent = qtiNode.eq(0).text();
+		contentNode = qtiNode
+	}
+	else{
+		qtiNodeContent = qtiNode.html();
+	}
+	
+	contentsDisplayNode.html(qtiNodeContent);
 
 	var contentsDisplayNode1 = $(
 			"<div class='optionEditablediv editView' ></div>")
@@ -2058,6 +2084,7 @@ QTI.Elements.SimpleChoice.play = function(qtiNode, displayNode, state) {
 				"for" : id,
 				"data---qti-content-container" : "true"				
 			}));
+	
 	
 	var qtiNodeHTML = QTI.replaceImage(qtiNode);
 	
@@ -2588,8 +2615,15 @@ QTI.Elements.Value.play = function(qtiNode, displayNode, state) {
 
 	$(displayNode).append(elementDisplayNode);
 
-	this.extend.play(qtiNode, elementDisplayNode, state);
-	this.processChildren(qtiNode, elementDisplayNode, state);
+	var matchText;
+	if(qtiNode.get(0).innerHTML.indexOf("<![CDATA[") > -1)
+	{
+		elementDisplayNode.html(qtiNode.eq(0).text());
+	}
+	else{
+		this.extend.play(qtiNode, elementDisplayNode, state);
+		this.processChildren(qtiNode, elementDisplayNode, state);
+	}
 	CustomQuestionTemplate[state.questionType].makeExtra(elementDisplayNode,this,null);
 }
 
@@ -2632,7 +2666,11 @@ QTI.Elements.InlineChoiceInteraction.play = function(qtiNode, displayNode,
 		qtiNode = qtiNode.find("inlineChoice:nth-child("
 				+ qtiNode.attr("responseIdentifier").substring(9) + ") ");
 		
-		var matchText = qtiNode.get(0).innerHTML;
+		var matchText;
+		if(qtiNode.get(0).innerHTML.indexOf("<![CDATA[") > -1)
+			matchText = qtiNode.eq(0).text();
+		else
+			matchText = qtiNode.get(0).innerHTML;
 		
 		
 		
@@ -2646,7 +2684,7 @@ QTI.Elements.InlineChoiceInteraction.play = function(qtiNode, displayNode,
 		  				"data---qti-content-container" : "true"
 		  			});
   	
-					contentsDisplayNodeImage.append(qtiNode.get(0).innerHTML);
+					contentsDisplayNodeImage.append(matchText);
 			  		
 			  		$(elementDisplayNode).append(contentsDisplayNodeImage);
 			  		matchText=QTI.replaceImage($(contentsDisplayNodeImage));	
@@ -2841,7 +2879,11 @@ QTI.getCaretPosition = function(element){
 }
 
 QTI.replaceImage = function(qtiNode){
-	var qtiNodeHTML = qtiNode.html();
+	var qtiNodeHTML;
+	if(qtiNode.get(0).innerHTML.indexOf("<![CDATA[") > -1)
+		qtiNodeHTML = qtiNode.eq(0).text();
+	else
+		qtiNodeHTML = qtiNode.html();
 	var images = qtiNode.find("img");
 	images.each(function(){
 		var url = $(this).attr("src");
