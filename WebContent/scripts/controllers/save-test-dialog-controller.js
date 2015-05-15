@@ -15,27 +15,35 @@
 		     }
 
 		     $scope.loadRootFolders();
-		     $scope.getFolders = function (defaultFolder) {
-		         $scope.selectedfolder = defaultFolder.node;
-		         if (defaultFolder.node.nodeType === EnumService.CONTENT_TYPE.folder) {
-		             if ($.isArray(defaultFolder.$parent.node)) {
-		                 for (var i = 0; i < defaultFolder.$parent.node.length; i++) {
-		                     defaultFolder.$parent.node[i].nodes = []
-		                     defaultFolder.$parent.node[i].isSelected = false;
-		                 }
-		             } else if (defaultFolder.$parent.node.nodes) {
-		                 for (var i = 0; i < defaultFolder.$parent.node.nodes.length; i++) {
-		                     defaultFolder.$parent.node.nodes[i].nodes = []
-		                     defaultFolder.$parent.node.nodes[i].nodes.isSelected = false;
-		                 }
+
+		     //populate the child nodes.
+		     $scope.getFolders = function (node, defaultFolder) {
+		         clearNodes(node, defaultFolder);
+		         $scope.selectedfolder.isSelected = true;
+		         $scope.getUserFolders(node);
+		     }
+		     //clear the previous selection and refresh the grid.
+		     //node : is a root folders 
+		     //chieldFolder : is a child folders
+		     function clearNodes(node, chieldFolder) {
+		         $scope.selectedfolder = node;
+		         var parentFolder = search($scope.node, node.parentId);
+		         if (parentFolder) {
+		             for (var i = 0; i < parentFolder.nodes.length; i++) {
+		                 parentFolder.nodes[i].nodes = []
+		                 parentFolder.nodes[i].isSelected = false;
 		             }
-		             $scope.selectedfolder.isSelected = true;
-		             $scope.getUserFolders(defaultFolder);
+		         } else {
+		             for (var i = 0; i < chieldFolder.$parent.node.length; i++) {
+		                 chieldFolder.$parent.node[i].nodes = []
+		                 chieldFolder.$parent.node[i].isSelected = false;
+		             }
 		         }
 		     }
-		     $scope.getUserFolders = function (defaultFolder, callback) {
-		         UserFolderService.userFolders(defaultFolder.node, function (userFolders) {
-		             defaultFolder.node.nodes = userFolders;
+		     
+		     $scope.getUserFolders = function (folder, callback) {
+		         UserFolderService.userFolders(folder, function (userFolders) {
+		             folder.nodes = userFolders;
 		             if (callback) callback();
 		         });
 		     };
@@ -70,7 +78,6 @@
 		         });
 		     }
 
-		     /*****************************************************************************/
 		     $scope.currentTest = parentScope.tests[parentScope.currentIndex];
 		     $scope.title = $scope.currentTest.title;
 		     $scope.isErrorMessage = false;
@@ -103,7 +110,21 @@
 		         });
 		     };
 
-
+		     //TODO : need to move this to common place
+		     function search(values, id) {
+		         var searchItem = null;
+		         $.each(values, function (i, v) {
+		             if (v.guid == id) {
+		                 console.log('found', v);
+		                 searchItem = v;
+		                 return false;
+		             }
+		             if (v.nodes) {
+		                 search(v.nodes);
+		             }
+		         });
+		         return searchItem;
+		     }
 		 }]);
 angular.module('e8MyTests').controller('AddNewFolderController', function ($scope, $modalInstance, parentScope) {
 
