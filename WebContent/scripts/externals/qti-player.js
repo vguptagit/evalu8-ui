@@ -2088,7 +2088,7 @@ QTI.Elements.SimpleChoice.play = function(qtiNode, displayNode, state) {
 	
 	var qtiNodeHTML = QTI.replaceImage(qtiNode);
 	
-	if((state.templateQstn)&&(qtiNode.html()=="")){
+	if((state.templateQstn)&&(qtiNodeContent.length == 0)){
 			containerDisplayNode.find("div.optionTextEditablediv").attr("data-placeholder",CustomQuestionTemplate[state.questionType].editOption);
 			containerDisplayNode.find("label.optionLabelView").html(CustomQuestionTemplate[state.questionType].printOption);
 		}else{
