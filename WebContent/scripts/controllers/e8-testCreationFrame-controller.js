@@ -1384,6 +1384,12 @@ angular
 								
 
 								var QuestionEnvelops = [];
+								var userSettings = {};
+								userSettings.questionMetadata = {};
+
+								$.each(SharedTabService.userQuestionSettings, function (index, value) {
+								    userSettings['questionMetadata'][value] = '';
+								});
 
 								var editedQstns = $
 										.grep(
@@ -1398,6 +1404,20 @@ angular
 														}
 													}
 													
+													if (typeof (qstn.questionMetadata) == 'undefined') {
+
+													    qstn.questionMetadata = userSettings.questionMetadata;
+
+													    $.each(qstn.extendedMetadata, function (index, item) {
+
+													        if (typeof (qstn['questionMetadata'][item['name']]) != 'undefined') {
+													            qstn['questionMetadata'][item['name']] = item['value'];
+													        }
+
+													    });
+													    qstn.selectedLevel = qstn.questionMetadata['Difficulty'] == undefined ? { name: 'Select Level', value: '0' } : { name: qstn.questionMetadata['Difficulty'], value: qstn.questionMetadata['Difficulty'] };
+													}
+
 													var qstnExtMetadata=[];													
 												
 													$.each(qstn.questionMetadata, function(KeyName, KeyValue){		
@@ -1887,11 +1907,13 @@ angular
 								$scope.tests[$scope.sharedTabService.currentTabIndex].isTestWizard = false;
 								$scope.sharedTabService.isTestWizardTabPresent = false;
 								$scope.tests[$scope.sharedTabService.currentTabIndex].tabTitle = "Untitled test";
+								$scope.tests[$scope.sharedTabService.currentTabIndex].questions = metadatas;
 								QTI.initialize();
 								// $scope.BlockRightPanel =
 								// blockUI.instances.get('BlockRightPanel');
 								// $scope.BlockRightPanel.start();
 								$scope.saveTest();
+								$scope.tests[$scope.sharedTabService.currentTabIndex].questions = [];
 								$scope.render(metadatas);
 								$scope.isApplySameCriteriaToAll = false;
 							}
