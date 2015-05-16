@@ -1,7 +1,7 @@
 /* CSS Document */
 /* generic css */
 body {background-color:#FFF; font-family:Helvetica; font-size:14px; color: #4D4D4D !important; Line-Height: 20px !important;}
-label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D; Line-Height: 1em;white-space: nowrap;width: 33em;overflow: hidden;text-overflow: ellipsis;}
+label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D; Line-Height: 1em;}
 .container{margin: 0 20px;}
 .circlenumber{font-size:34px; line-height:1em; background-color:#fff; padding:10px 20px; border:1px solid #d0d0d0; -moz-border-radius: 50%; -webkit-border-radius: 50%; border-radius: 30px; margin-left:27%; margin-bottom:15px;}cursor:pointer;}
 .inlineblock{display:inline-block;}
