@@ -1028,7 +1028,7 @@ angular
 																				.offset().top - 15)
 																		+ 'px');
 											});
-
+						    
 							$scope.editTest = function(selectedTest) {
 								// selectedTest.node.disableEdit = true;
 								$scope.newVersionBtnCss = "";
@@ -1455,6 +1455,10 @@ angular
 																	test.folderGuid,
 																	function(
 																			testResult) {
+																	    var isEditMode = false;
+																	    if (SharedTabService.tests[SharedTabService.currentTabIndex].testId) {
+																	        isEditMode = true;
+																	    }
 																		SharedTabService.currentTab = jQuery.extend(true, {}, SharedTabService.tests[SharedTabService.currentTabIndex]);
 																		SharedTabService.tests[SharedTabService.currentTabIndex].testId = testResult.guid;
 																		SharedTabService.tests[SharedTabService.currentTabIndex].id = testResult.guid;
@@ -1463,22 +1467,12 @@ angular
 //																		SharedTabService.currentTab = SharedTabService.tests[SharedTabService.currentTabIndex];
 																		$scope.newVersionBtnCss = "";
 																		$scope.exportBtnCss = "";
-																		$rootScope.$broadcast('handleBroadcast_AddNewTest', testResult, $scope.containerFolder);
+																		
+																		testResult.title = test.title;
+																		testResult.modified = (new Date()).toJSON();
+																		$rootScope.$broadcast('handleBroadcast_AddNewTest', testResult, $scope.containerFolder, isEditMode);
 																		$scope.containerFolder = null; //clear selected folder in save as dialog popup.
-
-																		if ($('.maindivTest[id='
-																				+ testResult.guid
-																				+ ']').length) {
-																			var selectedNode = angular
-																					.element(
-																							$('.maindivTest[id='
-																									+ testResult.guid
-																									+ ']'))
-																					.scope().node;
-																			selectedNode.title = test.title;
-																			selectedNode.modified = (new Date())
-																					.toJSON();
-																		}
+                                                                         
 																		if (SharedTabService.tests[SharedTabService.currentTabIndex].isSaveAndClose) {
 																			SharedTabService
 																					.closeTab(

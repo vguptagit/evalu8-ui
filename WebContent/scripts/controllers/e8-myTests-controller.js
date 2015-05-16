@@ -612,7 +612,14 @@ angular.module('e8MyTests')
             });
             parentFolderNodes.splice(numberOfFolders, 0, newFolder)
         });
-        $scope.$on('handleBroadcast_AddNewTest', function (handler, newTest,containerFolder) {
+        $scope.$on('handleBroadcast_AddNewTest', function (handler, newTest, containerFolder, isEditMode) {
+            if (isEditMode) {
+                var updatedTest = CommonService.SearchFolder($scope.defaultFolders, newTest.guid);
+                updatedTest.title = newTest.title;
+                updatedTest.modified = newTest.modified;
+                return false;
+            }
+
             var parentFolder = null, parentFolderNodes = null;
             //if containerFolder is null, it considered as root
             if (containerFolder == null) {
@@ -621,7 +628,7 @@ angular.module('e8MyTests')
                 parentFolder = CommonService.SearchFolder($scope.defaultFolders, containerFolder.guid);
                 parentFolderNodes = parentFolder.nodes;
             }
-            TestService.getMetadata(newTest.guid, function (test) {
+            TestService.getMetadata(newTest.guid, function (test) {               
                 test.nodeType = "test";
                 test.showEditIcon = true;
                 test.showArchiveIcon = true;
