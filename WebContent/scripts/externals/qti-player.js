@@ -1642,9 +1642,9 @@ if(state.questionType=="Matching"){
 	    	 
 	    	 this.extend.play(qtiNode, elementDisplayNode, state);
 
-	    		if(qtiNode.get(0).innerHTML.indexOf("<![CDATA[") > -1)
+/*	    		if(qtiNode.get(0).innerHTML.indexOf("<![CDATA[") > -1)
 	    			elementDisplayNode.html(qtiNode.eq(0).get(0).childNodes[0].textContent);
-	    		else
+	    		else*/
 	    			elementDisplayNode.html(qtiNode.get(0).innerHTML);
 	    	 
 	    	  qstnCaption=QTI.replaceImage(elementDisplayNode);		 
@@ -1656,14 +1656,14 @@ if(state.questionType=="Matching"){
 		  
 		    
 	    	 var optionPtext
-	    		if(qtiNode.get(0).innerHTML.indexOf("<![CDATA[") > -1){
+/*	    		if(qtiNode.get(0).innerHTML.indexOf("<![CDATA[") > -1){
 	    			optionPtext = qtiNode.eq(0).get(0).childNodes[0].textContent;
 	    		}
 	    		else
-    			{
+    			{*/
 	    			optionPtext = qtiNode.html();
 	    			optionPtext = optionPtext.substring(0, optionPtext.indexOf("<inlineChoiceInteraction")).trim();
-    			}
+/*    			}*/
 	    	 
 //	    	optionPtext = $(qtiNode.get(0).childNodes[0]).text().trim()
 	    	var optiontext=$(qtiNode).text();
@@ -1811,9 +1811,9 @@ var textBox = $("<div contenteditable='true'  class='editView' type='text' id='q
 	$(displayNode).append(elementDisplayNode);
 	this.extend.play(qtiNode, elementDisplayNode, state);
 //	this.processChildren(qtiNode, elementDisplayNode, state);
-	if(qtiNode.get(0).innerHTML.indexOf("<![CDATA[") > -1)
+/*	if(qtiNode.get(0).innerHTML.indexOf("<![CDATA[") > -1)
 		elementDisplayNode.html(qtiNode.eq(0).get(0).childNodes[0].textContent);
-	else
+	else*/
 		elementDisplayNode.html(qtiNode.get(0).innerHTML);
 	
 
@@ -2058,13 +2058,13 @@ QTI.Elements.SimpleChoice.play = function(qtiNode, displayNode, state) {
 	this.extend.play(qtiNode, elementDisplayNode, state);
 	var qtiNodeContent;
 	var contentNode;
-	if(qtiNode.get(0).innerHTML.indexOf("<![CDATA[") > -1){
+/*	if(qtiNode.get(0).innerHTML.indexOf("<![CDATA[") > -1){
 		qtiNodeContent = qtiNode.eq(0).get(0).childNodes[0].textContent;
 		contentNode = qtiNode
 	}
-	else{
+	else{*/
 		qtiNodeContent = qtiNode.html();
-	}
+/*	}*/
 	
 	contentsDisplayNode.html(qtiNodeContent);
 
@@ -2616,14 +2616,14 @@ QTI.Elements.Value.play = function(qtiNode, displayNode, state) {
 	$(displayNode).append(elementDisplayNode);
 
 	var matchText;
-	if(qtiNode.get(0).innerHTML.indexOf("<![CDATA[") > -1)
+/*	if(qtiNode.get(0).innerHTML.indexOf("<![CDATA[") > -1)
 	{
 		elementDisplayNode.html(qtiNode.eq(0).get(0).childNodes[0].textContent);
 	}
-	else{
+	else{*/
 		this.extend.play(qtiNode, elementDisplayNode, state);
 		this.processChildren(qtiNode, elementDisplayNode, state);
-	}
+/*	}*/
 	CustomQuestionTemplate[state.questionType].makeExtra(elementDisplayNode,this,null);
 }
 
@@ -2667,9 +2667,9 @@ QTI.Elements.InlineChoiceInteraction.play = function(qtiNode, displayNode,
 				+ qtiNode.attr("responseIdentifier").substring(9) + ") ");
 		
 		var matchText;
-		if(qtiNode.get(0).innerHTML.indexOf("<![CDATA[") > -1)
+/*		if(qtiNode.get(0).innerHTML.indexOf("<![CDATA[") > -1)
 			matchText = qtiNode.eq(0).get(0).childNodes[0].textContent;
-		else
+		else*/
 			matchText = qtiNode.get(0).innerHTML;
 		
 		
@@ -2755,12 +2755,10 @@ QTI.Elements.InlineChoiceInteraction.play = function(qtiNode, displayNode,
 
 QTI.customize = function(xml) {
 	xml.find("choiceInteraction").attr("shuffle", "false");
-	var maxChoice = xml.find("choiceInteraction").length == 0 ? 0 : xml.find("choiceInteraction").attr('maxChoices');
 	$.each(xml.find("simpleChoice"), function(i, ele) {
 		ele.setAttribute("index", indexResponse[i]);
 	});
-
-	if (xml.find("mapping").length == 1 && maxChoice == 1) {
+	if (xml.find("mapping").length == 1) {
 		var scores = xml.find("mapEntry[mappedValue='1']");
 		$.each(scores, function() {
 			QTI.correctResponse[$(this).attr("mapKey")] = true;
@@ -2882,9 +2880,9 @@ QTI.getCaretPosition = function(element){
 
 QTI.replaceImage = function(qtiNode){
 	var qtiNodeHTML;
-	if(qtiNode.get(0).innerHTML.indexOf("<![CDATA[") > -1)
+/*	if(qtiNode.get(0).innerHTML.indexOf("<![CDATA[") > -1)
 		qtiNodeHTML = qtiNode.eq(0).get(0).childNodes[0].textContent;
-	else
+	else*/
 		qtiNodeHTML = qtiNode.html();
 	var images = qtiNode.find("img");
 	images.each(function(){
@@ -2951,22 +2949,23 @@ QTI.getQuizType = function(quiztype){
 }
 
 QTI.getContent = function(elm){
-	if(elm.html().indexOf("<![CDATA[") == 0){
+/*	if(elm.html().indexOf("<![CDATA[") == 0){
 		return elm.text();
 	}
-	else{
+	else{*/
 		return elm.html();
-	}
+/*	}*/
 }
 QTI.setContent = function(elm,val){
-	elm.html("<![CDATA[" + val + "]]>")
+//	elm.html("<![CDATA[" + val + "]]>")
+	elm.html(val);
 }
 QTI.prependContent = function(elm,val){
-	if(elm.html().indexOf("<![CDATA[") == 0){
+/*	if(elm.html().indexOf("<![CDATA[") == 0){
 		elm.get(0).childNodes[0].textContent = val;
 	}
-	else{
+	else{*/
 		elm.prepend(val);
-	}
+/*	}*/
 	
 }
