@@ -1164,8 +1164,7 @@ angular
 							 function updateMatchingTemplatePrefilledtext(qstnNode) {
 	                                var xml = jQuery.parseXML(qstnNode.data);
 	
-	                                if ($(xml).find('itemBody').find('p').eq(0)
-	                                        .html() == "") {
+	                                if (QTI.getContent($(xml).find('itemBody').find('p').eq(0)) == "") {
 	                                    if (qstnNode.IsDefaultEditView) {                    
 
 	                                        var captionHtml = replaceImage($(document
@@ -1174,11 +1173,9 @@ angular
 	                                            captionHtml = CustomQuestionTemplate[qstnNode.quizType].printCaption;
 	                                        }
 
-	                                        $(xml).find('itemBody').find('p').eq(0)
-	                                                .html(captionHtml);
+	                                        QTI.setContent($(xml).find('itemBody').find('p').eq(0),captionHtml);
 	                                    }else{
-	                                        $(xml).find('itemBody').find('p').eq(0)
-	                                        .html(CustomQuestionTemplate[qstnNode.quizType].printCaption);
+	                                    	QTI.setContent($(xml).find('itemBody').find('p').eq(0),CustomQuestionTemplate[qstnNode.quizType].printCaption);
 	                                    }
 	                                }
 	                                
@@ -1204,9 +1201,9 @@ angular
 	                                        if ($(this).text() == "") {
 	                                            $(this).text("Match");
 	                                            if (qstnNode.IsDefaultEditView) {
-	                                                $(this).html(matchOptionsTxt[i]);
+	                                            	QTI.setContent($(this),matchOptionsTxt[i]);
 	                                                if ( matchOptionsTxt[i] == "") {
-	                                                    $(this).text("Match");
+	                                                	QTI.setContent($(this),"Match");
 	                                                }
 	                                            } 
 	                                        }
@@ -1230,7 +1227,7 @@ angular
 	                                    var pTag = $(this).find('p').eq(0).clone();
 	                                    $(pTag).find('inlineChoiceInteraction').remove();
 	                                
-	                                                    if (pTag.html() == "") {
+	                                                    if (QTI.getContent(pTag) == "") {
 	                                                        if (qstnNode.IsDefaultEditView) {
 
 	                                                            optionHtmlText = replaceImage(optionsHtml
@@ -1239,16 +1236,14 @@ angular
 	                                                            if (optionHtmlText == "") {
 	                                                                optionHtmlText = CustomQuestionTemplate[qstnNode.quizType].printOption+ " "+ (i+1) + "__";;
 	                                                            }
+	                                                            
+	                                                            QTI.prependContent($(this).find('p').eq(0),optionHtmlText)
 
-	                                                            $(this).find('p').eq(0)
-	                                                                    .prepend(
-	                                                                            optionHtmlText);
 
 	                                                        } else {
+	                                                        	
+	                                                        	QTI.prependContent($(this).find('p').eq(0),CustomQuestionTemplate[qstnNode.quizType].printOption)
 
-	                                                            $(this).find('p').eq(0)
-	                                                                    .prepend(
-	                                                                            CustomQuestionTemplate[qstnNode.quizType].printOption);
 
 	                                                        }
 	                                                    }
@@ -1267,8 +1262,7 @@ angular
 							function updateTemplatePrefilledtext(qstnNode) {
 								var xml = jQuery.parseXML(qstnNode.data);
 
-								if ($(xml).find('itemBody').find('p')
-										.html() == "") {
+								if (QTI.getContent($(xml).find('itemBody').find('p')) == "") {
 									if (qstnNode.IsDefaultEditView) {					
 
 										var captionHtml = replaceImage($(document
@@ -1277,11 +1271,9 @@ angular
 											captionHtml = CustomQuestionTemplate[qstnNode.quizType].printCaption;
 										}
 
-										$(xml).find('itemBody').find('p')
-												.html(captionHtml);
+										QTI.setContent($(xml).find('itemBody').find('p').eq(0),captionHtml);
 									}else{
-										$(xml).find('itemBody').find('p')
-										.html(CustomQuestionTemplate[qstnNode.quizType].printCaption);
+										QTI.setContent($(xml).find('itemBody').find('p').eq(0),CustomQuestionTemplate[qstnNode.quizType].printCaption)
 									}
 								}
 
@@ -1298,7 +1290,7 @@ angular
 										.each(
 												function(i, e) {
 
-													if ($(this).text() == "") {
+													if (QTI.getContent($(this)) == "") {
 														if (qstnNode.IsDefaultEditView) {
 
 															optionHtmlText = replaceImage(optionsHtml
@@ -1308,15 +1300,12 @@ angular
 																optionHtmlText = CustomQuestionTemplate[qstnNode.quizType].printOption;
 															}
 
-															$(this)
-																	.html(
-																			optionHtmlText);
+															QTI.setContent($(this),optionHtmlText)
 
 														} else {
 
-															$(this)
-																	.text(
-																			CustomQuestionTemplate[qstnNode.quizType].printOption);
+															QTI.setContent($(this),CustomQuestionTemplate[qstnNode.quizType].printOption);
+
 
 														}
 													}
