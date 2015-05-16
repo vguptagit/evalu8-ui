@@ -1459,6 +1459,7 @@ angular
 																		SharedTabService.tests[SharedTabService.currentTabIndex].testId = testResult.guid;
 																		SharedTabService.tests[SharedTabService.currentTabIndex].id = testResult.guid;
 																		SharedTabService.tests[SharedTabService.currentTabIndex].tabTitle = test.title;
+																		SharedTabService.tests[SharedTabService.currentTabIndex].metadata = testcreationdata.metadata;
 //																		SharedTabService.currentTab = SharedTabService.tests[SharedTabService.currentTabIndex];
 																		$scope.newVersionBtnCss = "";
 																		$scope.exportBtnCss = "";
