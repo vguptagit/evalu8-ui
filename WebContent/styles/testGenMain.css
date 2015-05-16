@@ -1897,7 +1897,20 @@ ul.a {
 	border-radius: 3px;
 	Box-Shadow: Inset top-2px;
 }
-
+.restoretesticon{
+	display: inline-block;
+	color: #808080;
+	border: none;
+	border-color: #F8FAFA;
+	background: #FDFAFA;
+	border-radius: 3px;
+	height: 30px;
+	width: 40px;
+	right: 64px;
+	position: absolute;
+	font-size: 15px;
+	top: 5px;
+}
 .restoreicon {
 	display: inline-block;
 	color: #808080;
@@ -1912,7 +1925,20 @@ ul.a {
 	font-size: 15px;
 	top: 5px;
 }
-
+.removeTestIcon{
+	display: inline-block;
+	color: #808080;
+	border: none;
+	border-color: #F8FAFA;
+	background: #FDFAFA;
+	border-radius: 3px;
+	height: 30px;
+	width: 40px;
+	right: 20px;
+	position: absolute;
+	font-size: 15px;
+	top: 5px
+}
 .removeIcon {
 	display: inline-block;
 	color: #808080;
@@ -1928,7 +1954,7 @@ ul.a {
 	top: 5px
 }
 
-.removeIcon:hover, .restoreicon:hover {
+.removeIcon:hover, .restoreicon:hover ,.restoretesticon:hover,.removeTestIcon:hover{
 	border: 1px solid #3C85C2;
 	background: #FDFAFA;
 	outline: 0 !important;
