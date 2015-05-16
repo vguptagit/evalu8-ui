@@ -2755,10 +2755,12 @@ QTI.Elements.InlineChoiceInteraction.play = function(qtiNode, displayNode,
 
 QTI.customize = function(xml) {
 	xml.find("choiceInteraction").attr("shuffle", "false");
+	var maxChoice = xml.find("choiceInteraction").length == 0 ? 0 : xml.find("choiceInteraction").attr('maxChoices');
 	$.each(xml.find("simpleChoice"), function(i, ele) {
 		ele.setAttribute("index", indexResponse[i]);
 	});
-	if (xml.find("mapping").length == 1) {
+
+	if (xml.find("mapping").length == 1 && maxChoice == 1) {
 		var scores = xml.find("mapEntry[mappedValue='1']");
 		$.each(scores, function() {
 			QTI.correctResponse[$(this).attr("mapKey")] = true;
@@ -2881,7 +2883,7 @@ QTI.getCaretPosition = function(element){
 QTI.replaceImage = function(qtiNode){
 	var qtiNodeHTML;
 	if(qtiNode.get(0).innerHTML.indexOf("<![CDATA[") > -1)
-		qtiNodeHTML = qtiNode.eq(0).get(0).childNodes.textContent;
+		qtiNodeHTML = qtiNode.eq(0).get(0).childNodes[0].textContent;
 	else
 		qtiNodeHTML = qtiNode.html();
 	var images = qtiNode.find("img");
