@@ -19,7 +19,7 @@
                                ng-src="{{collapsed && 'images/right_arrow2.png' || 'images/right_arrow.png'}}"></input>
                     </div>
                     <div class="captiondiv">
-                        <label class="captionLabel">{{node.item}}</label>
+                        <label class="captionLabel" title="{{node.item}}">{{node.item}}</label>
                     </div>
                 </div>
             </div>
@@ -38,7 +38,7 @@
                         <input ng-click="getNodes(this)" type="image" class="collapseImg" src="images/right_arrow2.png"></input>
                     </div>
                     <div class="captiondiv">
-                        <label class="captionLabel">{{node.title}}</label>
+                        <label class="captionLabel" title="{{node.title}}">{{node.title}}</label>
                     </div>
                     <!--
                     <div  class="iconsChapter">
@@ -62,7 +62,7 @@
                         <input ng-click="getNodesWithQuestion(this)" type="image" class="collapseImg" src="images/right_arrow2.png"></input>
                     </div>
                     <div class="captiondiv" ng-click="selectNode(this.node)">
-                        <label class="captionLabel">{{node.title}}</label>
+                        <label class="captionLabel" title="{{node.title}}">{{node.title}}</label>
                     </div>
                     <div class="iconsChapter">
                         <span class="action-icon-bg glyphicon glyphicon-pencil" tooltip="Move question to right for editing" tooltip-placement="bottom"></span>

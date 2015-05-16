@@ -19,7 +19,7 @@
 				<div class="testMessagetip"  style="position: absolute;top:0px">
 				<div class="newTest-close glyphicon glyphicon-remove"
                      ng-click="closeTip()"></div>
-				<div><span class="glyphicon glyphicon-info-sign"></span>&nbsp;<strong class="tips">Tips:</strong> Drag test to right to edit OR select pencil icon
+				<div><span class="glyphicon glyphicon-info-sign"></span>&nbsp;<strong class="tips">Tips:</strong> Drag test to right to edit OR select pencil icon.
 				Select Archive box icon to move <br>test to Archive directory</div>
 				</div>
                 <li data-ng-repeat="node in defaultFolders" data-ui-tree-node
@@ -40,7 +40,7 @@
                                ng-src="{{collapsed && 'images/right_arrow2.png' || 'images/right_arrow.png'}}" />
                     </div>
                     <div class="captiondiv">
-                        <label class="captionLabel">{{node.title}}</label>
+                        <label class="captionLabel" title="{{node.title}}">{{node.title}}</label>
                     </div>
                     <div class="iconsCourseNode">
                         <span></span>
@@ -78,7 +78,7 @@
                                ng-src="{{collapsed && 'images/right_arrow2.png' || 'images/right_arrow.png'}}" />
                     </div>
                     <div class="captiondiv">
-                        <label class="captionLabel">{{node.title}}</label>
+                        <label class="captionLabel"  title="{{node.title}}">{{node.title}}</label>
                     </div>
                     <div class="iconsCourseNode">
                         <span>
