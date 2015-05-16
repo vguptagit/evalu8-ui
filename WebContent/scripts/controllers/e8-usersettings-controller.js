@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('evalu8Demo')
-  .controller('UserSettingsController', ['$scope', '$rootScope', '$modalInstance', '$modal', 'UserService', 'BookService',
-     function ($scope, $rootScope, $modalInstance, $modal, UserService, BookService) {
+  .controller('UserSettingsController', ['$scope', '$rootScope', '$modalInstance', '$modal', 'UserService', 'BookService','SharedTabService',
+     function ($scope, $rootScope, $modalInstance, $modal, UserService, BookService,SharedTabService) {
 
 	  $scope.activeTab = "questionBanks";
 	  
@@ -44,6 +44,7 @@ angular.module('evalu8Demo')
 	 $scope.savePref = function() {								 
 		 
 		 UserService.saveUserQuestionMetadata($scope.questionMetadata.userSelected);
+		 SharedTabService.userQuestionSettings=$scope.questionMetadata.userSelected;
 		 $modalInstance.close();
 	 };
 	 

@@ -926,16 +926,15 @@ angular
 											'dropQuestion',
 											function(event, node, destIndex,
 													sourceTabName) {
-
 												var newNode = angular.copy(node);
 												
 												if (sourceTabName == "CustomQuestions") {													
 													SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode = true;
 												}
 												newNode.IsUserMetdataAvailable = false;
-												 UserService.userQuestionMetadata(function(userQuestionMetadata){
+												
 													 newNode.questionMetadata = {};
-													 if (userQuestionMetadata.length>0){
+													 if (SharedTabService.userQuestionSettings.length>0){
 														 newNode.IsUserMetdataAvailable = true;
 													 }
 														
@@ -944,7 +943,7 @@ angular
 																											 
 														if (sourceTabName == "CustomQuestions") {
 															
-															 $.each(userQuestionMetadata, function( index, value ) {	
+															 $.each(SharedTabService.userQuestionSettings, function( index, value ) {																	
 																 if(value!='QuestionId'){
 																 newNode['questionMetadata'][value]='';
 																 }
@@ -959,7 +958,7 @@ angular
 															
 														} else {
 															
-															 $.each(userQuestionMetadata, function( index, value ) {																	
+															 $.each(SharedTabService.userQuestionSettings, function( index, value ) {																	
 																 newNode['questionMetadata'][value]='';																
 															});		
 															 
@@ -1006,9 +1005,7 @@ angular
 												
 												 });
 												
-
-											});
-			
+												
 							$rootScope.$on('editTest',
 									function(event, selectedTest) {
 										$scope.editTest(selectedTest);
@@ -1075,16 +1072,15 @@ angular
 									return false;
 								}
 								
-								 UserService.userQuestionMetadata(function(userQuestionMetadata){		
-									 
-									 var question = qBindings.shift();
+									var question = qBindings.shift();
 									 
 									 var userSettings= {};	
 									 userSettings.questionMetadata = {};
 									 
-									 $.each(userQuestionMetadata, function( index, value ) {	
+									 $.each(SharedTabService.userQuestionSettings, function( index, value ) {	
 										 userSettings['questionMetadata'][value]='';																										
 										});			
+									 
 									 
 									 
 									 TestService
@@ -1093,14 +1089,14 @@ angular
 												function(questionMetadataResponse) {		
 											
 										TestService
-												.getQuestion(
-														question.boundActivity,
+												.getQuestionById(
+														question.guid,
 														function(response) {
 															var displayNode = $("<div></div>")
 															displayNode.guid = question.guid;	
 															displayNode.quizType = questionMetadataResponse.quizType;
 															displayNode.IsUserMetdataAvailable = false;
-															 if (userQuestionMetadata.length>0){
+															 if (SharedTabService.userQuestionSettings.length>0){
 																 displayNode.IsUserMetdataAvailable = true;
 															 }
 															QTI.play(response,
@@ -1149,11 +1145,6 @@ angular
 														});
 											});
 									 
-									 
-									 
-								 });
-
-								
 								
 							};
 
@@ -1931,19 +1922,26 @@ angular
 								}
 
 								var question = metadatas.shift();
+								
+								 var userSettings= {};	
+								 userSettings.questionMetadata = {};
+								 
+								 $.each(SharedTabService.userQuestionSettings, function( index, value ) {	
+									 userSettings['questionMetadata'][value]='';																										
+									});			
 
 								TestService
 										.getQuestionById(
 												question.guid,
 												function(response) {
 													var displayNode = $("<div></div>");													
-													displayNode.guid = question.guid;
-													displayNode.questionMetadata = SharedTabService.userQuestionSettings;
+													displayNode.guid = question.guid;	
+													displayNode.questionMetadata = userSettings.questionMetadata;
 													displayNode.extendedMetadata = question.extendedMetadata;
-													$.each(displayNode.extendedMetadata, function(index, item){	
-														if(typeof(displayNode['questionMetadata'][item['name']])!='undefined'){															
+													$.each(displayNode.extendedMetadata, function(index, item){																							
+														if(typeof(displayNode['questionMetadata'][item['name']])!='undefined'){
 															displayNode['questionMetadata'][item['name']]=item['value'];	
-															}														
+														}
 													});	
 													
 													displayNode.selectedLevel = displayNode.questionMetadata['Difficulty']==undefined?{name:'Select Level',value:'0'}:{name:displayNode.questionMetadata['Difficulty'],value:displayNode.questionMetadata['Difficulty']};

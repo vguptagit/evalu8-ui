@@ -521,10 +521,10 @@ angular.module('evalu8Demo')
                  { number: 10, text: '10 Versions' },
 		     ];
 		     
-		     sharedTabService.userQuestionSettings={};
-			 UserService.userQuestionMetadata(function(userQuestionMetadata){
-					$.each(userQuestionMetadata, function(index, item){		
-						sharedTabService['userQuestionSettings'][item]='';						
+		     sharedTabService.userQuestionSettings=[];
+			 UserService.userQuestionMetadata(function(userQuestionMetadata){				 
+					$.each(userQuestionMetadata, function(index, item){								
+						sharedTabService.userQuestionSettings.push(item);						
 					});
 				
 			});
