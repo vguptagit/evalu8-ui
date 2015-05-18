@@ -856,23 +856,6 @@ ol {
 	width: 100%;
 }
 
-.vsQuestion {
-	padding-left: 10px !important;
-}
-
-.vsAnswers {
-	padding-left: 35px !important;
-	position: absolute;
-	left: 36%;
-	top: 23%;
-}
-
-.version {
-	position: absolute;
-	left: 42%;
-	top: 56%;
-}
-
 .vsViewVersions {
 	padding-left: 3px !important;
 }

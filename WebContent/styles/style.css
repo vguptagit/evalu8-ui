@@ -27,6 +27,7 @@ label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D;
 .bold{font-weight:bold;}
 .text34{font-size:34px; line-height:25px; font-family:Arial, Helvetica, sans-serif}
 .text18 {font-size:18px; line-height:25px; font-family:Arial, Helvetica, sans-serif}
+.text16 {font-size:16px; line-height:25px; font-family:Arial, Helvetica, sans-serif}
 .text14 {font-size:14px; line-height:25px; font-family:Arial, Helvetica, sans-serif}
 
 /* Button CSS */
@@ -314,6 +315,10 @@ a.fa.fa-user{
   position: absolute;
   top:0; bottom: 0; left: 0; right: 0;
   margin: auto
+}
+
+section { 
+    display: inline-block; width:100%;
 }
 
 

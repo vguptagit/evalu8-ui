@@ -11,18 +11,20 @@
 <div class="modal-body">
 	<section>
 		<div class="row">
-			<div class="col-md-12 checkbox vsQuestion">
-				<label><input type="checkbox" ng-model="isQuestions">
+			<div class="col-md-12 checkbox pull-left margin-bot-10">
+				<label class="text16"><input type="checkbox" ng-model="isQuestions">
 					Questions </label>
 
 			</div>
-			<div class="col-md-12 checkbox vsAnswers">
-				<label> <input type="checkbox" ng-model="isAnswers">
+			<div class="col-md-12 checkbox pull-left  margin-bot-10">
+				<label  class="text16"> <input type="checkbox" ng-model="isAnswers">
 					Answers
 				</label>
 			</div>
 		</div>
+		
 	</section>
+	<hr>
 	<!-- <section>	
 			<div class="row">
 			<div class="col-md-2"></div>
@@ -36,27 +38,19 @@
 				</div>
 			</div>
 		</section> -->
-	<section>
-		<div class="row">
-			<div class="col-md-2">
-				<label for="selectNumber"><h5>Number:</h5></label>
-			</div>
-			<div class="col-md-3 checkbox">
-
+	<section class="inlineblock">
+		<div class="width100 pull-left  margin-bot-10">
+			<div class="col-md-6 ">
 				<select id="selectNumber" data-role="listview" class="versionBox"
 					data-inset="true" ng-model="selectedVersions"
 					ng-options="version as version.text for version in versions "
 					x-ng-change="selectVersion(selectedVersions)"></select>
-			</div>
-			<p class="version">
+			</div><div class="col-md-6 margin-top-10 ">
+			<p>
 				<input type="checkbox" ng-model="isViewVersions"> View
 				Versions
-			</p>
-
-
-		</div>
-
-
+			</p></div>
+</div>
 	</section>
 
 </div>
