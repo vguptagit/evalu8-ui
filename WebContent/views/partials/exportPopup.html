@@ -9,7 +9,69 @@
 
 <div class="modal-body">
 	<!-- <div class="alert alert-danger" ng-show="isError" role="alert">{{errorMessage}}</div> -->
-
+<!-- <section>
+<div class="width-100">
+          <div class="col-md-6" >
+            <div class="bold">Export Format:</div>
+            <div>
+              <form name="form2" method="post" action="">
+                <p class="btn-radio">
+                  <label class="text-radio-label margin-top-5">
+                    <input name="Contact Method" type="radio" id="ContactMethod_0" value="radio" checked="">
+                    <span>MS Word</span></label>
+                  <br>
+                  <label class="text-radio-label margin-top-5">
+                    <input type="radio" name="Contact Method" value="radio" id="ContactMethod_1">
+                    <span>PDF</span></label>
+                  <br>
+                  <label class="text-radio-label margin-top-5">
+                    <input type="radio" name="Contact Method" value="radio" id="ContactMethod_2">
+                    <span>Blackboard Pool Manager</span></label>
+                  <br>
+                  <label class="text-radio-label margin-top-5">
+                    <input type="radio" name="Contact Method" value="radio" id="ContactMethod_2">
+                    <span>Blackboard Test Manager</span></label>
+                  <br>
+                  <label class="text-radio-label margin-top-5">
+                    <input type="radio" name="Contact Method" value="radio" id="ContactMethod_2">
+                    <span>QTI 2.1</span></label>
+                  <br>
+                </p>
+              </form>
+            </div>
+          </div>
+          <div class="col-md-6" >
+            <div class="bold">Answer Area:</div>
+            <div>
+              <form name="form2" method="post" action="">
+                <p class="btn-radio">
+                  <label class="text-radio-label margin-top-5">
+                    <input name="Contact Method" type="radio" id="ContactMethod_0" value="radio" checked="">
+                    <span>MS Word</span></label>
+                  <br>
+                  <label class="text-radio-label margin-top-5">
+                    <input type="radio" name="Contact Method" value="radio" id="ContactMethod_1">
+                    <span>PDF</span></label>
+                  <br>
+                  <label class="text-radio-label margin-top-5">
+                    <input type="radio" name="Contact Method" value="radio" id="ContactMethod_2">
+                    <span>Blackboard Pool Manager</span></label>
+                  <br>
+                  <label class="text-radio-label margin-top-5">
+                    <input type="radio" name="Contact Method" value="radio" id="ContactMethod_2">
+                    <span>Blackboard Test Manager</span></label>
+                  <br>
+                  <label class="text-radio-label margin-top-5">
+                    <input type="radio" name="Contact Method" value="radio" id="ContactMethod_2">
+                    <span>QTI 2.1</span></label>
+                  <br>
+                </p>
+              </form>
+            </div>
+          </div>
+        </div>
+</section> -->
+<div class="modal-header inlineblock" ></div>
 	<section>
 		<div class="row">
 			<div class="col-md-1"></div>
@@ -113,21 +175,18 @@
 			</div>
 		</div>
 	</section>
-	<div class="row"></div>
-	<div class="row text-center">
-		<div>
-			<div>
-				<input type="checkbox" data-ng-model="isSaveSettingsAsDefault">
-				Save settings as default
-			</div>
-		</div>
-	</div>
 
 </div>
 
 <div class="modal-footer">
+<div class="col-md-6 text-left" >
 	<button type="button" class="btn btn-default" data-dismiss="modal"
 		data-ng-click="cancel()">Cancel</button>
 	<button type="button" class="btn btn-primary"
-		data-ng-click="onclick_exportTest()">Export</button>
+		data-ng-click="onclick_exportTest()">Export</button></div>
+		<div class="col-md-6 pull-right">
+				<input type="checkbox" data-ng-model="isSaveSettingsAsDefault">
+				Save settings as default
+			</div>
+		
 </div>
