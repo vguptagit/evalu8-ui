@@ -162,7 +162,7 @@ angular
 							}
 							
 							this.getConfig = function(){
-								if(config.headers["x-authorization"].length == 0)
+								if(config.headers["x-authorization"] != null || config.headers["x-authorization"].length == 0)
 									config.headers["x-authorization"] = $cookieStore.get('globals').authToken;
 								return config;
 							}
