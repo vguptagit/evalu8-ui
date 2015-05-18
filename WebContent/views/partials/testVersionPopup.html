@@ -11,15 +11,12 @@
 <div class="modal-body">
 	<section>
 		<div class="row">
-			<div class="col-md-2">
-				<label><h5>Scramble:</h5></label>
-			</div>
-			<div class="col-md-3 checkbox vsQuestion">
+			<div class="col-md-12 checkbox vsQuestion">
 				<label><input type="checkbox" ng-model="isQuestions">
 					Questions </label>
 
 			</div>
-			<div class="col-md-3 checkbox vsAnswers">
+			<div class="col-md-12 checkbox vsAnswers">
 				<label> <input type="checkbox" ng-model="isAnswers">
 					Answers
 				</label>
@@ -64,10 +61,11 @@
 
 </div>
 <div class="modal-footer">
+<div class="pull-left">
 	<button type="button" class="btn btn-default" data-dismiss="modal"
 		data-ng-click="cancel()">Cancel</button>
 	<button ng-click="createNewVersion()"
-		class="btn btn-primary pull-right">Create</button>
+		class="btn btn-primary pull-right">Create</button></div>
 </div>
 
 

@@ -309,6 +309,14 @@ a.fa.fa-user{
   right: 80px;
 }
 
+.testversion-Modal .modal-dialog{
+  width:400px; height: 400px;
+  position: absolute;
+  top:0; bottom: 0; left: 0; right: 0;
+  margin: auto
+}
+
+
 @media (max-width: 767px)
 { 	.container{width:750px;}
 	.discplineheight{height: 200px;}

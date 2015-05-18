@@ -1689,7 +1689,7 @@ angular
 										.open({
 											templateUrl : 'views/partials/testVersionPopup.html',
 											controller : 'TestVersionCreationController',
-											size : 'sm',
+											windowClass: 'testversion-Modal',
 											backdrop : 'static',
 											keyboard : false,
 											resolve : {

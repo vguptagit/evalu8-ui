@@ -466,4 +466,5 @@ span.glyphicon.glyphicon-info-sign {
   width: 32em;
   overflow: hidden;
   text-overflow: ellipsis;
+  height:15px;
 }

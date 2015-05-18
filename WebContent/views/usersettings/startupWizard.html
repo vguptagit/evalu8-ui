@@ -72,23 +72,20 @@
 						ng-keyup="searchedBookOnEnter($event)"> <span class="glyphicon glyphicon-search searchicon" ng-click="searchedBookOnClick()"
 						tooltip="Search" tooltip-placement="bottom"></span>
 				</div>
-				<div class="bookContainer margin-top-10">
+				<div class="bookContainer">
 					<div data-ng-repeat="discipline in disciplineBooks">
 						<div class="discplineText1" style="font-weight: bold;">{{discipline.name}}</div>					
 						<div data-ng-repeat="book in discipline.books"
 							ng-click="selectBook(book.guid,discipline.name)"
 							ng-class="{selectedDisc: book.isSelected}"
 							ng-show="book.showEdition" parentbookid="{{book.parentBookID}}">
-							<div					
-								ng-show="book.hasEdition"
-								ng-click="showOldEdition(book.guid,discipline.name)">
+							<div ng-show="book.hasEdition" ng-click="showOldEdition(book.guid,discipline.name)">
 								<img alt="Editions" id="{{book.guid}}" src=""
 									ng-class="book.isCollasped?'collapseBookEdition':'expandBookEdition'">
 							</div>
 							<div class="discplineText">
 								{{book.title}}</div>
 						</div>
-						<div></div>
 					</div>
 				</div>
 	</div>
