@@ -267,9 +267,8 @@ angular
 									currentNode = $scope.selectedNodes[i];
 									if (currentNode.showTestWizardIcon) {
 										currentNode.showTestWizardIcon = false;
-										getQuestions(
-												currentNode,
-												function() {
+										getQuestions(currentNode, function (response, currentNode) {
+										    $rootScope.$broadcast("handleBroadcast_createTestWizardCriteria", response, currentNode);
 													nodeCounter++;
 													if (nodeCounter == selectedNodesLength)
 														if (SharedTabService.errorMessages.length > 0)
@@ -290,12 +289,7 @@ angular
 												config)
 										.success(
 												function(response) {
-													$rootScope
-															.$broadcast(
-																	"handleBroadcast_createTestWizardCriteria",
-																	response,
-																	currentNode);
-													callBack()
+												    callBack(response, currentNode)
 												})
 										.error(
 												function() {
@@ -656,4 +650,9 @@ angular
 										})
 							}
 
+							$scope.addQuestionsToTest = function (questionFolder) {
+							    getQuestions(questionFolder.node, function (response, questionFolder) {
+							        $rootScope.$broadcast("handleBroadcast_AddQuestionsToTest", response, questionFolder);
+							    });
+							}
 						} ]);

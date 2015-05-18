@@ -630,8 +630,6 @@ angular.module('e8MyTests')
             }
             TestService.getMetadata(newTest.guid, function (test) {               
                 test.nodeType = "test";
-                test.showEditIcon = true;
-                test.showArchiveIcon = true;
                 if (containerFolder) {
                     test.parentId =  containerFolder.guid;
                     parentFolderNodes.push(test);

@@ -65,7 +65,7 @@
                         <label class="captionLabel" title="{{node.title}}">{{node.title}}</label>
                     </div>
                     <div class="iconsChapter">
-                        <span class="action-icon-bg glyphicon glyphicon-pencil" tooltip="Move question to right for editing" tooltip-placement="bottom"></span>
+                        <span class="action-icon-bg glyphicon glyphicon-pencil" ng-click="addQuestionsToTest(this)"  tooltip="Move question to right for editing" tooltip-placement="bottom"></span>
                         <span class="icon-magic action-icon-bg pull-right" ng-show="node.showTestWizardIcon" ng-click="createTestWizardCriteria(this)" tooltip="Auto create test with wizard" tooltip-placement="bottom"></span>
                         <!--
                         <span class="settingsChapter"></span>

@@ -1028,7 +1028,11 @@ angular
 																				.offset().top - 15)
 																		+ 'px');
 											});
-						    
+						    $rootScope.$on('handleBroadcast_AddQuestionsToTest', function (event, response, currentNode) {
+						        QTI.initialize();
+						        $scope.renderQuestions(response,
+                                        $scope.currentIndex);
+						    })
 							$scope.editTest = function(selectedTest) {
 								// selectedTest.node.disableEdit = true;
 								$scope.newVersionBtnCss = "";
