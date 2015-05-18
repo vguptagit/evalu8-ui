@@ -1685,7 +1685,7 @@ angular
 										.open({
 											templateUrl : 'views/partials/testVersionPopup.html',
 											controller : 'TestVersionCreationController',
-											size : 'md',
+											size : 'sm',
 											backdrop : 'static',
 											keyboard : false,
 											resolve : {
@@ -1702,7 +1702,7 @@ angular
 										.open({
 											templateUrl : 'views/partials/exportPopup.html',
 											controller : 'ExportTestController',
-											size : 'lg',
+											size : 'md',
 											backdrop : 'static',
 											keyboard : false,
 											resolve : {
