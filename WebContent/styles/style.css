@@ -75,6 +75,8 @@ label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D;
 .width33{width:34%;}
 .width48{width:48%;}
 .width50{width:50%;}
+.width55{width:55%;}
+.width60{width:60%;}
 .height40{height:40px;}
 
 
@@ -263,7 +265,9 @@ label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D;
   line-height: -1em;
   display: inline-block;
   width: 100%;
+  padding:5px 0;
 }
+.modal-body{padding:0;}
 .iconButtons {
   display: inline-block;
   color: #808080;
@@ -320,6 +324,12 @@ a.fa.fa-user{
 section { 
     display: inline-block; width:100%;
 }
+
+.paddingall20{padding:20px;}
+.paddingall30{padding:10px 30px;}
+hr{margin: 0;}
+
+.modal-header .close{margin-top: -10px; margin-right: -20px;}
 
 
 @media (max-width: 767px)

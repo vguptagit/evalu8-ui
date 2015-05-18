@@ -1,4 +1,4 @@
-
+<div class="paddingall30" >
 <div class="modal-header">
 	<!-- <button type="button" class="close" ng-click="cancel()" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
 	<button type="button" class="close" data-ng-click="cancel()"
@@ -6,7 +6,7 @@
 		<span aria-hidden="true">&times;</span>
 	</button>
 	<h4 class="modal-default-header-title" id="myModalLabel">Randomize
-		Versions Of Test</h4>
+		Versions of Test</h4>
 </div>
 <div class="modal-body">
 	<section>
@@ -24,28 +24,15 @@
 		</div>
 		
 	</section>
-	<hr>
-	<!-- <section>	
-			<div class="row">
-			<div class="col-md-2"></div>
-			<div class="col-md-8">
-				<div class="checkbox vsQuestionType">
-					<label> 
-					<input type="checkbox" style="margin-top: 0px;" data-ng-model="isQuestionsTypes" >
-					Keep same question types together
-					</label>
-				</div>
-				</div>
-			</div>
-		</section> -->
-	<section class="inlineblock">
+	<hr>	
+	<section class="inlineblock margin-top-20">
 		<div class="width100 pull-left  margin-bot-10">
-			<div class="col-md-6 ">
+			<div class="width55 pull-left">
 				<select id="selectNumber" data-role="listview" class="versionBox"
 					data-inset="true" ng-model="selectedVersions"
 					ng-options="version as version.text for version in versions "
 					x-ng-change="selectVersion(selectedVersions)"></select>
-			</div><div class="col-md-6 margin-top-10 ">
+			</div><div class="width40 pull-right margin-top-10 ">
 			<p>
 				<input type="checkbox" ng-model="isViewVersions"> View
 				Versions
@@ -55,13 +42,13 @@
 
 </div>
 <div class="modal-footer">
-<div class="pull-left">
+<div class="pull-left row">
 	<button type="button" class="btn btn-default" data-dismiss="modal"
 		data-ng-click="cancel()">Cancel</button>
 	<button ng-click="createNewVersion()"
 		class="btn btn-primary pull-right">Create</button></div>
 </div>
-
+</div>
 
 
 
