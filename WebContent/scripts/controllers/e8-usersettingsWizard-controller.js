@@ -238,6 +238,13 @@ angular
 								$scope.buttonEnableDisable($scope
 										.isDesciplineEmpty());
 
+								var container = $('.disciplineContainerInLightBox'),
+                                    scrollTo = $(".disciplineContainerInLightBox").find("div:contains('" + disciplineName + "')");
+
+								container.scrollTop(
+                                    scrollTo.offset().top - container.offset().top + container.scrollTop()
+                                );
+                                /*
 								var vtop = $(".disciplineContainerInLightBox")
 										.find(
 												"div:contains('"
@@ -247,6 +254,7 @@ angular
 										|| vtop < 0) {
 									$(".disciplineContainerInLightBox")[0].scrollTop = vtop;
 								}
+                                */
 							}
 
 							$scope.isSelectedDiscipline = function(discipline) {

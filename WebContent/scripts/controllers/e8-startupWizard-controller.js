@@ -225,14 +225,12 @@ angular
 
 								$scope.enableDisableNextButton($scope
 										.isDesciplineEmpty());
+								var container = $('.discplineheight'),
+                                    scrollTo = $(".discplineheight").find("div:contains('" + disciplineName + "')");
 
-								var vtop = $(".discplineheight").find(
-										"div:contains('" + disciplineName
-												+ "')").position().top;
-								if (vtop > $(".discplineheight")[0].clientHeight
-										|| vtop < 0) {
-									$(".discplineheight")[0].scrollTop = vtop;
-								}
+								container.scrollTop(
+                                    scrollTo.offset().top - container.offset().top + container.scrollTop()
+                                );								 
 							}
 
 							$scope.isSelectedDiscipline = function(discipline) {
