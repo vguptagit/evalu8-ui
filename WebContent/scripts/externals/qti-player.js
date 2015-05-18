@@ -1905,7 +1905,8 @@ QTI.Elements.ResponseDeclaration.GET_ALLOWED_CONTENT = function() {
 
 QTI.Elements.ResponseDeclaration.play = function(qtiNode, displayNode, state) {
 	if(state.questionType)
-		CustomQuestionTemplate[state.questionType].makeExtra(null,this,qtiNode);
+		if(CustomQuestionTemplate[state.questionType])
+			CustomQuestionTemplate[state.questionType].makeExtra(null,this,qtiNode);
 		
 	var elementDisplayNode = QTI.prepare(qtiNode, $("<div></div>"));
 
