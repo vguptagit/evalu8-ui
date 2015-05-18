@@ -329,7 +329,7 @@
 </div>
 <div class="editMetdata editView">
    <div class="imagecaptionMetadata">
-      <input ng-src="{{isReplyFormOpen && 'images/right_arrow.png' || 'images/right_arrow2.png' }}" ng-click="isReplyFormOpen = !isReplyFormOpen" class="downArrowImage allignimage" type="image" /> 
+      <input ng-src="{{isMetadataExpand && 'images/right_arrow.png' || 'images/right_arrow2.png' }}" ng-click="isMetadataExpand = !isMetadataExpand" class="downArrowImage allignimage" type="image" /> 
        <!--  src="images/right_arrow.png" /> -->
 	 </div>
 	<div  class="mainClass" >
@@ -337,14 +337,13 @@
          Format and add
          metadata
       </div>
-  <div ng-show="isReplyFormOpen">
-   <div id="viewHeader">
-      <span class="captionMetadata">Format</span><span class="normalText">
-      (visible
-      in Print View)
-      </span>
-   </div>
+  <div ng-show="isMetadataExpand"> 
    <div class="vhDiv" ng-show=" node.quizType == 'MultipleChoice' || node.quizType == 'MultipleResponse' ">
+	   <div id="viewHeader">
+      			<span class="captionMetadata">Format</span><span class="normalText">
+     			 (visible in Print View)
+     		 </span>
+     </div>
       <span class="viewOptionDiv normalText">Questions:</span>
       <div class="viewOptionDiv viewOptionHV">
          <input class="radioView" ng-checked="node.optionsView" name="radioView_{{$index}}_HV" ng-click="qstnOptionsView(this,true)" type="radio">Vertical Display </input>

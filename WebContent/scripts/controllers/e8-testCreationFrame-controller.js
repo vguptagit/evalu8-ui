@@ -1946,6 +1946,13 @@ angular
 												function(response) {
 													var displayNode = $("<div></div>");													
 													displayNode.guid = question.guid;	
+													
+													displayNode.IsEditView = false;
+													displayNode.qstnLinkText = displayNode.IsEditView ? "View"
+															: "Edit";
+													displayNode.data = 	response;
+													displayNode.quizType = 	question.quizType;
+													
 													displayNode.questionMetadata = userSettings.questionMetadata;
 													displayNode.extendedMetadata = question.extendedMetadata;
 													$.each(displayNode.extendedMetadata, function(index, item){																							
@@ -1955,9 +1962,9 @@ angular
 													});	
 													
 													displayNode.selectedLevel = displayNode.questionMetadata['Difficulty']==undefined?{name:'Select Level',value:'0'}:{name:displayNode.questionMetadata['Difficulty'],value:displayNode.questionMetadata['Difficulty']};
-																							
+																						
 													QTI.play(response,
-															displayNode, false);
+															displayNode, false,false,question.quizType);
 
 													// $scope.tree2.push(displayNode);
 													$scope.isLoading = false;
