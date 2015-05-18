@@ -853,7 +853,7 @@ angular
 
 								var qstnMasterData = {
 									caption : $(qstnXML).find('itemBody').find('p')
-											.html().trim(),
+											.html(),
 									options : optionList,
 									optionCount : $(qstnXML).find('itemBody').find(
 											'choiceInteraction').find(
@@ -1962,7 +1962,11 @@ angular
 													});	
 													
 													displayNode.selectedLevel = displayNode.questionMetadata['Difficulty']==undefined?{name:'Select Level',value:'0'}:{name:displayNode.questionMetadata['Difficulty'],value:displayNode.questionMetadata['Difficulty']};
-																						
+																				
+													displayNode.qstnMasterData = buildQstnMasterDetails(displayNode);
+													displayNode.optionsView = displayNode.qstnMasterData.optionsView;
+													displayNode.EssayPageSize = displayNode.qstnMasterData.EssayPageSize;
+													
 													QTI.play(response,
 															displayNode, false,false,question.quizType);
 
