@@ -149,18 +149,18 @@ angular
 
 											var yourQuestions = [];
 											$scope.userQuestions
-													.forEach(function(userQuestion) {
+													.forEach(function(xmlString) {
 
 														var yourQuestion = {};
 														var displayNode = $("<div></div>")
-														QTI.play(userQuestion.qtiXML,
+														QTI.play(xmlString,
 																displayNode,
 																false, false);
 														yourQuestion.isQuestion = true;
 														yourQuestion.questionXML = true;
-														yourQuestion.data = userQuestion.qtixml;
+														/*yourQuestion.data = userQuestion.qtixml;
 														yourQuestion.quizType = userQuestion.metadata.quizType;
-														yourQuestion.extendedMetadata = userQuestion.metadata.extendedMetadata;
+														yourQuestion.extendedMetadata = userQuestion.metadata.extendedMetadata;*/
 														yourQuestion.textHTML = displayNode
 																.html();
 														yourQuestions

@@ -27,7 +27,7 @@
 
         <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}" droppable="false">
             <li ng-if="!node.isQuestion" draggable="false" ng-repeat="node in node.nodes" collapsed="true" ui-tree-node ng-include="'book_renderer.html'"></li>
-            <li class="questIndex" ng-if="node.isQuestion" ng-repeat="node in node.nodes" collapsed="true" ui-tree-node ng-include="'questions_renderer.html'"></li>
+            <li class="questIndex" ng-if="node.isQuestion" draggable="false" ng-repeat="node in node.nodes" collapsed="true" ui-tree-node ng-include="'questions_renderer.html'"></li>
         </ol>
     </script>
 	<script type="text/ng-template" id="book_renderer.html">

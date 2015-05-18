@@ -128,8 +128,10 @@ angular
 							$scope.enableDisableNextButton = function(state) {
 								if (state) {
 									$(".nextButton").addClass("btnDisbled");
+									$("div.row.setupHeader input").addClass("btnDisbled");
 								} else {
 									$(".nextButton").removeClass("btnDisbled");
+									$("div.row.setupHeader input").removeClass("btnDisbled");
 								}
 							}
 
@@ -566,13 +568,13 @@ angular
 								return bookGUID;
 							}
 
-							$scope.enableDisableNextButton = function(state) {
+/*							$scope.enableDisableNextButton = function(state) {
 								if (state) {
 									$(".nextButton").addClass("btnDisbled");
 								} else {
 									$(".nextButton").removeClass("btnDisbled");
 								}
-							}
+							}*/
 
 							$scope.saveBooks = function() {
 								UserService

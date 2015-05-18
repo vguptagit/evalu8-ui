@@ -42,7 +42,7 @@ angular
 										.get(
 												evalu8config.host
 														+ "/settings/disciplines/",
-												config)
+														this.getConfig())
 										.success(
 												function(response, status) {
 
@@ -159,5 +159,11 @@ angular
 														$location
 																.path('/login');
 												})
+							}
+							
+							this.getConfig = function(){
+								if(config.headers["x-authorization"].length == 0)
+									config.headers["x-authorization"] = $cookieStore.get('globals').authToken;
+								return config;
 							}
 						} ])
