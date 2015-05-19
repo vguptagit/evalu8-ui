@@ -16,10 +16,10 @@ angular
 						'SharedTabService',
 						'$modal',
 						'$compile',
-						'directiveQtiService', 'EnumService', 'UserService', 'CommonService',
+						'directiveQtiService', 'EnumService', 'UserService', 'CommonService','blockUI',
 						function($scope, $rootScope, $location, $cookieStore,
 								$http, $sce, TestService, SharedTabService,
-								$modal, $compile, directiveQtiService, EnumService, UserService, CommonService) {
+								$modal, $compile, directiveQtiService, EnumService, UserService, CommonService,blockUI) {
 
 							// $scope.tree2 =
 							// SharedTabService.tests[SharedTabService.currentTabIndex].questions;
@@ -1006,9 +1006,9 @@ angular
 								$scope.exportBtnCss = "";
 								$scope.testGuid = selectedTest.node.guid;
 								$scope.selectedTestNode = selectedTest.node;
-								// $scope.BlockRightPanel =
-								// blockUI.instances.get('BlockRightPanel');
-								// $scope.BlockRightPanel.start();
+								$scope.BlockRightPanel =
+								 blockUI.instances.get('RightPanel');
+								 $scope.BlockRightPanel.start();
 
 								// if Test is in root folder
 								if (selectedTest.$parentNodeScope) {
@@ -1039,7 +1039,7 @@ angular
 									currentIndex) {
 								if (qBindings.length == 0) {
 									$scope.isLoading = false;
-									// $scope.BlockRightPanel.stop();
+									 $scope.BlockRightPanel.stop();
 									return false;
 								}
 								

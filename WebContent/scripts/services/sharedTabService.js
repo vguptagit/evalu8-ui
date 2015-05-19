@@ -3,8 +3,8 @@
 angular.module('evalu8Demo')
 
 .service('SharedTabService',
-		['$rootScope', '$modal','UserService',
-		 function ($rootScope, $modal,UserService) {
+		['$rootScope', '$modal','UserService','blockUI',
+		 function ($rootScope, $modal,UserService,blockUI) {
 
 		     var sharedTabService = {};
 		     sharedTabService.tests = [];
@@ -127,6 +127,8 @@ angular.module('evalu8Demo')
 		     }
 		     //TODO : need to do code optimization.
 		     sharedTabService.addTestWizard = function (scope) {
+		    	 var blockRightPanel = blockUI.instances.get('RightPanel');
+					blockRightPanel.start();
 		         var newTest = new sharedTabService.Test();
 		         newTest.tabTitle = "Test wizard";
 		         newTest.isTestWizard = true;
@@ -138,6 +140,7 @@ angular.module('evalu8Demo')
 		         scope.exportBtnCss = "disabled";
 		         //scope.isTestWizardTabPresent = true;
 		         sharedTabService.isTestWizardTabPresent = true;
+		         blockRightPanel.stop();
 		     }
 
 		     var DefaultNumberOfQuestions = [10, 20, 30,""];

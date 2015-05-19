@@ -17,11 +17,11 @@ angular
 						'SharedTabService',
 						'UserQuestionsService',
 						'EnumService',
-						'$modal',
+						'$modal','blockUI',
 						function($scope, $rootScope, $location, $cookieStore,
 								$http, $sce, DisciplineService, TestService,
 								SharedTabService, UserQuestionsService,
-								EnumService, $modal) {
+								EnumService, $modal,blockUI) {
 							SharedTabService.selectedMenu = SharedTabService.menu.questionBanks;
 							$rootScope.globals = $cookieStore.get('globals')
 									|| {};
@@ -125,8 +125,8 @@ angular
 							// and append the collection to input discipline
 							// angularjs node
 							$scope.getBooks = function(discipline) {
-								// var blockLeftpanel =
-								// blockUI.instances.get('BlockLeftpanel');
+								 var blockLeftpanel =
+								 blockUI.instances.get('Leftpanel');
 
 								if ($rootScope.globals.authToken == '') {
 									$location.path('/login');
@@ -135,7 +135,7 @@ angular
 									if (!discipline.collapsed) {
 										discipline.collapse();
 									} else {
-										// blockLeftpanel.start();
+										 blockLeftpanel.start();
 										discipline.expand();
 
 										var ep;
@@ -183,7 +183,7 @@ angular
 													.success(
 															function(response) {
 																discipline.node.nodes = response;
-																// blockLeftpanel.stop();
+																 blockLeftpanel.stop();
 															});
 										}
 

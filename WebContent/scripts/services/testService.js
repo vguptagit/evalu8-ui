@@ -3,8 +3,8 @@
 angular.module('evalu8Demo')
 
 .service('TestService', 
-		['$http', '$rootScope', '$location', '$cookieStore', '$upload',
-		 function($http, $rootScope, $location, $cookieStore,$upload) {
+		['$http', '$rootScope', '$location', '$cookieStore', '$upload','blockUI',
+		 function($http, $rootScope, $location, $cookieStore,$upload,blockUI) {
 			
 			$rootScope.globals = $cookieStore.get('globals') || {};
 			
@@ -20,36 +20,37 @@ angular.module('evalu8Demo')
 			};						
 			
 			this.saveTestData = function(testData,folderId,callback) {				
-				//var blockRightPanel = blockUI.instances.get('BlockRightPanel');
-				//blockRightPanel.start();
+				var blockRightPanel = blockUI.instances.get('RightPanel');
+				blockRightPanel.start();
 				var defaultFolders = [];
 				$http.post(evalu8config.host + '/my/folders/'+folderId+'/tests', testData, config)
 				.success(function(response) {	
 					var testResult = response;
 					callback(testResult);
-					//blockRightPanel.stop();
+					blockRightPanel.stop();
 				})
 				.error(function(error, status) {
 
 					if(status == 403)
 						$location.path('/login');
-					//blockRightPanel.stop();
+					blockRightPanel.stop();
 				})				
 			};
 			
             this.saveQuestions = function(editedQstns, callback) {
-                
+            	var blockRightPanel = blockUI.instances.get('RightPanel');
+            	blockRightPanel.start();
                 $http.post(evalu8config.host + '/my/questions', editedQstns, config)
                 .success(function(response) {    
                     var questionsResult = response;
                     callback(questionsResult);
-                    //blockRightPanel.stop();
+                    blockRightPanel.stop();
                 })
                 .error(function(error, status) {
 
                     if(status == 403)
                         $location.path('/login');
-                    //blockRightPanel.stop();
+                    blockRightPanel.stop();
                 })                
                 
             };
@@ -83,8 +84,8 @@ angular.module('evalu8Demo')
 			};
 				
 			this.getTests = function(folderId, callback) {				
-				//var blockLeftpanel = blockUI.instances.get('BlockLeftpanel');
-				//blockLeftpanel.start();
+				var blockLeftpanel = blockUI.instances.get('Leftpanel');
+				blockLeftpanel.start();
 				var url;
 				if(folderId==null) {
 					url = evalu8config.host + '/my/tests';
@@ -102,17 +103,17 @@ angular.module('evalu8Demo')
 						test.showArchiveIcon=true;
 					})
 					callback(tests)
-					//blockLeftpanel.stop();
+					blockLeftpanel.stop();
 				})
 				.error(function(error, status) {
 					callback([]);
-					//blockLeftpanel.stop();
+					blockLeftpanel.stop();
 				})				
 			};
 			
 			this.getArchiveTests = function(folderId, callback) {				
-				//var blockLeftpanel = blockUI.instances.get('BlockLeftpanel');
-				//blockLeftpanel.start();
+				var blockLeftpanel = blockUI.instances.get('Leftpanel');
+				blockLeftpanel.start();
 				$http.get(evalu8config.host + '/my/archive/folders/' + folderId + '/tests', config)
 				.success(function(response) {
 					var tests = response;
@@ -121,10 +122,10 @@ angular.module('evalu8Demo')
 						test.parentId = folderId;
 					})
 					callback(tests)
-					//blockLeftpanel.stop();
+					blockLeftpanel.stop();
 				})
 				.error(function(error, status) {
-					//blockLeftpanel.stop();
+					blockLeftpanel.stop();
 				})				
 			};
 			
@@ -216,17 +217,17 @@ angular.module('evalu8Demo')
 			}
 						
 			this.createVersions = function (scope, callback) {	
-				//var blockRightPanel = blockUI.instances.get('BlockRightPanel');
-				//blockRightPanel.start();
+				var blockRightPanel = blockUI.instances.get('RightPanel');
+				blockRightPanel.start();
 			    $http.post(evalu8config.host + '/my/tests/' + scope.currentTab.testId + '/versions', scope.versioningOptions, config)
 				.success(function (response) {				     
 				    callback(scope,response);
-				    //blockRightPanel.stop();
+				    blockRightPanel.stop();
 				})
 				.error(function (error, status) {
 				    if (status == 403)
 				        $location.path('/login');
-				    //blockRightPanel.stop();
+				    blockRightPanel.stop();
 				}) 
 			};
 			

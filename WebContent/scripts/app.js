@@ -28,18 +28,18 @@ angular.module('evalu8Demo', [
     'e8CustomQuestionBanks',
     'ngRoute',
     'ngCookies',
-//  'blockUI',
+    'blockUI',
     'ui.bootstrap',
     'ui.router',
     'angularFileUpload',
     'mgo-angular-wizard',
     'cgNotify',
     'angular.filter'
-])/*.config(function(blockUIConfig) {
+]).config(function(blockUIConfig) {
 	//blockUIConfig.message = "<div class='loader'>Loading...</div>";
 	blockUIConfig.autoInjectBodyBlock = false;
 	blockUIConfig.delay = 100;
-})*/
+})
 .config(function ($stateProvider, $urlRouterProvider) {
 
     $urlRouterProvider.otherwise('/home');

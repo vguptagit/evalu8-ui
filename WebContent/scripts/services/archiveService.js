@@ -3,8 +3,8 @@
 angular.module('evalu8Demo')
 
 .service('ArchiveService', 
-		['$http', '$rootScope', '$location', '$cookieStore', 
-		 function($http, $rootScope, $location, $cookieStore) {
+		['$http', '$rootScope', '$location', '$cookieStore', 'blockUI',
+		 function($http, $rootScope, $location, $cookieStore,blockUI) {
 			
 			$rootScope.globals = $cookieStore.get('globals') || {};
 			
@@ -21,7 +21,8 @@ angular.module('evalu8Demo')
 							
 			
 			this.getArchiveFolders = function(folder, callback) {				
-
+				var blockLeftpanel = blockUI.instances.get('Leftpanel');
+				blockLeftpanel.start();
 				var url;
 				if(folder && folder.guid) {
 					url = "/my/archive/folders/"+ folder.guid + "/folders"
@@ -40,6 +41,7 @@ angular.module('evalu8Demo')
 										userFolders.push(item);    							    							
 									});
 									callback (userFolders);
+									blockLeftpanel.stop();
 								})
 						.error(
 								function(error) {
@@ -48,6 +50,7 @@ angular.module('evalu8Demo')
 									item.nodeType = "empty";
 									userFolders.push(item);
 									callback (userFolders);
+									blockLeftpanel.stop();
 								})				
 			};			
 			
