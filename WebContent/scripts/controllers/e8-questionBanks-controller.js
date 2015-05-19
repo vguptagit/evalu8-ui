@@ -45,9 +45,13 @@ angular
 									destIndex) {
 								if ($scope.dragStarted) {
 									$scope.dragStarted = false;
-									$rootScope.$broadcast("dropQuestion",
-											source.node, destIndex);
-									source.node.showEditQuestionIcon = false;
+									if (!source.node.isNodeSelected) {
+									    $scope.selectNode(source.node);
+									}
+								    //$rootScope.$broadcast("dropQuestion",
+								    //		source.node, destIndex);
+								    //source.node.showEditQuestionIcon = false;
+									$scope.editQuestion();
 								}
 							});
 
@@ -225,12 +229,14 @@ angular
 																			book.node.nodes,
 																			function(
 																					item) {
-																				item.showTestWizardIcon = true;
+																			    item.showTestWizardIcon = true;
+                                                                                item.showEditQuestionIcon = true;
 																				item.isNodeSelected = false;
 																				if ($scope.selectedNodes.length > 0)
 																					for (var i = 0; i < $scope.selectedNodes.length; i++) {
 																						if ($scope.selectedNodes[i].guid == item.guid) {
-																							item.showTestWizardIcon = $scope.selectedNodes[i].showTestWizardIcon;
+																						    item.showTestWizardIcon = $scope.selectedNodes[i].showTestWizardIcon;
+																						    item.showEditQuestionIcon = $scope.selectedNodes[i].showEditQuestionIcon;
 																							item.isNodeSelected = $scope.selectedNodes[i].isNodeSelected;
 																							$scope.selectedNodes[i] = item;
 																						}
@@ -365,11 +371,13 @@ angular
 																					item) {
 																				item.template = 'nodes_renderer.html';
 																				item.showTestWizardIcon = true;
+																				item.showEditQuestionIcon = true;
 																				item.isNodeSelected = false;
 																				if ($scope.selectedNodes.length > 0)
 																					for (var i = 0; i < $scope.selectedNodes.length; i++) {
 																						if ($scope.selectedNodes[i].guid == item.guid) {
-																							item.showTestWizardIcon = $scope.selectedNodes[i].showTestWizardIcon;
+																						    item.showTestWizardIcon = $scope.selectedNodes[i].showTestWizardIcon;
+																						    item.showEditQuestionIcon = $scope.selectedNodes[i].showEditQuestionIcon;
 																							item.isNodeSelected = $scope.selectedNodes[i].isNodeSelected;
 																							$scope.selectedNodes[i] = item;
 																						}
@@ -569,16 +577,16 @@ angular
 								if (!node.isNodeSelected) {
 									$scope.selectedNodes.push(node);
 									node.isNodeSelected = !node.isNodeSelected;
-									node.showEditQuestionIcon = node.showEditQuestionIcon != undefined ? true
-											: node.showEditQuestionIcon;
+									node.showEditQuestionIcon = true;
+								    //node.showEditQuestionIcon = node.showEditQuestionIcon != undefined ? true : node.showEditQuestionIcon;
 								} else {
 									for (var i = 0; i < $scope.selectedNodes.length; i++) {
 										if ($scope.selectedNodes[i].guid == node.guid
 												&& (node.showTestWizardIcon || node.showEditQuestionIcon)) {
 											$scope.selectedNodes.splice(i, 1);
 											node.isNodeSelected = !node.isNodeSelected;
-											node.showEditQuestionIcon = node.showEditQuestionIcon != undefined ? false
-													: node.showEditQuestionIcon;
+											node.showEditQuestionIcon = false;
+										    //node.showEditQuestionIcon = node.showEditQuestionIcon != undefined ? false : node.showEditQuestionIcon;
 											break;
 										}
 									}
@@ -589,14 +597,24 @@ angular
 									function(handler, node) {
 										$scope.selectNode(node);
 									});
-							$scope.editQuestion = function(question) {
-								for (var i = 0; i < $scope.selectedNodes.length; i++) {
-									if ($scope.selectedNodes[i].showEditQuestionIcon) {
-										$scope.selectedNodes[i].showEditQuestionIcon = false;
-										$rootScope.$broadcast("dropQuestion",
-												$scope.selectedNodes[i], 0);
-									}
-								}
+							$scope.editQuestion = function () {
+							    if (SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
+							        $rootScope.$broadcast('handleBroadcast_AddNewTab');
+							    }
+							    for (var i = 0; i < $scope.selectedNodes.length; i++) {
+							        if ($scope.selectedNodes[i].showEditQuestionIcon) {
+							            $scope.selectedNodes[i].showEditQuestionIcon = false;
+							            if ($scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.question) {
+							                $rootScope.$broadcast("dropQuestion", $scope.selectedNodes[i], 0);
+							            } else if ($scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.chapter || $scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.topic) {
+							                var questionFolder = $scope.selectedNodes[i];
+							                getQuestions(questionFolder, function (response, questionFolder) {
+							                    $rootScope.$broadcast("handleBroadcast_AddQuestionsToTest", response, questionFolder);
+							                });
+							            }
+
+							        }
+							    }
 							}
 							$scope.questions = [];
 							var addToQuestionsArray = function(item) {

@@ -50,7 +50,7 @@
         </div>
 
         <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}" droppable="false">
-            <li draggable="false" ng-repeat="node in node.nodes" collapsed="true" ui-tree-node ng-include="'nodes_renderer.html'">
+            <li draggable="{{node.nodeType=='chapter' || node.nodeType=='topic'}}" ng-repeat="node in node.nodes" collapsed="true" ui-tree-node ng-include="'nodes_renderer.html'">
             </li>
         </ol>
     </script>
@@ -59,14 +59,14 @@
             <div class="treeDiv" ng-class="{activeFolder: !node.showTestWizardIcon , activeFolder: node.isNodeSelected}">
                 <div class="maindivChapter">
                     <div class="imagediv">
-                        <input ng-click="getNodesWithQuestion(this)" type="image" class="collapseImg" src="images/right_arrow2.png"></input>
+                        <input ng-mousedown="getNodesWithQuestion(this)" type="image" class="collapseImg" src="images/right_arrow2.png"></input>
                     </div>
-                    <div class="captiondiv" ng-click="selectNode(this.node)">
+                    <div class="captiondiv" ng-mousedown="selectNode(this.node)">
                         <label class="captionLabel" title="{{node.title}}">{{node.title}}</label>
                     </div>
                     <div class="iconsChapter">
-                        <span class="action-icon-bg glyphicon glyphicon-pencil" ng-click="addQuestionsToTest(this)"  tooltip="Move question to right for editing" tooltip-placement="bottom"></span>
-                        <span class="icon-magic action-icon-bg pull-right" ng-show="node.showTestWizardIcon" ng-click="createTestWizardCriteria(this)" tooltip="Auto create test with wizard" tooltip-placement="bottom"></span>
+                        <span class="action-icon-bg glyphicon glyphicon-pencil" ng-show="node.showEditQuestionIcon" ng-mousedown="editQuestion()" tooltip="Move question to right for editing" tooltip-placement="bottom"></span>
+                        <span class="icon-magic action-icon-bg pull-right" ng-show="node.showTestWizardIcon" ng-mousedown="createTestWizardCriteria(this)" tooltip="Auto create test with wizard" tooltip-placement="bottom"></span>
                         <!--
                         <span class="settingsChapter"></span>
                         <span class="printChapter"></span>
@@ -86,7 +86,7 @@
 
 	<script type="text/ng-template" id="qb_questions_renderer.html">
         <div ng-mousedown="selectNode(this.node);" ui-tree-handle class="printViewContainer tree-node tree-node-content questionList" ng-class="{questionTitleInTree: node.questionXML}">
-            <span ng-show="node.showEditQuestionIcon" class="newTest-close action-icon-bg glyphicon glyphicon-pencil" ng-mousedown="editQuestion(this)" tooltip="Move question to right for editing" tooltip-placement="bottom" ></span>
+            <span ng-show="node.showEditQuestionIcon" class="newTest-close action-icon-bg glyphicon glyphicon-pencil" ng-mousedown="editQuestion()" tooltip="Move question to right for editing" tooltip-placement="bottom" ></span>
             <div class="printViewContainer" ng-if="node.textHTML" ng-bind-html="getHTML(this)">
             </div>
         </div>

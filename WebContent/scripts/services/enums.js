@@ -21,4 +21,10 @@ angular.module('evalu8Demo')
         emptyFolder: 'empty',
         archiveRoot: 'archiveRoot'
     };
+
+    this.NODE_TYPE = {
+        question: 'question',
+        chapter : 'chapter',
+        topic   : 'topic'
+    };
 });
