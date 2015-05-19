@@ -81,90 +81,9 @@ angular.module('evalu8Demo', [
             url: '/startup',
             controller: 'startupWizardController',
             templateUrl: 'views/usersettings/startupWizard.html'
-        })
-
-        //reference
-        // nested list with just some random string data
-        .state('home.paragraph', {
-            url: '/paragraph',
-            template: 'I could sure use a drink right now.'
-        })
-        // nested list with custom controller
-        .state('home.list', {
-            url: '/list',
-            templateUrl: 'views/partial-home-list.html',
-            controller: function ($scope) {
-                $scope.dogs = ['Bernese', 'Husky', 'Goldendoodle'];
-            }
-        })
-        // ABOUT PAGE AND MULTIPLE NAMED VIEWS =================================
-        .state('about', {
-            url: '/about',
-            views: {
-                '': { templateUrl: 'partial-about.html' },
-                'columnOne@about': { template: 'Look I am a column!' },
-                'columnTwo@about': {
-                    templateUrl: 'table-data.html',
-                    controller: 'scotchController'
-                }
-            }
-
         });
 
 })
-.config(['$routeProvider', function ($routeProvider) {
-
-    $routeProvider
-        .when('/login', {
-            controller: 'LoginController',
-            templateUrl: 'views/newLogin.htm'
-        })
-        .when('/questionBanks', {
-            controller: 'QuestionBanksController',
-            templateUrl: 'views/questionBanks.htm'
-        })
-        .when('/publisherTests', {
-            controller: 'PublisherTestsController',
-            templateUrl: 'views/publisherTests.htm'
-        })
-        .when('/myTests', {
-            controller: 'MyTestsController',
-            templateUrl: 'views/myTests.htm'
-        })
-          .when('/customQuestionBanks', {
-              controller: 'CustomQuestionBanksController',
-              templateUrl: 'views/customQuestionBanks.htm'
-          })
-        .when('/books/:bookid/nodes', {
-            controller: 'ChapterController',
-            templateUrl: 'views/chapters.htm'
-        })
-        .when('/usersettings/disciplines', {
-            controller: 'SelectDisciplinesController',
-            templateUrl: 'views/usersettings/selectDisciplines.htm'
-        })
-        .when('/usersettings/books', {
-            controller: 'SelectBooksController',
-            templateUrl: 'views/usersettings/selectBooks.htm'
-        })
-        .when('/usersettings/questionmetadata', {
-            controller: 'SelectQuestionMetadataController',
-            templateUrl: 'views/usersettings/selectQuestionMetadata.htm'
-        })
-        .when('/usersettings/printsettings', {
-            controller: 'SelectPrintSettingsController',
-            templateUrl: 'views/usersettings/selectPrintSettings.htm'
-        })
-        .when('/', {
-            templateUrl: 'views/main.html',
-            controller: 'MainCtrl'
-        })
-      .when('/about', {
-          templateUrl: 'views/about.html',
-          controller: 'AboutCtrl'
-      }).otherwise({ redirectTo: '/login' });
-}])
-
 .run(['$rootScope', '$location', '$cookieStore', '$http', '$modal',
     function ($rootScope, $location, $cookieStore, $http, $modal) {
         // keep user logged in after page refresh
