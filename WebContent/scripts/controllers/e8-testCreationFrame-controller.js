@@ -87,23 +87,23 @@ angular
 								var qstnCaption = replaceImage(qstnHTML
 										.find('#qtiCaption'));
 		
-								$(xml).find('itemBody').find('p').eq(0).html(
-										qstnCaption );
+								$(xml).find('itemBody').find('p').eq(0).html("<![CDATA[" +
+										qstnCaption + "]]>");
 								
 
 								if($(xml).find('responseDeclaration').find('correctResponse').find('value').length >= 1){
-									 $(xml).find('responseDeclaration').find('correctResponse').find('value').html(replaceImage(qstnHTML.find('div.valueView')) );
+									 $(xml).find('responseDeclaration').find('correctResponse').find('value').html("<![CDATA[" + replaceImage(qstnHTML.find('div.valueView')) + "]]>");
 									 }
 								else if(qstnHTML.find('div.qti-correctResponse div.valueView').length > 0 && $(xml).find('responseDeclaration').find('correctResponse').length == 0){
 									var responseDeclaration = $(xml).find('responseDeclaration');
 									var response = responseDeclaration.append("<correctResponse></correctResponse>").children();
 									var value = response.append("<value></value>").children();
-									value.html(replaceImage(qstnHTML.find('div.valueView')))
+									value.html("<![CDATA[" + replaceImage(qstnHTML.find('div.valueView')) + "]]>")
 								}
 								
 								$(xml).find('assessmentItem').attr(
 										'identifier', 'QUESTION-X');
-								
+								selectedQstnNode.node.quizType = QTI.getQuestionType($(xml),selectedQstnNode.node.quizType);
 								if (selectedQstnNode.node.quizType =="Matching"){
 									
 									var htmlBlockquote = qstnHTML.find('blockquote');
@@ -155,7 +155,7 @@ angular
 												'@RESP', 'RESP_' + (i + 1));
 										
 										optionTagAppend = optionTagAppend.replace(
-												'@RESP_Val',  optionText );
+												'@RESP_Val', "<![CDATA[" + optionText + "]]>");
 										
 										var item = $.parseXML(optionTagAppend); 
 									
@@ -170,7 +170,7 @@ angular
 										var optionTagAppend = (optionTag).replace(
 												'@RESPONSE', 'RESPONSE_' + (i + 1));
 										optionTagAppend = optionTagAppend.replace(
-												'@p',  optionText);										
+												'@p', "<![CDATA[" + optionText + "]]>");										
 										
 										var item = $.parseXML(optionTagAppend); 
 										
@@ -215,7 +215,7 @@ angular
 									var optionTagAppend = optionTag.replace(
 											'@RESPONSE', 'RESPONSE_' + (i + 1));
 									optionTagAppend = optionTagAppend.replace(
-											'@val',  optionText );
+											'@val', "<![CDATA[" + optionText + "]]>");
 									var item = $.parseXML(optionTagAppend); // returns
 																			// DOM
 																			// element
@@ -853,7 +853,7 @@ angular
 
 								var qstnMasterData = {
 									caption : $(qstnXML).find('itemBody').find('p')
-											.html(),
+											.html().trim(),
 									options : optionList,
 									optionCount : $(qstnXML).find('itemBody').find(
 											'choiceInteraction').find(
@@ -1407,7 +1407,6 @@ angular
 														qstn =  updateTemplatePrefilledtext(qstn);
 														}
 													}
-													
 													if (typeof (qstn.questionMetadata) == 'undefined') {
 
 													    qstn.questionMetadata = userSettings.questionMetadata;
@@ -1421,7 +1420,6 @@ angular
 													    });
 													    qstn.selectedLevel = qstn.questionMetadata['Difficulty'] == undefined ? { name: 'Select Level', value: '0' } : { name: qstn.questionMetadata['Difficulty'], value: qstn.questionMetadata['Difficulty'] };
 													}
-
 													var qstnExtMetadata=[];													
 												
 													$.each(qstn.questionMetadata, function(KeyName, KeyValue){		
@@ -1945,7 +1943,7 @@ angular
 												question.guid,
 												function(response) {
 													var displayNode = $("<div></div>");													
-													displayNode.guid = question.guid;	
+													displayNode.guid = question.guid;
 													
 													displayNode.IsEditView = false;
 													displayNode.qstnLinkText = displayNode.IsEditView ? "View"
@@ -1962,11 +1960,11 @@ angular
 													});	
 													
 													displayNode.selectedLevel = displayNode.questionMetadata['Difficulty']==undefined?{name:'Select Level',value:'0'}:{name:displayNode.questionMetadata['Difficulty'],value:displayNode.questionMetadata['Difficulty']};
-																				
+													
 													displayNode.qstnMasterData = buildQstnMasterDetails(displayNode);
 													displayNode.optionsView = displayNode.qstnMasterData.optionsView;
 													displayNode.EssayPageSize = displayNode.qstnMasterData.EssayPageSize;
-													
+																							
 													QTI.play(response,
 															displayNode, false,false,question.quizType);
 
