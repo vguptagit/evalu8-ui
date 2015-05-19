@@ -149,20 +149,24 @@ angular
 
 											var yourQuestions = [];
 											$scope.userQuestions
-													.forEach(function(xmlString) {
-
+													.forEach(function(userQuestion) {
 														var yourQuestion = {};
 														var displayNode = $("<div></div>")
-														QTI.play(xmlString,
+														QTI.play(userQuestion.qtixml,
 																displayNode,
-																false, false);
+																false, false,userQuestion.metadata.quizType);
 														yourQuestion.isQuestion = true;
 														yourQuestion.questionXML = true;
-														/*yourQuestion.data = userQuestion.qtixml;
+														yourQuestion.data = userQuestion.qtixml;
 														yourQuestion.quizType = userQuestion.metadata.quizType;
-														yourQuestion.extendedMetadata = userQuestion.metadata.extendedMetadata;*/
-														yourQuestion.textHTML = displayNode
-																.html();
+														yourQuestion.extendedMetadata = userQuestion.metadata.extendedMetadata;
+														yourQuestion.textHTML = displayNode.html();					
+														yourQuestion.nodeType = "question";
+														yourQuestion.guid = userQuestion.guid;
+														yourQuestion.showEditQuestionIcon = false;
+														yourQuestion.isNodeSelected = false;
+														yourQuestion.template = 'qb_questions_renderer.html';
+												
 														yourQuestions
 																.push(yourQuestion);
 													})
