@@ -1640,35 +1640,37 @@ if(state.questionType=="Matching"){
 	    	 
 	    	 $(displayNode).append(elementDisplayNode);
 	    	 
-	    	 this.extend.play(qtiNode, elementDisplayNode, state);
-
-	    		if(qtiNode.get(0).innerHTML.indexOf("<![CDATA[") > -1)
-	    			elementDisplayNode.html(qtiNode.eq(0).get(0).childNodes[0].textContent);
-	    		else
-	    			elementDisplayNode.html(qtiNode.get(0).innerHTML);
-	    	 
-	    	  qstnCaption=QTI.replaceImage(elementDisplayNode);		 
+	    	 this.extend.play(qtiNode, elementDisplayNode, state);	   
+	    
+	    	 elementDisplayNode.html(QTI.getSerializedXML(qtiNode));
+	    	
+	    	 qstnCaption=QTI.replaceImage(elementDisplayNode);		 
 	    	
 	    	
 	    }else{
 	    	
-	    	 elementDisplayNode = QTI.prepare(qtiNode,$("<p></p>"));
-		  
+	    	 elementDisplayNode = QTI.prepare(qtiNode,$("<p></p>"));		  
 		    
-	    	 var optionPtext
-	    		if(qtiNode.get(0).innerHTML.indexOf("<![CDATA[") > -1){
-	    			optionPtext = qtiNode.eq(0).get(0).childNodes[0].textContent;
-	    		}
-	    		else
-    			{
-	    			optionPtext = qtiNode.html();
-	    			optionPtext = optionPtext.substring(0, optionPtext.indexOf("<inlineChoiceInteraction")).trim();
-    			}
+	    	 var optionPtext;
+	    	 
+	    	 if(qtiNode.get(0).firstChild!=null){	  	
+	    		 
+		    		if(qtiNode.get(0).firstChild.nodeType==4){
+		    			optionPtext = qtiNode.eq(0).get(0).childNodes[0].textContent;
+		    		}
+		    		else
+	    			{
+		    			var cloned = qtiNode.clone();
+		    			cloned.find("inlineChoiceInteraction").eq(0).remove();		    			
+		    			optionPtext = QTI.getSerializedXML(cloned) ;
+	    			}	    		 
+	    	 }
+	    	 
 	    	 
 //	    	optionPtext = $(qtiNode.get(0).childNodes[0]).text().trim()
 	    	var optiontext=$(qtiNode).text();
 	    	
-	    	qstnCaption=optionPtext;
+	    	qstnCaption=optionPtext.trim();
 	    
 	    	$(displayNode).append(elementDisplayNode);
 	    	 
@@ -1811,12 +1813,11 @@ var textBox = $("<div contenteditable='true'  class='editView' type='text' id='q
 	$(displayNode).append(elementDisplayNode);
 	this.extend.play(qtiNode, elementDisplayNode, state);
 //	this.processChildren(qtiNode, elementDisplayNode, state);
-	if(qtiNode.get(0).innerHTML.indexOf("<![CDATA[") > -1)
-		elementDisplayNode.html(qtiNode.eq(0).get(0).childNodes[0].textContent);
-	else
-		elementDisplayNode.html(qtiNode.get(0).innerHTML);
-	
 
+	
+ 	elementDisplayNode.html(QTI.getSerializedXML(qtiNode)); 		
+ 	
+	
 	var qstnCaption=QTI.replaceImage(elementDisplayNode);
 	
 	var contentsDisplayNode2 = $(
@@ -2057,15 +2058,8 @@ QTI.Elements.SimpleChoice.play = function(qtiNode, displayNode, state) {
 	$(displayNode).append(elementDisplayNode);
 
 	this.extend.play(qtiNode, elementDisplayNode, state);
-	var qtiNodeContent;
-	var contentNode;
-	if(qtiNode.get(0).innerHTML.indexOf("<![CDATA[") > -1){
-		qtiNodeContent = qtiNode.eq(0).get(0).childNodes[0].textContent;
-		contentNode = qtiNode
-	}
-	else{
-		qtiNodeContent = qtiNode.html();
-	}
+	
+	var qtiNodeContent = QTI.getSerializedXML(qtiNode);
 	
 	contentsDisplayNode.html(qtiNodeContent);
 
@@ -2617,14 +2611,21 @@ QTI.Elements.Value.play = function(qtiNode, displayNode, state) {
 	$(displayNode).append(elementDisplayNode);
 
 	var matchText;
-	if(qtiNode.get(0).innerHTML.indexOf("<![CDATA[") > -1)
-	{
-		elementDisplayNode.html(qtiNode.eq(0).get(0).childNodes[0].textContent);
+	var serializedQtiNode = QTI.getSerializedXML(qtiNode);
+	
+	if(qtiNode.get(0).firstChild!=null){
+	
+		if(qtiNode.get(0).firstChild.nodeType==4)
+		{
+			elementDisplayNode.html(qtiNode.eq(0).get(0).childNodes[0].textContent);
+		}
+		else{
+			this.extend.play(qtiNode, elementDisplayNode, state);
+			this.processChildren(qtiNode, elementDisplayNode, state);
+		}
 	}
-	else{
-		this.extend.play(qtiNode, elementDisplayNode, state);
-		this.processChildren(qtiNode, elementDisplayNode, state);
-	}
+		
+
 	CustomQuestionTemplate[state.questionType].makeExtra(elementDisplayNode,this,null);
 }
 
@@ -2668,17 +2669,17 @@ QTI.Elements.InlineChoiceInteraction.play = function(qtiNode, displayNode,
 				+ qtiNode.attr("responseIdentifier").substring(9) + ") ");
 		
 		var matchText;
-		if(qtiNode.get(0).innerHTML.indexOf("<![CDATA[") > -1)
-			matchText = qtiNode.eq(0).get(0).childNodes[0].textContent;
-		else
-			matchText = qtiNode.get(0).innerHTML;
 		
+		var serializedQtiNode = QTI.getSerializedXML(qtiNode);
 		
+		matchText = QTI.getSerializedXML(qtiNode);			
 		
 		this.extend.play(qtiNode, elementDisplayNode, state);
 		this.processChildren(qtiNode, elementDisplayNode, state);
 		
-		if(qtiNode.get(0).innerHTML!=""){
+		serializedQtiNode = QTI.getSerializedXML(qtiNode);
+		
+		if(serializedQtiNode!=""){
 				
 				
 				var	contentsDisplayNodeImage = $("<label class='matchOptionImage'></label>").attr({	  				
@@ -2881,11 +2882,14 @@ QTI.getCaretPosition = function(element){
 
 QTI.replaceImage = function(qtiNode){
 	var qtiNodeHTML;
-	if(qtiNode.get(0).innerHTML.indexOf("<![CDATA[") > -1)
-		qtiNodeHTML = qtiNode.eq(0).get(0).childNodes[0].textContent;
-	else
-		qtiNodeHTML = qtiNode.html();
-	var images = qtiNode.find("img");
+	qtiNodeHTML = QTI.getSerializedXML(qtiNode);
+	
+    if(qtiNode.get(0).innerHTML.indexOf("<![CDATA[") > -1)
+        qtiNodeHTML = qtiNode.eq(0).get(0).childNodes[0].textContent;
+    else
+        qtiNodeHTML = qtiNode.html();
+    var images = qtiNode.find("img");
+	
 	images.each(function(){
 		var url = $(this).attr("src");
 		var splittedUrl = url.split("/")
@@ -2967,5 +2971,28 @@ QTI.prependContent = function(elm,val){
 	else{
 		elm.prepend(val);
 	}
+	
+}
+
+QTI.getSerializedXML = function(qtiNode){	
+	
+	var serializedQtiNode='';
+	
+	if(qtiNode.get(0).firstChild!=null){
+		if(qtiNode.get(0).firstChild.nodeType==4){
+			serializedQtiNode = qtiNode.eq(0).get(0).childNodes[0].textContent;			
+		}else{		
+			serializedQtiNode = $((new XMLSerializer()).serializeToString(qtiNode[0])).html();			
+		}
+	}
+	
+		return serializedQtiNode;
+}
+
+QTI.getSerializedOuterXML = function(qtiNode){	
+	
+	var serializedQtiNode = (new XMLSerializer()).serializeToString(qtiNode[0]);	
+	
+	return serializedQtiNode.toLowerCase();
 	
 }
