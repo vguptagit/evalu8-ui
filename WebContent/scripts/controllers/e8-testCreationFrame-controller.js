@@ -677,7 +677,8 @@ angular
 								$scope.exportBtnCss = "disabled";
 							}
 
-							$scope.addNewTest = function() {
+							$scope.addNewTest = function () {
+							    //TODO : need to chech below jquery code and look for any other alternative in AngularJS. 
 								var editedElement = document
 										.querySelector("div#qstnArea li[printmode=false]")
 								if (editedElement) {
@@ -776,19 +777,7 @@ angular
 								}
 							}
 
-							$scope.$on('handleBroadcastTests', function() {
-								$scope.tests = SharedTabService.tests;
-							});
-							$scope
-									.$on(
-											'handleBroadcastCurrentTabIndex',
-											function() {
-												$scope.currentIndex = SharedTabService.currentTabIndex;
-											});
-							$rootScope.$on('handleBroadcast_AddTestWizard',
-									function() {
-										SharedTabService.addTestWizard($scope);
-									});
+							
 							$scope.testTitle = "New Test";
 
 							function buildQstnMasterDetails(qstnNode) {
@@ -1010,29 +999,7 @@ angular
 									function(event, selectedTest) {
 										$scope.editTest(selectedTest);
 									});
-						    $rootScope
-									.$on(
-											'handleBroadcast_createTestWizardCriteria',
-											function(event, response,
-													currentNode) {
-												$scope.addTestWizardCriteria(
-														response, currentNode);
-												// TODO : need to revisit and
-												// change JQuery implementation
-												$('.test-wizard-container')
-														.height(
-																($(document)
-																		.height()
-																		- $(
-																				'.test-wizard-container')
-																				.offset().top - 15)
-																		+ 'px');
-											});
-						    $rootScope.$on('handleBroadcast_AddQuestionsToTest', function (event, response, currentNode) {
-						        QTI.initialize();
-						        $scope.renderQuestions(response,
-                                        $scope.currentIndex);
-						    })
+						    
 							$scope.editTest = function(selectedTest) {
 								// selectedTest.node.disableEdit = true;
 								$scope.newVersionBtnCss = "";
@@ -2015,6 +1982,43 @@ angular
 							        }
 							    });
 							}
+
+						    // #region Broadcast handles
+							$scope.$on('handleBroadcastTests', function () {
+							    $scope.tests = SharedTabService.tests;
+							});
+							$scope.$on('handleBroadcastCurrentTabIndex', function () {
+							    $scope.currentIndex = SharedTabService.currentTabIndex;
+							});
+							$rootScope.$on('handleBroadcast_AddNewTab', function () {
+							    $scope.addNewTest($scope);
+							});
+							$rootScope.$on('handleBroadcast_AddTestWizard', function () {
+							    SharedTabService.addTestWizard($scope);
+							});
+							$rootScope.$on('handleBroadcast_createTestWizardCriteria',
+											function (event, response,
+													currentNode) {
+											    $scope.addTestWizardCriteria(
+														response, currentNode);
+											    // TODO : need to revisit and
+											    // change JQuery implementation
+											    $('.test-wizard-container')
+														.height(
+																($(document)
+																		.height()
+																		- $(
+																				'.test-wizard-container')
+																				.offset().top - 15)
+																		+ 'px');
+											});
+							$rootScope.$on('handleBroadcast_AddQuestionsToTest', function (event, response, currentNode) {
+							    QTI.initialize();
+							    $scope.renderQuestions(response,
+                                        $scope.currentIndex);
+							})
+						    // #endregion Broadcast handles
+
 						} ]);
 
 angular.module('e8MyTests').directive('bindQti',

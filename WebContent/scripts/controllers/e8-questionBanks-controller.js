@@ -655,6 +655,9 @@ angular
 							}
 
 							$scope.addQuestionsToTest = function (questionFolder) {
+							    if (SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
+							        $rootScope.$broadcast('handleBroadcast_AddNewTab');
+							    }
 							    getQuestions(questionFolder.node, function (response, questionFolder) {
 							        $rootScope.$broadcast("handleBroadcast_AddQuestionsToTest", response, questionFolder);
 							    });
