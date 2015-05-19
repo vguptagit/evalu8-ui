@@ -267,7 +267,7 @@ angular
 								
 
 								var attrs = {};
-								attrs.bindQti = "getHTML(this)";
+								attrs.bindQti = "getEditedHTML(this)";
 								var Qtiscope = angular.element(
 										$(selectedQstnNode.$element).find(
 												"div[class*='questionList']"))
@@ -1523,6 +1523,16 @@ angular
 									.trustAsHtml( datanode.node.textHTML);
 								}
 							}
+							
+							// Rendering the question as html while editing the question
+							$scope.getEditedHTML = function(datanode) {
+								if (datanode.node) {								
+									return $sce
+									.trustAsHtml( datanode.node.textHTML);
+								}
+							}
+							
+							
 
 							// second tree model, place holder for the dragged
 							// questions.
