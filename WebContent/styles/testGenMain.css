@@ -1071,6 +1071,7 @@ li[printmode='true'] .qti-simpleChoice .radio, li[printmode='true'] .qti-simpleC
 
 li[printmode='true'] .qti-choiceInteraction {
 	display: table;
+	width: 100%;
 }
 
 li[printmode='true'] .#tree-root {
@@ -1222,9 +1223,9 @@ li .editViewContainer #qtiCaption {
 }
 
 li.questIndex .angular-ui-tree-handle {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-family: Helvetica;
 	font-weight: normal !important;
-	font-size: 12px;
+	font-size: 14px;
 }
 
 li.questionTemplates {
