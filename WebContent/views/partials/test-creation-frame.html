@@ -367,6 +367,18 @@
          <input name="radioView_{{$index}}_PV"  ng-checked="node.EssayPageSize == '40'" ng-click="qstnEssayPageSize(this,'40')" pageSize='40'  type="radio">1 page</input>
       </div>
    </div>
+<div class="BlankSizeDiv" ng-show="node.quizType == 'FillInTheBlanks'" >
+		<span class="viewOptionDiv normalText">Blank Size:</span>
+		<div class="viewOptionDiv viewOptionHV">
+			<input class="radioView" name="radioView_{{$index}}_BS" ng-checked="node.BlankSize == '20'"  ng-click="qstnBlankSize(this,'20')"  blankSize='20' type="radio">small</input>
+		</div>
+		<div class="viewOptionDiv viewOptionHV">
+			<input name="radioView_{{$index}}_BS" ng-checked="node.BlankSize == '50'"  ng-click="qstnBlankSize(this,'50')"  blankSize='50'  type="radio">Medium</input>
+		</div>	
+		<div class="viewOptionDiv viewOptionHV">
+			<input name="radioView_{{$index}}_BS" ng-checked="node.BlankSize == '100'"  ng-click="qstnBlankSize(this,'100')"  blankSize='100'  type="radio">large</input>
+		</div>			
+	</div>
 
 <div ng-show={{node.IsUserMetdataAvailable}} class="metadataSection">
 <div class='metadataSectionCaption'>Metadata</div>

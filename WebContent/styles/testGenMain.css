@@ -2213,3 +2213,37 @@ button[disabled] + .tooltip {
 label.matchOptionImage{
 	max-width: 90%;
 }
+.blankButton{
+ 	 float: right;
+    margin-right: 40px;
+    border-radius: 5px;
+    background-color: Transparent;
+    border-color: gainsboro;
+    border-style: double;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+  div #crtAnsSpace{
+   height: 20px
+  }
+  div #BlanksCaption{
+   font-weight: normal;
+   font-size: small;
+  }
+  .blankWidth{
+  border-style: inset;
+  border-width: 2px;
+  height: 22px;
+  width: 175px;
+  display: inline-block;
+  border-radius: 5px;
+  text-align: left;
+  padding-left: 2px;
+  }
+  .blankFIBButton{
+  	display:inline-block;
+ 	 background-color:#fff;
+ 	 padding:0px;
+  	-webkit-user-modify:read-only;
+ 	 border:0px
+  }

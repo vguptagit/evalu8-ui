@@ -426,6 +426,11 @@ angular
 									pageSize) {
 								selectedNode.node.EssayPageSize = pageSize;
 							}
+							
+							$scope.qstnBlankSize = function(selectedNode,
+									blankSize) {
+								selectedNode.node.BlankSize = blankSize;
+							}
 
 							$scope.addOptions = function(selectedOption, event) {
 								var htmlOptionCnt = selectedOption.$element
@@ -595,6 +600,35 @@ angular
 								$(event.target).parents(parentText).after(p);
 							}
 
+							
+							$scope.addBlank = function(scope, event){
+								debugger;
+								var qtiCaption = scope.$element.find("#qtiCaption").eq(0);
+								var cursorPosition = QTI.getCaretPosition(qtiCaption.get(0));
+								var optionText = qtiCaption.html().replace(/&nbsp;/g," ");
+																
+								cursorPosition = QTI.getActualCursorPosition1(cursorPosition,qtiCaption);
+								var htmlEle =scope.$element.find('#crtAns').eq(0);
+								var htmlOptionCnt = scope.$element.find('#crtAns').find('div').length;
+								var lastId = scope.$element.find('#crtAns').find('div').length;
+								
+								var alphaArray = ["A:","B:","C:","D:","E:","F:","G:"];		
+															
+								
+								var blankCount = qtiCaption.find("button").length;
+								blankCount = blankCount + 1;
+//								qtiCaption.html(optionText.substring(0,cursorPosition) + "<button contenteditable='false'><span class='blankWidth editView'>"+alphaArray[htmlOptionCnt]+"<span contenteditable='true' id='"+alphaArray[htmlOptionCnt]+"' onkeydown='QTI.getSpanId(this,event)' placeHolder='Blank Space' ></span></span></button>" + optionText.substring(cursorPosition + 1, optionText.length));
+								qtiCaption.html(optionText.substring(0,cursorPosition) + "<button id='RESPONSE_"+ blankCount +" ' onkeydown='return QTI.getSpanId(this,event)' class='blankFIBButton '><span contenteditable='false' class='blankWidth editView'><b contenteditable='false'>" + String.fromCharCode(65 + blankCount - 1 ) + ".</b>Fill Blank</span><span contenteditable='false' class='printView'>____________</span></button>&nbsp;" + optionText.substring(cursorPosition + 1, optionText.length));
+															
+								htmlEle.append($("<div class='editView editablediv' type='text' id='RESPONSE_"+blankCount+"' >"+String.fromCharCode(65 + blankCount - 1 )+".<div contenteditable='true' data-placeholder='Enter the correct answer for blank "+ String.fromCharCode(65 + blankCount - 1 ) +"' style='width:96%;float:right'></div></div>"));
+															
+								
+							
+								
+							}
+
+							
+							
 							$scope.upload = function(files) {
 								var returnValue;
 								if (files && files.length) {
@@ -837,6 +871,10 @@ angular
 								var nodeEssayPageSize = '0';
 								if($(qstnXML).find('itemBody').find("extendedTextInteraction").length > 0)
 									nodeEssayPageSize = $(qstnXML).find('itemBody').find("extendedTextInteraction").eq(0).attr("expectedLines")
+									
+									var nodeBlankSize = '0';
+								if($(qstnXML).find('itemBody').find("textEntryInteraction").length > 0)
+									nodeBlankSize = $(qstnXML).find('itemBody').find("textEntryInteraction").eq(0).attr("expectedLength")
 
 								
 

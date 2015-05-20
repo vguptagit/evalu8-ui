@@ -1853,6 +1853,8 @@ var textBox = $("<div contenteditable='true'  class='editView' type='text' id='q
 					"class" : "iconButtons glyphicon glyphicon-picture",
 					"ng-click" : "addImage(this,$event,'div.textBoxContainer')"
 				}));
+				
+				CustomQuestionTemplate[state.questionType].makeExtra($(displayNode),this,null);
 		
 		
 		
@@ -2855,7 +2857,47 @@ var CustomQuestionTemplate =
 							 		tag.DISPLAY = true;
 							 	}
 
-						 }}		
+						 }}	
+		,
+		"FillInTheBlanks":	
+			
+		{"printCaption": "Fill in the Blanks Question <br> _________________________" ,
+		  "editCaption": "Enter Question Text",
+		 "printOption": "Answer Choice" ,
+		 "editOption": "Enter Answer for Blank A",
+		 "editMainText":"Enter Question Text, Choose Add Blank, and drag it into position ",
+		 "DISPLAY": false,
+		 makeExtra: function(element,tag,xml){
+			 switch(tag.TAG){
+			 case "p":
+				 var printElement = element.find("p").eq(0);
+				 var textEntries = printElement.find("textEntryInteraction");
+				 textEntries.each(function(){
+					 printElement.html(printElement.html().replace($(this).get(0).outerHTML,"<span class='blank'> _____________________ </span>"));
+				 })
+				 
+				 var editElement = element.find("#qtiCaption").eq(0);
+				 var textEntries = editElement.find("textEntryInteraction");
+				 textEntries.each(function(){
+					 editElement.html(editElement.html().replace($(this).get(0).outerHTML,"<div contenteditable='false' width='100px'></div>"));
+				 })
+				 
+				 $("<button class='editView blankButton' ng-mousedown='addBlank(this,$event)' ng-disabled='captionFocus'>Add Blank</button><br/>").insertAfter(printElement.next());
+				
+				 $("<div class = 'editView EssayHeader' id='crtAns'>Correct Answer</div>").insertAfter(element.find("button.editView.blankButton").eq(0));
+									$("<div id='crtAnsSpace'></div>").insertBefore(element.find("#crtAns").eq(0));
+					
+				 $(element.find("#qtiCaption").eq(0)).attr("ng-focus","captionFocus = false").attr("ng-blur","captionFocus = true")
+				 
+				 $(element.find("#qtiCaption").eq(0)).attr("onkeydown","QTI.getSpanId(this,event)");
+				 
+			 
+			 }
+			 
+			 
+			
+
+		 }}
 				}
 
 QTI.getCaretPosition = function(element){
@@ -2916,7 +2958,27 @@ QTI.getActualCursorPosition = function(cursorPosition,element){
 		}
 	})
 	return cursorPosition;
-} 
+}
+
+QTI.getActualCursorPosition1 = function(cursorPosition,element){
+	var textBox = element.find("button");
+	var actualLenght;
+	var actualText;
+	textBox.each(function(){
+		if(actualText == null)
+			actualText = element.html().substring(0,element.html().indexOf($(this).get(0).outerHTML)) + $(this).text();
+		else
+			actualText = actualText + element.html().substring(actualText.length,element.html().indexOf($(this).get(0).outerHTML)) + $(this).text();
+		if(cursorPosition >= actualText.length)
+		{
+			cursorPosition = cursorPosition + $(this).get(0).outerHTML.length - $(this).text().length;
+			return cursorPosition;
+		}
+	})
+	return cursorPosition;
+}
+
+
 QTI.reorderElements = function(state,displayNode){	
 	if(state.questionType == 'Essay'){
 		var qtiDeclare = $(displayNode).find("div.qti-responseDeclaration");
@@ -2933,6 +2995,8 @@ QTI.getQuestionType = function(qtiXML,questionType){
 		return "Essay";
 	}else if(QTI.format(qtiXML).find("inlineChoiceInteraction").length > 0){
 		return "Matching";
+	}else if(QTI.format(qtiXML).find("textEntryInteraction").length > 0){
+		return "FillInTheBlanks";
 	}
 }
 QTI.getQuizType = function(quiztype){
@@ -2995,4 +3059,99 @@ QTI.getSerializedOuterXML = function(qtiNode){
 	
 	return serializedQtiNode.toLowerCase();
 	
+}
+QTI.getSpanId = function(spanElement, event){
+
+	var qtiCationElement;
+	var blankElement;
+	if(event.keyCode == 46 || event.keyCode == 8){
+		if(spanElement.tagName == "BUTTON"){
+			qtiCationElement = $(spanElement).parent("#qtiCaption");
+			blankElement = $(spanElement);
+	
+			
+			event.stopPropagation();
+			spanElement.remove();
+		}
+		else{
+			var cursor = QTI.getCaretPosition(spanElement);
+			var val =  $(spanElement).text();
+			
+			
+			
+			qtiCationElement = $(spanElement);
+			if(cursor == qtiCationElement.text().length)
+				if(spanElement.innerHTML.lastIndexOf("</button>&nbsp;") + "</button>&nbsp;".length == spanElement.innerHTML.length)
+					{
+						blankElement = $(spanElement).find("button:last-child").eq(0);
+						$(spanElement).find("button:last-child").eq(0).remove();
+					}
+		}
+		if(blankElement != null)
+			if(blankElement.length > 0){
+				var index = blankElement.attr("id").substring(9,blankElement.attr("id").length);
+				index = parseInt(index);
+				qtiCationElement.parent().parent().find("#crtAns").children().eq(index - 1).remove();
+				for(var i = index-1; i<qtiCationElement.find("button").length; i++)
+				{
+					var button = qtiCationElement.find("button").eq(i);
+					var crtAnswer = qtiCationElement.parent().parent().find("#crtAns").children().eq(i);
+					button.attr("id","RESPONSE_" + i+1);
+					button.find("b").eq(0).text(String.fromCharCode(65 + i ) + ".");
+					crtAnswer.attr("id","RESPONSE_" + i+1);
+					crtAnswer.html(String.fromCharCode(65 + i ) + "." + crtAnswer.children().get(0).outerHTML);
+				}
+				
+			}
+		
+		var range = window.getSelection().getRangeAt(0);
+
+		if(event.keyCode == 8 && range.startOffset == 1 && range.startContainer.previousElementSibling)
+
+			if(range.startContainer.previousElementSibling.tagName == "BUTTON"){
+				blankElement = $(range.startContainer.previousElementSibling);
+				var index = blankElement.attr("id").substring(9,blankElement.attr("id").length);
+				index = parseInt(index);
+				blankElement.remove();
+				qtiCationElement.parent().parent().find("#crtAns").children().eq(index - 1).remove();
+				for(var i = index-1; i<qtiCationElement.find("button").length; i++)
+				{
+					qtiCationElement.find("button").eq(i).attr("id","RESPONSE_" + i+1);
+					qtiCationElement.find("button").eq(i).find("b").eq(0).text(String.fromCharCode(65 + i ) + ".");
+					qtiCationElement.parent().parent().find("#crtAns").children().eq(i).attr("id","RESPONSE_" + i+1);
+					qtiCationElement.parent().parent().find("#crtAns").children().eq(i).html(String.fromCharCode(65 + i ) + "."+ crtAnswer.children().get(i).outerHTML);
+				}
+				
+			}
+		
+			if(event.keyCode == 46 && range.startOffset == 1 && range.startContainer.nextElementSibling)
+	
+				if(range.startContainer.nextElementSibling.tagName == "BUTTON"){
+					blankElement = $(range.startContainer.nextElementSibling);
+					var index = blankElement.attr("id").substring(9,blankElement.attr("id").length);
+					index = parseInt(index);
+					blankElement.remove();
+					qtiCationElement.parent().parent().find("#crtAns").children().eq(index - 1).remove();
+					for(var i = index-1; i<qtiCationElement.find("button").length; i++)
+					{
+						qtiCationElement.find("button").eq(i).attr("id","RESPONSE_" + i+1);
+						qtiCationElement.find("button").eq(i).find("b").eq(0).text(String.fromCharCode(65 + i ) + ".");
+						qtiCationElement.parent().parent().find("#crtAns").children().eq(i).attr("id","RESPONSE_" + i+1);
+						qtiCationElement.parent().parent().find("#crtAns").children().eq(i).html(String.fromCharCode(65 + i ) + "."+ crtAnswer.children().get(0).outerHTML);
+					}
+				}
+		
+		if(spanElement.tagName == "BUTTON"){
+			return false;
+		}
+	}
+	
+}
+QTI.replaceBlank = function(elm,text){
+	var buttons = elm.find("button");
+	for(var i =0; i< buttons.length; i++)
+	{
+		text = text.replace(buttons.get(i).outerHTML,"<textEntryInteraction expectedLength='150' responseIdentifier='" + buttons.eq(i).attr("id") + "' />")
+	}
+	return text;
 }
