@@ -14,10 +14,6 @@ angular
 							$rootScope.globals = $cookieStore.get('globals')
 									|| {};
 
-							if ($rootScope.globals.authToken == '') {
-								$location.path('/login');
-							}
-
 							var config = {
 								headers : {
 									'x-authorization' : $rootScope.globals.authToken,

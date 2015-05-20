@@ -6,11 +6,7 @@ angular.module('evalu8Demo')
 		['$http', '$rootScope', '$location', '$cookieStore', 'blockUI',
 		 function($http, $rootScope, $location, $cookieStore,blockUI) {
 			
-			$rootScope.globals = $cookieStore.get('globals') || {};
-			
-			 if ($rootScope.globals.authToken == '') {
-				 $location.path('/login');
-			 } 
+			$rootScope.globals = $cookieStore.get('globals') || {};			
 			 
 			var config = {
 					headers : {

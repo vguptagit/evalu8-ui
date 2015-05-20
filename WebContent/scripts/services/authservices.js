@@ -23,13 +23,9 @@ angular.module('e8Login')
 				})
 			};			
 
-			service.SetCredentials = function (username, password, authToken, loginCount) {
+			service.SetCredentials = function (authToken, loginCount) {
 
 				$rootScope.globals = {
-						currentUser: {
-							username: username,
-							password: password
-						},
 						authToken: authToken,
 						loginCount: loginCount
 				};
@@ -39,16 +35,23 @@ angular.module('e8Login')
 
 			service.ClearCredentials = function () {
 				$rootScope.globals = {
-						currentUser: {
-							username: '',
-							password: ''
-						},
 						authToken: '',
 						loginCount: ''
 				};
 
 				$cookieStore.put('globals', $rootScope.globals);       
 			};
+			
+			service.logout = function() {
+				
+				this.ClearCredentials();				
+				
+				piSession.logout();								
+			};
+						
+			service.onLogout = function() {
+				piSession.login(evalu8config.signinUrl, evalu8config.loginGraceTimeSeconds);
+			};						
 
 			return service;
 		}])

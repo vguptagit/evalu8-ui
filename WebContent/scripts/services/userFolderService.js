@@ -6,11 +6,7 @@ angular.module('evalu8Demo')
 		['$http', '$rootScope', '$location', '$cookieStore', 
 		 function($http, $rootScope, $location, $cookieStore) {
 			
-			$rootScope.globals = $cookieStore.get('globals') || {};
-			
-			 if ($rootScope.globals.authToken == '') {
-				 $location.path('/login');
-			 } 
+			$rootScope.globals = $cookieStore.get('globals') || {};			
 			 
 			var config = {
 					headers : {
@@ -36,7 +32,7 @@ angular.module('evalu8Demo')
 								})
 						.error(
 								function(error, status) {
-									if(status == 403) $location.path('/login');
+
 									callback(defaultFolders)
 								});
 

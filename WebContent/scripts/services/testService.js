@@ -7,10 +7,6 @@ angular.module('evalu8Demo')
 		 function($http, $rootScope, $location, $cookieStore,$upload,blockUI) {
 			
 			$rootScope.globals = $cookieStore.get('globals') || {};
-			
-			 if ($rootScope.globals.authToken == '') {
-				 $location.path('/login');
-			 } 
 			 
 			var config = {
 					headers : {
@@ -31,8 +27,6 @@ angular.module('evalu8Demo')
 				})
 				.error(function(error, status) {
 
-					if(status == 403)
-						$location.path('/login');
 					blockRightPanel.stop();
 				})				
 			};
@@ -48,8 +42,6 @@ angular.module('evalu8Demo')
                 })
                 .error(function(error, status) {
 
-                    if(status == 403)
-                        $location.path('/login');
                     blockRightPanel.stop();
                 })                
                 
@@ -78,8 +70,8 @@ angular.module('evalu8Demo')
 				})
 				.error(function(error, status) {
 
-					if(status == 403)
-						$location.path('/login');
+					//if(status == 403)
+						//$location.path('/login');
 				})				
 			};
 				
@@ -225,8 +217,7 @@ angular.module('evalu8Demo')
 				    blockRightPanel.stop();
 				})
 				.error(function (error, status) {
-				    if (status == 403)
-				        $location.path('/login');
+
 				    blockRightPanel.stop();
 				}) 
 			};
@@ -237,8 +228,7 @@ angular.module('evalu8Demo')
 				    callback(response);
 				})
 				.error(function (error, status) {
-				    if (status == 403)
-				        $location.path('/login');
+
 				}) 
 			};
 			

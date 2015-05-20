@@ -42,57 +42,102 @@ angular.module('evalu8Demo', [
 })
 .config(function ($stateProvider, $urlRouterProvider) {
 
-    $urlRouterProvider.otherwise('/home');
+    $urlRouterProvider.otherwise('/home/questionbanks');
 
     $stateProvider
 
         // HOME STATES AND NESTED VIEWS ========================================
+    .state('signin', {
+        url: '/signin',
+        templateUrl: 'views/signin.html',
+        controller: 'SigninController',
+        data: {
+            requireLogin: false
+          }
+    })    
         .state('login', {
             url: '/login',
             templateUrl: 'views/login.html',
-            controller: 'LoginController'
+            controller: 'LoginController',
+            data: {
+                requireLogin: false
+              }
         })
         .state('home', {
             url: '/home',
             templateUrl: 'views/home.html',
-            controller: 'HomeController'
+            controller: 'HomeController',
+            data: {
+                requireLogin: true
+              }
         })
         .state('home.yourtests', {
             url: '/yourtests',
             templateUrl: 'views/partials/your-tests.html',
-            controller: 'MyTestsController'
+            controller: 'MyTestsController',
+            data: {
+                requireLogin: true
+              }
         })
         .state('home.questionbanks', {
             url: '/questionbanks',
             templateUrl: 'views/partials/question-banks.html',
-            controller: 'QuestionBanksController'
+            controller: 'QuestionBanksController',
+            data: {
+                requireLogin: true
+              }
         })
         .state('home.customquestions', {
             url: '/customquestions',
             templateUrl: 'views/partials/custom-questions.html',
-            controller: 'CustomQuestionBanksController'
+            controller: 'CustomQuestionBanksController',
+            data: {
+                requireLogin: true
+              }
         })
          .state('welcome', {
              url: '/welcome',
              controller: 'WelcomeController',
-             templateUrl: 'views/welcome.html'
+             templateUrl: 'views/welcome.html',
+             data: {
+                 requireLogin: true
+               }
          })
         .state('startup', {
             url: '/startup',
             controller: 'startupWizardController',
-            templateUrl: 'views/usersettings/startupWizard.html'
+            templateUrl: 'views/usersettings/startupWizard.html',
+            data: {
+                requireLogin: true
+              }
         });
 
 })
-.run(['$rootScope', '$location', '$cookieStore', '$http', '$modal',
-    function ($rootScope, $location, $cookieStore, $http, $modal) {
+.run(['$rootScope', '$location', '$cookieStore', '$http', '$modal', 'AuthenticationService',
+    function ($rootScope, $location, $cookieStore, $http, $modal, AuthenticationService) {
         // keep user logged in after page refresh
         $rootScope.globals = $cookieStore.get('globals') || {};
+    	
+        piSession.on(piSession.LogoutEvent, AuthenticationService.onLogout);
+        
+        $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {        	        	        	        		        	
+        	
+            var requireLogin = toState.data.requireLogin;
 
-        $rootScope.$on('$routeChangeStart', function (event, next, current) {
-            // redirect to login page if not logged in
-            if ($location.path() !== '/login' && $rootScope.globals.currentUser == '') {
-                $location.path('/login');
-            }
+            if (requireLogin && (typeof  $rootScope.globals.authToken === 'undefined' || $rootScope.globals.authToken === '')) {              
+			
+            	piSession.login(evalu8config.signinUrl, evalu8config.loginGraceTimeSeconds);                	                  
+            }       	
+
+        	/*
+        	if(evalu8config.viaPILogin) {
+        		
+        	} else {
+                // redirect to login page if not logged in
+            	
+                if ($location.path() !== '/login' && $rootScope.globals.currentUser == '') {
+                    $location.path('/login');
+                }	
+        	} */           
         });
     }]);

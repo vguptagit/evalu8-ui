@@ -15,10 +15,6 @@ angular
 							$rootScope.globals = $cookieStore.get('globals')
 									|| {};
 
-							if ($rootScope.globals.authToken == '') {
-								$location.path('/login');
-							}
-
 							var config = {
 								headers : {
 									'x-authorization' : $rootScope.globals.authToken,
@@ -116,8 +112,7 @@ angular
 											if (callback)
 												callback();
 										}).error(function(error, status) {
-									if (status == 403)
-										$location.path('/login');
+
 								})
 							}
 
@@ -133,8 +128,6 @@ angular
 												callback();
 										}).error(function(error, status) {
 
-									if (status == 403)
-										$location.path('/login');
 								})
 							}
 

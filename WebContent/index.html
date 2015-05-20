@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Evalu8</title>
+<title>Evalu8 by Pearson</title>
 
 <!-- build:css(.tmp) styles/vendor.css -->
 <link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
@@ -73,6 +73,7 @@
 	<!-- endbuild -->
 
 	<!-- build:js({WebContent,.tmp}) scripts/controllers.js -->
+	<script src="scripts/controllers/signin-controller.js"></script>
 	<script src="scripts/controllers/e8-login-controller.js"></script>
 	<script src="scripts/controllers/e8-selectDisciplines-controller.js"></script>
 	<script src="scripts/controllers/e8-selectBooks-controller.js"></script>
@@ -120,6 +121,10 @@
 	<script src="scripts/directives/ngEnter.js"></script>
 	<!-- endbuild -->
 
+    <script src='https://int-piapi.stg-openclass.com/v1/piapi-int/login/js/session.js'></script>
 
+    <script>
+        piSession.initialize("Odnmv55kBQbCBQfbRd4pCSHpvzmQmQ7u");
+    </script>
 </body>
 </html>
