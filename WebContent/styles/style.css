@@ -4,7 +4,7 @@ body {background-color:#FFF; font-family:Helvetica; font-size:14px; color: #4D4D
 label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D; Line-Height: 1em;}
 .container{margin: 0 20px;}
 .circlenumber{font-size:34px; line-height:1em; background-color:#fff; padding:10px 20px; border:1px solid #d0d0d0; -moz-border-radius: 50%; -webkit-border-radius: 50%; border-radius: 30px; margin-left:27%; margin-bottom:15px;}cursor:pointer;}
-.inlineblock{display:inline-block;}
+.inlineblocks{display:inline-block;}
 .form-signin { max-width: 470px; padding: 15px; margin: 0 auto; background-color:#fff;-webkit-box-shadow: 0px 0px 8px #C0C0C0; -moz-box-shadow: 0px 0px 8px #C0C0C0; box-shadow: 0px 0px 8px #C0C0C0; border:0px solid #C0C0C0; margin-top:80px; padding:40px; display: inline-block;}
 .form-signin .form-signin-heading, .form-signin .checkbox { margin-bottom: 10px;}
 .welbody{background-color:#f8f8f8;}
@@ -56,6 +56,7 @@ label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D;
 /* Margin CSS */
 .margin-border{margin-left:15px;}
 .margin-lft-10{margin-left:10px;}
+.margin-lft-5{margin-left:5px;}
 .margin-lft-15{margin-left:15px;}
 .margin-lft-20{margin-left:20px;}
 .margin-top-5{margin-top:5px;}
@@ -68,6 +69,11 @@ label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D;
 .margin-rt-5{margin-right:5px;}
 .margin-rt-10{margin-right:10px;}
 .margin-rt-20{margin-right:20px;}
+.margin-lft-n10{margin-left:-10px;}
+.margin-lft-n25{margin-left:-25px;}
+
+/* Padding CSS */
+.padding-lft-20{padding-left: 20px;}
 
 /* Width height CSS */
 .width100{width:100%;}
@@ -205,7 +211,7 @@ label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D;
   cursor: default;
   background-color: #fff;
   border: 1px solid #ddd;
-  border-bottom-color: transparent;
+  border-bottom : 2px solid #fff;
 }
 
 .nav>li>a {
@@ -322,7 +328,7 @@ a.fa.fa-user{
 
 .testversion-Modal .modal-body{padding:0;}
 .testversion-Modal .modal-header {padding:5px 0;}
-.testversion-Modal .modal-header .close{margin-top: -10px; margin-right: -20px;}
+.testversion-Modal modal-header .close{margin-top: -10px; margin-right: -20px;}
 
 
 section { 
@@ -331,9 +337,10 @@ section {
 
 .paddingall20{padding:20px;}
 .paddingall30{padding:10px 30px;}
+.padding-lft35{padding-left: 35px;}
 hr{margin: 0;}
-
-
+.botborder { border-bottom: 1px solid #ddd; height: 100px; background-color: #f8f8f8;}
+.resourcetab{height: 55px; padding-top: 10px; padding-left: 20px;}
 
 
 @media (max-width: 767px)

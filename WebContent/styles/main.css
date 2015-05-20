@@ -3,7 +3,7 @@ body {
     padding-bottom: 30px;
 }
 
-.devider {
+.divider {
     background-color: #505050;
     background-image: url("/images/divider.png");
     background-repeat-y: no-repeat;
@@ -11,28 +11,8 @@ body {
     height: 94.4vh;
     position: absolute;
     width: 13px;
-    z-index: 1;
-    top:40px;
+    z-index: 9999;
 }
-
-.left-frame {
-    padding-right: 0px;
-}
-
-    .left-frame > div.row {
-        padding-top: 3px;
-    }
-
-.right-frame {
-    padding-left: 0px;
-    top:-50px;
-}
-
-    .right-frame > div.row {
-        margin-left: 0px;
-        margin-right: -10px;
-        padding-top: 5px;
-    }
 
 .header-text {
     left: 43%;
@@ -91,10 +71,6 @@ login-container .panel-footer {
 }
 
 /* resource-tabs*/
-.resources-tabs-content {
-    padding-top: 5px;
-}
-
 .resources-tabs {
     /* margin-left: -15px; */
     padding-left: 30px;

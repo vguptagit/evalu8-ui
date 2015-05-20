@@ -401,12 +401,9 @@ span.glyphicon.glyphicon-info-sign {
 .tabs-content{
 	background-color: #FFF;
 }
-.left-frame,.right-frame{
-	background-color: #F8F8F8;
-}
 .nav-tabs.resources-tabs {
-  border-bottom: 4px solid #ddd;
-  height: 44px;
+  border-bottom: 1px solid #ddd;
+  height: 45px;
 }
 .restoreicon.fa-arrow-up {
   top: 5px;

@@ -1,24 +1,23 @@
-<div class="row">
-    <div class="col-md-6 left-frame" block-ui="Leftpanel">
-        <div class="row">
-            <div class="col-md-4">
+<div class="botborder inlineblocks" >
+    <div class="row col-md-6 pull-left" block-ui="Leftpanel">       
+            <div class="width100 pull-left resourcetab">
                 <h4>Resources</h4>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
+            <div class="row width100 pull-left padding-lft35">
                 <div ng-include="'views/partials/resources-tabs.html'" ng-controller="ResourcesTabsController"></div>
             </div>
-            <div class="col-md-12 tabs-content">
+        
+               
+            <div class="col-md-12 tabs-content margin-top-20 inlineblocks">
                 <div ui-view class="resources-tabs-content"></div>
             </div>
-        </div>
+        
 
     </div>
-    <div class="col-md-6 right-frame" block-ui="RightPanel">
-        <div class="devider visible-md visible-lg"></div>
-        <div class="row">
-            <div class="col-md-12">
+    <div class="col-md-6 pull-left" block-ui="RightPanel">
+        <div class="divider visible-md visible-lg pull-left"></div>
+        
+            <div class="margin-lft-20">
                         <div ng-include="'views/partials/test-creation-frame.html'" ng-controller="TestCreationFrameController"></div>
                 <!--<div class="row">
 
@@ -45,11 +44,7 @@
                     <li ng-repeat="dog in dogs">{{ dog }}</li>
                 </ul>-->
 
-
             </div>
-
-
-        </div>
     </div>
 
 
