@@ -9,12 +9,11 @@
 <title>Evalu8</title>
 
 <!-- build:css(.tmp) styles/vendor.css -->
-<link href="css/bootstrap.css" rel="stylesheet" />
-<link rel="stylesheet" href="styles/angular-ui-tree.min.css">
-<link href="styles/angular-block-ui.css" rel="stylesheet" />
-<link href="styles/block-ui.css" rel="stylesheet" />
-<link href="styles/externals/angular-notify.min.css" rel="stylesheet" />
-<link href="styles/externals/font-awesome-4.3.0/css/font-awesome.css" rel="stylesheet" />
+<link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+<link href="bower_components/angular-ui-tree/dist/angular-ui-tree.min.css" rel="stylesheet" />
+<link href="bower_components/angular-block-ui/dist/angular-block-ui.css" rel="stylesheet" />
+<link href="bower_components/angular-notify/dist/angular-notify.min.js" rel="stylesheet" />
+<link href="bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
 <!-- endbuild -->
 
 
@@ -46,26 +45,28 @@
 	</div>
 
 	<!-- build:js({WebContent,.tmp}) scripts/vendor.js -->
-	<script src="scripts/externals/jquery.min.js"></script>
-	<script src="scripts/externals/bootstrap.js"></script>
-	<script src="scripts/externals/angular.min.js"></script>
-	<script src="scripts/externals/angular-route.js"></script>
-	<script src="scripts/externals/angular-cookies.js"></script>
-	<script src="scripts/externals/qti-player.js"></script>
+	<script src="bower_components/jquery/dist/jquery.min.js"></script>
+	<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="bower_components/angular/angular.min.js"></script>
+	<script src="bower_components/angular-route/angular-route.min.js"></script>
+	<script src="bower_components/angular-cookies/angular-cookies.js"></script>
 	<script src="scripts/externals/angular-ui-tree.js"></script>
-	<script src="scripts/externals/checklist-model.js"></script>
-	<script src="scripts/externals/ui-bootstrap-tpls-0.12.1.min.js"></script>
-	<script src="scripts/externals/angular-ui-router.js"></script>
-	<script src="scripts/externals/angular-file-upload-shim.js"></script>
-	<script src="scripts/externals/angular-file-upload.min.js"></script>
-    <script src="scripts/externals/lodash.js"></script>
-    <script src="scripts/externals/angular-wizard.js"></script>
-    <script src="scripts/externals/angular-notify.min.js"></script>
-    <script src="scripts/externals/angular-filter.js"></script>
-    <script src="scripts/externals/angular-block-ui.js"></script>
+	<script src="bower_components/checklist-model/checklist-model.js"></script>
+	<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+	<script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+	<script src="bower_components/ng-file-upload-shim/angular-file-upload-shim.min.js"></script>
+	<script src="bower_components/ng-file-upload-shim/angular-file-upload.min.js"></script>
+	<script src="bower_components/lodash/lodash.min.js"></script>
+    <script src="bower_components/angular-wizard/dist/angular-wizard.js"></script>
+	<script src="bower_components/angular-notify/dist/angular-notify.min.js"></script>
+	<script src="bower_components/angular-filter/dist/angular-filter.min.js"></script>
+	<script src="bower_components/angular-block-ui/dist/angular-block-ui.js"></script>
 	<!-- endbuild -->
 
-
+	<!-- build:js({WebContent,.tmp}) scripts/qtip.js -->
+	<script src="scripts/externals/qti-player.js"></script>
+	<!-- endbuild -->
+	
 	<!-- build:js({WebContent,.tmp}) scripts/main.js -->
 	<script src="scripts/app.js"></script>
 	<script src="scripts/config.js"></script>
