@@ -960,7 +960,7 @@ angular
 							 
 							                 
 							  
-						    $rootScope
+							  $scope
 									.$on(
 											'dropQuestion',
 											function(event, node, destIndex,
