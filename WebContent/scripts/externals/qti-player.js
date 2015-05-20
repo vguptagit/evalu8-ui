@@ -1668,7 +1668,7 @@ if(state.questionType=="Matching"){
 	    	 
 	    	 
 //	    	optionPtext = $(qtiNode.get(0).childNodes[0]).text().trim()
-	    	var optiontext=$(qtiNode).text();
+	    	 var optiontext=$(qtiNode).text().trim;
 	    	
 	    	qstnCaption=optionPtext.trim();
 	    
@@ -1719,7 +1719,7 @@ if(state.questionType=="Matching"){
 		
 			$(mainContentsDisplayNode).find("div.mainOptionIndexdiv").append("A"+BLOCKQUOTE_ID);
 			
-			if(optionPtext==""){
+			if(optionPtext.trim()==""){
 				contentsDisplayNode2.attr("data-placeholder",CustomQuestionTemplate[state.questionType].editOption_Column_A.replace("#", "#"+BLOCKQUOTE_ID) + "A");
 			}else{
 				contentsDisplayNode2.html(optionPtext);
@@ -1818,7 +1818,7 @@ var textBox = $("<div contenteditable='true'  class='editView' type='text' id='q
  	elementDisplayNode.html(QTI.getSerializedXML(qtiNode)); 		
  	
 	
-	var qstnCaption=QTI.replaceImage(elementDisplayNode);
+ 	 var qstnCaption=QTI.replaceImage(qtiNode);
 	
 	var contentsDisplayNode2 = $(
 	"<div class='textBoxContainer editView editablediv' ></div>")
@@ -2923,14 +2923,12 @@ QTI.getCaretPosition = function(element){
 }
 
 QTI.replaceImage = function(qtiNode){
-	var qtiNodeHTML;
-	qtiNodeHTML = QTI.getSerializedXML(qtiNode);
-	
-    if(qtiNode.get(0).innerHTML.indexOf("<![CDATA[") > -1)
-        qtiNodeHTML = qtiNode.eq(0).get(0).childNodes[0].textContent;
-    else
-        qtiNodeHTML = qtiNode.html();
-    var images = qtiNode.find("img");
+	 var imageContent = $("<label></label>");
+     var optionPtext = QTI.getSerializedXML(qtiNode);
+        
+     imageContent.append(optionPtext);
+     var qtiNodeHTML = $(imageContent).get(0).innerHTML;
+     var  images = imageContent.find("img");   
 	
 	images.each(function(){
 		var url = $(this).attr("src");
@@ -3018,13 +3016,9 @@ QTI.getQuizType = function(quiztype){
 }
 
 QTI.getContent = function(elm){
-	if(elm.html().indexOf("<![CDATA[") == 0){
-		return elm.text();
-	}
-	else{
-		return elm.html();
-	}
+	return QTI.getSerializedXML(elm);    
 }
+
 QTI.setContent = function(elm,val){
 	elm.html("<![CDATA[" + val + "]]>")
 }
