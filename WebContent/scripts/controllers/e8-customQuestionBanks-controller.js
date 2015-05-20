@@ -3,15 +3,36 @@
 angular.module('e8CustomQuestionBanks')
 
 .controller('CustomQuestionBanksController',
-    ['$scope', '$rootScope', '$location', '$cookieStore', '$http', '$sce','CustomQuestionBanksService','EnumService', 
-    function ($scope, $rootScope, $location, $cookieStore, $http, $sce,CustomQuestionBanksService,EnumService) {
+    ['$scope', '$rootScope', '$location', '$cookieStore', '$http', '$sce','CustomQuestionBanksService','EnumService','SharedTabService','$modal', 
+    function ($scope, $rootScope, $location, $cookieStore, $http, $sce,CustomQuestionBanksService,EnumService,SharedTabService,$modal) {
   
     	
     //binding all Question format template to the "questionTemplates" Model.
     $scope.questionTemplates=CustomQuestionBanksService.questionTemplates();
         
+	$scope.editQuestion = function(question) {		
+		if (SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode) {
+			$scope.IsConfirmation = false;
+			$scope.message = "A question is already in Edit mode, save it before adding or reordering questions.";
+			$modal.open(confirmObject);
+			$scope.dragStarted = false;
+		}else{
+			$rootScope.$broadcast("dropQuestion",
+					question.node, 0,"CustomQuestions");				
+		}			
+	}
     
-    
+	var confirmObject = {
+			templateUrl : 'views/partials/alert.html',
+			controller : 'AlertMessageController',
+			backdrop : 'static',
+			keyboard : false,
+			resolve : {
+				parentScope : function() {
+					return $scope;
+				}
+			}
+		};
     
     //Rendering the question as html        
     $scope.getCustomQuestionHTML = function (datanode) {

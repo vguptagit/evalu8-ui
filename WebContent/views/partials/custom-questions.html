@@ -1,4 +1,4 @@
-﻿<div class="questionTemplateContainer">
+<div class="questionTemplateContainer">
     <div>
         <p>
             Drag question to right and add your content.
@@ -14,6 +14,7 @@
 
         <script type="text/ng-template" id="question_renderer.html">
             <div ui-tree-handle class="questionTemplate tree-node tree-node-content">
+ 			<span class="newTest-close action-icon-bg glyphicon glyphicon-pencil" ng-mousedown="editQuestion(this)" tooltip="Move question to right for editing" tooltip-placement="bottom" ></span>
                 <div class='printViewContainer' ng-if="node" ng-bind-html="getCustomQuestionHTML(this)">
                 </div>
             </div>

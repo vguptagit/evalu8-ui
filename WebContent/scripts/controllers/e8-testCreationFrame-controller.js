@@ -28,6 +28,18 @@ angular
 							$scope.currentIndex = SharedTabService.currentTabIndex;
 							$scope.criterias = SharedTabService.tests[SharedTabService.currentTabIndex].criterias;
 							
+							if (SharedTabService.userQuestionSettings.length == 0){
+								
+								UserService.userQuestionMetadata(function(userQuestionMetadata){	
+										$.each(userQuestionMetadata, function(index, item){	
+												SharedTabService.userQuestionSettings.push(item);						
+
+										});
+							
+								});
+						}
+
+							
 							// $scope.isTestWizardTabPresent = false;
 							$scope.sharedTabService = SharedTabService;
 
@@ -953,8 +965,8 @@ angular
 											'dropQuestion',
 											function(event, node, destIndex,
 													sourceTabName) {
-												var newNode = angular.copy(node);
-												
+												var newNode = angular.copy(node);										
+																								
 												if (sourceTabName == "CustomQuestions") {													
 													SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode = true;
 												}

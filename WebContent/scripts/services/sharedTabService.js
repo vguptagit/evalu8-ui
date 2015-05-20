@@ -3,14 +3,16 @@
 angular.module('evalu8Demo')
 
 .service('SharedTabService',
-		['$rootScope', '$modal','UserService','blockUI',
-		 function ($rootScope, $modal,UserService,blockUI) {
+		['$rootScope', '$modal','blockUI',
+		 function ($rootScope, $modal,blockUI) {
 
 		     var sharedTabService = {};
 		     sharedTabService.tests = [];
 		     sharedTabService.masterTests = []; // is to track isDirty.
 		     sharedTabService.currentTab;
 		     sharedTabService.currentTabIndex = 0;		    
+		     
+		     sharedTabService.userQuestionSettings=[];
 
 		     sharedTabService.menu = { "myTest": 1, "questionBanks": 2 };
 		     sharedTabService.selectedMenu;
@@ -523,13 +525,6 @@ angular.module('evalu8Demo')
                  { number: 9, text: '9 Versions' },
                  { number: 10, text: '10 Versions' },
 		     ];
-		     
-		     sharedTabService.userQuestionSettings=[];
-			 UserService.userQuestionMetadata(function(userQuestionMetadata){				 
-					$.each(userQuestionMetadata, function(index, item){								
-						sharedTabService.userQuestionSettings.push(item);						
-					});
-				
-			});
+		       
 		     return sharedTabService;
 		 }]);

@@ -1853,7 +1853,7 @@ var textBox = $("<div contenteditable='true'  class='editView' type='text' id='q
 					"class" : "iconButtons glyphicon glyphicon-picture",
 					"ng-click" : "addImage(this,$event,'div.textBoxContainer')"
 				}));
-				
+			if(state.questionType)
 				CustomQuestionTemplate[state.questionType].makeExtra($(displayNode),this,null);
 		
 		
