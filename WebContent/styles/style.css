@@ -79,10 +79,13 @@ label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D;
 .width100{width:100%;}
 .width30{width:30%;}
 .width33{width:34%;}
+.width40{width:40%;}
 .width48{width:48%;}
 .width50{width:50%;}
 .width55{width:55%;}
 .width60{width:60%;}
+.width67{width:67%;}
+.width70{width:70%;}
 .height40{height:40px;}
 
 
@@ -303,7 +306,7 @@ label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D;
   
 }
 .nav-tabs {
-  border-bottom: 0px solid #ddd;
+  border-bottom: 0px solid #E0e0e0;
   height: 44px;
 }
 .nav {
@@ -339,7 +342,7 @@ section {
 .paddingall30{padding:10px 30px;}
 .padding-lft35{padding-left: 35px;}
 hr{margin: 0;}
-.botborder { border-bottom: 1px solid #ddd; height: 100px; background-color: #f8f8f8;}
+.botborder { border-bottom: 1px solid #E0E0E0; height: 100px; background-color: #f8f8f8;}
 .resourcetab{height: 55px; padding-top: 10px; padding-left: 20px;}
 
 

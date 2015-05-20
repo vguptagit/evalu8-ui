@@ -11,7 +11,7 @@ body {
     height: 94.4vh;
     position: absolute;
     width: 13px;
-    z-index: 9999;
+    z-index: 9;
 }
 
 .header-text {
