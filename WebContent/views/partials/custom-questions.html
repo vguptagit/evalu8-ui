@@ -14,7 +14,7 @@
 
         <script type="text/ng-template" id="question_renderer.html">
             <div ui-tree-handle class="questionTemplate tree-node tree-node-content">
- 			<span class="newTest-close action-icon-bg glyphicon glyphicon-pencil" ng-mousedown="editQuestion(this)" tooltip="Move question to right for editing" tooltip-placement="bottom" ></span>
+ 			<span class="newTest-close glyphicon glyphicon-plus" ng-mousedown="editQuestion(this)" tooltip="Move question to right for editing" tooltip-placement="bottom" ></span>
                 <div class='printViewContainer' ng-if="node" ng-bind-html="getCustomQuestionHTML(this)">
                 </div>
             </div>
