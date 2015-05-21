@@ -19,7 +19,7 @@ angular.module('evalu8Demo')
 				var blockRightPanel = blockUI.instances.get('RightPanel');
 				blockRightPanel.start();
 				var defaultFolders = [];
-				$http.post(evalu8config.host + '/my/folders/'+folderId+'/tests', testData, config)
+				$http.post(evalu8config.apiUrl + '/my/folders/'+folderId+'/tests', testData, config)
 				.success(function(response) {	
 					var testResult = response;
 					callback(testResult);
@@ -34,7 +34,7 @@ angular.module('evalu8Demo')
             this.saveQuestions = function(editedQstns, callback) {
             	var blockRightPanel = blockUI.instances.get('RightPanel');
             	blockRightPanel.start();
-                $http.post(evalu8config.host + '/my/questions', editedQstns, config)
+                $http.post(evalu8config.apiUrl + '/my/questions', editedQstns, config)
                 .success(function(response) {    
                     var questionsResult = response;
                     callback(questionsResult);
@@ -63,7 +63,7 @@ angular.module('evalu8Demo')
 					versionOf: testData.versionOf
 				}
 								
-				$http.post(evalu8config.host + '/my/folders/'+folderId+'/tests/'+testMetadata.guid+'/metadata', testMetadata, config)
+				$http.post(evalu8config.apiUrl + '/my/folders/'+folderId+'/tests/'+testMetadata.guid+'/metadata', testMetadata, config)
 				.success(function(response) {	
 					var testResult = response;
 					if(callback) callback(testResult);
@@ -80,9 +80,9 @@ angular.module('evalu8Demo')
 				blockLeftpanel.start();
 				var url;
 				if(folderId==null) {
-					url = evalu8config.host + '/my/tests';
+					url = evalu8config.apiUrl + '/my/tests';
 				} else {
-					url = evalu8config.host + '/my/folders/' + folderId + '/tests';
+					url = evalu8config.apiUrl + '/my/folders/' + folderId + '/tests';
 				}
 				
 				$http.get(url, config)
@@ -106,7 +106,7 @@ angular.module('evalu8Demo')
 			this.getArchiveTests = function(folderId, callback) {				
 				var blockLeftpanel = blockUI.instances.get('Leftpanel');
 				blockLeftpanel.start();
-				$http.get(evalu8config.host + '/my/archive/folders/' + folderId + '/tests', config)
+				$http.get(evalu8config.apiUrl + '/my/archive/folders/' + folderId + '/tests', config)
 				.success(function(response) {
 					var tests = response;
 					tests.forEach(function(test){
@@ -124,7 +124,7 @@ angular.module('evalu8Demo')
 			this.getTestsMaxSeq = function(folderId, callback) {				
 
 				var maxSeq = 0.0;
-				$http.get(evalu8config.host + '/my/folders/' + folderId + '/tests', config)
+				$http.get(evalu8config.apiUrl + '/my/folders/' + folderId + '/tests', config)
 				.success(function(response) {
 					var tests = response;
 					tests.forEach(function(item){
@@ -146,7 +146,7 @@ angular.module('evalu8Demo')
 			this.getTestsMinSeq = function(folderId, callback) {				
 
 				var maxSeq = 0.0;
-				$http.get(evalu8config.host + '/my/folders/' + folderId + '/tests', config)
+				$http.get(evalu8config.apiUrl + '/my/folders/' + folderId + '/tests', config)
 				.success(function(response) {
 					var tests = response;
 					tests.every(function(item){
@@ -167,7 +167,7 @@ angular.module('evalu8Demo')
 			
 			this.getTest = function(testId, callback) {				
 
-				$http.get(evalu8config.host + '/tests/' + testId, config)
+				$http.get(evalu8config.apiUrl + '/tests/' + testId, config)
 				.success(function(response) {
 					var test = response;
 					callback(test)
@@ -178,7 +178,7 @@ angular.module('evalu8Demo')
 			};
 			
 			this.getQuestionById = function(questionGuid, callback) {
-				var url=evalu8config.host + '/questions/' + questionGuid
+				var url=evalu8config.apiUrl + '/questions/' + questionGuid
 				this.getQuestion(url,callback);
 			};
 			
@@ -211,7 +211,7 @@ angular.module('evalu8Demo')
 			this.createVersions = function (scope, callback) {	
 				var blockRightPanel = blockUI.instances.get('RightPanel');
 				blockRightPanel.start();
-			    $http.post(evalu8config.host + '/my/tests/' + scope.currentTab.testId + '/versions', scope.versioningOptions, config)
+			    $http.post(evalu8config.apiUrl + '/my/tests/' + scope.currentTab.testId + '/versions', scope.versioningOptions, config)
 				.success(function (response) {				     
 				    callback(scope,response);
 				    blockRightPanel.stop();
@@ -223,7 +223,7 @@ angular.module('evalu8Demo')
 			};
 			
 			this.getMetadata = function (testid ,callback) {			 
-			    $http.get(evalu8config.host + '/test/' + testid + '/metadata', config)
+			    $http.get(evalu8config.apiUrl + '/test/' + testid + '/metadata', config)
 				.success(function (response) {				     
 				    callback(response);
 				})
@@ -234,7 +234,7 @@ angular.module('evalu8Demo')
 			
 			this.uploadImage = function(file,element,cursorPosition,callback){
 				$upload.upload({
-                    url: evalu8config.host + '/image/upload',
+                    url: evalu8config.apiUrl + '/image/upload',
                     headers: {
 						'x-authorization' : $rootScope.globals.authToken,
 						'Accept' : 'application/json;odata=verbose'

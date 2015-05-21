@@ -31,7 +31,7 @@ angular
 				 }
 			 }
 			 
-			 $http.get(evalu8config.host + '/settings/printsettings', config)
+			 $http.get(evalu8config.apiUrl + '/settings/printsettings', config)
 			 .success(function(response) {
 				 $scope.userpref = response;
 
@@ -178,7 +178,7 @@ angular
 						};				 
 
 
-				 $http.post(evalu8config.host + '/settings/printsettings', preference, config)
+				 $http.post(evalu8config.apiUrl + '/settings/printsettings', preference, config)
 				 .success(function(response) {
 					 document.getElementById("divSaveMessage").innerHTML = "<span style='color:green'>Settings saved successfully</span>";
 				 })

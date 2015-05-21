@@ -18,7 +18,7 @@ angular.module('evalu8Demo')
 				
 				var allDisciplines = [];
 				$http.get(
-						evalu8config.host + "/disciplines/", config)
+						evalu8config.apiUrl + "/disciplines/", config)
 						.success(
 								function(response) {
 									
@@ -33,7 +33,7 @@ angular.module('evalu8Demo')
 
 				var userDisciplines = [];
 				$http.get(
-						evalu8config.host + "/settings/disciplines/", config)
+						evalu8config.apiUrl + "/settings/disciplines/", config)
 						.success(
 								function(response) {
 									

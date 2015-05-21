@@ -12,7 +12,7 @@ function($scope, $rootScope, $location, $http, AuthenticationService) {
 					}
 				};
 			
-			$http.post(evalu8config.host + '/login', '', piconfig)
+			$http.post(evalu8config.apiUrl + '/login', '', piconfig)
 			.success(function (response) {						
 				
 				AuthenticationService.SetCredentials(response.token, response.loginCount);

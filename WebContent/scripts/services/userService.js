@@ -24,7 +24,7 @@ angular
 
 							this.userPrintSettings = function(callback) {
 								$http.get(
-										evalu8config.host
+										evalu8config.apiUrl
 												+ '/settings/printsettings',
 										config).success(function(response) {
 									callback(response)
@@ -36,7 +36,7 @@ angular
 								var userDisciplines = [];
 								$http
 										.get(
-												evalu8config.host
+												evalu8config.apiUrl
 														+ "/settings/disciplines/",
 														this.getConfig())
 										.success(
@@ -65,7 +65,7 @@ angular
 								var userBookIDs = [];
 
 								$http.get(
-										evalu8config.host + '/settings/books',
+										evalu8config.apiUrl + '/settings/books',
 										config).success(function(response) {
 
 									if (response != "") {
@@ -83,7 +83,7 @@ angular
 								var userQuestionMetadata = [];
 								$http
 										.get(
-												evalu8config.host
+												evalu8config.apiUrl
 														+ "/settings/questionmetadata/",
 												config)
 										.success(
@@ -106,7 +106,7 @@ angular
 							this.saveUserBooks = function(userBookIDs, callback) {
 
 								$http.post(
-										evalu8config.host + '/settings/books',
+										evalu8config.apiUrl + '/settings/books',
 										userBookIDs, config).success(
 										function(response) {
 											if (callback)
@@ -120,7 +120,7 @@ angular
 									userDisciplines, callback) {
 
 								$http.post(
-										evalu8config.host
+										evalu8config.apiUrl
 												+ '/settings/disciplines',
 										userDisciplines, config).success(
 										function(response) {
@@ -136,7 +136,7 @@ angular
 
 								$http
 										.post(
-												evalu8config.host
+												evalu8config.apiUrl
 														+ '/settings/questionmetadata',
 												userQuestionMetadata, config)
 										.success(

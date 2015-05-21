@@ -133,7 +133,7 @@ angular.module('e8MyTests')
     	}
     		
         
-        var apiUrl = evalu8config.host + "/tests/" + testId + "/download/" + $scope.selectedFormat.value 
+        var apiUrl = evalu8config.apiUrl + "/tests/" + testId + "/download/" + $scope.selectedFormat.value 
         	+ "?answerKey=" + $scope.selectedAnswerKey.value + "&answerArea=" + $scope.selectedAnswerArea.value 
         	+ "&includeRandomizedTests=" + $scope.isIncludeRandomizedTest + "&includeStudentName=" + $scope.isIncludeStudentName
         	+ "&saveSettings=" + $scope.isSaveSettingsAsDefault+"&margin="+$scope.selectedMargin.value+"&pageNumberDisplay="+$scope.selectedPageNumber.value;
@@ -183,7 +183,7 @@ angular.module('e8MyTests')
             })[0].click();
             
             if (!isSameFile && $scope.selectedAnswerKey.value == $scope.answerKeys[2].value && !$scope.isIncludeRandomizedTest) {
-                var apiUrl = evalu8config.host + "/tests/" + testId + "/download/" + $scope.selectedFormat.value 
+                var apiUrl = evalu8config.apiUrl + "/tests/" + testId + "/download/" + $scope.selectedFormat.value 
                 	+ "?answerKey=" + $scope.answerKeys[0].value + "&answerArea=" + $scope.selectedAnswerArea.value
                 	+ "&includeRandomizedTests=" + $scope.isIncludeRandomizedTest + "&includeStudentName=" + $scope.isIncludeStudentName 
                 	+ "&saveSettings=false&margin="+$scope.selectedMargin.value+"&pageNumberDisplay="+$scope.selectedPageNumber.value;

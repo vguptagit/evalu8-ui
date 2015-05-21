@@ -177,7 +177,7 @@ angular
 
 											discipline.node.nodes = yourQuestions;
 										} else {
-											ep = evalu8config.host
+											ep = evalu8config.apiUrl
 													+ "/books?discipline="
 													+ discipline.node.item
 													+ "&userBooks=true";
@@ -216,7 +216,7 @@ angular
 												"images/right_arrow.png");
 										$http
 												.get(
-														evalu8config.host
+														evalu8config.apiUrl
 																+ "/books/"
 																+ book.node.guid
 																+ "/nodes",
@@ -291,7 +291,7 @@ angular
 							function getQuestions(currentNode, callBack) {
 								$http
 										.get(
-												evalu8config.host + "/books/"
+												evalu8config.apiUrl + "/books/"
 														+ currentNode.bookid
 														+ "/nodes/"
 														+ currentNode.guid
@@ -351,7 +351,7 @@ angular
 										currentNode.node.nodes = [];
 										$http
 												.get(
-														evalu8config.host
+														evalu8config.apiUrl
 																+ "/books/"
 																+ $scope.bookID
 																+ "/nodes/"
@@ -389,7 +389,7 @@ angular
 
 										$http
 												.get(
-														evalu8config.host
+														evalu8config.apiUrl
 																+ "/books/"
 																+ $scope.bookID
 																+ "/nodes/"
@@ -455,7 +455,7 @@ angular
 
 										$http
 												.get(
-														evalu8config.host
+														evalu8config.apiUrl
 																+ "/books/"
 																+ $scope.bookID
 																+ "/nodes/"
@@ -506,7 +506,7 @@ angular
 
 								$http
 										.get(
-												evalu8config.host
+												evalu8config.apiUrl
 														+ "/questions/"
 														+ item.guid, config)
 										.success(

@@ -19,7 +19,7 @@ angular.module('evalu8Demo')
 
 				var defaultFolders = [];
 				$http.get(
-						evalu8config.host + "/my/folders", config)
+						evalu8config.apiUrl + "/my/folders", config)
 						.success(
 								function(response) {
 									
@@ -42,7 +42,7 @@ angular.module('evalu8Demo')
 			this.myTestRootFolder = function(callback) {
 				var myTestRoot = null;
 				$http.get(
-						evalu8config.host + "/my/mytestroot", config)
+						evalu8config.apiUrl + "/my/mytestroot", config)
 						.success(
 								function(response) {									    							    							
 									myTestRoot = response
@@ -53,7 +53,7 @@ angular.module('evalu8Demo')
 			this.userFoldersCount = function(folder, callback) {				
 
 				$http.get(
-						evalu8config.host + "/my/folders/"+ folder.guid + "/folders", config)
+						evalu8config.apiUrl + "/my/folders/"+ folder.guid + "/folders", config)
 						.success(
 								function(userFolders) {
 
@@ -70,7 +70,7 @@ angular.module('evalu8Demo')
 			this.getFoldersMinSeq = function(folder, callback) {				
 
 				$http.get(
-						evalu8config.host + "/my/folders/"+ folder.guid + "/folders", config)
+						evalu8config.apiUrl + "/my/folders/"+ folder.guid + "/folders", config)
 						.success(
 								function(userFolders) {
 
@@ -88,7 +88,7 @@ angular.module('evalu8Demo')
 
 				var userFolders = [];
 				$http.get(
-						evalu8config.host + "/my/folders/"+ folder.guid + "/folders", config)
+						evalu8config.apiUrl + "/my/folders/"+ folder.guid + "/folders", config)
 						.success(
 								function(response) {
 
@@ -122,7 +122,7 @@ angular.module('evalu8Demo')
 				};
 				
 				
-				$http.post(evalu8config.host + '/my/folders', folder, config)
+				$http.post(evalu8config.apiUrl + '/my/folders', folder, config)
 				.success(function(response) {									
 				    if (callback) callback(response);
 				})

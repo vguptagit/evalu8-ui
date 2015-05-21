@@ -30,7 +30,7 @@ angular
 								};
 
 								$http.get(
-										evalu8config.host + "/books/"
+										evalu8config.apiUrl + "/books/"
 												+ $routeParams.bookid
 												+ "/nodes", config).success(
 										function(response) {
@@ -38,7 +38,7 @@ angular
 										});
 
 								$http.get(
-										evalu8config.host + "/books/"
+										evalu8config.apiUrl + "/books/"
 												+ $routeParams.bookid
 												+ "/tests", config).success(
 										function(response) {
@@ -59,7 +59,7 @@ angular
 									currentNode.expand();
 									$http
 											.get(
-													evalu8config.host
+													evalu8config.apiUrl
 															+ "/books/"
 															+ $routeParams.bookid
 															+ "/nodes/"
@@ -81,7 +81,7 @@ angular
 
 									$http
 											.get(
-													evalu8config.host
+													evalu8config.apiUrl
 															+ "/books/"
 															+ $routeParams.bookid
 															+ "/nodes/"
@@ -115,7 +115,7 @@ angular
 							$scope.renderQuestion = function(item) {
 
 								$http
-										.get(evalu8config.host + "/questions/"
+										.get(evalu8config.apiUrl + "/questions/"
 												+ item.guid, config)
 										.success(
 												function(response) {
@@ -152,7 +152,7 @@ angular
 
 								$scope.filterview = false;
 								$http.get(
-										evalu8config.host + "/books/"
+										evalu8config.apiUrl + "/books/"
 												+ $routeParams.bookid
 												+ "/nodes", config).success(
 										function(response) {
@@ -168,7 +168,7 @@ angular
 								$scope.queryString = ""
 								$scope.clear = false;
 								$http.get(
-										evalu8config.host + "/books/"
+										evalu8config.apiUrl + "/books/"
 												+ $routeParams.bookid
 												+ "/nodes", config).success(
 										function(response) {
@@ -193,7 +193,7 @@ angular
 								var testXML;
 								$http
 										.get(
-												evalu8config.host + "/tests/"
+												evalu8config.apiUrl + "/tests/"
 														+ datanode.node.guid,
 												config)
 										.success(

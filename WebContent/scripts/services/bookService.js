@@ -27,7 +27,7 @@ angular
 								var disciplineBooks = [];				
 								 
 								$http.get(
-										evalu8config.host + "/books?discipline=" + discipline, config)
+										evalu8config.apiUrl + "/books?discipline=" + discipline, config)
 										.success(
 												function(response) {
 													
@@ -45,7 +45,7 @@ angular
 							
 							this.userBooks = function(callback) {
 								
-								var url = evalu8config.host
+								var url = evalu8config.apiUrl
 								+ "/books?userBooks=true";
 
 								$http.get(url, config)

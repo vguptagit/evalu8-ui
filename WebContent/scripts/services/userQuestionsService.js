@@ -18,7 +18,7 @@ angular.module('evalu8Demo')
 		this.userQuestions = function(callback) {	
 
 			var userQuestions = [];
-			$http.get(evalu8config.host + "/my/questions", config)
+			$http.get(evalu8config.apiUrl + "/my/questions", config)
 				.success(function(response) {
 					userQuestions= response;
 					callback(userQuestions)

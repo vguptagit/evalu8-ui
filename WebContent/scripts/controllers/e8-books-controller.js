@@ -36,7 +36,7 @@ angular
 									}
 								};
 
-								var ep = evalu8config.host + "/books";
+								var ep = evalu8config.apiUrl + "/books";
 								var s = $location.search();
 								if (s) {
 
@@ -65,7 +65,7 @@ angular
 
 								if ($scope.searchparam)
 									if ($scope.searchparam != "") {
-										var booksSearchEndPoint = evalu8config.host
+										var booksSearchEndPoint = evalu8config.apiUrl
 												+ "/books";
 										booksSearchEndPoint = booksSearchEndPoint
 												+ "?s="
@@ -116,7 +116,7 @@ angular
 
 							};
 							$scope.clearSerch = function() {
-								$http.get(evalu8config.host + "/books", config)
+								$http.get(evalu8config.apiUrl + "/books", config)
 										.success(function(response) {
 											$scope.books = response;
 										});

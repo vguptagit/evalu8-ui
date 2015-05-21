@@ -52,7 +52,7 @@ angular.module('e8PublisherTests')
 					}
 				};
 				
-				var ep = evalu8config.host + "/tests/"+ guid +"/download/doc?option=QUESTIONS"
+				var ep = evalu8config.apiUrl + "/tests/"+ guid +"/download/doc?option=QUESTIONS"
 				
 				var xhr = new XMLHttpRequest;
 				xhr.addEventListener( "load", function(){
@@ -75,7 +75,7 @@ angular.module('e8PublisherTests')
 					}
 				};
 				
-				var ep = evalu8config.host + "/tests/"+ guid +"/download/doc?option=QUESTIONSANDANSWERKEYS"
+				var ep = evalu8config.apiUrl + "/tests/"+ guid +"/download/doc?option=QUESTIONSANDANSWERKEYS"
 				
 				var xhr = new XMLHttpRequest;
 				xhr.addEventListener( "load", function(){
@@ -99,7 +99,7 @@ angular.module('e8PublisherTests')
 					}
 				};
 				
-				var ep = evalu8config.host + "/tests/"+ guid +"/download/doc?option=ANSWERKEYS"
+				var ep = evalu8config.apiUrl + "/tests/"+ guid +"/download/doc?option=ANSWERKEYS"
 				
 				var xhr = new XMLHttpRequest;
 				xhr.addEventListener( "load", function(){
@@ -123,7 +123,7 @@ angular.module('e8PublisherTests')
 					}
 				};
 				
-				var ep = evalu8config.host + "/tests/"+ guid +"/download/pdf?option=QUESTIONS"
+				var ep = evalu8config.apiUrl + "/tests/"+ guid +"/download/pdf?option=QUESTIONS"
 				
 				var xhr = new XMLHttpRequest;
 				xhr.addEventListener( "load", function(){
@@ -147,7 +147,7 @@ angular.module('e8PublisherTests')
 					}
 				};
 				
-				var ep = evalu8config.host + "/tests/"+ guid +"/download/pdf?option=QUESTIONSANDANSWERKEYS"
+				var ep = evalu8config.apiUrl + "/tests/"+ guid +"/download/pdf?option=QUESTIONSANDANSWERKEYS"
 				
 				var xhr = new XMLHttpRequest;
 				xhr.addEventListener( "load", function(){
@@ -171,7 +171,7 @@ angular.module('e8PublisherTests')
 					}
 				};
 				
-				var ep = evalu8config.host + "/tests/"+ guid +"/download/pdf?option=ANSWERKEYS"
+				var ep = evalu8config.apiUrl + "/tests/"+ guid +"/download/pdf?option=ANSWERKEYS"
 				
 				var xhr = new XMLHttpRequest;
 				xhr.addEventListener( "load", function(){
@@ -199,7 +199,7 @@ angular.module('e8PublisherTests')
 				else{
 					discipline.expand();
 					
-					var ep = evalu8config.host + "/books?discipline=" + discipline.node.item;	    				    		
+					var ep = evalu8config.apiUrl + "/books?discipline=" + discipline.node.item;	    				    		
 
 					$http.get(ep, config).success(
 							function(response) {
@@ -224,7 +224,7 @@ angular.module('e8PublisherTests')
 					book.expand();
 	    		
 					$http.get(
-							evalu8config.host + "/books/"
+							evalu8config.apiUrl + "/books/"
 									+ book.node.guid
 									+ "/tests", config).success(
 							function(response) {

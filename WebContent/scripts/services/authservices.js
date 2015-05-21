@@ -11,7 +11,7 @@ angular.module('e8Login')
 				
 				var credentials = {'userName': username, 'password': password};
 				
-				$http.post(evalu8config.host + '/auth', credentials)
+				$http.post(evalu8config.apiUrl + '/auth', credentials)
 				.success(function (response) {
 					
 					var response = { 'success': true, 'token' : response.token, 'loginCount': response.loginCount };
