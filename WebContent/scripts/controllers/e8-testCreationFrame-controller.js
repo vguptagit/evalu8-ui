@@ -297,10 +297,11 @@ angular
 
 								var $responseElseIf = '<responseElseIf><match><variable identifier=\"RESPONSE\"/><baseValue baseType=\"identifier\">RESPONSE_1</baseValue></match><setOutcomeValue identifier=\"SCORE\"><baseValue baseType=\"float\">0</baseValue></setOutcomeValue><setOutcomeValue identifier=\"FEEDBACK\"><baseValue baseType=\"identifier\">FEEDBACK_1</baseValue></setOutcomeValue></responseElseIf>';
 								for (var i = 3; i < htmlOptionsCnt; i++) {
-									$(xml).find("responseCondition").append(
-											$responseElseIf.replace(
-													"RESPONSE_1", "RESPONSE_"
-															+ (i + 1)));
+									
+									var item = $.parseXML($responseElseIf.replace(
+	                                        "RESPONSE_1", "RESPONSE_" + (i + 1))); 
+
+									$(xml).find("responseCondition").append(item.childNodes[0]);
 								}
 							}
 
@@ -311,12 +312,12 @@ angular
 								$(xml).find("responseDeclaration mapping")
 										.children().slice(3).remove();
 								for (var i = 3; i < optionsHtmlControl.length; i++) {
+									
+									var item = $.parseXML($mapEntry.replace(
+											"RESPONSE_1","RESPONSE_"+ (i + 1)));
+									
 									$(xml).find("responseDeclaration mapping")
-											.append(
-													$mapEntry.replace(
-															"RESPONSE_1",
-															"RESPONSE_"
-																	+ (i + 1)));
+											.append(item.childNodes[0]);
 								}
 
 								$(xml).find('responseDeclaration mapEntry')
