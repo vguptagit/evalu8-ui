@@ -176,6 +176,7 @@ angular
 													})
 
 											discipline.node.nodes = yourQuestions;
+											blockLeftpanel.stop();
 										} else {
 											ep = evalu8config.apiUrl
 													+ "/books?discipline="
@@ -187,10 +188,10 @@ angular
 													.success(
 															function(response) {
 																discipline.node.nodes = response;
-																 blockLeftpanel.stop();
+																 
 															});
 										}
-
+										blockLeftpanel.stop();
 									}
 								}
 							}
@@ -325,8 +326,8 @@ angular
 							// Output topic,subtopic and question collection
 							// will be append to input chapter angularjs node
 							$scope.getNodesWithQuestion = function(currentNode) {
-								// var blockLeftpanel =
-								// blockUI.instances.get('BlockLeftpanel');
+								 var blockLeftpanel =
+								 blockUI.instances.get('BlockLeftpanel');
 								if ($rootScope.globals.authToken == '') {
 									$location.path('/login');
 								} else {
@@ -342,7 +343,7 @@ angular
 												.attr("src",
 														"images/right_arrow2.png");
 									} else {
-										// blockLeftpanel.start();
+										blockLeftpanel.start();
 										currentNode.expand();
 										currentNode.$element
 												.find("input")
@@ -384,7 +385,7 @@ angular
 																					}
 																				item.nodeType = "topic";
 																			})
-															// blockLeftpanel.stop();
+															 blockLeftpanel.stop();
 														})
 
 										$http
@@ -430,10 +431,10 @@ angular
 																				$scope
 																						.renderQuestion(item);
 																			})
-															// blockLeftpanel.stop();
+															 blockLeftpanel.stop();
 
 														}).error(function() {
-													// blockLeftpanel.stop();
+													 blockLeftpanel.stop();
 												});
 										;
 									}
