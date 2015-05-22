@@ -72,22 +72,34 @@
 </div>
 
 <div id="content">
-    <div class="wrap full">
+    <div class="wrap full full-width-tabs">
 
         <ul class="nav nav-tabs test-tabs" id="mytab">
-            <li ng-repeat="test in tests"
-                ng-class="{active: isActiveTab(test.id)}"
-                ng-click="onClickTab(test)" id="{{test.id}}">
-                <div class="newTest-close glyphicon glyphicon-remove"
-                     ng-show="isActiveTab(test.id)"
-                     ng-click="closeTabWithConfirmation(test)"></div> <a href="" title="{{test.tabTitle}}"
-                                                                         data-toggle="tab">{{test.tabTitle}}</a>
-            </li>
-            <li ng-click="addNewTest()">
+        <li ng-click="addNewTest()">
                 <button type="button"
                         class="btn btn-default glyphicon glyphicon-plus addNewTab" tooltip="New tab" tooltip-placement="bottom"></button>
             </li>
-        </ul>
+            
+            <li ng-show="$index < 5" ng-repeat="test in tests"
+                ng-class="{active: isActiveTab(test.id)}"
+                ng-click="onClickTab(test)" id="{{test.id}}">
+                <div class="newTest-close glyphicon glyphicon-remove"
+                      
+                     ng-click="closeTabWithConfirmation(test)"></div> <a href="" title="{{test.tabTitle}}"
+                                                                         data-toggle="tab">{{test.tabTitle}}</a>
+            </li>
+            <li class="dropdown" ng-show="tests.length > 5">
+  				<a class="dropdown-toggle dot" data-toggle="dropdown">...</a>
+  					<ul class="dropdown-menu">
+    					<li ng-show="$index >= 5" ng-repeat="test in tests" ng-class="{active: isActiveTab(test.id)}"
+                		ng-click="onClickTab(test)" id="{{test.id}}">
+                		<div class="newTest-close glyphicon glyphicon-remove"
+                     	ng-click="closeTabWithConfirmation(test)"></div> <a href="#" title="{{test.tabTitle}}">{{test.tabTitle}}</a>
+    					</li>
+  					</ul>
+				</li>
+            </ul>
+            
     </div>
 </div>
 <div class="QuestionArea container-fluid">

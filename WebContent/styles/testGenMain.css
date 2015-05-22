@@ -865,7 +865,7 @@ ol {
 	top: 5px;
 	right: 7px;
 	cursor: pointer;
-	font-size: 10px;
+	font-size: 8px;
 }
 
 .newTest-close:hover {
@@ -882,6 +882,51 @@ ol {
 
 #content .active a {
 	background-color: #FFFFFF;
+}
+
+#content ul:first-child > li:last-child{
+	width: 30px;
+}
+#content ul:first-child > li:last-child a:first-child{
+	width: 40px;
+	padding-left: 10px;
+	border: 0px;
+}
+#content ul:nth-child(2){
+	max-height: 400px;
+	overflow-y:auto;
+	overflow-x:hidden;
+}
+#content ul:nth-child(2) li:hover,#content ul:nth-child(2) a:hover{
+	background-color: #E0E0E0;
+} 
+
+#content ul:nth-child(2) li.active,#content ul:nth-child(2) li.active a{
+	background-color: #007FA9;
+	border-top:1px inset #007FA9;
+} 
+
+#content ul:nth-child(2) li a{
+	width: 150px;
+}
+#content ul:nth-child(2) li{
+	border-bottom:1px solid #ddd;
+	height: 36px;
+	border-radius: 2px;
+	position:relative;
+}
+#content ul:nth-child(2) li:last-child{
+	border-bottom-width:0px;
+}
+
+#content .dropdown-menu:before,#content .dropdown-menu:after{display: none}
+
+#content .dropdown-menu{
+	left:-65px;
+}
+.dot {
+  font-size: 14px;
+  font-weight: 800;
 }
 
 #tree-root .activeFolder {

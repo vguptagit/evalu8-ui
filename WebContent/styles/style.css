@@ -321,7 +321,6 @@ a.fa.fa-user{
   top: 14px;
   right: 80px;
 }
-
 .testversion-Modal .modal-dialog{
   width:400px; height: 400px;
   position: absolute;
@@ -345,6 +344,21 @@ hr{margin: 0;}
 .botborder { border-bottom: 1px solid #E0E0E0; height: 100px; background-color: #f8f8f8;}
 .resourcetab{height: 55px; padding-top: 10px; padding-left: 20px;}
 
+.full-width-tabs > ul.nav.test-tabs {
+  /* display: table; */
+  width: 100%;
+  table-layout: fixed;
+}
+.full-width-tabs > ul.nav.test-tabs > li {
+  float: none;
+  display: table-cell;
+  width: 50px;
+  
+}
+.full-width-tabs > ul.nav.test-tabs > li > a {
+  text-align: center;
+    width: 96px;
+}
 
 @media (max-width: 767px)
 { 	.container{width:750px;}
