@@ -379,6 +379,7 @@ a.newFolder:hover {
 	float: right;
 	position: absolute;
 	right: 25px;
+	margin-top: 7px;
 }
 
 .iconsChapter span:first-child{
