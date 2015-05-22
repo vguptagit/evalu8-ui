@@ -1774,7 +1774,7 @@ var textBox = $("<div contenteditable='true'  class='editView' type='text' id='q
 		if((state.templateQstn)&&(qstnCaption=="")){				
 				if($(displayNode)[0].nodeName=="BLOCKQUOTE"){
 					var BLOCKQUOTE_ID = QTI.BLOCKQUOTE.getId();
-					var blockQuoteVAL=CustomQuestionTemplate[state.questionType].printOption + " "+ BLOCKQUOTE_ID + "__";
+					var blockQuoteVAL=CustomQuestionTemplate[state.questionType].printOption + " "+ BLOCKQUOTE_ID + " _______";
 					$(elementDisplayNode).append($("<span class='printView printViewOption'></span>").text(
 							blockQuoteVAL));
 				}else{
@@ -1998,7 +1998,7 @@ QTI.Elements.SimpleChoice.play = function(qtiNode, displayNode, state) {
 				.html("&#10004"));
 		// containerDisplayNode.append("</div>");
 
-		containerDisplayNode.append($("<span class='printView'></span>").text(
+		containerDisplayNode.append($("<span class='printView specFont'></span>").text(
 				qtiNode.attr("index")));
 		containerDisplayNode
 				.append("<div class='optionSelectionDiv editView'></div>");

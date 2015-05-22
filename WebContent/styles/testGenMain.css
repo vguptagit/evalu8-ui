@@ -2036,6 +2036,8 @@ li[qstntemplate='true'] .indChar {
 
 li[qstntemplate=true] .printViewContainer  .qti-blockquote .matchIndex {
 	font-weight: normal;
+	font-size: 14px;
+	padding-top:4px;
 }
 
 .TestcreationInfo {
@@ -2245,7 +2247,7 @@ li[qstntemplate='true'] .questionTemplateContainer .questionTemplates {
 
 li[qstntemplate='true'] .questionTemplate {
 	padding: 0px 0px 0px 0px;
-	font-size: 12px;
+	font-size: 14px !important;
     width: 100%;
     font-weight: normal;
     display: table;
@@ -2279,6 +2281,16 @@ li[qstntemplate='true'][quiztype='Matching'] .qti-itemBody > blockquote:last-chi
 padding-bottom: 10px;
 }
 
- li[qstntemplate='true'] div #crtAnsSpace{
+li[qstntemplate='true'] div #crtAnsSpace{
    height: 20px
-  }
+}  
+li[qstntemplate='true'] .matchRight {
+   min-width: 70%;
+}
+li[qstntemplate='true'] .qti-simpleChoice .radio, li[printmode='true'] .qti-simpleChoice .checkbox{
+	margin-bottom: 5px;
+}
+#Custom-Qstn-tree-root{
+	overflow:hidden;
+	overflow-y: auto;
+}
