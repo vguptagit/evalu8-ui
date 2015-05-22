@@ -1057,9 +1057,9 @@ angular
 								$scope.exportBtnCss = "";
 								$scope.testGuid = selectedTest.node.guid;
 								$scope.selectedTestNode = selectedTest.node;
-								$scope.BlockRightPanel =
+								/*$scope.BlockRightPanel =
 								 blockUI.instances.get('RightPanel');
-								 $scope.BlockRightPanel.start();
+								 $scope.BlockRightPanel.start();*/
 
 								// if Test is in root folder
 								if (selectedTest.$parentNodeScope) {
@@ -1090,10 +1090,9 @@ angular
 									currentIndex) {
 								if (qBindings.length == 0) {
 									$scope.isLoading = false;
-									 $scope.BlockRightPanel.stop();
+									 /*$scope.BlockRightPanel.stop();*/
 									return false;
 								}
-								
 									var question = qBindings.shift();
 									 
 									 var userSettings= {};	
@@ -1181,6 +1180,8 @@ angular
 
 								$scope.renderQuestions(questionBindings,
 										$scope.currentIndex);
+								/*$scope.BlockRightPanel.stop();*/
+								
 							}
 							
 							 function updateMatchingTemplatePrefilledtext(qstnNode) {
