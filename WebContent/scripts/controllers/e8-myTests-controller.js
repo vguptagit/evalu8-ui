@@ -526,6 +526,8 @@ angular.module('e8MyTests')
 	    		if(ok) {
         			ArchiveService.deleteFolder(folder.node.guid, function() {
         				folder.remove(); 
+	                    if($scope.archiveRoot && $scope.archiveRoot.node && $scope.archiveRoot.node.nodes && $scope.archiveRoot.node.nodes.length == 0 && $scope.defaultFolders.length == 1)
+	                    	$scope.loadTree();
 	                }); 
 	    		}
     		})    		
@@ -540,6 +542,9 @@ angular.module('e8MyTests')
 	    		if(ok) {
 	                ArchiveService.deleteTest(test.node.guid, test.$parentNodeScope.node.guid, function() {
 	                    test.remove();
+	                    
+	                    if($scope.archiveRoot && $scope.archiveRoot.node && $scope.archiveRoot.node.nodes && $scope.archiveRoot.node.nodes.length == 0 && $scope.defaultFolders.length == 1)
+	                    	$scope.loadTree();
 	                }); 
 	    		}
     		})
