@@ -1854,7 +1854,7 @@ var textBox = $("<div contenteditable='true'  class='editView' type='text' id='q
 					"ng-click" : "addImage(this,$event,'div.textBoxContainer')"
 				}));
 			if(state.questionType)
-				CustomQuestionTemplate[state.questionType].makeExtra($(displayNode),this,null);
+				CustomQuestionTemplate[state.questionType].makeExtra($(displayNode),this,qtiNode);
 		
 		
 		
@@ -1903,7 +1903,7 @@ QTI.Elements.ResponseDeclaration.DISPLAY = false;
 QTI.Elements.ResponseDeclaration.CLASS = QTI.Classes.VariableDeclaration;
 
 QTI.Elements.ResponseDeclaration.GET_ALLOWED_CONTENT = function() {
-	return [ QTI.Elements.CorrectResponse ];
+	return [ QTI.Elements.CorrectResponse,QTI.Elements.Mapping ];
 }
 
 QTI.Elements.ResponseDeclaration.play = function(qtiNode, displayNode, state) {
@@ -1918,6 +1918,72 @@ QTI.Elements.ResponseDeclaration.play = function(qtiNode, displayNode, state) {
 	this.extend.play(qtiNode, elementDisplayNode, state);
 	this.processChildren(qtiNode, elementDisplayNode, state);
 }
+
+//mapping
+QTI.Elements.Mapping = {};
+
+QTI.Elements.Mapping.NAME = "Mapping";
+QTI.Elements.Mapping.TAG = "mapping";
+
+QTI.Elements.Mapping.DISPLAY = false;
+
+QTI.Elements.Mapping.CLASS = QTI.Classes.VariableDeclaration;
+
+QTI.Elements.Mapping.GET_ALLOWED_CONTENT = function() {
+	return [ QTI.Elements.MapEntry ];
+}
+
+QTI.Elements.Mapping.play = function(qtiNode, displayNode, state) {
+
+	if(state.questionType)
+		if(CustomQuestionTemplate[state.questionType])
+			CustomQuestionTemplate[state.questionType].makeExtra(null,this,null);
+	
+	if(this.DISPLAY)
+	{
+		var identifier = qtiNode.parent().attr("identifier");
+		var index = identifier.substring(9,identifier.length);
+		index = parseInt(index);
+		
+		var elementDisplayNode = QTI.prepare(qtiNode, $("<div class='editView editablediv' type='text' id='" + identifier + "' >"+String.fromCharCode(65 + index - 1 )+".</div>"));
+	
+		$(displayNode).append(elementDisplayNode);
+	
+		this.extend.play(qtiNode, elementDisplayNode, state);
+		this.processChildren(qtiNode, elementDisplayNode, state);
+	}
+}
+
+//MapEntry
+QTI.Elements.MapEntry = {};
+
+QTI.Elements.MapEntry.NAME = "MapEntry";
+QTI.Elements.MapEntry.TAG = "mapEntry";
+
+QTI.Elements.MapEntry.DISPLAY = true;
+
+QTI.Elements.MapEntry.CLASS = QTI.Classes.VariableDeclaration;
+
+QTI.Elements.MapEntry.GET_ALLOWED_CONTENT = function() {
+	return [];
+}
+
+QTI.Elements.MapEntry.play = function(qtiNode, displayNode, state) {
+	
+	var identifier = qtiNode.parent().parent().attr("identifier");
+	var index = identifier.substring(9,identifier.length);
+	index = parseInt(index);
+		
+	var elementDisplayNode = QTI.prepare(qtiNode, $("<div contenteditable='true' class='placeHolderForBlank' data-placeholder='Enter the correct answer for blank "+ String.fromCharCode(65 + index - 1 ) +"'></div>"));
+
+	$(displayNode).append(elementDisplayNode);
+
+	var mapkey = qtiNode.attr("mapKey");
+	if(mapkey != null)
+		if(mapkey.length > 0)
+			elementDisplayNode.text(mapkey);
+}
+
 
 // response processing
 
@@ -2861,41 +2927,71 @@ var CustomQuestionTemplate =
 		,
 		"FillInTheBlanks":	
 			
-		{"printCaption": "Fill in the Blanks Question <br> _______________" ,
-		  "editCaption": "Enter Question Text",
-		 "printOption": "Answer Choice" ,
-		 "editOption": "Enter Answer for Blank A",
-		 "editMainText":"Enter Question Text, Choose Add Blank, and drag it into position ",
-		 "DISPLAY": false,
-		 makeExtra: function(element,tag,xml){
-			 switch(tag.TAG){
-			 case "p":
-				 var printElement = element.find("p").eq(0);
-				 var textEntries = printElement.find("textEntryInteraction");
-				 textEntries.each(function(){
-					 printElement.html(printElement.html().replace($(this).get(0).outerHTML,"<span class='blank'> _______________ </span>"));
-				 })
-				 
-				 var editElement = element.find("#qtiCaption").eq(0);
-				 var textEntries = editElement.find("textEntryInteraction");
-				 textEntries.each(function(){
-					 editElement.html(editElement.html().replace($(this).get(0).outerHTML,"<div contenteditable='false' width='100px'></div>"));
-				 })
-				 
-				 $("<button class='editView blankButton' ng-mousedown='addBlank(this,$event)' ng-disabled='captionFocus'>Add Blank</button><br/>").insertAfter(printElement.next());
-				
-				 $("<div class = 'editView EssayHeader' id='crtAns'>Correct Answer</div>").insertAfter(element.find("button.editView.blankButton").eq(0));
-									$("<div id='crtAnsSpace'></div>").insertBefore(element.find("#crtAns").eq(0));
+		{"printCaption": "Fill in the Blanks Question <br> _________________________" ,
+			  "editCaption": "Enter Question Text",
+			 "printOption": "Answer Choice" ,
+			 "editOption": "Enter Answer for Blank A",
+			 "editMainText":"Enter Question Text, Choose Add Blank",
+			 "DISPLAY": false,
+			 makeExtra: function(element,tag,xml){
+				 switch(tag.TAG){
+				 case "p":
+					 var printElement = element.find("p").eq(0);
+						var serializedQtiNode='';
+						var printElement1 = "";
+					// printElement.html(xml);
+					 var xmlChildren = xml.eq(0).get(0).childNodes;
+					 for(var i=0;i<xmlChildren.length;i++){
+					 
+						 if(xmlChildren[i].nodeType==4){
+								serializedQtiNode =xmlChildren[i].textContent;			
+							}else if(xmlChildren[i].nodeName=="textEntryInteraction"){		
+								serializedQtiNode =(new XMLSerializer()).serializeToString(xmlChildren[i]);			
+							}
+						 printElement1 =printElement1 + serializedQtiNode;
+					 }
+					 if(xmlChildren.length > 0){
+						 printElement.html(printElement1);
+						 element.find("#qtiCaption").eq(0).html(printElement1);
+					 }
+					 var textEntries = printElement.find("textEntryInteraction");
+					 textEntries.each(function(){
+						 printElement.html(printElement.html().replace($(this).get(0).outerHTML,"<span class='blank'> _____________________ </span>"));
+					 })
+					 
+					 //printElement.replace(/<!\[/g,"");
+					 //<![CDATA[
+					//]]>
+					/* textEntries.each(function(){
+						 editElement.html(editElement.html().replace($(this).get(0).outerHTML,"<button id='id' onkeydown='return QTI.getSpanId(this,event)' class='blankFIBButton '><span contenteditable='false' class='blankWidth editView'><b contenteditable='false'>" + String.fromCharCode(65 + 1 ) + ".</b>Fill Blank</span></button>&nbsp;"));
+					 })*/
+					 
+					 $("<button class='editView blankButton' ng-mousedown='addBlank(this,$event)' ng-disabled='captionFocus'>Add Blank</button><br/>").insertAfter(printElement.next());
 					
-				 $(element.find("#qtiCaption").eq(0)).attr("ng-focus","captionFocus = false").attr("ng-blur","captionFocus = true")
+					 $("<div class = 'editView EssayHeader' id='crtAns'>Correct Answer</div>").insertAfter(element.find("button.editView.blankButton").eq(0));
+										$("<div id='crtAnsSpace'></div>").insertBefore(element.find("#crtAns").eq(0));
+						
+					 printElement.attr("ng-focus","captionFocus = false").attr("ng-blur","captionFocus = true")
+					 
+					 printElement.attr("onkeydown","QTI.getSpanId(this,event)");
+					 
+					 var editElement = element.find("#qtiCaption").eq(0);
+					 var crtAns = element.find("#crtAns").eq(0);
+					 var textEntries = editElement.find("textEntryInteraction");
+					 
+					 var responseDeclarations = element.parents("div[data-qti-tag='assessmentItem']").find("div.qti-responseDeclaration");
+					 for(var i=0;i<textEntries.length;i++){
+						 editElement.html(editElement.html().replace(textEntries[i].outerHTML,"<button id='"+textEntries[i].attributes.responseIdentifier.nodeValue+"' onkeydown='return QTI.getSpanId(this,event)' class='blankFIBButton '><span contenteditable='false' class='blankWidth editView'><b contenteditable='false'>" + String.fromCharCode(65 + i) + ".</b>Fill Blank</span></button>&nbsp;"));
+						 crtAns.append(responseDeclarations.eq(i).children(0));
+					 }
+					 
+				 case "responseDeclaration":
+					 tag.DISPLAY = true;
 				 
-				 $(element.find("#qtiCaption").eq(0)).attr("onkeydown","QTI.getSpanId(this,event)");
-				 
-			 
-			 }
-			 
-			 
-			
+				 case "mapping":
+					 tag.DISPLAY = true;
+					 
+				 }
 
 		 }}
 				}
@@ -2958,19 +3054,22 @@ QTI.getActualCursorPosition = function(cursorPosition,element){
 	return cursorPosition;
 }
 
-QTI.getActualCursorPosition1 = function(cursorPosition,element){
+QTI.getActualCursorPosition1 = function(cursorPosition,element,htmlContent){
 	var textBox = element.find("button");
 	var actualLenght;
 	var actualText;
 	textBox.each(function(){
 		if(actualText == null)
-			actualText = element.html().substring(0,element.html().indexOf($(this).get(0).outerHTML)) + $(this).text();
+			actualText = htmlContent.substring(0,htmlContent.indexOf($(this).get(0).outerHTML));
 		else
-			actualText = actualText + element.html().substring(actualText.length,element.html().indexOf($(this).get(0).outerHTML)) + $(this).text();
-		if(cursorPosition >= actualText.length)
+			actualText = actualText + htmlContent.substring(actualText.length,htmlContent.indexOf($(this).get(0).outerHTML));
+		/*if(cursorPosition < actualText.length)
+			return false;*/
+		if(cursorPosition >= (actualText.length + $(this).text().length))
 		{
 			cursorPosition = cursorPosition + $(this).get(0).outerHTML.length - $(this).text().length;
-			return cursorPosition;
+			actualText = actualText + $(this).get(0).outerHTML
+			//return cursorPosition;
 		}
 	})
 	return cursorPosition;
@@ -3100,7 +3199,7 @@ QTI.getSpanId = function(spanElement, event){
 		
 		var range = window.getSelection().getRangeAt(0);
 
-		if(event.keyCode == 8 && range.startOffset == 1 && range.startContainer.previousElementSibling)
+		if(event.keyCode == 8 && (range.startOffset == 0 || range.startOffset == 1) && range.startContainer.previousElementSibling)
 
 			if(range.startContainer.previousElementSibling.tagName == "BUTTON"){
 				blankElement = $(range.startContainer.previousElementSibling);
@@ -3108,17 +3207,19 @@ QTI.getSpanId = function(spanElement, event){
 				index = parseInt(index);
 				blankElement.remove();
 				qtiCationElement.parent().parent().find("#crtAns").children().eq(index - 1).remove();
-				for(var i = index-1; i<qtiCationElement.find("button").length; i++)
+				for(var i = index-1; i<=qtiCationElement.find("button").length; i++)
 				{
+					var crtAnswer = qtiCationElement.parent().parent().find("#crtAns").children().eq(i);
 					qtiCationElement.find("button").eq(i).attr("id","RESPONSE_" + i+1);
 					qtiCationElement.find("button").eq(i).find("b").eq(0).text(String.fromCharCode(65 + i ) + ".");
-					qtiCationElement.parent().parent().find("#crtAns").children().eq(i).attr("id","RESPONSE_" + i+1);
-					qtiCationElement.parent().parent().find("#crtAns").children().eq(i).html(String.fromCharCode(65 + i ) + "."+ crtAnswer.children().get(i).outerHTML);
+					crtAnswer.attr("id","RESPONSE_" + i+1);
+					crtAnswer.html(String.fromCharCode(65 + i ) + "."+ crtAnswer.children().get(0).outerHTML);
 				}
-				
+//				blankElement.remove();
+				return false;
 			}
 		
-			if(event.keyCode == 46 && range.startOffset == 1 && range.startContainer.nextElementSibling)
+			/*if(event.keyCode == 46 && range.startOffset == 1 && range.startContainer.nextElementSibling)
 	
 				if(range.startContainer.nextElementSibling.tagName == "BUTTON"){
 					blankElement = $(range.startContainer.nextElementSibling);
@@ -3133,7 +3234,7 @@ QTI.getSpanId = function(spanElement, event){
 						qtiCationElement.parent().parent().find("#crtAns").children().eq(i).attr("id","RESPONSE_" + i+1);
 						qtiCationElement.parent().parent().find("#crtAns").children().eq(i).html(String.fromCharCode(65 + i ) + "."+ crtAnswer.children().get(0).outerHTML);
 					}
-				}
+				}*/
 		
 		if(spanElement.tagName == "BUTTON"){
 			return false;
@@ -3141,11 +3242,24 @@ QTI.getSpanId = function(spanElement, event){
 	}
 	
 }
-QTI.replaceBlank = function(elm,text){
+QTI.replaceBlank = function(elm,text,xml,qstnHTML){
 	var buttons = elm.find("button");
+	var textEntryBackUp;
+	var actualContent;
 	for(var i =0; i< buttons.length; i++)
 	{
-		text = text.replace(buttons.get(i).outerHTML,"<textEntryInteraction expectedLength='150' responseIdentifier='" + buttons.eq(i).attr("id") + "' />")
+		if(actualContent == null)
+			actualContent = "<![CDATA[" + text.substring(0,text.indexOf(buttons.get(i).outerHTML)) + "]]>"
+		else{
+			var index = text.indexOf(buttons.get(i-1).outerHTML) + buttons.get(i-1).outerHTML.length;
+			actualContent = "<![CDATA[" + text.substring(index,text.indexOf(buttons.get(i).outerHTML)) + "]]>"
+		}
+//		text = text.replace(buttons.get(i).outerHTML,"<textEntryInteraction expectedLength='150' responseIdentifier='" + buttons.eq(i).attr("id") + "' />")
+		textEntryBackUp = "<textEntryInteraction expectedLength='150' responseIdentifier='" + buttons.eq(i).attr("id") + "' />"
+		actualContent = actualContent + textEntryBackUp;
 	}
-	return text;
+	var index = text.indexOf(buttons.get(buttons.length - 1).outerHTML) + buttons.get(buttons.length - 1).outerHTML.length;
+	actualContent = actualContent + "<![CDATA[" + text.substring(index,text.length) + "]]>"
+
+	return actualContent;
 }

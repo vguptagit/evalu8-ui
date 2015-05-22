@@ -327,6 +327,9 @@
         <script type="text/ng-template" id="rf_question_renderer.html">
            <div class="qstnContainer">
 <div class="qstnView">
+	<div class="glyphicon glyphicon-remove closeQuestion " ng-show="closeQstnBtn"
+     	ng-click="closeQuestions(tests[currentIndex],$index)">
+  	</div>
    <div class="questionEditCaption editView">
       {{node.editMainText}}
    </div>
@@ -380,13 +383,13 @@
 <div class="BlankSizeDiv" ng-show="node.quizType == 'FillInTheBlanks'" >
 		<span class="viewOptionDiv normalText">Blank Size:</span>
 		<div class="viewOptionDiv viewOptionHV">
-			<input class="radioView" name="radioView_{{$index}}_BS" ng-checked="node.BlankSize == '20'"  ng-click="qstnBlankSize(this,'20')"  blankSize='20' type="radio">small</input>
+			<input class="radioView" name="radioView_{{$index}}_BS" ng-checked="node.BlankSize == '20'"  ng-click="qstnBlankSize(this,'20')"  blankSize='20' type="radio">Small</input>
 		</div>
 		<div class="viewOptionDiv viewOptionHV">
 			<input name="radioView_{{$index}}_BS" ng-checked="node.BlankSize == '50'"  ng-click="qstnBlankSize(this,'50')"  blankSize='50'  type="radio">Medium</input>
 		</div>	
 		<div class="viewOptionDiv viewOptionHV">
-			<input name="radioView_{{$index}}_BS" ng-checked="node.BlankSize == '100'"  ng-click="qstnBlankSize(this,'100')"  blankSize='100'  type="radio">large</input>
+			<input name="radioView_{{$index}}_BS" ng-checked="node.BlankSize == '100'"  ng-click="qstnBlankSize(this,'100')"  blankSize='100'  type="radio">Large</input>
 		</div>			
 	</div>
 

@@ -374,6 +374,11 @@ angular.module('evalu8Demo')
 		         }
 		     }
 
+		     sharedTabService.closeQuestions = function(tab, scope ,index){
+		    	 scope.tests[scope.currentIndex].questions.splice(index,1);
+		    	 scope.tests[scope.currentIndex].IsAnyQstnEditMode = false;
+		     }
+		     
 		     sharedTabService.removeMasterTest = function (test) {
 		         $.each(sharedTabService.masterTests, function (i) {
 		             if (sharedTabService.masterTests[i].id === test.id) {

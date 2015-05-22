@@ -1315,6 +1315,7 @@ li[quiztype='TrueFalse'] .qti-simpleChoice .radio {
 	text-align: top;
 	float: right;
 	text-decoration: none !important;
+	margin-right :15px;
 }
 
 .editMetdata {
@@ -2339,4 +2340,14 @@ li[qstntemplate='true'] .qti-simpleChoice .radio, li[printmode='true'] .qti-simp
 #Custom-Qstn-tree-root{
 	overflow:hidden;
 	overflow-y: auto;
+}
+.placeHolderForBlank{
+  	width: 96%;
+	float: right;
+ 	font-weight: normal;
+}
+.closeQuestion{
+	margin-right: -10px;
+	float: right;
+	margin-top:3px;
 }

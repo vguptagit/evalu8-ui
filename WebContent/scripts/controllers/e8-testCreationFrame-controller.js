@@ -49,15 +49,25 @@ angular
 							 * ***************************************
 							 */
 							$scope.showQstnEditIcon = false;
-							
+							$scope.closeQstnBtn = false;
 
 							$scope.hoverIn = function(selectedQstn) {
 								this.showQstnEditIcon = true;
+								this.closeQstnBtn = true;
 							};
 							$scope.hoverOut = function() {
 								this.showQstnEditIcon = false;
+								this.closeQstnBtn = false;
 							};
+							
+							if(selectedQstnNode.node.quizType = "FillInTheBlanks"  &&  ($(selectedQstnNode.$element).find('#qtiCaption').find('button').length <= 0) && selectedQstnNode.node.IsEditView){
+								$scope.IsConfirmation = false;
+								$scope.message = "Add Blank to the Question";
 
+								$modal.open(confirmObject);
+								return;
+								
+							}
 							$scope.showQstnPrintOrEditMode = function(
 									selectedQstnNode) {
 								if (SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode
@@ -71,6 +81,7 @@ angular
 								}
 								var qstnHtml = selectedQstnNode.node.textHTML;
 								this.showQstnEditIcon = !this.showQstnEditIcon;
+								this.closeQstnBtn = !this.closeQstnBtn;
 								selectedQstnNode.node.qstnLinkText = selectedQstnNode.node.IsEditView ? "Edit"
 										: "View";
 								selectedQstnNode.node.qstnLinkTitle = selectedQstnNode.node.IsEditView ? "View Question in print mode"
@@ -99,8 +110,15 @@ angular
 								var qstnCaption = replaceImage(qstnHTML
 										.find('#qtiCaption'));
 		
-								$(xml).find('itemBody').find('p').eq(0).html("<![CDATA[" +
-										qstnCaption + "]]>");
+								if(qstnHTML.find('#qtiCaption').find("button").length > 0){
+									qstnCaption = QTI.replaceBlank(qstnHTML.find('#qtiCaption'),qstnCaption);
+									$(xml).find('itemBody').find('p').eq(0).html(qstnCaption)
+								}
+								else{
+									
+									$(xml).find('itemBody').find('p').eq(0).html("<![CDATA[" +
+											qstnCaption + "]]>");
+								}
 								
 
 								if($(xml).find('responseDeclaration').find('correctResponse').find('value').length >= 1){
@@ -116,6 +134,41 @@ angular
 								$(xml).find('assessmentItem').attr(
 										'identifier', 'QUESTION-X');
 								selectedQstnNode.node.quizType = QTI.getQuestionType($(xml),selectedQstnNode.node.quizType);
+								
+								if(selectedQstnNode.node.quizType =="FillInTheBlanks"){
+									var htmlTextEntry = qstnHTML.find('#crtAns').children();
+									
+									var optionText = '';
+									
+									var TextArray= htmlTextEntry.find('.placeHolderForBlank');
+									
+									var responseDeclaration = $(xml).find('responseDeclaration');
+									
+									responseDeclaration.remove();
+									
+									var responseTagTemplate = ' <responseDeclaration identifier="@RESPONSE" cardinality="single" baseType="string">'
+								        +'<mapping defaultValue="0"><mapEntry mapKey="@RESP" mappedValue="1" caseSensitive="false"/></mapping></responseDeclaration>';
+									
+									for (var i = 0; i < htmlTextEntry.length; i++) {
+										optionText = replaceImage(TextArray.eq(i));
+										var responseTag = responseTagTemplate
+										responseTag = responseTag.replace(
+												'@RESPONSE', 'RESPONSE_'+(i+1));
+										
+										responseTag = responseTag.replace(
+												'@RESP',  optionText );
+										
+										var item = $.parseXML(responseTag); 
+									
+									
+										if(i==0)
+										$(xml).find( "assessmentItem" ).prepend($(item).children(0));
+										else
+											$(xml).find( "responseDeclaration").eq(i-1).after($(item).children(0));
+										
+									}								
+								}
+								
 								if (selectedQstnNode.node.quizType =="Matching"){
 									
 									var htmlBlockquote = qstnHTML.find('blockquote');
@@ -211,6 +264,11 @@ angular
 								
 								if($(xml).find('itemBody').find("extendedTextInteraction").length > 0)
 									$(xml).find('itemBody').find("extendedTextInteraction").eq(0).attr("expectedLines",qstnHTML.find(".EssaySpaceDiv input[type=radio]:checked").attr("pageSize"))
+
+																		
+								if($(xml).find('itemBody').find("textEntryInteraction").length > 0)
+									$(xml).find('itemBody').find("textEntryInteraction").eq(0).attr("blankSize",qstnHTML.find(".BlankSizeDiv input[type=radio]:checked").attr("blankSize"))
+									
 
 								$(xml).find('itemBody').find(
 										'choiceInteraction').find(
@@ -615,29 +673,22 @@ angular
 
 							
 							$scope.addBlank = function(scope, event){
-								debugger;
+								
 								var qtiCaption = scope.$element.find("#qtiCaption").eq(0);
 								var cursorPosition = QTI.getCaretPosition(qtiCaption.get(0));
 								var optionText = qtiCaption.html().replace(/&nbsp;/g," ");
 																
-								cursorPosition = QTI.getActualCursorPosition1(cursorPosition,qtiCaption);
+								cursorPosition = QTI.getActualCursorPosition1(cursorPosition,qtiCaption,optionText);
 								var htmlEle =scope.$element.find('#crtAns').eq(0);
 								var htmlOptionCnt = scope.$element.find('#crtAns').find('div').length;
 								var lastId = scope.$element.find('#crtAns').find('div').length;
-								
-								var alphaArray = ["A:","B:","C:","D:","E:","F:","G:"];		
-															
-								
+
 								var blankCount = qtiCaption.find("button").length;
 								blankCount = blankCount + 1;
 //								qtiCaption.html(optionText.substring(0,cursorPosition) + "<button contenteditable='false'><span class='blankWidth editView'>"+alphaArray[htmlOptionCnt]+"<span contenteditable='true' id='"+alphaArray[htmlOptionCnt]+"' onkeydown='QTI.getSpanId(this,event)' placeHolder='Blank Space' ></span></span></button>" + optionText.substring(cursorPosition + 1, optionText.length));
-								qtiCaption.html(optionText.substring(0,cursorPosition) + "<button id='RESPONSE_"+ blankCount +" ' onkeydown='return QTI.getSpanId(this,event)' class='blankFIBButton '><span contenteditable='false' class='blankWidth editView'><b contenteditable='false'>" + String.fromCharCode(65 + blankCount - 1 ) + ".</b>Fill Blank</span><span contenteditable='false' class='printView'>____________</span></button>&nbsp;" + optionText.substring(cursorPosition + 1, optionText.length));
+								qtiCaption.html(optionText.substring(0,cursorPosition) + "<button id='RESPONSE_"+ blankCount +" ' onkeydown='return QTI.getSpanId(this,event)' class='blankFIBButton '><span contenteditable='false' class='blankWidth editView'><b contenteditable='false'>" + String.fromCharCode(65 + blankCount - 1 ) + ".</b>Fill Blank</span></button>&nbsp;" + optionText.substring(cursorPosition, optionText.length));
 															
-								htmlEle.append($("<div class='editView editablediv' type='text' id='RESPONSE_"+blankCount+"' >"+String.fromCharCode(65 + blankCount - 1 )+".<div contenteditable='true' data-placeholder='Enter the correct answer for blank "+ String.fromCharCode(65 + blankCount - 1 ) +"' style='width:96%;float:right'></div></div>"));
-															
-								
-							
-								
+								htmlEle.append($("<div class='editView editablediv' type='text' id='RESPONSE_"+blankCount+"' >"+String.fromCharCode(65 + blankCount - 1 )+".<div contenteditable='true' class='placeHolderForBlank' data-placeholder='Enter the correct answer for blank "+ String.fromCharCode(65 + blankCount - 1 ) +"'></div></div>"));
 							}
 
 							
@@ -799,6 +850,9 @@ angular
 					            var scope = angular.element($("input[type=checkbox][id=applyCriteria]").eq(0)).scope();
 					            $scope.isApplySameCriteriaToAll = false;
 					        }
+					        $scope.closeQuestions = function (tab,index) {
+					            SharedTabService.closeQuestions(tab, $scope, index);					           
+					        }
 							$scope.closeTabWithConfirmation = function(tab) {
 								SharedTabService.closeTabWithConfirmation(tab,
 										$scope);
@@ -885,7 +939,7 @@ angular
 								if($(qstnXML).find('itemBody').find("extendedTextInteraction").length > 0)
 									nodeEssayPageSize = $(qstnXML).find('itemBody').find("extendedTextInteraction").eq(0).attr("expectedLines")
 									
-									var nodeBlankSize = '0';
+									var nodeBlankSize = '20';
 								if($(qstnXML).find('itemBody').find("textEntryInteraction").length > 0)
 									nodeBlankSize = $(qstnXML).find('itemBody').find("textEntryInteraction").eq(0).attr("expectedLength")
 
@@ -900,7 +954,8 @@ angular
 											"simpleChoice").length,
 									correctAnswer : correctAnswerList,
 									optionsView : nodeOptionsView,
-									EssayPageSize : nodeEssayPageSize
+									EssayPageSize : nodeEssayPageSize,
+									BlankSize : nodeBlankSize
 								}
 
 								return qstnMasterData;
@@ -995,6 +1050,7 @@ angular
 															newNode.IsDefaultEditView = true ;															
 															newNode.selectedLevel = {name:'Select Level',value:'0'};	
 															newNode.EssayPageSize = '0';
+															newNode.BlankSize = '20';
 															
 														} else {
 															
@@ -1014,7 +1070,7 @@ angular
 															newNode.qstnMasterData = buildQstnMasterDetails(newNode);
 															newNode.optionsView = newNode.qstnMasterData.optionsView;
 															newNode.EssayPageSize = newNode.qstnMasterData.EssayPageSize;															
-														
+															newNode.BlankSize = newNode.qstnMasterData.BlankSize;
 														}
 														
 														newNode.qstnLinkText = newNode.IsEditView ? "View"
