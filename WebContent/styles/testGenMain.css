@@ -999,14 +999,7 @@ ol {
 }
 
 .questionTemplateContainer {
-	padding: 0px 0px 0px 20px;
 	font-size: 15px;
-}
-
-.questionTemplateContainer .questionTemplates {
-	border: 3px solid #D0D0D0;
-	border-bottom: 2px solid #D0D0D0;
-	margin: 0px 6px 0px 6px;
 }
 
 li[printmode='true'] .questionTemplate {
@@ -2217,4 +2210,75 @@ label.matchOptionImage{
  	 padding:0px;
   	-webkit-user-modify:read-only;
  	 border:0px
+  }
+  
+  .plusIconQT{
+  line-height: 35px;  
+  margin-right: 5px;
+  }
+  
+  
+ li[qstntemplate='true'] .qti-itemBody > p {
+    
+    display: inline-block;
+    width: 100%;
+    vertical-align: middle;
+    background-color: #E0E0E0 !important;
+    border-bottom: 1px solid #D0D0D0 !important;
+    height: 41px;
+    line-height: 41px;
+    font-size: 14px;
+}
+
+ li[qstntemplate='true'] .qti-itemBody {
+ width: 100%;
+ }
+  
+  li[qstntemplate='true'] .questionTemplateContainer {
+	   font-size: 14px;
+}
+
+li[qstntemplate='true'] .questionTemplateContainer .questionTemplates {
+  margin: 0 0px 15px 0px;
+  background-color: #f8f8f8 !important;
+}
+
+li[qstntemplate='true'] .questionTemplate {
+	padding: 0px 0px 0px 0px;
+	font-size: 12px;
+    width: 100%;
+    font-weight: normal;
+    display: table;
+}
+
+li[qstntemplate='true'] .printViewContainer .optionLabelView {
+	display: inline-block;
+	padding-left: 10px;
+	max-width: 100% !important;
+	vertical-align: middle;
+}
+
+li[qstntemplate='true'] .qti-itemBody:first-child blockquote > p,li[qstntemplate='true'][quiztype='FillInTheBlanks'] .qti-itemBody > blockquote > p {
+	
+	display: inline-block;
+	width: 100%;
+	vertical-align: middle;
+	background-color: #E0E0E0;
+	border-bottom: 1px solid #D0D0D0;
+	height: 41px;
+	line-height: 41px;
+	font-size: 14px;
+}
+
+
+li[qstntemplate='true'][quiztype='Matching'] .qti-itemBody > blockquote > p {	
+	margin: 0 0 3px;
+}
+
+li[qstntemplate='true'][quiztype='Matching'] .qti-itemBody > blockquote:last-child > span.printView{	
+padding-bottom: 10px;
+}
+
+ li[qstntemplate='true'] div #crtAnsSpace{
+   height: 20px
   }

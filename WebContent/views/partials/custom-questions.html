@@ -1,9 +1,4 @@
-<div class="questionTemplateContainer">
-    <div>
-        <p>
-            Drag question to right and add your content.
-        </p>
-    </div>
+<div class="questionTemplateContainer">   
     <div class="tree-node tree-node-content ">
         <div data-ui-tree id="Custom-Qstn-tree-root" class="custom-qstn-tree-root">
             <ol data-nodrop droppable="false" data-ui-tree-nodes data-ng-model="questionTemplates">
@@ -14,7 +9,7 @@
 
         <script type="text/ng-template" id="question_renderer.html">
             <div ui-tree-handle class="questionTemplate tree-node tree-node-content">
- 			<span class="newTest-close glyphicon glyphicon-plus" ng-mousedown="editQuestion(this)" tooltip="Move question to right for editing" tooltip-placement="bottom" ></span>
+ 			<span class="plusIconQT newTest-close glyphicon glyphicon-plus" ng-mousedown="editQuestion(this)" tooltip="Move question to right for editing" tooltip-placement="bottom" ></span>
                 <div class='printViewContainer' ng-if="node" ng-bind-html="getCustomQuestionHTML(this)">
                 </div>
             </div>

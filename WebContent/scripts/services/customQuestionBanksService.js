@@ -21,10 +21,11 @@ angular.module('evalu8Demo')
 					var nodes = [
 									{ "qstnTemplate": MultipleChoice_Template, "quizType": "MultipleChoice"},
 									{ "qstnTemplate": TrueFalse_Template , "quizType": "TrueFalse"},
-									{ "qstnTemplate": MultipleResponse_Template , "quizType": "MultipleResponse"},
+									{ "qstnTemplate": FillInTheBlanks_Template , "quizType": "FillInTheBlanks"}	,									
 									{ "qstnTemplate": MatchFollowing_Template , "quizType": "Matching"},
 									{ "qstnTemplate": Essay_Template , "quizType": "Essay"},
-									{ "qstnTemplate": FillInTheBlanks_Template , "quizType": "FillInTheBlanks"}	
+									{ "qstnTemplate": MultipleResponse_Template , "quizType": "MultipleResponse"}
+									
 									
 								]
 					

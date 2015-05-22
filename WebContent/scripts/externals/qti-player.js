@@ -2861,7 +2861,7 @@ var CustomQuestionTemplate =
 		,
 		"FillInTheBlanks":	
 			
-		{"printCaption": "Fill in the Blanks Question <br> _________________________" ,
+		{"printCaption": "Fill in the Blanks Question <br> _______________" ,
 		  "editCaption": "Enter Question Text",
 		 "printOption": "Answer Choice" ,
 		 "editOption": "Enter Answer for Blank A",
@@ -2873,7 +2873,7 @@ var CustomQuestionTemplate =
 				 var printElement = element.find("p").eq(0);
 				 var textEntries = printElement.find("textEntryInteraction");
 				 textEntries.each(function(){
-					 printElement.html(printElement.html().replace($(this).get(0).outerHTML,"<span class='blank'> _____________________ </span>"));
+					 printElement.html(printElement.html().replace($(this).get(0).outerHTML,"<span class='blank'> _______________ </span>"));
 				 })
 				 
 				 var editElement = element.find("#qtiCaption").eq(0);
