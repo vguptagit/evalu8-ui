@@ -151,7 +151,7 @@ label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D;
 }*/
 
 .btn-default.glyphicon{
-	position: relative;
+  position: absolute;
   top: 0px;
   display: inline-block;
   font-family: 'Glyphicons Halflings';
