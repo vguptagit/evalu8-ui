@@ -644,7 +644,7 @@ angular.module('e8MyTests')
                     test.parentId = null;
                     var position = 0;
                     $.each(parentFolderNodes, function (i,item) {
-                        if (item.nodeType == EnumService.CONTENT_TYPE.test) {
+                        if (item.nodeType == EnumService.CONTENT_TYPE.test || item.nodeType == EnumService.CONTENT_TYPE.archiveRoot) {
                             return false;
                         }
                         position++;
