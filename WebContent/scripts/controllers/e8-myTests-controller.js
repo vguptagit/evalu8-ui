@@ -409,11 +409,12 @@ angular.module('e8MyTests')
         		test.node.nodeType= "archiveTest";
         		
         		if(archivedFolder == null || archivedFolder == "") {
-        			if($scope.archiveRoot && $scope.archiveRoot.node && $scope.archiveRoot.node.nodes && $scope.archiveRoot.node.nodes.length)
+        			if($scope.archiveRoot && $scope.archiveRoot.node && $scope.archiveRoot.node.nodes && $scope.archiveRoot.node.nodes.length) {
         				if($scope.archiveRoot.node.nodes[0].nodeType == EnumService.CONTENT_TYPE.emptyFolder) {
         					$scope.archiveRoot.node.nodes.splice(0,1);
         				}
-        				$scope.archiveRoot.node.nodes.push(test.node);	    
+        				$scope.archiveRoot.node.nodes.push(test.node);
+        			}
         		} else {
         			
         			var testParent = angular.element($('[id=' + archivedFolder.guid + ']')).scope();
@@ -657,14 +658,38 @@ angular.module('e8MyTests')
             else {
                 treeItems = testFolder.nodes;
             }
-            addVersionTest(treeItems, test, newTest);
+            addVersionTest(testFolder, treeItems, test, newTest);
         })
-        var addVersionTest = function (treeItems, test, newTest) {
+        var addVersionTest = function (testFolder, treeItems, test, newTest) {
             $.each(treeItems, function (i, v) {
                 if (v.guid == test.id) {
                     treeItems.splice(i + 1, 0, newTest)
                     return false;
                 }
             });
+            
+        	var testBindings = [];
+        	var sequence = 1.0;
+        	treeItems.forEach(function(test) {
+        		if(test.nodeType == 'test') {
+        			
+            		var testBinding = {
+                			testId: test.guid,
+                			sequence: sequence  
+            		}
+                	testBindings.push(testBinding);
+            		sequence = sequence + 1.0;
+        		}        		 
+        	})
+        	
+        	var destNode;
+        	if(testFolder == null) {
+        		var destNode = $scope.myTestRoot;    			
+    		} else {
+    			destNode = testFolder;
+    		}
+        	
+        	destNode.testBindings = testBindings;
+        	UserFolderService.saveUserFolder(destNode);
         }
     }]);
