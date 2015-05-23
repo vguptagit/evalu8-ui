@@ -1,166 +1,162 @@
 'use strict';
 
 angular
-		.module('evalu8Demo')
+.module('evalu8Demo')
 
-		.service(
-				'UserService',
-				[
-						'$http',
-						'$rootScope',
-						'$location',
-						'$cookieStore',
-						function($http, $rootScope, $location, $cookieStore) {
+.service('UserService',[
+			'$http',
+			'$rootScope',
+			'$location',
+			'$cookieStore',
+			function($http, $rootScope, $location, $cookieStore) {
 
-							$rootScope.globals = $cookieStore.get('globals')
-									|| {};
+				$rootScope.globals = $cookieStore.get('globals')
+						|| {};
 
-							var config = {
-								headers : {
-									'x-authorization' : $rootScope.globals.authToken,
-									'Accept' : 'application/json;odata=verbose'
-								}
-							};
+				var config = {
+					headers : {
+						'x-authorization' : $rootScope.globals.authToken,
+						'Accept' : 'application/json;odata=verbose'
+					}
+				};
 
-							this.userPrintSettings = function(callback) {
-								$http.get(
-										evalu8config.apiUrl
-												+ '/settings/printsettings',
-										config).success(function(response) {
-									callback(response)
-								});
-							};
+				this.userPrintSettings = function(callback) {
+					$http.get(
+							evalu8config.apiUrl
+									+ '/settings/printsettings',
+							config).success(function(response) {
+						callback(response)
+					});
+				};
 
-							this.userDisciplines = function(callback) {
+				this.userDisciplines = function(callback) {
 
-								var userDisciplines = [];
-								$http
-										.get(
-												evalu8config.apiUrl
-														+ "/settings/disciplines/",
-														this.getConfig())
-										.success(
-												function(response, status) {
+					var userDisciplines = [];
+					$http
+							.get(
+									evalu8config.apiUrl
+											+ "/settings/disciplines/",
+											this.getConfig())
+							.success(
+									function(response, status) {
 
-													if (response != "") {
-														response
-																.forEach(function(
-																		item) {
-																	userDisciplines
-																			.push(item);
-																});
+										if (response != "") {
+											response
+													.forEach(function(
+															item) {
+														userDisciplines
+																.push(item);
+													});
 
-													}
+										}
 
-													callback(userDisciplines,
-															status);
-												}).error(
-												function(error, status) {
-													callback(error, status);
-												});
-							};
+										callback(userDisciplines,
+												status);
+									}).error(
+									function(error, status) {
+										callback(error, status);
+									});
+				};
 
-							this.userBookIDs = function(callback) {
+				this.userBookIDs = function(callback) {
 
-								var userBookIDs = [];
+					var userBookIDs = [];
 
-								$http.get(
-										evalu8config.apiUrl + '/settings/books',
-										config).success(function(response) {
+					$http.get(
+							evalu8config.apiUrl + '/settings/books',
+							config).success(function(response) {
 
-									if (response != "") {
-										response.forEach(function(item) {
-											userBookIDs.push(item);
-										});
-									}
+						if (response != "") {
+							response.forEach(function(item) {
+								userBookIDs.push(item);
+							});
+						}
 
-									callback(userBookIDs);
-								});
-							};
+						callback(userBookIDs);
+					});
+				};
 
-							this.userQuestionMetadata = function(callback) {
+				this.userQuestionMetadata = function(callback) {
 
-								var userQuestionMetadata = [];
-								$http
-										.get(
-												evalu8config.apiUrl
-														+ "/settings/questionmetadata/",
-												config)
-										.success(
-												function(response) {
+					var userQuestionMetadata = [];
+					$http
+							.get(
+									evalu8config.apiUrl
+											+ "/settings/questionmetadata/",
+									config)
+							.success(
+									function(response) {
 
-													if (response != "") {
-														response
-																.forEach(function(
-																		item) {
-																	userQuestionMetadata
-																			.push(item);
-																});
-													}
+										if (response != "") {
+											response
+													.forEach(function(
+															item) {
+														userQuestionMetadata
+																.push(item);
+													});
+										}
 
-													callback(userQuestionMetadata);
-												});
+										callback(userQuestionMetadata);
+									});
 
-							};
+				};
 
-							this.saveUserBooks = function(userBookIDs, callback) {
+				this.saveUserBooks = function(userBookIDs, callback) {
 
-								$http.post(
-										evalu8config.apiUrl + '/settings/books',
-										userBookIDs, config).success(
-										function(response) {
-											if (callback)
-												callback();
-										}).error(function(error, status) {
+					$http.post(
+							evalu8config.apiUrl + '/settings/books',
+							userBookIDs, config).success(
+							function(response) {
+								if (callback)
+									callback();
+							}).error(function(error, status) {
 
-								})
-							}
+					})
+				}
 
-							this.saveUserDisciplines = function(
-									userDisciplines, callback) {
+				this.saveUserDisciplines = function(
+						userDisciplines, callback) {
 
-								$http.post(
-										evalu8config.apiUrl
-												+ '/settings/disciplines',
-										userDisciplines, config).success(
-										function(response) {
-											if (callback)
-												callback();
-										}).error(function(error, status) {
+					$http.post(
+							evalu8config.apiUrl
+									+ '/settings/disciplines',
+							userDisciplines, config).success(
+							function(response) {
+								if (callback)
+									callback();
+							}).error(function(error, status) {
 
-								})
-							}
+					})
+				}
 
-							this.saveUserQuestionMetadata = function(
-									userQuestionMetadata) {
+				this.saveUserQuestionMetadata = function(userQuestionMetadata, callback) {
 
-								$http
-										.post(
-												evalu8config.apiUrl
-														+ '/settings/questionmetadata',
-												userQuestionMetadata, config)
-										.success(
-												function(response) {
-													document
-															.getElementById("divSaveMessage").innerHTML = "<span style='color:green'>Settings saved successfully<span>";
-												})
-										.error(
-												function(error, status) {
-													document
-															.getElementById("divSaveMessage").innerText = error.message;
-													if (status == 403)
-														$location
-																.path('/login');
-												})
-							}
-							
-							this.getConfig = function(){
-								if(config.headers["x-authorization"] == null){
-									config.headers["x-authorization"] = $cookieStore.get('globals').authToken;
-								}
-								else if(config.headers["x-authorization"].length == 0){
-									config.headers["x-authorization"] = $cookieStore.get('globals').authToken;
-								}
-								return config;
-							}
-						} ])
+					$http
+							.post(
+									evalu8config.apiUrl
+											+ '/settings/questionmetadata',
+									userQuestionMetadata, config)
+							.success(
+									function(response) {
+										document
+												.getElementById("divSaveMessage").innerHTML = "<p style='color:green'>Settings saved successfully</p>";
+										callback(true);
+									})
+							.error(
+									function(error, status) {
+										document
+												.getElementById("divSaveMessage").innerText = "<p style='color:red'>Error saving settings</p>" + "<p>" + error.message + "</p>";
+										callback(false);
+									})
+				}
+				
+				this.getConfig = function(){
+					if(config.headers["x-authorization"] == null){
+						config.headers["x-authorization"] = $cookieStore.get('globals').authToken;
+					}
+					else if(config.headers["x-authorization"].length == 0){
+						config.headers["x-authorization"] = $cookieStore.get('globals').authToken;
+					}
+					return config;
+				}
+} ])

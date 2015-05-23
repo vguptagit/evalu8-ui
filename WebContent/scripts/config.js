@@ -1,7 +1,7 @@
 (function(ns) {
 	
 	ns.domain = window.location.protocol + "//" + window.location.host;	
-    ns.uiUrl = ns.domain + "/evalu8-ui";    
+    ns.uiUrl = ns.domain + "/evalu8";    
     ns.apiUrl = ns.domain + "/mytest";    
 	
 	ns.viaPILogin = true;

@@ -43,9 +43,12 @@ angular.module('evalu8Demo')
 	 
 	 $scope.savePref = function() {								 
 		 
-		 UserService.saveUserQuestionMetadata($scope.questionMetadata.userSelected);
-		 SharedTabService.userQuestionSettings=$scope.questionMetadata.userSelected;
-		 $modalInstance.close();
+		 UserService.saveUserQuestionMetadata($scope.questionMetadata.userSelected, function(success) {
+			 if(success) {
+				 SharedTabService.userQuestionSettings=$scope.questionMetadata.userSelected;
+				 $modalInstance.close();				 
+			 }
+		 });
 	 };
 	 
 	  $scope.edit = function(step) {

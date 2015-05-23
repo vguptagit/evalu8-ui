@@ -9,6 +9,7 @@
 
 <div class="modal-body">
 
+	<div id="divSaveMessage"></div>
 	<div class="row">
 		<div class="col-md-12">
 
@@ -63,7 +64,7 @@
 				<div class="col-md-12" style="padding-top: 15px; margin-top: 25px;">
 					<div style="float:left;" data-ng-repeat="filter in questionMetadata.all">
 						<div class="checkboxDiv">
-							<input type="checkbox" data-checklist-model="questionMetadata.userSelected" data-checklist-value="filter">
+							<input type="checkbox" checklist-model="questionMetadata.userSelected" data-checklist-value="filter">
 						</div>
 						<div ng-if="filter == 'PageReference'" style="padding: 5px;" class="checkboxLabelDiv">Page Reference</div>
 						<div ng-if="filter == 'QuestionId'" style="padding: 5px;" class="checkboxLabelDiv">Question Id (provided by Evalu8)</div>						
