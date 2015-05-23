@@ -15,7 +15,7 @@ function($scope, $rootScope, $location, $http, AuthenticationService) {
 			$http.post(evalu8config.apiUrl + '/login', '', piconfig)
 			.success(function (response) {						
 				
-				AuthenticationService.SetCredentials(response.token, response.loginCount);
+				AuthenticationService.SetCredentials(response.token, response.loginCount, response.givenName, response.familyName, response.emailAddress);
 				
 				if(response.loginCount > evalu8config.welcomeLoginCount) {
 					window.location.href = evalu8config.homeUrl;

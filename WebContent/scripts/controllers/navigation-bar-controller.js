@@ -6,23 +6,25 @@ angular.module('evalu8Demo')
 		'NavigationBarController',
 		[ '$scope', '$rootScope', '$modal', 'AuthenticationService',
 				function($scope, $rootScope, $modal, AuthenticationService) {
-					// $scope.userName =
-					// $rootScope.globals.currentUser.username;
 
-					$scope.logout = function() {
+			$scope.showUserInNavBar = function() {
+				return (window.location.href.indexOf("signin") == -1) ? true : false;				
+			}
+  
+			$scope.logout = function() {
 
-						AuthenticationService.logout();
-					}
-					
-					$scope.settings_open = function() {
+				AuthenticationService.logout();
+			}
+			
+			$scope.settings_open = function() {
 
-						$modal.open({
-							templateUrl : 'views/usersettings.htm',
-							controller : 'UserSettingsController',
-							size : 'lg',
-							backdrop : 'static',
-							keyboard : false
-						});
-					}
+				$modal.open({
+					templateUrl : 'views/usersettings.htm',
+					controller : 'UserSettingsController',
+					size : 'lg',
+					backdrop : 'static',
+					keyboard : false
+				});
+			}
 
-				} ]);
+		} ]);

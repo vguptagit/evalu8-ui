@@ -12,10 +12,15 @@
         <div id="navbar" class="navbar-collapse collapse pull-right">
             <ul class="nav navbar-nav">
                 <li class="dropdown">
-                    <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="fa fa-user"></span>&nbsp John <span class="glyphicon glyphicon-chevron-down" tooltip="Logout and Account Information" tooltip-placement="bottom"></span><span class="border-right margin-border"></span></a>
+                
+                    <a ng-show="showUserInNavBar()" href="" class="dropdown-toggle" data-toggle="dropdown" role="button" 
+                    aria-expanded="false"><span class="fa fa-user"></span>&nbsp {{$root.globals.givenName}} <span class="glyphicon glyphicon-chevron-down" 
+                    tooltip="Logout and Account Information" tooltip-placement="bottom"></span><span 
+                    class="border-right margin-border"></span></a>
+                    
                     <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                        <li class="text-center"><label class="margin-lft-20"><strong>John Smith</strong></label></li>
-                        <li class ="text-center"><label class="margin-lft-20">john.smith@nyu.edu</label></li>
+                        <li class="text-center"><label class="margin-lft-20"><strong>{{$root.globals.givenName}} {{$root.globals.familyName}}</strong></label></li>
+                        <li class ="text-center"><label class="margin-lft-20">{{$root.globals.emailAddress}}</label></li>
                         <li class="divider"></li>
                         <li>
                             <button type="button" class="btn btn-default" ng-click="settings_open()">Settings</button>

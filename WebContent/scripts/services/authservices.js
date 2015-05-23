@@ -23,11 +23,14 @@ angular.module('e8Login')
 				})
 			};			
 
-			service.SetCredentials = function (authToken, loginCount) {
+			service.SetCredentials = function (authToken, loginCount, givenName, familyName, emailAddress) {
 
 				$rootScope.globals = {
 						authToken: authToken,
-						loginCount: loginCount
+						loginCount: loginCount,
+						givenName: givenName, 
+						familyName: familyName, 
+						emailAddress: emailAddress
 				};
 
 				$cookieStore.put('globals', $rootScope.globals);
@@ -36,7 +39,10 @@ angular.module('e8Login')
 			service.ClearCredentials = function () {
 				$rootScope.globals = {
 						authToken: '',
-						loginCount: ''
+						loginCount: '',
+						givenName: '', 
+						familyName: '', 
+						emailAddress: ''
 				};
 
 				$cookieStore.put('globals', $rootScope.globals);       
