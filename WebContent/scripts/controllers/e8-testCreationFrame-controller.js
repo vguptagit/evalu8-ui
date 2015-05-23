@@ -73,7 +73,7 @@ angular
 									return;
 								}
 								
-								if(selectedQstnNode.node.quizType = "FillInTheBlanks"  &&  ($(selectedQstnNode.$element).find('#qtiCaption').find('button').length <= 0) && selectedQstnNode.node.IsEditView){
+								if(selectedQstnNode.node.quizType == "FillInTheBlanks"  &&  ($(selectedQstnNode.$element).find('#qtiCaption').find('button').length <= 0) && selectedQstnNode.node.IsEditView){
 									$scope.IsConfirmation = false;
 									$scope.message = "Add Blank to the Question";
 
