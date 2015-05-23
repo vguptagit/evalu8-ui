@@ -3252,7 +3252,7 @@ QTI.replaceBlank = function(elm,text,xml,qstnHTML){
 			actualContent = "<![CDATA[" + text.substring(0,text.indexOf(buttons.get(i).outerHTML)) + "]]>"
 		else{
 			var index = text.indexOf(buttons.get(i-1).outerHTML) + buttons.get(i-1).outerHTML.length;
-			actualContent = "<![CDATA[" + text.substring(index,text.indexOf(buttons.get(i).outerHTML)) + "]]>"
+			actualContent = actualContent + "<![CDATA[" + text.substring(index,text.indexOf(buttons.get(i).outerHTML)) + "]]>"
 		}
 //		text = text.replace(buttons.get(i).outerHTML,"<textEntryInteraction expectedLength='150' responseIdentifier='" + buttons.eq(i).attr("id") + "' />")
 		textEntryBackUp = "<textEntryInteraction expectedLength='150' responseIdentifier='" + buttons.eq(i).attr("id") + "' />"

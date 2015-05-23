@@ -269,7 +269,7 @@ angular
 
 																		
 								if($(xml).find('itemBody').find("textEntryInteraction").length > 0)
-									$(xml).find('itemBody').find("textEntryInteraction").eq(0).attr("blankSize",qstnHTML.find(".BlankSizeDiv input[type=radio]:checked").attr("blankSize"))
+									$(xml).find('itemBody').find("textEntryInteraction").attr("expectedLength",qstnHTML.find(".BlankSizeDiv input[type=radio]:checked").attr("blanksize"))
 									
 
 								$(xml).find('itemBody').find(
