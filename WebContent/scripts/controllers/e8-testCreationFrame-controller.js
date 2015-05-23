@@ -73,7 +73,7 @@ angular
 									return;
 								}
 								
-								if(selectedQstnNode.node.quizType == "FillInTheBlanks"  &&  ($(selectedQstnNode.$element).find('#qtiCaption').find('button').length <= 0) && selectedQstnNode.node.IsEditView){
+								if(selectedQstnNode.node.quizType = "FillInTheBlanks"  &&  ($(selectedQstnNode.$element).find('#qtiCaption').find('button').length <= 0) && selectedQstnNode.node.IsEditView){
 									$scope.IsConfirmation = false;
 									$scope.message = "Add Blank to the Question";
 
@@ -1063,8 +1063,9 @@ angular
 															newNode.IsEditView = false;
 															newNode.editMainText = CustomQuestionTemplate["MultipleChoice"].editMainText;
 																																	
-															$.each(newNode.extendedMetadata, function(index, item){																	
-																			 newNode['questionMetadata'][item['name']]=item['value'];																				
+															$.each(newNode.extendedMetadata, function(index, item){		
+																			var name = item['name'].charAt(0).toUpperCase() + item['name'].slice(1);
+																			 newNode['questionMetadata'][name]=item['value'];																				
 																		    });															
 															
 															newNode.selectedLevel = newNode.questionMetadata['Difficulty']==undefined?{name:'Select Level',value:'0'}:{name:newNode.questionMetadata['Difficulty'],value:newNode.questionMetadata['Difficulty']};
