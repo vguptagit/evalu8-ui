@@ -60,14 +60,7 @@ angular
 								this.closeQstnBtn = false;
 							};
 							
-							if(selectedQstnNode.node.quizType = "FillInTheBlanks"  &&  ($(selectedQstnNode.$element).find('#qtiCaption').find('button').length <= 0) && selectedQstnNode.node.IsEditView){
-								$scope.IsConfirmation = false;
-								$scope.message = "Add Blank to the Question";
 
-								$modal.open(confirmObject);
-								return;
-								
-							}
 							$scope.showQstnPrintOrEditMode = function(
 									selectedQstnNode) {
 								if (SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode
@@ -78,6 +71,15 @@ angular
 									$modal.open(confirmObject);
 
 									return;
+								}
+								
+								if(selectedQstnNode.node.quizType = "FillInTheBlanks"  &&  ($(selectedQstnNode.$element).find('#qtiCaption').find('button').length <= 0) && selectedQstnNode.node.IsEditView){
+									$scope.IsConfirmation = false;
+									$scope.message = "Add Blank to the Question";
+
+									$modal.open(confirmObject);
+									return;
+									
 								}
 								var qstnHtml = selectedQstnNode.node.textHTML;
 								this.showQstnEditIcon = !this.showQstnEditIcon;
