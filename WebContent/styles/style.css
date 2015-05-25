@@ -65,6 +65,7 @@ label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D;
 .margin-bot-10{margin-bottom:10px;}
 .margin-bot-15{margin-bottom:15px;}
 .margin-top-20{margin-top:20px;}
+.margin-top-22{margin-top:22px;}
 .margin-bot-20{margin-bottom:20px;}
 .margin-rt-5{margin-right:5px;}
 .margin-rt-10{margin-right:10px;}
@@ -340,10 +341,10 @@ section {
 .padding-lft-15{padding-left:15px;}
 .paddingall20{padding:20px;}
 .paddingall30{padding:10px 30px;}
-.padding-lft35{padding-left: 35px;}
+.padding-lft30{padding-left: 30px;}
 hr{margin: 0;}
 .botborder { border-bottom: 1px solid #E0E0E0; height: 100px; background-color: #f8f8f8;}
-.resourcetab{height: 55px; padding-top: 10px; padding-left: 20px;}
+.resourcetab{height: 55px; padding-top: 10px; padding-left: 15px;}
 .angular-ui-tree-nodes .angular-ui-tree-nodes {padding-left: 0;}
 
 .full-width-tabs > ul.nav.test-tabs {
@@ -361,6 +362,8 @@ hr{margin: 0;}
   text-align: center;
     width: 96px;
 }
+
+.marginrow{margin:0 -10px;}
 
 @media (max-width: 767px)
 { 	.container{width:750px;}
