@@ -289,14 +289,9 @@ a.newFolder:hover {
 }
 
 .sectionLineDiv {
-	width: 98%;
-	margin-left: 2%;
-	margin-right: 2%;
+	width: 100%;
 	background-color: #DDDDDD;
-	padding: 2px 2px;
-	margin-top: 4px;
-	margin-bottom: 3px;
-	border-radius: 3px;
+	padding: 0 5px;
 	cursor: default;
 }
 
@@ -379,7 +374,7 @@ a.newFolder:hover {
 	float: right;
 	position: absolute;
 	right: 25px;
-	margin-top: 7px;
+	margin-top: 5px;
 }
 
 .iconsChapter span:first-child{
@@ -403,10 +398,9 @@ a.newFolder:hover {
 	overflow-y: auto;
 	position: absolute;
 	top: 268px;
-	bottom: 0px;
-	left: 0px;
-	right: 0px;
-	padding-right: 2px;
+	bottom: 10px;
+	left: 0;
+	right: 0;
 }
 
 .qti-simpleChoice span.tick {
@@ -781,7 +775,7 @@ ol {
 	border: 0px;
 	border-radius: 3px;
 	text-align: left;
-	padding-left: 20px;
+	padding-left: 25px;
 	line-height: 40px;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-weight: normal;
@@ -815,7 +809,7 @@ ol {
 }
 
 .testCaptionDiv {
-	width: 80%;
+	width: 100%;
 	float: left;
 }
 
@@ -1048,10 +1042,14 @@ ol {
 	font-size: 15px;
 }
 
+.questionTemplateContainer .questionTemplates {
+  margin: 0 0px 15px 0px;
+  background-color: #f8f8f8;
+}
+
 li[printmode='true'] .questionTemplate {
-	padding: 0px 0px 20px 20px;
 	font-size: 12px;
-	width: 97%;
+	width: 100%;
 	font-weight: normal;
 	display: table;
 }

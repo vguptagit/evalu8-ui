@@ -1,5 +1,5 @@
 <div class="row testContainer">
-    <div class="col-lg-12 myTest_scrollbar">
+    <div class="col-lg-12 ">
         <div>
             <div class="newFolderDiv">
                 <!-- <label class=" treeDiv1"> -->
@@ -14,7 +14,7 @@
             </div>
 
         </div>
-        <div data-ui-tree id="MyTest-tree-root">
+        <div data-ui-tree id="MyTest-tree-root" class="myTest_scrollbar">
             <ol data-ui-tree-nodes data-ng-model="defaultFolders">
 				<div class="testMessagetip"  style="position: absolute;top:0px">
 				<div class="newTest-close glyphicon glyphicon-remove"
@@ -34,7 +34,7 @@
                 <div class="sectionLineDiv"></div>
             </div>
             <div data-ng-if="node.nodeType == 'archiveRoot'" class="treeDiv">
-                <div class="maindiv">
+                <div class="newFolderDiv padding-lft-15">
                     <div class="imagediv">
                         <input type="image" ng-click="getFolders(this)" class="collapseImg"
                                ng-src="{{collapsed && 'images/right_arrow2.png' || 'images/right_arrow.png'}}" />

@@ -4,13 +4,15 @@ body {
 }
 
 .divider {
-    background-color: #505050;
+    background-color: #E8E8E8;
     background-image: url("/images/divider.png");
     background-repeat-y: no-repeat;
     background-position-y: 50%;
+    border-left : 1px solid #D0d0d0;
+    border-right : 1px solid #D0d0d0;
     height: 94.4vh;
     position: absolute;
-    width: 13px;
+    width: 7px;
     z-index: 9;
 }
 
@@ -90,7 +92,7 @@ login-container .panel-footer {
 }
 .myTest_scrollbar{
       position: relative;
-      top: 10px;
+      top: 0;
 }
 .save-dropdown a{
     cursor:pointer;

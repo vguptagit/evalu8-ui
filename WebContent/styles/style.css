@@ -337,12 +337,14 @@ section {
     display: inline-block; width:100%;
 }
 
+.padding-lft-15{padding-left:15px;}
 .paddingall20{padding:20px;}
 .paddingall30{padding:10px 30px;}
 .padding-lft35{padding-left: 35px;}
 hr{margin: 0;}
 .botborder { border-bottom: 1px solid #E0E0E0; height: 100px; background-color: #f8f8f8;}
 .resourcetab{height: 55px; padding-top: 10px; padding-left: 20px;}
+.angular-ui-tree-nodes .angular-ui-tree-nodes {padding-left: 0;}
 
 .full-width-tabs > ul.nav.test-tabs {
   /* display: table; */
