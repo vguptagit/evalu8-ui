@@ -155,7 +155,8 @@ angular
 											$scope.userQuestions
 													.forEach(function(userQuestion) {
 														var yourQuestion = {};
-														var displayNode = $("<div></div>")
+														var displayNode = $("<div></div>");
+														QTI.BLOCKQUOTE.id = 0;
 														QTI.play(userQuestion.qtixml,
 																displayNode,
 																false, false,userQuestion.metadata.quizType);

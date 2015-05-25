@@ -1677,24 +1677,12 @@ if(state.questionType=="Matching"){
 	    	 this.extend.play(qtiNode, elementDisplayNode, state);
 	  		this.processChildren(qtiNode, elementDisplayNode, state);
 	  		
-	  		if(qstnCaption!=""){
-	  			
-	              var    contentsDisplayNode = $("<label class='mOptionLabel'></label>").attr({                      
-                      "data---qti-content-container" : "true"
-                  });
-
-	  		
-            contentsDisplayNode.append(optionPtext);
-
-	  		$(elementDisplayNode).append(contentsDisplayNode);
-	  		optionPtext=QTI.replaceImage($(contentsDisplayNode));	
-
-	  		}
-	  	
-	  		 
-	    }
-		
-		
+	  		if(qstnCaption!=""){	  			
+	  			$(displayNode).find("label.mOptionLabel").append(optionPtext);
+	  			optionPtext=QTI.replaceImage($($(displayNode).find("label.mOptionLabel")));
+	  		}  	
+	  }
+				
 		if($(displayNode)[0].nodeName=="BLOCKQUOTE"){
 			
 			var BLOCKQUOTE_ID = QTI.BLOCKQUOTE.getId();				
@@ -1775,8 +1763,7 @@ var textBox = $("<div contenteditable='true'  class='editView' type='text' id='q
 				if($(displayNode)[0].nodeName=="BLOCKQUOTE"){
 					var BLOCKQUOTE_ID = QTI.BLOCKQUOTE.getId();
 					var blockQuoteVAL=CustomQuestionTemplate[state.questionType].printOption + " "+ BLOCKQUOTE_ID + " _______";
-					$(elementDisplayNode).append($("<span class='printView printViewOption'></span>").text(
-							blockQuoteVAL));
+					   $(displayNode).find("label.mOptionLabel").append(blockQuoteVAL);
 				}else{
 					textBox.attr("data-placeholder",CustomQuestionTemplate[state.questionType].editCaption);
 					$(elementDisplayNode).append(CustomQuestionTemplate[state.questionType].printCaption);
@@ -2721,9 +2708,14 @@ QTI.Elements.InlineChoiceInteraction.play = function(qtiNode, displayNode,
 		var elementDisplayNode = QTI.prepare(qtiNode,
 				$("<div class='matchRight printView'></div>"));
 		
-		displayNode.prepend("<div  class='printView indChar' style='float:left'>"
-				+ matchIndex[qtiNode.attr("responseIdentifier").substring(9)]
+		displayNode.prepend("<div  class='printView matchingOption'>"
+				+ "<label class='indChar'>"+ matchIndex[qtiNode.attr("responseIdentifier").substring(9)] +"</label>"
 				+ "</div>")
+		
+		$(displayNode).find("div.matchingOption").append(
+            		 $("<label class='mOptionLabel'></label>").attr({                      
+                         "data---qti-content-container" : "true"
+                     }));   
 				
 			
 		$(displayNode).append(elementDisplayNode);

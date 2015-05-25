@@ -1141,8 +1141,7 @@ li[printmode='false'] .questionList {
 	display: none;
 }
 
-.printViewContainer .optionLabelView {
-	display: inline-block;
+.printViewContainer .optionLabelView {	
 	padding-left: 10px;
 	max-width: 91%;
 	vertical-align: middle;
@@ -2060,11 +2059,8 @@ li[qstntemplate='true'] .indChar {
 }
 
 .printViewContainer  .qti-blockquote .matchIndex {
-	font-size: 11px;
-	font-weight: bold;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	vertical-align: top;
-	padding-top: 6px;
+	font-size: 14px;	
+	font-family: Verdana, Arial, Helvetica, sans-serif;	
 }
 
 .printViewContainer .questionImage {
@@ -2073,8 +2069,8 @@ li[qstntemplate='true'] .indChar {
 }
 
 .printViewContainer .indChar {
-	font-size: 11px;
-	font-weight: bold;
+	font-size: 14px;	
+	font-family: Verdana, Arial, Helvetica, sans-serif;
 }
 
 li[qstntemplate=true] .printViewContainer  .qti-blockquote .matchIndex {
@@ -2123,8 +2119,7 @@ li[qstntemplate=true] .printViewContainer  .qti-blockquote .matchIndex {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 }
 
-.printViewContainer .mOptionLabel {
-	display: table;
+.printViewContainer .mOptionLabel {	
 	padding-left: 10px;
 }
 
@@ -2327,6 +2322,17 @@ padding-bottom: 10px;
 li[qstntemplate='true'] div #crtAnsSpace{
    height: 20px
 }  
+
+li[printmode='true'] .matchingOption{	
+	max-width: 200px;
+	min-width: 50%;
+}
+
+li[qstntemplate='true'] .matchingOption {
+   min-width: 30%;
+}
+
+
 li[qstntemplate='true'] .matchRight {
    min-width: 70%;
 }
@@ -2346,4 +2352,12 @@ li[qstntemplate='true'] .qti-simpleChoice .radio, li[printmode='true'] .qti-simp
 	margin-right: -10px;
 	float: right;
 	margin-top:3px;
+}
+
+li[printmode='true'] .qti-itemBody > blockquote:last-child > p{	
+margin-bottom: 10px;
+}
+
+li[printmode='true'] .qti-itemBody .qti-blockquote > p:first-child{	
+margin: 0 0 3px;
 }
