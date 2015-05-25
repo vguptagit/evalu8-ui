@@ -739,7 +739,7 @@ angular
 																	.replace(
 																			/&nbsp;/g,
 																			" ");
-															cursorPosition = QTI.getActualCursorPosition(cursorPosition,element);
+															cursorPosition = QTI.getActualCursorPosition(cursorPosition,element,optionText);
 															element
 																	.html(optionText
 																			.substring(

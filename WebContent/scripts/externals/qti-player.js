@@ -1819,6 +1819,8 @@ var textBox = $("<div contenteditable='true'  class='editView' type='text' id='q
  	
 	
  	 var qstnCaption=QTI.replaceImage(qtiNode);
+// 	elementDisplayNode.html(qstnCaption);
+ 	 
 	
 	var contentsDisplayNode2 = $(
 	"<div class='textBoxContainer editView editablediv' ></div>")
@@ -2937,34 +2939,12 @@ var CustomQuestionTemplate =
 				 switch(tag.TAG){
 				 case "p":
 					 var printElement = element.find("p").eq(0);
-						var serializedQtiNode='';
-						var printElement1 = "";
-					// printElement.html(xml);
-					 var xmlChildren = xml.eq(0).get(0).childNodes;
-					 for(var i=0;i<xmlChildren.length;i++){
-					 
-						 if(xmlChildren[i].nodeType==4){
-								serializedQtiNode =xmlChildren[i].textContent;			
-							}else if(xmlChildren[i].nodeName=="textEntryInteraction"){		
-								serializedQtiNode =(new XMLSerializer()).serializeToString(xmlChildren[i]);			
-							}
-						 printElement1 =printElement1 + serializedQtiNode;
-					 }
-					 if(xmlChildren.length > 0){
-						 printElement.html(printElement1);
-						 element.find("#qtiCaption").eq(0).html(printElement1);
-					 }
 					 var textEntries = printElement.find("textEntryInteraction");
 					 textEntries.each(function(){
 						 printElement.html(printElement.html().replace($(this).get(0).outerHTML,"<span class='blank'> _____________________ </span>"));
 					 })
 					 
-					 //printElement.replace(/<!\[/g,"");
-					 //<![CDATA[
-					//]]>
-					/* textEntries.each(function(){
-						 editElement.html(editElement.html().replace($(this).get(0).outerHTML,"<button id='id' onkeydown='return QTI.getSpanId(this,event)' class='blankFIBButton '><span contenteditable='false' class='blankWidth editView'><b contenteditable='false'>" + String.fromCharCode(65 + 1 ) + ".</b>Fill Blank</span></button>&nbsp;"));
-					 })*/
+					
 					 
 					 $("<button class='editView blankButton' ng-mousedown='addBlank(this,$event)' ng-disabled='captionFocus'>Add Blank</button><br/>").insertAfter(printElement.next());
 					
@@ -3037,7 +3017,7 @@ QTI.replaceImage = function(qtiNode){
 }
 
 QTI.getActualCursorPosition = function(cursorPosition,element){
-	var images = element.find("u[contenteditable=false]");
+	var images = element.find("u[contenteditable=false],button");
 	var actualLenght;
 	var actualText;
 	images.each(function(){
@@ -3055,7 +3035,7 @@ QTI.getActualCursorPosition = function(cursorPosition,element){
 }
 
 QTI.getActualCursorPosition1 = function(cursorPosition,element,htmlContent){
-	var textBox = element.find("button");
+	var textBox = element.find("button,u[contenteditable=false]");
 	var actualLenght;
 	var actualText;
 	textBox.each(function(){
@@ -3134,16 +3114,19 @@ QTI.prependContent = function(elm,val){
 QTI.getSerializedXML = function(qtiNode){	
 	
 	var serializedQtiNode='';
+	var serializedText = '';
 	
-	if(qtiNode.get(0).firstChild!=null){
-		if(qtiNode.get(0).firstChild.nodeType==4){
-			serializedQtiNode = qtiNode.eq(0).get(0).childNodes[0].textContent;			
-		}else{		
-			serializedQtiNode = $((new XMLSerializer()).serializeToString(qtiNode[0])).html();			
-		}
-	}
-	
-		return serializedQtiNode;
+	 var xmlChildren = qtiNode.eq(0).get(0).childNodes;
+	 for(var i=0;i<xmlChildren.length;i++){
+	 
+		 if(xmlChildren[i].nodeType==4){
+				serializedQtiNode =xmlChildren[i].textContent;			
+			}else{		
+				serializedQtiNode =(new XMLSerializer()).serializeToString(xmlChildren[i]);			
+			}
+		 serializedText =serializedText + serializedQtiNode;
+	 }
+	return serializedText;
 }
 
 QTI.getSerializedOuterXML = function(qtiNode){	
