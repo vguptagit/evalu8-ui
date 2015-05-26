@@ -155,7 +155,7 @@ label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D;
 
 .btn-default.glyphicon{
   position: absolute;
-  top: 0px;
+  top: 3px;
   display: inline-block;
   font-family: 'Glyphicons Halflings';
   font-style: normal;
@@ -217,7 +217,7 @@ label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D;
   cursor: default;
   background-color: #fff;
   border: 1px solid #ddd;
-  border-bottom : 2px solid #fff;
+  border-bottom : 5px solid #fff;
 }
 
 .nav>li>a {
@@ -314,7 +314,7 @@ label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D;
 }
 .nav {
   padding-left: 0;
-  margin-bottom: -2px;
+  margin-bottom: 2px;
   list-style: none;
 }
 a.fa.fa-user{
@@ -341,7 +341,7 @@ section {
 }
 
 .padding-lft-15{padding-left:15px;}
-.paddingall20{padding:20px;}
+.paddingall20{padding:5px 20px;}
 .paddingall30{padding:10px 30px;}
 .padding-lft30{padding-left: 30px;}
 hr{margin: 0;}
@@ -367,6 +367,19 @@ hr{margin: 0;}
 
 .marginrow{margin:0 -10px;}
 
+.block-ui-message {
+ display: inline-block;
+  text-align: left;
+  color: #f5f5f5;
+  padding: 20px;
+  border-radius: 4px;
+  font-size: 50px;
+  font-weight: bold;
+  background-color: transparent;
+  -webkit-animation: load8 1.1s infinite linear;
+  -webkit-transform: rotate(0deg);
+} 
+
 @media (max-width: 767px)
 { 	.container{width:750px;}
 	.discplineheight{height: 200px;}
@@ -390,15 +403,3 @@ hr{margin: 0;}
 .bookContainer{height: 410px;}
 	}
 
-.block-ui-message {
- display: inline-block;
-  text-align: left;
-  color: #f5f5f5;
-  padding: 20px;
-  border-radius: 4px;
-  font-size: 50px;
-  font-weight: bold;
-  background-color: transparent;
-  -webkit-animation: load8 1.1s infinite linear;
-  -webkit-transform: rotate(0deg);
-} 

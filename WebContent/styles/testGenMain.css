@@ -352,7 +352,7 @@ a.newFolder:hover {
 }
 
 .captiondiv {
-	width: 96%;
+	width: 95%;
 	float: left;
 	margin-top: 15px;
 	margin-left: 5px;
@@ -384,7 +384,7 @@ a.newFolder:hover {
 	position: absolute;
 	right: 25px;
 	margin-top: 5px;
-	width:90px;
+	width: 90px;
 }
 
 .iconsChapter span:first-child{
@@ -411,6 +411,7 @@ a.newFolder:hover {
 	bottom: 10px;
 	left: 0;
 	right: 0;
+    overflow-x: hidden;
 }
 
 .qti-simpleChoice span.tick {
@@ -564,9 +565,11 @@ ol {
 }
 
 #TestCreationArea {
-	margin-top: 20px;
+	margin-top: 15px;
 	margin-left: 10px;
 }
+
+.TestCreationAreatitle {margin-top: 7px; height: 22px;}
 
 #QuestionConent {
 	text-align: left;
@@ -754,10 +757,6 @@ ol {
 	display: inline-block;
 }
 
-#QuestArea {
-	padding-left: 20px;
-}
-
 #QuestArea+div.angular-ui-tree-empty {
 	background-color: white;
 	border: 20px;
@@ -793,14 +792,14 @@ ol {
 .testHighlight {
 	background-color: #007FA9 !important;
 	color: #FFFFFF;
-	border-left: 2px #007FA9 solid !important;
+	border-left: 4px #007FA9 solid !important;
 	Border-Bottom: 2px #FFFFFF;
 }
 
 .testHighlight:hover {
 	background-color: #007FA9 !important;
 	color: #FFFFFF;
-	border-left: 2px #006a8d solid !important;
+	border-left: 4px #006a8d solid !important;
 	Border-Bottom: 2px #FFFFFF;
 }
 
@@ -811,7 +810,7 @@ ol {
 }
 
 .testCaptionDiv {
-	width: 97%;
+	width: 90%;
 	float: left;
 }
 
@@ -838,6 +837,7 @@ ol {
 	width: 96%;
 	height: 36px;
 	border-radius: 4px;
+	padding-left: 5px;
 }
 
 .vsViewVersions {
@@ -917,6 +917,7 @@ ol {
 
 #content .dropdown-menu{
 	left:-75px;
+	top: 46px;
 }
 .dot {
   font-size: 14px;
@@ -1096,12 +1097,11 @@ li.displayQuestionLI {
 }
 
 li[printmode='false'].displayQuestionLI {
-	padding-bottom: 05px;
+	padding-bottom: 5px;
 	cursor: pointer;
-	border: 2px solid #D0D0D0;
+	border: 1px solid #D0D0D0;
 	border-radius: 4px;
-	margin: 4px;
-	padding-left: 23px;
+	padding: 4px;
 }
 
 .qstnView {
@@ -1168,11 +1168,10 @@ li[quiztype='TrueFalse'] #viewHeader {
 .editablediv {
 	cursor: pointer;
 	min-width: 455px;
-	border: 2px solid #D0D0D0;
-	border-radius: 4px;
-	min-height: 27px;
+	border: 1px solid #D0D0D0;
+	border-radius: 3px;
+	min-height: 30px;
 	padding-left: 0px;
-	margin-bottom: 15px;
 }
 
 .optionEditablediv {
@@ -1280,8 +1279,7 @@ li[printmode='false'].displayQuestionLI .questionEditCaption {
 	padding-top: 2px;
 	margin: 5px;
 	padding-bottom: 10px;
-	width: 350px;
-	margin-left: -17px;
+	width: 100%;
 }
 
 li[printmode='true'] .editMetdata {
