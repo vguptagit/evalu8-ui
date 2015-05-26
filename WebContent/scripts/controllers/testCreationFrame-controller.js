@@ -1204,7 +1204,7 @@ angular
 															displayNode.qstnMasterData = buildQstnMasterDetails(displayNode);
 															displayNode.optionsView = displayNode.qstnMasterData.optionsView;
 															displayNode.EssayPageSize = displayNode.qstnMasterData.EssayPageSize;	
-															
+															displayNode.BlankSize = displayNode.qstnMasterData.BlankSize;
 													
 															// $scope.tree2.push(displayNode);
 															$scope.isLoading = false;
