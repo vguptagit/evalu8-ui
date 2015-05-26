@@ -75,6 +75,8 @@ label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D;
 
 /* Padding CSS */
 .padding-lft-20{padding-left: 20px;}
+.padding-lft-30{padding-left: 30px;}
+.padding-lft-60{padding-left: 60px;}
 
 /* Width height CSS */
 .width100{width:100%;}

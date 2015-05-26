@@ -271,8 +271,8 @@ div.resource {
 	background-color: #F8f8f8;
 	font-size: 12px;
 	cursor: default;
-	height: 45px;
-	border-bottom: 1px solid #fff;
+	height: 42px;
+	border-bottom: 2px solid #fff;
 }
 .treeDiv:hover {
 	background-color: #e0e0e0;
@@ -333,9 +333,18 @@ a.newFolder:hover {
 }
 
 .maindivTest {
-	min-height: 40px;
+	background-color : #f8f8f8;
+	height: 40px;
 	width: 100%;
-	border-left: 5px solid #c0c0c0;
+	border-left: 4px solid #C0C0C0;
+	border-bottom: 2px #FFF;
+}
+
+.maindivTest:hover {
+	background-color: #e0e0e0;
+	height: 40px;
+	border-bottom: 2px #FFF;
+	border-left: 4px #C0C0C0 solid;
 }
 .imagediv {
 	margin-top: 15px;
@@ -343,7 +352,7 @@ a.newFolder:hover {
 }
 
 .captiondiv {
-	width: 95%;
+	width: 96%;
 	float: left;
 	margin-top: 15px;
 	margin-left: 5px;
@@ -771,7 +780,6 @@ ol {
 /*My Test tab test display*/
 .testInputbuttonClass {
 	border: 0px;
-	border-radius: 3px;
 	text-align: left;
 	padding-left: 25px;
 	line-height: 40px;
@@ -784,36 +792,32 @@ ol {
 .testHighlight {
 	background-color: #007FA9 !important;
 	color: #FFFFFF;
-	border-left: 2px #0B6786 solid;
+	border-left: 2px #007FA9 solid !important;
 	Border-Bottom: 2px #FFFFFF;
 }
 
 .testHighlight:hover {
 	background-color: #007FA9 !important;
 	color: #FFFFFF;
-	border-left: 2px #0B6786 solid;
+	border-left: 2px #006a8d solid !important;
 	Border-Bottom: 2px #FFFFFF;
 }
 
-.maindivTest:hover {
-	background-color: #e2e0e1;
-	border-bottom: 1px #E0E0E0;
-	Border-Left: 4px #E0E0E0;
-	border-left: 5px #C0C0C0 solid;
-}
+
 
 .testHighlightSelected div {
 	background-color: #a9a9a9 !important;
 }
 
 .testCaptionDiv {
-	width: 100%;
+	width: 97%;
 	float: left;
 }
 
 .testimagesdiv {
 	float: right;
 	padding-right: 10px;
+	position: relative;
 }
 
 .disableEditIcon {
@@ -862,11 +866,7 @@ ol {
 }
 
 .newTest-close:hover {
-	opacity: 1;
-	background-color: #ffa;
-	-webkit-transition: all 0.5s linear;
-	transition: all 0.5s linear;
-	color: #C0C0C0
+	color: #4d4d4d;
 }
 
 .addNewTab {
@@ -915,7 +915,7 @@ ol {
 #content .dropdown-menu:before,#content .dropdown-menu:after{display: none}
 
 #content .dropdown-menu{
-	left:-65px;
+	left:-75px;
 }
 .dot {
   font-size: 14px;
@@ -1141,7 +1141,7 @@ li[printmode='false'] .questionList {
 	display: none;
 }
 
-.printViewContainer .optionLabelView {	
+.printViewContainer .optionLabelView {
 	padding-left: 10px;
 	max-width: 91%;
 	vertical-align: middle;
@@ -1738,24 +1738,22 @@ ul.a {
 }
 
 .addFolder {
-	color: #808080;
+	color: #4d4d4d;
 	border: 0px;
 	font-size: 15px;
 	position: relative;
 	left: 1%;
 	padding-top: 10px;
-	padding-bottom: 10px;
 	background-color: #DDDDDD;
 }
 
 .import {
-	color: #808080;
+	color: #4d4d4d;
 	border: 0px;
 	font-size: 15px;
 	position: relative;
 	left: 4%;
 	padding-top: 10px;
-	padding-bottom: 10px;
 	background-color: #DDDDDD;
 }
 
@@ -2059,8 +2057,8 @@ li[qstntemplate='true'] .indChar {
 }
 
 .printViewContainer  .qti-blockquote .matchIndex {
-	font-size: 14px;	
-	font-family: Verdana, Arial, Helvetica, sans-serif;	
+	font-size: 14px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
 }
 
 .printViewContainer .questionImage {
@@ -2069,7 +2067,7 @@ li[qstntemplate='true'] .indChar {
 }
 
 .printViewContainer .indChar {
-	font-size: 14px;	
+	font-size: 14px;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 }
 
@@ -2086,26 +2084,22 @@ li[qstntemplate=true] .printViewContainer  .qti-blockquote .matchIndex {
 }
 
 .addFolderContainer {
-	background-color: #DDDDDD;
-	vertical-align: middle;
-	height: 40px;
-	margin-left: 9px;
-	width: 98%;
-	border-bottom-color: #DDDDDD;
-	border-bottom-width: 2px;
-	border-bottom-style: solid;
+	background-color: #E0E0E0;
+	height: 43px;
+	width: 100%;
+	border-bottom:1px solid #D0D0D0;
 }
 
 .addFolderIcon {
 	float: left;
-	margin-top: 10px;
+	margin-top: 15px;
 	margin-left: 10px;
 	background-color: #DDDDDD;
 	cursor: pointer;
 }
 
 .addFolderText {
-	padding: 10px 10px 10px 7px;
+	padding: 15px 10px 10px 7px;
 	float: left;
 	color: #4D4D4D;
 	font-family: Helvetica;
@@ -2119,7 +2113,7 @@ li[qstntemplate=true] .printViewContainer  .qti-blockquote .matchIndex {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 }
 
-.printViewContainer .mOptionLabel {	
+.printViewContainer .mOptionLabel {
 	padding-left: 10px;
 }
 
@@ -2141,7 +2135,6 @@ li[qstntemplate=true] .printViewContainer  .qti-blockquote .matchIndex {
 	margin-top: 10px;
 	display: table;
 	width: 100%;
-	float: left;
 }
 
 .metadataSectionCaption {
@@ -2152,7 +2145,6 @@ li[qstntemplate=true] .printViewContainer  .qti-blockquote .matchIndex {
 }
 
 .metadatarow {
-	float:left;
 	padding-bottom: 10px;
 	font-size: 14px;
 	font-weight: normal;
@@ -2325,15 +2317,14 @@ li[qstntemplate='true'] div #crtAnsSpace{
    height: 20px
 }  
 
-li[printmode='true'] .matchingOption{	
-	max-width: 200px;
-	min-width: 50%;
+li[printmode='true'] .matchingOption{    
+    max-width: 200px;
+    min-width: 50%;
 }
 
 li[qstntemplate='true'] .matchingOption {
    min-width: 30%;
 }
-
 
 li[qstntemplate='true'] .matchRight {
    min-width: 70%;
@@ -2355,11 +2346,10 @@ li[qstntemplate='true'] .qti-simpleChoice .radio, li[printmode='true'] .qti-simp
 	float: right;
 	margin-top:3px;
 }
-
-li[printmode='true'] .qti-itemBody > blockquote:last-child > p{	
+li[printmode='true'] .qti-itemBody > blockquote:last-child > p{    
 margin-bottom: 10px;
 }
 
-li[printmode='true'] .qti-itemBody .qti-blockquote > p:first-child{	
+li[printmode='true'] .qti-itemBody .qti-blockquote > p:first-child{    
 margin: 0 0 3px;
 }

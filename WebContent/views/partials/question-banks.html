@@ -1,5 +1,5 @@
 <div class="row">
-	<div>
+	<div class="col-lg-12 col-md-12 col-sm-12" >
 		<div class="addFolderContainer">
 			<div class="glyphicon glyphicon-plus addFolderIcon"
 				ng-click="openUserSettings(2)"></div>
@@ -27,13 +27,14 @@
 
         <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}" droppable="false">
             <li ng-if="!node.isQuestion" draggable="false" ng-repeat="node in node.nodes" collapsed="true" ui-tree-node ng-include="'book_renderer.html'"></li>
-            <li printmode="true" class="questIndex" ng-class="{questionSelected:node.isNodeSelected}" ng-if="node.isQuestion" ng-repeat="node in node.nodes" collapsed="true" ui-tree-node ng-include="'qb_questions_renderer.html'"></li>
+                        <li printmode="true" class="questIndex" ng-class="{questionSelected:node.isNodeSelected}" ng-if="node.isQuestion" ng-repeat="node in node.nodes" collapsed="true" ui-tree-node ng-include="'qb_questions_renderer.html'"></li>
+
         </ol>
     </script>
 	<script type="text/ng-template" id="book_renderer.html">
         <div ui-tree-handle class="tree-node tree-node-content" ng-class="{questionTitleInTree: node.questionXML}">
             <div class="treeDiv">
-                <div class="maindiv">
+                <div class="maindiv padding-lft-30">
                     <div class="imagediv">
                         <input ng-click="getNodes(this)" type="image" class="collapseImg" src="images/right_arrow2.png"></input>
                     </div>
