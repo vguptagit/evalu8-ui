@@ -384,6 +384,7 @@ a.newFolder:hover {
 	position: absolute;
 	right: 25px;
 	margin-top: 5px;
+	width:90px;
 }
 
 .iconsChapter span:first-child{
