@@ -48,6 +48,7 @@ angular
 									if (!source.node.isNodeSelected) {
 									    $scope.selectNode(source.node);
 									}
+									
 								    //$rootScope.$broadcast("dropQuestion",
 								    //		source.node, destIndex);
 								    //source.node.showEditQuestionIcon = false;
@@ -162,14 +163,21 @@ angular
 																false, false,userQuestion.metadata.quizType);
 														yourQuestion.isQuestion = true;
 														yourQuestion.questionXML = true;
-														yourQuestion.data = userQuestion.qtixml;
-														yourQuestion.quizType = userQuestion.metadata.quizType;
-														yourQuestion.extendedMetadata = userQuestion.metadata.extendedMetadata;
-														yourQuestion.textHTML = displayNode.html();					
+														
 														yourQuestion.nodeType = "question";
 														yourQuestion.guid = userQuestion.guid;
 														yourQuestion.showEditQuestionIcon = false;
 														yourQuestion.isNodeSelected = false;
+														
+													
+														addToQuestionsArray(yourQuestion);
+														
+														yourQuestion.data = userQuestion.qtixml;
+														yourQuestion.quizType = userQuestion.metadata.quizType;
+														yourQuestion.extendedMetadata = userQuestion.metadata.extendedMetadata;
+														yourQuestion.textHTML = displayNode.html();					
+													
+														
 														yourQuestion.template = 'qb_questions_renderer.html';
 												
 														yourQuestions
