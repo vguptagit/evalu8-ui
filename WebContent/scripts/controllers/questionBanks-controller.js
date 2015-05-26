@@ -357,7 +357,7 @@ angular
 										currentNode.$element
 												.find("input")
 												.attr("src",
-														"images/down_arrow.png");
+														"images/right_arrow.png");
 										currentNode.node.nodes = [];
 										$http
 												.get(

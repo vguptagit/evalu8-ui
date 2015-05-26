@@ -677,6 +677,7 @@ ol {
 .questionFeature {
 	float: right;
 	margin: 5px;
+	margin-right: 0;
 }
 
 .questionFeature button {
@@ -1101,7 +1102,7 @@ li[printmode='false'].displayQuestionLI {
 	cursor: pointer;
 	border: 1px solid #D0D0D0;
 	border-radius: 4px;
-	padding: 4px;
+	padding: 30px;
 }
 
 .qstnView {
@@ -1283,7 +1284,7 @@ li[printmode='false'].displayQuestionLI .questionEditCaption {
 	padding-top: 2px;
 	margin: 5px;
 	padding-bottom: 10px;
-	width: 100%;
+	width: 85%;
 }
 
 li[printmode='true'] .editMetdata {
