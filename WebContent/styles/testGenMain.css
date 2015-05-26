@@ -1129,9 +1129,13 @@ li[printmode='false'] .questionList {
 	display: inline-block;
 }
 
-.printViewContainer .editView {
+.printViewContainer .editView,.printViewContainer #crtAnsSpace {
 	/* float: left; */
 	display: none;
+}
+
+li[qstntemplate='true'] #crtAnsSpace{
+	display: block;
 }
 
 .editViewContainer .editView {

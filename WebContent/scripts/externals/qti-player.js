@@ -2938,7 +2938,7 @@ var CustomQuestionTemplate =
 					 
 					
 					 
-					 $("<button class='editView blankButton' ng-mousedown='addBlank(this,$event)' ng-disabled='captionFocus'>Add Blank</button><br/>").insertAfter(printElement.next());
+					 $("<button class='editView blankButton' ng-mousedown='addBlank(this,$event)' ng-disabled='captionFocus'>Add Blank</button>").insertAfter(printElement.next());
 					
 					 $("<div class = 'editView EssayHeader' id='crtAns'>Correct Answer</div>").insertAfter(element.find("button.editView.blankButton").eq(0));
 										$("<div id='crtAnsSpace'></div>").insertBefore(element.find("#crtAns").eq(0));
@@ -3167,10 +3167,12 @@ QTI.getSpanId = function(spanElement, event){
 					button.attr("id","RESPONSE_" + i+1);
 					button.find("b").eq(0).text(String.fromCharCode(65 + i ) + ".");
 					crtAnswer.attr("id","RESPONSE_" + i+1);
+					crtAnswer.children().eq(0).attr("data-placeholder","Enter the correct answer for blank "+String.fromCharCode(65 + i ));
 					crtAnswer.html(String.fromCharCode(65 + i ) + "." + crtAnswer.children().get(0).outerHTML);
 				}
-				
+				return true;
 			}
+		
 		
 		var range = window.getSelection().getRangeAt(0);
 
@@ -3188,6 +3190,7 @@ QTI.getSpanId = function(spanElement, event){
 					qtiCationElement.find("button").eq(i).attr("id","RESPONSE_" + i+1);
 					qtiCationElement.find("button").eq(i).find("b").eq(0).text(String.fromCharCode(65 + i ) + ".");
 					crtAnswer.attr("id","RESPONSE_" + i+1);
+					crtAnswer.children().eq(0).attr("data-placeholder","Enter the correct answer for blank "+String.fromCharCode(65 + i ));
 					crtAnswer.html(String.fromCharCode(65 + i ) + "."+ crtAnswer.children().get(0).outerHTML);
 				}
 //				blankElement.remove();
