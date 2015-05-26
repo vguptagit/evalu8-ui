@@ -2943,11 +2943,11 @@ var CustomQuestionTemplate =
 					 $("<div class = 'editView EssayHeader' id='crtAns'>Correct Answer</div>").insertAfter(element.find("button.editView.blankButton").eq(0));
 										$("<div id='crtAnsSpace'></div>").insertBefore(element.find("#crtAns").eq(0));
 						
-					 printElement.attr("ng-focus","captionFocus = false").attr("ng-blur","captionFocus = true")
+					var editElement = element.find("#qtiCaption").eq(0);
+					
+					editElement.attr("ng-focus","captionFocus = false").attr("ng-blur","captionFocus = true")
 					 
-					 printElement.attr("onkeydown","QTI.getSpanId(this,event)");
-					 
-					 var editElement = element.find("#qtiCaption").eq(0);
+					 editElement.attr("onkeydown","QTI.getSpanId(this,event)");
 					 var crtAns = element.find("#crtAns").eq(0);
 					 var textEntries = editElement.find("textEntryInteraction");
 					 

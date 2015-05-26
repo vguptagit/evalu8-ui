@@ -27,6 +27,7 @@ angular
 							$scope.tests = SharedTabService.tests;
 							$scope.currentIndex = SharedTabService.currentTabIndex;
 							$scope.criterias = SharedTabService.tests[SharedTabService.currentTabIndex].criterias;
+							$scope.captionFocus = true;
 							
 							if (SharedTabService.userQuestionSettings.length == 0){
 								
