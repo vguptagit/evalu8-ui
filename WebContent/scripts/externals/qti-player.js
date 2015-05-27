@@ -1934,7 +1934,7 @@ QTI.Elements.Mapping.play = function(qtiNode, displayNode, state) {
 		var index = identifier.substring(9,identifier.length);
 		index = parseInt(index);
 		
-		var elementDisplayNode = QTI.prepare(qtiNode, $("<div class='editView editablediv' type='text' id='" + identifier + "' >"+String.fromCharCode(65 + index - 1 )+".</div>"));
+		var elementDisplayNode = QTI.prepare(qtiNode, $("<div class='editView editablediv crtAnsDiv' type='text' id='" + identifier + "' >"+String.fromCharCode(65 + index - 1 )+".</div>"));
 	
 		$(displayNode).append(elementDisplayNode);
 	
@@ -2919,7 +2919,7 @@ var CustomQuestionTemplate =
 
 						 }}	
 		,
-		"FillInTheBlanks":	
+		"FillInBlanks":	
 			
 		{"printCaption": "Fill in the Blanks Question <br> _________________________" ,
 			  "editCaption": "Enter Question Text",
@@ -3065,7 +3065,7 @@ QTI.getQuestionType = function(qtiXML,questionType){
 	}else if(QTI.format(qtiXML).find("inlineChoiceInteraction").length > 0){
 		return "Matching";
 	}else if(QTI.format(qtiXML).find("textEntryInteraction").length > 0){
-		return "FillInTheBlanks";
+		return "FillInBlanks";
 	}
 }
 QTI.getQuizType = function(quiztype){

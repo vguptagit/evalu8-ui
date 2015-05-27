@@ -2245,10 +2245,17 @@ label.matchOptionImage {
 	border-style: double;
 	padding-left: 6px;
 	padding-right: 6px;
+	margin-top: 10px;
+}
+
+button.blankButton[disabled] {
+  cursor: default;
+  background-color: gainsboro;
+  color: darkgray;
 }
 
 div #crtAnsSpace {
-	height: 20px
+	height: 30px;
 }
 
 div #BlanksCaption {
@@ -2394,4 +2401,13 @@ li[printmode='true'] .qti-itemBody .qti-blockquote>p:first-child {
 	z-index: 9999;
 	margin-top: 10px;
 	margin-left: 255px;
+}
+.crtAnsDiv{
+	cursor: pointer;
+	min-width: 455px;
+	border: 2px solid #D0D0D0;
+	border-radius: 4px;
+	min-height: 27px;
+	padding-left: 0px;
+	margin-bottom: 10px;
 }

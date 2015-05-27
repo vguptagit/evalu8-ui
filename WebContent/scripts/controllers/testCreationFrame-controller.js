@@ -74,7 +74,7 @@ angular
 									return;
 								}
 								
-								if(selectedQstnNode.node.quizType == "FillInTheBlanks"  &&  ($(selectedQstnNode.$element).find('#qtiCaption').find('button').length <= 0) && selectedQstnNode.node.IsEditView){
+								if(selectedQstnNode.node.quizType == "FillInBlanks"  &&  ($(selectedQstnNode.$element).find('#qtiCaption').find('button').length <= 0) && selectedQstnNode.node.IsEditView){
 									$scope.IsConfirmation = false;
 									$scope.message = "Add Blank to the Question";
 
@@ -138,7 +138,7 @@ angular
 										'identifier', 'QUESTION-X');
 								selectedQstnNode.node.quizType = QTI.getQuestionType($(xml),selectedQstnNode.node.quizType);
 								
-								if(selectedQstnNode.node.quizType =="FillInTheBlanks"){
+								if(selectedQstnNode.node.quizType =="FillInBlanks"){
 									var htmlTextEntry = qstnHTML.find('#crtAns').children();
 									
 									var optionText = '';
@@ -694,7 +694,7 @@ angular
 									
 								qtiCaption.html(qtiCaption.html().replace(/<\/button> /g,"</button>&nbsp;"));
 								
-								htmlEle.append($("<div class='editView editablediv' type='text' id='RESPONSE_"+blankCount+"' >"+String.fromCharCode(65 + blankCount - 1 )+".<div contenteditable='true' class='placeHolderForBlank' data-placeholder='Enter the correct answer for blank "+ String.fromCharCode(65 + blankCount - 1 ) +"'></div></div>"));
+								htmlEle.append($("<div class='editView editablediv crtAnsDiv' type='text' id='RESPONSE_"+blankCount+"' >"+String.fromCharCode(65 + blankCount - 1 )+".<div contenteditable='true' class='placeHolderForBlank' data-placeholder='Enter the correct answer for blank "+ String.fromCharCode(65 + blankCount - 1 ) +"'></div></div>"));
 							}
 
 							
