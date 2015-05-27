@@ -50,11 +50,7 @@ angular
 									if (!source.node.isNodeSelected) {
 										$scope.selectNode(source.node);
 									}
-
-									// $rootScope.$broadcast("dropQuestion",
-									// source.node, destIndex);
-									// source.node.showEditQuestionIcon = false;
-									$scope.editQuestion();
+								  $scope.editQuestion(source.node,destIndex);
 								}
 							});
 
@@ -631,7 +627,7 @@ angular
 									function(handler, node) {
 										$scope.selectNode(node);
 									});
-							$scope.editQuestion = function(scope) {
+							$scope.editQuestion = function(scope,destIndex) {
 								if (SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
 									$rootScope
 											.$broadcast('handleBroadcast_AddNewTab');
@@ -642,7 +638,7 @@ angular
 										if ($scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.question) {
 											$rootScope.$broadcast(
 													"dropQuestion",
-													$scope.selectedNodes[i], 0);
+													$scope.selectedNodes[i], destIndex);
 										} else if ($scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.chapter
 												|| $scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.topic) {
 											var test = SharedTabService.tests[SharedTabService.currentTabIndex];
