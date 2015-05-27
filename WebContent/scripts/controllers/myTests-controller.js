@@ -279,11 +279,9 @@ angular.module('e8MyTests')
         $('.testMessagetip').hide();
         $scope.selectTestNode = function ($event,test) {
         	
-        	//$('.messagetip').offset({top:$($event.target).offset().top+50});
             if (!test.node.disableEdit) {
-                test.node.selectTestNode = !test.node.selectTestNode; 
-                if(test.node.selectTestNode && $rootScope.globals.loginCount<=12){
-    	        	//$scope.notify=true;
+                test.node.selectTestNode = !test.node.selectTestNode;
+                if(test.node.selectTestNode && $rootScope.globals.loginCount<=20 && test.node.nodeType!='archiveTest'){
     	        	$('.testMessagetip').show()
     	        	setTimeout(function(){ 
     	        		$('.testMessagetip').hide();

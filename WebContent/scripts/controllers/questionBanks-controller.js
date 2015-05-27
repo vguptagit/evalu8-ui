@@ -597,7 +597,7 @@ angular
 							$('.questionMessagetip').hide();
 							$scope.selectNode = function(node) {
 								if (node.isNodeSelected == false
-										&& $rootScope.globals.loginCount <= 12) {
+										&& $rootScope.globals.loginCount <= 12 && node.nodeType!="question") {
 									$('.questionMessagetip').show()
 									setTimeout(function() {
 										$('.questionMessagetip').hide();
