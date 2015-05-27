@@ -1762,10 +1762,10 @@ angular
 																		newTestTab.id = node.guid;
 																		newTestTab.testId = node.guid;
 																		newTestTab.title = result.title;
-																		newTestTab.tabTitle = result.title;
-																		newTestTab.folderGuid = result.folderId;
-																		SharedTabService
-																				.prepForBroadcastTest(newTestTab);
+																		newTestTab.tabTitle = result.title;	
+																		newTestTab.metadata = result;                                                                        
+                                                                        newTestTab.folderGuid = (typeof(result.folderId)=='undefined')?null:result.folderId;    
+																		SharedTabService.prepForBroadcastTest(newTestTab);
 																	}
 																});
 													}
