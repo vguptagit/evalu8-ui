@@ -20,10 +20,11 @@ angular
 						'$modal',
 						'blockUI',
 						'BookService',
+						'ContainerService',
 						function($scope, $rootScope, $location, $cookieStore,
 								$http, $sce, DisciplineService, TestService,
 								SharedTabService, UserQuestionsService,
-								EnumService, $modal, blockUI,BookService) {
+								EnumService, $modal, blockUI,BookService,ContainerService) {
 							SharedTabService.selectedMenu = SharedTabService.menu.questionBanks;
 							$rootScope.globals = $cookieStore.get('globals')
 									|| {};
@@ -239,39 +240,63 @@ angular
 											return;
 										}
 										
-										$http
-												.get(
-														evalu8config.apiUrl
-																+ "/books/"
-																+ book.node.guid
-																+ "/nodes",
-														config)
-												.success(
-														function(response) {
-															book.node.nodes = response;
-															angular
-																	.forEach(
-																			book.node.nodes,
-																			function(
-																					item) {
-																				item.showTestWizardIcon = true;
-																				item.showEditQuestionIcon = true;
-																				item.isNodeSelected = false;
-																				if ($scope.selectedNodes.length > 0)
-																					for (var i = 0; i < $scope.selectedNodes.length; i++) {
-																						if ($scope.selectedNodes[i].guid == item.guid) {
-																							item.showTestWizardIcon = $scope.selectedNodes[i].showTestWizardIcon;
-																							item.showEditQuestionIcon = $scope.selectedNodes[i].showEditQuestionIcon;
-																							item.isNodeSelected = $scope.selectedNodes[i].isNodeSelected;
-																							$scope.selectedNodes[i] = item;
-																						}
-																					}
-																				item.nodeType = "chapter";
-																			})
-														});
+                                        ContainerService.bookNodes(book.node.guid, function(bookNodes) {
+                                            book.node.nodes = bookNodes;
+                                            angular.forEach(
+                                                book.node.nodes,
+                                                function(item) {
+                                                    item.showTestWizardIcon = true;
+                                                    item.showEditQuestionIcon = true;
+                                                    item.isNodeSelected = false;
+                                                    if ($scope.selectedNodes.length > 0)
+                                                        for (var i = 0; i < $scope.selectedNodes.length; i++) {
+                                                            if ($scope.selectedNodes[i].guid == item.guid) {
+                                                                item.showTestWizardIcon = $scope.selectedNodes[i].showTestWizardIcon;
+                                                                item.showEditQuestionIcon = $scope.selectedNodes[i].showEditQuestionIcon;
+                                                                item.isNodeSelected = $scope.selectedNodes[i].isNodeSelected;
+                                                                $scope.selectedNodes[i] = item;
+                                                            }
+                                                        }
+                                                    item.nodeType = "chapter";
+                                                })
+                                                if(book.node.testBindings && book.node.testBindings.length) {
+                                                    var publisherTestsNode = {};
+                                                    publisherTestsNode.title = "Publisher Tests"
+                                                    publisherTestsNode.nodeType = "publisherTests"
+                                                    book.node.nodes.push(publisherTestsNode);    
+                                                    
+                                                    publisherTestsNode.nodes = [];
+                                                    
+                                                    book.node.testBindings.forEach(function (testId) {
+                                                        var test = {};
+                                                        test.title = "xyz";
+                                                        test.guid = testId;
+                                                        test.nodeType = "test";
+                                                        test.selectTestNode = false;//to show the edit icon
+                                                        test.disableEdit = false;//to disable the edit icon
+
+                                                        publisherTestsNode.nodes.push(test);
+                                                    })
+                                                }                                                
+                                        });
 									}
 								}
 							}
+							
+							$scope.selectTestNode = function ($event,test) {
+                                
+                                if (!test.node.disableEdit) {
+                                    test.node.selectTestNode = !test.node.selectTestNode;
+                                    if(test.node.selectTestNode && $rootScope.globals.loginCount<=20 && test.node.nodeType!='archiveTest'){
+                                        $('.testMessagetip').show()
+                                        setTimeout(function(){ 
+                                            $('.testMessagetip').hide();
+                                        }, 5000);
+                                    }
+                                }
+                                SharedTabService.showSelectedTestTab(test.node.guid);
+                            }
+							
 							// TODO : need to move this to service.
 							$scope.createTestWizardCriteria = function(
 									currentNode) {
@@ -379,6 +404,16 @@ angular
 												.attr("src",
 														"images/right_arrow.png");
 										
+                                        if(currentNode.node.nodeType == 'publisherTests') {
+                                            
+                                            angular.forEach(currentNode.node.nodes,
+                                                    function(item) {
+                                                        item.template = 'tests_renderer.html';
+                                                    });
+                                            blockLeftpanel.stop();
+                                            return;
+                                        }
+							                                        
 										if(!$scope.isNormalMode && $scope.searchedContainerId!=currentNode.node.guid){
 											blockLeftpanel.stop();
 											return;

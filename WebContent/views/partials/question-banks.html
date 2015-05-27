@@ -96,6 +96,33 @@
         </ol>
     </script>
 
+	<script type="text/ng-template" id="tests_renderer.html">
+        <div ui-tree-handle class="tree-node tree-node-content">
+
+            <div data-ng-if="node.nodeType=='test'" class="treeDiv" ng-class="{testHighlightSelected: isActiveSelectedTest(node.guid)}">
+                <div class="maindivTest" id={{node.guid}} ng-class="{testHighlight: node.selectTestNode}">
+                    <div class="imagediv"></div>
+                    <div class="testCaptionDiv">
+                        <div ng-mousedown="selectTestNode($event,this);" id="testButtonDiv" title={{node.title}} 
+                             ng-class="{testHighlight: node.selectTestNode}" class="testCaptionLabel testInputbuttonClass">
+                            {{node.title}} &nbsp;&nbsp;&nbsp;&nbsp; {{node.modified | date:'MM/dd/yy'}}
+                        </div>
+                    </div>
+                    <div class="testimagesdiv" ng-class="{testHighlight: node.selectTestNode}">
+                        <span ng-show="node.selectTestNode">
+                            <button ng-disabled="node.disableEdit" ng-show="node.showEditIcon" id="editTestbtn"
+                                    ng-click="editTest(this)" ng-class="{disableEditIcon: node.disableEdit}"
+                                    class="foldertestediticon glyphicon glyphicon-pencil" tooltip="Open in right edit panel" tooltip-placement="bottom"/>
+                            <button ng-click="archiveTest(this)" ng-show="node.showArchiveIcon" class="iconButtons fa fa-archive" tooltip="Move to Archive folder at bottom of screen" tooltip-placement="bottom"/>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </script>
+
 	<script type="text/ng-template" id="qb_questions_renderer.html">
         <div ng-mousedown="selectNode(this.node);" ui-tree-handle class="printViewContainer tree-node tree-node-content questionList" ng-class="{questionTitleInTree: node.questionXML}">
             <span ng-show="node.showEditQuestionIcon" class="newTest-close action-icon-bg glyphicon glyphicon-pencil" ng-mousedown="editQuestion()" tooltip="Move question to right for editing" tooltip-placement="bottom" ></span>
