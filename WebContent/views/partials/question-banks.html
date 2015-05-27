@@ -1,5 +1,16 @@
 <div class="row">
-	<div class="col-lg-12 col-md-12 col-sm-12" >
+	<div class="col-lg-6">
+		<input type="text" placeHolder="Search selected banks"
+			class="bookSearch form-control" ng-model="searchedText"
+			typeahead="container.title for container in allContainers | filter:$viewValue"
+			ng-keyup="showContainerOnEnter($event)"> <span
+			class="glyphicon glyphicon-search bookSearchicon" tooltip="Search"
+			tooltip-placement="bottom"></span>
+	</div>
+	<div class="col-lg-6"></div>
+</div>
+<div class="row margin-top-15">
+	<div class="col-lg-12 col-md-12 col-sm-12">
 		<div class="addFolderContainer">
 			<div class="glyphicon glyphicon-plus addFolderIcon"
 				ng-click="openUserSettings(2)"></div>
@@ -38,7 +49,7 @@
                     <div class="imagediv">
                         <input ng-click="getNodes(this)" type="image" class="collapseImg" src="images/right_arrow2.png"></input>
                     </div>
-                    <div class="captiondiv">
+                    <div class="captiondiv" ng-mousedown="selectBook(this.node)">
                         <label class="captionLabel" title="{{node.title}}">{{node.title}}</label>
                     </div>
                     <!--
@@ -94,13 +105,17 @@
     </script>
 
 	<div data-ui-tree id="tree-root" class="question_bank_scrollbar">
-	<div class="questionMessagetip" style="position: absolute;top:0px">
-	<div class="newTest-close glyphicon glyphicon-remove"
-                     ng-click="closeTip()"></div>
-				<div><span class="glyphicon glyphicon-info-sign"></span>&nbsp;<strong class="tips">Tips:</strong> Drag selected topic or question to right or click pencil icon to
-			build a test <br>manually OR<br/>Select the Test Wizard wand to auto-create a test based on
-criteria you choose</div>
-				</div>
+		<div class="questionMessagetip" style="position: absolute; top: 0px">
+			<div class="newTest-close glyphicon glyphicon-remove"
+				ng-click="closeTip()"></div>
+			<div>
+				<span class="glyphicon glyphicon-info-sign"></span>&nbsp;<strong
+					class="tips">Tips:</strong> Drag selected topic or question to
+				right or click pencil icon to build a test <br>manually OR<br />Select
+				the Test Wizard wand to auto-create a test based on criteria you
+				choose
+			</div>
+		</div>
 		<ol data-ui-tree-nodes data-ng-model="disciplines" droppable="false">
 			<li data-ng-repeat="node in disciplines" data-ui-tree-node
 				collapsed="true" draggable="false"

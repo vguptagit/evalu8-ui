@@ -262,6 +262,7 @@ div.resource {
 	padding-left: 10px;
 	border-bottom: 1px solid #fff;
 }
+
 .treeDiv {
 	width: 100%;
 	text-align: left;
@@ -274,6 +275,7 @@ div.resource {
 	height: 42px;
 	border-bottom: 2px solid #fff;
 }
+
 .treeDiv:hover {
 	background-color: #e0e0e0;
 }
@@ -326,6 +328,7 @@ a.newFolder:hover {
 	display: table;
 	padding-left: 10px;
 }
+
 .maindivChapter {
 	min-height: 40px;
 	width: 100%;
@@ -333,7 +336,7 @@ a.newFolder:hover {
 }
 
 .maindivTest {
-	background-color : #f8f8f8;
+	background-color: #f8f8f8;
 	height: 40px;
 	width: 100%;
 	border-left: 4px solid #C0C0C0;
@@ -346,6 +349,7 @@ a.newFolder:hover {
 	border-bottom: 2px #FFF;
 	border-left: 4px #C0C0C0 solid;
 }
+
 .imagediv {
 	margin-top: 15px;
 	float: left;
@@ -373,6 +377,7 @@ a.newFolder:hover {
 	position: absolute;
 	display: inline-block;
 }
+
 .iconsTestNode {
 	margin: 10px;
 	float: right;
@@ -387,9 +392,9 @@ a.newFolder:hover {
 	width: 90px;
 }
 
-.iconsChapter span:first-child{
+.iconsChapter span:first-child {
 	margin-right: 4px;
-	top:0px;
+	top: 0px;
 }
 
 .iconsChapterVisible {
@@ -411,7 +416,7 @@ a.newFolder:hover {
 	bottom: 10px;
 	left: 0;
 	right: 0;
-    overflow-x: hidden;
+	overflow-x: hidden;
 }
 
 .qti-simpleChoice span.tick {
@@ -426,7 +431,6 @@ a.newFolder:hover {
 /* .angular-ui-tree-handle {
 	margin-bottom: 2px;
 } */
-
 html, body {
 	height: 100%;
 	overflow: hidden;
@@ -484,6 +488,7 @@ html, body {
 	list-style: decimal;
 	font-weight: 700;
 }
+
 ol {
 	list-style: none;
 	position: relative;
@@ -502,7 +507,6 @@ ol {
 .testContainer ol li .questionList {
 	padding-left: 15px;
 } */
-
 .questionList:before {
 	counter-reset: none;
 	counter-increment: list;
@@ -569,7 +573,10 @@ ol {
 	margin-left: 10px;
 }
 
-.TestCreationAreatitle {margin-top: 7px; height: 22px;}
+.TestCreationAreatitle {
+	margin-top: 7px;
+	height: 22px;
+}
 
 #QuestionConent {
 	text-align: left;
@@ -804,8 +811,6 @@ ol {
 	Border-Bottom: 2px #FFFFFF;
 }
 
-
-
 .testHighlightSelected div {
 	background-color: #a9a9a9 !important;
 }
@@ -879,50 +884,59 @@ ol {
 	background-color: #FFFFFF;
 }
 
-#content ul:first-child > li:last-child{
+#content ul:first-child>li:last-child {
 	width: 30px;
 }
-#content ul:first-child > li:last-child a:first-child{
+
+#content ul:first-child>li:last-child a:first-child {
 	width: 40px;
 	padding-left: 10px;
 	border: 0px;
 }
-#content ul:nth-child(2){
+
+#content ul:nth-child(2) {
 	max-height: 400px;
-	overflow-y:auto;
-	overflow-x:hidden;
+	overflow-y: auto;
+	overflow-x: hidden;
 }
-#content ul:nth-child(2) li:hover,#content ul:nth-child(2) a:hover{
+
+#content ul:nth-child(2) li:hover, #content ul:nth-child(2) a:hover {
 	background-color: #E0E0E0;
-} 
+}
 
-#content ul:nth-child(2) li.active,#content ul:nth-child(2) li.active a{
+#content ul:nth-child(2) li.active, #content ul:nth-child(2) li.active a
+	{
 	background-color: #007FA9;
-	border-top:1px inset #007FA9;
-} 
+	border-top: 1px inset #007FA9;
+}
 
-#content ul:nth-child(2) li a{
+#content ul:nth-child(2) li a {
 	width: 150px;
 }
-#content ul:nth-child(2) li{
-	border-bottom:1px solid #ddd;
+
+#content ul:nth-child(2) li {
+	border-bottom: 1px solid #ddd;
 	height: 36px;
 	border-radius: 2px;
-	position:relative;
-}
-#content ul:nth-child(2) li:last-child{
-	border-bottom-width:0px;
+	position: relative;
 }
 
-#content .dropdown-menu:before,#content .dropdown-menu:after{display: none}
+#content ul:nth-child(2) li:last-child {
+	border-bottom-width: 0px;
+}
 
-#content .dropdown-menu{
-	left:-75px;
+#content .dropdown-menu:before, #content .dropdown-menu:after {
+	display: none
+}
+
+#content .dropdown-menu {
+	left: -75px;
 	top: 46px;
 }
+
 .dot {
-  font-size: 14px;
-  font-weight: 800;
+	font-size: 14px;
+	font-weight: 800;
 }
 
 #tree-root .activeFolder {
@@ -1044,8 +1058,8 @@ ol {
 }
 
 .questionTemplateContainer .questionTemplates {
-  margin: 0 0px 15px 0px;
-  background-color: #f8f8f8;
+	margin: 0 0px 15px 0px;
+	background-color: #f8f8f8;
 }
 
 li[printmode='true'] .questionTemplate {
@@ -1130,12 +1144,12 @@ li[printmode='false'] .questionList {
 	display: inline-block;
 }
 
-.printViewContainer .editView,.printViewContainer #crtAnsSpace {
+.printViewContainer .editView, .printViewContainer #crtAnsSpace {
 	/* float: left; */
 	display: none;
 }
 
-li[qstntemplate='true'] #crtAnsSpace{
+li[qstntemplate='true'] #crtAnsSpace {
 	display: block;
 }
 
@@ -1314,13 +1328,12 @@ li[quiztype='TrueFalse'] .qti-simpleChoice .radio {
 	text-align: top;
 	float: right;
 	text-decoration: none !important;
-	margin-right :15px;
+	margin-right: 15px;
 }
 
 .editMetdata {
 	display: inline-block;
 	float: left;
-	
 }
 
 .captionMetadata {
@@ -1347,11 +1360,11 @@ li[quiztype='TrueFalse'] .qti-simpleChoice .radio {
 }
 
 .downArrowImage {
-	float: left;	
+	float: left;
 }
 
-.imagecaptionMetadata {	
-	float:left;
+.imagecaptionMetadata {
+	float: left;
 	margin-left: -18px;
 }
 
@@ -1593,7 +1606,7 @@ ul.a {
 .setupHeader {
 	background-color: #F6F7F5;
 	height: 60px;
-	line-height:60px;
+	line-height: 60px;
 	border-bottom-color: #D9D9DB;
 	border-bottom-style: solid;
 	border-bottom-width: 1px;
@@ -1732,13 +1745,13 @@ ul.a {
 	width: 100%;
 	text-align: left;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-weight: bold;	
+	font-weight: bold;
 	white-space: normal;
 	background-color: #e0e0e0;
 	font-size: 12px;
 	cursor: default;
 	height: 43px;
-	border-bottom : 1px solid #d0d0d0;
+	border-bottom: 1px solid #d0d0d0;
 }
 
 .addFolder {
@@ -1888,7 +1901,8 @@ ul.a {
 	border-radius: 3px;
 	Box-Shadow: Inset top-2px;
 }
-.restoretesticon{
+
+.restoretesticon {
 	display: inline-block;
 	color: #808080;
 	border: none;
@@ -1902,6 +1916,7 @@ ul.a {
 	font-size: 15px;
 	top: 5px;
 }
+
 .restoreicon {
 	display: inline-block;
 	color: #808080;
@@ -1916,7 +1931,8 @@ ul.a {
 	font-size: 15px;
 	top: 5px;
 }
-.removeTestIcon{
+
+.removeTestIcon {
 	display: inline-block;
 	color: #808080;
 	border: none;
@@ -1930,6 +1946,7 @@ ul.a {
 	font-size: 15px;
 	top: 5px
 }
+
 .removeIcon {
 	display: inline-block;
 	color: #808080;
@@ -1945,7 +1962,8 @@ ul.a {
 	top: 5px
 }
 
-.removeIcon:hover, .restoreicon:hover ,.restoretesticon:hover,.removeTestIcon:hover{
+.removeIcon:hover, .restoreicon:hover, .restoretesticon:hover,
+	.removeTestIcon:hover {
 	border: 1px solid #3C85C2;
 	background: #FDFAFA;
 	outline: 0 !important;
@@ -2078,7 +2096,7 @@ li[qstntemplate='true'] .indChar {
 li[qstntemplate=true] .printViewContainer  .qti-blockquote .matchIndex {
 	font-weight: normal;
 	font-size: 14px;
-	padding-top:4px;
+	padding-top: 4px;
 }
 
 .TestcreationInfo {
@@ -2091,7 +2109,7 @@ li[qstntemplate=true] .printViewContainer  .qti-blockquote .matchIndex {
 	background-color: #E0E0E0;
 	height: 43px;
 	width: 100%;
-	border-bottom:1px solid #D0D0D0;
+	border-bottom: 1px solid #D0D0D0;
 }
 
 .addFolderIcon {
@@ -2206,87 +2224,92 @@ li[qstntemplate=true] .printViewContainer  .qti-blockquote .matchIndex {
 	border-radius: 5px;
 }
 
-.mainClass{
+.mainClass {
 	padding-left: 3px;
 }
-button[disabled] + .tooltip {
-  display: none !important;
-}
-label.matchOptionImage{
-	max-width: 90%;
-}
-.blankButton{
- 	 float: right;
-    margin-right: 40px;
-    border-radius: 5px;
-    background-color: Transparent;
-    border-color: gainsboro;
-    border-style: double;
-    padding-left: 6px;
-    padding-right: 6px;
-  }
-  div #crtAnsSpace{
-   height: 20px
-  }
-  div #BlanksCaption{
-   font-weight: normal;
-   font-size: small;
-  }
-  .blankWidth{
-  border-style: inset;
-  border-width: 2px;
-  height: 22px;
-  width: 175px;
-  display: inline-block;
-  border-radius: 5px;
-  text-align: left;
-  padding-left: 2px;
-  }
-  .blankFIBButton{
-  	display:inline-block;
- 	 background-color:#fff;
- 	 padding:0px;
-  	-webkit-user-modify:read-only;
- 	 border:0px
-  }
-  
-  .plusIconQT{
-  line-height: 35px;  
-  margin-right: 5px;
-  }
-  
-  
- li[qstntemplate='true'] .qti-itemBody > p {
-    
-    display: inline-block;
-    width: 100%;
-    vertical-align: middle;
-    background-color: #E0E0E0 !important;
-    border-bottom: 1px solid #D0D0D0 !important;
-    height: 41px;
-    line-height: 41px;
-    font-size: 14px;
+
+button[disabled]+.tooltip {
+	display: none !important;
 }
 
- li[qstntemplate='true'] .qti-itemBody {
- width: 100%;
- }
-  
-  li[qstntemplate='true'] .questionTemplateContainer {
-	   font-size: 14px;
+label.matchOptionImage {
+	max-width: 90%;
+}
+
+.blankButton {
+	float: right;
+	margin-right: 40px;
+	border-radius: 5px;
+	background-color: Transparent;
+	border-color: gainsboro;
+	border-style: double;
+	padding-left: 6px;
+	padding-right: 6px;
+}
+
+div #crtAnsSpace {
+	height: 20px
+}
+
+div #BlanksCaption {
+	font-weight: normal;
+	font-size: small;
+}
+
+.blankWidth {
+	border-style: inset;
+	border-width: 2px;
+	height: 22px;
+	width: 175px;
+	display: inline-block;
+	border-radius: 5px;
+	text-align: left;
+	padding-left: 2px;
+}
+
+.blankFIBButton {
+	display: inline-block;
+	background-color: #fff;
+	padding: 0px;
+	-webkit-user-modify: read-only;
+	border: 0px
+}
+
+.plusIconQT {
+	line-height: 35px;
+	margin-right: 5px;
+}
+
+li[qstntemplate='true'] .qti-itemBody>p {
+	display: inline-block;
+	width: 100%;
+	vertical-align: middle;
+	background-color: #E0E0E0 !important;
+	border-bottom: 1px solid #D0D0D0 !important;
+	height: 41px;
+	line-height: 41px;
+	font-size: 14px;
+}
+
+li[qstntemplate='true'] .qti-itemBody {
+	width: 100%;
+}
+
+li[qstntemplate='true'] .questionTemplateContainer {
+	font-size: 14px;
 }
 
 li[qstntemplate='true'] .questionTemplateContainer .questionTemplates {
-  margin: 0 0px 15px 0px;
-  background-color: #f8f8f8 !important;
+	margin: 0 0px 15px 0px;
+	background-color: #f8f8f8 !important;
 }
 
 li[qstntemplate='true'] .questionTemplate {
 	padding: 0px 0px 0px 0px;
 	font-size: 14px !important;
-    width: 100%;
-    font-weight: normal;
-    display: table;
+	width: 100%;
+	font-weight: normal;
+	display: table;
 }
 
 li[qstntemplate='true'] .printViewContainer .optionLabelView {
@@ -2296,8 +2319,8 @@ li[qstntemplate='true'] .printViewContainer .optionLabelView {
 	vertical-align: middle;
 }
 
-li[qstntemplate='true'] .qti-itemBody:first-child blockquote > p,li[qstntemplate='true'][quiztype='FillInTheBlanks'] .qti-itemBody > blockquote > p {
-	
+li[qstntemplate='true'] .qti-itemBody:first-child blockquote>p, li[qstntemplate='true'][quiztype='FillInTheBlanks'] .qti-itemBody>blockquote>p
+	{
 	display: inline-block;
 	width: 100%;
 	vertical-align: middle;
@@ -2308,52 +2331,67 @@ li[qstntemplate='true'] .qti-itemBody:first-child blockquote > p,li[qstntemplate
 	font-size: 14px;
 }
 
-
-li[qstntemplate='true'][quiztype='Matching'] .qti-itemBody > blockquote > p {	
+li[qstntemplate='true'][quiztype='Matching'] .qti-itemBody>blockquote>p
+	{
 	margin: 0 0 3px;
 }
 
-li[qstntemplate='true'][quiztype='Matching'] .qti-itemBody > blockquote:last-child > span.printView{	
-padding-bottom: 10px;
+li[qstntemplate='true'][quiztype='Matching'] .qti-itemBody>blockquote:last-child>span.printView
+	{
+	padding-bottom: 10px;
 }
 
-li[qstntemplate='true'] div #crtAnsSpace{
-   height: 20px
-}  
+li[qstntemplate='true'] div #crtAnsSpace {
+	height: 20px
+}
 
-li[printmode='true'] .matchingOption{    
-    max-width: 200px;
-    min-width: 50%;
+li[printmode='true'] .matchingOption {
+	max-width: 200px;
+	min-width: 50%;
 }
 
 li[qstntemplate='true'] .matchingOption {
-   min-width: 30%;
+	min-width: 30%;
 }
 
 li[qstntemplate='true'] .matchRight {
-   min-width: 70%;
-}
-li[qstntemplate='true'] .qti-simpleChoice .radio, li[printmode='true'] .qti-simpleChoice .checkbox{
-	margin-bottom: 5px;
-}
-#Custom-Qstn-tree-root{
-	overflow:hidden;
-	overflow-y: auto;
-}
-.placeHolderForBlank{
-  	width: 96%;
-	float: right;
- 	font-weight: normal;
-}
-.closeQuestion{
-	margin-right: -10px;
-	float: right;
-	margin-top:3px;
-}
-li[printmode='true'] .qti-itemBody > blockquote:last-child > p{    
-margin-bottom: 10px;
+	min-width: 70%;
 }
 
-li[printmode='true'] .qti-itemBody .qti-blockquote > p:first-child{    
-margin: 0 0 3px;
+li[qstntemplate='true'] .qti-simpleChoice .radio, li[printmode='true'] .qti-simpleChoice .checkbox
+	{
+	margin-bottom: 5px;
+}
+
+#Custom-Qstn-tree-root {
+	overflow: hidden;
+	overflow-y: auto;
+}
+
+.placeHolderForBlank {
+	width: 96%;
+	float: right;
+	font-weight: normal;
+}
+
+.closeQuestion {
+	margin-right: -10px;
+	float: right;
+	margin-top: 3px;
+}
+
+li[printmode='true'] .qti-itemBody>blockquote:last-child>p {
+	margin-bottom: 10px;
+}
+
+li[printmode='true'] .qti-itemBody .qti-blockquote>p:first-child {
+	margin: 0 0 3px;
+}
+
+.bookSearchicon {
+	float: left;
+	position: absolute;
+	z-index: 9999;
+	margin-top: 10px;
+	margin-left: 255px;
 }

@@ -24,36 +24,61 @@ angular
 							this.disciplineBooks = function(discipline,
 									callback) {
 
-								var disciplineBooks = [];				
-								 
-								$http.get(
-										evalu8config.apiUrl + "/books?discipline=" + discipline, config)
-										.success(
-												function(response) {
-													
-													response.forEach (function(item) {
-														item.hasEdition = false;
-														item.showEdition = true;
-														item.isSelected = false;
-														item.isCollasped = false;
-														disciplineBooks.push(item);    							    							
-													});
-													
-													callback(disciplineBooks);
-												});
-							};
-							
-							this.userBooks = function(callback) {
-								
-								var url = evalu8config.apiUrl
-								+ "/books?userBooks=true";
+								var disciplineBooks = [];
 
-								$http.get(url, config)
-								.success(
+								$http.get(
+										evalu8config.apiUrl
+												+ "/books?discipline="
+												+ discipline, config).success(
 										function(response) {
-											
+
+											response.forEach(function(item) {
+												item.hasEdition = false;
+												item.showEdition = true;
+												item.isSelected = false;
+												item.isCollasped = false;
+												disciplineBooks.push(item);
+											});
+
+											callback(disciplineBooks);
+										});
+							};
+
+							this.userBooks = function(callback) {
+
+								var url = evalu8config.apiUrl
+										+ "/books?userBooks=true";
+
+								$http.get(url, config).success(
+										function(response) {
+
 											callback(response);
 										});
+							};
+
+							this.getAllContainers = function(bookids, callback) {
+
+								var cointainers = [];
+
+								var url = evalu8config.apiUrl
+										+ "/books/nodes?bookids="
+										+ bookids;
+
+								$http
+										.get(url, config)
+										.success(
+												function(response) {
+
+													response
+															.forEach(function(
+																	container) {
+																cointainers
+																		.push(container)
+															});
+
+													callback(cointainers);
+												});
+
 							};
 
 						} ])

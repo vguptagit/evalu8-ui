@@ -17,11 +17,13 @@ angular
 						'SharedTabService',
 						'UserQuestionsService',
 						'EnumService',
-						'$modal','blockUI',
+						'$modal',
+						'blockUI',
+						'BookService',
 						function($scope, $rootScope, $location, $cookieStore,
 								$http, $sce, DisciplineService, TestService,
 								SharedTabService, UserQuestionsService,
-								EnumService, $modal,blockUI) {
+								EnumService, $modal, blockUI,BookService) {
 							SharedTabService.selectedMenu = SharedTabService.menu.questionBanks;
 							$rootScope.globals = $cookieStore.get('globals')
 									|| {};
@@ -46,12 +48,12 @@ angular
 								if ($scope.dragStarted) {
 									$scope.dragStarted = false;
 									if (!source.node.isNodeSelected) {
-									    $scope.selectNode(source.node);
+										$scope.selectNode(source.node);
 									}
-									
-								    //$rootScope.$broadcast("dropQuestion",
-								    //		source.node, destIndex);
-								    //source.node.showEditQuestionIcon = false;
+
+									// $rootScope.$broadcast("dropQuestion",
+									// source.node, destIndex);
+									// source.node.showEditQuestionIcon = false;
 									$scope.editQuestion();
 								}
 							});
@@ -130,8 +132,8 @@ angular
 							// and append the collection to input discipline
 							// angularjs node
 							$scope.getBooks = function(discipline) {
-								 var blockLeftpanel =
-								 blockUI.instances.get('Leftpanel');
+								var blockLeftpanel = blockUI.instances
+										.get('Leftpanel');
 
 								if ($rootScope.globals.authToken == '') {
 									$location.path('/login');
@@ -140,7 +142,7 @@ angular
 									if (!discipline.collapsed) {
 										discipline.collapse();
 									} else {
-										 blockLeftpanel.start();
+										blockLeftpanel.start();
 										discipline.expand();
 
 										var ep;
@@ -154,32 +156,36 @@ angular
 
 											var yourQuestions = [];
 											$scope.userQuestions
-													.forEach(function(userQuestion) {
+													.forEach(function(
+															userQuestion) {
 														var yourQuestion = {};
 														var displayNode = $("<div></div>");
 														QTI.BLOCKQUOTE.id = 0;
-														QTI.play(userQuestion.qtixml,
-																displayNode,
-																false, false,userQuestion.metadata.quizType);
+														QTI
+																.play(
+																		userQuestion.qtixml,
+																		displayNode,
+																		false,
+																		false,
+																		userQuestion.metadata.quizType);
 														yourQuestion.isQuestion = true;
 														yourQuestion.questionXML = true;
-														
+
 														yourQuestion.nodeType = "question";
 														yourQuestion.guid = userQuestion.guid;
 														yourQuestion.showEditQuestionIcon = false;
 														yourQuestion.isNodeSelected = false;
-														
-													
+
 														addToQuestionsArray(yourQuestion);
-														
+
 														yourQuestion.data = userQuestion.qtixml;
 														yourQuestion.quizType = userQuestion.metadata.quizType;
 														yourQuestion.extendedMetadata = userQuestion.metadata.extendedMetadata;
-														yourQuestion.textHTML = displayNode.html();					
-													
-														
+														yourQuestion.textHTML = displayNode
+																.html();
+
 														yourQuestion.template = 'qb_questions_renderer.html';
-												
+
 														yourQuestions
 																.push(yourQuestion);
 													})
@@ -197,7 +203,7 @@ angular
 													.success(
 															function(response) {
 																discipline.node.nodes = response;
-																 
+
 															});
 										}
 										blockLeftpanel.stop();
@@ -239,14 +245,14 @@ angular
 																			book.node.nodes,
 																			function(
 																					item) {
-																			    item.showTestWizardIcon = true;
-                                                                                item.showEditQuestionIcon = true;
+																				item.showTestWizardIcon = true;
+																				item.showEditQuestionIcon = true;
 																				item.isNodeSelected = false;
 																				if ($scope.selectedNodes.length > 0)
 																					for (var i = 0; i < $scope.selectedNodes.length; i++) {
 																						if ($scope.selectedNodes[i].guid == item.guid) {
-																						    item.showTestWizardIcon = $scope.selectedNodes[i].showTestWizardIcon;
-																						    item.showEditQuestionIcon = $scope.selectedNodes[i].showEditQuestionIcon;
+																							item.showTestWizardIcon = $scope.selectedNodes[i].showTestWizardIcon;
+																							item.showEditQuestionIcon = $scope.selectedNodes[i].showEditQuestionIcon;
 																							item.isNodeSelected = $scope.selectedNodes[i].isNodeSelected;
 																							$scope.selectedNodes[i] = item;
 																						}
@@ -287,8 +293,14 @@ angular
 									currentNode = $scope.selectedNodes[i];
 									if (currentNode.showTestWizardIcon) {
 										currentNode.showTestWizardIcon = false;
-										getQuestions(currentNode, function (response, currentNode) {
-										    $rootScope.$broadcast("handleBroadcast_createTestWizardCriteria", response, currentNode);
+										getQuestions(
+												currentNode,
+												function(response, currentNode) {
+													$rootScope
+															.$broadcast(
+																	"handleBroadcast_createTestWizardCriteria",
+																	response,
+																	currentNode);
 													nodeCounter++;
 													if (nodeCounter == selectedNodesLength)
 														if (SharedTabService.errorMessages.length > 0)
@@ -307,10 +319,9 @@ angular
 														+ currentNode.guid
 														+ "/questions?flat=1",
 												config)
-										.success(
-												function(response) {
-												    callBack(response, currentNode)
-												})
+										.success(function(response) {
+											callBack(response, currentNode)
+										})
 										.error(
 												function() {
 													SharedTabService
@@ -335,8 +346,8 @@ angular
 							// Output topic,subtopic and question collection
 							// will be append to input chapter angularjs node
 							$scope.getNodesWithQuestion = function(currentNode) {
-								 var blockLeftpanel =
-								 blockUI.instances.get('BlockLeftpanel');
+								var blockLeftpanel = blockUI.instances
+										.get('BlockLeftpanel');
 								if ($rootScope.globals.authToken == '') {
 									$location.path('/login');
 								} else {
@@ -386,15 +397,16 @@ angular
 																				if ($scope.selectedNodes.length > 0)
 																					for (var i = 0; i < $scope.selectedNodes.length; i++) {
 																						if ($scope.selectedNodes[i].guid == item.guid) {
-																						    item.showTestWizardIcon = $scope.selectedNodes[i].showTestWizardIcon;
-																						    item.showEditQuestionIcon = $scope.selectedNodes[i].showEditQuestionIcon;
+																							item.showTestWizardIcon = $scope.selectedNodes[i].showTestWizardIcon;
+																							item.showEditQuestionIcon = $scope.selectedNodes[i].showEditQuestionIcon;
 																							item.isNodeSelected = $scope.selectedNodes[i].isNodeSelected;
 																							$scope.selectedNodes[i] = item;
 																						}
 																					}
 																				item.nodeType = "topic";
 																			})
-															 blockLeftpanel.stop();
+															blockLeftpanel
+																	.stop();
 														})
 
 										$http
@@ -440,10 +452,11 @@ angular
 																				$scope
 																						.renderQuestion(item);
 																			})
-															 blockLeftpanel.stop();
+															blockLeftpanel
+																	.stop();
 
 														}).error(function() {
-													 blockLeftpanel.stop();
+													blockLeftpanel.stop();
 												});
 										;
 									}
@@ -570,25 +583,33 @@ angular
 								}
 								return sortedNodes;
 							}
-							
-							//Message tip
-							$scope.closeTip=function(){
-					        	$('.questionMessagetip').hide();
-					        }
-							 $('.questionMessagetip').offset({'top':($(window).height()/2)-$('.questionMessagetip').height()});
-						        $('.questionMessagetip').hide();
+
+							// Message tip
+							$scope.closeTip = function() {
+								$('.questionMessagetip').hide();
+							}
+							$('.questionMessagetip').offset(
+									{
+										'top' : ($(window).height() / 2)
+												- $('.questionMessagetip')
+														.height()
+									});
+							$('.questionMessagetip').hide();
 							$scope.selectNode = function(node) {
-								if(node.isNodeSelected==false && $rootScope.globals.loginCount<=12){
+								if (node.isNodeSelected == false
+										&& $rootScope.globals.loginCount <= 12) {
 									$('.questionMessagetip').show()
-				    	        	setTimeout(function(){ 
-				    	        		$('.questionMessagetip').hide();
-				    	        	}, 5000);
+									setTimeout(function() {
+										$('.questionMessagetip').hide();
+									}, 5000);
 								}
 								if (!node.isNodeSelected) {
 									$scope.selectedNodes.push(node);
 									node.isNodeSelected = !node.isNodeSelected;
 									node.showEditQuestionIcon = true;
-								    //node.showEditQuestionIcon = node.showEditQuestionIcon != undefined ? true : node.showEditQuestionIcon;
+									// node.showEditQuestionIcon =
+									// node.showEditQuestionIcon != undefined ?
+									// true : node.showEditQuestionIcon;
 								} else {
 									for (var i = 0; i < $scope.selectedNodes.length; i++) {
 										if ($scope.selectedNodes[i].guid == node.guid
@@ -596,7 +617,10 @@ angular
 											$scope.selectedNodes.splice(i, 1);
 											node.isNodeSelected = !node.isNodeSelected;
 											node.showEditQuestionIcon = false;
-										    //node.showEditQuestionIcon = node.showEditQuestionIcon != undefined ? false : node.showEditQuestionIcon;
+											// node.showEditQuestionIcon =
+											// node.showEditQuestionIcon !=
+											// undefined ? false :
+											// node.showEditQuestionIcon;
 											break;
 										}
 									}
@@ -607,24 +631,35 @@ angular
 									function(handler, node) {
 										$scope.selectNode(node);
 									});
-							$scope.editQuestion = function () {
-							    if (SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
-							        $rootScope.$broadcast('handleBroadcast_AddNewTab');
-							    }
-							    for (var i = 0; i < $scope.selectedNodes.length; i++) {
-							        if ($scope.selectedNodes[i].showEditQuestionIcon) {
-							            $scope.selectedNodes[i].showEditQuestionIcon = false;
-							            if ($scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.question) {
-							                $rootScope.$broadcast("dropQuestion", $scope.selectedNodes[i], 0);
-							            } else if ($scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.chapter || $scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.topic) {
-							                var questionFolder = $scope.selectedNodes[i];
-							                getQuestions(questionFolder, function (response, questionFolder) {
-							                    $rootScope.$broadcast("handleBroadcast_AddQuestionsToTest", response, questionFolder);
-							                });
-							            }
+							$scope.editQuestion = function() {
+								if (SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
+									$rootScope
+											.$broadcast('handleBroadcast_AddNewTab');
+								}
+								for (var i = 0; i < $scope.selectedNodes.length; i++) {
+									if ($scope.selectedNodes[i].showEditQuestionIcon) {
+										$scope.selectedNodes[i].showEditQuestionIcon = false;
+										if ($scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.question) {
+											$rootScope.$broadcast(
+													"dropQuestion",
+													$scope.selectedNodes[i], 0);
+										} else if ($scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.chapter
+												|| $scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.topic) {
+											var questionFolder = $scope.selectedNodes[i];
+											getQuestions(
+													questionFolder,
+													function(response,
+															questionFolder) {
+														$rootScope
+																.$broadcast(
+																		"handleBroadcast_AddQuestionsToTest",
+																		response,
+																		questionFolder);
+													});
+										}
 
-							        }
-							    }
+									}
+								}
 							}
 							$scope.questions = [];
 							var addToQuestionsArray = function(item) {
@@ -682,12 +717,40 @@ angular
 										})
 							}
 
-							$scope.addQuestionsToTest = function (questionFolder) {
-							    if (SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
-							        $rootScope.$broadcast('handleBroadcast_AddNewTab');
-							    }
-							    getQuestions(questionFolder.node, function (response, questionFolder) {
-							        $rootScope.$broadcast("handleBroadcast_AddQuestionsToTest", response, questionFolder);
-							    });
+							$scope.addQuestionsToTest = function(questionFolder) {
+								if (SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
+									$rootScope
+											.$broadcast('handleBroadcast_AddNewTab');
+								}
+								getQuestions(
+										questionFolder.node,
+										function(response, questionFolder) {
+											$rootScope
+													.$broadcast(
+															"handleBroadcast_AddQuestionsToTest",
+															response,
+															questionFolder);
+										});
 							}
+
+							$scope.selectedBooks = [];
+
+							$scope.selectBook = function(node) {
+								$scope.allContainers = [];
+
+								var index = $scope.selectedBooks
+										.indexOf(node.guid);
+								if (index > -1) {
+									$scope.selectedBooks.splice(index, 1);
+								} else {
+									$scope.selectedBooks.push(node.guid)
+								}
+
+								BookService.getAllContainers(
+										$scope.selectedBooks.toString(),
+										function(response) {
+											$scope.allContainers = response;
+										});
+							}
+
 						} ]);
