@@ -52,8 +52,8 @@
                 <div class="maindivTest" ng-class="{testHighlight: node.selectTestNode}" id={{node.guid}}>
                     <div class="imagediv"></div>
                     <div class="testCaptionDiv">
-                        <div ng-mousedown="selectTestNode($event,this);" id="testButtonDiv"
-                             class="testInputbuttonClass">
+                        <div ng-mousedown="selectTestNode($event,this);" id="testButtonDiv" title="{{node.title}}"
+                             class="testCaptionLabel  testInputbuttonClass">
                             {{node.title}} &nbsp;&nbsp;&nbsp;&nbsp; {{node.modified | date:'MM/dd/yy'}}
                         </div>
                     </div>
@@ -111,7 +111,7 @@
                                ng-src="{{collapsed && 'images/right_arrow2.png' || 'images/right_arrow.png'}}" />
                     </div>
                     <div class="captiondiv">
-                        <label ng-class="{captionEmptyNode : node.nodeType == 'empty'}">{{node.title}}</label>
+                        <label title={{node.title}} class="captionLabel" ng-class="{captionEmptyNode : node.nodeType == 'empty'}">{{node.title}}</label>
                     </div>
                     <div class="iconsCourseNode">
                         <span>
@@ -129,7 +129,7 @@
                                ng-src="{{collapsed && 'images/right_arrow2.png' || 'images/right_arrow.png'}}" />
                     </div>
                     <div class="captiondiv">
-                        <label ng-class="{captionEmptyNode : node.nodeType == 'empty'}">{{node.title}}</label>
+                        <label title={{node.title}} class="captionLabel" ng-class="{captionEmptyNode : node.nodeType == 'empty'}">{{node.title}}</label>
                     </div>
                     <div class="iconsCourseNode">
                         <span>
@@ -144,8 +144,8 @@
                 <div class="maindivTest" id={{node.guid}} ng-class="{testHighlight: node.selectTestNode}">
                     <div class="imagediv"></div>
                     <div class="testCaptionDiv">
-                        <div ng-mousedown="selectTestNode($event,this);" id="testButtonDiv"
-                             ng-class="{testHighlight: node.selectTestNode}" class="testInputbuttonClass">
+                        <div ng-mousedown="selectTestNode($event,this);" id="testButtonDiv" title={{node.title}} 
+                             ng-class="{testHighlight: node.selectTestNode}" class="testCaptionLabel testInputbuttonClass">
                             {{node.title}} &nbsp;&nbsp;&nbsp;&nbsp; {{node.modified | date:'MM/dd/yy'}}
                         </div>
                     </div>
@@ -163,8 +163,8 @@
                 <div ng-class="{testHighlight: node.selectTestNode}" class="maindivTest" id={{node.guid}}>
                     <div class="imagediv"></div>
                     <div class="testCaptionDiv">
-                        <div ng-mousedown="selectTestNode($event,this);" id="testButtonDiv"
-                             ng-class="{testHighlight: node.selectTestNode}" class="testInputbuttonClass">
+                        <div ng-mousedown="selectTestNode($event,this);" id="testButtonDiv" title="{{node.title}}"
+                             ng-class="{testHighlight: node.selectTestNode}" class="testCaptionLabel testInputbuttonClass">
                             {{node.title}} &nbsp;&nbsp;&nbsp;&nbsp; {{node.modified | date:'MM/dd/yy'}}
                         </div>
                     </div>
