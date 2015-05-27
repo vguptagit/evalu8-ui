@@ -770,7 +770,6 @@ angular
 								var parentContainerid = "";
 								var hasParent = false;
 								var searchedDiscipline = {};
-								var searchedbook = [];
 
 								if (event.keyCode === 13) {
 									$scope.disciplines = [];
@@ -791,7 +790,9 @@ angular
 																	book) {
 																if (container.bookid == book.guid) {
 																	searchedDiscipline["item"] = book.discipline;
-																	searchedDiscipline["nodes"] = [ book ];
+																	searchedDiscipline["nodes"] = [ jQuery.extend(true,
+																			{}, book) ];
+																	$scope.bookID=book.guid;
 																}
 															})
 												}
@@ -805,16 +806,25 @@ angular
 										parentContainers.reverse();
 										var containerNode = $scope.disciplines[0].nodes[0];
 										parentContainers
-												.forEach(function(Container) {
-													Container.template = "nodes_renderer.html";
-													containerNode["nodes"] = [ Container ];
+												.forEach(function(container) {
+													container.template = "nodes_renderer.html";
+													container.showEditQuestionIcon=true;
+													container.showTestWizardIcon=true;
+													containerNode["nodes"] = [jQuery.extend(true,
+															{}, container)];
 													containerNode = containerNode.nodes[0];
 												})
 										searchedContainer.template = "nodes_renderer.html";
-										containerNode["nodes"] = [ searchedContainer ];
+										searchedContainer.showEditQuestionIcon=true;
+										searchedContainer.showTestWizardIcon=true;
+										containerNode["nodes"] = [ jQuery.extend(true,
+												{}, searchedContainer) ];
 
 									} else {
-										$scope.disciplines[0].nodes[0]["nodes"] = [ searchedContainer ];
+										searchedContainer.showEditQuestionIcon=true;
+										searchedContainer.showTestWizardIcon=true;
+										$scope.disciplines[0].nodes[0]["nodes"] = [jQuery.extend(true,
+												{}, searchedContainer)];
 									}
 								}
 							}

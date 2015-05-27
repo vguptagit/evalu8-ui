@@ -27,7 +27,7 @@
                 <div class="maindiv">
                     <div class="imagediv">
                         <input ng-click="getBooks(this)" type="image" class="collapseImg"
-                               ng-src="{{collapsed && 'images/right_arrow2.png' || 'images/right_arrow.png'}}"></input>
+                               ng-src="{{collapsed && isNormalMode && 'images/right_arrow2.png' || 'images/right_arrow.png'}}"></input>
                     </div>
                     <div class="captiondiv">
                         <label class="captionLabel" title="{{node.item}}">{{node.item}}</label>
@@ -47,7 +47,7 @@
             <div class="treeDiv" ng-class="{activeFolder:node.isNodeSelected}">
                 <div class="maindiv padding-lft-30">
                     <div class="imagediv">
-                        <input ng-click="getNodes(this)" type="image" class="collapseImg" src="images/right_arrow2.png"></input>
+                        <input ng-click="getNodes(this)" type="image" class="collapseImg" ng-src="{{isNormalMode?'images/right_arrow2.png':'images/right_arrow.png'}}"></input>
                     </div>
                     <div class="captiondiv" ng-mousedown="selectBook(this.node)">
                         <label class="captionLabel" title="{{node.title}}">{{node.title}}</label>
@@ -71,7 +71,7 @@
             <div class="treeDiv" ng-class="{activeFolder: !node.showTestWizardIcon , activeFolder: node.isNodeSelected}">
                 <div class="maindivChapter">
                     <div class="imagediv">
-                        <input ng-mousedown="getNodesWithQuestion(this)" type="image" class="collapseImg" src="images/right_arrow2.png"></input>
+                        <input ng-mousedown="getNodesWithQuestion(this)" type="image" class="collapseImg" ng-src="{{isNormalMode?'images/right_arrow2.png':'images/right_arrow.png'}}"></input>
                     </div>
                     <div class="captiondiv" ng-mousedown="selectNode(this.node)">
                         <label class="captionLabel" title="{{node.title}}">{{node.title}}</label>
