@@ -2126,6 +2126,23 @@ angular
 											});
 							$rootScope.$on('handleBroadcast_AddQuestionsToTest', function (event, response, currentNode) {
 							    QTI.initialize();
+							    
+							    response = $.grep(response,function(obj, index){
+							    	var find = false;
+							    	SharedTabService.tests[SharedTabService.currentTabIndex].questions.forEach(function(item){
+							    		if(item.guid == obj.guid)
+							    			find = true;
+							    	})
+							    	return !find;
+							    	/*
+							    	if(find == true)
+							    		return false;
+							    	else
+							    		return true;*/
+							    	 
+							    	
+							    })
+							    
 							    $scope.renderQuestions(response,
                                         $scope.currentIndex);
 							})

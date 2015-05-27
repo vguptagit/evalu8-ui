@@ -47,6 +47,7 @@ angular.module('evalu8Demo')
 		         this.isSaveAndClose = false;
 		         this.isTestWizard = false;
 		         this.treeNode = null;
+		         this.questionFolder = null;
 		     }
 
 		     sharedTabService.Criteria = function () {
@@ -405,6 +406,7 @@ angular.module('evalu8Demo')
 		         if (test.treeNode) {
 		             test.treeNode.showEditIcon = true;
 		             test.treeNode.showArchiveIcon = true;
+		             test.treeNode.showEditQuestionIcon = true;
 		         }
 
 		         if (index == scope.tests.length) {

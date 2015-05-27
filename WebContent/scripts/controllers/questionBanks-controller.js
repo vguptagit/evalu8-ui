@@ -631,7 +631,7 @@ angular
 									function(handler, node) {
 										$scope.selectNode(node);
 									});
-							$scope.editQuestion = function() {
+							$scope.editQuestion = function(scope) {
 								if (SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
 									$rootScope
 											.$broadcast('handleBroadcast_AddNewTab');
@@ -645,6 +645,8 @@ angular
 													$scope.selectedNodes[i], 0);
 										} else if ($scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.chapter
 												|| $scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.topic) {
+											var test = SharedTabService.tests[SharedTabService.currentTabIndex];
+								        	test.treeNode = $scope.selectedNodes[i];
 											var questionFolder = $scope.selectedNodes[i];
 											getQuestions(
 													questionFolder,
