@@ -3164,9 +3164,9 @@ QTI.getSpanId = function(spanElement, event){
 				{
 					var button = qtiCationElement.find("button").eq(i);
 					var crtAnswer = qtiCationElement.parent().parent().find("#crtAns").children().eq(i);
-					button.attr("id","RESPONSE_" + i+1);
+					button.attr("id","RESPONSE_" + (i+1));
 					button.find("b").eq(0).text(String.fromCharCode(65 + i ) + ".");
-					crtAnswer.attr("id","RESPONSE_" + i+1);
+					crtAnswer.attr("id","RESPONSE_" + (i+1));
 					crtAnswer.children().eq(0).attr("data-placeholder","Enter the correct answer for blank "+String.fromCharCode(65 + i ));
 					crtAnswer.html(String.fromCharCode(65 + i ) + "." + crtAnswer.children().get(0).outerHTML);
 				}
@@ -3187,9 +3187,9 @@ QTI.getSpanId = function(spanElement, event){
 				for(var i = index-1; i<=qtiCationElement.find("button").length; i++)
 				{
 					var crtAnswer = qtiCationElement.parent().parent().find("#crtAns").children().eq(i);
-					qtiCationElement.find("button").eq(i).attr("id","RESPONSE_" + i+1);
+					qtiCationElement.find("button").eq(i).attr("id","RESPONSE_" + (i+1));
 					qtiCationElement.find("button").eq(i).find("b").eq(0).text(String.fromCharCode(65 + i ) + ".");
-					crtAnswer.attr("id","RESPONSE_" + i+1);
+					crtAnswer.attr("id","RESPONSE_" + (i+1));
 					crtAnswer.children().eq(0).attr("data-placeholder","Enter the correct answer for blank "+String.fromCharCode(65 + i ));
 					crtAnswer.html(String.fromCharCode(65 + i ) + "."+ crtAnswer.children().get(0).outerHTML);
 				}
