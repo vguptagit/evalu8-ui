@@ -137,10 +137,18 @@ angular
 
 									if (!discipline.collapsed) {
 										discipline.collapse();
+										discipline.$element.find("input").attr("src",
+										"images/right_arrow2.png");
 									} else {
 										blockLeftpanel.start();
 										discipline.expand();
-
+										discipline.$element.find("input").attr("src",
+										"images/right_arrow.png");
+										
+										if(!$scope.isNormalMode){
+											blockLeftpanel.stop();
+											return;
+										}
 										var ep;
 
 										if (discipline.node.item == 'Your Questions (user created)') {
@@ -226,6 +234,11 @@ angular
 										book.expand();
 										book.$element.find("input").attr("src",
 												"images/right_arrow.png");
+										
+										if(!$scope.isNormalMode && $scope.searchedContainerId!=book.node.guid){
+											return;
+										}
+										
 										$http
 												.get(
 														evalu8config.apiUrl
@@ -365,6 +378,12 @@ angular
 												.find("input")
 												.attr("src",
 														"images/right_arrow.png");
+										
+										if(!$scope.isNormalMode && $scope.searchedContainerId!=currentNode.node.guid){
+											blockLeftpanel.stop();
+											return;
+										}
+										
 										currentNode.node.nodes = [];
 										$http
 												.get(
@@ -733,7 +752,8 @@ angular
 
 							$scope.selectedBooks = [];
 							$scope.selectedBookIDs = [];
-
+							$scope.searchedContainerId="";
+							
 							$scope.selectBook = function(node) {
 								$scope.allContainers = [];
 								var index = $scope.selectedBookIDs
@@ -775,6 +795,7 @@ angular
 											.forEach(function(container) {
 												if (container.title == $scope.searchedText) {
 													searchedContainer = container;
+													$scope.searchedContainerId=container.guid;
 													if (container.parentId != null
 															&& container.parentId != "") {
 														parentContainerid = container.parentId;
