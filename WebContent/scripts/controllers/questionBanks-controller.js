@@ -35,7 +35,7 @@ angular
 							};
 							$scope.controller = EnumService.CONTROLLERS.questionBanks;
 							$scope.selectedNodes = [];
-
+							$scope.isNormalMode = true;
 							$scope.dragStarted = false;
 
 							$scope.$on('dragStarted', function() {
@@ -736,23 +736,113 @@ angular
 							}
 
 							$scope.selectedBooks = [];
+							$scope.selectedBookIDs = [];
 
 							$scope.selectBook = function(node) {
 								$scope.allContainers = [];
-
-								var index = $scope.selectedBooks
+								var index = $scope.selectedBookIDs
 										.indexOf(node.guid);
 								if (index > -1) {
+									$scope.selectedBookIDs.splice(index, 1);
 									$scope.selectedBooks.splice(index, 1);
+									node.isNodeSelected = false;
 								} else {
-									$scope.selectedBooks.push(node.guid)
+									$scope.selectedBookIDs.push(node.guid)
+									$scope.selectedBooks.push(node)
+									node.isNodeSelected = true;
 								}
 
 								BookService.getAllContainers(
-										$scope.selectedBooks.toString(),
+										$scope.selectedBookIDs.toString(),
 										function(response) {
 											$scope.allContainers = response;
 										});
+							}
+
+							$scope.showContainerOnEnter = function(event) {
+								$(".dropdown-menu")
+								.addClass("autocompleteList");
+								
+								if($scope.searchedText==""){
+									return;
+								}
+								var searchedContainer = "";
+								var parentContainerid = "";
+								var hasParent = false;
+								var searchedDiscipline = {};
+								var searchedbook = [];
+
+								if (event.keyCode === 13) {
+									$scope.disciplines = [];
+									$scope.isNormalMode = false;
+
+									$scope.allContainers
+											.forEach(function(container) {
+												if (container.title == $scope.searchedText) {
+													searchedContainer = container;
+													if (container.parentId != null
+															&& container.parentId != "") {
+														parentContainerid = container.parentId;
+														hasParent = true;
+													}
+
+													$scope.selectedBooks
+															.forEach(function(
+																	book) {
+																if (container.bookid == book.guid) {
+																	searchedDiscipline["item"] = book.discipline;
+																	searchedDiscipline["nodes"] = [ book ];
+																}
+															})
+												}
+											});
+
+									$scope.disciplines.push(searchedDiscipline);
+
+									if (hasParent) {
+										var parentContainers = $scope
+												.getParentContainers(parentContainerid)
+										parentContainers.reverse();
+										var containerNode = $scope.disciplines[0].nodes[0];
+										parentContainers
+												.forEach(function(Container) {
+													Container.template = "nodes_renderer.html";
+													containerNode["nodes"] = [ Container ];
+													containerNode = containerNode.nodes[0];
+												})
+										searchedContainer.template = "nodes_renderer.html";
+										containerNode["nodes"] = [ searchedContainer ];
+
+									} else {
+										$scope.disciplines[0].nodes[0]["nodes"] = [ searchedContainer ];
+									}
+								}
+							}
+
+							$scope.getParentContainers = function(containerid) {
+								var parentContainers = [];
+								var parentContainerid = "";
+								var hasParent = false;
+
+								$scope.allContainers
+										.forEach(function(container) {
+											if (container.guid == containerid) {
+												parentContainers
+														.push(container)
+												if (container.parentId != null
+														&& container.parentId != "") {
+													parentContainer = container.parentId;
+													hasParent = true;
+												}
+											}
+										});
+
+								if (hasParent) {
+									$scope
+											.getParentContainers(parentContainerid)
+								}
+
+								return parentContainers;
 							}
 
 						} ]);

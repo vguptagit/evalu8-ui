@@ -36,7 +36,7 @@
             </div>
         </div>
 
-        <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}" droppable="false">
+        <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed && isNormalMode}" droppable="false">
             <li ng-if="!node.isQuestion" draggable="false" ng-repeat="node in node.nodes" collapsed="true" ui-tree-node ng-include="'book_renderer.html'"></li>
                         <li printmode="true" class="questIndex" ng-class="{questionSelected:node.isNodeSelected}" ng-if="node.isQuestion" ng-repeat="node in node.nodes" collapsed="true" ui-tree-node ng-include="'qb_questions_renderer.html'"></li>
 
@@ -44,7 +44,7 @@
     </script>
 	<script type="text/ng-template" id="book_renderer.html">
         <div ui-tree-handle class="tree-node tree-node-content" ng-class="{questionTitleInTree: node.questionXML}">
-            <div class="treeDiv">
+            <div class="treeDiv" ng-class="{activeFolder:node.isNodeSelected}">
                 <div class="maindiv padding-lft-30">
                     <div class="imagediv">
                         <input ng-click="getNodes(this)" type="image" class="collapseImg" src="images/right_arrow2.png"></input>
@@ -61,7 +61,7 @@
             </div>
         </div>
 
-        <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}" droppable="false">
+        <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed && isNormalMode}" droppable="false">
             <li draggable="{{node.nodeType=='chapter' || node.nodeType=='topic'}}" ng-repeat="node in node.nodes" collapsed="true" ui-tree-node ng-include="'nodes_renderer.html'">
             </li>
         </ol>
@@ -89,7 +89,7 @@
 
             </div>
         </div>
-        <ol ui-tree-nodes="" type="1" ng-model="node.nodes" ng-class="{hidden: collapsed}" droppable="false">
+        <ol ui-tree-nodes="" type="1" ng-model="node.nodes" ng-class="{hidden: collapsed && isNormalMode}" droppable="false">
 
             <li class="questIndex" printmode="true" ng-repeat="node in node.nodes" ng-class="{questionSelected:node.isNodeSelected}" collapsed="true" ui-tree-node draggable="{{node.nodeType=='question'}}" ng-include="node.template">
             </li>
