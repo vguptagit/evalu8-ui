@@ -2,6 +2,7 @@
 	<div class="col-lg-6">
 		<input type="text" placeHolder="Search selected banks"
 			class="bookSearch form-control" ng-model="searchedText"
+			ng-focus="validateSearch()"
 			typeahead="container.title for container in allContainers | filter:{title:$viewValue}""
 			ng-keyup="showContainerOnEnter($event)"> <span
 			class="glyphicon glyphicon-search bookSearchicon"

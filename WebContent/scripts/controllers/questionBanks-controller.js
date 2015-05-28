@@ -833,14 +833,18 @@ angular
 										});
 							}
 
-							$scope.showContainerOnClick = function(){
-								if($scope.searchedText==""){
-									return;
-								}else if($scope.selectedBookIDs.length == 0){
+							$scope.validateSearch = function(){
+								if($scope.selectedBookIDs.length == 0){
 									$scope.searchedText="";
 									$scope.IsConfirmation = false;
 									$scope.message = "Please select a question bank to search";
 									$modal.open(confirmObject);
+									return;
+								}
+							}
+							
+							$scope.showContainerOnClick = function(){
+								if($scope.searchedText==""){
 									return;
 								}
 								$scope.showContainer();
@@ -849,13 +853,8 @@ angular
 							$scope.showContainerOnEnter = function(event) {
 								if($scope.searchedText==""){
 									return;
-								}else if($scope.selectedBookIDs.length == 0){
-									$scope.searchedText="";
-									$scope.IsConfirmation = false;
-									$scope.message = "Please select a question bank to search";
-									$modal.open(confirmObject);
-									return;
 								}
+								
 								$(".dropdown-menu")
 								.addClass("autocompleteList");
 								if (event.keyCode === 13) {
