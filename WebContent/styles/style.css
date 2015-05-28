@@ -111,7 +111,16 @@ label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D;
 #scroll li a { margin: 15px 15px 0 15px;}   
 #scroll li ul li {display: table; text-align: left; color:#000; line-height:30px;}
 #scroll span.active{ display:inline-block; width:100%; background-color:#d5d5d5; line-height:30px; color:#000;}
-#scroll .node-text{ padding-left:10px; cursor:pointer;}
+#scroll .node-text{ 
+  padding-left:10px; 
+  cursor:pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 219px !important;
+  height: 35px;
+  display: block;
+}
 
 .folder-main {
         min-height: 20px;
