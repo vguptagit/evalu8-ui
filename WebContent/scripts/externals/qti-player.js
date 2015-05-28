@@ -1674,6 +1674,8 @@ if(state.questionType=="Matching"){
 	    
 	    	$(displayNode).append(elementDisplayNode);
 	    	 
+	    	$(displayNode).addClass("matching")
+	    	
 	    	 this.extend.play(qtiNode, elementDisplayNode, state);
 	  		this.processChildren(qtiNode, elementDisplayNode, state);
 	  		
