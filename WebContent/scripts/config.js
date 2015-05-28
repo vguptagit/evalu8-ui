@@ -11,6 +11,6 @@
 	ns.welcomeUrl = ns.uiUrl + "/#/welcome";
 	
 	ns.loginGraceTimeSeconds = 2; 
-	ns.welcomeLoginCount = 5;
+	ns.welcomeLoginCount = 1000;
 		
 })(window.evalu8config = window.evalu8config || {})
