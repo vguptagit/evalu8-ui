@@ -166,16 +166,14 @@ angular.module('evalu8Demo')
 			};
 			
 			this.getTest = function(testId, callback) {				
-				var blockRightPanel = blockUI.instances.get('RightPanel');
-            	blockRightPanel.start();
+
 				$http.get(evalu8config.apiUrl + '/tests/' + testId, config)
 				.success(function(response) {
 					var test = response;
 					callback(test)
-					blockRightPanel.stop();
 				})
 				.error(function(error, status) {
-					blockRightPanel.stop();
+
 				})				
 			};
 			

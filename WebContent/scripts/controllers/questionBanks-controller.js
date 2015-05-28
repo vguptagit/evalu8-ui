@@ -270,7 +270,7 @@ angular
                                                 })
                                                 if(book.node.testBindings && book.node.testBindings.length) {
                                                     var publisherTestsNode = {};
-                                                    publisherTestsNode.title = "Publisher Tests"
+                                                    publisherTestsNode.title = "Publisher Tests for this Book"
                                                     publisherTestsNode.nodeType = "publisherTests"
                                                     book.node.nodes.push(publisherTestsNode);    
                                                     
