@@ -811,6 +811,13 @@ angular
 							}
 
 							$scope.showContainerOnEnter = function(event) {
+								if($scope.selectedBookIDs.length==0){
+									$scope.IsConfirmation = false;
+									$scope.message = "Please select a question bank to search";
+									$modal.open(confirmObject);
+									return;
+								}
+								
 								$(".dropdown-menu")
 								.addClass("autocompleteList");
 								
@@ -906,5 +913,18 @@ angular
 
 								return parentContainers;
 							}
+							
+							var confirmObject = {
+									templateUrl : 'views/partials/alert.html',
+									controller : 'AlertMessageController',
+									backdrop : 'static',
+									keyboard : false,
+									resolve : {
+										parentScope : function() {
+											return $scope;
+										}
+									}
+								};
+							
 
 						} ]);
