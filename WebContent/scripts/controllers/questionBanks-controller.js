@@ -268,14 +268,15 @@ angular
                                                     publisherTestsNode.nodes = [];
                                                     
                                                     book.node.testBindings.forEach(function (testId) {
-                                                        var test = {};
-                                                        test.title = "xyz";
-                                                        test.guid = testId;
-                                                        test.nodeType = "test";
-                                                        test.selectTestNode = false;//to show the edit icon
-                                                        test.disableEdit = false;//to disable the edit icon
+                                                        TestService.getTest(testId, function(test){
 
-                                                        publisherTestsNode.nodes.push(test);
+                                                            test.nodeType = "test";
+                                                            test.showEditIcon=true;
+                                                            test.selectTestNode = false;//to show the edit icon
+                                                            test.disableEdit = false;//to disable the edit icon
+
+                                                            publisherTestsNode.nodes.push(test);                                                            
+                                                        });
                                                     })
                                                 }                                                
                                         });
@@ -295,6 +296,13 @@ angular
                                     }
                                 }
                                 SharedTabService.showSelectedTestTab(test.node.guid);
+                            }
+							
+                            //to disable the edit icon once it clicked  
+                            $scope.editTest = function (selectedTest) {
+                                selectedTest.node.showEditIcon=false;
+                                selectedTest.node.showArchiveIcon=false;
+                                $rootScope.$broadcast("editTest", selectedTest);
                             }
 							
 							// TODO : need to move this to service.
