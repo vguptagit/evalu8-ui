@@ -6,7 +6,6 @@ angular
 					return function(books, searchText) {
 
 						var filteredBooks = [];
-						var isAuthorExists = false;
 						var authorName = [];
 						searchText = searchText.toLowerCase();
 						books
@@ -24,67 +23,51 @@ angular
 																.forEach(
 																		function(
 																				authorDetail) {
-																			if (authorDetail.FirstName
-																					.toLowerCase()
-																					.indexOf(
-																							searchText) > -1
-																					|| authorDetail.middleName
-																							.toLowerCase()
-																							.indexOf(
-																									searchText) > -1
-																					|| authorDetail.lastName
-																							.toLowerCase()
-																							.indexOf(
-																									searchText) > -1) {
-																				isAuthorExists = true;
+																			authorName
+																					.push(authorDetail.FirstName
+																							+ " "
+																							+ authorDetail.middleName
+																							+ " "
+																							+ authorDetail.lastName)
 
-																				authorName
-																						.push(authorDetail.FirstName
-																								+ " "
-																								+ authorDetail.middleName
-																								+ " "
-																								+ authorDetail.lastName)
-																			}
 																		});
 													} else {
-														if (author
-																.toLowerCase()
-																.indexOf(
-																		searchText) > -1) {
-															isAuthorExists = true;
-															authorName
-																	.push(author);
-														}
+
+														authorName.push(author);
 													}
 
 												});
 									}
 
-									if (isAuthorExists) {
-										book.authorName = authorName;
-									}
+									book.authorName = authorName.toString();
 
 									if (book.title.toLowerCase().indexOf(
 											searchText) > -1
+
 											|| (book.guid != null && book.guid
 													.toLowerCase().indexOf(
 															searchText) > -1)
+
 											|| (book.isbn13 != null && book.isbn13
 													.toLowerCase().indexOf(
 															searchText) > -1)
+
 											|| (book.isbn10 != null && book.isbn10
 													.toLowerCase().indexOf(
 															searchText) > -1)
+
 											|| (book.publisher != null && book.publisher
 													.toLowerCase().indexOf(
 															searchText) > -1)
-											|| (isAuthorExists)) {
+
+											|| (book.authorName != null && book.authorName
+													.toLowerCase().indexOf(
+															searchText) > -1)) {
 
 										filteredBooks.push(jQuery.extend(true,
 												{}, book));
 
 									}
-									isAuthorExists = false;
 									authorName = [];
 								});
 						return filteredBooks;
@@ -115,10 +98,12 @@ angular
 							$scope.enableDisableNextButton = function(state) {
 								if (state) {
 									$(".nextButton").addClass("btnDisbled");
-									$("div.row.setupHeader input").addClass("btnDisbled");
+									$("div.row.setupHeader input").addClass(
+											"btnDisbled");
 								} else {
 									$(".nextButton").removeClass("btnDisbled");
-									$("div.row.setupHeader input").removeClass("btnDisbled");
+									$("div.row.setupHeader input").removeClass(
+											"btnDisbled");
 								}
 							}
 
@@ -212,12 +197,14 @@ angular
 
 								$scope.enableDisableNextButton($scope
 										.isDesciplineEmpty());
-								var container = $('.discplineheight'),
-                                    scrollTo = $(".discplineheight").find("div:contains('" + disciplineName + "')");
+								var container = $('.discplineheight'), scrollTo = $(
+										".discplineheight").find(
+										"div:contains('" + disciplineName
+												+ "')");
 
-								container.scrollTop(
-                                    scrollTo.offset().top - container.offset().top + container.scrollTop()
-                                );								 
+								container.scrollTop(scrollTo.offset().top
+										- container.offset().top
+										+ container.scrollTop());
 							}
 
 							$scope.isSelectedDiscipline = function(discipline) {
@@ -553,13 +540,12 @@ angular
 								return bookGUID;
 							}
 
-/*							$scope.enableDisableNextButton = function(state) {
-								if (state) {
-									$(".nextButton").addClass("btnDisbled");
-								} else {
-									$(".nextButton").removeClass("btnDisbled");
-								}
-							}*/
+							/*
+							 * $scope.enableDisableNextButton = function(state) {
+							 * if (state) {
+							 * $(".nextButton").addClass("btnDisbled"); } else {
+							 * $(".nextButton").removeClass("btnDisbled"); } }
+							 */
 
 							$scope.saveBooks = function() {
 								UserService

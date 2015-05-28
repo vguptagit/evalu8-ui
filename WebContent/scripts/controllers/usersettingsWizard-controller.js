@@ -6,12 +6,11 @@ angular
 					return function(books, searchText) {
 
 						var filteredBooks = [];
-						var isAuthorExists = false;
 						var authorName = [];
 						searchText = searchText.toLowerCase();
 						books
 								.forEach(function(book) {
-									book.authorName="";
+									book.authorName = "";
 									if (book.authors != null
 											&& book.authors.length > 0) {
 										book.authors
@@ -24,46 +23,25 @@ angular
 																.forEach(
 																		function(
 																				authorDetail) {
-																			if (authorDetail.FirstName
-																					.toLowerCase()
-																					.indexOf(
-																							searchText) > -1
-																					|| authorDetail.middleName
-																							.toLowerCase()
-																							.indexOf(
-																									searchText) > -1
-																					|| authorDetail.lastName
-																							.toLowerCase()
-																							.indexOf(
-																									searchText) > -1) {
-																				isAuthorExists = true;
 
-																				authorName
-																						.push(authorDetail.FirstName
-																								+ " "
-																								+ authorDetail.middleName
-																								+ " "
-																								+ authorDetail.lastName)
-																			}
+																			authorName
+																					.push(authorDetail.FirstName
+																							+ " "
+																							+ authorDetail.middleName
+																							+ " "
+																							+ authorDetail.lastName)
+
 																		});
 													} else {
-														if (author
-																.toLowerCase()
-																.indexOf(
-																		searchText) > -1) {
-															isAuthorExists = true;
-															authorName
-																	.push(author);
-														}
+
+														authorName.push(author);
 
 													}
 
 												});
 									}
 
-									if (isAuthorExists) {
-										book.authorName = authorName;
-									}
+									book.authorName = authorName.toString();
 
 									if (book.title.toLowerCase().indexOf(
 											searchText) > -1
@@ -82,13 +60,14 @@ angular
 											|| (book.publisher != null && book.publisher
 													.toLowerCase().indexOf(
 															searchText) > -1)
-											|| (isAuthorExists)) {
+											|| (book.authorName != null && book.authorName
+													.toLowerCase().indexOf(
+															searchText) > -1)) {
 
 										filteredBooks.push(jQuery.extend(true,
 												{}, book));
 									}
 
-									isAuthorExists = false;
 									authorName = [];
 								});
 						return filteredBooks;
@@ -238,23 +217,24 @@ angular
 								$scope.buttonEnableDisable($scope
 										.isDesciplineEmpty());
 
-								var container = $('.disciplineContainerInLightBox'),
-                                    scrollTo = $(".disciplineContainerInLightBox").find("div:contains('" + disciplineName + "')");
+								var container = $('.disciplineContainerInLightBox'), scrollTo = $(
+										".disciplineContainerInLightBox").find(
+										"div:contains('" + disciplineName
+												+ "')");
 
-								container.scrollTop(
-                                    scrollTo.offset().top - container.offset().top + container.scrollTop()
-                                );
-                                /*
-								var vtop = $(".disciplineContainerInLightBox")
-										.find(
-												"div:contains('"
-														+ disciplineName + "')")
-										.position().top;
-								if (vtop > $(".disciplineContainerInLightBox")[0].clientHeight
-										|| vtop < 0) {
-									$(".disciplineContainerInLightBox")[0].scrollTop = vtop;
-								}
-                                */
+								container.scrollTop(scrollTo.offset().top
+										- container.offset().top
+										+ container.scrollTop());
+								/*
+								 * var vtop =
+								 * $(".disciplineContainerInLightBox") .find(
+								 * "div:contains('" + disciplineName + "')")
+								 * .position().top; if (vtop >
+								 * $(".disciplineContainerInLightBox")[0].clientHeight ||
+								 * vtop < 0) {
+								 * $(".disciplineContainerInLightBox")[0].scrollTop =
+								 * vtop; }
+								 */
 							}
 
 							$scope.isSelectedDiscipline = function(discipline) {
@@ -647,11 +627,13 @@ angular
 																						DisciplineService
 																								.userDisciplines(function(
 																										userDisciplines) {
-																									userDisciplines.forEach(function(discipline) {
-																										discipline["isCollapsed"]=true;
-																									});
-																									$scope.$parent.isSearchMode=false;
-																									$scope.$parent.searchedText="";
+																									userDisciplines
+																											.forEach(function(
+																													discipline) {
+																												discipline["isCollapsed"] = true;
+																											});
+																									$scope.$parent.isSearchMode = false;
+																									$scope.$parent.searchedText = "";
 																									$scope.$parent.disciplines = userDisciplines;
 																									$modalInstance
 																											.close();
