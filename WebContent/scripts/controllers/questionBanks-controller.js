@@ -48,6 +48,14 @@ angular
 									destIndex) {
 								if ($scope.dragStarted) {
 									$scope.dragStarted = false;
+									
+						            if(source.node.nodeType==='test' && destParent.controller === EnumService.CONTROLLERS.testCreationFrame){        
+						                source.node.showEditIcon=false;
+						                source.node.showArchiveIcon=false;
+						                $rootScope.$broadcast("dropTest", source, destIndex);
+						                return false;
+						            }
+						            
 									if (!source.node.isNodeSelected) {
 										$scope.selectNode(source.node);
 									}
