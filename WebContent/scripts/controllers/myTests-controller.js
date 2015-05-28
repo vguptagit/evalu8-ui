@@ -596,7 +596,7 @@ angular.module('e8MyTests')
       //evalu8-ui : to set Active Resources Tab , handled in ResourcesTabsController
         $rootScope.$broadcast('handleBroadcast_setActiveResourcesTab', EnumService.RESOURCES_TABS.yourtests);
          //TODO : set container height, need revesit
-        $('.myTest_scrollbar ').height(($(document).height() - $('.myTest_scrollbar ').offset().top + 25));
+        $('.myTest_scrollbar ').height(($(document).height() - $('.myTest_scrollbar ').offset().top + 35));
 
         //#region Save-as test
         $scope.$on('handleBroadcast_AddNewFolder', function (handler, newFolder) {
@@ -649,6 +649,7 @@ angular.module('e8MyTests')
                     });
                     parentFolderNodes.splice(position, 0, test)
                 }
+                SharedTabService.tests[SharedTabService.currentTabIndex].metadata = TestService.getTestMetadata(test); 
             });
         });
         //#endregion
