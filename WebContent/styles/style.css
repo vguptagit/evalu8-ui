@@ -347,7 +347,7 @@ section {
 hr{margin: 0;}
 .botborder { border-bottom: 1px solid #E0E0E0; height: 100px; background-color: #f8f8f8;}
 .resourcetab{height: 55px; padding-top: 10px; padding-left: 15px;}
-.angular-ui-tree-nodes .angular-ui-tree-nodes {padding-left: 0;}
+ .angular-ui-tree-nodes .angular-ui-tree-nodes {padding-right: 1px;} 
 
 .full-width-tabs > ul.nav.test-tabs {
   /* display: table; */

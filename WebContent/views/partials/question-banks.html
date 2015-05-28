@@ -47,7 +47,7 @@
 	<script type="text/ng-template" id="book_renderer.html">
         <div ui-tree-handle class="tree-node tree-node-content" ng-class="{questionTitleInTree: node.questionXML}">
             <div class="treeDiv" ng-class="{activeFolder:node.isNodeSelected}">
-                <div class="maindiv padding-lft-30">
+                <div class="maindiv">
                     <div class="imagediv">
                         <input ng-click="getNodes(this)" type="image" class="collapseImg" ng-src="{{collapsed?'images/right_arrow2.png':'images/right_arrow.png'}}"></input>
                     </div>
