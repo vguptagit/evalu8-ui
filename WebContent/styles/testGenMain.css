@@ -1349,6 +1349,16 @@ li[quiztype='TrueFalse'] .qti-simpleChoice .radio {
 	padding-bottom: 4px;
 	padding-top: 4px;
 }
+.EssaySpaceDiv {
+	display: inline-block;
+	padding-bottom: 4px;
+	padding-top: 4px;
+}
+.BlankSizeDiv {
+	display: inline-block;
+	padding-bottom: 4px;
+	padding-top: 4px;
+}
 
 .viewOptionDiv {
 	float: left;
