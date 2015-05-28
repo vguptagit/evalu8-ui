@@ -90,19 +90,6 @@ angular
 						return filteredBooks;
 					};
 				})
-		.directive(
-				'resize',
-				function($window) {
-					return function(scope, element) {
-						var divHeight = ($(document).height() - $(
-								'.searchdiv').offset().top) + 60;
-
-						$('.discplineheight').height(divHeight);
-
-						$('.bookContainer').height(divHeight);
-
-					}
-				})
 		.controller(
 				'startupWizardController',
 				[

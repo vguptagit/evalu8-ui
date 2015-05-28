@@ -36,7 +36,7 @@ angular
 							};
 							$scope.controller = EnumService.CONTROLLERS.questionBanks;
 							$scope.selectedNodes = [];
-							$scope.isNormalMode = true;
+							$scope.isSearchMode = false;
 							$scope.dragStarted = false;
 
 							$scope.$on('dragStarted', function() {
@@ -84,6 +84,10 @@ angular
 									.userDisciplines(function(userDisciplines) {
 
 										$scope.disciplines = userDisciplines;
+										
+										$scope.disciplines.forEach(function(discipline) {
+											discipline["isCollapsed"]=true;
+										});
 
 										$scope.disciplines.sort(function(a, b) {
 											return a.item.localeCompare(b.item)
@@ -146,15 +150,11 @@ angular
 
 									if (!discipline.collapsed) {
 										discipline.collapse();
-										discipline.$element.find("input").attr("src",
-										"images/right_arrow2.png");
 									} else {
 										blockLeftpanel.start();
 										discipline.expand();
-										discipline.$element.find("input").attr("src",
-										"images/right_arrow.png");
 										
-										if(!$scope.isNormalMode){
+										if($scope.isSearchMode){
 											blockLeftpanel.stop();
 											return;
 										}
@@ -215,6 +215,10 @@ angular
 													.get(ep, config)
 													.success(
 															function(response) {
+																response.forEach(function(book) {
+																	book["isCollapsed"]=true;
+																});
+																
 																discipline.node.nodes = response;
 
 															});
@@ -237,14 +241,10 @@ angular
 								} else {
 									if (!book.collapsed) {
 										book.collapse();
-										book.$element.find("input").attr("src",
-												"images/right_arrow2.png");
 									} else {
 										book.expand();
-										book.$element.find("input").attr("src",
-												"images/right_arrow.png");
 										
-										if(!$scope.isNormalMode && $scope.searchedContainerId!=book.node.guid){
+										if($scope.isSearchMode && $scope.searchedContainerId!=book.node.guid){
 											return;
 										}
 										
@@ -266,6 +266,7 @@ angular
                                                             }
                                                         }
                                                     item.nodeType = "chapter";
+                                                    item.isCollapsed=true;
                                                 })
                                                 if(book.node.testBindings && book.node.testBindings.length) {
                                                     var publisherTestsNode = {};
@@ -409,17 +410,9 @@ angular
 												'iconsChapterVisible');
 										currentNode.$element.children(1)
 												.removeClass('expandChapter');
-										currentNode.$element
-												.find("input")
-												.attr("src",
-														"images/right_arrow2.png");
 									} else {
 										blockLeftpanel.start();
 										currentNode.expand();
-										currentNode.$element
-												.find("input")
-												.attr("src",
-														"images/right_arrow.png");
 										
                                         if(currentNode.node.nodeType == 'publisherTests') {
                                             
@@ -431,7 +424,7 @@ angular
                                             return;
                                         }
 							                                        
-										if(!$scope.isNormalMode && $scope.searchedContainerId!=currentNode.node.guid){
+										if($scope.isSearchMode && $scope.searchedContainerId!=currentNode.node.guid){
 											blockLeftpanel.stop();
 											return;
 										}
@@ -471,6 +464,7 @@ angular
 																						}
 																					}
 																				item.nodeType = "topic";
+																				item.isCollapsed=true;
 																			})
 															blockLeftpanel
 																	.stop();
@@ -899,6 +893,8 @@ angular
 																book) {
 															if (container.bookid == book.guid) {
 																searchedDiscipline["item"] = book.discipline;
+																searchedDiscipline["isCollapsed"]=false;
+																book["isCollapsed"]=false;
 																searchedDiscipline["nodes"] = [ jQuery.extend(true,
 																		{}, book) ];
 																$scope.bookID=book.guid;
@@ -911,7 +907,7 @@ angular
 									return;
 								}else{
 									$scope.disciplines = [];
-									$scope.isNormalMode = false;
+									$scope.isSearchMode = true;
 								}
 								
 								$scope.disciplines.push(searchedDiscipline);
@@ -927,6 +923,7 @@ angular
 												container.showEditQuestionIcon=true;
 												container.showTestWizardIcon=true;
 												container.nodeType = "chapter";
+												container.isCollapsed=false;
 												containerNode["nodes"] = [jQuery.extend(true,
 														{}, container)];
 												containerNode = containerNode.nodes[0];
@@ -935,6 +932,7 @@ angular
 									searchedContainer.showEditQuestionIcon=true;
 									searchedContainer.showTestWizardIcon=true;
 									searchedContainer.nodeType = "topic";
+									searchedContainer.isCollapsed=true;
 									containerNode["nodes"] = [ jQuery.extend(true,
 											{}, searchedContainer) ];
 
@@ -942,6 +940,7 @@ angular
 									searchedContainer.showEditQuestionIcon=true;
 									searchedContainer.showTestWizardIcon=true;
 									searchedContainer.nodeType = "topic";
+									searchedContainer.isCollapsed=true;
 									$scope.disciplines[0].nodes[0]["nodes"] = [jQuery.extend(true,
 											{}, searchedContainer)];
 								}

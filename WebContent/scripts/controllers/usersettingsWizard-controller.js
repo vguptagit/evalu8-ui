@@ -647,7 +647,10 @@ angular
 																						DisciplineService
 																								.userDisciplines(function(
 																										userDisciplines) {
-																									$scope.$parent.isNormalMode=true;
+																									userDisciplines.forEach(function(discipline) {
+																										discipline["isCollapsed"]=true;
+																									});
+																									$scope.$parent.isSearchMode=false;
 																									$scope.$parent.searchedText="";
 																									$scope.$parent.disciplines = userDisciplines;
 																									$modalInstance
