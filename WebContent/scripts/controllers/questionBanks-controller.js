@@ -287,7 +287,7 @@ angular
                                 
                                 if (!test.node.disableEdit) {
                                     test.node.selectTestNode = !test.node.selectTestNode;
-                                    if(test.node.selectTestNode && $rootScope.globals.loginCount<=20 && test.node.nodeType!='archiveTest'){
+                                    if(test.node.selectTestNode && $rootScope.globals.loginCount<=2 && test.node.nodeType!='archiveTest'){
                                         $('.testMessagetip').show()
                                         setTimeout(function(){ 
                                             $('.testMessagetip').hide();
