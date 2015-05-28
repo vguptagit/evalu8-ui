@@ -279,6 +279,7 @@ angular
                                                         TestService.getTest(testId, function(test){
 
                                                             test.nodeType = "test";
+                                                            test.testType = "PublisherTest";
                                                             test.showEditIcon=true;
                                                             test.selectTestNode = false;//to show the edit icon
                                                             test.disableEdit = false;//to disable the edit icon

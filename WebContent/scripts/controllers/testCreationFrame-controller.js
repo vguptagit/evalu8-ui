@@ -1110,11 +1110,18 @@ angular
 												
 												
 							$rootScope.$on('editTest',
-									function(event, selectedTest) {
+									function(event, selectedTest) {								
+                                		
 										$scope.editTest(selectedTest);
 									});
 						    
 							$scope.editTest = function(selectedTest) {
+								
+                        		$scope.testType = 'Test';
+                        		if(selectedTest.node.testType == 'PublisherTest') {
+                        			$scope.testType = 'PublisherTest';
+                        		}
+                        		
 								// selectedTest.node.disableEdit = true;
 								$scope.newVersionBtnCss = "";
 								$scope.exportBtnCss = "";
