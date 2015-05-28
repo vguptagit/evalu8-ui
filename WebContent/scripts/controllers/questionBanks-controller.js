@@ -99,7 +99,8 @@ angular
 														$scope.userQuestions = userQuestions;
 														$scope.disciplines
 																.unshift({
-																	"item" : "Your Questions (user created)"
+																	"item" : "Your Questions (user created)",
+																	"isCollapsed" : true	
 																});
 													}
 												})
@@ -125,7 +126,8 @@ angular
 								if ($scope.userQuestions.length) {
 									$scope.disciplines
 											.unshift({
-												"item" : "Your Questions (user created)"
+												"item" : "Your Questions (user created)",
+												"isCollapsed" : true
 											});
 								}
 							}
@@ -272,7 +274,7 @@ angular
                                                     publisherTestsNode.title = "Publisher Tests for this Book"
                                                     publisherTestsNode.nodeType = "publisherTests"
                                                     book.node.nodes.push(publisherTestsNode);    
-                                                    
+                                                    publisherTestsNode.isCollapsed=true;
                                                     publisherTestsNode.nodes = [];
                                                     
                                                     book.node.testBindings.forEach(function (testId) {
