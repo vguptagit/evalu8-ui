@@ -1681,7 +1681,8 @@ ul.a {
 	top: -4px;
 	left: 30px;
 	display: inline-block;
-	border: solid 1px #A9A9A9
+	border: solid 1px #A9A9A9;
+	margin-top: 5px;
 }
 
 .uploadImage div {
@@ -2307,6 +2308,18 @@ li[qstntemplate='true'] .qti-itemBody>p {
 	line-height: 41px;
 	font-size: 14px;
 }
+
+li[qstntemplate='true'] .qti-itemBody>blockquote:first-child>p {
+	display: inline-block;
+	width: 100%;
+	vertical-align: middle;
+	background-color: #E0E0E0 !important;
+	border-bottom: 1px solid #D0D0D0 !important;
+	height: 41px;
+	line-height: 41px;
+	font-size: 14px;
+}
+
 
 li[qstntemplate='true'] .qti-itemBody {
 	width: 100%;
