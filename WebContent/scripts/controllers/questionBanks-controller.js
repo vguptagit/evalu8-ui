@@ -19,12 +19,11 @@ angular
 						'EnumService',
 						'$modal',
 						'blockUI',
-						'BookService',
 						'ContainerService',
 						function($scope, $rootScope, $location, $cookieStore,
 								$http, $sce, DisciplineService, TestService,
 								SharedTabService, UserQuestionsService,
-								EnumService, $modal, blockUI,BookService,ContainerService) {
+								EnumService, $modal, blockUI,ContainerService) {
 							SharedTabService.selectedMenu = SharedTabService.menu.questionBanks;
 							$rootScope.globals = $cookieStore.get('globals')
 									|| {};
@@ -814,22 +813,24 @@ angular
 							
 							$scope.selectBook = function(node) {
 								$scope.allContainers = [];
+								var isBookSelected=false;
 								var index = $scope.selectedBookIDs
 										.indexOf(node.guid);
 								if (index > -1) {
 									$scope.selectedBookIDs.splice(index, 1);
 									$scope.selectedBooks.splice(index, 1);
-									node.isNodeSelected = false;
+									isBookSelected=false;
 								} else {
 									$scope.selectedBookIDs.push(node.guid)
 									$scope.selectedBooks.push(node)
-									node.isNodeSelected = true;
+									isBookSelected=true;
 								}
 
-								BookService.getAllContainers(
+								ContainerService.getAllContainers(
 										$scope.selectedBookIDs.toString(),
 										function(response) {
 											$scope.allContainers = response;
+											node.isNodeSelected = isBookSelected;
 										});
 							}
 

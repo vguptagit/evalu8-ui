@@ -30,5 +30,32 @@ angular
 				callback(bookNodes);
 			});
 		};
+		
+		this.getAllContainers = function(bookids, callback) {
+
+			var cointainers = [];
+
+			var url = evalu8config.apiUrl
+					+ "/books/nodes?bookids="
+					+ bookids;
+
+			$http
+					.get(url, config)
+					.success(
+							function(response) {
+
+								response
+										.forEach(function(
+												container) {
+											cointainers
+													.push(container)
+										});
+
+								callback(cointainers);
+							}).error(function(){
+								callback(cointainers);
+							});
+
+		};
 	}
 ]);
