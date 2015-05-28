@@ -880,8 +880,7 @@ angular
 								var parentContainerid = "";
 								var hasParent = false;
 								var searchedDiscipline = {};
-								$scope.disciplines = [];
-								$scope.isNormalMode = false;
+								
 
 								$scope.allContainers
 										.forEach(function(container) {
@@ -907,6 +906,13 @@ angular
 											}
 										});
 
+								if($scope.searchedContainerId == ""){
+									return;
+								}else{
+									$scope.disciplines = [];
+									$scope.isNormalMode = false;
+								}
+								
 								$scope.disciplines.push(searchedDiscipline);
 
 								if (hasParent) {
