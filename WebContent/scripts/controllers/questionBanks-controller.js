@@ -806,6 +806,8 @@ angular
 							$scope.selectedBooks = [];
 							$scope.selectedBookIDs = [];
 							$scope.searchedContainerId="";
+							$scope.trackEnterKey=0;
+							$scope.searchedText="";
 							
 							$scope.selectBook = function(node) {
 								$scope.allContainers = [];
@@ -828,81 +830,105 @@ angular
 										});
 							}
 
-							$scope.showContainerOnEnter = function(event) {
-								if($scope.selectedBookIDs.length==0){
+							$scope.showContainerOnClick = function(){
+								if($scope.searchedText==""){
+									return;
+								}else if($scope.selectedBookIDs.length == 0){
+									$scope.searchedText="";
 									$scope.IsConfirmation = false;
 									$scope.message = "Please select a question bank to search";
 									$modal.open(confirmObject);
 									return;
 								}
-								
-								$(".dropdown-menu")
-								.addClass("autocompleteList");
-								
+								$scope.showContainer();
+							}
+							
+							$scope.showContainerOnEnter = function(event) {
 								if($scope.searchedText==""){
 									return;
+								}else if($scope.selectedBookIDs.length == 0){
+									$scope.searchedText="";
+									$scope.IsConfirmation = false;
+									$scope.message = "Please select a question bank to search";
+									$modal.open(confirmObject);
+									return;
 								}
+								$(".dropdown-menu")
+								.addClass("autocompleteList");
+								if (event.keyCode === 13) {
+									if ($scope.trackEnterKey > 0) {
+										$scope.showContainer();
+									}
+									else{
+										$scope.trackEnterKey = 1;
+									}
+								}else {
+									$scope.trackEnterKey = 0
+								}
+							}
+							
+							$scope.showContainer = function(){
 								var searchedContainer = "";
 								var parentContainerid = "";
 								var hasParent = false;
 								var searchedDiscipline = {};
+								$scope.disciplines = [];
+								$scope.isNormalMode = false;
 
-								if (event.keyCode === 13) {
-									$scope.disciplines = [];
-									$scope.isNormalMode = false;
-
-									$scope.allContainers
-											.forEach(function(container) {
-												if (container.title == $scope.searchedText) {
-													searchedContainer = container;
-													$scope.searchedContainerId=container.guid;
-													if (container.parentId != null
-															&& container.parentId != "") {
-														parentContainerid = container.parentId;
-														hasParent = true;
-													}
-
-													$scope.selectedBooks
-															.forEach(function(
-																	book) {
-																if (container.bookid == book.guid) {
-																	searchedDiscipline["item"] = book.discipline;
-																	searchedDiscipline["nodes"] = [ jQuery.extend(true,
-																			{}, book) ];
-																	$scope.bookID=book.guid;
-																}
-															})
+								$scope.allContainers
+										.forEach(function(container) {
+											if (container.title == $scope.searchedText) {
+												searchedContainer = container;
+												$scope.searchedContainerId=container.guid;
+												if (container.parentId != null
+														&& container.parentId != "") {
+													parentContainerid = container.parentId;
+													hasParent = true;
 												}
-											});
 
-									$scope.disciplines.push(searchedDiscipline);
+												$scope.selectedBooks
+														.forEach(function(
+																book) {
+															if (container.bookid == book.guid) {
+																searchedDiscipline["item"] = book.discipline;
+																searchedDiscipline["nodes"] = [ jQuery.extend(true,
+																		{}, book) ];
+																$scope.bookID=book.guid;
+															}
+														})
+											}
+										});
 
-									if (hasParent) {
-										var parentContainers = $scope
-												.getParentContainers(parentContainerid)
-										parentContainers.reverse();
-										var containerNode = $scope.disciplines[0].nodes[0];
-										parentContainers
-												.forEach(function(container) {
-													container.template = "nodes_renderer.html";
-													container.showEditQuestionIcon=true;
-													container.showTestWizardIcon=true;
-													containerNode["nodes"] = [jQuery.extend(true,
-															{}, container)];
-													containerNode = containerNode.nodes[0];
-												})
-										searchedContainer.template = "nodes_renderer.html";
-										searchedContainer.showEditQuestionIcon=true;
-										searchedContainer.showTestWizardIcon=true;
-										containerNode["nodes"] = [ jQuery.extend(true,
-												{}, searchedContainer) ];
+								$scope.disciplines.push(searchedDiscipline);
 
-									} else {
-										searchedContainer.showEditQuestionIcon=true;
-										searchedContainer.showTestWizardIcon=true;
-										$scope.disciplines[0].nodes[0]["nodes"] = [jQuery.extend(true,
-												{}, searchedContainer)];
-									}
+								if (hasParent) {
+									var parentContainers = $scope
+											.getParentContainers(parentContainerid)
+									parentContainers.reverse();
+									var containerNode = $scope.disciplines[0].nodes[0];
+									parentContainers
+											.forEach(function(container) {
+												container.template = "nodes_renderer.html";
+												container.showEditQuestionIcon=true;
+												container.showTestWizardIcon=true;
+												container.nodeType = "chapter";
+												containerNode["nodes"] = [jQuery.extend(true,
+														{}, container)];
+												containerNode = containerNode.nodes[0];
+											})
+									searchedContainer.template = "nodes_renderer.html";
+									searchedContainer.showEditQuestionIcon=true;
+									searchedContainer.showTestWizardIcon=true;
+									searchedContainer.nodeType = "topic";
+									containerNode["nodes"] = [ jQuery.extend(true,
+											{}, searchedContainer) ];
+
+								} else {
+									searchedContainer.showEditQuestionIcon=true;
+									searchedContainer.showTestWizardIcon=true;
+									searchedContainer.nodeType = "topic";
+									$scope.disciplines[0].nodes[0]["nodes"] = [jQuery.extend(true,
+											{}, searchedContainer)];
 								}
 							}
 

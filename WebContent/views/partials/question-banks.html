@@ -4,7 +4,8 @@
 			class="bookSearch form-control" ng-model="searchedText"
 			typeahead="container.title for container in allContainers | filter:$viewValue"
 			ng-keyup="showContainerOnEnter($event)"> <span
-			class="glyphicon glyphicon-search bookSearchicon" tooltip="Search"
+			class="glyphicon glyphicon-search bookSearchicon"
+			ng-click="showContainerOnClick()" tooltip="Search"
 			tooltip-placement="bottom"></span>
 	</div>
 	<div class="col-lg-6"></div>

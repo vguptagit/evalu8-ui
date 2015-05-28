@@ -647,6 +647,8 @@ angular
 																						DisciplineService
 																								.userDisciplines(function(
 																										userDisciplines) {
+																									$scope.$parent.isNormalMode=true;
+																									$scope.$parent.searchedText="";
 																									$scope.$parent.disciplines = userDisciplines;
 																									$modalInstance
 																											.close();
