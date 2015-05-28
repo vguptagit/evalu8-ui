@@ -820,6 +820,9 @@ angular
 								if (SharedTabService.tests[SharedTabService.currentTabIndex].testId) {
 									$scope.newVersionBtnCss = "";
 									$scope.exportBtnCss = "";
+									if(SharedTabService.tests[SharedTabService.currentTabIndex].treeNode.testType == 'PublisherTest') {
+										$scope.newVersionBtnCss = "disabled";
+									}
 								} else {
 									$scope.newVersionBtnCss = "disabled";
 									$scope.exportBtnCss = "disabled";
@@ -1117,14 +1120,17 @@ angular
 						    
 							$scope.editTest = function(selectedTest) {
 								
+								$scope.newVersionBtnCss = "";
+								$scope.exportBtnCss = "";
+								
                         		$scope.testType = 'Test';
                         		if(selectedTest.node.testType == 'PublisherTest') {
                         			$scope.testType = 'PublisherTest';
+                        			$scope.newVersionBtnCss = "disabled";
                         		}
                         		
 								// selectedTest.node.disableEdit = true;
-								$scope.newVersionBtnCss = "";
-								$scope.exportBtnCss = "";
+
 								$scope.testGuid = selectedTest.node.guid;
 								$scope.selectedTestNode = selectedTest.node;
 								/*$scope.BlockRightPanel =
