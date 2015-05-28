@@ -661,7 +661,8 @@ angular
 														.height()
 									});
 							$('.questionMessagetip').hide();
-							$scope.selectNode = function(node) {
+							$scope.selectNode = function (node) {
+							    var test = SharedTabService.tests[SharedTabService.currentTabIndex];
 								if (node.isNodeSelected == false
 										&& $rootScope.globals.loginCount <= 12 && node.nodeType!="question") {
 									$('.questionMessagetip').show()
@@ -671,26 +672,25 @@ angular
 								}
 								if (!node.isNodeSelected) {
 									$scope.selectedNodes.push(node);
-									node.isNodeSelected = !node.isNodeSelected;
+									node.isNodeSelected = true;
 									node.showEditQuestionIcon = true;
-									item.showTestWizardIcon = true;
-									// node.showEditQuestionIcon =
-									// node.showEditQuestionIcon != undefined ?
-									// true : node.showEditQuestionIcon;
+									node.showTestWizardIcon = true;
 								} else {
 									for (var i = 0; i < $scope.selectedNodes.length; i++) {
 										if ($scope.selectedNodes[i].guid == node.guid
-												&& (node.showTestWizardIcon || node.showEditQuestionIcon)) {
+												&& (node.showTestWizardIcon && node.showEditQuestionIcon)) {
 											$scope.selectedNodes.splice(i, 1);
-											node.isNodeSelected = !node.isNodeSelected;
+											node.isNodeSelected = false;
 											node.showEditQuestionIcon = false;
-											item.showTestWizardIcon = false;
-											// node.showEditQuestionIcon =
-											// node.showEditQuestionIcon !=
-											// undefined ? false :
-											// node.showEditQuestionIcon;
+											node.showTestWizardIcon = false; 
 											break;
 										}
+									}
+								    //hide EditQuestionIcon on selecting the folder, if folder is already edited for that test.
+									for (var j = 0; j < test.questionFolderNode.length; j++) {
+									    if (node.guid === test.questionFolderNode[j].guid) {
+									        node.showEditQuestionIcon = false;
+									    }
 									}
 								}
 							};
@@ -748,6 +748,14 @@ angular
 															break;
 														}
 													}
+												}
+												for (var i = 0; i < $scope.selectedNodes.length; i++) {
+												    $scope.selectedNodes[i].showEditQuestionIcon = true;
+												    for (var j = 0; j < tab.questionFolderNode.length; j++) {
+												        if ($scope.selectedNodes[i].guid === tab.questionFolderNode[j].guid) {
+												            $scope.selectedNodes[i].showEditQuestionIcon = false;
+												        }
+												    }
 												}
 											});
 							$scope
