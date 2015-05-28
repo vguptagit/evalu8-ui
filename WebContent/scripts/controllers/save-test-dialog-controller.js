@@ -18,9 +18,16 @@
 
 		     //populate the child nodes.
 		     $scope.getFolders = function (node, defaultFolder) {
+		         var folderState = node.isSelected;
 		         clearNodes(node, defaultFolder);
-		         $scope.selectedfolder.isSelected = true;
-		         $scope.getUserFolders(node);
+                 
+		         $scope.selectedfolder.isSelected = !folderState;   //to select and deselection of folder.
+		         if ($scope.selectedfolder.isSelected) {
+		            $scope.getUserFolders(node);
+		         }
+		         else {
+		             $scope.selectedfolder = null;
+		         }
 		     }
 		     //clear the previous selection and refresh the grid.
 		     //node : is a root folders 
