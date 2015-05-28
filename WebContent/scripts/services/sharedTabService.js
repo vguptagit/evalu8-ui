@@ -47,7 +47,7 @@ angular.module('evalu8Demo')
 		         this.isSaveAndClose = false;
 		         this.isTestWizard = false;
 		         this.treeNode = null;
-		         this.questionFolder = null;
+		         this.questionFolderNode = [];
 		     }
 
 		     sharedTabService.Criteria = function () {
@@ -406,7 +406,8 @@ angular.module('evalu8Demo')
 		         if (test.treeNode) {
 		             test.treeNode.showEditIcon = true;
 		             test.treeNode.showArchiveIcon = true;
-		             test.treeNode.showEditQuestionIcon = true;
+		         }else{
+		        	 showQuestionEditIcons(test);
 		         }
 
 		         if (index == scope.tests.length) {
@@ -422,7 +423,13 @@ angular.module('evalu8Demo')
 		     var removeMasterTestByIndex = function (index) {
 		         sharedTabService.masterTests.splice(index, 1);
 		     }
-
+		     
+		     var showQuestionEditIcons=function (test){
+		    	 for (var i = 0; i < test.questionFolderNode.length; i++) {
+		             test.questionFolderNode[i].showEditQuestionIcon = true;
+		         }
+		     }
+		     
 		     var showTestWizardIcons = function (test) {
 		         for (var i = 0; i < test.criterias.length; i++) {
 		             test.criterias[i].treeNode.showTestWizardIcon = true;

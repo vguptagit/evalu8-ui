@@ -253,8 +253,8 @@ angular
                                             angular.forEach(
                                                 book.node.nodes,
                                                 function(item) {
-                                                    item.showTestWizardIcon = true;
-                                                    item.showEditQuestionIcon = true;
+                                                    item.showTestWizardIcon = false;
+                                                    item.showEditQuestionIcon = false;
                                                     item.isNodeSelected = false;
                                                     if ($scope.selectedNodes.length > 0)
                                                         for (var i = 0; i < $scope.selectedNodes.length; i++) {
@@ -673,6 +673,7 @@ angular
 									$scope.selectedNodes.push(node);
 									node.isNodeSelected = !node.isNodeSelected;
 									node.showEditQuestionIcon = true;
+									item.showTestWizardIcon = true;
 									// node.showEditQuestionIcon =
 									// node.showEditQuestionIcon != undefined ?
 									// true : node.showEditQuestionIcon;
@@ -683,6 +684,7 @@ angular
 											$scope.selectedNodes.splice(i, 1);
 											node.isNodeSelected = !node.isNodeSelected;
 											node.showEditQuestionIcon = false;
+											item.showTestWizardIcon = false;
 											// node.showEditQuestionIcon =
 											// node.showEditQuestionIcon !=
 											// undefined ? false :
@@ -698,6 +700,8 @@ angular
 										$scope.selectNode(node);
 									});
 							$scope.editQuestion = function(scope,destIndex) {
+								var test = SharedTabService.tests[SharedTabService.currentTabIndex];
+					        	test.questionFolderNode = $scope.selectedNodes;
 								if (SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
 									$rootScope
 											.$broadcast('handleBroadcast_AddNewTab');
@@ -711,8 +715,6 @@ angular
 													$scope.selectedNodes[i], destIndex);
 										} else if ($scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.chapter
 												|| $scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.topic) {
-											var test = SharedTabService.tests[SharedTabService.currentTabIndex];
-								        	test.treeNode = $scope.selectedNodes[i];
 											var questionFolder = $scope.selectedNodes[i];
 											getQuestions(
 													questionFolder,
