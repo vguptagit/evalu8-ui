@@ -3172,7 +3172,11 @@ QTI.getSpanId = function(spanElement, event){
 					crtAnswer.children().eq(0).attr("data-placeholder","Enter the correct answer for blank "+String.fromCharCode(65 + i ));
 					crtAnswer.html(String.fromCharCode(65 + i ) + "." + crtAnswer.children().get(0).outerHTML);
 				}
-				return true;
+				
+				if(spanElement.tagName == "BUTTON")
+					return false;
+				else
+					return true;
 			}
 		
 		

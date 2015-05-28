@@ -500,6 +500,10 @@ ol {
 	margin-left: 0;
 }
 
+.questionList {
+	padding-left: 20px;
+}
+
 /* .testContainer ol li {
 	margin-left: -5px;
 }
@@ -1137,11 +1141,11 @@ li[printmode='false'] .questionList {
 
 .qstnContainer {
 	display: table;
-	width: 100%;
+	width: 100%;	
 }
 
 .printViewContainer .printView {
-	display: inline-block;
+	display: inline-block;	
 }
 
 .printViewContainer .editView, .printViewContainer #crtAnsSpace {
