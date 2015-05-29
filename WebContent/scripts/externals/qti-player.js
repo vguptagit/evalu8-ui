@@ -1693,13 +1693,17 @@ if(state.questionType=="Matching"){
 			"<div class='optionTextBoxMainContainer mainOptionEditablediv qti-simpleChoice' ></div>");
 			
 			$(mainContentsDisplayNode).append($("<div></div>").attr({			
-				"class" : "mainOptionIndexdiv"
+				"class" : "mainOptionIndexEditContainerdiv"
 			}));	
-					
+			
+			$(mainContentsDisplayNode).find('.mainOptionIndexEditContainerdiv').append($("<div></div>").attr({			
+				"class" : "mainOptionIndexdiv"
+			}));		
+							
 			var contentsDisplayNode2 = $(
-			"<div class='optionTextBoxContainer' ></div>")
+			"<div></div>")
 			.attr({			
-				"class":'optionTextBoxContainer editView',
+				"class":'optionTextBoxContainer',
 				"contenteditable" : true,
 				"data---qti-content-container" : true	,
 				"id":"simpleChoice_Matching"
@@ -1716,7 +1720,7 @@ if(state.questionType=="Matching"){
 			}
 				
 			
-			$(mainContentsDisplayNode).append(contentsDisplayNode2);		
+			$(mainContentsDisplayNode).find('.mainOptionIndexEditContainerdiv').append(contentsDisplayNode2);		
 			
 			
 			$(mainContentsDisplayNode).append(
@@ -2775,13 +2779,19 @@ QTI.Elements.InlineChoiceInteraction.play = function(qtiNode, displayNode,
 						
 				}));
 		
+		
+		
 		$(displayNode).find("div.matchOptionMaindiv").append($("<div></div>").attr({			
+			"class" : "matchOptionIndexEditContainerdiv"
+		}));	
+		
+		$(displayNode).find("div.matchOptionIndexEditContainerdiv").append($("<div></div>").attr({			
 			"class" : "matchOptionIndexdiv"
 		}));	
 		
-		$(displayNode).find("div.matchOptionMaindiv").append(
+		$(displayNode).find("div.matchOptionIndexEditContainerdiv").append(
 		$("<div></div>").attr({			
-			"class" : "matchOptionTextEditablediv editView",
+			"class" : "matchOptionTextEditablediv",
 			"contenteditable" : "true",
 			"data---qti-content-container" : "true",
 			"id":"simpleChoice_Matching"

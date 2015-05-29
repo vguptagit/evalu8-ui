@@ -1201,8 +1201,7 @@ li[quiztype='TrueFalse'] #viewHeader {
 	cursor: pointer;
 	min-width: 422px;
 	border: 2px solid #D0D0D0;	
-	border-radius: 4px;		
-	min-height: 24px;
+	border-radius: 4px;			
 	padding-left: 1px;
 	float: left;
 	font-weight: normal;
@@ -1210,17 +1209,17 @@ li[quiztype='TrueFalse'] #viewHeader {
 }
 
 .optionTextEditablediv {
-	width: 290px;	
+	width: 305px;	
 	line-height: 1.5;
-	min-height: 30px;		
+	min-height: 26px;		
 	border-left: 2px solid #D0D0D0;	
 	float: left;
-	padding: 5px 5px;	
+	padding: 4px 5px;	
 }
 
 .optionSelectionDiv {
 	min-width: 28px;			
-	min-height: 28px;
+	min-height: 10px;
 	float: left;
 }
 
@@ -1265,8 +1264,8 @@ li.questionTemplates {
 
 .optionSelectionDiv input[type=radio], .optionSelectionDiv input[type=checkbox]
 	{
-	margin-left: 7px;
-	margin-top: 8px;
+	margin-left: 8px;
+	margin-top: 7px;
 }
 
 li .editViewContainer .qti-simpleChoice {
@@ -1284,7 +1283,7 @@ li .editViewContainer .qti-simpleChoice .radio {
 	border: 0px solid #D0D0D0;
 	border-left: 0px solid #D0D0D0;
 	border-radius: 4px;
-	padding-top: 5px;
+	padding-top: 3px;
 }
 
 li[printmode='true'].displayQuestionLI .questionEditCaption {
@@ -2012,10 +2011,32 @@ ul.a {
 }
 
 .optionTextBoxContainer, .matchOptionTextEditablediv {
-	min-width: 345px;
-	display: inline-block;
-	line-height: 24px;
-	height: 100%;
+	width: 340px;	
+	line-height: 1.5;
+	min-height: 10px;
+	float: left;
+	border-left: 2px solid #D0D0D0;
+	background-color: #FFFFFF;	
+	padding: 3px 6px;
+}
+
+.mainOptionIndexdiv, .matchOptionIndexdiv {
+	min-width: 27px;
+	border: 0px solid #D0D0D0;
+	border-right: 0px solid #D0D0D0;
+	border-radius: 1px;
+	display: inline-block;	
+	float: left;
+	text-align: center;
+	padding-top: 2px;
+	font-size: 11px;
+	font-weight: bold;
+	background-color: #EFEFEF;
+}
+
+.mainOptionIndexEditContainerdiv,.matchOptionIndexEditContainerdiv{
+	float: left;
+	background-color: #EFEFEF;
 }
 
 .matchOptionTextEditablediv {
@@ -2026,12 +2047,15 @@ li[qstntemplate='true'] .indChar {
 	display: none;
 }
 
+.indChar{
+	float: left;
+}
+
 .mainOptionEditablediv {
 	cursor: pointer;
 	min-width: 455px;
 	border: 2px solid #D0D0D0;
-	border-radius: 4px;
-	min-height: 27px;
+	border-radius: 4px;	
 	padding-left: 0px;
 	margin-bottom: 10px;
 	font-weight: normal;
@@ -2045,21 +2069,6 @@ li[qstntemplate='true'] .indChar {
 	border-left: 0px solid #D0D0D0;
 	border-radius: 4px;
 	padding-top: 3px;
-}
-
-.mainOptionIndexdiv, .matchOptionIndexdiv {
-	min-width: 27px;
-	border: 0px solid #D0D0D0;
-	border-right: 2px solid #D0D0D0;
-	border-radius: 1px;
-	display: inline-block;
-	min-height: 26px;
-	float: left;
-	text-align: center;
-	padding-top: 2px;
-	font-size: 11px;
-	font-weight: bold;
-	background-color: #EFEFEF;
 }
 
 .imageIconContainer {
@@ -2087,6 +2096,7 @@ li[qstntemplate='true'] .indChar {
 
 .qti-blockquote .matchIndex {
 	margin-right: 10px;
+	float: left;
 }
 
 .printViewContainer  .qti-blockquote .matchIndex {
@@ -2099,7 +2109,7 @@ li[qstntemplate='true'] .indChar {
 	vertical-align: text-top;
 }
 
-.printViewContainer .indChar {
+.printViewContainer . {
 	font-size: 14px;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 }
@@ -2144,6 +2154,7 @@ li[qstntemplate=true] .printViewContainer  .qti-blockquote .matchIndex {
 	max-width: 240px;
 	font-size: 14px;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
+	float: left;
 }
 
 .printViewContainer .mOptionLabel {
@@ -2158,10 +2169,6 @@ li[qstntemplate=true] .printViewContainer  .qti-blockquote .matchIndex {
 	float: right;
 	max-width: 200px;
 	min-width: 50%;
-}
-
-.optionTextBoxContainer, .matchOptionTextEditablediv {
-	width: 345px;
 }
 
 .metadataSection {
@@ -2245,6 +2252,7 @@ button[disabled]+.tooltip {
 
 label.matchOptionImage {
 	max-width: 90%;
+	float: left;
 }
 
 .blankButton {
