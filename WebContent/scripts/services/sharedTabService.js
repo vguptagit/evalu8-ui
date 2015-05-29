@@ -97,10 +97,14 @@ angular.module('evalu8Demo')
 		     };
 
 		     sharedTabService.prepForBroadcastTest = function (test) {
+		         //Dont delete below commented lines, its commented to fix below mentioned issed.
+                 //will delete after few days, if there is no impacts.
+		         //Bug 6311 - 'New Tab' button is not working if there is no Tests opened in right frame
+                 /*
 		         if (sharedTabService.tests.length == 1 && sharedTabService.isEmptyTab(sharedTabService.tests[0]) && !sharedTabService.tests[0].isTestWizard) {
 		             sharedTabService.tests = [];
 		             sharedTabService.masterTests = [];
-		         }
+		         }*/
 		         this.tests.push(test);
 		         var clonedTest = new sharedTabService.Test(test);
 		         clonedTest.id = test.id;
