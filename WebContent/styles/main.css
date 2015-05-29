@@ -78,9 +78,9 @@ login-container .panel-footer {
     padding-left: 30px;
 }
 
-    .resources-tabs li.active > a {
-        line-height: 1.6;
-    }
+ .resources-tabs li.active > a {
+        line-height: 1.4;
+}
 
 /* new css of testGen.css*/
 #MyTest-tree-root, #tree-root {
