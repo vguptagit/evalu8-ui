@@ -320,6 +320,7 @@ a.newFolder:hover {
 	height: 15px;
 	margin-right: 2px;
 	float: left;
+	outline: :0;
 }
 
 .maindiv {
@@ -1774,6 +1775,7 @@ ul.a {
 	left: 1%;
 	padding-top: 10px;
 	background-color: #DDDDDD;
+	outline: 0;
 }
 
 .import {
@@ -1784,6 +1786,7 @@ ul.a {
 	left: 4%;
 	padding-top: 10px;
 	background-color: #DDDDDD;
+	outline: 0;
 }
 
 .questionSelected {
