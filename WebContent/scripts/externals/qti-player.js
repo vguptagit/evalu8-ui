@@ -2714,26 +2714,31 @@ QTI.Elements.InlineChoiceInteraction.play = function(qtiNode, displayNode,
 	$(displayNode)[0].innerText="";
 
 		var elementDisplayNode = QTI.prepare(qtiNode,
-				$("<div class='matchRight printView'></div>"));
+				$("<span class='matchRight mOptionLabel'></span>"));
 		
-		displayNode.prepend("<div  class='printView matchingOption'>"
+		var matchOptionContainer = $("<div></div>").attr({"class":'matchOptionContainer printView'});
+		matchOptionContainer.append("<div  class='matchingOption'>"
 				+ "<label class='indChar'>"+ matchIndex[qtiNode.attr("responseIdentifier").substring(9)] +"</label>"
-				+ "</div>")
-		
-		$(displayNode).find("div.matchingOption").append(
-            		 $("<label class='mOptionLabel'></label>").attr({                      
-                         "data---qti-content-container" : "true"
-                     }));   
+				+ "</div>");
 				
-			
-		$(displayNode).append(elementDisplayNode);
+		matchOptionContainer.find('div.matchingOption').append($("<label class='mOptionLabel'></label>").attr({                      
+                    "data---qti-content-container" : "true"}));   
 		
-		var matchOptionsIndex = $("<label class='matchIndex' ></label>");
+		
+		
+		var matchOptionsIndex = $("<span class='matchIndex' ></span>");
 		matchOptionsIndex.append(matchIndex[qtiNode.attr("responseIdentifier")
 		        			  				.substring(9)]	);
-		elementDisplayNode.append(matchOptionsIndex);
 		
-	
+		matchOptionContainer.append( $("<div></div>").attr({"class":'rightMatchingOption'}));
+		
+		matchOptionContainer.find('div.rightMatchingOption').append(matchOptionsIndex);		
+		
+		matchOptionContainer.find('div.rightMatchingOption').append(elementDisplayNode);
+		
+		$(displayNode).append(matchOptionContainer);
+		
+		
 				
 		qtiNode = qtiNode.find("inlineChoice:nth-child("
 				+ qtiNode.attr("responseIdentifier").substring(9) + ") ");

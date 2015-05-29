@@ -2082,7 +2082,7 @@ li[qstntemplate='true'] .indChar {
 
 .qstnContainer .qti-blockquote {
 	display: table;
-	width: 100%;
+	width: 100%; 
 }
 
 .EssayHeader {
@@ -2092,16 +2092,6 @@ li[qstntemplate='true'] .indChar {
 
 .valueView {
 	width: 450px;
-}
-
-.qti-blockquote .matchIndex {
-	margin-right: 10px;
-	float: left;
-}
-
-.printViewContainer  .qti-blockquote .matchIndex {
-	font-size: 14px;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
 }
 
 .printViewContainer .questionImage {
@@ -2117,7 +2107,6 @@ li[qstntemplate='true'] .indChar {
 li[qstntemplate=true] .printViewContainer  .qti-blockquote .matchIndex {
 	font-weight: normal;
 	font-size: 14px;
-	padding-top: 4px;
 }
 
 .TestcreationInfo {
@@ -2151,25 +2140,21 @@ li[qstntemplate=true] .printViewContainer  .qti-blockquote .matchIndex {
 }
 
 .mOptionLabel {
-	max-width: 240px;
+	max-width: 235px;
 	font-size: 14px;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	float: left;
 }
 
 .printViewContainer .mOptionLabel {
-	padding-left: 10px;
+	padding-left: 8px;
 }
 
 .editViewContainer .mOptionLabel {
 	display: none;
 }
 
-.matchRight {
-	float: right;
-	max-width: 200px;
-	min-width: 50%;
-}
+
 
 .metadataSection {
 	margin-top: 10px;
@@ -2248,11 +2233,6 @@ li[qstntemplate=true] .printViewContainer  .qti-blockquote .matchIndex {
 
 button[disabled]+.tooltip {
 	display: none !important;
-}
-
-label.matchOptionImage {
-	max-width: 90%;
-	float: left;
 }
 
 .blankButton {
@@ -2354,7 +2334,7 @@ li[qstntemplate='true'] .printViewContainer .optionLabelView {
 	display: inline-block;
 	padding-left: 10px;
 	max-width: 100% !important;
-	vertical-align: middle;
+	vertical-align: inherit;	
 }
 
 li[qstntemplate='true'] .qti-itemBody:first-child blockquote>p, li[qstntemplate='true'][quiztype='FillInTheBlanks'] .qti-itemBody>blockquote>p
@@ -2383,10 +2363,30 @@ li[qstntemplate='true'] div #crtAnsSpace {
 	height: 40px
 }
 
-li[printmode='true'] .matchingOption {
-	max-width: 200px;
-	min-width: 50%;
+li[printmode='true'] .matchingOption {	
+	width: 50%;
+	display: block;
+	float: left;
 }
+
+.rightMatchingOption{
+	width: 50%;
+	display: block;
+	float: right;
+}
+
+.qti-blockquote .matchIndex {	
+	float: left;	
+}
+
+.printViewContainer  .qti-blockquote .matchIndex {
+	font-size: 14px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+li[printmode='true'] .matchOptionContainer{
+	width: 100%;
+} 
 
 li[qstntemplate='true'] .matchingOption {
 	min-width: 30%;
