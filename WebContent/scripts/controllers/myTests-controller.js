@@ -604,7 +604,7 @@ angular.module('e8MyTests')
             if (newFolder.parentId == null) {
                 parentFolderNodes = $scope.defaultFolders
             } else {
-                parentFolder = CommonService.SearchFolder($scope.defaultFolders, newFolder.parentId);
+                parentFolder = CommonService.SearchItem($scope.defaultFolders, newFolder.parentId);
                 parentFolderNodes = parentFolder.nodes;
             }
             
@@ -618,7 +618,7 @@ angular.module('e8MyTests')
         });
         $scope.$on('handleBroadcast_AddNewTest', function (handler, newTest, containerFolder, isEditMode) {
             if (isEditMode) {
-                var updatedTest = CommonService.SearchFolder($scope.defaultFolders, newTest.guid);
+                var updatedTest = CommonService.SearchItem($scope.defaultFolders, newTest.guid);
                 updatedTest.title = newTest.title;
                 updatedTest.modified = newTest.modified;
                 return false;
@@ -629,7 +629,7 @@ angular.module('e8MyTests')
             if (containerFolder == null) {
                 parentFolderNodes = $scope.defaultFolders;
             } else {
-                parentFolder = CommonService.SearchFolder($scope.defaultFolders, containerFolder.guid);
+                parentFolder = CommonService.SearchItem($scope.defaultFolders, containerFolder.guid);
                 parentFolderNodes = parentFolder.nodes;
             }
             TestService.getMetadata(newTest.guid, function (test) {               
