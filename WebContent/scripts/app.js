@@ -124,7 +124,7 @@ angular.module('evalu8Demo', [
         	
             var requireLogin = toState.data.requireLogin;
 
-            if (requireLogin && (typeof  $rootScope.globals.authToken === 'undefined' || $rootScope.globals.authToken === '')) {              
+            if (requireLogin) {              
 			
             	piSession.login(evalu8config.signinUrl, evalu8config.loginGraceTimeSeconds);                	                  
             }       	
