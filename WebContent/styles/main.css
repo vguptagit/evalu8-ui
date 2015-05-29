@@ -104,11 +104,15 @@ login-container .panel-footer {
     width :312px;
 }
 
+/*TODO : Need to check the dropdowns*/
 .test-creation-frame .dropdown-menu:before,
 .test-creation-frame .dropdown-menu:after {
   display:none;
 }
-
+.botborderright .dropdown-menu:before,
+.botborderright .dropdown-menu:after {
+  display:none;
+}
 .test-creation-frame-btn-group{
     margin-left:-10px;
 }

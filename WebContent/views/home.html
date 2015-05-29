@@ -1,49 +1,21 @@
-<div class="botborder inlineblocks" >
-<div row>
-<div class="col-lg-6 col-md-6 col-sm-6 pull-left marginrow" block-ui="Leftpanel">       
-            <div class="width100 pull-left resourcetab">
+<div class="botborder">
+    <div class="col-sm-6 col-md-6 col-lg-6" block-ui="Leftpanel">
+        <div class="inline">
+            <div class="resourcetab ">
                 <h4>Resources</h4>
             </div>
-            <div class="row width100 pull-left padding-lft30">
-                <div ng-include="'views/partials/resources-tabs.html'" ng-controller="ResourcesTabsController"></div>
+            <div class="row">
+                <div ng-include="'views/partials/resources-tabs.html'"
+                     ng-controller="ResourcesTabsController"></div>
             </div>
-        
-               
-            <div class="col-md-12 tabs-content margin-top-22 inlineblocks">
+            <div class="tabs-content margin-top-22 ">
                 <div ui-view class="resources-tabs-content"></div>
             </div>
-        
-
+        </div>
     </div>
-<div class="col-lg-6 col-md-6 col-sm-6 pull-left" block-ui="RightPanel">
-<div class="divider visible-md visible-lg pull-left row"></div>
-<div class="margin-lft-15">
-                        <div ng-include="'views/partials/test-creation-frame.html'" ng-controller="TestCreationFrameController"></div>
-                <!--<div class="row">
-
-                    <div class="col-md-4">
-                        <h4>Create or Edit Tests</h4>
-                    </div>
-                    <div class="col-md-8">
-                        <button type="button" class="btn btn-default">Default</button>
-                        <button type="button" class="btn btn-primary">Primary</button>
-                        <button type="button" class="btn btn-success">Success</button>
-                        <button type="button" class="btn btn-info">Info</button>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <ul class="nav nav-tabs">
-                            <li role="presentation" class="active"><a  >Untitled test</a></li>
-                            <li role="presentation"><a  >Untitled test</a></li>
-                            <li role="presentation"><a  >Untitled test</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <ul>
-                    <li ng-repeat="dog in dogs">{{ dog }}</li>
-                </ul>-->
-            </div>
-</div>
-</div>
+    <div class="col-sm-6 col-md-6 col-lg-6" block-ui="RightPanel">
+        <div class="divider visible-sm visible-md visible-lg pull-left row"></div>
+        <div ng-include="'views/partials/test-creation-frame.html'"
+             ng-controller="TestCreationFrameController"></div>
+    </div>
 </div>

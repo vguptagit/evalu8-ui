@@ -433,7 +433,8 @@ a.newFolder:hover {
 } */
 html, body {
 	height: 100%;
-	overflow: hidden;
+	overflow: auto;
+    overflow-x: hidden; 
 }
 
 .leftCollapse, .rightCollapse {
@@ -572,10 +573,10 @@ ol {
 	margin-right: 10px
 }
 
-#TestCreationArea {
+/*#TestCreationArea {
 	margin-top: 15px;
 	margin-left: 10px;
-}
+}*/
 
 .TestCreationAreatitle {
 	margin-top: 7px;
@@ -681,14 +682,14 @@ ol {
 .QuestionArea {
 	float: left;
 	width: 100%;
-	height: 760px;
+	height: 100%;
 	background-color: #FFF;
 }
 
 .questionFeature {
 	float: right;
 	margin: 5px;
-	margin-right: 0;
+	margin-right: 15px;
 }
 
 .questionFeature button {
@@ -896,6 +897,7 @@ ol {
 	width: 40px;
 	padding-left: 10px;
 	border: 0px;
+    margin-left: 15px;
 }
 
 #content ul:nth-child(2) {
@@ -1120,7 +1122,7 @@ li[printmode='false'].displayQuestionLI {
 	cursor: pointer;
 	border: 1px solid #D0D0D0;
 	border-radius: 4px;
-	padding: 30px;
+	padding: 15px;
 }
 
 .qstnView {
