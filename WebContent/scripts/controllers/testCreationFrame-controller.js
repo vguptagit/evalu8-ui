@@ -1018,10 +1018,10 @@ angular
 									});
 
 							  $scope.Difficulty = [{name:'Select Level',value:'0'},
-							                       {name:'Easy',value:'high'},
-							                       {name:'Moderate',value:'medium'},
-							                       {name:'Difficult',value:'low'}
-							                      ];
+							                       {name:'Easy',value:'Easy'},
+							                       {name:'Moderate',value:'Moderate'},
+							                       {name:'Difficult',value:'Difficult'}
+							                      ];	
 							 
 							                 
 							  
@@ -1071,9 +1071,13 @@ angular
 															newNode.editMainText = CustomQuestionTemplate["MultipleChoice"].editMainText;
 																																	
 															$.each(newNode.extendedMetadata, function(index, item){		
-																			var name = item['name'].charAt(0).toUpperCase() + item['name'].slice(1);
-																			 newNode['questionMetadata'][name]=item['value'];																				
-																		    });															
+																var name = item['name'].charAt(0).toUpperCase() + item['name'].slice(1);
+																 if(item['name'] == "questionLevelOfDifficulty")
+																	 newNode['questionMetadata']['Difficulty'] = item['value'];
+																 else
+																	 newNode['questionMetadata'][name]=item['value'];	
+
+															    });														
 															
 															newNode.selectedLevel = newNode.questionMetadata['Difficulty']==undefined?{name:'Select Level',value:'0'}:{name:newNode.questionMetadata['Difficulty'],value:newNode.questionMetadata['Difficulty']};
 															
