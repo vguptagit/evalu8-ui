@@ -281,7 +281,9 @@ angular.module('e8MyTests')
         	
             if (!test.node.disableEdit) {
                 test.node.selectTestNode = !test.node.selectTestNode;
-                if(test.node.selectTestNode && $rootScope.globals.loginCount<=2 && test.node.nodeType!='archiveTest'){
+                if(test.node.selectTestNode 
+                		&& $rootScope.globals.loginCount <= evalu8config.messageTipLoginCount 
+                		&& test.node.nodeType != EnumService.NODE_TYPE.archiveTest){
     	        	$('.testMessagetip').show()
     	        	setTimeout(function(){ 
     	        		$('.testMessagetip').hide();
@@ -299,13 +301,13 @@ angular.module('e8MyTests')
         }
 
         $scope.getFolders = function(defaultFolder) {
-        	if(defaultFolder.node.nodeType == 'folder') {
+        	if(defaultFolder.node.nodeType == EnumService.NODE_TYPE.folder) {
         		$scope.getUserFolders(defaultFolder);
         	}
-        	if(defaultFolder.node.nodeType == 'archiveFolder') {
+        	if(defaultFolder.node.nodeType == EnumService.NODE_TYPE.archiveFolder) {
         		$scope.getArchiveFolders(defaultFolder);
         	}
-        	if(defaultFolder.node.nodeType == EnumService.CONTENT_TYPE.archiveRoot) {
+        	if(defaultFolder.node.nodeType == EnumService.NODE_TYPE.archiveRoot) {
         		$scope.archiveRoot = defaultFolder;
         		$scope.getArchiveFolders(defaultFolder);
         	}        	
@@ -381,7 +383,7 @@ angular.module('e8MyTests')
         		if(archivedFolder.parentId == null) {
         			
         			if($scope.archiveRoot && $scope.archiveRoot.node && $scope.archiveRoot.node.nodes && $scope.archiveRoot.node.nodes.length)
-        				if($scope.archiveRoot.node.nodes[0].nodeType == EnumService.CONTENT_TYPE.emptyFolder) {
+        				if($scope.archiveRoot.node.nodes[0].nodeType == EnumService.NODE_TYPE.emptyFolder) {
         					$scope.archiveRoot.node.nodes.splice(0,1);
         				}
         				$scope.archiveRoot.node.nodes.unshift(archivedFolder)	        				        				    
@@ -389,7 +391,7 @@ angular.module('e8MyTests')
         			
         			archivedFolderParent = angular.element($('[id=' + archivedFolder.parentId + ']')).scope()
         			if(archivedFolderParent && archivedFolderParent.node) {
-        				if(archivedFolderParent.node.nodes[0] && archivedFolderParent.node.nodes[0].nodeType == EnumService.CONTENT_TYPE.emptyFolder) {
+        				if(archivedFolderParent.node.nodes[0] && archivedFolderParent.node.nodes[0].nodeType == EnumService.NODE_TYPE.emptyFolder) {
         					archivedFolderParent.node.nodes.splice(0,1);
         				}
         				archivedFolderParent.node.nodes.unshift(archivedFolder);
@@ -408,7 +410,7 @@ angular.module('e8MyTests')
         		
         		if(archivedFolder == null || archivedFolder == "") {
         			if($scope.archiveRoot && $scope.archiveRoot.node && $scope.archiveRoot.node.nodes && $scope.archiveRoot.node.nodes.length) {
-        				if($scope.archiveRoot.node.nodes[0].nodeType == EnumService.CONTENT_TYPE.emptyFolder) {
+        				if($scope.archiveRoot.node.nodes[0].nodeType == EnumService.NODE_TYPE.emptyFolder) {
         					$scope.archiveRoot.node.nodes.splice(0,1);
         				}
         				$scope.archiveRoot.node.nodes.push(test.node);
@@ -417,7 +419,7 @@ angular.module('e8MyTests')
         			
         			var testParent = angular.element($('[id=' + archivedFolder.guid + ']')).scope();
         			if(testParent && testParent.node) {
-        				if(testParent.node.nodes[0] && testParent.node.nodes[0].nodeType == EnumService.CONTENT_TYPE.emptyFolder) {
+        				if(testParent.node.nodes[0] && testParent.node.nodes[0].nodeType == EnumService.NODE_TYPE.emptyFolder) {
         					testParent.node.nodes.splice(0,1);
         				}
         				
@@ -473,7 +475,7 @@ angular.module('e8MyTests')
         			var index = 0, restoreIndex = 0;
         			$scope.defaultFolders.forEach(function(item){
 
-        				if(item.nodeType == EnumService.CONTENT_TYPE.archiveRoot) {
+        				if(item.nodeType == EnumService.NODE_TYPE.archiveRoot) {
         					restoreIndex = index;        					
         				}
         				index = index + 1;
@@ -565,7 +567,7 @@ angular.module('e8MyTests')
 
             if($scope.defaultFolders 
             		&& $scope.defaultFolders[0] 
-            		&& $scope.defaultFolders[0].nodeType == EnumService.CONTENT_TYPE.folder) {
+            		&& $scope.defaultFolders[0].nodeType == EnumService.NODE_TYPE.folder) {
             	sequence = (0 + $scope.defaultFolders[0].sequence) / 2;
             }
             
@@ -610,7 +612,7 @@ angular.module('e8MyTests')
             
             var numberOfFolders = 0;
             $.each(parentFolderNodes, function (i, item) {
-                if (item.nodeType === EnumService.CONTENT_TYPE.folder) {
+                if (item.nodeType === EnumService.NODE_TYPE.folder) {
                     numberOfFolders++;
                 }
             });
@@ -642,7 +644,7 @@ angular.module('e8MyTests')
                     test.parentId = null;
                     var position = 0;
                     $.each(parentFolderNodes, function (i,item) {
-                        if (item.nodeType == EnumService.CONTENT_TYPE.test || item.nodeType == EnumService.CONTENT_TYPE.archiveRoot) {
+                        if (item.nodeType == EnumService.NODE_TYPE.test || item.nodeType == EnumService.NODE_TYPE.archiveRoot) {
                             return false;
                         }
                         position++;

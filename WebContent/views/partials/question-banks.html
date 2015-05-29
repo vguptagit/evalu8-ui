@@ -79,8 +79,8 @@
                         <label class="captionLabel" title="{{node.title}}">{{node.title}}</label>
                     </div>
                     <div class="iconsChapter">
-                        <span class="action-icon-bg glyphicon glyphicon-pencil" ng-show="node.showEditQuestionIcon" ng-mousedown="editQuestion(this)" tooltip="Move question to right for editing" tooltip-placement="bottom"></span>
-                        <span class="icon-magic action-icon-bg pull-right" ng-show="node.showTestWizardIcon" ng-mousedown="createTestWizardCriteria(this)" tooltip="Auto create test with wizard" tooltip-placement="bottom"></span>
+                        <span ng-show="node.nodeType != 'publisherTests'" class="action-icon-bg glyphicon glyphicon-pencil" ng-show="node.showEditQuestionIcon" ng-mousedown="editQuestion(this)" tooltip="Move question to right for editing" tooltip-placement="bottom"></span>
+                        <span ng-show="node.nodeType != 'publisherTests'" class="icon-magic action-icon-bg pull-right" ng-show="node.showTestWizardIcon" ng-mousedown="createTestWizardCriteria(this)" tooltip="Auto create test with wizard" tooltip-placement="bottom"></span>
                         <!--
                         <span class="settingsChapter"></span>
                         <span class="printChapter"></span>
@@ -133,9 +133,17 @@
     </script>
 
 	<div data-ui-tree id="tree-root" class="question_bank_scrollbar">
+	
+		<div class="testMessagetip"  style="position: absolute;top:0px">
+			<div class="newTest-close glyphicon glyphicon-remove"
+	                   ng-click="closeTip()"></div>
+			<div><span class="glyphicon glyphicon-info-sign"></span>&nbsp;<strong class="tips">Tips:</strong> Drag 
+			test to right to edit OR select pencil icon.</div>
+		</div>
+		
 		<div class="questionMessagetip" style="position: absolute; top: 0px">
 			<div class="newTest-close glyphicon glyphicon-remove"
-				ng-click="closeTip()"></div>
+				ng-click="closeQuestionTip()"></div>
 			<div>
 				<span class="glyphicon glyphicon-info-sign"></span>&nbsp;<strong
 					class="tips">Tips:</strong> Drag selected topic or question to

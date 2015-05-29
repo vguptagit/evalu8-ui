@@ -59,7 +59,7 @@
 		         var sequence = 1;
 		         if ($scope.selectedfolder) {
 		             var lastFolder = $scope.selectedfolder.nodes[$scope.selectedfolder.nodes.length - 1];
-		             if (lastFolder.nodeType != EnumService.CONTENT_TYPE.emptyFolder) {
+		             if (lastFolder.nodeType != EnumService.NODE_TYPE.emptyFolder) {
 		                 sequence = lastFolder.sequence + (lastFolder.sequence / 2);
 		             }
 		         }
@@ -72,7 +72,7 @@
 
 		         UserFolderService.saveUserFolder(newFolder, function (response) {
 		             newFolder.guid = response.guid;
-		             newFolder.nodeType = EnumService.CONTENT_TYPE.folder;
+		             newFolder.nodeType = EnumService.NODE_TYPE.folder;
 		             if ($scope.selectedfolder) {
 		                 $scope.selectedfolder.nodes.push(newFolder);
 		             }

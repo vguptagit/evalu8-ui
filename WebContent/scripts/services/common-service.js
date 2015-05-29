@@ -22,7 +22,7 @@ angular.module('evalu8Demo')
 
         }
         recurse(items, id);
-        if (searchItem != null && (searchItem.nodeType === EnumService.CONTENT_TYPE.archiveRoot || searchItem.nodeType === EnumService.CONTENT_TYPE.emptyFolder)) {
+        if (searchItem != null && (searchItem.nodeType === EnumService.NODE_TYPE.archiveRoot || searchItem.nodeType === EnumService.NODE_TYPE.emptyFolder)) {
             return null;
         }
         return searchItem;
@@ -46,7 +46,7 @@ angular.module('evalu8Demo')
 
         }
         recurse(items, id);        
-        if (searchItem != null && (searchItem.nodeType === EnumService.CONTENT_TYPE.archiveRoot || searchItem.nodeType === EnumService.CONTENT_TYPE.emptyFolder)) {
+        if (searchItem != null && (searchItem.nodeType === EnumService.NODE_TYPE.archiveRoot || searchItem.nodeType === EnumService.NODE_TYPE.emptyFolder)) {
             return null;
         }
         return searchItem;

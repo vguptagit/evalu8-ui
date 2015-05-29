@@ -12,5 +12,7 @@
 	
 	ns.loginGraceTimeSeconds = 2; 
 	ns.welcomeLoginCount = 1;
+	
+	ns.messageTipLoginCount = 2;
 		
 })(window.evalu8config = window.evalu8config || {})

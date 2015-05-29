@@ -272,7 +272,7 @@ angular
                                                 if(book.node.testBindings && book.node.testBindings.length) {
                                                     var publisherTestsNode = {};
                                                     publisherTestsNode.title = "Publisher Tests for this Book"
-                                                    publisherTestsNode.nodeType = "publisherTests"
+                                                    publisherTestsNode.nodeType = EnumService.NODE_TYPE.publisherTests;
                                                     book.node.nodes.push(publisherTestsNode);    
                                                     publisherTestsNode.isCollapsed=true;
                                                     publisherTestsNode.nodes = [];
@@ -280,7 +280,7 @@ angular
                                                     book.node.testBindings.forEach(function (testId) {
                                                         TestService.getTest(testId, function(test){
 
-                                                            test.nodeType = "test";
+                                                            test.nodeType = EnumService.NODE_TYPE.test;
                                                             test.testType = "PublisherTest";
                                                             test.showEditIcon=true;
                                                             test.selectTestNode = false;//to show the edit icon
@@ -295,11 +295,18 @@ angular
 								}
 							}
 							
+					        $scope.closeTip=function(){
+					        	$('.testMessagetip').hide();
+					        }
+					        $('.testMessagetip').offset({'top':($(window).height()/2)-$('.testMessagetip').height()});
+					        $('.testMessagetip').hide();
+							
 							$scope.selectTestNode = function ($event,test) {
                                 
                                 if (!test.node.disableEdit) {
                                     test.node.selectTestNode = !test.node.selectTestNode;
-                                    if(test.node.selectTestNode && $rootScope.globals.loginCount<=2 && test.node.nodeType!='archiveTest'){
+                                    if(test.node.selectTestNode && $rootScope.globals.loginCount <= evalu8config.messageTipLoginCount 
+                                    		&& test.node.nodeType != EnumService.NODE_TYPE.archiveTest){
                                         $('.testMessagetip').show()
                                         setTimeout(function(){ 
                                             $('.testMessagetip').hide();
@@ -647,7 +654,7 @@ angular
 							}
 
 							// Message tip
-							$scope.closeTip = function() {
+							$scope.closeQuestionTip = function() {
 								$('.questionMessagetip').hide();
 							}
 							$('.questionMessagetip').offset(
@@ -660,7 +667,9 @@ angular
 							$scope.selectNode = function (node) {
 							    var test = SharedTabService.tests[SharedTabService.currentTabIndex];
 								if (node.isNodeSelected == false
-										&& $rootScope.globals.loginCount <= 12 && node.nodeType!="question") {
+										&& $rootScope.globals.loginCount <= evalu8config.messageTipLoginCount 
+										&& node.nodeType != EnumService.NODE_TYPE.question
+										&& node.nodeType != EnumService.NODE_TYPE.publisherTests) {
 									$('.questionMessagetip').show()
 									setTimeout(function() {
 										$('.questionMessagetip').hide();

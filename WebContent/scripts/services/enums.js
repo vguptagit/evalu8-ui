@@ -15,16 +15,16 @@ angular.module('evalu8Demo')
             testCreationFrame: 'TestCreationFrameController'
     };
 
-    this.CONTENT_TYPE = {
-        folder: 'folder',
-        test: 'test',
-        emptyFolder: 'empty',
-        archiveRoot: 'archiveRoot'
-    };
-
     this.NODE_TYPE = {
-        question: 'question',
+        folder : 'folder',
+        test : 'test',
+        emptyFolder : 'empty',
+        archiveRoot : 'archiveRoot',
+        archiveFolder : 'archiveFolder',
+        archiveTest : 'archiveTest',
+        question : 'question',
         chapter : 'chapter',
-        topic   : 'topic'
+        topic   : 'topic',
+        publisherTests : 'publisherTests'
     };
 });

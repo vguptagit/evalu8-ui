@@ -820,10 +820,15 @@ angular
 								if (SharedTabService.tests[SharedTabService.currentTabIndex].testId) {
 									$scope.newVersionBtnCss = "";
 									$scope.exportBtnCss = "";
+									
 									if (SharedTabService.tests[SharedTabService.currentTabIndex].treeNode
                                         && SharedTabService.tests[SharedTabService.currentTabIndex].treeNode.testType == 'PublisherTest') {
+										
 										$scope.newVersionBtnCss = "disabled";
-									}
+										$scope.testType = 'PublisherTest';
+									} else {
+										$scope.testType = 'Test';
+									}									
 								} else {
 									$scope.newVersionBtnCss = "disabled";
 									$scope.exportBtnCss = "disabled";
