@@ -2046,7 +2046,7 @@ QTI.Elements.SimpleChoice.play = function(qtiNode, displayNode, state) {
 			"display" : "inline-block"
 		});
 	}
-
+	var contentsDisplayNodeRadioEditable;
 	if (isInteractionChoice) {
 		var multiple = hasInteraction ? (maxChoices == 1 ? false : true) : true;
 
@@ -2057,9 +2057,9 @@ QTI.Elements.SimpleChoice.play = function(qtiNode, displayNode, state) {
 
 		containerDisplayNode.append($("<span class='printView specFont'></span>").text(
 				qtiNode.attr("index")));
-		containerDisplayNode
-				.append("<div class='optionSelectionDiv editView'></div>");
-		containerDisplayNode.find("div.optionSelectionDiv").append(
+		contentsDisplayNodeRadioEditable=$("<div class='optionRadioEditableDiv'></div>");
+		contentsDisplayNodeRadioEditable.append("<div class='optionSelectionDiv'></div>");
+		contentsDisplayNodeRadioEditable.find("div.optionSelectionDiv").append(
 				$("<input></input>").attr({
 					"id" : id,
 					"type" : multiple ? "checkbox" : "radio",
@@ -2127,10 +2127,10 @@ QTI.Elements.SimpleChoice.play = function(qtiNode, displayNode, state) {
 			.attr({			
 				"class":'optionEditablediv editView'				
 			});
-	
+
 	containerDisplayNode.append(contentsDisplayNode1);
 	
-	containerDisplayNode.find("div.optionEditablediv").append(
+	contentsDisplayNodeRadioEditable.append(	
 			$("<div></div>").attr({			
 				"class" : "optionTextEditablediv",
 				"contenteditable" : "true",
@@ -2138,6 +2138,8 @@ QTI.Elements.SimpleChoice.play = function(qtiNode, displayNode, state) {
 				"for" : id,
 				"data---qti-content-container" : "true"				
 			}));
+	
+	containerDisplayNode.find("div.optionEditablediv").append(contentsDisplayNodeRadioEditable);
 	
 	
 	var qtiNodeHTML = QTI.replaceImage(qtiNode);
