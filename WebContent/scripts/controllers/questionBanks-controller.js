@@ -986,5 +986,13 @@ angular
 									}
 								};
 							
-
+							$scope.$on('handleBroadcast_AddNewTest', function (handler, newTest, containerFolder, isEditMode) {
+							    if (isEditMode) {							       
+							        return false;
+							    }							    
+							    TestService.getMetadata(newTest.guid, function (test) {
+							        test.nodeType = "test";
+							        SharedTabService.tests[SharedTabService.currentTabIndex].metadata = TestService.getTestMetadata(test);
+							    });
+							});
 						} ]);

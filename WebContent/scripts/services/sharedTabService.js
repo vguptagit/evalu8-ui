@@ -446,7 +446,7 @@ angular.module('evalu8Demo')
 		         }
 		         else if (masterTest.title != test.title) {
 		             isDirty = true;
-		         } else if (masterTest.questions.length != test.questions.length) {
+		         } else if (masterTest.questions.length != test.questions.length || masterTest.questions.length != masterTest.masterQuestions.length) {
 		             isDirty = true;
 		         } else {
 		             for (var i = 0; i < masterTest.questions.length; i++) {
