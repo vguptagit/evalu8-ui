@@ -2446,3 +2446,8 @@ li[printmode='true'] .qti-itemBody .qti-blockquote>p:first-child {
 	display: inline-block;
 	width: 100%;
 }
+.headerTitle {
+  top: 30px;
+  position: relative;
+  margin-top: -15px;
+}
