@@ -34,7 +34,7 @@
 		     //chieldFolder : is a child folders
 		     function clearNodes(node, chieldFolder) {
 		         $scope.selectedfolder = node;
-		         var parentFolder = CommonService.SearchFolder($scope.node, node.parentId);
+		         var parentFolder = CommonService.SearchItem($scope.node, node.parentId);
 		         if (parentFolder) {
 		             for (var i = 0; i < parentFolder.nodes.length; i++) {
 		                 parentFolder.nodes[i].nodes = []
