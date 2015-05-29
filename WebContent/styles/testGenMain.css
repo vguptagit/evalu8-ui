@@ -2372,7 +2372,7 @@ li[qstntemplate='true'][quiztype='Matching'] .qti-itemBody>blockquote:last-child
 }
 
 li[qstntemplate='true'] div #crtAnsSpace {
-	height: 20px
+	height: 40px
 }
 
 li[printmode='true'] .matchingOption {
