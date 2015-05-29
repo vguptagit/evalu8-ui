@@ -1368,6 +1368,22 @@ angular
 	                                
 	                            }
 							 
+							 function updateFillInBlankTemplatePrefilledtext(qstnNode) {
+								 var xml = jQuery.parseXML(qstnNode.data);
+								 var response = $(xml).find('responseDeclaration');
+								 for(var i = 0; i< response.length; i ++){
+									 var mapEntry = response.eq(i).find("mapEntry").eq(0);
+									 if(mapEntry.attr("mapKey").length == 0)
+										 mapEntry.attr("mapKey","Text for blank " + String.fromCharCode(65 + i ) )
+								 }
+								 var serializer = new XMLSerializer();
+                                 var editedXML = serializer
+                                        .serializeToString(xml);
+                                 qstnNode.data = editedXML;
+                                
+                                 return qstnNode;
+							 }
+							 
 							function updateTemplatePrefilledtext(qstnNode) {
 								var xml = jQuery.parseXML(qstnNode.data);
 
@@ -1508,8 +1524,11 @@ angular
 													if (qstn.qstnTemplate) {
 														if(qstn.quizType=="Matching"){															
 															qstn =  updateMatchingTemplatePrefilledtext(qstn);
-														}else{														
-														qstn =  updateTemplatePrefilledtext(qstn);
+														}else if(qstn.quizType=="FillInBlanks"){
+															qstn =  updateFillInBlankTemplatePrefilledtext(qstn);
+														}
+														else{														
+															qstn =  updateTemplatePrefilledtext(qstn);
 														}
 													}
 													if (typeof (qstn.questionMetadata) == 'undefined') {

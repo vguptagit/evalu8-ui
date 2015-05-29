@@ -3046,7 +3046,7 @@ QTI.getActualCursorPosition = function(cursorPosition,element){
 }
 
 QTI.getActualCursorPosition1 = function(cursorPosition,element,htmlContent){
-	var textBox = element.find("button,u[contenteditable=false],span");
+	var textBox = element.find("button,u[contenteditable=false]");
 	var actualLenght;
 	var actualText;
 	textBox.each(function(){
