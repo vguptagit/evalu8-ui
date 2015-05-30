@@ -834,6 +834,7 @@ angular
 								} else {
 									$scope.newVersionBtnCss = "disabled";
 									$scope.exportBtnCss = "disabled";
+                                    $scope.testType = 'Test';
 								}
 
 								if (test.testId && !test.questions.length) {
