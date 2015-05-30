@@ -96,6 +96,7 @@ login-container .panel-footer {
 }
 .save-dropdown a{
     cursor:pointer;
+    outline: 0;
 }
 .save-dropdown ul{
     min-width:100px;

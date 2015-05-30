@@ -183,7 +183,7 @@ label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D;
   border: 1px;
   padding: 10px 15px;
   height: 42px;
-  outline: :0;
+  outline: 0;
 	}
 	
 .btn-default.glyphicon:hover{

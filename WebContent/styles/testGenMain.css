@@ -320,7 +320,7 @@ a.newFolder:hover {
 	height: 15px;
 	margin-right: 2px;
 	float: left;
-	outline: :0;
+	outline: 0;
 }
 
 .maindiv {
