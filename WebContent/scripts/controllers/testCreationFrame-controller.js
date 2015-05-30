@@ -1457,6 +1457,11 @@ angular
 							    $scope.testGuid = null;
 							    $scope.saveTest();
 							}
+							$scope.showMessage_EmptyTestTitle = function () {
+							    $scope.IsConfirmation = false;
+							    $scope.message = EnumService.ERROR_MESSAGES.EmptyTestTitle;
+							    $modal.open(confirmObject);
+							}
 							// Function is to save the Test details with the
 							// questions.
 							$scope.saveTest = function() {
@@ -1464,10 +1469,11 @@ angular
 								var test = SharedTabService.tests[SharedTabService.currentTabIndex];
 								if (test.title == null
 										|| test.title.length <= 0) {
-									$scope.IsConfirmation = false;
-									$scope.message = "Please Enter Test Title to save the test.";
+								    $scope.showMessage_EmptyTestTitle();
+									//$scope.IsConfirmation = false;
+									//$scope.message = "Please Enter Test Title to save the test.";
 
-									$modal.open(confirmObject);
+									//$modal.open(confirmObject);
 									return;
 								}
 								$scope.testTitle = test.title;

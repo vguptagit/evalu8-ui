@@ -91,8 +91,7 @@
 
 		     $scope.save = function () {
 		         if ($scope.title == "" || $scope.title == null) {
-		             $scope.errorMessage = 'please enter the test title.';
-		             $scope.isErrorMessage = true;
+		             parentScope.showMessage_EmptyTestTitle();
 		             return false;
 		         }
 		         parentScope.saveAs_Test($scope.title, $scope.selectedfolder);
