@@ -17,7 +17,6 @@ angular.module('e8MyTests')
                              { value: 'pdf', text: 'PDF' },
                              { value: 'pool', text: 'Blackboard Pool manager' },
                              { value: 'test', text: 'Blackboard Test manager' },
-                             { value: 'vista', text: 'Blackboard Vista (WebCT)' },
                              { value: 'qti', text: 'QTI 2.1' }
     ];
 
@@ -35,7 +34,7 @@ angular.module('e8MyTests')
     ];
     
     $scope.margins = [
-                      	 { value: '0.5', text: '.5 inch' },
+                      	 { value: '0.5', text: '0.5 inch' },
                          { value: '1.0', text: '1 inch' },
                          { value: '1.5', text: '1.5 inch' },
      ];

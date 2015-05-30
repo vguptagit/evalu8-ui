@@ -21,7 +21,7 @@
 </div>
 
 <div class="modal-body">
-	<div class="container-fluid">
+	<div class="container-fluid paddingall20">
 		<div class="row">
 			<div class="col-md-12">
 				<div>
@@ -44,13 +44,20 @@
 				<div class="col-lg-12">
 					<div class="row">
 						<div class="col-lg-12">
-							<div class="searchPanelPopup">
-								<input type="text" placeHolder="Search Discipline"
+							<div class="input-group searchdiv">
+							<input type="text" placeHolder="Search Discipline"
+						class="searchDiscpline form-control" ng-model="searched"
+						typeahead="discipline for discipline in disciplines.all.sort() | filter:$viewValue"
+						ng-keyup="searchDiscipline($event)"> <span class="glyphicon glyphicon-search searchicon" ng-click="searchDisciplineOnClick()"
+						tooltip="Search" tooltip-placement="bottom"></span>
+							
+							
+								<!-- <input type="text" placeHolder="Search Discipline"
 									class="searchDiscpline" ng-model="searched"
 									typeahead="discipline for discipline in disciplines.all.sort() | filter:$viewValue"
 									ng-keyup="searchedDiscipline($event)"> <span
 									class="searchIcon" ng-click="searchedDisciplineOnClick()"
-									tooltip="search" tooltip-placement="bottom"></span>
+									tooltip="search" tooltip-placement="bottom"></span> -->
 							</div>
 						</div>
 					</div>
@@ -76,13 +83,13 @@
 				<div class="col-lg-12">
 					<div class="row">
 						<div class="col-lg-12">
-							<div class="searchPanelPopup">
-								<input type="text" placeHolder="Enter title, author, publisher, bookid or ISBN" class="searchBook"
+							<div class="input-group searchdiv">
+								<input type="text" placeHolder="Enter title, author, publisher, bookid or ISBN" class="searchBook form-control"
 									ng-model="searchedBook" placeholder="Custom template"
 									typeahead-template-url="customTemplate.html"
 									typeahead="book.title for book in books.all | searchFields22:$viewValue"
-									ng-keyup="searchedBookOnEnter($event)"> <span
-									class="searchIcon" ng-click="searchedBookOnClick()"
+									ng-keyup="searchedBookOnEnter($event)"><span
+									class="glyphicon glyphicon-search searchicon" ng-click="searchedBookOnClick()"
 									tooltip="search" tooltip-placement="bottom"></span>
 							</div>
 						</div>

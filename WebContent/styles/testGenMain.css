@@ -2454,9 +2454,9 @@ li[printmode='true'] .qti-itemBody .qti-blockquote>p:first-child {
 .bookSearchicon {
 	float: left;
 	position: absolute;
-	z-index: 9999;
+	z-index: 1050;
 	margin-top: 10px;
-	margin-left: 255px;
+	margin-left: 250px;
 }
 .crtAnsDiv{
 	cursor: pointer;
@@ -2476,7 +2476,11 @@ li[printmode='true'] .qti-itemBody .qti-blockquote>p:first-child {
   position: relative;
   margin-top: -15px;
 }
-
+.closeIcon {
+  position: relative;
+  right: -20px;
+  top: -10px;
+}
 .advancedSearchText {
 	float: left;
 	color: #4D4D4D;
