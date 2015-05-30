@@ -27,4 +27,8 @@ angular.module('evalu8Demo')
         topic   : 'topic',
         publisherTests : 'publisherTests'
     };
+
+    this.ERROR_MESSAGES = {
+        EmptyTestTitle: "Please Enter Test Title to save the test."
+    };
 });
