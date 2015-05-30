@@ -1376,7 +1376,7 @@ angular
 								 for(var i = 0; i< response.length; i ++){
 									 var mapEntry = response.eq(i).find("mapEntry").eq(0);
 									 if(mapEntry.attr("mapKey").length == 0)
-										 mapEntry.attr("mapKey","Text for blank " + String.fromCharCode(65 + i ) )
+										 mapEntry.attr("mapKey","Correct answer for blank " + String.fromCharCode(65 + i ) )
 								 }
 								 var serializer = new XMLSerializer();
                                  var editedXML = serializer
