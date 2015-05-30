@@ -200,7 +200,7 @@
 
 	<script type="text/ng-template" id="qb_questions_renderer.html">
         <div ng-mousedown="selectNode(this.node);" ui-tree-handle class="printViewContainer tree-node tree-node-content questionList" ng-class="{questionTitleInTree: node.questionXML}">
-            <span ng-show="node.showEditQuestionIcon" class="newTest-close action-icon-bg glyphicon glyphicon-pencil" ng-mousedown="editQuestion()" tooltip="Move question to right for editing" tooltip-placement="bottom" ></span>
+            <span ng-show="node.showEditQuestionIcon" class="newTest-close questionIcon action-icon-bg glyphicon glyphicon-pencil" ng-mousedown="editQuestion()" tooltip="Move question to right for editing" tooltip-placement="bottom" ></span>
             <div class="printViewContainer" ng-if="node.textHTML" ng-bind-html="getHTML(this)">
             </div>
         </div>
