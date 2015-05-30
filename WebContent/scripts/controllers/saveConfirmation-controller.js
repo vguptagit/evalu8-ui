@@ -5,8 +5,8 @@ angular.module('e8MyTests').controller('SaveConfirmationController', function ($
 
     $scope.save = function () {
     	if($scope.curresnTest.title == "" || $scope.curresnTest.title == null){
-        	$scope.errorMessage='please enter the test title.';
-        	$scope.isErrorMessage=true;
+    	    parentScope.showMessage_EmptyTestTitle();
+    	    $scope.cancel();
         	return false;
         }
     	parentScope.saveTest();
