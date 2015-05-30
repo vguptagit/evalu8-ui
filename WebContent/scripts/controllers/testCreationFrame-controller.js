@@ -1584,66 +1584,61 @@ angular
 															.push(QuestionEnvelop);
 												});
 
-								TestService
-										.saveQuestions(
-												QuestionEnvelops,
-												function(questionsResult) {
-													questionsResult
-															.forEach(function(
-																	questionItem) {
-																var question = JSON
-																		.parse(questionItem);
-																var guid = question[0].guid;
+								TestService.saveQuestions(QuestionEnvelops, function(questionsResult) {
+									
+									var questionIndex = 0;
+									questionsResult.forEach(function(questionItem) {
+											var question = JSON.parse(questionItem);
+											var guid = question[0].guid;
 
-																testcreationdata.body.assignmentContents.binding
-																		.push({
-																			guid : guid,
-																			activityFormat : "application/vnd.pearson.qti.v2p1.asi+xml",
-																			bindingIndex : index
-																		});
-																index = index + 1;
-															})
+											test.questions[questionIndex].guid = guid;
+											questionIndex = questionIndex + 1;
+											
+											testcreationdata.body.assignmentContents.binding
+													.push({
+														guid : guid,
+														activityFormat : "application/vnd.pearson.qti.v2p1.asi+xml",
+														bindingIndex : index
+													});
+											index = index + 1;
+									})
 
-													TestService
-															.saveTestData(
-																	testcreationdata,
-																	test.folderGuid,
-																	function(
-																			testResult) {
-																	    var isEditMode = false;
-																	    if (SharedTabService.tests[SharedTabService.currentTabIndex].testId) {
-																	        isEditMode = true;
-																	    }
-																		SharedTabService.currentTab = jQuery.extend(true, {}, SharedTabService.tests[SharedTabService.currentTabIndex]);
-																		SharedTabService.tests[SharedTabService.currentTabIndex].testId = testResult.guid;
-																		SharedTabService.tests[SharedTabService.currentTabIndex].id = testResult.guid;
-																		SharedTabService.tests[SharedTabService.currentTabIndex].tabTitle = test.title;
-																		SharedTabService.tests[SharedTabService.currentTabIndex].metadata = testcreationdata.metadata;
+									TestService.saveTestData(testcreationdata, test.folderGuid,
+										function(testResult) {
+										    var isEditMode = false;
+										    if (SharedTabService.tests[SharedTabService.currentTabIndex].testId) {
+										        isEditMode = true;
+										    }
+											SharedTabService.currentTab = jQuery.extend(true, {}, SharedTabService.tests[SharedTabService.currentTabIndex]);
+											SharedTabService.tests[SharedTabService.currentTabIndex].testId = testResult.guid;
+											SharedTabService.tests[SharedTabService.currentTabIndex].id = testResult.guid;
+											SharedTabService.tests[SharedTabService.currentTabIndex].tabTitle = test.title;
+											SharedTabService.tests[SharedTabService.currentTabIndex].metadata = testcreationdata.metadata;
 
-																		$scope.testGuid = testResult.guid;
-																		$scope.newVersionBtnCss = "";
-																		$scope.exportBtnCss = "";
-																		
-																		testResult.title = test.title;
-																		testResult.modified = (new Date()).toJSON();
-																		$rootScope.$broadcast('handleBroadcast_AddNewTest', testResult, $scope.containerFolder, isEditMode);
-																		$scope.containerFolder = null; //clear selected folder in save as dialog popup.
-                                                                         
-																		if (SharedTabService.tests[SharedTabService.currentTabIndex].isSaveAndClose) {
-																			SharedTabService
-																					.closeTab(
-																							SharedTabService.currentTab,
-																							$scope);
-																			SharedTabService
-																					.removeMasterTest(SharedTabService.currentTab);
-																		} else {
-																			SharedTabService
-																					.removeMasterTest(SharedTabService.currentTab);
-																			SharedTabService
-																					.addMasterTest(SharedTabService.tests[SharedTabService.currentTabIndex]);
-																		}
-																	});
-												});
+											$scope.testGuid = testResult.guid;
+											$scope.newVersionBtnCss = "";
+											$scope.exportBtnCss = "";
+											
+											testResult.title = test.title;
+											testResult.modified = (new Date()).toJSON();
+											$rootScope.$broadcast('handleBroadcast_AddNewTest', testResult, $scope.containerFolder, isEditMode);
+											$scope.containerFolder = null; //clear selected folder in save as dialog popup.
+                                             
+											if (SharedTabService.tests[SharedTabService.currentTabIndex].isSaveAndClose) {
+												SharedTabService
+														.closeTab(
+																SharedTabService.currentTab,
+																$scope);
+												SharedTabService
+														.removeMasterTest(SharedTabService.currentTab);
+											} else {
+												SharedTabService
+														.removeMasterTest(SharedTabService.currentTab);
+												SharedTabService
+														.addMasterTest(SharedTabService.tests[SharedTabService.currentTabIndex]);
+											}
+										});
+									});
 
 							}
 
