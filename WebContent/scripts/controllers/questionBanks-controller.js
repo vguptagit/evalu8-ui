@@ -36,6 +36,13 @@ angular
 							};
 							$scope.controller = EnumService.CONTROLLERS.questionBanks;
 							$scope.selectedNodes = [];
+							
+							if (SharedTabService.tests[SharedTabService.currentTabIndex].questions.length) {
+							    var test = SharedTabService.tests[SharedTabService.currentTabIndex];
+							    for (var i = 0; i < test.questions.length; i++) {
+							        $scope.selectedNodes.push(test.questions[i]);
+							    }
+							}
 							$scope.isSearchMode = false;
 							$scope.dragStarted = false;
 
@@ -463,6 +470,10 @@ angular
 																				item.showTestWizardIcon = true;
 																				item.showEditQuestionIcon = true;
 																				item.isNodeSelected = false;
+                                                                                item.nodeType = "topic";
+																				item.isCollapsed=true;
+																				updateTreeNode(item);
+                                                                                /*
 																				if ($scope.selectedNodes.length > 0)
 																					for (var i = 0; i < $scope.selectedNodes.length; i++) {
 																						if ($scope.selectedNodes[i].guid == item.guid) {
@@ -472,8 +483,8 @@ angular
 																							$scope.selectedNodes[i] = item;
 																						}
 																					}
-																				item.nodeType = "topic";
-																				item.isCollapsed=true;
+                                                                                */
+																				
 																			})
 															blockLeftpanel
 																	.stop();
@@ -518,6 +529,7 @@ angular
 																				item.nodeType = "question";
 																				item.showEditQuestionIcon = false;
 																				item.isNodeSelected = false;
+																				updateTreeNode(item);
 																				addToQuestionsArray(item);
 																				$scope
 																						.renderQuestion(item);
@@ -531,6 +543,18 @@ angular
 										;
 									}
 								}
+							}
+
+							var updateTreeNode = function (item) {
+							    if ($scope.selectedNodes.length > 0)
+							        for (var i = 0; i < $scope.selectedNodes.length; i++) {
+							            if ($scope.selectedNodes[i].guid == item.guid) {
+							                item.showTestWizardIcon = $scope.selectedNodes[i].showTestWizardIcon;
+							                item.showEditQuestionIcon = $scope.selectedNodes[i].showEditQuestionIcon;
+							                item.isNodeSelected = $scope.selectedNodes[i].isNodeSelected;
+							                $scope.selectedNodes[i] = item;
+							            }
+							        }
 							}
 
 							$scope.getQuestions = function(currentNode) {
