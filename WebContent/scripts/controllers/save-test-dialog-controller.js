@@ -17,7 +17,7 @@
 		     $scope.loadRootFolders();
 
 		     //populate the child nodes.
-		     $scope.getFolders = function (node, defaultFolder, $event) {
+		     $scope.getFolders = function (node, defaultFolder) {
 		         var folderState = node.isSelected;
 		         clearNodes(node, defaultFolder);
                  
