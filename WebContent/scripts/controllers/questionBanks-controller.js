@@ -779,8 +779,8 @@ angular
 												&& (node.showTestWizardIcon && !node.showEditQuestionIcon)) {
 												$scope.selectedNodes.splice(i, 1);																			
 												$scope.setDeselectedNodeState(node);
-											}
-									break;
+												break;
+											}									
 								}
 							};			
 							
