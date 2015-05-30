@@ -766,7 +766,7 @@ ol {
 #tree2-root {
 	width: 100%;
 	height: 50px;
-	min-height: 430px;
+	min-height: 590px;
 	overflow-y: auto;
 	display: inline-block;
 }
@@ -1340,10 +1340,8 @@ li[quiztype='TrueFalse'] .qti-simpleChoice .radio {
 .editMetdata {
 	display: inline-block;
 	float: left;
-}
-
-.captionMetadata {
-	font-weight: bold;
+	margin-top: 15px;
+	width: 100%;
 }
 
 .normalText {
@@ -1377,11 +1375,30 @@ li[quiztype='TrueFalse'] .qti-simpleChoice .radio {
 
 .downArrowImage {
 	float: left;
+	outline: none;
 }
 
 .imagecaptionMetadata {
-	float: left;
-	margin-left: -18px;
+	float: left;	
+	margin-left: -5px;
+}
+
+.metadataView{
+	margin-left: 5px;
+	margin-top: 4px;
+}
+
+.captionMetadata {
+	font-weight: bold;		
+	margin-left: 5px;
+}
+
+#viewHeader > .captionMetadata{
+	margin-left: 0px;
+}
+
+.mainClass {
+	padding-left: 14px;
 }
 
 .allignimage {
@@ -2163,10 +2180,8 @@ li[qstntemplate=true] .printViewContainer  .qti-blockquote .matchIndex {
 	display: none;
 }
 
-
-
 .metadataSection {
-	margin-top: 10px;
+	margin-top: 6px;
 	display: table;
 	width: 100%;
 }
@@ -2234,10 +2249,6 @@ li[qstntemplate=true] .printViewContainer  .qti-blockquote .matchIndex {
 	border-radius: 5px;
 	width: 98%;
 	border-radius: 5px;
-}
-
-.mainClass {
-	padding-left: 3px;
 }
 
 button[disabled]+.tooltip {
