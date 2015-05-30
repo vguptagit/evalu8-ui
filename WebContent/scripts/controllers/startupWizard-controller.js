@@ -88,7 +88,7 @@ angular
 								$http, UserService, BookService,
 								DisciplineService) {
 
-							$scope.searched = "";
+							$scope.searchedDiscpline="";
 							$scope.trackEnterKey = 0;
 							$scope.disciplines = {
 								all : [],
@@ -136,21 +136,21 @@ angular
 										discipline.discipline, false)
 							}
 
-							$scope.searchedDisciplineOnClick = function() {
-								$scope.searched = $(".searchDiscpline").val();
-								if ($scope.searched == undefined
-										|| $scope.searched == "") {
+							$scope.searchDisciplineOnClick = function() {
+								$scope.searchedDiscpline = $(".searchDiscpline").val();
+								if ($scope.searchedDiscpline == undefined
+										|| $scope.searchedDiscpline == "") {
 									return false;
 
 								}
-								$scope.addToselectedDiscipline($scope.searched,
+								$scope.addToselectedDiscipline($scope.searchedDiscpline,
 										true);
 							}
 
-							$scope.searchedDiscipline = function(event) {
-								$scope.searched = $(".searchDiscpline").val();
-								if ($scope.searched == undefined
-										|| $scope.searched == "") {
+							$scope.searchDiscipline = function(event) {
+								$scope.searchedDiscpline = $(".searchDiscpline").val();
+								if ($scope.searchedDiscpline == undefined
+										|| $scope.searchedDiscpline == "") {
 									$(".discplineheight")[0].scrollTop = 0;
 									return false;
 
@@ -159,7 +159,7 @@ angular
 								if (event.keyCode === 13) {
 									if ($scope.trackEnterKey > 0) {
 										$scope.addToselectedDiscipline(
-												$scope.searched, true);
+												$scope.searchedDiscpline, true);
 									} else {
 										$scope.trackEnterKey = 1
 									}
