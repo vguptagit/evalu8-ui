@@ -792,6 +792,8 @@ angular
 											editedElement).scope()
 									convertHtmlToXmlNode(scopeElement);
 								}
+								
+								$scope.testType = 'Test';
 
 								SharedTabService.addNewTest($scope);
 							}
