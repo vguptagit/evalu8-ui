@@ -1594,6 +1594,7 @@ angular
 											var guid = question[0].guid;
 
 											test.questions[questionIndex].guid = guid;
+											test.questions[questionIndex].IsEdited = false; 
 											questionIndex = questionIndex + 1;
 											
 											testcreationdata.body.assignmentContents.binding
@@ -1603,7 +1604,7 @@ angular
 														bindingIndex : index
 													});
 											index = index + 1;
-									})
+									})									
 
 									TestService.saveTestData(testcreationdata, test.folderGuid,
 										function(testResult) {
