@@ -3,13 +3,87 @@
 		<input type="text" placeHolder="Search selected banks"
 			class="bookSearch form-control" ng-model="searchedText"
 			ng-focus="validateSearch()"
-			typeahead="container.title for container in allContainers | filter:{title:$viewValue}""
+			typeahead="container.title for container in allContainers | filter:{title:$viewValue}"
 			ng-keyup="showContainerOnEnter($event)"> <span
 			class="glyphicon glyphicon-search bookSearchicon"
 			ng-click="showContainerOnClick()" tooltip="Search"
 			tooltip-placement="bottom"></span>
 	</div>
-	<div class="col-lg-6"></div>
+	<div class="col-lg-6">
+		<a href="" class="advancedSearchText" ng-click="openAdvancedSearch()">Advanced
+			Search</a>
+	</div>
+</div>
+<div class="row advancedSearchCriteria" ng-show="showAdvancedSearch">
+	<div class="col-lg-12">
+		<div class="row">
+			<div class="col-lg-12">
+				<button type=" button" class="close"
+					ng-click="closeAdvancedSearch()" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-1 text-left">
+				<h5">Type:</h5>
+			</div>
+			<div class="col-lg-11">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="ck-button">
+							<label ng-class="disabled-cursor"> <input type="checkbox"
+								ng-click='toggleQuestiontypeSelection("TrueFalse")'
+								ng-checked="false"><span>True or False</span>
+							</label>
+						</div>
+						<div class="ck-button">
+							<label ng-class="disabled-cursor"> <input type="checkbox"
+								ng-click='toggleQuestiontypeSelection("MultipleChoice")'
+								ng-checked="false"><span>Multiple Choice</span>
+							</label>
+						</div>
+						<div class="ck-button">
+							<label ng-class="disabled-cursor"> <input type="checkbox"
+								ng-click='toggleQuestiontypeSelection("FillInBlanks")'
+								ng-checked="false"><span>Text Entry</span>
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="ck-button">
+							<label ng-class="disabled-cursor"> <input type="checkbox"
+								ng-click='toggleQuestiontypeSelection("Matching")'
+								ng-checked="false"><span>Matching</span>
+							</label>
+						</div>
+						<div class="ck-button">
+							<label ng-class="disabled-cursor"> <input type="checkbox"
+								ng-click='toggleQuestiontypeSelection("MultipleResponse")'
+								ng-checked="false"><span>Multiple Response</span>
+							</label>
+						</div>
+						<div class="ck-button">
+							<label ng-class="disabled-cursor"> <input type="checkbox"
+								ng-click='toggleQuestiontypeSelection("Essay")'
+								ng-checked="false"><span>Essay</span>
+							</label>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12 text-right	">
+				<button ng-click="closeAdvancedSearch()" class="backButton">Cancel</button>
+				<button class="nextButton" ng-class="{btnDisbled : isSaveDisabled }"
+					ng-disabled="isSaveDisabled"
+					ng-click="searchBooksForQuestionTypes()">Search</button>
+			</div>
+		</div>
+	</div>
 </div>
 <div class="row margin-top-15">
 	<div class="col-lg-12 col-md-12 col-sm-12">
@@ -133,14 +207,17 @@
     </script>
 
 	<div data-ui-tree id="tree-root" class="question_bank_scrollbar">
-	
-		<div class="testMessagetip"  style="position: absolute;top:0px">
+
+		<div class="testMessagetip" style="position: absolute; top: 0px">
 			<div class="newTest-close glyphicon glyphicon-remove"
-	                   ng-click="closeTip()"></div>
-			<div><span class="glyphicon glyphicon-info-sign"></span>&nbsp;<strong class="tips">Tips:</strong> Drag 
-			test to right to edit OR select pencil icon.</div>
+				ng-click="closeTip()"></div>
+			<div>
+				<span class="glyphicon glyphicon-info-sign"></span>&nbsp;<strong
+					class="tips">Tips:</strong> Drag test to right to edit OR select
+				pencil icon.
+			</div>
 		</div>
-		
+
 		<div class="questionMessagetip" style="position: absolute; top: 0px">
 			<div class="newTest-close glyphicon glyphicon-remove"
 				ng-click="closeQuestionTip()"></div>
@@ -159,9 +236,3 @@
 		</ol>
 	</div>
 </div>
-
-
-
-
-
-

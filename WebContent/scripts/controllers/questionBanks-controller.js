@@ -20,10 +20,11 @@ angular
 						'$modal',
 						'blockUI',
 						'ContainerService',
+						'questionService',
 						function($scope, $rootScope, $location, $cookieStore,
 								$http, $sce, DisciplineService, TestService,
 								SharedTabService, UserQuestionsService,
-								EnumService, $modal, blockUI,ContainerService) {
+								EnumService, $modal, blockUI,ContainerService,questionService) {
 							SharedTabService.selectedMenu = SharedTabService.menu.questionBanks;
 							$rootScope.globals = $cookieStore.get('globals')
 									|| {};
@@ -843,8 +844,30 @@ angular
 											$scope.allContainers = response;
 											node.isNodeSelected = isBookSelected;
 										});
+								
+								$scope.getBookQuestions();
 							}
 
+							$scope.bookQuestions=[];
+							$scope.getBookQuestions = function(){
+								var bookQuestionsDetails={};
+								$scope.selectedBooks.forEach(function(book){
+									 ContainerService.bookNodes(book.guid, function(containers) {
+										 containers.forEach(function(container){
+											 questionService.getAllQuestionsOfContainer(book.guid,container.guid, function(questions){
+												 if(questions.length>0){
+													 bookQuestionsDetails["book"]=jQuery.extend(true,{}, book);
+													 bookQuestionsDetails["container"]=jQuery.extend(true,{}, container);
+													 bookQuestionsDetails["questions"]=questions;
+													 $scope.bookQuestions.push(bookQuestionsDetails);
+													 bookQuestionsDetails={};
+												 	}
+												 })
+											 });
+									 });
+								});
+							}
+							
 							$scope.validateSearch = function(){
 								if($scope.selectedBookIDs.length == 0){
 									$scope.searchedText="";
@@ -981,6 +1004,110 @@ angular
 								}
 
 								return parentContainers;
+							}
+							
+							$scope.showAdvancedSearch = false;
+							$scope.selectedQuestionTypes = [];
+							$scope.isSaveDisabled=true;
+							
+							$scope.openAdvancedSearch = function() {
+								if (!$scope.showAdvancedSearch) {
+									$scope.showAdvancedSearch = true;
+								} else {
+									$scope.showAdvancedSearch = false;
+								}
+
+							}
+							
+							$scope.closeAdvancedSearch = function() {
+								$scope.showAdvancedSearch = false;
+							}
+							
+							$scope.toggleQuestiontypeSelection = function(
+									questionType) {
+
+								var index = $scope.selectedQuestionTypes
+										.indexOf(questionType);
+								if (index > -1) {
+									$scope.selectedQuestionTypes.splice(index,
+											1);
+								} else {
+									$scope.selectedQuestionTypes
+											.push(questionType)
+								}
+								if($scope.selectedQuestionTypes.length == 0){
+									$scope.isSaveDisabled=true;
+								}else{
+									$scope.isSaveDisabled=false;
+								}
+							}
+							
+							$scope.validContainers=[];
+							$scope.searchBooksForQuestionTypes = function(node) {
+								$scope.showAdvancedSearch = false;
+								$scope.validateSearch();
+								$scope.disciplines=[];
+								var isValidContainer=false;
+								var searchedDiscipline={};
+								
+								$scope.bookQuestions.forEach(function(item) {
+									item.questions.forEach(function(question){
+										$scope.selectedQuestionTypes.forEach(function(questionType){
+											if(question.quizType.toLowerCase()===questionType.toLowerCase()){
+												isValidContainer=true;
+											}
+										});
+									});
+									
+									if(isValidContainer==true){
+										var isCourseExists=false;
+										
+										if($scope.disciplines.length==0){
+											searchedDiscipline["item"] = item.book.discipline;
+											searchedDiscipline["isCollapsed"]=false;
+											item.book.isCollapsed=false;
+											item.container.isCollapsed=true;
+											item.nodeType = "chapter";
+											item.book.nodes= [item.container]
+											searchedDiscipline["nodes"] = [item.book];
+											$scope.disciplines.push(searchedDiscipline)
+										}else{
+											$scope.disciplines.forEach(function(discipline) {
+												 if(discipline.item===item.book.discipline){
+													 discipline.nodes.forEach(function(book) {
+														if(book.guid===item.book.guid){
+															isCourseExists=true;
+															item.container.isCollapsed=true;
+															item.nodeType = "chapter";
+															book.nodes.push(item.container);
+														} 
+													 })
+													 if(!isCourseExists){
+														 item.book.isCollapsed=false;
+														 item.container.isCollapsed=true;
+														 item.nodeType = "chapter";
+														 item.book.nodes= [item.container]
+														 discipline.nodes = [item.book];
+													 }
+													 isCourseExists=false;
+												 }
+												 else{
+													 searchedDiscipline["item"] = item.book.discipline;;
+													 searchedDiscipline["isCollapsed"]=false;
+													 item.book.isCollapsed=false;
+													 item.container.isCollapsed=true;
+													 item.nodeType = "chapter";
+													 item.book.nodes= [item.container]
+													 searchedDiscipline["nodes"] = [item.book];
+													 $scope.disciplines.push(searchedDiscipline)
+												 }
+											 });
+										}
+									}
+									
+									isValidContainer=false;
+								});
+								
 							}
 							
 							var confirmObject = {

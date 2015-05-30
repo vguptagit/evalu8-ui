@@ -2460,3 +2460,24 @@ li[printmode='true'] .qti-itemBody .qti-blockquote>p:first-child {
   position: relative;
   margin-top: -15px;
 }
+
+.advancedSearchText {
+	float: left;
+	color: #4D4D4D;
+	font-family: Helvetica;
+	font-size: 14px;
+	text-decoration: none !important;
+	margin-top: 5px;
+}
+
+.advancedSearchCriteria {
+	position: absolute;
+	z-index: 1000;
+	border: 1px solid  #ddd;
+	background: #f8f8f8;
+	left: 30px;
+	border-radius: 3px;
+}
+.closeButtonAdvancedSearch{
+	padding:5px !important;
+}
