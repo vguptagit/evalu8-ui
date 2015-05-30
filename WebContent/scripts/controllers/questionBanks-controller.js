@@ -772,6 +772,37 @@ angular
 													$scope.questions[i].isNodeSelected = false;
 												}
 											});
+							
+							$scope.deselectQuestionNode = function (node) {							 
+									for (var i = 0; i < $scope.selectedNodes.length; i++) {
+										if ($scope.selectedNodes[i].guid == node.guid
+												&& (node.showTestWizardIcon && !node.showEditQuestionIcon)) {
+												$scope.selectedNodes.splice(i, 1);																			
+												$scope.setDeselectedNodeState(node);
+											}
+									break;
+								}
+							};			
+							
+							$scope.setDeselectedNodeState = function(deselectedNode){
+								for (var i = 0; i < $scope.questions.length; i++) {
+										if ($scope.questions[i].guid === deselectedNode.guid) {
+		                                        $scope.questions[i].isNodeSelected = false;
+		                                        $scope.questions[i].showEditQuestionIcon = false;
+		                                        $scope.questions[i].showTestWizardIcon = false; 
+		                                        break;
+	                                    	}
+                                }
+							}
+						
+							//Handling the Broadcast event when selected question is removed from the Test creation frame.
+							// here need to remove the question node from selected list and need to chnage his state. 
+							$scope.$on('handleBroadcast_deselectQuestionNode',
+									function(handler, node) {
+										$scope.deselectQuestionNode(node);
+									});
+							
+							
 							// evalu8-ui : to set Active Resources Tab , handled
 							// in ResourcesTabsController
 							$rootScope.$broadcast(

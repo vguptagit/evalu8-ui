@@ -380,8 +380,10 @@ angular.module('evalu8Demo')
 		     }
 
 		     sharedTabService.closeQuestions = function(tab, scope ,index){
+		    	 var node = scope.tests[scope.currentIndex].questions[index];
 		    	 scope.tests[scope.currentIndex].questions.splice(index,1);
 		    	 scope.tests[scope.currentIndex].IsAnyQstnEditMode = false;
+		    	 $rootScope.$broadcast("handleBroadcast_deselectQuestionNode", node);
 		     }
 		     
 		     sharedTabService.removeMasterTest = function (test) {
