@@ -679,6 +679,10 @@ angular
 								
 								var qtiCaption = scope.$element.find("#qtiCaption").eq(0);
 								var cursorPosition = QTI.getCaretPosition(qtiCaption.get(0));
+								if(cursorPosition > 0){
+									qtiCaption = QTI.getCursorElement(qtiCaption)
+									cursorPosition = QTI.getCaretPosition(qtiCaption.get(0));
+								}
 								var optionText = qtiCaption.html().replace(/&nbsp;/g," ");
 																
 								cursorPosition = QTI.getActualCursorPosition1(cursorPosition,qtiCaption,optionText);
@@ -696,8 +700,6 @@ angular
 								
 								htmlEle.append($("<div class='editView editablediv crtAnsDiv' type='text' id='RESPONSE_"+blankCount+"' >"+String.fromCharCode(65 + blankCount - 1 )+".<div contenteditable='true' class='placeHolderForBlank' data-placeholder='Enter the correct answer for blank "+ String.fromCharCode(65 + blankCount - 1 ) +"'></div></div>"));
 							}
-
-							
 							
 							$scope.upload = function(files) {
 								var returnValue;

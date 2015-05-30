@@ -1929,7 +1929,7 @@ QTI.Elements.Mapping.GET_ALLOWED_CONTENT = function() {
 }
 
 QTI.Elements.Mapping.play = function(qtiNode, displayNode, state) {
-
+	this.DISPLAY = false;
 	if(state.questionType)
 		if(CustomQuestionTemplate[state.questionType])
 			CustomQuestionTemplate[state.questionType].makeExtra(null,this,null);
@@ -3066,7 +3066,29 @@ QTI.getActualCursorPosition1 = function(cursorPosition,element,htmlContent){
 	return cursorPosition;
 }
 
-
+QTI.getCursorElement = function(elm){
+	var elements = elm.children("*:not(button,u)");
+	if(elements.length == 0)
+		return elm;
+	var i = 0;
+	for(i = 0; i < elements.length; i++){
+		var pos = QTI.getCaretPosition(elements[i]);
+		if(pos == 0)
+		{
+			break;
+		}
+	}
+	if(i == 0){
+		if(QTI.getCaretPosition(elements.eq(0).parent().get(0)) != 0)
+			return elements.eq(0).parent();
+		else
+			return elements.eq(0);
+	}
+	else{
+		return QTI.getCursorElement(elements.eq(i-1));
+	}
+	
+}
 QTI.reorderElements = function(state,displayNode){	
 	if(state.questionType == 'Essay'){
 		var qtiDeclare = $(displayNode).find("div.qti-responseDeclaration");

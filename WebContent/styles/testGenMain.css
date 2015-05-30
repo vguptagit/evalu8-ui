@@ -1138,6 +1138,10 @@ li[printmode='false'].displayQuestionLI {
 	width: 450px;
 }
 
+#qtiCaption p{
+	padding: 0px;
+}
+
 li[printmode='false'] .questionList {
 	float: left;
 }
