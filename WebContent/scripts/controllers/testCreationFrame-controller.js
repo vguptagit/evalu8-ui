@@ -1137,7 +1137,7 @@ angular
 								$scope.exportBtnCss = "";
 								
                         		$scope.testType = 'Test';
-                        		if(selectedTest.node.testType == 'PublisherTest') {
+                        		if(selectedTest.node.testType && selectedTest.node.testType == 'PublisherTest') {
                         			$scope.testType = 'PublisherTest';
                         			$scope.newVersionBtnCss = "disabled";
                         		}
