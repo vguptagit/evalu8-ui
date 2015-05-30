@@ -1,7 +1,7 @@
 ﻿<style type="text/css">
     @media (min-width: 768px) {
         .modal-dialog {
-            width: 500px;
+            width: 490px;
         }
     }
 </style>
@@ -27,7 +27,7 @@
     <div class="margin-top-20 modaltablewidth table-bordered inlineblock" id="scroll">
         <ul ng-model="node" class="folder-template-container">
             <li ng-repeat="node in node" class="modaldivwidth">
-                <span ng-click="getFolders(node,this)" ng-class="{active : node.isSelected}" class="text14 node-text" title="{{node.title}}">{{node.title}}<span ng-show="node.isSelected" class="glyphicon glyphicon-triangle-right margin-top-5 margin-rt-5 pull-right"></span></span>
+                <span ng-click="getFolders(node,this,$event)" ng-class="{active : node.isSelected}" class="text14 node-text" title="{{node.title}}">{{node.title}}<span ng-show="node.isSelected" class="glyphicon glyphicon-triangle-right margin-top-10 margin-rt-5 pull-right"></span></span>
                 <div class="folder-template">
                     <ul ng-model="node" ng-include="'folder_render.html'" class="folder-template-container"> </ul>
                 </div>
@@ -36,9 +36,9 @@
     </div>
       
      <script type="text/ng-template" id="folder_render.html">          
-         <li ng-repeat="node in node.nodes" data-ng-if="node.nodeType != 'empty'"  class="modaldivwidth folder-main-container">
+         <li ng-repeat="node in node.nodes" data-ng-if="node.nodeType != 'empty'" ng-Auto-Scroll class="modaldivwidth folder-main-container">
              <span>
-                 <span ng-click="getFolders(node,this)" ng-class="{active : node.isSelected}" class="text14  node-text" title="{{node.title}}">{{node.title}}<span ng-show="node.isSelected" class="glyphicon glyphicon-triangle-right margin-top-5 margin-rt-5 pull-right"></span></span>
+                 <span ng-click="getFolders(node,this,$event)" ng-class="{active : node.isSelected}" class="text14  node-text" title="{{node.title}}">{{node.title}}<span ng-show="node.isSelected" class="glyphicon glyphicon-triangle-right margin-top-10 margin-rt-5 pull-right"></span></span>
                  <div ng-model="node" ng-include="'folder_render.html'" class="folder-template"> </div>
              </span>
          </li>
