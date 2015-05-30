@@ -803,6 +803,7 @@ angular
 							}
 							$scope.addTestWizardCriteria = function(response,
 									currentNode) {
+							    
 								SharedTabService
 										.addTestWizardCriteria(
 												$scope,
@@ -1132,9 +1133,15 @@ angular
                                 		
 										$scope.editTest(selectedTest);
 									});
-						    
+                            //
+							var resetTabs = function () {
+							    if (SharedTabService.tests.length == 1 && SharedTabService.isEmptyTab(SharedTabService.tests[0]) && !SharedTabService.tests[0].isTestWizard) {
+							        SharedTabService.tests = [];
+							        SharedTabService.masterTests = [];
+							    }
+							}
 							$scope.editTest = function(selectedTest) {
-								
+							    resetTabs();
 								$scope.newVersionBtnCss = "";
 								$scope.exportBtnCss = "";
 								
@@ -2160,6 +2167,7 @@ angular
 							    $scope.addNewTest($scope);
 							});
 							$rootScope.$on('handleBroadcast_AddTestWizard', function () {
+							    resetTabs();
 							    SharedTabService.addTestWizard($scope);
 							});
 							$rootScope.$on('handleBroadcast_createTestWizardCriteria',
