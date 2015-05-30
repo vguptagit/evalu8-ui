@@ -222,19 +222,11 @@ angular
 										"div:contains('" + disciplineName
 												+ "')");
 
-								container.scrollTop(scrollTo.offset().top
+								if (scrollTo.offset().top > (container.offset().top + container.height())) {
+									container.scrollTop(scrollTo.offset().top
 										- container.offset().top
 										+ container.scrollTop());
-								/*
-								 * var vtop =
-								 * $(".disciplineContainerInLightBox") .find(
-								 * "div:contains('" + disciplineName + "')")
-								 * .position().top; if (vtop >
-								 * $(".disciplineContainerInLightBox")[0].clientHeight ||
-								 * vtop < 0) {
-								 * $(".disciplineContainerInLightBox")[0].scrollTop =
-								 * vtop; }
-								 */
+								}
 							}
 
 							$scope.isSelectedDiscipline = function(discipline) {
@@ -512,15 +504,15 @@ angular
 
 								if ($scope.searchedBook != undefined
 										&& $scope.searchedBook != "") {
-									var vtop = $(".bookContainerInLightBox")
-											.find(
-													"div:contains('"
-															+ $scope.searchedBook
-															+ "')").position().top;
-									if (vtop > $(".bookContainerInLightBox")[0].clientHeight
-											|| vtop < 0) {
-										$(".bookContainerInLightBox")[0].scrollTop = vtop;
-									}
+									var container = $('.bookContainerInLightBox'), scrollTo = $(
+									".bookContainerInLightBox").find("div:contains('"+ $scope.searchedBook+ "')");
+
+									if (scrollTo.offset().top+150 > (container
+											.offset().top + container.height())) {
+											container.scrollTop(scrollTo.offset().top
+												- container.offset().top
+												+ container.scrollTop());
+										}
 								}
 							}
 

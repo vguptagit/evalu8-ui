@@ -88,7 +88,7 @@ angular
 								$http, UserService, BookService,
 								DisciplineService) {
 
-							$scope.searchedDiscpline="";
+							$scope.searchedDiscpline = "";
 							$scope.trackEnterKey = 0;
 							$scope.disciplines = {
 								all : [],
@@ -137,18 +137,20 @@ angular
 							}
 
 							$scope.searchDisciplineOnClick = function() {
-								$scope.searchedDiscpline = $(".searchDiscpline").val();
+								$scope.searchedDiscpline = $(".searchDiscpline")
+										.val();
 								if ($scope.searchedDiscpline == undefined
 										|| $scope.searchedDiscpline == "") {
 									return false;
 
 								}
-								$scope.addToselectedDiscipline($scope.searchedDiscpline,
-										true);
+								$scope.addToselectedDiscipline(
+										$scope.searchedDiscpline, true);
 							}
 
 							$scope.searchDiscipline = function(event) {
-								$scope.searchedDiscpline = $(".searchDiscpline").val();
+								$scope.searchedDiscpline = $(".searchDiscpline")
+										.val();
 								if ($scope.searchedDiscpline == undefined
 										|| $scope.searchedDiscpline == "") {
 									$(".discplineheight")[0].scrollTop = 0;
@@ -202,9 +204,13 @@ angular
 										"div:contains('" + disciplineName
 												+ "')");
 
-								container.scrollTop(scrollTo.offset().top
-										- container.offset().top
-										+ container.scrollTop());
+								if (scrollTo.offset().top > (container.offset().top + container
+										.height())) {
+									container.scrollTop(scrollTo.offset().top
+											- container.offset().top
+											+ container.scrollTop());
+								}
+
 							}
 
 							$scope.isSelectedDiscipline = function(discipline) {
@@ -505,14 +511,18 @@ angular
 
 								if ($scope.searchedBook != undefined
 										&& $scope.searchedBook != "") {
-									var vtop = $(".bookContainer").find(
-											"div:contains('"
-													+ $scope.searchedBook
-													+ "')").position().top;
-									if (vtop > $(".bookContainer")[0].clientHeight
-											|| vtop < 0) {
-										$(".bookContainer")[0].scrollTop = vtop;
+
+									var container = $('.bookContainer'), scrollTo = $(
+											".bookContainer").find("div:contains('"+ $scope.searchedBook+ "')");
+
+									if (scrollTo.offset().top+150 > (container
+											.offset().top + container.height())) {
+										container
+												.scrollTop(scrollTo.offset().top
+														- container.offset().top
+														+ container.scrollTop());
 									}
+
 								}
 							}
 
