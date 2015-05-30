@@ -399,37 +399,37 @@
                             <div ng-show={{node.IsUserMetdataAvailable}} class="metadataSection">
                                 <div class='metadataSectionCaption'>Metadata</div>
 
-                                <div ng-show={{node.questionMetadata['Difficulty'] = =undefined?false:true}} class='metadatarow'>
+                                <div ng-show={{node.questionMetadata['Difficulty']==undefined?false:true}} class='metadatarow'>
                                     <span class='metdatalabel'>Difficulty:</span>
                                     <div class="metdataVal">
                                         <select class='metadataQlvl' ng-model="node.selectedLevel" ng-options="level.name for level in Difficulty  track by level.value"></select>
                                     </div>
                                 </div>
-                                <div ng-show={{node.questionMetadata['Topic'] = =undefined?false:true}} class='metadatarow'>
+                                <div ng-show={{node.questionMetadata['Topic']==undefined?false:true}} class='metadatarow'>
                                     <span class='metdatalabel'>Topic:</span>
                                     <div class="metdataVal">
                                         <input class='metdataInput' data-ng-model="node.questionMetadata.Topic" type="textbox"></input>
                                     </div>
                                 </div>
-                                <div ng-show={{node.questionMetadata['Objective'] = =undefined?false:true}} class='metadatarow'>
+                                <div ng-show={{node.questionMetadata['Objective']==undefined?false:true}} class='metadatarow'>
                                     <span class='metdatalabel'>Objective:</span>
                                     <div class="metdataVal">
                                         <input class='metdataInput' data-ng-model="node.questionMetadata.Objective" type="textbox"></input>
                                     </div>
                                 </div>
-                                <div ng-show={{node.questionMetadata["PageReference"] = =undefined?false:true}} class='metadatarow'>
+                                <div ng-show={{node.questionMetadata["PageReference"]==undefined?false:true}} class='metadatarow'>
                                     <span class='metdatalabel'>Page Reference:</span>
                                     <div class="metdataVal">
                                         <input class='metdataInput' data-ng-model="node.questionMetadata['PageReference']" type="textbox" /></input>
                                     </div>
                                 </div>
-                                <div ng-show={{node.questionMetadata['Skill'] = =undefined?false:true}} class='metadatarow'>
+                                <div ng-show={{node.questionMetadata['Skill']==undefined?false:true}} class='metadatarow'>
                                     <span class='metdatalabel'>Skill:</span>
                                     <div class="metdataVal">
                                         <input class='metdataInput' data-ng-model="node.questionMetadata.Skill" type="textbox" /></input>
                                     </div>
                                 </div>
-                                <div ng-show={{node.questionMetadata['QuestionId'] = =undefined?false:true}} class='metadatarow'>
+                                <div ng-show={{node.questionMetadata['QuestionId']==undefined?false:true}} class='metadatarow'>
                                     <span class='metdatalabel'>Question ID:</span>
                                     <div class='metdataVal'>{{node.guid}}</div>
                                 </div>
