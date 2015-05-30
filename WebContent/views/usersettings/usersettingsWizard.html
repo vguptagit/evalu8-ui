@@ -68,7 +68,7 @@
 									ng-click="selectDiscipline(this)"
 									ng-class="{selectedDisc: isSelectedDiscipline(this)}">
 									<div class="discplineText">{{discipline}}</div>
-									<hr style="margin-bottom: 0px; margin-top: 0px;">
+									
 								</div>
 							</div>
 						</div>
@@ -99,8 +99,6 @@
 							<div class="bookContainerInLightBox">
 								<div data-ng-repeat="discipline in disciplineBooks">
 									<div class="discplineText1" style="font-weight: bold;">{{discipline.name}}</div>
-									<hr
-										style="Border: 1px solid #E8E8E8; margin-bottom: 0px; margin-top: 0px;">
 
 									<div data-ng-repeat="book in discipline.books"
 										ng-click="selectBook(book.guid,discipline.name)"
@@ -116,7 +114,7 @@
 										</div>
 										<div class="discplineText" style="margin-left: 25px;">
 											{{book.title}}</div>
-										<hr style="margin-bottom: 0px; margin-top: 0px;">
+										
 									</div>
 									<div style="margin-top: 40px;"></div>
 								</div>
@@ -130,8 +128,8 @@
 		<div class="row"
 			style="border-bottom: 1px solid #ddd; padding-top: 15px;">&nbsp;</div>
 		<div class="row" style="padding-top: 12px;">
-			<div class="col-md-7"></div>
-			<div class="col-md-5 text-right">
+			<div class="col-md-5"></div>
+			<div class="col-md-7 text-right">
 				<button ng-click="cancel()" class="backButton">Cancel</button>
 				<button class="nextButton" ng-if="step == '2'"
 					ng-click="save()">Save</button>
