@@ -137,7 +137,7 @@ angular.module('evalu8Demo')
 		    	 var blockRightPanel = blockUI.instances.get('RightPanel');
 					blockRightPanel.start();
 		         var newTest = new sharedTabService.Test();
-		         newTest.tabTitle = "Test wizard";
+		         newTest.tabTitle = "Test Wizard";
 		         newTest.isTestWizard = true;
 		         sharedTabService.currentTab = newTest;
 		         sharedTabService.prepForBroadcastTest(newTest);
