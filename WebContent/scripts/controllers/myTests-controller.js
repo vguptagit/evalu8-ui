@@ -602,21 +602,24 @@ angular.module('e8MyTests')
 
         //#region Save-as test
         $scope.$on('handleBroadcast_AddNewFolder', function (handler, newFolder) {
-            var parentFolder = null, parentFolderNodes=null;
+            var parentFolder = null;
             if (newFolder.parentId == null) {
-                parentFolderNodes = $scope.defaultFolders
+                $scope.defaultFolders.unshift(newFolder);
             } else {
                 parentFolder = CommonService.SearchItem($scope.defaultFolders, newFolder.parentId);
-                parentFolderNodes = parentFolder.nodes;
-            }
-            
-            var numberOfFolders = 0;
-            $.each(parentFolderNodes, function (i, item) {
-                if (item.nodeType === EnumService.NODE_TYPE.folder) {
-                    numberOfFolders++;
+                if (parentFolder.nodes) {
+                    var found = false;
+                for (var i = 0; i < parentFolder.nodes.length; i++) {
+                    if (parentFolder.nodes[i].guid === newFolder.guid) {
+                        found = true;
+                        return false;
+                    }
                 }
-            });
-            parentFolderNodes.splice(numberOfFolders, 0, newFolder)
+                if (!found) {
+                    parentFolder.nodes.unshift(newFolder);
+                }
+                }
+            }             
         });
         $scope.$on('handleBroadcast_AddNewTest', function (handler, newTest, containerFolder, isEditMode) {
             if (isEditMode) {

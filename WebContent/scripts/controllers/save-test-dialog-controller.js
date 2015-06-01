@@ -58,11 +58,14 @@
 		     $scope.addNewFolder = function (folderName, callback) {
 		         if (folderName == null || folderName.trim().length == 0) { return; }
 		         var sequence = 1;
-		         if ($scope.selectedfolder) {
-		             var lastFolder = $scope.selectedfolder.nodes[$scope.selectedfolder.nodes.length - 1];
-		             if (lastFolder.nodeType != EnumService.NODE_TYPE.emptyFolder) {
-		                 sequence = lastFolder.sequence + (lastFolder.sequence / 2);
+		         if ($scope.selectedfolder && $scope.selectedfolder.nodes) {
+		             if ($scope.selectedfolder.nodes[0].nodeType === EnumService.NODE_TYPE.emptyFolder) {
+		                 sequence = 1;
+		             } else {
+		                 sequence = ($scope.selectedfolder.nodes[0].sequence / 2);
 		             }
+		         } else if ($scope.node[0] != null && ($scope.node[0].nodeType !== EnumService.NODE_TYPE.archiveRoot || $scope.node[0].nodeType !== EnumService.NODE_TYPE.emptyFolder)) {
+		             sequence = ($scope.node[0].sequence / 2);
 		         }
 
 		         var newFolder = {
@@ -75,14 +78,13 @@
 		             newFolder.guid = response.guid;
 		             newFolder.nodeType = EnumService.NODE_TYPE.folder;
 		             if ($scope.selectedfolder) {
-		                 $scope.selectedfolder.nodes.push(newFolder);
+		                 $scope.selectedfolder.nodes.unshift(newFolder);
 		             }
 		             else {
-		                 $scope.node.push(newFolder);
+		                 $scope.node.unshift(newFolder);
 		             }
 		             $rootScope.$broadcast('handleBroadcast_AddNewFolder', newFolder);
-
-		             if (callback) callback();
+                     		             
 		         });
 		     }
 
