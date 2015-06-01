@@ -72,17 +72,17 @@
                  ng-class="{treeNodeHover: hover}"
                  ng-mouseenter="treeNodeMouseEnter(this)"
                  ng-mouseleave="treeNodeMouseLeave(this)">
-                <div class="maindiv" id={{node.guid}}>
+                <div class="maindiv" ng-class="{activeFolder: node.selectTestNode}" id={{node.guid}}>
                     <div class="imagediv">
                         <input type="image" ng-click="getFolders(this)" class="collapseImg"
                                ng-src="{{collapsed && 'images/right_arrow2.png' || 'images/right_arrow.png'}}" />
                     </div>
-                    <div class="captiondiv">
+                    <div class="captiondiv" ng-mousedown="selectTestNode($event,this);">
                         <label class="captionLabel"  title="{{node.title}}">{{node.title}}</label>
                     </div>
                     <div class="iconsCourseNode">
-                        <span>
-                            <button data-ng-if="node.nodeType == 'folder'" ng-click="archiveFolder(this)"
+                        <span ng-show="node.selectTestNode">
+                            <button data-ng-if="node.nodeType == 'folder'" ng-click="archiveFolder(this)" 
                                     class="iconButtons fa fa-archive" tooltip="Move to Archive folder at bottom of screen" tooltip-placement="bottom"/>
                         </span>
                     </div>
@@ -105,17 +105,17 @@
                  ng-class="{treeNodeHover: hover}"
                  ng-mouseenter="treeNodeMouseEnter(this)"
                  ng-mouseleave="treeNodeMouseLeave(this)">
-                <div class="maindiv  padding-lft-30" id={{node.guid}}>
+                <div class="maindiv  padding-lft-30"  ng-class="{activeFolder: node.selectTestNode}" id={{node.guid}}>
                     <div class="imagediv">
                         <input type="image" data-ng-if="node.nodeType != 'empty'" ng-click="getFolders(this)" class="collapseImg"
                                ng-src="{{collapsed && 'images/right_arrow2.png' || 'images/right_arrow.png'}}" />
                     </div>
-                    <div class="captiondiv">
+                    <div class="captiondiv" ng-mousedown="selectTestNode($event,this);">
                         <label title={{node.title}} class="captionLabel" ng-class="{captionEmptyNode : node.nodeType == 'empty'}">{{node.title}}</label>
                     </div>
                     <div class="iconsCourseNode">
-                        <span>
-                            <button data-ng-if="node.nodeType == 'folder'" ng-click="archiveFolder(this)" tooltip="Move to Archive folder at bottom of screen" tooltip-placement="bottom"
+                        <span ng-show="node.selectTestNode">
+                            <button  data-ng-if="node.nodeType == 'folder'" ng-click="archiveFolder(this)" tooltip="Move to Archive folder at bottom of screen" tooltip-placement="bottom"
                                     class="iconButtons fa fa-archive" />
                         </span>
                     </div>
@@ -123,16 +123,16 @@
             </div>
 
             <div data-ng-if="node.nodeType == 'archiveFolder'" class="treeDiv">
-                <div class="maindiv padding-lft-30" id={{node.guid}}>
+                <div class="maindiv padding-lft-30" ng-class="{activeFolder: node.selectTestNode}" id={{node.guid}}>
                     <div class="imagediv">
                         <input type="image" data-ng-if="node.nodeType != 'empty'" ng-click="getFolders(this)" class="collapseImg"
                                ng-src="{{collapsed && 'images/right_arrow2.png' || 'images/right_arrow.png'}}" />
                     </div>
-                    <div class="captiondiv">
+                    <div class="captiondiv" ng-mousedown="selectTestNode($event,this);">
                         <label title={{node.title}} class="captionLabel" ng-class="{captionEmptyNode : node.nodeType == 'empty'}">{{node.title}}</label>
                     </div>
                     <div class="iconsCourseNode">
-                        <span>
+                        <span ng-show="node.selectTestNode">
                             <button ng-click="deleteFolder(this)" class="removeIcon fa fa-trash-o" tooltip="Delete. Cannot be undone" tooltip-placement="bottom"/>
                             <button ng-click="restoreFolder(this)" class="restoreicon fa fa-undo" tooltip="Restore to main directory" tooltip-placement="bottom"/>
                         </span>
