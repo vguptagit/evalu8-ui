@@ -28,7 +28,7 @@
         <ul ng-model="node" class="folder-template-container">
             <li ng-repeat="node in node" class="modaldivwidth">
                 <span ng-click="getFolders(node,this)" ng-class="{active : node.isSelected}" class="text14 node-text" title="{{node.title}}">{{node.title}}<span ng-show="node.isSelected" class="glyphicon glyphicon-triangle-right margin-top-10 margin-rt-5 pull-right"></span></span>
-                <div class="folder-template">
+                <div class="folder-template" ng-show="node.nodes">
                     <ul ng-model="node" ng-include="'folder_render.html'" class="folder-template-container"> </ul>
                 </div>
             </li>
@@ -39,7 +39,7 @@
          <li ng-repeat="node in node.nodes" data-ng-if="node.nodeType != 'empty'" ng-Auto-Scroll class="modaldivwidth folder-main-container">
              <span>
                  <span ng-click="getFolders(node,this)" ng-class="{active : node.isSelected}" class="text14  node-text" title="{{node.title}}">{{node.title}}<span ng-show="node.isSelected" class="glyphicon glyphicon-triangle-right margin-top-10 margin-rt-5 pull-right"></span></span>
-                 <div ng-model="node" ng-include="'folder_render.html'" class="folder-template"> </div>
+                 <div ng-model="node" ng-include="'folder_render.html'" class="folder-template" ng-show="node.nodes"> </div>
              </span>
          </li>
      </script>
