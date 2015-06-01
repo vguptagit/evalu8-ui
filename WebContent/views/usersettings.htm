@@ -45,16 +45,17 @@
 					</div>        						
 					<div style="clear:left;">&nbsp;</div>
 					
-					<div ng-repeat="(key, value) in userBooks | groupBy: 'discipline'">
-				
-						<div ng-repeat = "book in value">
-					
-							<div ng-class="{'bottomonlyborder': $last}" style="float:left;" class="col-md-12">
-								<div class="col-md-4"><span ng-show="$index == 0">{{book.discipline}}</span>&nbsp;</div>
-								<div class="col-md-8">{{book.title}} </div>
-							</div>        						
-							<div style="clear:left;">&nbsp;</div>											
-						</div>								
+					<div class="col-md-12" style="height: 350px; overflow-y: auto;">
+						<div ng-repeat="(key, value) in userBooks | groupBy: 'discipline'">					
+							<div ng-repeat = "book in value">
+						
+								<div ng-class="{'bottomonlyborder': $last}" style="float:left;" class="col-md-12">
+									<div class="col-md-4"><span ng-show="$index == 0">{{book.discipline}}</span>&nbsp;</div>
+									<div class="col-md-8">{{book.title}} </div>
+								</div>        						
+								<div style="clear:left;">&nbsp;</div>											
+							</div>								
+						</div>
 					</div>
 				</div>
 			</div>

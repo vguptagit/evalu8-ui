@@ -1466,6 +1466,7 @@ angular
 							    $scope.containerFolder = containerFolder;
 							    $scope.testGuid = null;
 							    $scope.saveTest();
+							    $scope.testType = 'Test';
 							}
 							$scope.showMessage_EmptyTestTitle = function () {
 							    $scope.IsConfirmation = false;
@@ -1624,6 +1625,8 @@ angular
 											SharedTabService.tests[SharedTabService.currentTabIndex].id = testResult.guid;
 											SharedTabService.tests[SharedTabService.currentTabIndex].tabTitle = test.title;
 											SharedTabService.tests[SharedTabService.currentTabIndex].metadata = testcreationdata.metadata;
+											
+											SharedTabService.tests[SharedTabService.currentTabIndex].treeNode.testType = 'Test';
 
 											$scope.testGuid = testResult.guid;
 											$scope.newVersionBtnCss = "";
