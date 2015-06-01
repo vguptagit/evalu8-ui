@@ -1198,7 +1198,13 @@
             	  
             	  var destination = dragInfo.eventArgs().dest.nodesScope;
             	  var editModeQuestions=$(destination.$parent.$element).find("li[printmode=false]");
-	              if(
+            	  
+            	  var IsTargetAreaInScope=false;     
+            	  if(angular.element(e.target).hasClass('angular-ui-tree')) {
+            		  IsTargetAreaInScope = true;            	  
+            	  }                	  
+            	 
+	              if( !IsTargetAreaInScope && 
 	              		(destination.$parent &&  
 	        				(
 	        					$(destination.$parent.$element).find("ol").attr('droppable') == 'false' ||
