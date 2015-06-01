@@ -949,6 +949,9 @@ ol {
 #tree-root .activeFolder {
 	background-color: #B6B4B4;
 }
+#MyTest-tree-root .activeFolder {
+	background-color: #B6B4B4;
+}
 
 .alertMsg {
 	padding: 20px 20px 20px 20px;
