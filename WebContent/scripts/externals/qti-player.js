@@ -3175,7 +3175,7 @@ QTI.getSpanId = function(spanElement, event){
 	var blankElement;
 	if(event.keyCode == 46 || event.keyCode == 8){
 		if(spanElement.tagName == "BUTTON"){
-			qtiCationElement = $(spanElement).parent("#qtiCaption");
+			qtiCationElement = $(spanElement).parents("#qtiCaption").eq(0);
 			blankElement = $(spanElement);
 	
 			
@@ -3186,9 +3186,10 @@ QTI.getSpanId = function(spanElement, event){
 			var cursor = QTI.getCaretPosition(spanElement);
 			var val =  $(spanElement).text();
 			
-			
-			
-			qtiCationElement = $(spanElement);
+			if($(spanElement).attr("id") == "qtiCaption")
+				qtiCationElement = $(spanElement)
+			else
+				qtiCationElement = $(spanElement).parents("#qtiCaption").eq(0);
 			if(cursor == qtiCationElement.text().length)
 				if(spanElement.innerHTML.lastIndexOf("</button>&nbsp;") + "</button>&nbsp;".length == spanElement.innerHTML.length)
 					{
@@ -3229,7 +3230,7 @@ QTI.getSpanId = function(spanElement, event){
 				index = parseInt(index);
 				blankElement.remove();
 				qtiCationElement.parent().parent().find("#crtAns").children().eq(index - 1).remove();
-				for(var i = index-1; i<=qtiCationElement.find("button").length; i++)
+				for(var i = index-1; i<qtiCationElement.find("button").length; i++)
 				{
 					var crtAnswer = qtiCationElement.parent().parent().find("#crtAns").children().eq(i);
 					qtiCationElement.find("button").eq(i).attr("id","RESPONSE_" + (i+1));
