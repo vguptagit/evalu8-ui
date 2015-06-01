@@ -1627,7 +1627,8 @@ angular
 											SharedTabService.tests[SharedTabService.currentTabIndex].metadata = testcreationdata.metadata;
 											
 											SharedTabService.tests[SharedTabService.currentTabIndex].treeNode.testType = 'Test';
-
+											SharedTabService.tests[SharedTabService.currentTabIndex].treeNode.showEditIcon = true;
+											
 											$scope.testGuid = testResult.guid;
 											$scope.newVersionBtnCss = "";
 											$scope.exportBtnCss = "";
