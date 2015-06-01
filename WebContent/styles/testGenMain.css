@@ -2169,14 +2169,14 @@ li[qstntemplate=true] .printViewContainer  .qti-blockquote .matchIndex {
 }
 
 .mOptionLabel {
-	max-width: 235px;
+	max-width: 93%;
 	font-size: 14px;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	float: left;
 }
 
 .printViewContainer .mOptionLabel {
-	padding-left: 8px;
+	padding-left: 6px;
 }
 
 .editViewContainer .mOptionLabel {
@@ -2393,18 +2393,20 @@ li[qstntemplate='true'] div #crtAnsSpace {
 
 li[printmode='true'] .matchingOption {	
 	width: 50%;
+	padding-right:6px;	
 	display: block;
 	float: left;
 }
 
 .rightMatchingOption{
-	width: 50%;
+	width: 48%;	
 	display: block;
 	float: right;
 }
 
 .qti-blockquote .matchIndex {	
 	float: left;	
+	width:7%;
 }
 
 .printViewContainer  .qti-blockquote .matchIndex {
