@@ -1287,8 +1287,7 @@ li.questionTemplates {
 }
 
 li .editViewContainer .qti-simpleChoice {
-	display: inline-block;
-	float: left;
+	display: inline-block;	
 	padding-top: 2px;
 }
 
@@ -1725,10 +1724,23 @@ ul.a {
 	background-color: #CADDEE;
 	position: relative;
 	top: -4px;
-	left: 30px;
+	left: 1px;
 	display: inline-block;
 	border: solid 1px #A9A9A9;
 	margin-top: 5px;
+}
+
+.qti-choiceInteraction > .qti-simpleChoice + .uploadImage{
+	top: -9px;	
+}
+
+.qti-simpleChoice + .uploadImage{
+	top: -19px;	
+}
+
+
+.qti-blockquote .matchIndex > .uploadImage{
+	top: -20px;	
 }
 
 .uploadImage div {
@@ -2522,6 +2534,13 @@ li[printmode='true'] .qti-itemBody .qti-blockquote>p:first-child {
   position: relative;
   right: -25px;
 }
+
+.questionCloseIcon {
+  position: relative;
+  right: -20px;
+  top : -10px;
+}
+
 .advancedSearchText {
 	float: left;
 	color: #4D4D4D;

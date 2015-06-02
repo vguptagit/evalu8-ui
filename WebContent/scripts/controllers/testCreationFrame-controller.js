@@ -872,6 +872,13 @@ angular
 					            $scope.isApplySameCriteriaToAll = false;
 					        }
 					        $scope.closeQuestions = function (tab,index) {
+					        	 var p = $(
+	                                        angular.element(document
+	                                                .querySelector("#uploadImage")))
+	                                        .detach();
+	                                
+	                                $('#qstnArea').after(p);
+	                                $scope.imageClicked = false;
 					            SharedTabService.closeQuestions(tab, $scope, index);					           
 					        }
 							$scope.closeTabWithConfirmation = function(tab) {
