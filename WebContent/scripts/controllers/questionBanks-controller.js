@@ -292,7 +292,6 @@ angular
                                                             test.testType = "PublisherTest";
                                                             test.showEditIcon=true;
                                                             test.selectTestNode = false;//to show the edit icon
-                                                            test.disableEdit = false;//to disable the edit icon
 
                                                             publisherTestsNode.nodes.push(test);                                                            
                                                         });
@@ -309,9 +308,8 @@ angular
 					        $('.testMessagetip').offset({'top':($(window).height()/2)-$('.testMessagetip').height()});
 					        $('.testMessagetip').hide();
 							
-							$scope.selectTestNode = function ($event,test) {
-                                
-                                if (!test.node.disableEdit) {
+							$scope.selectTestNode = function ($event,test) {                                
+
                                     test.node.selectTestNode = !test.node.selectTestNode;
                                     if(test.node.selectTestNode && $rootScope.globals.loginCount <= evalu8config.messageTipLoginCount 
                                     		&& test.node.nodeType != EnumService.NODE_TYPE.archiveTest){
@@ -320,7 +318,7 @@ angular
                                             $('.testMessagetip').hide();
                                         }, 5000);
                                     }
-                                }
+
                                 SharedTabService.showSelectedTestTab(test.node.guid);
                             }
 							

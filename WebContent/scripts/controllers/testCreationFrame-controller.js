@@ -1149,9 +1149,7 @@ angular
                         		if(selectedTest.node.testType && selectedTest.node.testType == 'PublisherTest') {
                         			$scope.testType = 'PublisherTest';
                         			$scope.newVersionBtnCss = "disabled";
-                        		}
-                        		
-								// selectedTest.node.disableEdit = true;
+                        		}                        		
 
 								$scope.testGuid = selectedTest.node.guid;
 								$scope.selectedTestNode = selectedTest.node;

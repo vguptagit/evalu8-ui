@@ -279,17 +279,16 @@ angular.module('e8MyTests')
         $('.testMessagetip').hide();
         $scope.selectTestNode = function ($event,test) {
         	
-            if (!test.node.disableEdit) {
-                test.node.selectTestNode = !test.node.selectTestNode;
-                if(test.node.selectTestNode 
-                		&& $rootScope.globals.loginCount <= evalu8config.messageTipLoginCount 
-                		&& test.node.nodeType != EnumService.NODE_TYPE.archiveTest){
-    	        	$('.testMessagetip').show()
-    	        	setTimeout(function(){ 
-    	        		$('.testMessagetip').hide();
-    	        	}, 5000);
-            	}
-            }
+            test.node.selectTestNode = !test.node.selectTestNode;
+            if(test.node.selectTestNode 
+            		&& $rootScope.globals.loginCount <= evalu8config.messageTipLoginCount 
+            		&& test.node.nodeType != EnumService.NODE_TYPE.archiveTest){
+	        	$('.testMessagetip').show()
+	        	setTimeout(function(){ 
+	        		$('.testMessagetip').hide();
+	        	}, 5000);
+        	}
+
             SharedTabService.showSelectedTestTab(test.node.guid);
         }
 
@@ -325,7 +324,6 @@ angular.module('e8MyTests')
                     TestService.getTests(defaultFolder.node.guid, function (tests) {
                         tests.forEach(function (test) {
                             test.selectTestNode = false;//to show the edit icon
-                            test.disableEdit = false;//to disable the edit icon
 
                             defaultFolder.node.nodes.push(test);
                         })
@@ -353,7 +351,6 @@ angular.module('e8MyTests')
                     TestService.getArchiveTests(defaultFolder.node.guid, function (tests) {
                         tests.forEach(function (test) {
                             test.selectTestNode = false;//to show the edit icon
-                            test.disableEdit = false;//to disable the edit icon
 
                             defaultFolder.node.nodes.push(test);
                         })
@@ -468,7 +465,6 @@ angular.module('e8MyTests')
         		test.node.nodeType= "test";
 
                 test.node.selectTestNode = false;//to show the edit icon
-                test.node.disableEdit = false;//to disable the edit icon
                 
         		if(restoredFolder == null || restoredFolder == "") {
         			
@@ -496,7 +492,6 @@ angular.module('e8MyTests')
                     TestService.getTests(restoredFolder.guid, function (tests) {
                         tests.forEach(function (test) {
                             test.selectTestNode = false;//to show the edit icon
-                            test.disableEdit = false;//to disable the edit icon
 
                             testParent.node.nodes.push(test);
                         })
