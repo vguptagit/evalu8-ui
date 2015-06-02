@@ -1167,6 +1167,14 @@ li[qstntemplate='true'] #crtAnsSpace {
 	display: block;
 }
 
+li .editViewContainer{
+	padding-left: 8px;
+}
+
+li[printmode='false'] .qti-choiceInteraction {
+	margin-top: 5px;
+}
+	
 .editViewContainer .editView {
 	display: inline-block;
 }
@@ -1280,6 +1288,8 @@ li.questionTemplates {
 
 li .editViewContainer .qti-simpleChoice {
 	display: inline-block;
+	float: left;
+	padding-top: 2px;
 }
 
 li .editViewContainer .qti-simpleChoice .radio {
@@ -1303,10 +1313,9 @@ li[printmode='true'].displayQuestionLI .questionEditCaption {
 li[printmode='false'].displayQuestionLI .questionEditCaption {
 	display: inline-block;
 	float: left;
-	font-size: 14px;
-	padding-top: 2px;
-	margin: 5px;
-	padding-bottom: 10px;
+	font-size: 14px;		
+	padding-bottom: 20px;
+	padding-left:6px;
 	width: 85%;
 }
 
@@ -1343,7 +1352,8 @@ li[quiztype='TrueFalse'] .qti-simpleChoice .radio {
 .editMetdata {
 	display: inline-block;
 	float: left;
-	margin-top: 15px;
+	margin-top: 20px;
+	margin-left:9px;
 	width: 100%;
 }
 
@@ -1388,12 +1398,16 @@ li[quiztype='TrueFalse'] .qti-simpleChoice .radio {
 
 .metadataView{
 	margin-left: 5px;
-	margin-top: 4px;
+	margin-top: 10px;
 }
 
 .captionMetadata {
 	font-weight: bold;		
 	margin-left: 5px;
+}
+
+#viewHeader{
+	padding-bottom: 3px;
 }
 
 #viewHeader > .captionMetadata{
@@ -2184,23 +2198,29 @@ li[qstntemplate=true] .printViewContainer  .qti-blockquote .matchIndex {
 }
 
 .metadataSection {
-	margin-top: 6px;
+	margin-top: 10px;
 	display: table;
 	width: 100%;
 }
 
 .metadataSectionCaption {
-	font-size: 12px;
+	font-size: 14px;
 	font-weight: bold;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	padding-bottom: 10px;
+	font-family: Helvetica;
+	padding-bottom: 5px;
 }
 
+span.viewOptionDiv{
+	padding-right: 42px;
+} 
+
 .metadatarow {
-	padding-bottom: 10px;
-	font-size: 14px;
-	font-weight: normal;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	  width: 100%;
+	  float: left;
+	  padding-bottom: 12px;
+	  font-size: 14px;
+	  font-weight: normal;
+	  font-family: Helvetica;
 }
 
 .metadataQlvl {
@@ -2210,15 +2230,17 @@ li[qstntemplate=true] .printViewContainer  .qti-blockquote .matchIndex {
 }
 
 .metdataVal {
-	margin-left: 126px;
+	float:left;
+	width: 72%;
 }
 
 .metdatalabel {
 	float: left;
+	 width: 25%;
 }
 
 .metdataInput {
-	width: 330px;
+	width: 326px;
 	border: 1px solid #D0D0D0;
 	border-radius: 4px;
 }
