@@ -121,6 +121,7 @@ angular
 									$scope.exitDiscipline()
 									$scope.step = step;
 								} else if (step == '1') {
+									$scope.searchedBook="";
 									$scope.step = step;
 								}
 							}
