@@ -2514,8 +2514,7 @@ li[printmode='true'] .qti-itemBody .qti-blockquote>p:first-child {
 }
 .closeIcon {
   position: relative;
-  right: -20px;
-  top: -10px;
+  right: -25px;
 }
 .advancedSearchText {
 	float: left;

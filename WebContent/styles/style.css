@@ -79,7 +79,7 @@ label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D;
 .padding-lft-30{padding-left: 30px;}
 .padding-lft-60{padding-left: 60px;}
 .padding-top-10{padding-top: 10px;}
-.padding-top-6{padding-top: 6px;}
+.padding-top-6{padding-top: 8px;}
 
 /* Width height CSS */
 .width100{width:100%;}
@@ -167,7 +167,7 @@ label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D;
 
 .btn-default.glyphicon{
   position: absolute;
-  top: 3px;
+  top: 1px;
   display: inline-block;
   font-family: 'Glyphicons Halflings';
   font-style: normal;
@@ -182,7 +182,7 @@ label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D;
   border-bottom-right-radius: 0px;
   border: 1px;
   padding: 10px 15px;
-  height: 42px;
+  height: 36px;
   outline: 0;
 	}
 	
@@ -237,7 +237,7 @@ label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D;
 .nav>li>a {
   position: relative;
   display: block;
-  padding: 10px 15px;
+  padding: 6px 15px;
 }
 
 .input-sm {
@@ -286,7 +286,7 @@ label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D;
 
 .modal-header {
   min-height: 16px;
-  padding: 14px;
+  padding: 5px 20px;
   border-bottom: 1px solid #e5e5e5;
   line-height: -1em;
   display: inline-block;
@@ -324,7 +324,7 @@ label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D;
 }
 .nav-tabs {
   border-bottom: 0px solid #E0e0e0;
-  height: 44px;
+  height: 36px;
 }
 .nav {
   margin-bottom: 2px;
@@ -358,8 +358,8 @@ section {
 .paddingall30{padding:10px 30px;}
 .padding-lft30{padding-left: 30px;}
 hr{margin: 0;}
-.botborder { border-bottom: 1px solid #E0E0E0; background-color: #f8f8f8; height: 100px; }
-.botborderright { border-bottom: 1px solid #E0E0E0; background-color: #f8f8f8; min-height: 100px; }
+.botborder { border-bottom: 1px solid #E0E0E0; background-color: #f8f8f8; height: 91px; }
+.botborderright { border-bottom: 1px solid #E0E0E0; background-color: #f8f8f8; min-height: 91px; }
 .resourcetab{height: 55px; padding-top: 10px;}
 
  .angular-ui-tree-nodes .angular-ui-tree-nodes {padding-right: 1px; padding-top: 1px;} 
@@ -401,6 +401,7 @@ hr{margin: 0;}
 
 .container-fluid, .col-md-6, .col-lg-6 {  padding-right: 20px; padding-left: 20px;}
 
+h4, .h4, h5, .h5, h6, .h6 {  margin-top: 8px; margin-bottom: 8px;}
  
 
 @media (max-width: 767px)

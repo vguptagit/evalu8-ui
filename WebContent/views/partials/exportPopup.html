@@ -10,7 +10,7 @@
     </h4>
 </div>
 
-<div class="modal-body">
+<div class="modal-body row">
     <!-- <div class="alert alert-danger" ng-show="isError" role="alert">{{errorMessage}}</div> -->
     <!-- <section>
     <div class="width-100">
@@ -75,7 +75,7 @@
             </div>
     </section> -->
     <section>
-        <div class="col-sm-12 col-md-12 col-lg-12 blockinline">
+        <div class="col-sm-12 col-md-12 col-lg-12 blockinline margin-top-5 row">
             <div class="col-sm-6 col-md-6 col-lg-6">
                 <div class="bold">Export Format:</div>
                 <div data-ng-repeat="format in exportFileFormats">
@@ -105,7 +105,7 @@
     </section>
     <hr class="margin-top-10">
     <section>
-        <div class="col-sm-12 col-md-12 col-lg-12 blockinline  margin-top-20">
+        <div class="col-sm-12 col-md-12 col-lg-12 blockinline row  margin-top-20">
             <div class="col-sm-6 col-md-6 col-lg-6">
                 <div class="bold">Margins:</div>
                 <div ng-repeat="margin in margins">
@@ -134,7 +134,7 @@
     </section>
     <hr class="margin-top-10">
     <section>
-        <div class="col-sm-12 col-md-12 col-lg-12  margin-top-20 ">
+        <div class="col-sm-12 col-md-12 col-lg-12 row margin-top-20 ">
             <div class="col-sm-6 col-md-6 col-lg-6">
                 <div class="bold">Page Number:</div>
                 <div ng-repeat="pageNumber in pageNumbers">
@@ -168,7 +168,7 @@
     </section>
 </div>
 <div class="modal-footer">
-    <div class="col-sm-6 col-md-6 col-lg-6 text-left">
+    <div class="col-sm-6 col-md-6 col-lg-6 text-left row">
         <button type="button" class="btn btn-default" data-dismiss="modal"
                 data-ng-click="cancel()">
             Cancel
