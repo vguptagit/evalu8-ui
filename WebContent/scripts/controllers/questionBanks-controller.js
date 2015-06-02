@@ -744,9 +744,15 @@ angular
 									if ($scope.selectedNodes[i].showEditQuestionIcon) {
 										$scope.selectedNodes[i].showEditQuestionIcon = false;
 										if ($scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.question) {
-											$rootScope.$broadcast(
-													"dropQuestion",
-													$scope.selectedNodes[i], destIndex);
+                                            if (SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode) {
+                                                $scope.IsConfirmation = false;
+                                                $scope.message = "A question is already in Edit mode, save it before adding or reordering questions.";
+                                                $modal.open(confirmObject);
+                                                $scope.dragStarted = false;
+                                            }else{                                            
+                                                $rootScope.$broadcast("dropQuestion",$scope.selectedNodes[i], destIndex);
+                                            }    
+
 										} else if ($scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.chapter
 												|| $scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.topic) {
 											var questionFolder = $scope.selectedNodes[i];

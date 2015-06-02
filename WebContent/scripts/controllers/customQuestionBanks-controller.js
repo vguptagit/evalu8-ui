@@ -11,16 +11,22 @@ angular.module('e8CustomQuestionBanks')
     $scope.questionTemplates=CustomQuestionBanksService.questionTemplates();
         
 	$scope.editQuestion = function(question) {		
-		if (SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode) {
-			$scope.IsConfirmation = false;
-			$scope.message = "A question is already in Edit mode, save it before adding or reordering questions.";
-			$modal.open(confirmObject);
-			$scope.dragStarted = false;
-		}else{
-			$rootScope.$broadcast("dropQuestion",
-					question.node, 0,"CustomQuestions");				
-		}			
+		 $scope.questionEditAlert(question);
 	}
+	
+	  
+	  $scope.questionEditAlert = function(question){
+		  if (SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode) {
+				$scope.IsConfirmation = false;
+				$scope.message = "A question is already in Edit mode, save it before adding or reordering questions.";
+				$modal.open(confirmObject);
+				$scope.dragStarted = false;
+			}else{
+				$rootScope.$broadcast("dropQuestion",
+						question.node, 0,"CustomQuestions");				
+			}	
+	  }
+
     
 	var confirmObject = {
 			templateUrl : 'views/partials/alert.html',
@@ -50,7 +56,12 @@ angular.module('e8CustomQuestionBanks')
     });
     
     $scope.$on('beforeDrop', function (event) {
-    	$rootScope.$broadcast("beforeDropQuestion");     
+    	if (SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode) {
+			$scope.IsConfirmation = false;
+			$scope.message = "A question is already in Edit mode, save it before adding or reordering questions.";
+			$modal.open(confirmObject);
+			$scope.dragStarted = false;
+		}
    });
     
 	 //broad casting event when a question template is dropped to the test creation frame.

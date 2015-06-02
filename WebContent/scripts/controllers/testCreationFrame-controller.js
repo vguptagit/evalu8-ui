@@ -1018,18 +1018,26 @@ angular
 
 								return qstnMasterData;
 							}
+							
+							  $scope.$on('beforeDrop', function (event) {
+								  $scope.questionEditAlert();
+							   });
+							  
+							  $scope.questionEditAlert = function(){
+								  if (SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode) {
+										$scope.IsConfirmation = false;
+										$scope.message = "A question is already in Edit mode, save it before adding or reordering questions.";
+										$modal.open(confirmObject);
+										$scope.dragStarted = false;
+									}
+							  }
 
-						    $rootScope
+							$scope
 									.$on(
 											'beforeDropQuestion',
 											function(event) {
 
-												if (SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode) {
-													$scope.IsConfirmation = false;
-													$scope.message = "A question is already in Edit mode, save it before adding or reordering questions.";
-													$modal.open(confirmObject);
-													$scope.dragStarted = false;
-												}
+												 $scope.questionEditAlert();
 
 											});
 						    $rootScope.$on('dropTest', function (event, selectedTest, destIndex) {
