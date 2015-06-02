@@ -831,12 +831,6 @@ angular
 									'handleBroadcast_setActiveResourcesTab',
 									EnumService.RESOURCES_TABS.questionbanks);
 
-							// TODO : set container height, need revesit
-							$('.question_bank_scrollbar').height(
-									($(document).height() - $(
-											'.question_bank_scrollbar')
-											.offset().top) - 40);
-
 							$scope.openUserSettings = function(step) {
 								$modal
 										.open({

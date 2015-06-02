@@ -1,6 +1,5 @@
 body {
     padding-top: 50px;
-    padding-bottom: 30px;
 }
 
 .divider {
@@ -10,7 +9,7 @@ body {
     background-position-y: 50%;
     border-left : 1px solid #D0d0d0;
     border-right : 1px solid #D0d0d0;
-    height: 94.4vh;
+    height: 94.0vh;
     position: absolute;
     width: 10px;
     z-index: 9;
