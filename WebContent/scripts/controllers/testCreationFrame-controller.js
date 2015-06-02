@@ -1623,10 +1623,10 @@ angular
 											SharedTabService.tests[SharedTabService.currentTabIndex].id = testResult.guid;
 											SharedTabService.tests[SharedTabService.currentTabIndex].tabTitle = test.title;
 											SharedTabService.tests[SharedTabService.currentTabIndex].metadata = testcreationdata.metadata;
-											
-											SharedTabService.tests[SharedTabService.currentTabIndex].treeNode.testType = 'Test';
-											SharedTabService.tests[SharedTabService.currentTabIndex].treeNode.showEditIcon = true;
-											
+											if (SharedTabService.tests[SharedTabService.currentTabIndex].treeNode) {
+											    SharedTabService.tests[SharedTabService.currentTabIndex].treeNode.testType = EnumService.NODE_TYPE.test;
+											    SharedTabService.tests[SharedTabService.currentTabIndex].treeNode.showEditIcon = true;
+											}
 											$scope.testGuid = testResult.guid;
 											$scope.newVersionBtnCss = "";
 											$scope.exportBtnCss = "";

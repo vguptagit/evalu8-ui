@@ -320,7 +320,7 @@ angular.module('evalu8Demo')
 		         if (scope.tests.length == 1) {
 		             return true;
 		         }
-		         return tabUrl == sharedTabService.currentTab.id;
+		         return tabUrl == sharedTabService.tests[sharedTabService.currentTabIndex].id;
 		     }
 
 
