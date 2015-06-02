@@ -418,8 +418,9 @@ angular.module('evalu8Demo')
 
 		         if (index == scope.tests.length) {
 		             scope.currentIndex--;
-		             sharedTabService.onClickTab(sharedTabService.tests[scope.currentIndex], scope);
 		         }
+		         sharedTabService.onClickTab(sharedTabService.tests[scope.currentIndex], scope);
+
 		         if (sharedTabService.tests.length == 0) {
 		             sharedTabService.addNewTest(scope);
 		         }
