@@ -649,7 +649,7 @@ angular.module('e8MyTests')
                 parentFolderNodes = parentFolder.nodes;
             }
             TestService.getMetadata(newTest.guid, function (test) {               
-                test.nodeType = "test";
+                test.nodeType = EnumService.NODE_TYPE.test;
                 if (containerFolder) {
                     test.parentId =  containerFolder.guid;
                     parentFolderNodes.push(test);
@@ -658,7 +658,7 @@ angular.module('e8MyTests')
                     test.parentId = null;
                     var position = 0;
                     $.each(parentFolderNodes, function (i,item) {
-                        if (item.nodeType == EnumService.NODE_TYPE.test || item.nodeType == EnumService.NODE_TYPE.archiveRoot) {
+                        if (item.nodeType == EnumService.NODE_TYPE.archiveRoot){
                             return false;
                         }
                         position++;
