@@ -2234,9 +2234,18 @@ span.viewOptionDiv{
 	width: 72%;
 }
 
+.radioView{
+	float: left;
+}
+
+.radioText{
+	padding-left: 5px;
+}
+
 .metdatalabel {
 	float: left;
 	 width: 25%;
+	 padding-top: 3px;
 }
 
 .metdataInput {

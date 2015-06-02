@@ -293,9 +293,12 @@
         <script type="text/ng-template" id="rf_question_renderer.html">
             <div class="qstnContainer">
                 <div class="qstnView">
-                    <div class="glyphicon glyphicon-remove closeQuestion " ng-show="closeQstnBtn"
-                         ng-click="closeQuestions(tests[currentIndex],$index)">
-                    </div>
+                  <div >
+   						<button type="button" class="close closeIcon" ng-show="node.IsEditView" data-ng-click="closeQuestions(tests[currentIndex],$index)"
+            					aria-label="Close">
+       						 <span aria-hidden="true">&times;</span>
+    					</button>   
+					</div>
                     <div class="questionEditCaption editView">
                         {{node.editMainText}}
                     </div>
@@ -324,11 +327,13 @@
                                     </span>
                                 </div>
                                 <span class="viewOptionDiv normalText">Questions:</span>
-                                <div class="viewOptionDiv viewOptionHV">
-                                    <input class="radioView" ng-checked="node.optionsView" name="radioView_{{$index}}_HV" ng-click="qstnOptionsView(this,true)" type="radio">Vertical Display </input>
+                                <div class="viewOptionDiv viewOptionHV">                                 
+                                    <input class="radioView" ng-checked="node.optionsView" name="radioView_{{$index}}_HV" ng-click="qstnOptionsView(this,true)" type="radio"></input>
+                                    <span class='radioText'>Vertical Display </span>
                                 </div>
-                                <div class="viewOptionDiv viewOptionHV">
-                                    <input name="radioView_{{$index}}_HV" ng-checked="!node.optionsView" ng-click="qstnOptionsView(this,false)" type="radio">Horizontal Display </input>
+                               <div class="viewOptionDiv viewOptionHV">
+                                    <input class="radioView" name="radioView_{{$index}}_HV" ng-checked="!node.optionsView" ng-click="qstnOptionsView(this,false)" type="radio"></input>
+                                    <span class='radioText'>Horizontal Display </span>
                                 </div>
                             </div>
                             <div class="EssaySpaceDiv" ng-show="node.quizType == 'Essay'">
