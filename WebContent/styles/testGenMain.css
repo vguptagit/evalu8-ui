@@ -1178,10 +1178,6 @@ li .editViewContainer{
 	padding-left: 8px;
 }
 
-li[printmode='false'] .qti-choiceInteraction {
-	margin-top: 5px;
-}
-	
 .editViewContainer .editView {
 	display: inline-block;
 }
@@ -1224,7 +1220,7 @@ li[quiztype='TrueFalse'] #viewHeader {
 
 .optionEditablediv {
 	cursor: pointer;
-	min-width: 422px;
+	min-width: 420px;
 	border: 2px solid #D0D0D0;	
 	border-radius: 4px;			
 	padding-left: 1px;
@@ -1234,7 +1230,7 @@ li[quiztype='TrueFalse'] #viewHeader {
 }
 
 .optionTextEditablediv {
-	width: 305px;	
+	width: 300px;	
 	line-height: 1.5;
 	min-height: 26px;		
 	border-left: 2px solid #D0D0D0;	
@@ -1249,7 +1245,7 @@ li[quiztype='TrueFalse'] #viewHeader {
 }
 
 .editViewContainer .iconButtons {
-	height: 17px;
+	height: 20px;
 	width: 26px;
 	position: inherit;
 }
@@ -1266,7 +1262,7 @@ li[quiztype='TrueFalse'] #viewHeader {
 }
 
 li .editViewContainer #qtiCaption {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-family: Helvetica;
 	font-weight: normal;
 	padding-top: 3px;
 	font-size: 12px;
@@ -1294,8 +1290,7 @@ li.questionTemplates {
 }
 
 li .editViewContainer .qti-simpleChoice {
-	display: inline-block;	
-	padding-top: 2px;
+	display: inline-block;		
 }
 
 li .editViewContainer .qti-simpleChoice .radio {
@@ -1304,12 +1299,12 @@ li .editViewContainer .qti-simpleChoice .radio {
 
 .optionOperationdiv {
 	display: inline-block;
-	float: right;
-	/* min-height: 32px;   */
+	float: right;	
 	border: 0px solid #D0D0D0;
 	border-left: 0px solid #D0D0D0;
 	border-radius: 4px;
 	padding-top: 3px;
+	padding-right: 5px;
 }
 
 li[printmode='true'].displayQuestionLI .questionEditCaption {
@@ -1777,6 +1772,7 @@ ul.a {
 
 .textBoxContainer {
 	min-height: 27px;
+	margin-bottom:12px;
 	display: inline-block;
 }
 
@@ -2074,18 +2070,14 @@ ul.a {
 	text-overflow: ellipsis;
 }
 
-.optionsMaindiv {
-	margin-top: 10px;
-}
-
 .optionTextBoxContainer, .matchOptionTextEditablediv {
-	width: 340px;	
+	width: 300px;	
 	line-height: 1.5;
 	min-height: 10px;
 	float: left;
 	border-left: 2px solid #D0D0D0;
 	background-color: #FFFFFF;	
-	padding: 3px 6px;
+	padding: 4px 6px;
 }
 
 .mainOptionIndexdiv, .matchOptionIndexdiv {
@@ -2108,8 +2100,9 @@ ul.a {
 }
 
 .matchOptionTextEditablediv {
-	min-width: 385px;
+    min-width: 352px;
 }
+
 
 li[qstntemplate='true'] .indChar {
 	display: none;
@@ -2121,11 +2114,11 @@ li[qstntemplate='true'] .indChar {
 
 .mainOptionEditablediv {
 	cursor: pointer;
-	min-width: 455px;
+	min-width: 420px;
 	border: 2px solid #D0D0D0;
 	border-radius: 4px;	
 	padding-left: 0px;
-	margin-bottom: 10px;
+	margin-bottom: 7px;
 	font-weight: normal;
 	font-size: 12px;
 }
@@ -2137,6 +2130,7 @@ li[qstntemplate='true'] .indChar {
 	border-left: 0px solid #D0D0D0;
 	border-radius: 4px;
 	padding-top: 3px;
+	padding-right: 5px;
 }
 
 .imageIconContainer {
@@ -2269,12 +2263,12 @@ span.viewOptionDiv{
 
 .metdatalabel {
 	float: left;
-	 width: 25%;
+	 width: 24%;
 	 padding-top: 3px;
 }
 
 .metdataInput {
-	width: 326px;
+	width: 332px;
 	border: 1px solid #D0D0D0;
 	border-radius: 4px;
 }
