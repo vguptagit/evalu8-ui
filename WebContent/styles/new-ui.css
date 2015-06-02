@@ -371,13 +371,14 @@ a.fa.fa-user{
 }
 .createNewNode .form-control{
   width: 98%;
-  height: 26px;
+  height: 29px;
   position: relative;
   top: 5px;
   padding-left: 10px;
   font-size: 14px;
   font-family: helvetica;
   font-weight: 100;
+  padding-bottom:0;
   }
  .test-tabs li>a{
   width: 100px;
