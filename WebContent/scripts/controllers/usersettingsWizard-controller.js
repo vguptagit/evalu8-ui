@@ -379,7 +379,7 @@ angular
 
 							$scope.searchedBookOnEnter = function(event) {
 								$(".dropdown-menu")
-										.addClass("autocompleteList");
+										.addClass("autocompleteQuestionList");
 
 								$scope.searchedBook = $(".searchBook").val();
 								if ($scope.searchedBook == undefined
