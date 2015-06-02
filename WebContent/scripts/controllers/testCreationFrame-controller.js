@@ -1230,13 +1230,15 @@ angular
 															displayNode.qstnLinkText = displayNode.IsEditView ? "View"
 																	: "Edit";
 															displayNode.extendedMetadata =  questionMetadataResponse.extendedMetadata;
-															displayNode.questionMetadata = userSettings.questionMetadata;
+															displayNode.questionMetadata = userSettings.questionMetadata;															
 															
-															$.each(displayNode.extendedMetadata, function(index, item){				
-																if(typeof(displayNode['questionMetadata'][item['name']])!='undefined'){
-																displayNode['questionMetadata'][item['name']]=item['value'];	
-																}
-															});	
+                                                            $.each(displayNode.extendedMetadata, function(index, item){                                                                    
+                                                                var name = item['name'].charAt(0).toUpperCase() + item['name'].slice(1);
+                                                                 if(item['name'] == "questionLevelOfDifficulty")
+                                                                     displayNode['questionMetadata']['Difficulty'] = item['value'];
+                                                                 else
+                                                                     displayNode['questionMetadata'][name]=item['value'];            
+                                                            });
 											
 												
 															displayNode.selectedLevel = displayNode.questionMetadata['Difficulty']==undefined?{name:'Select Level',value:'0'}:{name:displayNode.questionMetadata['Difficulty'],value:displayNode.questionMetadata['Difficulty']};
@@ -1492,172 +1494,188 @@ angular
 									//$modal.open(confirmObject);
 									return;
 								}
-								$scope.testTitle = test.title;
-
-								// Building the json to create the test.
-								var testcreationdata = {
-									"metadata" : {
-										"crawlable" : "true"
-									},
-									"body" : {
-										"@context" : "http://purl.org/pearson/paf/v1/ctx/core/StructuredAssignment",
-										"@type" : "StructuredAssignment",
-										"assignmentContents" : {
-											"@contentType" : "application/vnd.pearson.paf.v1.assignment+json",
-											"binding" : []
-										}
-									}
-								};
-								testcreationdata.body.title = $scope.testTitle;
-								testcreationdata.body.guid = $scope.testGuid;
-
-								if (test.testId != null) {
-									testcreationdata.metadata = test.metadata;
-								}
-
-								testcreationdata.metadata.title = $scope.testTitle;
-
-								var index = 0;
-
-								var editedElement = document
-								.querySelector("div#qstnArea li[printmode=false]")
-								if (editedElement) {
-									var scopeElement = angular.element(
-											editedElement).scope();
-									scopeElement.node.IsEditView = false;
-									scopeElement.node.qstnLinkText = "Edit";
-									convertHtmlToXmlNode(scopeElement);
-									SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode=false;
-									
-								}
 								
+                            	var duplicateTitle = false;
+                            	
+                                TestService.getTests(test.folderGuid, function(tests){
 
-								var QuestionEnvelops = [];
-								var userSettings = {};
-								userSettings.questionMetadata = {};
+                                    tests.forEach(function(folderTest){
+                                        if(folderTest.title == test.title) {
 
-								$.each(SharedTabService.userQuestionSettings, function (index, value) {
-								    userSettings['questionMetadata'][value] = '';
-								});
+                                        	duplicateTitle = true;
+                                        	
+                                            $scope.IsConfirmation = false;
+                                            $scope.message = "A test with same title already exists in this folder";
+                                            $modal.open(confirmObject);                                                                                        
+                                        }
+                                    });
+                                    
+                                    if(duplicateTitle) {
+                                    	return;
+                                    }
+                                    
+    								$scope.testTitle = test.title;
 
-								var editedQstns = $
-										.grep(
-												test.questions,
-												function(qstn) {
+    								// Building the json to create the test.
+    								var testcreationdata = {
+    									"metadata" : {
+    										"crawlable" : "true"
+    									},
+    									"body" : {
+    										"@context" : "http://purl.org/pearson/paf/v1/ctx/core/StructuredAssignment",
+    										"@type" : "StructuredAssignment",
+    										"assignmentContents" : {
+    											"@contentType" : "application/vnd.pearson.paf.v1.assignment+json",
+    											"binding" : []
+    										}
+    									}
+    								};
+    								testcreationdata.body.title = $scope.testTitle;
+    								testcreationdata.body.guid = $scope.testGuid;
 
-													if (qstn.qstnTemplate) {
-														if(qstn.quizType=="Matching"){															
-															qstn =  updateMatchingTemplatePrefilledtext(qstn);
-														}else if(qstn.quizType=="FillInBlanks"){
-															qstn =  updateFillInBlankTemplatePrefilledtext(qstn);
-														}
-														else{														
-															qstn =  updateTemplatePrefilledtext(qstn);
-														}
-													}
-													if (typeof (qstn.questionMetadata) == 'undefined') {
+    								if (test.testId != null) {
+    									testcreationdata.metadata = test.metadata;
+    								}
 
-													    qstn.questionMetadata = userSettings.questionMetadata;
+    								testcreationdata.metadata.title = $scope.testTitle;
 
-													    $.each(qstn.extendedMetadata, function (index, item) {
+    								var index = 0;
 
-													        if (typeof (qstn['questionMetadata'][item['name']]) != 'undefined') {
-													            qstn['questionMetadata'][item['name']] = item['value'];
-													        }
+    								var editedElement = document
+    								.querySelector("div#qstnArea li[printmode=false]")
+    								if (editedElement) {
+    									var scopeElement = angular.element(
+    											editedElement).scope();
+    									scopeElement.node.IsEditView = false;
+    									scopeElement.node.qstnLinkText = "Edit";
+    									convertHtmlToXmlNode(scopeElement);
+    									SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode=false;
+    									
+    								}
+    								
 
-													    });
-													    qstn.selectedLevel = qstn.questionMetadata['Difficulty'] == undefined ? { name: 'Select Level', value: '0' } : { name: qstn.questionMetadata['Difficulty'], value: qstn.questionMetadata['Difficulty'] };
-													}
-													var qstnExtMetadata=[];													
-												
-													$.each(qstn.questionMetadata, function(KeyName, KeyValue){		
-														if(KeyName == "Difficulty"){
-															KeyValue = qstn.selectedLevel.value;
-														}
-														qstnExtMetadata.push({name:KeyName,value:KeyValue}) ;
-													});													
-																									
-													var QuestionEnvelop = {
-														metadata : {
-															guid : qstn.IsEdited ? null
-																	: qstn.guid,
-		                                                    title : qstn.title,
-															description : qstn.description,
-															quizType : qstn.quizType,
-															subject : qstn.subject,
-															timeRequired : qstn.timeRequired,
-															crawlable : qstn.crawlable,
-															keywords : qstn.keywords,
-															versionOf : qstn.versionOf,
-															version : qstn.version,
-															extendedMetadata : qstnExtMetadata
-														},
-														body : qstn.IsEdited ? qstn.data
-																: null
-													};
-													QuestionEnvelops
-															.push(QuestionEnvelop);
-												});
+    								var QuestionEnvelops = [];
+    								var userSettings = {};
+    								userSettings.questionMetadata = {};
 
-								TestService.saveQuestions(QuestionEnvelops, function(questionsResult) {
-									
-									var questionIndex = 0;
-									questionsResult.forEach(function(questionItem) {
-											var question = JSON.parse(questionItem);
-											var guid = question[0].guid;
+    								$.each(SharedTabService.userQuestionSettings, function (index, value) {
+    								    userSettings['questionMetadata'][value] = '';
+    								});
+    								
+    								var editedQstns = $.grep(test.questions, function(qstn) {
 
-											test.questions[questionIndex].guid = guid;
-											test.questions[questionIndex].IsEdited = false; 
-											questionIndex = questionIndex + 1;
-											
-											testcreationdata.body.assignmentContents.binding
-													.push({
-														guid : guid,
-														activityFormat : "application/vnd.pearson.qti.v2p1.asi+xml",
-														bindingIndex : index
-													});
-											index = index + 1;
-									})									
+    									if (qstn.qstnTemplate) {
+    										if(qstn.quizType=="Matching"){															
+    											qstn =  updateMatchingTemplatePrefilledtext(qstn);
+    										}else if(qstn.quizType=="FillInBlanks"){
+    											qstn =  updateFillInBlankTemplatePrefilledtext(qstn);
+    										}
+    										else{														
+    											qstn =  updateTemplatePrefilledtext(qstn);
+    										}
+    									}
+    									if (typeof (qstn.questionMetadata) == 'undefined') {
 
-									TestService.saveTestData(testcreationdata, test.folderGuid,
-										function(testResult) {
-										    var isEditMode = false;
-										    if (SharedTabService.tests[SharedTabService.currentTabIndex].testId) {
-										        isEditMode = true;
-										    }
-											SharedTabService.currentTab = jQuery.extend(true, {}, SharedTabService.tests[SharedTabService.currentTabIndex]);
-											SharedTabService.tests[SharedTabService.currentTabIndex].testId = testResult.guid;
-											SharedTabService.tests[SharedTabService.currentTabIndex].id = testResult.guid;
-											SharedTabService.tests[SharedTabService.currentTabIndex].tabTitle = test.title;
-											SharedTabService.tests[SharedTabService.currentTabIndex].metadata = testcreationdata.metadata;
-											if (SharedTabService.tests[SharedTabService.currentTabIndex].treeNode) {
-											    SharedTabService.tests[SharedTabService.currentTabIndex].treeNode.testType = EnumService.NODE_TYPE.test;
-											    SharedTabService.tests[SharedTabService.currentTabIndex].treeNode.showEditIcon = true;
-											}
-											$scope.testGuid = testResult.guid;
-											$scope.newVersionBtnCss = "";
-											$scope.exportBtnCss = "";
-											
-											testResult.title = test.title;
-											testResult.modified = (new Date()).toJSON();
-											$rootScope.$broadcast('handleBroadcast_AddNewTest', testResult, $scope.containerFolder, isEditMode);
-											$scope.containerFolder = null; //clear selected folder in save as dialog popup.
+    									    qstn.questionMetadata = userSettings.questionMetadata;
+
+    									    $.each(qstn.extendedMetadata, function (index, item) {
+
+    									        if (typeof (qstn['questionMetadata'][item['name']]) != 'undefined') {
+    									            qstn['questionMetadata'][item['name']] = item['value'];
+    									        }
+
+    									    });
+    									    qstn.selectedLevel = qstn.questionMetadata['Difficulty'] == undefined ? { name: 'Select Level', value: '0' } : { name: qstn.questionMetadata['Difficulty'], value: qstn.questionMetadata['Difficulty'] };
+    									}
+    									var qstnExtMetadata=[];													
+    								
+    									$.each(qstn.questionMetadata, function(KeyName, KeyValue){		
+    										if(KeyName == "Difficulty"){
+    											KeyValue = qstn.selectedLevel.value;
+    										}
+    										qstnExtMetadata.push({name:KeyName,value:KeyValue}) ;
+    									});													
+    																					
+    									var QuestionEnvelop = {
+    										metadata : {
+    											guid : qstn.IsEdited ? null
+    													: qstn.guid,
+                                                title : qstn.title,
+    											description : qstn.description,
+    											quizType : qstn.quizType,
+    											subject : qstn.subject,
+    											timeRequired : qstn.timeRequired,
+    											crawlable : qstn.crawlable,
+    											keywords : qstn.keywords,
+    											versionOf : qstn.versionOf,
+    											version : qstn.version,
+    											extendedMetadata : qstnExtMetadata
+    										},
+    										body : qstn.IsEdited ? qstn.data : null
+    									};
+    									QuestionEnvelops.push(QuestionEnvelop);
+    								});
+
+    								TestService.saveQuestions(QuestionEnvelops, function(questionsResult) {
+    									
+    									var questionIndex = 0;
+    									questionsResult.forEach(function(questionItem) {
+    										var question = JSON.parse(questionItem);
+    										var guid = question[0].guid;
+
+    										test.questions[questionIndex].guid = guid;
+    										test.questions[questionIndex].IsEdited = false; 
+    										questionIndex = questionIndex + 1;
+    										
+    										testcreationdata.body.assignmentContents.binding
+    												.push({
+    													guid : guid,
+    													activityFormat : "application/vnd.pearson.qti.v2p1.asi+xml",
+    													bindingIndex : index
+    												});
+    										index = index + 1;
+    									})									
+
+    									TestService.saveTestData(testcreationdata, test.folderGuid, function(testResult) {
+    									    var isEditMode = false;
+    									    if (SharedTabService.tests[SharedTabService.currentTabIndex].testId) {
+    									        isEditMode = true;
+    									    }
+    										SharedTabService.currentTab = jQuery.extend(true, {}, SharedTabService.tests[SharedTabService.currentTabIndex]);
+    										SharedTabService.tests[SharedTabService.currentTabIndex].testId = testResult.guid;
+    										SharedTabService.tests[SharedTabService.currentTabIndex].id = testResult.guid;
+    										SharedTabService.tests[SharedTabService.currentTabIndex].tabTitle = test.title;
+    										SharedTabService.tests[SharedTabService.currentTabIndex].metadata = testcreationdata.metadata;
+    										if (SharedTabService.tests[SharedTabService.currentTabIndex].treeNode) {
+    										    SharedTabService.tests[SharedTabService.currentTabIndex].treeNode.testType = EnumService.NODE_TYPE.test;
+    										    SharedTabService.tests[SharedTabService.currentTabIndex].treeNode.showEditIcon = true;
+    										}
+    										$scope.testGuid = testResult.guid;
+    										$scope.newVersionBtnCss = "";
+    										$scope.exportBtnCss = "";
+    										
+    										testResult.title = test.title;
+    										testResult.modified = (new Date()).toJSON();
+    										$rootScope.$broadcast('handleBroadcast_AddNewTest', testResult, $scope.containerFolder, isEditMode);
+    										$scope.containerFolder = null; //clear selected folder in save as dialog popup.
                                              
-											if (SharedTabService.tests[SharedTabService.currentTabIndex].isSaveAndClose) {
-												SharedTabService
-														.closeTab(
-																SharedTabService.currentTab,
-																$scope);
-												SharedTabService
-														.removeMasterTest(SharedTabService.currentTab);
-											} else {
-												SharedTabService
-														.removeMasterTest(SharedTabService.currentTab);
-												SharedTabService
-														.addMasterTest(SharedTabService.tests[SharedTabService.currentTabIndex]);
-											}
-										});
-									});
+    										if (SharedTabService.tests[SharedTabService.currentTabIndex].isSaveAndClose) {
+    											SharedTabService
+    													.closeTab(
+    															SharedTabService.currentTab,
+    															$scope);
+    											SharedTabService
+    													.removeMasterTest(SharedTabService.currentTab);
+    										} else {
+    											SharedTabService
+    													.removeMasterTest(SharedTabService.currentTab);
+    											SharedTabService
+    													.addMasterTest(SharedTabService.tests[SharedTabService.currentTabIndex]);
+    										}
+    									});
+    								});                                                                
+
+								});
 
 							}
 
