@@ -1,9 +1,9 @@
 <div class="row">
 	<div class="col-lg-6">
 		<input type="text" placeHolder="Search selected banks"
-			class="bookSearch form-control" ng-model="searchedText"
+			class="bookSearch form-control" ng-model="selectedContainer"
 			ng-focus="validateSearch()"
-			typeahead="container.title for container in allContainers | filter:{title:$viewValue}"
+			typeahead="container as container.title for container in allContainers | filter:{title:$viewValue}"
 			ng-keyup="showContainerOnEnter($event)"> <span
 			class="glyphicon glyphicon-search bookSearchicon"
 			ng-click="showContainerOnClick()" tooltip="Search"
