@@ -579,6 +579,20 @@ angular.module('e8MyTests')
             if($scope.defaultFolders 
             		&& $scope.defaultFolders[0] 
             		&& $scope.defaultFolders[0].nodeType == EnumService.NODE_TYPE.folder) {
+            	
+            	var duplicateTitle = false;
+            	$scope.defaultFolders.forEach(function(rootFolder) {
+            		if(rootFolder.title == $scope.folderName) {
+            			duplicateTitle = true;	
+            			
+                        $scope.IsConfirmation = false;
+                        $scope.message = "A folder with same title already exists at this level";
+                        $modal.open(confirmObject); 
+            		}
+            	});
+            	
+            	if(duplicateTitle) return;
+            	
             	sequence = (0 + $scope.defaultFolders[0].sequence) / 2;
             }
             
