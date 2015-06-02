@@ -293,6 +293,9 @@
         <script type="text/ng-template" id="rf_question_renderer.html">
             <div class="qstnContainer">
                 <div class="qstnView">
+					<div class="glyphicon glyphicon-remove closeQuestion " ng-show="!node.IsEditView && closeQstnBtn"
+						   ng-click="closeQuestions(tests[currentIndex],$index)">
+                    </div>
                   <div >
    						<button type="button" class="close questionCloseIcon" ng-show="node.IsEditView" data-ng-click="closeQuestions(tests[currentIndex],$index)"
             					aria-label="Close">
