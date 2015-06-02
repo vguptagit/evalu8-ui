@@ -357,11 +357,11 @@ a.newFolder:hover {
 }
 
 .captiondiv {
-	width: 90%;
-	float: left;
-	margin-top: 15px;
-	margin-left: 5px;
-	cursor: pointer;
+  width: 93%;
+  float: left;
+  margin-top: 15px;
+  margin-left: 5px;
+  cursor: pointer;
 }
 
 .captionTestNode {
@@ -374,9 +374,10 @@ a.newFolder:hover {
 }
 
 .iconsCourseNode {
-	float: right;
-	position: absolute;
-	display: inline-block;
+  float: right;
+  position: relative;
+  display: inline-block;
+  margin-top: 5px;
 }
 
 .iconsTestNode {
