@@ -26,6 +26,15 @@ angular.module('e8MyTests')
                 
                 TestService.getTests(null, function(tests){
                 	tests.forEach(function(test) {
+                		
+                    	if(SharedTabService.tests) {
+                        	SharedTabService.tests.forEach(function(testTab) {
+                        		if(testTab.testId == test.guid) {
+                        			test.showEditIcon = false;
+                        			test.showArchiveIcon = false;
+                        		}
+                        	});
+                    	}
                 		$scope.defaultFolders.push(test);	
                 	});
                 	
@@ -323,8 +332,15 @@ angular.module('e8MyTests')
 
                     TestService.getTests(defaultFolder.node.guid, function (tests) {
                         tests.forEach(function (test) {
-                            test.selectTestNode = false;//to show the edit icon
 
+                        	if(SharedTabService.tests) {
+	                        	SharedTabService.tests.forEach(function(testTab) {
+	                        		if(testTab.testId == test.guid) {
+	                        			test.showEditIcon = false;
+	                        			test.showArchiveIcon = false;
+	                        		}
+	                        	});
+                        	}
                             defaultFolder.node.nodes.push(test);
                         })
 
