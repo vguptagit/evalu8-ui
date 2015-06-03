@@ -72,7 +72,12 @@ angular
 							});
 
 							$scope.$on('beforeDrop', function(event) {
-								$rootScope.$broadcast("beforeDropQuestion");
+								 if (SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode) {                                 
+                                     $scope.IsConfirmation = false;
+                                     $scope.message = "A question is already in Edit mode, save it before adding or reordering questions.";
+                                     $modal.open(confirmObject);
+                                     $scope.dragStarted = false;                                     
+                                 }
 							});
 
 							$scope.isTestWizard = false;
@@ -741,20 +746,23 @@ angular
 											.$broadcast('handleBroadcast_AddNewTab');
 								}
 								for (var i = 0; i < $scope.selectedNodes.length; i++) {
-									if ($scope.selectedNodes[i].showEditQuestionIcon) {
-										$scope.selectedNodes[i].showEditQuestionIcon = false;
+									if ($scope.selectedNodes[i].showEditQuestionIcon) {										
 										if ($scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.question) {
                                             if (SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode) {
+                                            	$scope.selectedNodes[i].showEditQuestionIcon = true;
                                                 $scope.IsConfirmation = false;
                                                 $scope.message = "A question is already in Edit mode, save it before adding or reordering questions.";
                                                 $modal.open(confirmObject);
                                                 $scope.dragStarted = false;
-                                            }else{                                            
+                                                break;
+                                            }else{               
+                                            	$scope.selectedNodes[i].showEditQuestionIcon = false;
                                                 $rootScope.$broadcast("dropQuestion",$scope.selectedNodes[i], destIndex);
                                             }    
 
 										} else if ($scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.chapter
 												|| $scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.topic) {
+											$scope.selectedNodes[i].showEditQuestionIcon = false;
 											var questionFolder = $scope.selectedNodes[i];
 											getQuestions(
 													questionFolder,
