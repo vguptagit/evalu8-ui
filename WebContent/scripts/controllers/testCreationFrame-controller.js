@@ -2211,10 +2211,22 @@ angular
 							    SharedTabService.addTestWizard($scope);
 							});
 							$rootScope.$on('handleBroadcast_createTestWizardCriteria',
-											function (event, response,
+											function (event, response,quizTypes,
 													currentNode) {
+								
+												var filteredQuestions=[];
+											    if(quizTypes!=""){
+											    	response.forEach(function(question){
+												    	if(quizTypes.indexOf(question.quizType)>-1){
+												    		filteredQuestions.push(question);
+												    	}
+												    });	
+											    }else{
+											    	filteredQuestions=response;
+											    }
+							    
 											    $scope.addTestWizardCriteria(
-														response, currentNode);
+											    		filteredQuestions, currentNode);
 											    // TODO : need to revisit and
 											    // change JQuery implementation
 											    $('.test-wizard-container')

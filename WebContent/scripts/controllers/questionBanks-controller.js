@@ -369,6 +369,7 @@ angular
 															.$broadcast(
 																	"handleBroadcast_createTestWizardCriteria",
 																	response,
+																	$scope.selectedQuestionTypes.toString(),
 																	currentNode);
 													nodeCounter++;
 													if (nodeCounter == selectedNodesLength)
