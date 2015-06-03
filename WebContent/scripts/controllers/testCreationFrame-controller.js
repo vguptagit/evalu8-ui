@@ -1514,15 +1514,16 @@ angular
                                     tests.forEach(function(folderTest){
                                         if(folderTest.title == test.title) {
 
-                                        	duplicateTitle = true;
-                                        	
-                                            $scope.IsConfirmation = false;
-                                            $scope.message = "A test with same title already exists in this folder";
-                                            $modal.open(confirmObject);                                                                                        
+                                        	duplicateTitle = true;                                        	                                                                                      
                                         }
                                     });
                                     
-                                    if(duplicateTitle) {
+                                    if(duplicateTitle && test.guid == null) {
+                                        
+                                    	$scope.IsConfirmation = false;
+                                        $scope.message = "A test with same title already exists in this folder";
+                                        $modal.open(confirmObject); 
+                                        
                                     	return;
                                     }
                                     
