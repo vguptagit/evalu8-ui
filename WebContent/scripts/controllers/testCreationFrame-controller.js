@@ -1236,7 +1236,7 @@ angular
 																 displayNode.IsUserMetdataAvailable = true;
 															 }
 															QTI.play(response,
-																	displayNode, false);
+																	displayNode, false,false,displayNode.quizType);
 															
 															displayNode.IsEditView = false;
 															displayNode.qstnLinkText = displayNode.IsEditView ? "View"

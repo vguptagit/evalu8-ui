@@ -642,7 +642,7 @@ angular
 													var displayNode = $("<div></div>")
 													QTI.play(response,
 															displayNode, false,
-															false);
+															false,item.quizType);
 
 													item.textHTML = displayNode
 															.html();
