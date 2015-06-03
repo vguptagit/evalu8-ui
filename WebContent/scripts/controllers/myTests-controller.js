@@ -32,6 +32,7 @@ angular.module('e8MyTests')
                         		if(testTab.testId == test.guid) {
                         			test.showEditIcon = false;
                         			test.showArchiveIcon = false;
+                        			testTab.treeNode = test;
                         		}
                         	});
                     	}
