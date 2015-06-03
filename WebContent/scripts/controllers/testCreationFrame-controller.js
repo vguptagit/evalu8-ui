@@ -1521,12 +1521,13 @@ angular
                                         }
                                     });
                                     
-                                    if(duplicateTitle && test.guid == null) {
+                                    if(duplicateTitle && test.testId == null) {
                                         
                                     	$scope.IsConfirmation = false;
                                         $scope.message = "A test with same title already exists in this folder";
                                         $modal.open(confirmObject); 
                                         
+                                        $rootScope.blockRightPanel.stop();
                                     	return;
                                     }
                                     
