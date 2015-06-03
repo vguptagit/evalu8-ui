@@ -823,6 +823,19 @@ ol {
 	border-left: 4px #007FA9 solid !important;
 	Border-Bottom: 2px #FFFFFF;
 }
+.folderArchiveIcon{
+display: inline-block;
+  color: #808080;
+  border: none;
+  border-color: #007fa9;
+  background: #FFF;
+  border-radius: 3px;
+  height: 30px;
+  width: 40px;
+  right: 20px;
+  position: absolute;
+  top: 1px;
+  }
 .testHighlight:hover {
 	background-color: #007FA9 !important;
 	color: #FFFFFF;
