@@ -736,6 +736,7 @@ angular
 																.$broadcast(
 																		"handleBroadcast_AddQuestionsToTest",
 																		response,
+																		$scope.selectedQuestionTypes.toString(),
 																		questionFolder);
 													});
 										}

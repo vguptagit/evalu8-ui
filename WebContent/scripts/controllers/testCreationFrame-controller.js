@@ -2226,7 +2226,7 @@ angular
 																				.offset().top - 15)
 																		+ 'px');
 											});
-							$rootScope.$on('handleBroadcast_AddQuestionsToTest', function (event, response, currentNode) {
+							$rootScope.$on('handleBroadcast_AddQuestionsToTest', function (event, response, quizTypes, currentNode) {
 							    QTI.initialize();
 							    
 							    response = $.grep(response,function(obj, index){
@@ -2236,16 +2236,20 @@ angular
 							    			find = true;
 							    	})
 							    	return !find;
-							    	/*
-							    	if(find == true)
-							    		return false;
-							    	else
-							    		return true;*/
-							    	 
-							    	
 							    })
 							    
-							    $scope.renderQuestions(response,
+							    var filteredQuestions=[];
+							    if(quizTypes!=""){
+							    	response.forEach(function(question){
+								    	if(quizTypes.indexOf(question.quizType)>-1){
+								    		filteredQuestions.push(question);
+								    	}
+								    });	
+							    }else{
+							    	filteredQuestions=response;
+							    }
+							    
+							    $scope.renderQuestions(filteredQuestions,
                                         $scope.currentIndex);
 							})
 						    // #endregion Broadcast handles
