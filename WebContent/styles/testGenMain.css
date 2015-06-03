@@ -1094,9 +1094,10 @@ li[printmode='true'] .questionTemplate {
 	display: table;
 }
 
-/* li[printmode='true'] .qti-simpleChoice {
-	float: left;
-} */
+ li[printmode='false'] .angular-ui-tree-handle {
+	cursor: default;
+} 
+
 li[printmode='true'][optionsview='false'] .qti-simpleChoice {
 	float: left;
 }
