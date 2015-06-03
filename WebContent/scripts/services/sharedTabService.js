@@ -415,7 +415,7 @@ angular.module('evalu8Demo')
 		         }else{
 		        	 showQuestionEditIcons(test);
 		         }
-		         if (index <= scope.tests.length) {
+		         if (index <= scope.currentIndex) {
 		             scope.currentIndex--;
 		         }
 		         if (scope.currentIndex < 0) {
