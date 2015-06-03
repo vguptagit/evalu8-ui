@@ -415,9 +415,11 @@ angular.module('evalu8Demo')
 		         }else{
 		        	 showQuestionEditIcons(test);
 		         }
-
-		         if (index == scope.tests.length) {
+		         if (index <= scope.tests.length) {
 		             scope.currentIndex--;
+		         }
+		         if (scope.currentIndex < 0) {
+		             scope.currentIndex = 0;
 		         }
 		         sharedTabService.onClickTab(sharedTabService.tests[scope.currentIndex], scope);
 
