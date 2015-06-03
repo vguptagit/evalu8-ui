@@ -115,7 +115,9 @@ angular
 		
 								if(qstnHTML.find('#qtiCaption').find("button").length > 0){
 									qstnCaption = QTI.replaceBlank(qstnHTML.find('#qtiCaption'),qstnCaption);
-									$(xml).find('itemBody').find('p').eq(0).html(qstnCaption)
+									/*$(xml).find('itemBody').find('p').eq(0).html(qstnCaption)*/
+									$(xml).find('itemBody').find('p').eq(0).empty();
+									QTI.appendHTMLNodes($(xml).find('itemBody').find('p').eq(0),qstnCaption);
 								}
 								else{
 									

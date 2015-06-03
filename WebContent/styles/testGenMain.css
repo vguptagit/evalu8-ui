@@ -2518,6 +2518,7 @@ li[qstntemplate='true'] .qti-simpleChoice .radio, li[printmode='true'] .qti-simp
 	width: 96%;
 	float: right;
 	font-weight: normal;
+	outline:none;
 }
 
 .closeQuestion {
@@ -2590,4 +2591,14 @@ li[printmode='true'] .qti-itemBody .qti-blockquote>p:first-child {
 }
 .closeButtonAdvancedSearch{
 	padding:5px !important;
+}
+.qstnContainer div:empty:before {
+	content: attr(data-placeholder);
+	color: gray;
+	position: absolute;
+	/* top:4px; */
+}
+
+.qstnContainer div[contenteditable='true']{
+	position: relative;
 }

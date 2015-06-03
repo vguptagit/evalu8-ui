@@ -2967,7 +2967,7 @@ var CustomQuestionTemplate =
 					
 					editElement.attr("ng-focus","captionFocus = false").attr("ng-blur","captionFocus = true")
 					 
-					 editElement.attr("onkeydown","QTI.getSpanId(this,event)");
+					 editElement.attr("onkeydown","return QTI.getSpanId(this,event)");
 					 var crtAns = element.find("#crtAns").eq(0);
 					 var textEntries = editElement.find("textEntryInteraction");
 					 
@@ -3140,6 +3140,15 @@ QTI.getContent = function(elm){
 QTI.setContent = function(elm,val){
 	elm.html("<![CDATA[" + val + "]]>")
 }
+
+QTI.appendHTMLNodes = function(elm,val){
+	var nodes = $.parseXML("<dummy>" + val + "</dummy>").childNodes[0];
+	while(nodes.childNodes.length != 0){
+		elm.append($(nodes.childNodes[0]));
+	}
+	
+	return elm;
+}
 QTI.prependContent = function(elm,val){
 	if(elm.html().indexOf("<![CDATA[") == 0){
 		elm.get(0).childNodes[0].textContent = val;
@@ -3186,7 +3195,7 @@ QTI.getSpanId = function(spanElement, event){
 	
 			
 			event.stopPropagation();
-			spanElement.remove();
+			$(spanElement).remove();
 		}
 		else{
 			var cursor = QTI.getCaretPosition(spanElement);
@@ -3228,13 +3237,13 @@ QTI.getSpanId = function(spanElement, event){
 		
 		var range = window.getSelection().getRangeAt(0);
 
-		if(event.keyCode == 8 && (range.startOffset == 0 || range.startOffset == 1) && range.startContainer.previousElementSibling)
+		if(event.keyCode == 8 && (range.startOffset == 0 || range.startOffset == 1) && range.startContainer.previousSibling)
 
-			if(range.startContainer.previousElementSibling.tagName == "BUTTON"){
-				blankElement = $(range.startContainer.previousElementSibling);
+			if(range.startContainer.previousSibling.tagName == "BUTTON"){
+				blankElement = $(range.startContainer.previousSibling);
 				var index = blankElement.attr("id").substring(9,blankElement.attr("id").length);
 				index = parseInt(index);
-				blankElement.remove();
+				$(blankElement).remove();
 				qtiCationElement.parent().parent().find("#crtAns").children().eq(index - 1).remove();
 				for(var i = index-1; i<qtiCationElement.find("button").length; i++)
 				{
