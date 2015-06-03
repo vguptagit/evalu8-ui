@@ -455,17 +455,8 @@ angular
 										}
 										
 										currentNode.node.nodes = [];
-										$http
-												.get(
-														evalu8config.apiUrl
-																+ "/books/"
-																+ $scope.bookID
-																+ "/nodes/"
-																+ currentNode.node.guid
-																+ "/nodes",
-														config)
-												.success(
-														function(response) {
+										ContainerService.containerNodes($scope.bookID,currentNode.node.guid,
+												$scope.selectedQuestionTypes.toString(),function(response) {
 
 															currentNode.node.nodes = currentNode.node.nodes
 																	.concat(response);
@@ -482,18 +473,6 @@ angular
                                                                                 item.nodeType = "topic";
 																				item.isCollapsed=true;
 																				updateTreeNode(item);
-                                                                                /*
-																				if ($scope.selectedNodes.length > 0)
-																					for (var i = 0; i < $scope.selectedNodes.length; i++) {
-																						if ($scope.selectedNodes[i].guid == item.guid) {
-																							item.showTestWizardIcon = $scope.selectedNodes[i].showTestWizardIcon;
-																							item.showEditQuestionIcon = $scope.selectedNodes[i].showEditQuestionIcon;
-																							item.isNodeSelected = $scope.selectedNodes[i].isNodeSelected;
-																							$scope.selectedNodes[i] = item;
-																						}
-																					}
-                                                                                */
-																				
 																			})
 															blockLeftpanel
 																	.stop();
@@ -913,29 +892,8 @@ angular
 											node.isNodeSelected = isBookSelected;
 										});
 								
-								$scope.getBookQuestions();
 							}
 
-							$scope.bookQuestions=[];
-							$scope.getBookQuestions = function(){
-								var bookQuestionsDetails={};
-								$scope.selectedBooks.forEach(function(book){
-									 ContainerService.bookNodes(book.guid, function(containers) {
-										 containers.forEach(function(container){
-											 questionService.getAllQuestionsOfContainer(book.guid,container.guid, function(questions){
-												 if(questions.length>0){
-													 bookQuestionsDetails["book"]=jQuery.extend(true,{}, book);
-													 bookQuestionsDetails["container"]=jQuery.extend(true,{}, container);
-													 bookQuestionsDetails["questions"]=questions;
-													 $scope.bookQuestions.push(bookQuestionsDetails);
-													 bookQuestionsDetails={};
-												 	}
-												 })
-											 });
-									 });
-								});
-							}
-							
 							$scope.validateSearch = function(){
 								if($scope.selectedBookIDs.length == 0){
 									$scope.selectedContainer="";
@@ -1113,9 +1071,9 @@ angular
 							
 							$scope.searchBooksForQuestionTypes = function(node) {
 								$scope.showAdvancedSearch = false;
-								$scope.disciplines=[];
+								var count = 0;
 								$scope.selectedBooks.forEach(function(book){
-									questionService.getAllQuestionsOfbooks(book.guid,$scope.selectedQuestionTypes.toString(),function(containers){
+									ContainerService.getQuestionTypeContainers(book.guid,$scope.selectedQuestionTypes.toString(),function(containers){
 										containers.forEach(function(container){
 											container.isCollapsed=true;
 											container.nodeType = "chapter";
@@ -1123,8 +1081,11 @@ angular
 										});
 										book.isCollapsed=false;
 										book.nodes=containers;
-										
+										if(count == 0){
+											$scope.disciplines=[];
+										}
 										$scope.bookAddToDiscipline(book);
+										count=count+1;
 									});
 								});	
 							}

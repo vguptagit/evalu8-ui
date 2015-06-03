@@ -41,20 +41,5 @@ angular
 								});
 
 							};
-							
-							this.getAllQuestionsOfbooks = function(bookid,
-									quizTypes, callback) {
-
-								var questions = [];
-								var url = evalu8config.apiUrl + "/books/"+bookid+"/nodes?quizTypes="+quizTypes;
-
-								$http.get(url, config).success(
-										function(response) {
-											callback(response);
-										}).error(function() {
-											callback(response);
-										});
-
-								};
 
 						} ]);

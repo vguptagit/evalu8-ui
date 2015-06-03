@@ -31,6 +31,30 @@ angular
 			});
 		};
 		
+		this.containerNodes = function(bookId,containerId, quizTypes ,callback) {
+			var url="";
+			if(quizTypes==""){
+				url=evalu8config.apiUrl+ "/books/"+ bookId+ "/nodes/"+ containerId+ "/nodes"
+			}else{
+				url=evalu8config.apiUrl+ "/books/"+ bookId+ "/nodes/"+ containerId+ "/nodes?quizTypes="+quizTypes;
+			}
+			
+			$http.get(url, config)
+				.success(function(response) {
+					callback(response);
+				})
+		};
+		
+		this.getQuestionTypeContainers = function(bookid,quizTypes, callback) {
+			var url = evalu8config.apiUrl + "/books/"+bookid+"/nodes?quizTypes="+quizTypes;
+			$http.get(url, config).success(
+					function(response) {
+						callback(response);
+					}).error(function() {
+						callback(response);
+					});
+			};
+		
 		this.getAllContainers = function(bookids, callback) {
 
 			var cointainers = [];
