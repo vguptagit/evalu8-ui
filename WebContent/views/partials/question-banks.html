@@ -14,10 +14,10 @@
 			Search</a>
 	</div>
 </div>
-<div class="row advancedSearchCriteria" ng-show="showAdvancedSearch">
-	<div class="col-lg-12">
+<div class="advancedSearchCriteria" ng-show="showAdvancedSearch">
+	<div class="col-md-12">
 		<div class="row">
-			<div class="col-lg-12">
+			<div class="col-md-12">
 				<button type=" button" class="close"
 					ng-click="closeAdvancedSearch()" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
@@ -25,58 +25,54 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-lg-1 text-left">
+			<div class="col-md-1 text-left">
 				<h5">Type:</h5>
 			</div>
-			<div class="col-lg-11">
-				<div class="row">
-					<div class="col-lg-12">
-						<div class="ck-button">
+			<div class="col-md-11 margin-bot-10">
+				<div>
+						<div class="ck-button col-md-4">
 							<label ng-class="disabled-cursor"> <input type="checkbox"
 								ng-click='toggleQuestiontypeSelection("TrueFalse")'
 								ng-checked="false"><span>True or False</span>
 							</label>
 						</div>
-						<div class="ck-button">
+						<div class="ck-button col-md-4">
 							<label ng-class="disabled-cursor"> <input type="checkbox"
 								ng-click='toggleQuestiontypeSelection("MultipleChoice")'
 								ng-checked="false"><span>Multiple Choice</span>
 							</label>
 						</div>
-						<div class="ck-button">
+						<div class="ck-button col-md-4">
 							<label ng-class="disabled-cursor"> <input type="checkbox"
 								ng-click='toggleQuestiontypeSelection("FillInBlanks")'
 								ng-checked="false"><span>Text Entry</span>
 							</label>
 						</div>
-					</div>
 				</div>
-				<div class="row">
-					<div class="col-lg-12">
-						<div class="ck-button">
+				<div>
+						<div class="ck-button col-md-4">
 							<label ng-class="disabled-cursor"> <input type="checkbox"
 								ng-click='toggleQuestiontypeSelection("Matching")'
 								ng-checked="false"><span>Matching</span>
 							</label>
 						</div>
-						<div class="ck-button">
+						<div class="ck-button col-md-4">
 							<label ng-class="disabled-cursor"> <input type="checkbox"
 								ng-click='toggleQuestiontypeSelection("MultipleResponse")'
 								ng-checked="false"><span>Multiple Response</span>
 							</label>
 						</div>
-						<div class="ck-button">
+						<div class="ck-button col-md-4">
 							<label ng-class="disabled-cursor"> <input type="checkbox"
 								ng-click='toggleQuestiontypeSelection("Essay")'
 								ng-checked="false"><span>Essay</span>
 							</label>
 						</div>
-					</div>
 				</div>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-lg-12 text-right	">
+			  <div class="row col-lg-12 text-right margin-bot-10">
 				<button ng-click="closeAdvancedSearch()" class="backButton">Cancel</button>
 				<button class="nextButton" ng-class="{btnDisbled : isSaveDisabled }"
 					ng-disabled="isSaveDisabled"
