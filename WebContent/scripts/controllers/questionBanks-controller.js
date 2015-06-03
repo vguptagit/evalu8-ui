@@ -330,6 +330,7 @@ angular
 							
                             //to disable the edit icon once it clicked  
                             $scope.editTest = function (selectedTest) {
+                            	selectedTest.node.testType = 'PublisherTest';
                                 selectedTest.node.showEditIcon=false;
                                 selectedTest.node.showArchiveIcon=false;
                                 $rootScope.$broadcast("editTest", selectedTest);
