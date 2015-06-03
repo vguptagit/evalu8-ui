@@ -25,6 +25,10 @@ angular
 							// SharedTabService.tests[SharedTabService.currentTabIndex].questions;
 							$scope.controller = EnumService.CONTROLLERS.testCreationFrame;
 							$scope.tests = SharedTabService.tests;
+							
+							$rootScope.blockRightPanel = blockUI.instances.get('RightPanel');
+							$rootScope.blockLeftPanel = blockUI.instances.get('leftPanel');
+							
 							$scope.currentIndex = SharedTabService.currentTabIndex;
 							$scope.criterias = SharedTabService.tests[SharedTabService.currentTabIndex].criterias;
 							$scope.captionFocus = true;
@@ -1162,6 +1166,7 @@ angular
 							    }
 							}
 							$scope.editTest = function(selectedTest) {
+								$rootScope.blockRightPanel.start();
 							    resetTabs();
 								$scope.newVersionBtnCss = "";
 								$scope.exportBtnCss = "";
@@ -1497,7 +1502,7 @@ angular
 							// Function is to save the Test details with the
 							// questions.
 							$scope.saveTest = function() {
-
+								$rootScope.blockRightPanel.start();
 								var test = SharedTabService.tests[SharedTabService.currentTabIndex];
 								if (test.title == null
 										|| test.title.length <= 0) {

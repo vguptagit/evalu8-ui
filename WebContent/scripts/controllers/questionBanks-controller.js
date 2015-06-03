@@ -338,6 +338,7 @@ angular
 							// TODO : need to move this to service.
 							$scope.createTestWizardCriteria = function(
 									currentNode) {
+								$rootScope.blockRightPanel.start();
 								if (!SharedTabService.isTestWizardTabPresent) {
 									$rootScope
 											.$broadcast('handleBroadcast_AddTestWizard');
@@ -393,6 +394,7 @@ angular
 												config)
 										.success(function(response) {
 											callBack(response, currentNode)
+											$rootScope.blockRightPanel.stop();
 										})
 										.error(
 												function() {
@@ -406,6 +408,7 @@ angular
 													// = false;
 													$scope
 															.selectNode(currentNode);
+													$rootScope.blockRightPanel.stop();
 												})
 							}
 
@@ -543,11 +546,8 @@ angular
 																							.renderQuestion(item);
 																				}
 																			})
-															blockLeftpanel
-																	.stop();
 
 														}).error(function() {
-													blockLeftpanel.stop();
 												});
 										;
 									}

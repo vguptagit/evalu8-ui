@@ -16,33 +16,27 @@ angular.module('evalu8Demo')
 			};						
 			
 			this.saveTestData = function(testData,folderId,callback) {				
-				var blockRightPanel = blockUI.instances.get('RightPanel');
-				blockRightPanel.start();
 				var defaultFolders = [];
 				$http.post(evalu8config.apiUrl + '/my/folders/'+folderId+'/tests', testData, config)
 				.success(function(response) {	
 					var testResult = response;
 					callback(testResult);
-					blockRightPanel.stop();
 				})
 				.error(function(error, status) {
 
-					blockRightPanel.stop();
 				})				
 			};
 			
             this.saveQuestions = function(editedQstns, callback) {
-            	var blockRightPanel = blockUI.instances.get('RightPanel');
-            	blockRightPanel.start();
                 $http.post(evalu8config.apiUrl + '/my/questions', editedQstns, config)
                 .success(function(response) {    
                     var questionsResult = response;
                     callback(questionsResult);
-                    blockRightPanel.stop();
+                    $rootScope.blockRightPanel.stop();
                 })
                 .error(function(error, status) {
 
-                    blockRightPanel.stop();
+                	$rootScope.blockRightPanel.stop();
                 })                
                 
             };
@@ -76,8 +70,6 @@ angular.module('evalu8Demo')
 			};
 				
 			this.getTests = function(folderId, callback) {				
-				var blockLeftpanel = blockUI.instances.get('Leftpanel');
-				blockLeftpanel.start();
 				var url;
 				if(folderId==null) {
 					url = evalu8config.apiUrl + '/my/tests';
@@ -95,17 +87,13 @@ angular.module('evalu8Demo')
 						test.showArchiveIcon=true;
 					})
 					callback(tests)
-					blockLeftpanel.stop();
 				})
 				.error(function(error, status) {
 					callback([]);
-					blockLeftpanel.stop();
 				})				
 			};
 			
 			this.getArchiveTests = function(folderId, callback) {				
-				var blockLeftpanel = blockUI.instances.get('Leftpanel');
-				blockLeftpanel.start();
 				$http.get(evalu8config.apiUrl + '/my/archive/folders/' + folderId + '/tests', config)
 				.success(function(response) {
 					var tests = response;
@@ -114,10 +102,8 @@ angular.module('evalu8Demo')
 						test.parentId = folderId;
 					})
 					callback(tests)
-					blockLeftpanel.stop();
 				})
 				.error(function(error, status) {
-					blockLeftpanel.stop();
 				})				
 			};
 			
@@ -171,9 +157,10 @@ angular.module('evalu8Demo')
 				.success(function(response) {
 					var test = response;
 					callback(test)
+					$rootScope.blockRightPanel.stop();
 				})
 				.error(function(error, status) {
-
+					$rootScope.blockRightPanel.stop();
 				})				
 			};
 			
@@ -209,16 +196,11 @@ angular.module('evalu8Demo')
 			}
 						
 			this.createVersions = function (scope, callback) {	
-				var blockRightPanel = blockUI.instances.get('RightPanel');
-				blockRightPanel.start();
 			    $http.post(evalu8config.apiUrl + '/my/tests/' + scope.currentTab.testId + '/versions', scope.versioningOptions, config)
 				.success(function (response) {				     
 				    callback(scope,response);
-				    blockRightPanel.stop();
 				})
 				.error(function (error, status) {
-
-				    blockRightPanel.stop();
 				}) 
 			};
 			
