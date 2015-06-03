@@ -51,7 +51,7 @@ angular
 					function(response) {
 						callback(response);
 						$rootScope.blockLeftPanel.stop();
-					}).error(function() {
+					}).error(function(response) {
 						callback(response);
 						$rootScope.blockLeftPanel.stop();
 					});
