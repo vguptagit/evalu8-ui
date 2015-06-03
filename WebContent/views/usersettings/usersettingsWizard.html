@@ -88,8 +88,8 @@
 									ng-model="searchedBook" placeholder="Custom template"
 									typeahead-template-url="customTemplate.html"
 									typeahead="book.title for book in books.all | searchFields22:$viewValue"
-									ng-keyup="searchedBookOnEnter($event)"><span
-									class="glyphicon glyphicon-search searchicon" ng-click="searchedBookOnClick()"
+									ng-keyup="searchBookOnEnter($event)"><span
+									class="glyphicon glyphicon-search searchicon" ng-click="searchBookOnClick()"
 									tooltip="search" tooltip-placement="bottom"></span>
 							</div>
 						</div>

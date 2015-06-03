@@ -156,7 +156,7 @@ angular
 										discipline.discipline, false)
 							}
 
-							$scope.searchedDisciplineOnClick = function() {
+							$scope.searchDisciplineOnClick = function() {
 								$scope.searched = $(".searchDiscpline").val();
 								if ($scope.searched == undefined
 										|| $scope.searched == "") {
@@ -167,7 +167,9 @@ angular
 										true);
 							}
 
-							$scope.searchedDiscipline = function(event) {
+							$scope.searchDiscipline = function(event) {
+								$(".dropdown-menu")
+								.addClass("autocompleteQuestionList");
 								$scope.searched = $(".searchDiscpline").val();
 								if ($scope.searched == undefined
 										|| $scope.searched == "") {
@@ -378,7 +380,7 @@ angular
 
 							}
 
-							$scope.searchedBookOnEnter = function(event) {
+							$scope.searchBookOnEnter = function(event) {
 								$(".dropdown-menu")
 										.addClass("autocompleteQuestionList");
 
@@ -435,7 +437,7 @@ angular
 
 							}
 
-							$scope.searchedBookOnClick = function() {
+							$scope.searchBookOnClick = function() {
 								$scope.searchedBook = $(".searchBook").val();
 								if ($scope.searchedBook == undefined
 										|| $scope.searchedBook == "") {

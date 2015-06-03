@@ -149,6 +149,8 @@ angular
 							}
 
 							$scope.searchDiscipline = function(event) {
+								$(".dropdown-menu")
+								.addClass("startupautocompleteList");
 								$scope.searchedDiscpline = $(".searchDiscpline")
 										.val();
 								if ($scope.searchedDiscpline == undefined
@@ -388,7 +390,7 @@ angular
 
 							$scope.searchedBookOnEnter = function(event) {
 								$(".dropdown-menu")
-										.addClass("autocompleteList");
+										.addClass("startupautocompleteList");
 
 								$scope.searchedBook = $(".searchBook").val();
 								if ($scope.searchedBook == undefined
