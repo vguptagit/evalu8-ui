@@ -156,8 +156,7 @@ angular
 							// and append the collection to input discipline
 							// angularjs node
 							$scope.getBooks = function(discipline) {
-								var blockLeftpanel = blockUI.instances
-										.get('Leftpanel');
+								
 
 								if ($rootScope.globals.authToken == '') {
 									$location.path('/login');
@@ -166,11 +165,9 @@ angular
 									if (!discipline.collapsed) {
 										discipline.collapse();
 									} else {
-										blockLeftpanel.start();
 										discipline.expand();
 										
 										if($scope.isSearchMode){
-											blockLeftpanel.stop();
 											return;
 										}
 										var ep;
@@ -219,7 +216,6 @@ angular
 													})
 
 											discipline.node.nodes = yourQuestions;
-											blockLeftpanel.stop();
 										} else {
 											ep = evalu8config.apiUrl
 													+ "/books?discipline="
@@ -238,7 +234,6 @@ angular
 
 															});
 										}
-										blockLeftpanel.stop();
 									}
 								}
 							}
@@ -422,8 +417,6 @@ angular
 							// Output topic,subtopic and question collection
 							// will be append to input chapter angularjs node
 							$scope.getNodesWithQuestion = function(currentNode) {
-								var blockLeftpanel = blockUI.instances
-										.get('BlockLeftpanel');
 								if ($rootScope.globals.authToken == '') {
 									$location.path('/login');
 								} else {
@@ -435,7 +428,6 @@ angular
 										currentNode.$element.children(1)
 												.removeClass('expandChapter');
 									} else {
-										blockLeftpanel.start();
 										currentNode.expand();
 										
                                         if(currentNode.node.nodeType == 'publisherTests') {
@@ -444,12 +436,10 @@ angular
                                                     function(item) {
                                                         item.template = 'tests_renderer.html';
                                                     });
-                                            blockLeftpanel.stop();
                                             return;
                                         }
 							                                        
 										if($scope.isSearchMode && $scope.searchedContainerId!=currentNode.node.guid){
-											blockLeftpanel.stop();
 											return;
 										}else if ($scope.isAdvancedSearchMode){
 											$scope.bookID=currentNode.node.bookid;
@@ -475,8 +465,6 @@ angular
 																				item.isCollapsed=true;
 																				updateTreeNode(item);
 																			})
-															blockLeftpanel
-																	.stop();
 														})
 
 										$http
@@ -547,15 +535,13 @@ angular
 							}
 
 							$scope.getQuestions = function(currentNode) {
-								// var blockLeftpanel =
-								// blockUI.instances.get('BlockLeftpanel');
+								
 								if ($rootScope.globals.authToken == '') {
 									$location.path('/login');
 								} else {
 									if (!currentNode.collapsed) {
 										currentNode.collapse();
 									} else {
-										// blockLeftpanel.start();
 										currentNode.expand();
 										currentNode.node.nodes = [];
 
@@ -589,10 +575,8 @@ angular
 																				$scope
 																						.renderQuestion(item);
 																			})
-															// blockLeftpanel.stop();
 
 														}).error(function() {
-													// blockLeftpanel.stop();
 												});
 										;
 									}
@@ -901,7 +885,9 @@ angular
 									$scope.IsConfirmation = false;
 									$scope.message = "Please select a question bank to search";
 									$modal.open(confirmObject);
-									return;
+									return false;
+								}else{
+									return true;
 								}
 							}
 							
@@ -1038,12 +1024,13 @@ angular
 							$scope.isSaveDisabled=true;
 							
 							$scope.openAdvancedSearch = function() {
-								if (!$scope.showAdvancedSearch) {
-									$scope.showAdvancedSearch = true;
-								} else {
-									$scope.showAdvancedSearch = false;
+								if($scope.validateSearch()){
+									if (!$scope.showAdvancedSearch) {
+										$scope.showAdvancedSearch = true;
+									} else {
+										$scope.showAdvancedSearch = false;
+									}	
 								}
-
 							}
 							
 							$scope.closeAdvancedSearch = function() {
@@ -1071,6 +1058,7 @@ angular
 							
 							
 							$scope.searchBooksForQuestionTypes = function(node) {
+								$rootScope.blockLeftPanel.start();
 								$scope.showAdvancedSearch = false;
 								var count = 0;
 								$scope.selectedBooks.forEach(function(book){
