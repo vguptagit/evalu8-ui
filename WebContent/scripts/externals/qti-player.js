@@ -3068,7 +3068,7 @@ QTI.getActualCursorPosition1 = function(cursorPosition,element,htmlContent){
 }
 
 QTI.getCursorElement = function(elm){
-	var elements = elm.children("*:not(button,u)");
+	var elements = elm.children("*:not(button,u[contenteditable=false])");
 	if(elements.length == 0)
 		return elm;
 	var i = 0;
@@ -3080,10 +3080,15 @@ QTI.getCursorElement = function(elm){
 		}
 	}
 	if(i == 0){
-		if(QTI.getCaretPosition(elements.eq(0).parent().get(0)) != 0)
+		var pos = QTI.getCaretPosition(elements.eq(0).parent().get(0));
+		if(pos != 0 && !(pos == elements.eq(0).parent().text().length && elements.eq(0).html() == "<br>")){
 			return elements.eq(0).parent();
-		else
+		}
+		else{
+			if(elements.eq(0).html() == "<br>")
+				elements.eq(0).html("");
 			return elements.eq(0);
+		}
 	}
 	else{
 		return QTI.getCursorElement(elements.eq(i-1));

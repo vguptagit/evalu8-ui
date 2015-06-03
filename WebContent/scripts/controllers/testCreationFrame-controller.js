@@ -740,12 +740,16 @@ angular
 																	return;
 																}
 															}
+															if(cursorPosition > 0){
+																element = QTI.getCursorElement(element)
+																cursorPosition = QTI.getCaretPosition(element.get(0));
+															}
 															var optionText = element
 																	.html()
 																	.replace(
 																			/&nbsp;/g,
 																			" ");
-															cursorPosition = QTI.getActualCursorPosition(cursorPosition,element,optionText);
+															cursorPosition = QTI.getActualCursorPosition1(cursorPosition,element,optionText);
 															element
 																	.html(optionText
 																			.substring(
