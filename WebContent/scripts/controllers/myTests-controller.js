@@ -32,7 +32,6 @@ angular.module('e8MyTests')
                         		if(testTab.testId == test.guid) {
                         			test.showEditIcon = false;
                         			test.showArchiveIcon = false;
-                        			testTab.treeNode = test;
                         		}
                         	});
                     	}
@@ -103,6 +102,34 @@ angular.module('e8MyTests')
             if (mouseOverNode && (mouseOverNode != source)) {
 
                 var item = source.node;
+                
+                if(mouseOverNode.node.nodes) {
+                	var duplicateItem = false;
+                	mouseOverNode.node.nodes.forEach(function(nodeItem) {
+                        
+                		if(item.nodeType == "folder") {
+                    		if(nodeItem.nodeType == 'folder' && nodeItem.title == item.title) {
+                    			duplicateItem = true;
+                    			
+        			            $scope.IsConfirmation = false;
+        			            $scope.message = "A folder with same title already exists at this level";
+        			            $modal.open(confirmObject); 
+                    		}                        	
+                        }
+                		if(item.nodeType == "test") {
+                    		if(nodeItem.nodeType == 'test' && nodeItem.title == item.title) {
+                    			duplicateItem = true;
+                    			
+        			            $scope.IsConfirmation = false;
+        			            $scope.message = "A test with same title already exists at this level";
+        			            $modal.open(confirmObject); 
+                    		}                        	
+                        }
+                	})
+                	
+                	if(duplicateTitle) return false;	
+                }
+
                 source.remove();                
                 
                 if(item.nodeType == "folder") {

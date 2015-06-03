@@ -55,8 +55,43 @@
 		             if (callback) callback();
 		         });
 		     };
+		     
+		        var confirmObject = {
+		                templateUrl: 'views/partials/alert.html',
+		                controller: 'AlertMessageController',
+		                backdrop: 'static',
+		                keyboard: false,
+		                resolve: {
+		                    parentScope: function () {
+		                        return $scope;
+		                    }
+		                }
+		            };
+		        
 		     $scope.addNewFolder = function (folderName, callback) {
-		         if (folderName == null || folderName.trim().length == 0) { return; }
+		    	 
+	    	 	if (folderName == null || folderName.trim().length == 0) { return; }
+		         
+	    	 	var nodes = [];
+				if($scope.selectedfolder && $scope.selectedfolder.nodes) {
+					nodes = $scope.selectedfolder.nodes
+				} else if($scope.node) {
+					nodes = $scope.node;
+				}	
+				
+				var duplicateTitle = false;
+				nodes.forEach(function(folder) {
+					if(folder.nodeType == EnumService.NODE_TYPE.folder && folder.title == folderName) {
+						duplicateTitle = true;	
+						
+			            $scope.IsConfirmation = false;
+			            $scope.message = "A folder with same title already exists at this level";
+			            $modal.open(confirmObject); 
+					}
+				});
+				
+				if(duplicateTitle) return;									
+	            
 		         var sequence = 1;
 		         if ($scope.selectedfolder && $scope.selectedfolder.nodes) {
 		             if ($scope.selectedfolder.nodes[0].nodeType === EnumService.NODE_TYPE.emptyFolder) {
