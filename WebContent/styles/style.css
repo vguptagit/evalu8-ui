@@ -113,17 +113,19 @@ label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D;
 #scroll .folder-template-container li {display: table; text-align: center; width:220px; text-align: left;}
 #scroll li a { margin: 15px 15px 0 15px;}   
 #scroll li ul li {display: table; text-align: left; color:#000; line-height:30px;}
-#scroll span.active{ display:inline-block; width:100%; background-color:#d5d5d5; line-height:30px; color:#000;}
+#scroll div.active{ display:inline-block; width:100%; background-color:#d5d5d5; line-height:30px; color:#000;}
 #scroll .node-text{ 
   padding-left:10px; 
   cursor:pointer;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 219px !important;
+  width: 206px !important;
   height: 35px;
   display: block;
+  float:left;
 }
+.savearrow{background-color: #d5d5d5; line-height: 35px; top:0;}
 
 .folder-main {
         min-height: 20px;
@@ -406,6 +408,7 @@ hr{margin: 0;}
 h4, .h4, h5, .h5, h6, .h6 {  margin-top: 8px; margin-bottom: 8px;}
  .input-group .form-control {padding-right: 35px;}
 .form-control {padding-right: 36px;}
+.welcomebackground{height: 94vh; background-color: #f8f8f8;}
 
 @media (max-width: 767px)
 { 	.container{width:750px;}

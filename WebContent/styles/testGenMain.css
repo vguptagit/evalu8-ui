@@ -817,6 +817,12 @@ ol {
 	Border-Bottom: 2px #FFFFFF;
 }
 
+.folderHighlight{
+	background-color: #007FA9 !important;
+	color: #FFFFFF;
+	border-left: 4px #007FA9 solid !important;
+	Border-Bottom: 2px #FFFFFF;
+}
 .testHighlight:hover {
 	background-color: #007FA9 !important;
 	color: #FFFFFF;
@@ -1695,8 +1701,8 @@ ul.a {
 }
 
 .autocompleteQuestionList {
-	max-height: 468px;
-	max-width: 500px;
+	max-height: 49vh;
+	max-width: 496px;
 	overflow: auto;
 }
 
