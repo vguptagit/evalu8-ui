@@ -63,6 +63,13 @@ angular.module('evalu8Demo', [
                 requireLogin: false
               }
         })
+        .state('layout', {
+            url: '/layout',
+            templateUrl: 'views/layout.html',
+            data: {
+                requireLogin: false
+            }
+        })
         .state('home', {
             url: '/home',
             templateUrl: 'views/home.html',

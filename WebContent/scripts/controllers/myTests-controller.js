@@ -32,6 +32,7 @@ angular.module('e8MyTests')
                         		if(testTab.testId == test.guid) {
                         			test.showEditIcon = false;
                         			test.showArchiveIcon = false;
+                        			testTab.treeNode = test;
                         		}
                         	});
                     	}
@@ -705,7 +706,8 @@ angular.module('e8MyTests')
                     });
                     parentFolderNodes.splice(position, 0, test)
                 }
-                SharedTabService.tests[SharedTabService.currentTabIndex].metadata = TestService.getTestMetadata(test); 
+                SharedTabService.tests[SharedTabService.currentTabIndex].metadata = TestService.getTestMetadata(test);
+                SharedTabService.tests[SharedTabService.currentTabIndex].treeNode = test;
             });
         });
         //#endregion
