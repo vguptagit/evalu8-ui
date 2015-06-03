@@ -527,7 +527,7 @@ angular
 																			responseQuestions,
 																			function(
 																					item) {
-																				if($scope.selectedQuestionTypes.toString().indexOf(item.quizType)>-1)
+																				if($scope.isAdvancedSearchMode == false  || ($scope.isAdvancedSearchMode == true && $scope.selectedQuestionTypes.toString().indexOf(item.quizType)>-1))
 																				{
 																					item.nodeType = "question";
 																					item.showEditQuestionIcon = false;
