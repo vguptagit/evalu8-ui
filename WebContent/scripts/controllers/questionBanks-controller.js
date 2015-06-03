@@ -790,7 +790,9 @@ angular
 													}
 												}
 												for (var i = 0; i < $scope.selectedNodes.length; i++) {
-												    //$scope.selectedNodes[i].showEditQuestionIcon = true;
+												    if ($scope.selectedNodes[i].nodeType != EnumService.NODE_TYPE.question) {
+												        $scope.selectedNodes[i].showEditQuestionIcon = true;
+												    }
 												    for (var j = 0; j < tab.questionFolderNode.length; j++) {
 												        if ($scope.selectedNodes[i].guid === tab.questionFolderNode[j].guid) {
 												            $scope.selectedNodes[i].showEditQuestionIcon = false;
