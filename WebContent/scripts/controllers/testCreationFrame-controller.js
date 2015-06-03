@@ -1179,10 +1179,6 @@ angular
 
 								$scope.testGuid = selectedTest.node.guid;
 								$scope.selectedTestNode = selectedTest.node;
-								/*$scope.BlockRightPanel =
-								 blockUI.instances.get('RightPanel');
-								 $scope.BlockRightPanel.start();*/
-
 								// if Test is in root folder
 								if (selectedTest.$parentNodeScope) {
 									$scope.folderGuid = selectedTest.$parentNodeScope.node.guid;
@@ -1771,7 +1767,7 @@ angular
 										.createVersions(
 												this,
 												function(scope, testResult) {
-
+													$rootScope.blockRightPanel.start();
 													$scope.versionedTests = testResult;
 
 													$scope.currentTab = SharedTabService.tests[SharedTabService.currentTabIndex];
@@ -2108,9 +2104,6 @@ angular
 								$scope.tests[$scope.sharedTabService.currentTabIndex].tabTitle = "Untitled test";
 								$scope.tests[$scope.sharedTabService.currentTabIndex].questions = metadatas;
 								QTI.initialize();
-								// $scope.BlockRightPanel =
-								// blockUI.instances.get('BlockRightPanel');
-								// $scope.BlockRightPanel.start();
 								$scope.saveTest();
 								$scope.tests[$scope.sharedTabService.currentTabIndex].questions = [];
 								$scope.render(metadatas);
