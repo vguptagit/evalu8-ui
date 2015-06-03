@@ -2053,6 +2053,7 @@ QTI.Elements.SimpleChoice.play = function(qtiNode, displayNode, state) {
 	var contentsDisplayNodeRadioEditable;
 	if (isInteractionChoice) {
 		var multiple = hasInteraction ? (maxChoices == 1 ? false : true) : true;
+		multiple = (typeof(state.questionType)!='undefined') ? (state.questionType == 'MultipleResponse' ? true : false) : multiple;
 
 		containerDisplayNode.addClass(multiple ? "checkbox" : "radio");
 		containerDisplayNode.append($("<span class='tick printView' tooltip='correct answer' tooltip-placement='bottom'></span>")
