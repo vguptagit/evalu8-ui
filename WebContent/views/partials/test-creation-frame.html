@@ -7,7 +7,7 @@
         <div class="col-sm-8 col-md-8 col-lg-8">
             <button type="button" class="btn btn-primary"
                     ng-disabled="sharedTabService.isTestWizardTabPresent"
-                    ng-click="addTestWizard()" tooltip="Test Creation Wizard" tooltip-placement="bottom">
+                    ng-click="addTestWizard()" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Test Creation Wizard">
                 <span class="icon-magic"></span> Test Wizard
             </button>
 
@@ -19,12 +19,12 @@
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                        <li ng-show="testType == 'PublisherTest'" role="presentation"><a style="color:lightgray; cursor:not-allowed;" tooltip="Save your tests" tooltip-placement="left" role="menuitem" tabindex="-1">Save</a></li>
-                        <li ng-show="testType != 'PublisherTest'" role="presentation"><a ng-click="saveTest()" ng-disabled="tests[currentIndex].isTestWizard && tests[currentIndex].testId == null" tooltip="Save your tests" tooltip-placement="left" role="menuitem" tabindex="-1">Save</a></li>
-                        <li role="presentation"><a ng-click="openSaveAsTestDialog()" ng-disabled="tests[currentIndex].isTestWizard && tests[currentIndex].testId == null" tooltip="Save your tests as" tooltip-placement="left" role="menuitem" tabindex="-1">Save As</a></li>
+                        <li ng-show="testType == 'PublisherTest'" role="presentation"><a style="color:lightgray; cursor:not-allowed;" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="left" title="Save your tests" role="menuitem" tabindex="-1">Save</a></li>
+                        <li ng-show="testType != 'PublisherTest'" role="presentation"><a ng-click="saveTest()" ng-disabled="tests[currentIndex].isTestWizard && tests[currentIndex].testId == null" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="left" title="Save your tests" role="menuitem" tabindex="-1">Save</a></li>
+                        <li role="presentation"><a ng-click="openSaveAsTestDialog()" ng-disabled="tests[currentIndex].isTestWizard && tests[currentIndex].testId == null" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="left" title="Save your tests as" role="menuitem" tabindex="-1">Save As</a></li>
                     </ul>
                 </div>
-                <button type="button" class="btn btn-primary" tooltip="Print and Format Tests" tooltip-placement="bottom">Print</button>
+                <button type="button" class="btn btn-primary" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Print and Format Tests">Print</button>
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-primary {{exportBtnCss}}"
                         ng-click="open()" tooltip="Export Test Files" tooltip-placement="bottom">
@@ -41,7 +41,7 @@
             <ul class="nav nav-tabs test-tabs margin-lft-10 padding-top-6" id="mytab">
                 <li ng-click="addNewTest()">
                     <button type="button"
-                            class="btn btn-default glyphicon glyphicon-plus addNewTab" tooltip="New tab" tooltip-placement="bottom"></button>
+                            class="btn btn-default glyphicon glyphicon-plus addNewTab" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="New tab"></button>
                 </li>
 
                 <li ng-show="$index < 5" ng-repeat="test in tests"
@@ -52,7 +52,7 @@
                                                                              data-toggle="tab">{{test.tabTitle}}</a>
                 </li>
                 <li class="dropdown" ng-show="tests.length > 5">
-                    <a class="dropdown-toggle dot" data-toggle="dropdown">...</a>
+                    <a class="dropdown-toggle dot" data-toggle="dropdown" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="More tabs">...</a>
                     <ul class="dropdown-menu">
                         <li ng-show="$index >= 5" ng-repeat="test in tests" ng-class="{active: isActiveTab(test.id)}"
                             ng-click="onClickTab(test)" id="{{test.id}}">
