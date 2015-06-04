@@ -49,7 +49,7 @@
 						class="searchDiscpline form-control" ng-model="searched"
 						typeahead="discipline for discipline in disciplines.all.sort() | filter:$viewValue"
 						ng-keyup="searchDiscipline($event)"> <span class="glyphicon glyphicon-search searchicon" ng-click="searchDisciplineOnClick()"
-						tooltip="Search" tooltip-placement="bottom"></span>
+						ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Search"></span>
 							
 							
 								<!-- <input type="text" placeHolder="Search Discipline"
@@ -90,7 +90,7 @@
 									typeahead="book.title for book in books.all | searchFields22:$viewValue"
 									ng-keyup="searchBookOnEnter($event)"><span
 									class="glyphicon glyphicon-search searchicon" ng-click="searchBookOnClick()"
-									tooltip="search" tooltip-placement="bottom"></span>
+									ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Search"></span>
 							</div>
 						</div>
 					</div>

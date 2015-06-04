@@ -27,7 +27,7 @@
                 <button type="button" class="btn btn-primary" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Print and Format Tests">Print</button>
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-primary {{exportBtnCss}}"
-                        ng-click="open()" tooltip="Export Test Files" tooltip-placement="bottom">
+                        ng-click="open()" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Export Test Files">
                     Export
                 </button>
             </div>
@@ -74,7 +74,7 @@
     <div class="row">
         <div class="questionFeature">
             <button ng-click="TestVersion_open()"
-                    class="btn btn-primary pull-right {{newVersionBtnCss}}">
+                    class="btn btn-primary pull-right {{newVersionBtnCss}}" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Create test versions">
                 New
                 Version
             </button>
@@ -132,7 +132,7 @@
                  ng-repeat="criteria in tests[currentIndex].criterias" ng-show="$first || !isApplySameCriteriaToAll">
                 <div class="col-lg-11  form-inline  panel panel-default bg-gray-lighter">
                     <button type="button" class="close"
-                            ng-click="closeCriteria(criteria,true)" aria-label="Close" tooltip="Delete this section" tooltip-placement="bottom">
+                            ng-click="closeCriteria(criteria,true)" aria-label="Close" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Delete this section">
                         <span aria-hidden="true">&times;</span>
                     </button>
                     <!-- <div>
@@ -155,7 +155,7 @@
                                 <li ng-repeat="topic in tests[currentIndex].criterias" ng-if="topic.folderTitle == criteria.folderTitle || isApplySameCriteriaToAll">
                                     <span>{{topic.folderTitle}} ({{topic.totalQuestions}} Questions)</span>
                                     <button type="button" class="close btnChapterClose" ng-show="isApplySameCriteriaToAll"
-                                            ng-click="closeCriteria(topic,false)" aria-label="Close" tooltip="Delete this section" tooltip-placement="bottom">
+                                            ng-click="closeCriteria(topic,false)" aria-label="Close" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Delete this section">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </li>
