@@ -305,6 +305,9 @@ angular
 
 								var maxChoices = $(xml).find('itemBody').find(
 										'choiceInteraction').attr('maxChoices');
+								
+								maxChoices = (typeof(selectedQstnNode.node.quizType)!='undefined') ? (selectedQstnNode.node.quizType == 'MultipleResponse' ? '2' : '1') : maxChoices;
+								
 								appendResponseProcessingTag(xml,
 										htmlOptions.length);
 								var optionCntrol = (maxChoices == 1 ? 'radio'
@@ -1104,8 +1107,8 @@ angular
 																 newNode['questionMetadata'][value]='';																
 															});		
 															 
-															newNode.IsEditView = false;
-															newNode.editMainText = CustomQuestionTemplate["MultipleChoice"].editMainText;
+															newNode.IsEditView = false;															
+															newNode.editMainText = CustomQuestionTemplate[newNode.quizType].editMainText;
 																																	
 															$.each(newNode.extendedMetadata, function(index, item){		
 																var name = item['name'].charAt(0).toUpperCase() + item['name'].slice(1);
@@ -1245,7 +1248,10 @@ angular
 															displayNode.qstnLinkText = displayNode.IsEditView ? "View"
 																	: "Edit";
 															displayNode.extendedMetadata =  questionMetadataResponse.extendedMetadata;
-															displayNode.questionMetadata = userSettings.questionMetadata;															
+															displayNode.questionMetadata = userSettings.questionMetadata;	
+															
+
+                                                            displayNode.editMainText = CustomQuestionTemplate[displayNode.quizType].editMainText;
 															
                                                             $.each(displayNode.extendedMetadata, function(index, item){                                                                    
                                                                 var name = item['name'].charAt(0).toUpperCase() + item['name'].slice(1);
