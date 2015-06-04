@@ -1197,6 +1197,8 @@
               if(dragInfo) {
             	  
             	  var destination = dragInfo.eventArgs().dest.nodesScope;
+                  var editModeQuestions=$(destination.$parent.$element).find("li[printmode=false]");
+
             	            	  
             	  var IsTargetAreaInScope=false;     
             	  if(angular.element(e.target).hasClass('angular-ui-tree')) {
@@ -1219,8 +1221,13 @@
           	
               if (dragElm) {
                 scope.$treeScope.$apply(function() {
-                	 if (scope.$$apply) {
-					                  scope.$callbacks.beforeDrop(dragInfo.eventArgs(elements, pos));					                
+                	 if (dragStarted && scope.$$apply) {
+					                  scope.$callbacks.beforeDrop(dragInfo.eventArgs(elements, pos));	
+                                      if(editModeQuestions.length>0){
+                                          scope.$emit("dragCancel");
+                                            scope.$$apply = false;
+                                    }
+
                 	 }
   	                	
                 });
