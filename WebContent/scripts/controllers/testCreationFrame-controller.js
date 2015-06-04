@@ -1531,7 +1531,7 @@ angular
                                     if(duplicateTitle && test.testId == null) {
                                         
                                     	$scope.IsConfirmation = false;
-                                        $scope.message = "A test with same title already exists in this folder";
+                                        $scope.message = "A test already exists with this name. Please save with another name.";
                                         $modal.open(confirmObject); 
                                         
                                         $rootScope.blockRightPanel.stop();

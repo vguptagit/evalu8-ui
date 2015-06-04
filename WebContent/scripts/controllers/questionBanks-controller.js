@@ -1120,6 +1120,7 @@ angular
 							    TestService.getMetadata(newTest.guid, function (test) {
 							        test.nodeType = "test";
 							        SharedTabService.tests[SharedTabService.currentTabIndex].metadata = TestService.getTestMetadata(test);
+							        SharedTabService.tests[SharedTabService.currentTabIndex].treeNode = null;
 							    });
 							});
 						} ]);
