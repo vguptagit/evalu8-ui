@@ -17,7 +17,7 @@ angular.module('e8MyTests').controller('SaveConfirmationController', function ($
         $modalInstance.dismiss('cancel');
     };
     $scope.closeTab = function () {
-    	parentScope.closeTab($scope.curresnTest);
+        parentScope.closeTab(parentScope.closingTab);
         $modalInstance.dismiss('cancel');
     };
 });

@@ -1917,7 +1917,8 @@ angular
 
 						    // save confirmation on close button clicked..
 						    //TODO: renamed 'Confirmation_Open' to 'open_CloseConfirmation'. need to remove this comment later, if there is no impact.
-							$scope.open_CloseTabConfirmation = function() {
+							$scope.open_CloseTabConfirmation = function (tab) {
+							    $scope.closingTab = tab;
 								$modal
 										.open({
 											templateUrl : 'views/partials/saveConfirmationPopup.html',

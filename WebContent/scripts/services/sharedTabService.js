@@ -349,7 +349,7 @@ angular.module('evalu8Demo')
 		                             removeMasterTestByIndex(j);
 		                             //scope.tests.splice(i, 1);
 		                         } else {
-		                             scope.open_CloseTabConfirmation();
+		                             scope.open_CloseTabConfirmation(tab);
 		                         }
 		                         isComeOutFreomLoop = true;
 		                         return false;
