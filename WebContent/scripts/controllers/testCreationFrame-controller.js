@@ -1661,19 +1661,22 @@ angular
     									})									
 
     									TestService.saveTestData(testcreationdata, test.folderGuid, function(testResult) {
-    									    var isEditMode = false;
-    									    if (SharedTabService.tests[SharedTabService.currentTabIndex].testId) {
+    									    var isEditMode = false,
+                                                test = SharedTabService.tests[SharedTabService.currentTabIndex];
+
+    									    if (test.testId) {
     									        isEditMode = true;
     									    }
-    										SharedTabService.currentTab = jQuery.extend(true, {}, SharedTabService.tests[SharedTabService.currentTabIndex]);
-    										SharedTabService.tests[SharedTabService.currentTabIndex].testId = testResult.guid;
-    										SharedTabService.tests[SharedTabService.currentTabIndex].id = testResult.guid;
-    										SharedTabService.tests[SharedTabService.currentTabIndex].tabTitle = test.title;
-    										SharedTabService.tests[SharedTabService.currentTabIndex].metadata = testcreationdata.metadata;
-    										if (SharedTabService.tests[SharedTabService.currentTabIndex].treeNode) {
-    										    SharedTabService.tests[SharedTabService.currentTabIndex].treeNode.testType = EnumService.NODE_TYPE.test;
-    										    SharedTabService.tests[SharedTabService.currentTabIndex].treeNode.showEditIcon = true;
-    										}
+    									    SharedTabService.currentTab = jQuery.extend(true, {}, test);
+    									    test.testId = testResult.guid;
+    									    test.id = testResult.guid;
+    									    test.tabTitle = test.title;
+    									    test.metadata = testcreationdata.metadata;
+
+    									    if (test.treeNode && test.treeNode.testType === EnumService.TEST_TYPE.PublisherTest) {
+    									        test.treeNode.testType = EnumService.NODE_TYPE.test;
+    									        test.treeNode.showEditIcon = true;
+    									    }
     										$scope.testGuid = testResult.guid;
     										$scope.newVersionBtnCss = "";
     										$scope.exportBtnCss = "";
@@ -1683,7 +1686,7 @@ angular
     										$rootScope.$broadcast('handleBroadcast_AddNewTest', testResult, $scope.containerFolder, isEditMode);
     										$scope.containerFolder = null; //clear selected folder in save as dialog popup.
                                              
-    										if (SharedTabService.tests[SharedTabService.currentTabIndex].isSaveAndClose) {
+    										if (test.isSaveAndClose) {
     											SharedTabService
     													.closeTab(
     															SharedTabService.currentTab,
@@ -1694,7 +1697,7 @@ angular
     											SharedTabService
     													.removeMasterTest(SharedTabService.currentTab);
     											SharedTabService
-    													.addMasterTest(SharedTabService.tests[SharedTabService.currentTabIndex]);
+    													.addMasterTest(test);
     										}
     									});
     								});                                                                

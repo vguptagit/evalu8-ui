@@ -28,6 +28,11 @@ angular.module('evalu8Demo')
         publisherTests : 'publisherTests'
     };
 
+    this.TEST_TYPE = {
+        Test: 'test',
+        PublisherTest: 'PublisherTest'
+    };
+
     this.ERROR_MESSAGES = {
         EmptyTestTitle: "Please Enter Test Title to save the test."
     };
