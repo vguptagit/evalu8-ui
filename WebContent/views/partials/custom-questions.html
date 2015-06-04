@@ -9,7 +9,7 @@
 
         <script type="text/ng-template" id="question_renderer.html">
             <div ui-tree-handle class="questionTemplate tree-node tree-node-content">
- 			<span class="plusIconQT newTest-close glyphicon glyphicon-plus" ng-mousedown="editQuestion(this)" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Move template to right to create question"></span>
+ 			<button class="plusIconQT newTest-close glyphicon glyphicon-plus" ng-mousedown="editQuestion(this)" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Move template to right to create question"></button>
                 <div class='printViewContainer' ng-if="node" ng-bind-html="getCustomQuestionHTML(this)">
                 </div>
             </div>

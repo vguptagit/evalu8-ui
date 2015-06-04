@@ -149,12 +149,12 @@
                         <label class="captionLabel" title="{{node.title}}">{{node.title}}</label>
                     </div>
                     <div class="iconsChapter">
-                        <span class="action-icon-bg glyphicon glyphicon-pencil" 
+                        <button type="button" class="action-icon-bg glyphicon glyphicon-pencil" 
 							ng-show="node.showEditQuestionIcon && node.nodeType != 'publisherTests'" 
-							ng-mousedown="editQuestion(this)" data-container="body" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Move question to right for editing"></span>
-                        <span class="icon-magic action-icon-bg pull-right" 
+							ng-mousedown="editQuestion(this)" data-container="body" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Move question to right for editing"></button>
+                        <button type="button" class="icon-magic action-icon-bg pull-right" 
 							ng-show="node.showTestWizardIcon && node.nodeType != 'publisherTests'" 
-							ng-mousedown="createTestWizardCriteria(this)" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Auto create test with wizard"></span>
+							ng-mousedown="createTestWizardCriteria(this)" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Auto create test with wizard"></button>
                         <!--
                         <span class="settingsChapter"></span>
                         <span class="printChapter"></span>
@@ -199,7 +199,7 @@
 
 	<script type="text/ng-template" id="qb_questions_renderer.html">
         <div ng-mousedown="selectNode(this.node);" ui-tree-handle class="printViewContainer tree-node tree-node-content questionList" ng-class="{questionTitleInTree: node.questionXML}">
-            <span ng-show="node.showEditQuestionIcon" class="newTest-close questionIcon action-icon-bg glyphicon glyphicon-pencil" ng-mousedown="editQuestion()" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Move question to right for editing"></span>
+            <button type="button" ng-show="node.showEditQuestionIcon" class="newTest-close questionIcon action-icon-bg glyphicon glyphicon-pencil" ng-mousedown="editQuestion()" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Move question to right for editing"></button>
             <div class="printViewContainer" ng-if="node.textHTML" ng-bind-html="getHTML(this)">
             </div>
         </div>
