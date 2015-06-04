@@ -1083,7 +1083,6 @@ angular
 							$scope.searchBooksForQuestionTypes = function(node) {
 								$scope.showAdvancedSearch = false;
 								if($scope.selectedContainer!=undefined && $scope.selectedContainer!=""){
-									$scope.showAdvancedSearch = true;
 									$scope.showContainer(true);
 								}
 								else{
@@ -1143,6 +1142,15 @@ angular
 										}
 									}
 								};
+							
+							$scope.clearAdvancedSearch = function(){
+								$scope.selectedContainer="";
+								$scope.selectedQuestionTypes=[];
+								$scope.selectedBookIDs=[];
+								$scope.isAdvancedSearchMode = false;
+								$scope.isSearchMode = false;
+								$scope.loadTree();
+							}
 							
 							$scope.$on('handleBroadcast_AddNewTest', function (handler, newTest, containerFolder, isEditMode) {
 							    if (isEditMode) {							       

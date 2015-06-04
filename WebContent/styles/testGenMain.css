@@ -2643,3 +2643,22 @@ li[printmode='true'] .qti-itemBody .qti-blockquote>p:first-child {
 li[printmode='false'][optionsview='true'] .blankBtnDiv{
 	float: left;
 }
+
+.selectedQuestionTypes{
+	float: left; 
+	color: #4D4D4D; 
+	font-family: Helvetica; 
+	font-size: 14px; 
+	text-decoration: none !important; 
+	margin-top: 10px;
+	margin-right: 10px;	
+}
+
+.clearAdvancedSearch{
+	float: left; 
+	color: #4D4D4D; 
+	font-family: Helvetica; 
+	font-size: 14px; 
+	text-decoration: none !important; 
+	margin-top: 10px; 
+}
