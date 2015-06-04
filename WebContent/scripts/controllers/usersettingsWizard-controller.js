@@ -606,52 +606,19 @@ angular
 							}
 
 							$scope.save = function() {
-								if (!$scope.isBookEmpty()) {
-
-									var blockLeftpanel = blockUI.instances.get('Leftpanel');
-									blockLeftpanel.start();
+								
+								UserService.saveUserDisciplines($scope.disciplines.userSelected, function() {
 									
-									UserService.saveUserDisciplines($scope.disciplines.userSelected, function() {
+									UserService.saveUserBooks($scope.books.currentlySelected, function() {
 										
-										UserService.saveUserBooks($scope.books.currentlySelected, function() {
-											
-											BookService.userBooks(function(response) {
-												
-												$scope.$parent.userBooks = response;
+                                        BookService.userBooks(function(response) {
 
-												DisciplineService.userDisciplines(function(userDisciplines) {
-													userDisciplines.forEach(function(discipline) {
-														discipline["isCollapsed"] = true;
-													});
-													
-													userDisciplines.sort(function(a, b) {
-														return a.item.localeCompare(b.item)
-													});
-
-													UserQuestionsService.userQuestions(function(userQuestions) {
-														if (userQuestions.length) {
-															$scope.userQuestions = userQuestions;
-															userDisciplines
-																	.unshift({
-																		"item" : "Your Questions (user created)",
-																		"isCollapsed" : true	
-																	});
-														}
-														
-														blockLeftpanel.stop();
-													})
-															
-													$scope.$parent.isSearchMode = false;
-													$scope.$parent.searchedText = "";
-													$scope.$parent.disciplines = userDisciplines;
-													$modalInstance.close();
-												})
-
-											})
-										});
+                                        	$scope.$parent.userBooks = response;
+                                        	
+                                        	$modalInstance.close();
+                                        });
 									});
-
-								}
+								});
 							}
 
 							$scope.buttonEnableDisable = function(state) {

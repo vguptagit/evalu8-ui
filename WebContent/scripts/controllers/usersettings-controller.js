@@ -46,6 +46,9 @@ angular.module('evalu8Demo')
 		 UserService.saveUserQuestionMetadata($scope.questionMetadata.userSelected, function(success) {
 			 if(success) {
 				 SharedTabService.userQuestionSettings=$scope.questionMetadata.userSelected;
+				 
+				 $rootScope.$broadcast("SaveSettings");
+				 
 				 $modalInstance.close();				 
 			 }
 		 });
