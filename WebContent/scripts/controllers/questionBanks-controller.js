@@ -917,13 +917,12 @@ angular
 								}
 							}
 							
-							$scope.showContainer = function(){
+							$scope.parentNode;
+							$scope.showContainer = function(isAdvancedSearch){
 								var searchedContainer = "";
 								var parentContainerid = "";
 								var hasParent = false;
 								var searchedDiscipline = {};
-								
-
 								$scope.allContainers
 										.forEach(function(container) {
 											if (container.guid == $scope.selectedContainer.guid) {
@@ -975,24 +974,48 @@ angular
 														{}, container)];
 												containerNode = containerNode.nodes[0];
 											})
+									$scope.parentNode = containerNode;		
+									$scope.addSearchedContainer(isAdvancedSearch,searchedContainer)
+
+								} else {
+									$scope.parentNode = $scope.disciplines[0].nodes[0];
+									$scope.addSearchedContainer(isAdvancedSearch,searchedContainer)
+								}
+							}
+
+
+							$scope.addSearchedContainer = function(isAdvancedSearch, searchedContainer) {
+								if(isAdvancedSearch){
+									var isQuestionTypeExists=false; 
+									questionService.getAllQuestionsOfContainer($scope.bookID,searchedContainer.guid, function(response){
+										response.forEach(function(question) {
+											if($scope.selectedQuestionTypes.toString().indexOf(question.quizType)>-1){
+												isQuestionTypeExists=true;
+											}
+										});
+										if(isQuestionTypeExists){
+											searchedContainer.template = "nodes_renderer.html";
+											searchedContainer.showEditQuestionIcon=true;
+											searchedContainer.showTestWizardIcon=true;
+											searchedContainer.nodeType = "topic";
+											searchedContainer.isCollapsed=true;
+											$scope.parentNode["nodes"] = [ jQuery.extend(true,
+													{}, searchedContainer) ];
+										}
+									});
+								}
+								else{
 									searchedContainer.template = "nodes_renderer.html";
 									searchedContainer.showEditQuestionIcon=true;
 									searchedContainer.showTestWizardIcon=true;
 									searchedContainer.nodeType = "topic";
 									searchedContainer.isCollapsed=true;
-									containerNode["nodes"] = [ jQuery.extend(true,
-											{}, searchedContainer) ];
-
-								} else {
-									searchedContainer.showEditQuestionIcon=true;
-									searchedContainer.showTestWizardIcon=true;
-									searchedContainer.nodeType = "topic";
-									searchedContainer.isCollapsed=true;
-									$scope.disciplines[0].nodes[0]["nodes"] = [jQuery.extend(true,
-											{}, searchedContainer)];
+									$scope.parentNode["nodes"] = [ jQuery.extend(true,
+											{}, searchedContainer) ];	
 								}
+								
 							}
-
+							
 							$scope.getParentContainers = function(containerid) {
 								var parentContainers = [];
 								var parentContainerid = "";
@@ -1058,25 +1081,30 @@ angular
 							
 							
 							$scope.searchBooksForQuestionTypes = function(node) {
-								$rootScope.blockLeftPanel.start();
 								$scope.showAdvancedSearch = false;
-								var count = 0;
-								$scope.selectedBooks.forEach(function(book){
-									ContainerService.getQuestionTypeContainers(book.guid,$scope.selectedQuestionTypes.toString(),function(containers){
-										containers.forEach(function(container){
-											container.isCollapsed=true;
-											container.nodeType = "chapter";
-											container.bookid = book.guid;
+								if($scope.selectedContainer!=""){
+									$scope.showAdvancedSearch = true;
+									$scope.showContainer(true);
+								}
+								else{
+									var count = 0;
+									$scope.selectedBooks.forEach(function(book){
+										ContainerService.getQuestionTypeContainers(book.guid,$scope.selectedQuestionTypes.toString(),function(containers){
+											containers.forEach(function(container){
+												container.isCollapsed=true;
+												container.nodeType = "chapter";
+												container.bookid = book.guid;
+											});
+											book.isCollapsed=false;
+											book.nodes=containers;
+											if(count == 0){
+												$scope.disciplines=[];
+											}
+											$scope.bookAddToDiscipline(book);
+											count=count+1;
 										});
-										book.isCollapsed=false;
-										book.nodes=containers;
-										if(count == 0){
-											$scope.disciplines=[];
-										}
-										$scope.bookAddToDiscipline(book);
-										count=count+1;
-									});
-								});	
+									});	
+								}
 							}
 							
 							$scope.bookAddToDiscipline=function(book){

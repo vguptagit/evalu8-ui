@@ -50,10 +50,8 @@ angular
 			$http.get(url, config).success(
 					function(response) {
 						callback(response);
-						$rootScope.blockLeftPanel.stop();
 					}).error(function(response) {
 						callback(response);
-						$rootScope.blockLeftPanel.stop();
 					});
 			};
 		
