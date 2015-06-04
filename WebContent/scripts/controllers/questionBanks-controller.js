@@ -96,6 +96,9 @@ angular
 							DisciplineService
 									.userDisciplines(function(userDisciplines) {
 
+										var blockLeftpanel = blockUI.instances.get('Leftpanel');
+										blockLeftpanel.start();
+										
 										$scope.disciplines = userDisciplines;
 										
 										$scope.disciplines.forEach(function(discipline) {
@@ -107,8 +110,7 @@ angular
 										});
 
 										UserQuestionsService
-												.userQuestions(function(
-														userQuestions) {
+												.userQuestions(function(userQuestions) {
 													if (userQuestions.length) {
 														$scope.userQuestions = userQuestions;
 														$scope.disciplines
@@ -117,19 +119,11 @@ angular
 																	"isCollapsed" : true	
 																});
 													}
+													
+													blockLeftpanel.stop();
 												})
+												
 
-										DisciplineService
-												.disciplineDropdownOptions(
-														userDisciplines,
-														"Question Banks",
-														function(
-																disciplinesOptions,
-																selectedValue) {
-
-															$scope.disciplinesOptions = disciplinesOptions;
-															$scope.selectedValue = selectedValue;
-														});
 									});
 
 							$scope.disciplineFilterChange = function(option) {
