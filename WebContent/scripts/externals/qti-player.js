@@ -1636,7 +1636,7 @@ if(state.questionType=="Matching"){
 	    if($(displayNode)[0].nodeName!="BLOCKQUOTE"){
 	    	
 	    	 elementDisplayNode = QTI.prepare(qtiNode,
-					$("<p class='optionLabelView'></p>"));
+					$("<p class='optionLabelView qText'></p>"));
 	    	 
 	    	 $(displayNode).append(elementDisplayNode);
 	    	 
@@ -1802,7 +1802,7 @@ var textBox = $("<div contenteditable='true'  class='editView' type='text' id='q
 
 	
 	var elementDisplayNode = QTI.prepare(qtiNode,
-			$("<p class='optionLabelView'></p>"));
+			$("<p class='optionLabelView qText'></p>"));
 	$(displayNode).append(elementDisplayNode);
 	this.extend.play(qtiNode, elementDisplayNode, state);
 //	this.processChildren(qtiNode, elementDisplayNode, state);

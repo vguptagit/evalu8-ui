@@ -1138,7 +1138,11 @@ li[printmode='true'] .qti-simpleChoice .radio, li[printmode='true'] .qti-simpleC
 
 li[printmode='true'] .qti-choiceInteraction {
 	display: table;
-	width: 100%;
+	width: 100%;	
+}
+
+li[printmode='true'] .qstnContainer .qti-choiceInteraction {
+	margin-left: -8px;
 }
 
 li[printmode='true'] .#tree-root {
@@ -1146,8 +1150,9 @@ li[printmode='true'] .#tree-root {
 }
 
 li.displayQuestionLI {
-	cursor: pointer;
+	cursor: pointer;	
 	padding-bottom: 05px;
+	margin: 2px;
 }
 
 li[printmode='false'].displayQuestionLI {
@@ -1159,11 +1164,19 @@ li[printmode='false'].displayQuestionLI {
 }
 
 .qstnView {
-	font-size: 11px;
-	cursor: pointer;
-	padding-right: 15px;
-	height: 10px;
-	margin-bottom: 10px;
+	  font-size: 11px;
+	  cursor: pointer;
+	  padding-right: 21px;
+	  height: 10px;
+	  margin-top: 5px;
+	  margin-bottom: 2px;
+}
+
+.qstnViewLink {
+	text-align: top;
+	float: right;
+	text-decoration: none !important;
+	margin-right: 12px;
 }
 
 #qtiCaption {
@@ -1250,6 +1263,7 @@ li[quiztype='TrueFalse'] #viewHeader {
 	float: left;
 	font-weight: normal;
 	font-size: 12px;
+	background-color: #fff;
 }
 
 .optionTextEditablediv {
@@ -1266,6 +1280,7 @@ li[quiztype='TrueFalse'] #viewHeader {
 	min-width: 28px;			
 	min-height: 10px;
 	float: left;
+	background-color: #fff;
 }
 
 .editViewContainer .iconButtons {
@@ -1368,13 +1383,6 @@ li[quiztype='TrueFalse'] .qti-simpleChoice .radio {
 	margin-top: 0px;
 }
 
-.qstnViewLink {
-	text-align: top;
-	float: right;
-	text-decoration: none !important;
-	margin-right: 15px;
-}
-
 .editMetdata {
 	display: inline-block;
 	float: left;
@@ -1433,7 +1441,7 @@ li[quiztype='TrueFalse'] .qti-simpleChoice .radio {
 }
 
 #viewHeader{
-	padding-bottom: 3px;
+	padding-bottom: 9px;
 }
 
 #viewHeader > .captionMetadata{
@@ -1804,6 +1812,7 @@ ul.a {
 	min-height: 27px;
 	margin-bottom:12px;
 	display: inline-block;
+	background-color: #fff;
 }
 
 .iconContainer {
@@ -1878,11 +1887,17 @@ ul.a {
 	outline: 0;
 }
 
+.testQuestionSelected {
+	-webkit-box-shadow: 2px 2px 10px 0px rgba(169, 169, 169, 0.8);
+    -moz-box-shadow: 2px 2px 10px 0px rgba(169, 169, 169, 0.8);
+    box-shadow: 2px 2px 10px 0px rgba(169, 169, 169, 0.8);
+}
+
 .questionSelected {
 	-webkit-box-shadow: 0 0 10px 2px rgba(169, 169, 169, 0.8);
-	-moz-box-shadow: 0 0 10px 2px rgba(169, 169, 169, 0.8);
-	box-shadow: 0 0 10px 2px rgba(169, 169, 169, 0.8);
-}
+    -moz-box-shadow: 0 0 10px 2px rgba(169, 169, 169, 0.8);
+    box-shadow: 0 0 10px 2px rgba(169, 169, 169, 0.8); 
+ }
 
 .editiconButtons {
 	display: inline-block;
@@ -2121,12 +2136,12 @@ ul.a {
 	padding-top: 2px;
 	font-size: 11px;
 	font-weight: bold;
-	background-color: #EFEFEF;
+	background-color: #fff;
 }
 
 .mainOptionIndexEditContainerdiv,.matchOptionIndexEditContainerdiv{
 	float: left;
-	background-color: #EFEFEF;
+	background-color: #fff;
 }
 
 .matchOptionTextEditablediv {
@@ -2151,6 +2166,7 @@ li[qstntemplate='true'] .indChar {
 	margin-bottom: 7px;
 	font-weight: normal;
 	font-size: 12px;
+	background-color: #fff;
 }
 
 .mainOptionOperationdiv, .matchOptionOperation {
@@ -2175,6 +2191,7 @@ li[qstntemplate='true'] .indChar {
 .qstnContainer .qti-blockquote {
 	display: table;
 	width: 100%; 
+	padding-left: 5px;
 }
 
 .EssayHeader {
@@ -2206,9 +2223,10 @@ li[qstntemplate='true'] .indChar {
 	vertical-align: text-top;
 }
 
-.printViewContainer . {
+.qstnContainer .printViewContainer{
 	font-size: 14px;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-family: Helvetica;
+	padding-left: 8px;
 }
 
 li[qstntemplate=true] .printViewContainer  .qti-blockquote .matchIndex {
@@ -2604,8 +2622,8 @@ li[printmode='true'] .qti-itemBody .qti-blockquote>p:first-child {
 
 .questionCloseIcon {
   position: relative;
-  right: -20px;
-  top : -10px;
+  right: -27px;
+  top : -17px;
 }
 
 .advancedSearchText {
@@ -2661,4 +2679,12 @@ li[printmode='false'][optionsview='true'] .blankBtnDiv{
 	font-size: 14px; 
 	text-decoration: none !important; 
 	margin-top: 10px; 
+}
+
+.qstnContainer .qText{
+	padding-left: 4px !important;
+}
+
+li[printmode='true'] .questionList {
+	padding-left: 28px !important;
 }

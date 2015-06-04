@@ -284,7 +284,7 @@
                 type="1" ng-model="tests[currentIndex].questions">
                 <li draggable="{{!node.IsEditView}}" quiztype={{node.quizType}} class="questIndex displayQuestionLI" printmode="{{!node.IsEditView}}"
                     templateqstn="{{node.templateQstn}}" ng-mouseover="hoverIn(this)" ng-mouseleave="hoverOut()"
-                    optionsview={{node.optionsView}}
+                    optionsview="{{node.optionsView}}" ng-class="{testQuestionSelected:node.isNodeSelected}" 
                     ng-repeat="node in tests[currentIndex].questions" ui-tree-node
                     ng-include="'rf_question_renderer.html'"></li>
             </ol>
@@ -308,7 +308,7 @@
                     <a class="qstnViewLink" ng-click="showQstnPrintOrEditMode(this)"
                        ng-show="showQstnEditIcon" tooltip="{{node.qstnLinkTitle}}" tooltip-placement="bottom">{{node.qstnLinkText}}</a>
                 </div>
-                <div ui-tree-handle class="tree-node tree-node-content questionList">
+                <div ng-mousedown="selectQuestionNode(this.node);" ui-tree-handle class="tree-node tree-node-content questionList">
                     <div ng-class="node.IsEditView ? 'editViewContainer' : 'printViewContainer' "
                          bind-qti="getHTML(this)"></div>
                 </div>

@@ -65,7 +65,10 @@ angular
 								this.closeQstnBtn = false;
 							};
 							
-
+							$scope.selectQuestionNode = function (selectedQstn) {
+								selectedQstn.isNodeSelected = typeof(selectedQstn.isNodeSelected)=='undefined'?true:!selectedQstn.isNodeSelected;
+							};
+							
 							$scope.showQstnPrintOrEditMode = function(
 									selectedQstnNode) {
 								if (SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode
