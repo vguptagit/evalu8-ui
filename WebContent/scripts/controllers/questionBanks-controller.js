@@ -826,6 +826,9 @@ angular
 											resolve : {
 												step : function() {
 													return step;
+												},
+												source : function() {
+													return "questionBankTab";
 												}
 											}
 										})

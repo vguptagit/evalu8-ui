@@ -63,10 +63,13 @@ angular.module('evalu8Demo')
 				keyboard : false,
 				scope: $scope,
 				resolve: {
-			         step: function () {
-			           return step;
-			         }
-			       }
+					step: function () {
+						return step;
+					},
+					source : function() {
+						return "userSettings";
+					}
+				}
 			});			
 	  }
 	  

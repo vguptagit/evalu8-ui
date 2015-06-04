@@ -102,11 +102,11 @@ angular
 						'WizardHandler',
 						'$modalInstance',
 						'blockUI',
-						'step',
+						'step','source',
 						function($scope, $rootScope, $location, $routeParams,
 								$http, UserService, BookService,
 								DisciplineService, UserQuestionsService, WizardHandler,
-								$modalInstance, blockUI, step) {
+								$modalInstance, blockUI, step, source) {
 
 							$scope.searched = "";
 							$scope.trackEnterKey = 0;
@@ -614,6 +614,10 @@ angular
                                         BookService.userBooks(function(response) {
 
                                         	$scope.$parent.userBooks = response;
+                                        	
+                                        	if(source && source == "questionBankTab") {
+                                        		$rootScope.$broadcast("SaveSettings");
+                                        	}
                                         	
                                         	$modalInstance.close();
                                         });
