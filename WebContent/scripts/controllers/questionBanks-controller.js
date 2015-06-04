@@ -1082,7 +1082,7 @@ angular
 							
 							$scope.searchBooksForQuestionTypes = function(node) {
 								$scope.showAdvancedSearch = false;
-								if($scope.selectedContainer!=""){
+								if($scope.selectedContainer!=undefined && $scope.selectedContainer!=""){
 									$scope.showAdvancedSearch = true;
 									$scope.showContainer(true);
 								}
