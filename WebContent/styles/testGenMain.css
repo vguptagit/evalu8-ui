@@ -2188,9 +2188,15 @@ li[qstntemplate='true'] .indChar {
 	padding-left: 7px;
 }
 
-.qstnContainer .qti-blockquote {
+li[quiztype='Matching'] .qstnContainer .qti-blockquote {
 	display: table;
 	width: 100%; 
+	padding-left: 5px;
+}
+
+li[quiztype='FillInBlanks'] .qstnContainer .qti-blockquote,li[quiztype='Essay'] .qstnContainer .qti-blockquote {
+	display: table;
+	width: 84%; 
 	padding-left: 5px;
 }
 

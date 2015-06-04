@@ -69,6 +69,7 @@ angular
 								selectedQstn.isNodeSelected = typeof(selectedQstn.isNodeSelected)=='undefined'?true:!selectedQstn.isNodeSelected;
 							};
 							
+
 							$scope.showQstnPrintOrEditMode = function(
 									selectedQstnNode) {
 								if (SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode
@@ -309,7 +310,7 @@ angular
 								var maxChoices = $(xml).find('itemBody').find(
 										'choiceInteraction').attr('maxChoices');
 								
-								maxChoices = (typeof(selectedQstnNode.node.quizType)!='undefined') ? (selectedQstnNode.node.quizType == 'MultipleResponse' ? '2' : '1') : maxChoices;
+								maxChoices = (typeof(selectedQstnNode.node.quizType)!='undefined') ? (selectedQstnNode.node.quizType == 'MultipleResponse' ? 2 : 1) : maxChoices;
 								
 								appendResponseProcessingTag(xml,
 										htmlOptions.length);
@@ -325,7 +326,7 @@ angular
 									setIdentifierScore(xml, optionsHtmlControl);
 								}
 
-								var qstnModifiedData = getMultipleChoiceQstn_MasterDetails($(xml));
+								var qstnModifiedData = getMultipleChoiceQstn_MasterDetails($(xml),selectedQstnNode.node.quizType);
 								qstnModifiedData.questionMetadata = selectedQstnNode.node.questionMetadata;
 								selectedQstnNode.node.IsEdited = !angular
 										.equals(
@@ -380,7 +381,6 @@ angular
 
 							var updateMapEntryTag = function(xml,
 									optionsHtmlControl) {
-
 								var $mapEntry = '<mapEntry mapKey=\"RESPONSE_1\" mappedValue=\"0\" />';
 								$(xml).find("responseDeclaration mapping")
 										.children().slice(3).remove();
@@ -935,7 +935,7 @@ angular
 									
 										 case "MultipleResponse","MultipleChoice","Essay","FillInBlanks","TrueFalse":
 											 
-											 qstnMasterData = getMultipleChoiceQstn_MasterDetails(qstnXML);										 
+											 qstnMasterData = getMultipleChoiceQstn_MasterDetails(qstnXML,qstnNode.quizType);										 
 									         break;
 									         
 									      case "Matching":
@@ -952,9 +952,20 @@ angular
 									return qstnMasterData;																
 							}
 							
-							function getMultipleChoiceQstn_MasterDetails(qstnXML) {								
+							function getMultipleChoiceQstn_MasterDetails(qstnXML,quizType) {								
 								var optionList = [];
 								var correctAnswerList = [];
+								if(quizType=='MultipleResponse'){
+									$(qstnXML)
+									.find(
+											'responseDeclaration mapEntry')
+									.each(function(i, e) {
+										if ($(this).attr("mappedValue") == "1") {
+											correctAnswerList.push(i);
+										}
+									});
+									
+								}else{
 								$(qstnXML)
 										.find(
 												'setOutcomeValue[identifier="SCORE"] baseValue')
@@ -964,6 +975,7 @@ angular
 												correctAnswerList.push(i);
 											}
 										});
+								}
 
 								$(qstnXML).find('itemBody').find(
 										'choiceInteraction').find(
