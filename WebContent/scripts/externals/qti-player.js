@@ -2958,7 +2958,7 @@ var CustomQuestionTemplate =
 					 
 					
 					 
-					 $("<button class='editView blankButton' ng-mousedown='addBlank(this,$event)' ng-disabled='captionFocus'>Add Blank</button>").insertAfter(printElement.next());
+					 $("<div class='blankBtnDiv'><button class='editView blankButton' ng-mousedown='addBlank(this,$event)' ng-disabled='captionFocus'>Add Blank</button></div>").insertAfter(printElement.next());
 					
 					 $("<div class = 'editView EssayHeader' id='crtAns'>Correct Answer</div>").insertAfter(element.find("button.editView.blankButton").eq(0));
 										$("<div id='crtAnsSpace'></div>").insertBefore(element.find("#crtAns").eq(0));

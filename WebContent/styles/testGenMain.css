@@ -2180,13 +2180,25 @@ li[qstntemplate='true'] .indChar {
 .EssayHeader {
 	font-size: 14px;
 	font-weight: bold;
-	margin-top: 20px;
+	margin-top: 10px;
+}
+
+.essayViewOptionDiv{
+	padding-right: 29px;
+	float: left;
 }
 
 .valueView {
-	width: 450px;
+	min-width: 400px !important;
 	background-color: #fff;
 	font-size: 12px;
+	width: 300px;
+	line-height: 1.5;
+	min-height: 26px;
+	border-left: 2px solid #D0D0D0;
+	float: left;
+	padding: 4px 5px;
+	background-color: #fff;
 }
 
 .printViewContainer .questionImage {
@@ -2263,7 +2275,7 @@ li[qstntemplate=true] .printViewContainer  .qti-blockquote .matchIndex {
 }
 
 span.viewOptionDiv{
-	padding-right: 42px;
+	padding-right: 46px;
 } 
 
 .metadatarow {
@@ -2369,8 +2381,10 @@ button.blankButton[disabled] {
   font-size: 13px;
   font-weight: normal;
   font-family: Verdana, Arial, Helvetica, sans-serif;
+  box-shadow: none; 
+  opacity: .65;
 }
-}
+
 
 div #crtAnsSpace {
 	height: 30px;
@@ -2622,4 +2636,8 @@ li[printmode='true'] .qti-itemBody .qti-blockquote>p:first-child {
 
 .qstnContainer div[contenteditable='true']{
 	position: relative;
+}
+
+li[printmode='false'][optionsview='true'] .blankBtnDiv{
+	float: left;
 }
