@@ -1168,6 +1168,7 @@ li[printmode='false'].displayQuestionLI {
 
 #qtiCaption {
 	width: 450px;
+	background-color: #fff;
 }
 
 #qtiCaption p{
@@ -1257,7 +1258,8 @@ li[quiztype='TrueFalse'] #viewHeader {
 	min-height: 26px;		
 	border-left: 2px solid #D0D0D0;	
 	float: left;
-	padding: 4px 5px;	
+	padding: 4px 5px;
+	background-color: #fff;	
 }
 
 .optionSelectionDiv {
@@ -1348,6 +1350,7 @@ li[printmode='true'] .editMetdata {
 
 li[quiztype='TrueFalse'] .radio div {
 	border: 0px;
+	background-color: #f8f8f8 !important;
 }
 
 li[quiztype='TrueFalse'] .radio div.optionOperationdiv {
@@ -2177,10 +2180,13 @@ li[qstntemplate='true'] .indChar {
 .EssayHeader {
 	font-size: 14px;
 	font-weight: bold;
+	margin-top: 20px;
 }
 
 .valueView {
 	width: 450px;
+	background-color: #fff;
+	font-size: 12px;
 }
 
 .printViewContainer .questionImage {
@@ -2336,21 +2342,34 @@ button[disabled]+.tooltip {
 }
 
 .blankButton {
-	float: right;
+	float: left;
 	margin-right: 40px;
 	border-radius: 5px;
-	background-color: Transparent;
+	background-color: #E0E0E0 !important;;
+	color:#4D4D4D !important;
 	border-color: gainsboro;
 	border-style: double;
 	padding-left: 6px;
 	padding-right: 6px;
 	margin-top: 10px;
+	font-size: 13px;
+	font-weight: normal;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+li[printmode='false'][optionsview='true'].displayQuestionLI{
+	background-color: #f8f8f8;
 }
 
 button.blankButton[disabled] {
   cursor: default;
-  background-color: gainsboro;
+  background-color: #E0E0E0 !important;
   color: darkgray;
+  font-size: 13px;
+  font-size: 13px;
+  font-weight: normal;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+}
 }
 
 div #crtAnsSpace {
@@ -2519,6 +2538,7 @@ li[qstntemplate='true'] .qti-simpleChoice .radio, li[printmode='true'] .qti-simp
 	float: right;
 	font-weight: normal;
 	outline:none;
+	background-color: #fff;
 }
 
 .closeQuestion {
@@ -2544,12 +2564,13 @@ li[printmode='true'] .qti-itemBody .qti-blockquote>p:first-child {
 }
 .crtAnsDiv{
 	cursor: pointer;
-	min-width: 455px;
+	min-width: 420px;
 	border: 2px solid #D0D0D0;
 	border-radius: 4px;
 	min-height: 27px;
 	padding-left: 0px;
 	margin-bottom: 10px;
+	margin-top: 5px;
 }
 .matching{
 	display: inline-block;
