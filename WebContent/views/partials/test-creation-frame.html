@@ -27,8 +27,8 @@
                 <button type="button" class="btn btn-primary" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Print and Format Tests">Print</button>
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-primary {{exportBtnCss}}"
-                        ng-click="open()" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Export Test Files">
-                    Export
+                       ng-click="open()" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Export Test Files">
+   							Export
                 </button>
             </div>
         </div>
@@ -74,7 +74,7 @@
     <div class="row">
         <div class="questionFeature">
             <button ng-click="TestVersion_open()"
-                    class="btn btn-primary pull-right {{newVersionBtnCss}}" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Create test versions">
+                                    class="btn btn-primary pull-right {{newVersionBtnCss}}" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Create test versions">
                 New
                 Version
             </button>
@@ -132,7 +132,7 @@
                  ng-repeat="criteria in tests[currentIndex].criterias" ng-show="$first || !isApplySameCriteriaToAll">
                 <div class="col-lg-11  form-inline  panel panel-default bg-gray-lighter">
                     <button type="button" class="close"
-                            ng-click="closeCriteria(criteria,true)" aria-label="Close" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Delete this section">
+                                ng-click="closeCriteria(criteria,true)" aria-label="Close" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Delete this section">
                         <span aria-hidden="true">&times;</span>
                     </button>
                     <!-- <div>
@@ -155,8 +155,8 @@
                                 <li ng-repeat="topic in tests[currentIndex].criterias" ng-if="topic.folderTitle == criteria.folderTitle || isApplySameCriteriaToAll">
                                     <span>{{topic.folderTitle}} ({{topic.totalQuestions}} Questions)</span>
                                     <button type="button" class="close btnChapterClose" ng-show="isApplySameCriteriaToAll"
-                                            ng-click="closeCriteria(topic,false)" aria-label="Close" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Delete this section">
-                                        <span aria-hidden="true">&times;</span>
+                                              ng-click="closeCriteria(topic,false)" aria-label="Close" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Delete this section">
+                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </li>
                             </ul>
@@ -329,41 +329,47 @@
                                         (visible in Print View)
                                     </span>
                                 </div>
-                                <span class="viewOptionDiv normalText">Questions:</span>
                                 <div class="viewOptionDiv viewOptionHV">                                 
                                     <input class="radioView" ng-checked="node.optionsView" name="radioView_{{$index}}_HV" ng-click="qstnOptionsView(this,true)" type="radio"></input>
-                                    <span class='radioText'>Vertical Display </span>
+                                    <span class='radioText'>Vertical Question Display </span>
                                 </div>
                                <div class="viewOptionDiv viewOptionHV">
                                     <input class="radioView" name="radioView_{{$index}}_HV" ng-checked="!node.optionsView" ng-click="qstnOptionsView(this,false)" type="radio"></input>
-                                    <span class='radioText'>Horizontal Display </span>
+                                    <span class='radioText'>Horizontal Question Display </span>
                                 </div>
                             </div>
                             <div class="EssaySpaceDiv" ng-show="node.quizType == 'Essay'">
                                 <span class="viewOptionDiv normalText">Essay Space:</span>
                                 <div class="viewOptionDiv viewOptionHV">
-                                    <input class="radioView" ng-checked="node.EssayPageSize == '0'" pagesize='0' name="radioView_{{$index}}_PV" ng-click="qstnEssayPageSize(this,'0')" type="radio">None</input>
+                                    <input class="radioView" ng-checked="node.EssayPageSize == '0'" pagesize='0' name="radioView_{{$index}}_PV" ng-click="qstnEssayPageSize(this,'0')" type="radio"></input>
+									<span class='radioText'>None</span>
                                 </div>
                                 <div class="viewOptionDiv viewOptionHV">
-                                    <input name="radioView_{{$index}}_PV" ng-checked="node.EssayPageSize == '10'" ng-click="qstnEssayPageSize(this,'10')" pagesize='10' type="radio">1/4 page</input>
+                                    <input class="radioView" name="radioView_{{$index}}_PV" ng-checked="node.EssayPageSize == '10'" ng-click="qstnEssayPageSize(this,'10')" pagesize='10' type="radio"></input>
+									<span class='radioText'>1/4 page</span>
                                 </div>
                                 <div class="viewOptionDiv viewOptionHV">
-                                    <input name="radioView_{{$index}}_PV" ng-checked="node.EssayPageSize == '20'" ng-click="qstnEssayPageSize(this,'20')" pagesize='20' type="radio">1/2 page</input>
+                                    <input class="radioView" name="radioView_{{$index}}_PV" ng-checked="node.EssayPageSize == '20'" ng-click="qstnEssayPageSize(this,'20')" pagesize='20' type="radio"></input>
+									<span class='radioText'>1/2 page</span>
                                 </div>
                                 <div class="viewOptionDiv viewOptionHV">
-                                    <input name="radioView_{{$index}}_PV" ng-checked="node.EssayPageSize == '40'" ng-click="qstnEssayPageSize(this,'40')" pagesize='40' type="radio">1 page</input>
+                                    <input class="radioView" name="radioView_{{$index}}_PV" ng-checked="node.EssayPageSize == '40'" ng-click="qstnEssayPageSize(this,'40')" pagesize='40' type="radio"></input>
+									<span class='radioText'>1 page</span>
                                 </div>
                             </div>
                             <div class="BlankSizeDiv" ng-show="node.quizType == 'FillInBlanks'">
                                 <span class="viewOptionDiv normalText">Blank Size:</span>
                                 <div class="viewOptionDiv viewOptionHV">
-                                    <input class="radioView" name="radioView_{{$index}}_BS" ng-checked="node.BlankSize == '20'" ng-click="qstnBlankSize(this,'20')" blanksize='20' type="radio">Small</input>
+                                    <input class="radioView" name="radioView_{{$index}}_BS" ng-checked="node.BlankSize == '20'" ng-click="qstnBlankSize(this,'20')" blanksize='20' type="radio"></input>
+ 									<span class='radioText'>Small</span>
                                 </div>
                                 <div class="viewOptionDiv viewOptionHV">
-                                    <input name="radioView_{{$index}}_BS" ng-checked="node.BlankSize == '50'" ng-click="qstnBlankSize(this,'50')" blanksize='50' type="radio">Medium</input>
+                                    <input class="radioView" name="radioView_{{$index}}_BS" ng-checked="node.BlankSize == '50'" ng-click="qstnBlankSize(this,'50')" blanksize='50' type="radio"></input>
+									<span class='radioText'>Medium</span>
                                 </div>
                                 <div class="viewOptionDiv viewOptionHV">
-                                    <input name="radioView_{{$index}}_BS" ng-checked="node.BlankSize == '100'" ng-click="qstnBlankSize(this,'100')" blanksize='100' type="radio">Large</input>
+                                    <input class="radioView" name="radioView_{{$index}}_BS" ng-checked="node.BlankSize == '100'" ng-click="qstnBlankSize(this,'100')" blanksize='100' type="radio"></input>
+									<span class='radioText'>Large</span>
                                 </div>
                             </div>
 
