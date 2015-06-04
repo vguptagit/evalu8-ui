@@ -92,39 +92,43 @@ angular
 
 							$scope.userQuestions = [];
 
-							// Fetch user disciplines and populate the drop down
-							DisciplineService
-									.userDisciplines(function(userDisciplines) {
+							$scope.loadTree = function() {
+								DisciplineService.userDisciplines(function(userDisciplines) {
 
-										var blockLeftpanel = blockUI.instances.get('Leftpanel');
-										blockLeftpanel.start();
-										
-										$scope.disciplines = userDisciplines;
-										
-										$scope.disciplines.forEach(function(discipline) {
-											discipline["isCollapsed"]=true;
-										});
-
-										$scope.disciplines.sort(function(a, b) {
-											return a.item.localeCompare(b.item)
-										});
-
-										UserQuestionsService
-												.userQuestions(function(userQuestions) {
-													if (userQuestions.length) {
-														$scope.userQuestions = userQuestions;
-														$scope.disciplines
-																.unshift({
-																	"item" : "Your Questions (user created)",
-																	"isCollapsed" : true	
-																});
-													}
-													
-													blockLeftpanel.stop();
-												})
-												
-
+									var blockLeftpanel = blockUI.instances.get('Leftpanel');
+									blockLeftpanel.start();
+									
+									$scope.disciplines = userDisciplines;
+									
+									$scope.disciplines.forEach(function(discipline) {
+										discipline["isCollapsed"]=true;
 									});
+
+									$scope.disciplines.sort(function(a, b) {
+										return a.item.localeCompare(b.item)
+									});
+
+									UserQuestionsService.userQuestions(function(userQuestions) {
+										if (userQuestions.length) {
+											$scope.userQuestions = userQuestions;
+											$scope.disciplines
+													.unshift({
+														"item" : "Your Questions (user created)",
+														"isCollapsed" : true	
+													});
+										}
+										
+										blockLeftpanel.stop();
+									})
+
+								});								
+							}
+							
+							$scope.loadTree();
+							
+							$scope.$on('SaveSettings', function() {
+								$scope.loadTree();
+							})
 
 							$scope.disciplineFilterChange = function(option) {
 
