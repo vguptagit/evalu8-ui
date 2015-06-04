@@ -1503,6 +1503,7 @@ angular
 								if (test.title == null
 										|| test.title.length <= 0) {
 								    $scope.showMessage_EmptyTestTitle();
+								    $rootScope.blockRightPanel.stop();
 									//$scope.IsConfirmation = false;
 									//$scope.message = "Please Enter Test Title to save the test.";
 
@@ -2116,7 +2117,6 @@ angular
 							// TODO: code optimization is need.
 							$scope.render = function(metadatas) {
 								if (metadatas.length == 0) {
-									// $scope.BlockRightPanel.stop();
 									return false;
 								}
 
