@@ -2616,7 +2616,7 @@ li[printmode='true'] .qti-itemBody .qti-blockquote>p:first-child {
 	position: absolute;
 	z-index: 1050;
 	margin-top: 10px;
-	margin-left: 255px;
+	margin-left: 80%;
 }
 .crtAnsDiv{
 	cursor: pointer;

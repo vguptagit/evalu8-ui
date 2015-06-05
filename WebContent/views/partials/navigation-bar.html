@@ -15,7 +15,7 @@
                 
                     <a ng-show="showUserInNavBar()" href="" class="dropdown-toggle" data-toggle="dropdown" role="button" 
                     aria-expanded="false"><span class="fa fa-user"></span>&nbsp {{$root.globals.givenName}} <span class="glyphicon glyphicon-chevron-down" 
-                    ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Logout and Account Information"></span><span 
+                    tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter"  tooltip="Logout and Account Information"></span><span 
                     class="border-right margin-border"></span></a>
                     
                     <ul class="dropdown-menu dropdown-menu-right" role="menu">
@@ -31,7 +31,7 @@
                 <!--<li ng-show="userName!=''">
                     <a  ><div class="glyphicon glyphicon-user"></div> {{userName}}<div class="glyphicon glyphicon-chevron-down"></div> </a>
                 </li>-->
-                <li><a href="" class='glyphicon glyphicon-question-sign' ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Evalu8 Help"> </a></li>
+                <li><a href="" class='glyphicon glyphicon-question-sign' tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Evalu8 Help"> </a></li>
             </ul>
         </div><!--/.nav-collapse -->
     </div>
