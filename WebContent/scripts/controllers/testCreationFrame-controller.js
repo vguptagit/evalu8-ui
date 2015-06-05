@@ -1551,6 +1551,10 @@ angular
                                         $modal.open(confirmObject); 
                                         
                                         $rootScope.blockRightPanel.stop();
+                                        
+                                        test.title = test.id;
+        							    $scope.testGuid = test.id;
+        							    
                                     	return;
                                     }
                                     
