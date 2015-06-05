@@ -3093,6 +3093,12 @@ QTI.getCursorElement = function(elm){
 		}
 	}
 	else{
+		if(elements.eq(i).length == 1)
+			if(elements.eq(i).html() == "<br>")
+			{
+				elements.eq(i).html("");
+				return QTI.getCursorElement(elements.eq(i));
+			}
 		return QTI.getCursorElement(elements.eq(i-1));
 	}
 	
