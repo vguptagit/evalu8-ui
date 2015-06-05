@@ -35,7 +35,7 @@
 						class="searchDiscpline form-control" ng-model="searchedDiscpline"
 						typeahead="discipline for discipline in disciplines.all.sort() | filter:$viewValue"
 						ng-keyup="searchDiscipline($event)"> <span class="glyphicon glyphicon-search searchicon" ng-click="searchDisciplineOnClick()"
-						ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Search"></span>
+						tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Search"></span>
 				</div>
 				<div class="discplineheight">
 					<div data-ng-repeat="discipline in disciplines.all.sort()"
@@ -70,7 +70,7 @@
 						typeahead-template-url="customTemplate.html"
 						typeahead="book.title for book in books.all | searchFields:$viewValue"
 						ng-keyup="searchedBookOnEnter($event)"> <span class="glyphicon glyphicon-search searchicon" ng-click="searchedBookOnClick()"
-						ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Search"></span>
+						tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Search"></span>
 				</div>
 				<div class="bookContainer">
 					<div data-ng-repeat="discipline in disciplineBooks">
