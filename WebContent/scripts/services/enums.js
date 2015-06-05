@@ -29,7 +29,7 @@ angular.module('evalu8Demo')
     };
 
     this.TEST_TYPE = {
-        Test: 'test',
+        Test: 'Test',
         PublisherTest: 'PublisherTest'
     };
 

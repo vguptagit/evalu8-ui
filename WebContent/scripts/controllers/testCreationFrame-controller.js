@@ -843,14 +843,7 @@ angular
 									$scope.newVersionBtnCss = "";
 									$scope.exportBtnCss = "";
 									
-									if (SharedTabService.tests[SharedTabService.currentTabIndex].treeNode
-                                        && SharedTabService.tests[SharedTabService.currentTabIndex].treeNode.testType == 'PublisherTest') {
-										
-										$scope.newVersionBtnCss = "disabled";
-										$scope.testType = 'PublisherTest';
-									} else {
-										$scope.testType = 'Test';
-									}									
+									$scope.setTestType();									
 								} else {
 									$scope.newVersionBtnCss = "disabled";
 									$scope.exportBtnCss = "disabled";
@@ -899,10 +892,22 @@ angular
 					            SharedTabService.closeQuestions(tab, $scope, index);					           
 					        }
 					        $scope.closeTabWithConfirmation = function ($event,tab) {
-								SharedTabService.closeTabWithConfirmation(tab,
-										$scope);
+								SharedTabService.closeTabWithConfirmation(tab, $scope);
+								$scope.setTestType();
 								$event.stopPropagation();
 							}
+					        
+							$scope.setTestType = function() {
+								if (SharedTabService.tests[SharedTabService.currentTabIndex].treeNode
+								        && SharedTabService.tests[SharedTabService.currentTabIndex].treeNode.testType === EnumService.TEST_TYPE.PublisherTest) {
+										
+									$scope.newVersionBtnCss = "disabled";
+									$scope.testType = EnumService.TEST_TYPE.PublisherTest;
+								} else {
+									$scope.testType = EnumService.TEST_TYPE.Test;
+								}
+							}
+							
 							$scope.closeCriteria = function(folder,
 									isWizardCloseBtnClicked) {
 								var scope = angular
