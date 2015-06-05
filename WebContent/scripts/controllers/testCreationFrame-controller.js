@@ -1558,7 +1558,7 @@ angular
                                         
                                         $rootScope.blockPage.stop();
                                         
-                                        test.title = test.id;
+                                        test.testId = test.id;
         							    $scope.testGuid = test.id;
         							    
                                     	return;
