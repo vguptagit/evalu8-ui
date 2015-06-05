@@ -105,30 +105,38 @@ angular.module('e8MyTests')
                 var item = source.node;
                 
                 if(mouseOverNode.node.nodes) {
-                	var duplicateItem = false;
-                	mouseOverNode.node.nodes.forEach(function(nodeItem) {
-                        
-                		if(item.nodeType == "folder") {
-                    		if(nodeItem.nodeType == 'folder' && nodeItem.title == item.title) {
-                    			duplicateItem = true;
-                    			
-        			            $scope.IsConfirmation = false;
-        			            $scope.message = "A folder already exists with this name. Please save with another name.";
-        			            $modal.open(confirmObject); 
-                    		}                        	
-                        }
-                		if(item.nodeType == "test") {
-                    		if(nodeItem.nodeType == 'test' && nodeItem.title == item.title) {
-                    			duplicateItem = true;
-                    			
-        			            $scope.IsConfirmation = false;
-        			            $scope.message = "A test already exists with this name. Please save with another name.";
-        			            $modal.open(confirmObject); 
-                    		}                        	
-                        }
-                	})
                 	
-                	if(duplicateTitle) return false;	
+                	var duplicateTitle = false;
+                	
+                	if(item.nodeType == "folder") {
+                    	mouseOverNode.node.nodes.forEach(function(nodeItem) {                            
+                    		if(nodeItem.nodeType == 'folder' && nodeItem.title == item.title) {
+                    			duplicateTitle = true;                			 
+                    		}                        
+                    	})
+                    	
+                    	if(duplicateTitle) {
+    			            $scope.IsConfirmation = false;
+    			            $scope.message = "A folder already exists with this name.";
+    			            $modal.open(confirmObject);
+                    		return false;
+                    	}                		
+                	}
+
+                	if(item.nodeType == "test") {
+                    	mouseOverNode.node.nodes.forEach(function(nodeItem) {                        
+                    		if(nodeItem.nodeType == 'test' && nodeItem.title == item.title) {
+                    			duplicateTitle = true;                			 
+                        	}                        	                        
+                    	})
+                    	
+                    	if(duplicateTitle) {
+    			            $scope.IsConfirmation = false;
+    			            $scope.message = "A test already exists with this name.";
+    			            $modal.open(confirmObject);
+                    		return false;
+                    	}                		
+                	}	
                 }
 
                 source.remove();                
@@ -150,6 +158,59 @@ angular.module('e8MyTests')
             } else {
 
             	var item = source.node;
+            	
+            	if(destParent.node.nodes) {
+                	var duplicateTitle = false;
+                	
+                	if(item.nodeType == "folder") {
+                		destParent.node.nodes.forEach(function(nodeItem) {                        
+                    		if(nodeItem.nodeType == 'folder' && nodeItem.title == item.title && nodeItem.$$hashKey != item.$$hashKey) {
+                    			duplicateTitle = true;                    			 
+                    		}                        	
+                        
+                		})
+                		
+                		if(duplicateTitle) {
+    			            $scope.IsConfirmation = false;
+    			            $scope.message = "A folder already exists with this name.";
+    			            $modal.open(confirmObject);
+    			            
+    			            if(sourceParent) {
+    			            	sourceParent.node.nodes.splice(sourceIndex, 0, source.node);	
+    			            } else {
+    			            	$scope.defaultFolders.splice(sourceIndex, 0, source.node);
+    			            }
+    			            
+    			            destParent.node.nodes.splice(destIndex, 1);
+                    		return false;
+                    	}
+                	}
+                	
+            		if(item.nodeType == "test") {
+                		destParent.node.nodes.forEach(function(nodeItem) {
+                    		if(nodeItem.nodeType == 'test' && nodeItem.title == item.title && nodeItem.$$hashKey != item.$$hashKey) {
+                    			duplicateTitle = true;                			 
+                    		}                        	
+                    	})            			
+                    	
+                    	if(duplicateTitle) {
+    			            $scope.IsConfirmation = false;
+    			            $scope.message = "A test already exists with this name.";
+    			            $modal.open(confirmObject);
+    			            
+    			            if(sourceParent) {
+    			            	sourceParent.node.nodes.splice(sourceIndex, 0, source.node);	
+    			            } else {
+    			            	$scope.defaultFolders.splice(sourceIndex, 0, source.node);
+    			            }
+    			                			            
+    			            destParent.node.nodes.splice(destIndex, 1);
+                    		return false;
+                    	}
+            		}
+            	}
+
+            	
             	var prevSeq = 0.0;
             	var nextSeq = 0.0;
             	$scope.itemSeq = 0.0;
@@ -615,7 +676,7 @@ angular.module('e8MyTests')
             			duplicateTitle = true;	
             			
                         $scope.IsConfirmation = false;
-                        $scope.message = "A folder with same title already exists at this level";
+                        $scope.message = "A folder already exists with this name. Please save with another name.";
                         $modal.open(confirmObject); 
             		}
             	});

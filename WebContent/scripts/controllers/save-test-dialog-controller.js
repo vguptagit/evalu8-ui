@@ -85,7 +85,7 @@
 						duplicateTitle = true;	
 						
 			            $scope.IsConfirmation = false;
-			            $scope.message = "A folder with same title already exists at this level";
+			            $scope.message = "A folder already exists with this name. Please save with another name.";
 			            $modal.open(confirmObject); 
 					}
 				});
