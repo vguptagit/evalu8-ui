@@ -2,6 +2,7 @@ angular.module('e8MyTests').controller('SaveConfirmationController', function ($
 
     $scope.curresnTest=parentScope.tests[parentScope.currentIndex];
     $scope.isErrorMessage=false;
+    parentScope.closingTab.showCloseButton = true;
 
     $scope.save = function () {
     	if($scope.curresnTest.title == "" || $scope.curresnTest.title == null){

@@ -48,6 +48,7 @@ angular.module('evalu8Demo')
 		         this.isTestWizard = false;
 		         this.treeNode = null;
 		         this.questionFolderNode = [];
+		         this.showCloseButton = true;
 		     }
 
 		     sharedTabService.Criteria = function () {
@@ -327,7 +328,9 @@ angular.module('evalu8Demo')
 		     //close tab
 		     sharedTabService.closeTabWithConfirmation = function (tab, scope) {
 		         //sharedTabService.onClickTab(tab, scope);
+		         tab.showCloseButton = false;
 		         if (sharedTabService.tests.length == 1 && sharedTabService.isEmptyTab(tab) && !sharedTabService.tests[0].isTestWizard) {//if only one empty tab present. 
+		             tab.showCloseButton = true;
 		             return false;
 		         }
 		         var isComeOutFreomLoop = false;
