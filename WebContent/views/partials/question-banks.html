@@ -6,7 +6,9 @@
 			typeahead="container as container.title for container in allContainers | filter:{title:$viewValue}"
 			ng-keyup="showContainerOnEnter($event)"> <span
 			class="glyphicon glyphicon-search bookSearchicon"
-			ng-click="showContainerOnClick()" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Search"></span>
+			ng-click="showContainerOnClick()" ng-Mytest-Tooltip
+			data-container="body" data-toggle="tooltip" data-placement="bottom"
+			title="Search"></span>
 	</div>
 	<div class="col-lg-6">
 		<a href="" class="advancedSearchText" ng-click="openAdvancedSearch()">Advanced
@@ -29,50 +31,44 @@
 			</div>
 			<div class="col-md-11 margin-bot-10">
 				<div>
-					<div class="ck-button col-md-4">
-						<label ng-class="disabled-cursor"> <input type="checkbox"
-							ng-click='toggleQuestiontypeSelection("Essay")'
-							ng-checked="false"><span>Essay</span>
-						</label>
+					<div class="col-md-4"
+						ng-class="isThisQuizTypeSelected('Essay')?'ck-buttonSelected':'ck-button'"
+						ng-click='toggleQuestiontypeSelection("Essay")'>
+						<span style="text-align: center; vertical-align: middle;">Essay</span>
 					</div>
-					<div class="ck-button col-md-4">
-						<label ng-class="disabled-cursor"> <input type="checkbox"
-							ng-click='toggleQuestiontypeSelection("MultipleResponse")'
-							ng-checked="false"><span>Multiple Response</span>
-						</label>
+					<div class="col-md-4"
+						ng-class="isThisQuizTypeSelected('MultipleResponse')?'ck-buttonSelected':'ck-button'"
+						ng-click='toggleQuestiontypeSelection("MultipleResponse")'>
+						<span>Multiple Response</span>
 					</div>
-					<div class="ck-button col-md-4">
-						<label ng-class="disabled-cursor"> <input type="checkbox"
-							ng-click='toggleQuestiontypeSelection("Matching")'
-							ng-checked="false"><span>Matching</span>
-						</label>
+					<div class="col-md-4"
+						ng-class="isThisQuizTypeSelected('Matching')?'ck-buttonSelected':'ck-button'"
+						ng-click='toggleQuestiontypeSelection("Matching")'>
+						<span>Matching</span>
 					</div>
 				</div>
 				<div>
-					<div class="ck-button col-md-4">
-						<label ng-class="disabled-cursor"> <input type="checkbox"
-							ng-click='toggleQuestiontypeSelection("MultipleChoice")'
-							ng-checked="false"><span>Multiple Choice</span>
-						</label>
+					<div class="col-md-4"
+						ng-class="isThisQuizTypeSelected('MultipleChoice')?'ck-buttonSelected':'ck-button'"
+						ng-click='toggleQuestiontypeSelection("MultipleChoice")'>
+						<span>Multiple Choice</span>
 					</div>
-					<div class="ck-button col-md-4">
-						<label ng-class="disabled-cursor"> <input type="checkbox"
-							ng-click='toggleQuestiontypeSelection("TrueFalse")'
-							ng-checked="false"><span>True or False</span>
-						</label>
+					<div class="col-md-4"
+						ng-class="isThisQuizTypeSelected('TrueFalse')?'ck-buttonSelected':'ck-button'"
+						ng-click='toggleQuestiontypeSelection("TrueFalse")'>
+						<span>True or False</span>
 					</div>
 
-					<div class="ck-button col-md-4">
-						<label ng-class="disabled-cursor"> <input type="checkbox"
-							ng-click='toggleQuestiontypeSelection("FillInBlanks")'
-							ng-checked="false"><span>Fill in Blanks</span>
-						</label>
+					<div class="col-md-4"
+						ng-class="isThisQuizTypeSelected('FillInBlanks')?'ck-buttonSelected':'ck-button'"
+						ng-click='toggleQuestiontypeSelection("FillInBlanks")'>
+						<span>Fill in Blanks</span>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="row">
-			  <div class="row col-lg-12 text-right margin-bot-10">
+			<div class="row col-lg-12 text-right margin-bot-10">
 				<button ng-click="closeAdvancedSearch()" class="backButton">Cancel</button>
 				<button class="nextButton" ng-class="{btnDisbled : isSaveDisabled }"
 					ng-disabled="isSaveDisabled"
@@ -81,12 +77,11 @@
 		</div>
 	</div>
 </div>
-<div class="row">
+<div class="row" ng-show="showHideSearchCriteria()">
 	<div class="col-md-12">
 		<div class="selectedQuestionTypes"
-			ng-bind="selectedQuestionTypes.toString()"></div>
-		<div><a href="" class="clearAdvancedSearch"
-				ng-click="clearAdvancedSearch()">Clear</a>
+			ng-bind="selectedQuestionTypesToShow.toString()"></div>
+		<div class="clearAdvancedSearch" ng-click="clearAdvancedSearch()">Clear
 		</div>
 	</div>
 </div>

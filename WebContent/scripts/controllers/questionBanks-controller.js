@@ -975,17 +975,19 @@ angular
 												containerNode = containerNode.nodes[0];
 											})
 									$scope.parentNode = containerNode;		
-									$scope.addSearchedContainer(isAdvancedSearch,searchedContainer)
+									$scope.addSearchedContainer(isAdvancedSearch,searchedContainer);
 
 								} else {
 									$scope.parentNode = $scope.disciplines[0].nodes[0];
-									$scope.addSearchedContainer(isAdvancedSearch,searchedContainer)
+									$scope.addSearchedContainer(isAdvancedSearch,searchedContainer);
 								}
 							}
 
 
 							$scope.addSearchedContainer = function(isAdvancedSearch, searchedContainer) {
 								if(isAdvancedSearch){
+									var blockLeftpanel = blockUI.instances.get('Leftpanel');
+									blockLeftpanel.start();
 									var isQuestionTypeExists=false; 
 									questionService.getAllQuestionsOfContainer($scope.bookID,searchedContainer.guid, function(response){
 										response.forEach(function(question) {
@@ -1002,6 +1004,7 @@ angular
 											$scope.parentNode["nodes"] = [ jQuery.extend(true,
 													{}, searchedContainer) ];
 										}
+										blockLeftpanel.stop();
 									});
 								}
 								else{
@@ -1058,7 +1061,21 @@ angular
 							
 							$scope.closeAdvancedSearch = function() {
 								$scope.showAdvancedSearch = false;
+								if(!$scope.isAdvancedSearchMode){
+									$scope.selectedQuestionTypes=[];
+								}
 							}
+							
+							$scope.isThisQuizTypeSelected = function(questionType){
+								var index = $scope.selectedQuestionTypes.indexOf(questionType);
+								if (index > -1) {
+									return true;
+								}else{
+									return false;
+								}
+							}
+							
+							$scope.selectedQuestionTypesToShow=[];
 							
 							$scope.toggleQuestiontypeSelection = function(
 									questionType) {
@@ -1066,16 +1083,41 @@ angular
 								var index = $scope.selectedQuestionTypes
 										.indexOf(questionType);
 								if (index > -1) {
-									$scope.selectedQuestionTypes.splice(index,
-											1);
+									$scope.selectedQuestionTypes.splice(index,1);
+									$scope.selectedQuestionTypesToShow.splice(index,1);
 								} else {
-									$scope.selectedQuestionTypes
-											.push(questionType)
+									$scope.selectedQuestionTypes.push(questionType);
+									$scope.addQuestionTypesToShow(questionType);
 								}
 								if($scope.selectedQuestionTypes.length == 0){
 									$scope.isSaveDisabled=true;
 								}else{
 									$scope.isSaveDisabled=false;
+								}
+							}
+							
+							$scope.addQuestionTypesToShow = function(quizTypes)
+							{
+								if(quizTypes=='Essay'){
+									$scope.selectedQuestionTypesToShow.push("Essay ") 
+								}else if(quizTypes=='MultipleResponse'){
+									$scope.selectedQuestionTypesToShow.push("Multiple Response ")
+								}else if(quizTypes=='Matching'){
+									$scope.selectedQuestionTypesToShow.push("Matching ")
+								}else if(quizTypes=='MultipleChoice'){
+									$scope.selectedQuestionTypesToShow.push("Multiple Choice ")
+								}else if(quizTypes=='TrueFalse'){
+									$scope.selectedQuestionTypesToShow.push("True False ")
+								}else if(quizTypes=='FillInBlanks'){
+									$scope.selectedQuestionTypesToShow.push("Fill In Blanks ")
+								}
+							}
+							
+							$scope.showHideSearchCriteria =function(){
+								if($scope.isAdvancedSearchMode == true || $scope.isSearchMode == true){
+									return true;
+								} else{
+									false;
 								}
 							}
 							
@@ -1086,6 +1128,8 @@ angular
 									$scope.showContainer(true);
 								}
 								else{
+									var blockLeftpanel = blockUI.instances.get('Leftpanel');
+									blockLeftpanel.start();
 									var count = 0;
 									$scope.selectedBooks.forEach(function(book){
 										ContainerService.getQuestionTypeContainers(book.guid,$scope.selectedQuestionTypes.toString(),function(containers){
@@ -1101,6 +1145,7 @@ angular
 											}
 											$scope.bookAddToDiscipline(book);
 											count=count+1;
+											blockLeftpanel.stop();
 										});
 									});	
 								}
@@ -1149,6 +1194,7 @@ angular
 								$scope.selectedBookIDs=[];
 								$scope.isAdvancedSearchMode = false;
 								$scope.isSearchMode = false;
+								$scope.selectedQuestionTypesToShow=[];
 								$scope.loadTree();
 							}
 							

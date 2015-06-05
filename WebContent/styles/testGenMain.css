@@ -1049,13 +1049,31 @@ display: inline-block;
 
 .ck-button {
     margin: 5px;
+    font-family:Helvetica;
+    font-size:12px;
     background-color: #EFEFEF;
     border-radius: 4px;
     border: 1px solid #D0D0D0;
     float: left;
     text-align: center;
     width: 30%;
+	height:30px;
+	cursor: pointer;
+}
 
+.ck-buttonSelected {
+    margin: 5px;
+    font-family:Helvetica;
+    font-size:12px;
+    background-color: #999;
+    color:#ffffff;
+    border-radius: 4px;
+    border: 1px solid #D0D0D0;
+    float: left;
+    text-align: center;
+    width: 30%;
+	height:30px;
+	cursor: pointer;
 }
 
 .ck-button label {
@@ -2683,6 +2701,7 @@ li[printmode='false'][optionsview='true'] .blankBtnDiv{
 	font-size: 14px; 
 	text-decoration: none !important; 
 	margin-top: 10px; 
+	cursor: pointer;
 }
 
 .qstnContainer .qText{
