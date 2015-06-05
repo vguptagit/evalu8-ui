@@ -266,7 +266,7 @@ angular
 							$scope.trackEnterKey = 0;
 
 							$scope.exitDiscipline = function() {
-
+								$scope.searched="";
 								$scope.disciplineBooks = [];
 
 								$scope.books = {
