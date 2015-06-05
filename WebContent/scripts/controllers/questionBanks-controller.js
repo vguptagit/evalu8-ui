@@ -668,8 +668,7 @@ angular
 									function(handler, node) {
 										$scope.selectNode(node);
 									});
-							$scope.editQuestion = function (scope, destIndex) {
-							    $rootScope.blockPage.start();
+							$scope.editQuestion = function (scope, destIndex) {							    
 								var test = SharedTabService.tests[SharedTabService.currentTabIndex];
 					        	test.questionFolderNode = $scope.selectedNodes;
 								if (SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
@@ -687,12 +686,14 @@ angular
                                                 $scope.dragStarted = false;
                                                 break;
                                             }else{               
+                                                $rootScope.blockPage.start();
                                             	$scope.selectedNodes[i].showEditQuestionIcon = false;
                                                 $rootScope.$broadcast("dropQuestion",$scope.selectedNodes[i], destIndex);
                                             }    
 
 										} else if ($scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.chapter
 												|| $scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.topic) {
+										    $rootScope.blockPage.start();
 											$scope.selectedNodes[i].showEditQuestionIcon = false;
 											var questionFolder = $scope.selectedNodes[i];
 											getQuestions(

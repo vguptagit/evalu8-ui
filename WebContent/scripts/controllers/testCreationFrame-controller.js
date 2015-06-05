@@ -1092,88 +1092,94 @@ angular
 											'dropQuestion',
 											function(event, node, destIndex,
 													sourceTabName) {
-												var newNode = angular.copy(node);										
-																								
-												if (sourceTabName == "CustomQuestions") {													
-													SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode = true;
-												}
-												newNode.IsUserMetdataAvailable = false;
-												
-													 newNode.questionMetadata = {};
-													 if (SharedTabService.userQuestionSettings.length>0){
-														 newNode.IsUserMetdataAvailable = true;
-													 }
-														
-													 
-														var tests = SharedTabService.tests[SharedTabService.currentTabIndex].questions;
-																											 
-														if (sourceTabName == "CustomQuestions") {
-															
-															 $.each(SharedTabService.userQuestionSettings, function( index, value ) {																	
-																 if(value!='QuestionId'){
-																 newNode['questionMetadata'][value]='';
-																 }
-															});		
-															 
-															newNode.IsEditView = true;
-															newNode.editMainText = CustomQuestionTemplate[newNode.quizType].editMainText;
-															newNode.IsEdited = true;
-															newNode.IsDefaultEditView = true ;															
-															newNode.selectedLevel = {name:'Select Level',value:'0'};	
-															newNode.EssayPageSize = '0';
-															newNode.BlankSize = '20';
-															
-														} else {
-															
-															 $.each(SharedTabService.userQuestionSettings, function( index, value ) {																	
-																 newNode['questionMetadata'][value]='';																
-															});		
-															 
-															newNode.IsEditView = false;															
-															newNode.editMainText = CustomQuestionTemplate[newNode.quizType].editMainText;
-																																	
-															$.each(newNode.extendedMetadata, function(index, item){		
-																var name = item['name'].charAt(0).toUpperCase() + item['name'].slice(1);
-																 if(item['name'] == "questionLevelOfDifficulty")
-																	 newNode['questionMetadata']['Difficulty'] = item['value'];
-																 else
-																	 newNode['questionMetadata'][name]=item['value'];	
+											    try {
+											        var newNode = angular.copy(node);
 
-															    });														
-															
-															newNode.selectedLevel = newNode.questionMetadata['Difficulty']==undefined?{name:'Select Level',value:'0'}:{name:newNode.questionMetadata['Difficulty'],value:newNode.questionMetadata['Difficulty']};
-															
-															newNode.qstnMasterData = buildQstnMasterDetails(newNode);
-															newNode.optionsView = newNode.qstnMasterData.optionsView;
-															newNode.EssayPageSize = newNode.qstnMasterData.EssayPageSize;															
-															newNode.BlankSize = newNode.qstnMasterData.BlankSize;
-														}
-														
-														newNode.qstnLinkText = newNode.IsEditView ? "View"
-																: "Edit";
-														
-														
-														var nodeAlreadyExist = false;
-														if (tests.length == 0) {
-															tests.push(newNode);
-														} else {
-															if (sourceTabName != "CustomQuestions") {
-																tests
-																		.forEach(function(
-																				item) {
-																			if (item.guid == newNode.guid) {
-																				nodeAlreadyExist = true;
-																			}
-																		});
-															}
+											        if (sourceTabName == "CustomQuestions") {
+											            SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode = true;
+											        }
+											        newNode.IsUserMetdataAvailable = false;
 
-															if (!nodeAlreadyExist) {
-																tests.splice(destIndex,
-																		0, newNode);
-															}
-														}
-														$scope.tests[$scope.currentIndex].questions = tests;
-														
+											        newNode.questionMetadata = {};
+											        if (SharedTabService.userQuestionSettings.length > 0) {
+											            newNode.IsUserMetdataAvailable = true;
+											        }
+
+
+											        var tests = SharedTabService.tests[SharedTabService.currentTabIndex].questions;
+
+											        if (sourceTabName == "CustomQuestions") {
+
+											            $.each(SharedTabService.userQuestionSettings, function (index, value) {
+											                if (value != 'QuestionId') {
+											                    newNode['questionMetadata'][value] = '';
+											                }
+											            });
+
+											            newNode.IsEditView = true;
+											            newNode.editMainText = CustomQuestionTemplate[newNode.quizType].editMainText;
+											            newNode.IsEdited = true;
+											            newNode.IsDefaultEditView = true;
+											            newNode.selectedLevel = { name: 'Select Level', value: '0' };
+											            newNode.EssayPageSize = '0';
+											            newNode.BlankSize = '20';
+
+											        } else {
+
+											            $.each(SharedTabService.userQuestionSettings, function (index, value) {
+											                newNode['questionMetadata'][value] = '';
+											            });
+
+											            newNode.IsEditView = false;
+											            newNode.editMainText = CustomQuestionTemplate[newNode.quizType].editMainText;
+
+											            $.each(newNode.extendedMetadata, function (index, item) {
+											                var name = item['name'].charAt(0).toUpperCase() + item['name'].slice(1);
+											                if (item['name'] == "questionLevelOfDifficulty")
+											                    newNode['questionMetadata']['Difficulty'] = item['value'];
+											                else
+											                    newNode['questionMetadata'][name] = item['value'];
+
+											            });
+
+											            newNode.selectedLevel = newNode.questionMetadata['Difficulty'] == undefined ? { name: 'Select Level', value: '0' } : { name: newNode.questionMetadata['Difficulty'], value: newNode.questionMetadata['Difficulty'] };
+
+											            newNode.qstnMasterData = buildQstnMasterDetails(newNode);
+											            newNode.optionsView = newNode.qstnMasterData.optionsView;
+											            newNode.EssayPageSize = newNode.qstnMasterData.EssayPageSize;
+											            newNode.BlankSize = newNode.qstnMasterData.BlankSize;
+											        }
+
+											        newNode.qstnLinkText = newNode.IsEditView ? "View"
+                                                            : "Edit";
+
+
+											        var nodeAlreadyExist = false;
+											        if (tests.length == 0) {
+											            tests.push(newNode);
+											        } else {
+											            if (sourceTabName != "CustomQuestions") {
+											                tests
+                                                                    .forEach(function (
+                                                                            item) {
+                                                                        if (item.guid == newNode.guid) {
+                                                                            nodeAlreadyExist = true;
+                                                                        }
+                                                                    });
+											            }
+
+											            if (!nodeAlreadyExist) {
+											                tests.splice(destIndex,
+                                                                    0, newNode);
+											            }
+											        }
+											        $scope.tests[$scope.currentIndex].questions = tests;
+											        } catch (e) {
+											            console.log(e);
+											        }
+											        finally {
+											            $rootScope.blockPage.stop();
+											        }
 												
 												 });
 												
@@ -2122,7 +2128,7 @@ angular
 									if (test.title == null
 											|| test.title.length <= 0) {
 										$scope.IsConfirmation = false;
-										$scope.message = "Please Enter Test Title to save the test.";
+										$scope.message = "Please enter test title to save the test.";
 
 										$modal.open(confirmObject);
 										return false;
@@ -2212,7 +2218,7 @@ angular
 																		metadatas,
 																		SharedTabService.currentTabIndex);
 													} else {
-														// $scope.BlockRightPanel.stop();
+													     $scope.blockPage.stop();
 													}
 												});
 							};
