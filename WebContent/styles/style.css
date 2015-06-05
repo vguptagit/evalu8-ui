@@ -21,7 +21,6 @@ label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D;
 .form-group{position:relative;}
 .form-control + .glyphicon { position: absolute; left: 0; top: 13%; padding: 8px 0 0 12px; }
 .input-lg{padding:10px 35px;}
-.block-ui {display: inline;}
 .blockinline {display: inline-block;}
 
 /* Text CSS */
