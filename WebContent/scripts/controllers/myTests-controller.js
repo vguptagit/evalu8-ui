@@ -104,12 +104,12 @@ angular.module('e8MyTests')
 
                 var item = source.node;
                 
-                if(mouseOverNode.node.nodes) {
-                	
-                	var duplicateTitle = false;
-                	
+                var duplicateTitle = false;
+                
+                UserFolderService.userFolders(mouseOverNode.node, function (userFolders) {
+                    	
                 	if(item.nodeType == "folder") {
-                    	mouseOverNode.node.nodes.forEach(function(nodeItem) {                            
+                		userFolders.forEach(function(nodeItem) {                            
                     		if(nodeItem.nodeType == 'folder' && nodeItem.title == item.title) {
                     			duplicateTitle = true;                			 
                     		}                        
@@ -124,7 +124,7 @@ angular.module('e8MyTests')
                 	}
 
                 	if(item.nodeType == "test") {
-                    	mouseOverNode.node.nodes.forEach(function(nodeItem) {                        
+                		userFolders.forEach(function(nodeItem) {                        
                     		if(nodeItem.nodeType == 'test' && nodeItem.title == item.title) {
                     			duplicateTitle = true;                			 
                         	}                        	                        
@@ -137,29 +137,31 @@ angular.module('e8MyTests')
                     		return false;
                     	}                		
                 	}	
-                }
+                                        
+                    source.remove();                
+                    
+                    if(item.nodeType == "folder") {
+                        item.parentId = mouseOverNode.node.guid;
+                        UserFolderService.getFoldersMinSeq(mouseOverNode.node, function(minSeq) {
+                        	item.sequence = minSeq==0.0 ? 1.0 : (0.0 + minSeq)/2;
+                        	UserFolderService.saveUserFolder(item);                	
+                        })                	
+                    }
+                    else {
+                    	var sourceFolder = $scope.removeTestBindingFromSource(sourceParent, item.guid);
+                    	UserFolderService.saveUserFolder(sourceFolder, function() {
+                    		$scope.insertTestBindingToDest(mouseOverNode, item.guid);                		
+                    	});            		              	               	
+                    }
+                    
+                })
 
-                source.remove();                
-                
-                if(item.nodeType == "folder") {
-                    item.parentId = mouseOverNode.node.guid;
-                    UserFolderService.getFoldersMinSeq(mouseOverNode.node, function(minSeq) {
-                    	item.sequence = minSeq==0.0 ? 1.0 : (0.0 + minSeq)/2;
-                    	UserFolderService.saveUserFolder(item);                	
-                    })                	
-                }
-                else {
-                	var sourceFolder = $scope.removeTestBindingFromSource(sourceParent, item.guid);
-                	UserFolderService.saveUserFolder(sourceFolder, function() {
-                		$scope.insertTestBindingToDest(mouseOverNode, item.guid);                		
-                	});            		              	               	
-                }
                 
             } else {
 
             	var item = source.node;
             	
-            	if(destParent.node.nodes) {
+            	if(destParent && destParent.node && destParent.node.nodes) {
                 	var duplicateTitle = false;
                 	
                 	if(item.nodeType == "folder") {
