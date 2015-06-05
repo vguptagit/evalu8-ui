@@ -709,6 +709,8 @@ angular
 								blankCount = blankCount + 1;
 								qtiCaption.html(qtiCaption.html().replace(/&nbsp;/g," "))
 //								qtiCaption.html(optionText.substring(0,cursorPosition) + "<button contenteditable='false'><span class='blankWidth editView'>"+alphaArray[htmlOptionCnt]+"<span contenteditable='true' id='"+alphaArray[htmlOptionCnt]+"' onkeydown='QTI.getSpanId(this,event)' placeHolder='Blank Space' ></span></span></button>" + optionText.substring(cursorPosition + 1, optionText.length));
+								if(qtiCaption.html().length == 0)
+									qtiCaption.html("Blank");
 								qtiCaption.html(optionText.substring(0,cursorPosition) + "<button id='RESPONSE_"+ blankCount +" ' onkeydown='return QTI.getSpanId(this,event)' class='blankFIBButton '><span contenteditable='false' class='blankWidth editView'><b contenteditable='false'>" + String.fromCharCode(65 + blankCount - 1 ) + ".</b>Fill Blank</span></button>&nbsp;" + optionText.substring(cursorPosition, optionText.length));
 									
 								qtiCaption.html(qtiCaption.html().replace(/<\/button> /g,"</button>&nbsp;"));
@@ -765,6 +767,8 @@ angular
 																			/&nbsp;/g,
 																			" ");
 															cursorPosition = QTI.getActualCursorPosition1(cursorPosition,element,optionText);
+															if(element.html().length == 0)
+																element.html("Image");
 															element
 																	.html(optionText
 																			.substring(
