@@ -5,11 +5,11 @@
             <h4>Create or Edit Tests</h4>
         </div>
         <div class="col-sm-8 col-md-8 col-lg-8">
-            <button type="button" class="btn btn-primary"
+            <a type="button" class="btn btn-primary"
                     ng-disabled="sharedTabService.isTestWizardTabPresent"
                     ng-click="addTestWizard()" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Test Creation Wizard">
                 <span class="icon-magic"></span> Test Wizard
-            </button>
+            </a>
 
             <div class="btn-group" role="group" aria-label="...">
                 <div class="btn-group save-dropdown" role="group">
@@ -132,7 +132,7 @@
                  ng-repeat="criteria in tests[currentIndex].criterias" ng-show="$first || !isApplySameCriteriaToAll">
                 <div class="col-lg-11  form-inline  panel panel-default bg-gray-lighter">
                     <button type="button" class="close"
-                                ng-click="closeCriteria(criteria,true)" aria-label="Close" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Delete this section">
+                                ng-click="closeCriteria(criteria,true)" aria-label="Close" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Delete this section">
                         <span aria-hidden="true">&times;</span>
                     </button>
                     <!-- <div>
@@ -155,7 +155,7 @@
                                 <li ng-repeat="topic in tests[currentIndex].criterias" ng-if="topic.folderTitle == criteria.folderTitle || isApplySameCriteriaToAll">
                                     <span>{{topic.folderTitle}} ({{topic.totalQuestions}} Questions)</span>
                                     <button type="button" class="close btnChapterClose" ng-show="isApplySameCriteriaToAll"
-                                              ng-click="closeCriteria(topic,false)" aria-label="Close" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Delete this section">
+                                              ng-click="closeCriteria(topic,false)" aria-label="Close" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Delete this section">
                                          <span aria-hidden="true">&times;</span>
                                     </button>
                                 </li>
@@ -306,7 +306,7 @@
                         {{node.editMainText}}
                     </div>
                     <a class="qstnViewLink" ng-click="showQstnPrintOrEditMode(this)"
-                       ng-show="showQstnEditIcon" tooltip="{{node.qstnLinkTitle}}" tooltip-placement="bottom">{{node.qstnLinkText}}</a>
+                       ng-show="showQstnEditIcon" tooltip="{{node.qstnLinkTitle}}" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="bottom">{{node.qstnLinkText}}</a>
                 </div>
                 <div ng-mousedown="selectQuestionNode(this.node);" ui-tree-handle class="tree-node tree-node-content questionList">
                     <div ng-class="node.IsEditView ? 'editViewContainer' : 'printViewContainer' "

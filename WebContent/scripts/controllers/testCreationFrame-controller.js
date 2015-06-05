@@ -95,8 +95,8 @@ angular
 								this.closeQstnBtn = !this.closeQstnBtn;
 								selectedQstnNode.node.qstnLinkText = selectedQstnNode.node.IsEditView ? "Edit"
 										: "View";
-								selectedQstnNode.node.qstnLinkTitle = selectedQstnNode.node.IsEditView ? "View Question in print mode"
-										: "View Question in edit mode";
+								selectedQstnNode.node.qstnLinkTitle = selectedQstnNode.node.IsEditView ? "View Question in edit mode"
+										: " View Question in print mode";
 								if (selectedQstnNode.node.IsEditView) {
 									$scope.imageClicked = false;
 									var p = $(
