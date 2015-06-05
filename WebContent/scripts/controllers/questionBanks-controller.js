@@ -407,118 +407,85 @@ angular
 												})
 							}
 
-							// To get the topics, subtopics, question for the
-							// given chapter.
-							// This method will call the api
-							// mytest/books/{bookid}/nodes/{nodeid}/nodes
-							// and
-							// mytest/books/{bookid}/nodes/{nodeid}/questions.
-							// Output topic,subtopic and question collection
-							// will be append to input chapter angularjs node
+
 							$scope.getNodesWithQuestion = function(currentNode) {
-								if ($rootScope.globals.authToken == '') {
-									$location.path('/login');
+
+								if (!currentNode.collapsed) {
+									currentNode.collapse();
+									$(currentNode.$element).find(".captiondiv").removeClass('iconsChapterVisible');
+									currentNode.$element.children(1).removeClass('expandChapter');
 								} else {
-									if (!currentNode.collapsed) {
-										currentNode.collapse();
-										$(currentNode.$element).find(
-												".captiondiv").removeClass(
-												'iconsChapterVisible');
-										currentNode.$element.children(1)
-												.removeClass('expandChapter');
-									} else {
-										currentNode.expand();
-										
-                                        if(currentNode.node.nodeType == 'publisherTests') {
-                                            
-                                            angular.forEach(currentNode.node.nodes,
-                                                    function(item) {
-                                                        item.template = 'tests_renderer.html';
-                                                    });
-                                            return;
-                                        }
-							                                        
-										if($scope.isSearchMode && $scope.searchedContainerId!=currentNode.node.guid){
-											return;
-										}else if ($scope.isAdvancedSearchMode){
-											$scope.bookID=currentNode.node.bookid;
-										}
-										
-										currentNode.node.nodes = [];
-										ContainerService.containerNodes($scope.bookID,currentNode.node.guid,
-												$scope.selectedQuestionTypes.toString(),function(response) {
+									currentNode.expand();
+									
+                                    if(currentNode.node.nodeType == 'publisherTests') {
+                                        
+                                        angular.forEach(currentNode.node.nodes, function(item) {
+                                            item.template = 'tests_renderer.html';
+                                        });
+                                        return;
+                                    }
+						                                        
+									if($scope.isSearchMode && $scope.searchedContainerId!=currentNode.node.guid){
+										return;
+									}else if ($scope.isAdvancedSearchMode){
+										$scope.bookID=currentNode.node.bookid;
+									}
+									
+									currentNode.node.nodes = [];
+									ContainerService.containerNodes($scope.bookID, 
+										currentNode.node.guid,
+										$scope.selectedQuestionTypes.toString(),
+										function(response) {
 
-															currentNode.node.nodes = currentNode.node.nodes
-																	.concat(response);
+											currentNode.node.nodes = currentNode.node.nodes.concat(response);
 
-															angular
-																	.forEach(
-																			currentNode.node.nodes,
-																			function(
-																					item) {
-																				item.template = 'nodes_renderer.html';
-																				item.showTestWizardIcon = true;
-																				item.showEditQuestionIcon = true;
-																				item.isNodeSelected = false;
-                                                                                item.nodeType = "topic";
-																				item.isCollapsed=true;
-																				updateTreeNode(item);
-																			})
+											angular.forEach(currentNode.node.nodes, function(item) {
+												item.template = 'nodes_renderer.html';
+												item.showTestWizardIcon = true;
+												item.showEditQuestionIcon = true;
+												item.isNodeSelected = false;
+                                                item.nodeType = "topic";
+												item.isCollapsed=true;
+												updateTreeNode(item);
+											})
+										})
+
+									$http.get(evalu8config.apiUrl
+															+ "/books/"
+															+ $scope.bookID
+															+ "/nodes/"
+															+ currentNode.node.guid
+															+ "/questions",
+													config)
+											.success(
+													function(response) {
+
+														var responseQuestions = response;
+														$(currentNode.$element).find(".captiondiv").addClass('iconsChapterVisible');
+														currentNode.$element.children(0).addClass('expandChapter');
+
+														var sortedNodes = sortNodes(response, currentNode);
+
+														currentNode.node.nodes = currentNode.node.nodes.concat(sortedNodes);
+
+														angular.forEach(responseQuestions, function(item) {
+															if($scope.isAdvancedSearchMode == false  || ($scope.isAdvancedSearchMode == true && $scope.selectedQuestionTypes.toString().indexOf(item.quizType)>-1))
+															{
+																item.nodeType = "question";
+																item.showEditQuestionIcon = false;
+																item.isNodeSelected = false;
+																updateTreeNode(item);
+																addToQuestionsArray(item);
+																$scope
+																		.renderQuestion(item);
+															}
 														})
 
-										$http
-												.get(
-														evalu8config.apiUrl
-																+ "/books/"
-																+ $scope.bookID
-																+ "/nodes/"
-																+ currentNode.node.guid
-																+ "/questions",
-														config)
-												.success(
-														function(response) {
-
-															var responseQuestions = response;
-															$(
-																	currentNode.$element)
-																	.find(
-																			".captiondiv")
-																	.addClass(
-																			'iconsChapterVisible');
-															currentNode.$element
-																	.children(0)
-																	.addClass(
-																			'expandChapter');
-
-															var sortedNodes = sortNodes(
-																	response,
-																	currentNode);
-
-															currentNode.node.nodes = currentNode.node.nodes
-																	.concat(sortedNodes);
-
-															angular
-																	.forEach(
-																			responseQuestions,
-																			function(
-																					item) {
-																				if($scope.isAdvancedSearchMode == false  || ($scope.isAdvancedSearchMode == true && $scope.selectedQuestionTypes.toString().indexOf(item.quizType)>-1))
-																				{
-																					item.nodeType = "question";
-																					item.showEditQuestionIcon = false;
-																					item.isNodeSelected = false;
-																					updateTreeNode(item);
-																					addToQuestionsArray(item);
-																					$scope
-																							.renderQuestion(item);
-																				}
-																			})
-
-														}).error(function() {
-												});
-										;
+													}).error(function() {
+											});
+										
 									}
-								}
+								
 							}
 
 							var updateTreeNode = function (item) {
