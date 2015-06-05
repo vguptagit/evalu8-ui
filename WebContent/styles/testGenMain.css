@@ -2439,12 +2439,10 @@ div #BlanksCaption {
 }
 
 .plusIconQT {
-	line-height: 28px;
+	line-height: 35px;
 	margin-right: 5px;
 	font-size: 14px;
-	border: 0;
-	background: transparent;
-}
+	
 
 .questionIcon{
 	font-size: 12px;

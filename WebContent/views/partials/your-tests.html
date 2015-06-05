@@ -3,7 +3,7 @@
         <div>
             <div class="newFolderDiv">
                 <!-- <label class=" treeDiv1"> -->
-                <button class="addFolder fa fa-plus" ng-click='showAddFolderPanel= !showAddFolderPanel' value="Add Folder" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Add new folder"><span class="text14 margin-lft-10" >Add Folder</span></button>
+                <button class="addFolder fa fa-plus" ng-click='showAddFolderPanel= !showAddFolderPanel' value="Add Folder" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Add new folder"><span class="text14 margin-lft-10" >Add Folder</span></button>
                 <button class="import fa fa-download"><span class="text14 margin-lft-10" >Import</span></button>
                 <!-- </label> -->
             </div>
@@ -61,8 +61,8 @@
                         <span ng-show="node.selectTestNode">
                             <button ng-show="node.showEditIcon" id="editTestbtn"
                                     ng-click="editTest(this)"
-                                    class="editiconButtons glyphicon glyphicon-pencil" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Open in right edit panel"/>
-                            <button ng-show="node.showArchiveIcon" ng-click="archiveTest(this)" class="archiveIconButtons fa fa-archive" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Move to Archive folder at bottom of screen"/>
+                                    class="editiconButtons glyphicon glyphicon-pencil"  tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Open in right edit panel"/>
+                            <button ng-show="node.showArchiveIcon" ng-click="archiveTest(this)" class="archiveIconButtons fa fa-archive" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Move to Archive folder at bottom of screen"/>
                         </span>
                     </div>
                 </div>
@@ -83,7 +83,7 @@
                     <div class="iconsCourseNode">
                         <span ng-show="node.selectTestNode">
                             <button data-ng-if="node.nodeType == 'folder'" ng-click="archiveFolder(this)" 
-                                    class="folderArchiveIcon fa fa-archive" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Move to Archive folder at bottom of screen"/>
+                                    class="folderArchiveIcon fa fa-archive" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Move to Archive folder at bottom of screen"/>
                         </span>
                     </div>
                 </div>
@@ -115,7 +115,7 @@
                     </div>
                     <div class="iconsCourseNode">
                         <span ng-show="node.selectTestNode">
-                            <button  data-ng-if="node.nodeType == 'folder'" ng-click="archiveFolder(this)" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Move to Archive folder at bottom of screen"
+                            <button  data-ng-if="node.nodeType == 'folder'" ng-click="archiveFolder(this)" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Move to Archive folder at bottom of screen"
                                     class="folderArchiveIcon fa fa-archive" />
                         </span>
                     </div>
@@ -133,8 +133,8 @@
                     </div>
                     <div class="iconsCourseNode">
                         <span ng-show="node.selectTestNode">
-                            <button ng-click="deleteFolder(this)" class="removeIcon fa fa-trash-o" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Delete. Cannot be undone"/>
-                            <button ng-click="restoreFolder(this)" class="restoreicon fa fa-undo" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Restore to main directory"/>
+                            <button ng-click="deleteFolder(this)" class="removeIcon fa fa-trash-o" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Delete. Cannot be undone"/>
+                            <button ng-click="restoreFolder(this)" class="restoreicon fa fa-undo" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Restore to main directory"/>
                         </span>
                     </div>
                 </div>
@@ -152,8 +152,8 @@
                     <div class="testimagesdiv" ng-class="{testHighlight: node.selectTestNode}">
                         <span ng-show="node.selectTestNode">
                             <button ng-show="node.showEditIcon" id="editTestbtn" ng-click="editTest(this)" 
-                                    class="foldertestediticon glyphicon glyphicon-pencil" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Open in right edit panel"/>
-                            <button ng-click="archiveTest(this)" ng-show="node.showArchiveIcon" class="iconButtons fa fa-archive" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Move to Archive folder at bottom of screen"/>
+                                    class="foldertestediticon glyphicon glyphicon-pencil" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Open in right edit panel"/>
+                            <button ng-click="archiveTest(this)" ng-show="node.showArchiveIcon" class="iconButtons fa fa-archive" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Move to Archive folder at bottom of screen"/>
                         </span>
                     </div>
                 </div>
@@ -169,8 +169,8 @@
                     </div>
                     <div class="testimagesdiv" ng-class="{testHighlight: node.selectTestNode}">
                         <span ng-show="node.selectTestNode">
-                            <button ng-click="deleteTest(this)" class="removeTestIcon fa fa-trash-o" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Delete. Cannot be undone"/>
-                            <button ng-click="restoreTest(this)" class="restoretesticon fa fa-undo" ng-Mytest-Tooltip data-container="body" data-toggle="tooltip" data-placement="bottom" title="Restore to main directory"/>
+                            <button ng-click="deleteTest(this)" class="removeTestIcon fa fa-trash-o" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Delete. Cannot be undone"/>
+                            <button ng-click="restoreTest(this)" class="restoretesticon fa fa-undo" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Restore to main directory"/>
                         </span>
                     </div>
                 </div>
