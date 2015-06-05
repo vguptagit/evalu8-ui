@@ -66,6 +66,25 @@ angular
 								selectedQstn.isNodeSelected = typeof(selectedQstn.isNodeSelected)=='undefined'?true:!selectedQstn.isNodeSelected;
 							};
 							
+							$scope.showChoiceSelectionAlert = function(selectedQstnNode) {
+								var isAnswerChoiceSelected=false;
+								var qstnHTML = $(selectedQstnNode.$element);
+								var optionsHtmlControl = qstnHTML.find("input[type='checkbox'][name='RESPONSE']");
+								for (var index = 0; index < optionsHtmlControl.length; index++) {
+									if (optionsHtmlControl[index].checked == true) {
+										isAnswerChoiceSelected=true;										
+									}
+								}									
+								if(!isAnswerChoiceSelected){		
+									selectedQstnNode.node.IsEditView = true;
+									$scope.IsConfirmation = false;
+									$scope.message = "Minimum answer required is 1."
+									$modal.open(confirmObject);			
+									return true;
+									
+								}
+							};
+							
 
 							$scope.showQstnPrintOrEditMode = function(
 									selectedQstnNode) {
@@ -84,9 +103,12 @@ angular
 									$scope.message = "Add Blank to the Question";
 
 									$modal.open(confirmObject);
-									return;
-									
+									return;									
+								}else if(selectedQstnNode.node.quizType == "MultipleResponse" && selectedQstnNode.node.IsEditView){
+									if($scope.showChoiceSelectionAlert(selectedQstnNode))
+										return;
 								}
+								
 								var qstnHtml = selectedQstnNode.node.textHTML;
 								this.showQstnEditIcon = !this.showQstnEditIcon;
 								this.closeQstnBtn = !this.closeQstnBtn;
@@ -1553,6 +1575,21 @@ angular
 									return;
 								}
 								
+								var editedElement = document.querySelector("div#qstnArea li[printmode=false]")
+								if (editedElement) {
+									var scopeElement = angular.element(
+											editedElement).scope();
+									scopeElement.node.IsEditView = false;
+									scopeElement.node.qstnLinkText = "Edit";
+									if($scope.showChoiceSelectionAlert(scopeElement)){
+										$rootScope.blockPage.stop();
+										return;										
+									}										
+									convertHtmlToXmlNode(scopeElement);
+									SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode=false;    									
+								}
+                                
+								
                             	var duplicateTitle = false;
                             	
                                 TestService.getTests(test.folderGuid, function(tests){
@@ -1577,7 +1614,7 @@ angular
         							    
                                     	return;
                                     }
-                                    
+                                                                        
     								$scope.testTitle = test.title;
 
     								// Building the json to create the test.
@@ -1603,21 +1640,7 @@ angular
 
     								testcreationdata.metadata.title = $scope.testTitle;
 
-    								var index = 0;
-
-    								var editedElement = document
-    								.querySelector("div#qstnArea li[printmode=false]")
-    								if (editedElement) {
-    									var scopeElement = angular.element(
-    											editedElement).scope();
-    									scopeElement.node.IsEditView = false;
-    									scopeElement.node.qstnLinkText = "Edit";
-    									convertHtmlToXmlNode(scopeElement);
-    									SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode=false;
-    									
-    								}
-    								
-
+    								var index = 0;    								
     								var QuestionEnvelops = [];
     								var userSettings = {};
     								userSettings.questionMetadata = {};
