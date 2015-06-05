@@ -540,6 +540,12 @@ angular
 
 								selectedOption.node.textHTML = selectedOption.$element
 										.children().html();
+								
+								if (selectedOption.node.length) {
+									selectedOption.node[0].innerHTML = selectedOption.$element
+									.children().html();									
+								}									
+								
 								var attrs = {};
 								attrs.bindQti = "getHTML1(this)";
 								var qstnHTML = $(selectedOption.$element);
@@ -1271,6 +1277,8 @@ angular
 															 }
 															QTI.play(response,
 																	displayNode, false,false,displayNode.quizType);
+															
+															displayNode.textHTML = displayNode.html();
 															
 															displayNode.IsEditView = false;
 															displayNode.qstnLinkText = displayNode.IsEditView ? "View"
@@ -2201,6 +2209,8 @@ angular
 																							
 													QTI.play(response,
 															displayNode, false,false,question.quizType);
+													
+													displayNode.textHTML = displayNode.html();
 
 													// $scope.tree2.push(displayNode);
 													$scope.isLoading = false;
