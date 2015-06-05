@@ -48,7 +48,7 @@
                     ng-class="{active: isActiveTab(test.id)}"
                     ng-click="onClickTab(test)" id="{{test.id}}">
                     <div class="newTest-close glyphicon glyphicon-remove" ng-show="test.showCloseButton"
-                         ng-click="closeTabWithConfirmation(test)"></div> <a href="" title="{{test.tabTitle}}"
+                         ng-click="closeTabWithConfirmation($event,test)"></div> <a href="" title="{{test.tabTitle}}"
                                                                              data-toggle="tab">{{test.tabTitle}}</a>
                 </li>
                 <li class="dropdown" ng-show="tests.length > 5">

@@ -897,9 +897,10 @@ angular
 	                                $scope.imageClicked = false;
 					            SharedTabService.closeQuestions(tab, $scope, index);					           
 					        }
-							$scope.closeTabWithConfirmation = function(tab) {
+					        $scope.closeTabWithConfirmation = function ($event,tab) {
 								SharedTabService.closeTabWithConfirmation(tab,
 										$scope);
+								$event.stopPropagation();
 							}
 							$scope.closeCriteria = function(folder,
 									isWizardCloseBtnClicked) {
