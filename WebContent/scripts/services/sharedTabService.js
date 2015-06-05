@@ -69,12 +69,12 @@ angular.module('evalu8Demo')
 		     }
 
 		     sharedTabService.QuestionTypes = [
-				                 		         { key: "Essay", value: "Essay" },
-				                                  { key: "MultipleResponse", value: 'Multiple response' },
-				                                  { key: "Matching", value: 'Matching' },
-				                                  { key: "FillInBlanks", value: 'Fill in Blanks' },
-				                                  { key: "MultipleChoice", value: 'Multiple Choice' },
-				                                  { key: "TrueFalse", value: 'True False' },
+                                      			{ key: "TrueFalse", value: 'True False' , newValue: "TF"},
+                                      			{ key: "MultipleChoice", value: 'Multiple Choice', newValue: "MC" },
+                                      			{ key: "FillInBlanks", value: 'Fill in Blanks' , newValue: "Text Entry"},
+                                      			{ key: "Matching", value: 'Matching' , newValue: "Matching"},
+                                      			{ key: "MultipleResponse", value: 'Multiple response' , newValue: "Multi-response"},
+				                 		        { key: "Essay", value: "Essay" , newValue: "Essay"}
 		     ];
 
 		     sharedTabService.createDefaultTest = function () {

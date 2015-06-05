@@ -736,8 +736,8 @@ angular
 																cursorPosition) {
 															if (element
 																	.attr("id")
-																	.startsWith(
-																			"simpleChoice")) {
+																	.indexOf(
+																			"simpleChoice") == 0) {
 																if (element
 																		.find("u[contenteditable='false']").length == 1) {
 																	element
@@ -781,7 +781,7 @@ angular
 																			+ "</i></u>&nbsp;"
 																			+ optionText
 																					.substring(
-																							cursorPosition + 1,
+																							cursorPosition,
 																							optionText.length))
 															$scope.imageClicked = false;
 														});

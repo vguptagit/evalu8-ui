@@ -1636,7 +1636,7 @@ if(state.questionType=="Matching"){
 	    if($(displayNode)[0].nodeName!="BLOCKQUOTE"){
 	    	
 	    	 elementDisplayNode = QTI.prepare(qtiNode,
-					$("<p class='optionLabelView qText'></p>"));
+	    			 $("<div class='optionLabelView'></div>"));
 	    	 
 	    	 $(displayNode).append(elementDisplayNode);
 	    	 
@@ -1802,7 +1802,7 @@ var textBox = $("<div contenteditable='true'  class='editView' type='text' id='q
 
 	
 	var elementDisplayNode = QTI.prepare(qtiNode,
-			$("<p class='optionLabelView qText'></p>"));
+			$("<div class='optionLabelView'></div>"));
 	$(displayNode).append(elementDisplayNode);
 	this.extend.play(qtiNode, elementDisplayNode, state);
 //	this.processChildren(qtiNode, elementDisplayNode, state);
@@ -3064,6 +3064,8 @@ QTI.getActualCursorPosition1 = function(cursorPosition,element,htmlContent){
 			//return cursorPosition;
 		}
 	})
+	if(element.html().substr(cursorPosition) == "<br><br>")
+		cursorPosition = cursorPosition + 4;
 	return cursorPosition;
 }
 
