@@ -1266,7 +1266,7 @@ li[quiztype='TrueFalse'] #viewHeader {
 .editablediv {
 	cursor: pointer;
 	min-width: 455px;
-	border: 2px solid #D0D0D0;
+	border: 1px solid #D0D0D0;
 	border-radius: 3px;
 	min-height: 30px;
 	padding-left: 0px;
@@ -1275,7 +1275,7 @@ li[quiztype='TrueFalse'] #viewHeader {
 .optionEditablediv {
 	cursor: pointer;
 	min-width: 420px;
-	border: 2px solid #D0D0D0;	
+	border: 1px solid #D0D0D0;	
 	border-radius: 4px;			
 	padding-left: 1px;
 	float: left;
@@ -2178,7 +2178,7 @@ li[qstntemplate='true'] .indChar {
 .mainOptionEditablediv {
 	cursor: pointer;
 	min-width: 420px;
-	border: 2px solid #D0D0D0;
+	border: 1px solid #D0D0D0;
 	border-radius: 4px;	
 	padding-left: 0px;
 	margin-bottom: 7px;
@@ -2360,7 +2360,7 @@ span.viewOptionDiv{
 }
 
 .bottomonlyborder {
-	border-bottom: 1px solid;
+	border-bottom: 1px solid #d0d0d0;
 	padding-bottom: 9px;
 }
 
@@ -2616,7 +2616,7 @@ li[printmode='true'] .qti-itemBody .qti-blockquote>p:first-child {
 	position: absolute;
 	z-index: 1050;
 	margin-top: 10px;
-	margin-left: 245px;
+	margin-left: 255px;
 }
 .crtAnsDiv{
 	cursor: pointer;
