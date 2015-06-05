@@ -46,12 +46,13 @@ angular
 		};
 		
 		this.getQuestionTypeContainers = function(bookid,quizTypes, callback) {
+			var nodes=[];
 			var url = evalu8config.apiUrl + "/books/"+bookid+"/nodes?quizTypes="+quizTypes;
 			$http.get(url, config).success(
 					function(response) {
 						callback(response);
-					}).error(function(response) {
-						callback(response);
+					}).error(function() {
+						callback(nodes);
 					});
 			};
 		
