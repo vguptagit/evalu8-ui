@@ -922,7 +922,11 @@ angular
 							}
 							
 							$scope.parentNode;
-							$scope.showContainer = function(isAdvancedSearch){
+							$scope.showContainer = function(){
+								var isAdvancedSearch=false;
+								if($scope.selectedQuestionTypes.length>0){
+									isAdvancedSearch=true;
+								}
 								var searchedContainer = "";
 								var parentContainerid = "";
 								var hasParent = false;
@@ -1067,6 +1071,7 @@ angular
 								$scope.showAdvancedSearch = false;
 								if(!$scope.isAdvancedSearchMode){
 									$scope.selectedQuestionTypes=[];
+									$scope.selectedQuestionTypesToShow=[];
 								}
 							}
 							
@@ -1129,7 +1134,7 @@ angular
 							$scope.searchBooksForQuestionTypes = function(node) {
 								$scope.showAdvancedSearch = false;
 								if($scope.selectedContainer!=undefined && $scope.selectedContainer!=""){
-									$scope.showContainer(true);
+									$scope.showContainer();
 								}
 								else{
 									var blockLeftpanel = blockUI.instances.get('Leftpanel');
