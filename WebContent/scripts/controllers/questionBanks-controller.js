@@ -25,7 +25,8 @@ angular
 								$http, $sce, DisciplineService, TestService,
 								SharedTabService, UserQuestionsService,
 								EnumService, $modal, blockUI,ContainerService,questionService) {
-							SharedTabService.selectedMenu = SharedTabService.menu.questionBanks;
+						    SharedTabService.selectedMenu = SharedTabService.menu.questionBanks;
+						    $rootScope.blockPage = blockUI.instances.get('BlockPage');
 							$rootScope.globals = $cookieStore.get('globals')
 									|| {};
 							var config = {
@@ -396,12 +397,13 @@ angular
 															.addErrorMessage(
 																	currentNode.title,
 																	SharedTabService.errorMessageEnum.NoQuestionsAvailable);
-													callBack()
+													//callBack()
 													currentNode.showTestWizardIcon = true;
 													// currentNode.isNodeSelected
 													// = false;
 													$scope
 															.selectNode(currentNode);
+													$rootScope.blockPage.stop();
 												})
 							}
 
@@ -699,7 +701,8 @@ angular
 									function(handler, node) {
 										$scope.selectNode(node);
 									});
-							$scope.editQuestion = function(scope,destIndex) {
+							$scope.editQuestion = function (scope, destIndex) {
+							    $rootScope.blockPage.start();
 								var test = SharedTabService.tests[SharedTabService.currentTabIndex];
 					        	test.questionFolderNode = $scope.selectedNodes;
 								if (SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {

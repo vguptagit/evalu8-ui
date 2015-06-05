@@ -27,7 +27,8 @@ angular
 							$scope.tests = SharedTabService.tests;
 							
 							$rootScope.blockRightPanel = blockUI.instances.get('RightPanel');
-							$rootScope.blockLeftPanel = blockUI.instances.get('leftPanel');
+							$rootScope.blockLeftPanel = blockUI.instances.get('leftPanel'); 
+							$rootScope.blockPage = blockUI.instances.get('BlockPage');
 							
 							$scope.currentIndex = SharedTabService.currentTabIndex;
 							$scope.criterias = SharedTabService.tests[SharedTabService.currentTabIndex].criterias;
@@ -1184,8 +1185,8 @@ angular
 							        SharedTabService.masterTests = [];
 							    }
 							}
-							$scope.editTest = function(selectedTest) {
-								$rootScope.blockRightPanel.start();
+							$scope.editTest = function (selectedTest) {
+							    $rootScope.blockPage.start();
 							    resetTabs();
 								$scope.newVersionBtnCss = "";
 								$scope.exportBtnCss = "";
@@ -1303,7 +1304,7 @@ angular
 																		qBindings,
 																		currentIndex);
 															} else {
-																// $scope.BlockRightPanel.stop();
+															    $rootScope.blockPage.stop();
 															}
 														});
 											});
@@ -1520,12 +1521,12 @@ angular
 							// Function is to save the Test details with the
 							// questions.
 							$scope.saveTest = function() {
-								$rootScope.blockRightPanel.start();
+							    $rootScope.blockPage.start();
 								var test = SharedTabService.tests[SharedTabService.currentTabIndex];
 								if (test.title == null
 										|| test.title.length <= 0) {
 								    $scope.showMessage_EmptyTestTitle();
-								    $rootScope.blockRightPanel.stop();
+								    $rootScope.blockPage.stop();
 									//$scope.IsConfirmation = false;
 									//$scope.message = "Please Enter Test Title to save the test.";
 
@@ -1550,7 +1551,7 @@ angular
                                         $scope.message = "A test already exists with this name. Please save with another name.";
                                         $modal.open(confirmObject); 
                                         
-                                        $rootScope.blockRightPanel.stop();
+                                        $rootScope.blockPage.stop();
                                         
                                         test.title = test.id;
         							    $scope.testGuid = test.id;
@@ -1719,6 +1720,7 @@ angular
     											SharedTabService
     													.addMasterTest(test);
     										}
+    										$rootScope.blockPage.stop();
     									});
     								});                                                                
 

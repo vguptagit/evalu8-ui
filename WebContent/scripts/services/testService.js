@@ -23,7 +23,7 @@ angular.module('evalu8Demo')
 					callback(testResult);
 				})
 				.error(function(error, status) {
-
+				    $rootScope.blockPage.stop();
 				})				
 			};
 			
@@ -31,12 +31,10 @@ angular.module('evalu8Demo')
                 $http.post(evalu8config.apiUrl + '/my/questions', editedQstns, config)
                 .success(function(response) {    
                     var questionsResult = response;
-                    callback(questionsResult);
-                    $rootScope.blockRightPanel.stop();
+                    callback(questionsResult);                     
                 })
                 .error(function(error, status) {
-
-                	$rootScope.blockRightPanel.stop();
+                    $rootScope.blockPage.stop();
                 })                
                 
             };
