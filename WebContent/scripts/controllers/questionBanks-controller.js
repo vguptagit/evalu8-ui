@@ -256,7 +256,8 @@ angular
 											return;
 										}
 										
-                                        ContainerService.bookNodes(book.node.guid, function(bookNodes) {
+                                        ContainerService.bookNodes(book.node.guid, $scope.selectedQuestionTypes.toString(),
+                                        		function(bookNodes) {
                                             book.node.nodes = bookNodes;
                                             angular.forEach(
                                                 book.node.nodes,

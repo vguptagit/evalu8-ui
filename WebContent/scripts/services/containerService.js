@@ -17,11 +17,17 @@ angular
 			}
 		};
 
-		this.bookNodes = function(bookId, callback) {
+		this.bookNodes = function(bookId, quizTypes,  callback) {
 
 			var bookNodes = [];				
-			 
-			$http.get(evalu8config.apiUrl + "/books/" + bookId + "/nodes", config)
+			var url="";
+			if(quizTypes==""){
+				url= evalu8config.apiUrl + "/books/" + bookId + "/nodes";
+			}else{
+				url= evalu8config.apiUrl + "/books/" + bookId + "/nodes?quizTypes="+quizTypes;
+			}
+			
+			$http.get(url, config)
 			.success(function(response) {
 				bookNodes = response;
 				callback(bookNodes);
