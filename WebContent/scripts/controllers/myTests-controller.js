@@ -708,6 +708,10 @@ angular.module('e8MyTests')
                 }
                 SharedTabService.tests[SharedTabService.currentTabIndex].metadata = TestService.getTestMetadata(test);
                 SharedTabService.tests[SharedTabService.currentTabIndex].treeNode = test;
+                
+            	if($scope.defaultFolders.length == 1) {
+            		$scope.defaultFolders.push({'guid': null, 'nodeType': 'archiveRoot', "title": "Archive"});
+            	}
             });
         });
         //#endregion
