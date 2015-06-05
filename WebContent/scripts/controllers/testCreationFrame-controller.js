@@ -24,11 +24,7 @@ angular
 							// $scope.tree2 =
 							// SharedTabService.tests[SharedTabService.currentTabIndex].questions;
 							$scope.controller = EnumService.CONTROLLERS.testCreationFrame;
-							$scope.tests = SharedTabService.tests;
-							
-							$rootScope.blockRightPanel = blockUI.instances.get('RightPanel');
-							$rootScope.blockLeftPanel = blockUI.instances.get('leftPanel'); 
-							$rootScope.blockPage = blockUI.instances.get('BlockPage');
+							$scope.tests = SharedTabService.tests;							
 							
 							$scope.currentIndex = SharedTabService.currentTabIndex;
 							$scope.criterias = SharedTabService.tests[SharedTabService.currentTabIndex].criterias;
@@ -1787,7 +1783,7 @@ angular
 							 * $scope.noOfVersions = version.number; };
 							 */
 							$scope.createNewVersion = function(scope) {
-								// var self = this;
+
 								$scope.currentTab = SharedTabService.tests[SharedTabService.currentTabIndex];
 
 								var scrambleType;
@@ -1815,113 +1811,88 @@ angular
 								};
 								$scope.isViewVersions = scope.isViewVersions;
 
-								TestService
-										.createVersions(
-												this,
-												function(scope, testResult) {
-													$rootScope.blockRightPanel.start();
-													$scope.versionedTests = testResult;
+								$rootScope.blockPage.start();
 
-													$scope.currentTab = SharedTabService.tests[SharedTabService.currentTabIndex];
-													$scope.currentTab.modified = (new Date())
-															.toJSON();
-													//if (SharedTabService.selectedMenu == SharedTabService.menu.myTest) {
+								TestService.createVersions(this, function(scope, testResult) {
+									
+										try {
+																									
+											$scope.versionedTests = testResult;
 
-													//	$scope.selectedTestIndex = 0;
-													//	if ($scope.currentTab.folderGuid == null) {
-													//		$scope.selectedFolder = $scope.defaultFolders;
-													//	} else {
-													//		$scope.selectedFolder = angular
-													//				.element(
-													//						$(
-													//								'#'
-													//										+ $scope.currentTab.testId)
-													//								.closest(
-													//										'ol'))
-													//				.scope().node.nodes;
-													//	}
-													//	for (var i = 0; i < $scope.selectedFolder.length; i++) {
-													//		if ($scope.selectedFolder[i].guid === $scope.currentTab.testId) {
-													//			$scope.selectedTestIndex = i + 1;
-													//			break;
-													//		}
-													//	}
+										$scope.currentTab = SharedTabService.tests[SharedTabService.currentTabIndex];
+										$scope.currentTab.modified = (new Date())
+												.toJSON();
 
-													//}
+										$scope.maping = {};
+										$scope.count = 0;
 
-													$scope.maping = {};
-													$scope.count = 0;
+										$scope.versionedTests
+												.forEach(function(
+														node) {
+													var testID = node.guid;
+													TestService
+															.getMetadata(
+																	testID,
+																	function(
+																			result) {
+																		$scope.maping[node.guid] = result;
+																		$scope.count = $scope.count + 1;
 
-													$scope.versionedTests
-															.forEach(function(
-																	node) {
-																var testID = node.guid;
-																TestService
-																		.getMetadata(
-																				testID,
-																				function(
-																						result) {
-																					$scope.maping[node.guid] = result;
-																					$scope.count = $scope.count + 1;
+																		if ($scope.count == $scope.versionedTests.length)
+																			$scope
+																					.bindTabs();
+																	});
+												})
 
-																					if ($scope.count == $scope.versionedTests.length)
-																						$scope
-																								.bindTabs();
-																				});
-															})
+										$scope.bindTabs = function() {
+											$scope.versionedTests
+													.forEach(function(
+															node) {
+														var result = $scope.maping[node.guid];
+														// update
+														// MyTest
+														// tree
+														node.testId = $scope.currentTab.testId;
+														node.folderGuid = $scope.currentTab.folderGuid;
+														node.nodeType = "test";
+														node.title = result.title;
+														node.tabTitle = result.title;
+														node.modified = $scope.currentTab.modified;
 
-													$scope.bindTabs = function() {
-														$scope.versionedTests
-																.forEach(function(
-																		node) {
-																	var result = $scope.maping[node.guid];
-																	// update
-																	// MyTest
-																	// tree
-																	node.testId = $scope.currentTab.testId;
-																	node.folderGuid = $scope.currentTab.folderGuid;
-																	node.nodeType = "test";
-																	node.title = result.title;
-																	node.tabTitle = result.title;
-																	node.modified = $scope.currentTab.modified;
+														if (SharedTabService.selectedMenu == SharedTabService.menu.myTest) {
+															$rootScope
+																	.$broadcast(
+																			'handleBroadcast_CreateVersion',
+																			SharedTabService.tests[SharedTabService.currentTabIndex],
+																			node);
 
-																	if (SharedTabService.selectedMenu == SharedTabService.menu.myTest) {
-																	    $rootScope.$broadcast('handleBroadcast_CreateVersion', SharedTabService.tests[SharedTabService.currentTabIndex], node);
+														}
+														// create
+														// tabs
+														if ($scope.isViewVersions) {
+															var newTestTab = new SharedTabService.Test(
+																	SharedTabService.tests[SharedTabService.currentTabIndex]);
+															newTestTab.questions = [];
+															newTestTab.id = node.guid;
+															newTestTab.testId = node.guid;
+															newTestTab.title = result.title;
+															newTestTab.tabTitle = result.title;
+															newTestTab.metadata = result;
+															newTestTab.folderGuid = (typeof (result.folderId) == 'undefined') ? null
+																	: result.folderId;
+															SharedTabService
+																	.prepForBroadcastTest(newTestTab);
+														}
+													});
+										}
+										} catch (e) {
+											console.log(e);
+										} finally {
+											$rootScope.blockPage.stop();
+										}
 
-																		//if ($scope.currentTab.folderGuid == null) {
-																		//	$scope.selectedFolder
-																		//			.splice(
-																		//					$scope.selectedTestIndex
-																		//							+ parseInt(result.version),
-																		//					0,
-																		//					node);
-																			 
-																		//} else {
-																		//	$scope.selectedFolder
-																		//			.splice(
-																		//					$scope.selectedTestIndex
-																		//							+ parseInt(result.version),
-																		//					0,
-																		//					node);
-																		//}
-																	}
-																	// create
-																	// tabs
-																	if ($scope.isViewVersions) {
-																		var newTestTab = new SharedTabService.Test(
-																				SharedTabService.tests[SharedTabService.currentTabIndex]);
-																		newTestTab.questions = [];
-																		newTestTab.id = node.guid;
-																		newTestTab.testId = node.guid;
-																		newTestTab.title = result.title;
-																		newTestTab.tabTitle = result.title;	
-																		newTestTab.metadata = result;                                                                        
-                                                                        newTestTab.folderGuid = (typeof(result.folderId)=='undefined')?null:result.folderId;    
-																		SharedTabService.prepForBroadcastTest(newTestTab);
-																	}
-																});
-													}
-												});
+									});
+
 								return true;
 							}
 

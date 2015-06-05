@@ -135,8 +135,8 @@ angular.module('evalu8Demo')
 		     }
 		     //TODO : need to do code optimization.
 		     sharedTabService.addTestWizard = function (scope) {
-		    	 var blockRightPanel = blockUI.instances.get('RightPanel');
-					blockRightPanel.start();
+		    	 
+                 $rootScope.blockPage.start();
 		         var newTest = new sharedTabService.Test();
 		         newTest.tabTitle = "Test Wizard";
 		         newTest.isTestWizard = true;
@@ -148,7 +148,7 @@ angular.module('evalu8Demo')
 		         scope.exportBtnCss = "disabled";
 		         //scope.isTestWizardTabPresent = true;
 		         sharedTabService.isTestWizardTabPresent = true;
-		         blockRightPanel.stop();
+                 $rootScope.blockPage.stop();
 		     }
 
 		     var DefaultNumberOfQuestions = [10, 20, 30,""];

@@ -96,8 +96,7 @@ angular
 							$scope.loadTree = function() {
 								DisciplineService.userDisciplines(function(userDisciplines) {
 
-									var blockLeftpanel = blockUI.instances.get('Leftpanel');
-									blockLeftpanel.start();
+									$rootScope.blockPage.start();
 									
 									$scope.disciplines = userDisciplines;
 									
@@ -119,7 +118,7 @@ angular
 													});
 										}
 										
-										blockLeftpanel.stop();
+										$rootScope.blockPage.stop();
 									})
 
 								});								
@@ -962,8 +961,8 @@ angular
 
 							$scope.addSearchedContainer = function(isAdvancedSearch, searchedContainer) {
 								if(isAdvancedSearch){
-									var blockLeftpanel = blockUI.instances.get('Leftpanel');
-									blockLeftpanel.start();
+
+									$rootScope.blockPage.start();
 									var isQuestionTypeExists=false; 
 									questionService.getAllQuestionsOfContainer($scope.bookID,searchedContainer.guid, function(response){
 										response.forEach(function(question) {
@@ -980,7 +979,7 @@ angular
 											$scope.parentNode["nodes"] = [ jQuery.extend(true,
 													{}, searchedContainer) ];
 										}
-										blockLeftpanel.stop();
+										$rootScope.blockPage.stop();
 									});
 								}
 								else{
@@ -1105,8 +1104,8 @@ angular
 									$scope.showContainer();
 								}
 								else{
-									var blockLeftpanel = blockUI.instances.get('Leftpanel');
-									blockLeftpanel.start();
+
+									$rootScope.blockPage.start();
 									var count = 0;
 									$scope.selectedBooks.forEach(function(book){
 										ContainerService.getQuestionTypeContainers(book.guid,$scope.selectedQuestionTypes.toString(),function(containers){
@@ -1122,7 +1121,7 @@ angular
 											}
 											$scope.bookAddToDiscipline(book);
 											count=count+1;
-											blockLeftpanel.stop();
+											$rootScope.blockPage.stop();
 										});
 									});	
 								}

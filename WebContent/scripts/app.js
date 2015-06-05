@@ -120,8 +120,8 @@ angular.module('evalu8Demo', [
         });
 
 })
-.run(['$rootScope', '$location', '$cookieStore', '$http', '$modal', 'AuthenticationService',
-    function ($rootScope, $location, $cookieStore, $http, $modal, AuthenticationService) {
+.run(['$rootScope', '$location', '$cookieStore', '$http', '$modal', 'blockUI', 'AuthenticationService',
+    function ($rootScope, $location, $cookieStore, $http, $modal, blockUI, AuthenticationService) {
         // keep user logged in after page refresh
         $rootScope.globals = $cookieStore.get('globals') || {};
     	
@@ -129,6 +129,10 @@ angular.module('evalu8Demo', [
         
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {        	        	        	        		        	
         	
+			$rootScope.blockPage = blockUI.instances.get('BlockPage');
+			$rootScope.blockRightPanel = blockUI.instances.get('RightPanel');
+			$rootScope.blockLeftPanel = blockUI.instances.get('leftPanel'); 
+			
             var requireLogin = toState.data.requireLogin;
 
             if (requireLogin) {              

@@ -155,10 +155,9 @@ angular.module('evalu8Demo')
 				.success(function(response) {
 					var test = response;
 					callback(test)
-					$rootScope.blockRightPanel.stop();
 				})
 				.error(function(error, status) {
-					$rootScope.blockRightPanel.stop();
+
 				})				
 			};
 			
@@ -197,10 +196,10 @@ angular.module('evalu8Demo')
 			    $http.post(evalu8config.apiUrl + '/my/tests/' + scope.currentTab.testId + '/versions', scope.versioningOptions, config)
 				.success(function (response) {				     
 				    callback(scope,response);
-				    $rootScope.blockRightPanel.stop();
+
 				})
 				.error(function (error, status) {
-					$rootScope.blockRightPanel.stop();
+					callback();
 				}) 
 			};
 			
