@@ -1267,7 +1267,7 @@ angular
 									currentIndex) {
 								if (qBindings.length == 0) {
 									$scope.isLoading = false;
-									 /*$scope.BlockRightPanel.stop();*/
+									$rootScope.blockPage.stop();
 									return false;
 								}
 									var question = qBindings.shift();
