@@ -774,7 +774,8 @@ angular.module('e8MyTests')
                 test.draggable = false;
                 
                 if (containerFolder) {
-                    test.parentId =  containerFolder.guid;
+                    test.parentId = containerFolder.guid;
+                    test.selectTestNode = true;
                     parentFolderNodes.push(test);
                 }
                 else {

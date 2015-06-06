@@ -1751,6 +1751,9 @@ angular
     										$scope.newVersionBtnCss = "";
     										$scope.exportBtnCss = "";
     										
+    										if (oldGuid !== test.id && test.treeNode) {//save as
+    										    test.treeNode.showEditIcon = true;
+    										}
     										testResult.title = test.title;
     										testResult.modified = (new Date()).toJSON();
     										$rootScope.$broadcast('handleBroadcast_AddNewTest', testResult, $scope.containerFolder, isEditMode, oldGuid);
