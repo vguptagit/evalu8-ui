@@ -1152,7 +1152,8 @@ li[printmode='true'] .qti-simpleChoice .radio, li[printmode='true'] .qti-simpleC
 	{
 	padding-left: 0px;
 	padding-right: 15px;
-	margin-top: 0px;	
+	margin-top: 0px;
+	margin-bottom: 7px;	
 }
 
 li[printmode='true'] .qti-choiceInteraction {
@@ -1263,7 +1264,7 @@ li .editViewContainer{
 
 .printViewContainer .optionLabelView {
 	padding-left: 5px;
-	max-width: 94%;	
+	max-width: 91%;	
 	margin-top: 1px;
 }
 
@@ -2319,7 +2320,7 @@ li[qstntemplate=true] .printViewContainer  .qti-blockquote .matchIndex {
 }
 
 .mOptionLabel {
-	max-width: 93%;
+	max-width: 91%;
 	font-size: 14px;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	float: left;
@@ -2795,4 +2796,20 @@ iframe#dnloadFrame{
     width: 0px;
     position: absolute;
     top:0px
+}
+
+span.mOptionTemplate{
+	display: none;
+}
+
+label.mOptionLabel{
+	display: block;
+}
+
+li[qstntemplate='true'] span.mOptionTemplate{
+	display: block;
+}
+
+li[qstntemplate='true'] label.mOptionLabel{
+	display: none;
 }

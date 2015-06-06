@@ -1441,7 +1441,7 @@ angular
 	                                                                    .eq(i));
 
 	                                                            if (optionHtmlText == "") {
-	                                                                optionHtmlText = CustomQuestionTemplate[qstnNode.quizType].printOption+ " "+ (i+1) + "__";;
+	                                                                optionHtmlText = CustomQuestionTemplate[qstnNode.quizType].printOption+ " "+ (i+1);
 	                                                            }
 	                                                            
 	                                                            QTI.prependContent($(this).find('p').eq(0),optionHtmlText)

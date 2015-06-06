@@ -1769,7 +1769,8 @@ var textBox = $("<div contenteditable='true'  class='editView' type='text' id='q
 				if($(displayNode)[0].nodeName=="BLOCKQUOTE"){
 					var BLOCKQUOTE_ID = QTI.BLOCKQUOTE.getId();
 					var blockQuoteVAL=CustomQuestionTemplate[state.questionType].printOption + " "+ BLOCKQUOTE_ID + " _______";
-					   $(displayNode).find("label.mOptionLabel").append(blockQuoteVAL);
+					   $(displayNode).find("label.mOptionLabel").append(CustomQuestionTemplate[state.questionType].printOption);
+					   $(displayNode).find("span.mOptionTemplate").append(blockQuoteVAL);
 				}else{
 					textBox.attr("data-placeholder",CustomQuestionTemplate[state.questionType].editCaption);
 					$(elementDisplayNode).append(CustomQuestionTemplate[state.questionType].printCaption);
@@ -2723,7 +2724,9 @@ QTI.Elements.InlineChoiceInteraction.play = function(qtiNode, displayNode,
 				+ "</div>");
 				
 		matchOptionContainer.find('div.matchingOption').append($("<label class='mOptionLabel'></label>").attr({                      
-                    "data---qti-content-container" : "true"}));   
+                    "data---qti-content-container" : "true"}));  
+		matchOptionContainer.find('div.matchingOption').append($("<span class='mOptionTemplate'></label>").attr({                      
+            "data---qti-content-container" : "true"}));   
 		
 		
 		
@@ -2859,7 +2862,7 @@ QTI.customize = function(xml) {
 
 QTI.correctResponse = {};
 
-var indexResponse = [ "A) ", "B) ", "C) ", "D) ", "E) ","F) ","G) ","H) ","I) ", "J) ","K) ","L) ","M) "];
+var indexResponse = [ "A) ", "B) ", "C) ", "D) ", "E) ","F) ","G) ","H) ","I) ", "J) ","K) ","L) ","M) ","N) ", "O) ","P) ","Q) ","R) "];
 
 var matchIndex = {
 		"1" : "A) ",
@@ -2869,7 +2872,15 @@ var matchIndex = {
 		"5" : "E) ",
 		"6" : "F) ",
 		"7" : "G) ",
-		"8" : "H) "
+		"8" : "H) ",
+		"9" : "I) ",
+		"10" : "J) ",
+		"11" : "K) ",
+		"12" : "L) ",
+		"13" : "M) ",
+		"14" : "N) ",
+		"15" : "O) ",
+		"16" : "P) "
 	}
 
 
