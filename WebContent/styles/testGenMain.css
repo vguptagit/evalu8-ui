@@ -1163,6 +1163,10 @@ li[printmode='true'] .qstnContainer .qti-choiceInteraction {
 	margin-left: -8px;
 }
 
+li[printmode='true'] .qti-choiceInteraction {
+	margin-top: 10px;
+}
+
 li[printmode='true'] .#tree-root {
 	top: 50px;
 }
@@ -1241,9 +1245,10 @@ li .editViewContainer{
 }
 
 .printViewContainer .optionLabelView {
-	padding-left: 10px;
+	padding-left: 5px;
 	max-width: 91%;
 	vertical-align: text-top;
+	margin-top: 1px;
 }
 
 li[qstnTemplate='true'] .radio span.tick, li[qstnTemplate='true'] .checkbox span.tick
@@ -2209,6 +2214,8 @@ li[qstntemplate='true'] .indChar {
 li[quiztype='Matching'] .qstnContainer .qti-blockquote {
 	display: table;
 	width: 100%; 	
+	padding-left: 5px;
+	margin-bottom: -4px;
 }
 
 li[quiztype='FillInBlanks'] .qstnContainer .qti-blockquote,li[quiztype='Essay'] .qstnContainer .qti-blockquote {
@@ -2536,6 +2543,11 @@ li[qstntemplate='true'][quiztype='Matching'] .qti-itemBody>blockquote>div.option
 	margin: 0 0 3px;
 }
 
+li[qstntemplate='true'][quiztype='Matching'] .qti-itemBody>blockquote>p
+	{
+	margin: 0 0 3px;
+}
+
 li[qstntemplate='true'][quiztype='Matching'] .qti-itemBody>blockquote:last-child>span.printView
 	{
 	padding-bottom: 10px;
@@ -2582,7 +2594,7 @@ li[qstntemplate='true'] .matchRight {
 
 li[qstntemplate='true'] .qti-simpleChoice .radio, li[printmode='true'] .qti-simpleChoice .checkbox
 	{
-	margin-bottom: 5px;
+	margin-bottom: 4px;
 }
 
 #Custom-Qstn-tree-root {
