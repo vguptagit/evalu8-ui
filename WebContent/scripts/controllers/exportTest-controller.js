@@ -109,39 +109,7 @@ angular.module('e8MyTests')
         $scope.format_change();
         
     })
-    
-    //$scope.isError=false;
-    //$scope.ErrorMessage='';
-
-    $scope.onclick_exportTest = function () {
-
-    	if($scope.isIncludeRandomizedTest){
-    		var format="zip";
-    		var fileExtention=".zip";
-    	}else{
-    		if ($scope.selectedFormat.value == FileFormats.MSWord){
-    	        var format = "msword";
-    			var fileExtention=".doc"; 
-    	
-    		}
-            else if ($scope.selectedFormat.value == FileFormats.PDF){
-            	var format = "pdf";
-            	var fileExtention=".pdf";
-            }
-                	
-    	}
-    		
-        
-        var apiUrl = evalu8config.apiUrl + "/tests/" + testId + "/download/" + $scope.selectedFormat.value 
-        	+ "?answerKey=" + $scope.selectedAnswerKey.value + "&answerArea=" + $scope.selectedAnswerArea.value 
-        	+ "&includeRandomizedTests=" + $scope.isIncludeRandomizedTest + "&includeStudentName=" + $scope.isIncludeStudentName
-        	+ "&saveSettings=" + $scope.isSaveSettingsAsDefault+"&margin="+$scope.selectedMargin.value+"&pageNumberDisplay="+$scope.selectedPageNumber.value;
-        
-        TestService.getMetadata(testId,function(result){
-         	download(result.title,fileExtention,format, apiUrl);
-         });
-    }
-
+  
     $scope.format_change = function () {
         if ($scope.selectedFormat.value == FileFormats.MSWord || $scope.selectedFormat.value == FileFormats.PDF) {
             $scope.disableAnsAreaAndKey = '';
@@ -155,7 +123,7 @@ angular.module('e8MyTests')
     };
     
     //TODO : need to implement using $get
-    function download(title,fileExtention,format, apiUrl, isSameFile) {
+    $scope.onclick_exportTest = function () {
 		if($scope.selectedAnswerKey.value == $scope.answerKeys[2].value){
 			downloadFile($scope.answerKeys[0].value, false)
 		}

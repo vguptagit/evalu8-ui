@@ -1053,7 +1053,7 @@ display: inline-block;
 .ck-button {
     margin: 5px;
     font-family:Helvetica;
-    font-size:12px;
+    font-size:14px;
     background-color: #EFEFEF;
     border-radius: 4px;
     border: 1px solid #D0D0D0;
@@ -1062,12 +1062,13 @@ display: inline-block;
     width: 30%;
 	height:30px;
 	cursor: pointer;
+	padding-top: 3px;
 }
 
 .ck-buttonSelected {
     margin: 5px;
     font-family:Helvetica;
-    font-size:12px;
+    font-size:14px;
     background-color: #999;
     color:#ffffff;
     border-radius: 4px;
@@ -1077,6 +1078,7 @@ display: inline-block;
     width: 30%;
 	height:30px;
 	cursor: pointer;
+	padding-top: 3px;
 }
 
 .ck-button label {
@@ -2671,7 +2673,16 @@ li[printmode='true'] .qti-itemBody .qti-blockquote>div.optionLabelView:first-chi
 	font-family: Helvetica;
 	font-size: 14px;
 	text-decoration: none !important;
-	margin-top: 5px;
+	margin-top: 7px;
+}
+
+.advancedSearchText:hover {
+	float: left;
+	color: #007FA9;
+	font-family: Helvetica;
+	font-size: 14px;
+	text-decoration: none !important;
+	margin-top: 7px;
 }
 
 .advancedSearchCriteria {
@@ -2714,6 +2725,16 @@ li[printmode='false'][optionsview='true'] .blankBtnDiv{
 .clearAdvancedSearch{
 	float: left; 
 	color: #4D4D4D; 
+	font-family: Helvetica; 
+	font-size: 14px; 
+	text-decoration: none !important; 
+	margin-top: 10px; 
+	cursor: pointer;
+}
+
+.clearAdvancedSearch:hover{
+	float: left; 
+	color: #007FA9; 
 	font-family: Helvetica; 
 	font-size: 14px; 
 	text-decoration: none !important; 

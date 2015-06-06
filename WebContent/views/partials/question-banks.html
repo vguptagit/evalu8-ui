@@ -6,7 +6,8 @@
 			typeahead="container as container.title for container in allContainers | filter:{title:$viewValue}"
 			ng-keyup="showContainerOnEnter($event)"> <span
 			class="glyphicon glyphicon-search bookSearchicon"
-			ng-click="showContainerOnClick()" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="bottom"
+			ng-click="showContainerOnClick()" tooltip-append-to-body="true"
+			tooltip-trigger="mouseenter" tooltip-placement="bottom"
 			tooltip="Search"></span>
 	</div>
 	<div class="col-lg-6">
@@ -25,44 +26,37 @@
 			</div>
 		</div>
 		<div class="row">
-		<div class="col-md-1 text-left margin-top-10">
+			<div class="col-md-1 text-left margin-top-10">
 				<h5">Type:</h5>
 			</div>
 			<div class="col-md-11 margin-bot-10">
 				<div>
 					<div class="col-md-4"
 						ng-class="isThisQuizTypeSelected('Essay')?'ck-buttonSelected':'ck-button'"
-						ng-click='toggleQuestiontypeSelection("Essay")'>
-						<span style="text-align: center; vertical-align: middle;">Essay</span>
-					</div>
+						ng-click='toggleQuestiontypeSelection("Essay")'>Essay</div>
 					<div class="col-md-4"
 						ng-class="isThisQuizTypeSelected('MultipleResponse')?'ck-buttonSelected':'ck-button'"
 						ng-click='toggleQuestiontypeSelection("MultipleResponse")'>
-						<span>Multiple Response</span>
-					</div>
+						Multiple Response</div>
 					<div class="col-md-4"
 						ng-class="isThisQuizTypeSelected('Matching')?'ck-buttonSelected':'ck-button'"
-						ng-click='toggleQuestiontypeSelection("Matching")'>
-						<span>Matching</span>
+						ng-click='toggleQuestiontypeSelection("Matching")'>Matching
 					</div>
 				</div>
 				<div>
 					<div class="col-md-4"
 						ng-class="isThisQuizTypeSelected('MultipleChoice')?'ck-buttonSelected':'ck-button'"
 						ng-click='toggleQuestiontypeSelection("MultipleChoice")'>
-						<span>Multiple Choice</span>
-					</div>
+						Multiple Choice</div>
 					<div class="col-md-4"
 						ng-class="isThisQuizTypeSelected('TrueFalse')?'ck-buttonSelected':'ck-button'"
-						ng-click='toggleQuestiontypeSelection("TrueFalse")'>
-						<span>True or False</span>
-					</div>
+						ng-click='toggleQuestiontypeSelection("TrueFalse")'>True
+						False</div>
 
 					<div class="col-md-4"
 						ng-class="isThisQuizTypeSelected('FillInBlanks')?'ck-buttonSelected':'ck-button'"
-						ng-click='toggleQuestiontypeSelection("FillInBlanks")'>
-						<span>Fill in Blanks</span>
-					</div>
+						ng-click='toggleQuestiontypeSelection("FillInBlanks")'>Fill
+						in the Blanks</div>
 				</div>
 			</div>
 		</div>
@@ -79,7 +73,7 @@
 <div class="row" ng-show="showHideSearchCriteria()">
 	<div class="col-md-12">
 		<div class="selectedQuestionTypes"
-			ng-bind="selectedQuestionTypesToShow.toString()"></div>
+			ng-bind="getSearchCriteriaSelections()"></div>
 		<div class="clearAdvancedSearch" ng-click="clearAdvancedSearch()">Clear
 		</div>
 	</div>
