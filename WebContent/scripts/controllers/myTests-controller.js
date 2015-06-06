@@ -24,6 +24,7 @@ angular.module('e8MyTests')
             	
                 $scope.defaultFolders = defaultFolders;
                 
+                $rootScope.blockLeftPanel.start();
                 TestService.getTests(null, function(tests){
                 	tests.forEach(function(test) {
                 		
@@ -58,6 +59,7 @@ angular.module('e8MyTests')
                     		}
                     	});                		
                 	}
+                	$rootScope.blockLeftPanel.stop();
                 });            
             });
         }
@@ -418,11 +420,24 @@ angular.module('e8MyTests')
             defaultFolder.toggle();
 
             if (!defaultFolder.collapsed) {
+            	
+				if(defaultFolder.node.nodes) {
+					return;
+				}
             	UserFolderService.userFolders(defaultFolder.node, function (userFolders) {
 
                     defaultFolder.node.nodes = userFolders;
 
+                    $rootScope.blockLeftPanel.start();
                     TestService.getTests(defaultFolder.node.guid, function (tests) {
+                    	
+                    	if(userFolders.length == 0 && tests.length == 0) {
+    						var item = null;
+    						item = {"draggable":"NotDraggable","title":"Empty folder", "sequence":0};
+    						item.nodeType = "empty";
+    						 defaultFolder.node.nodes.push(item);                    		
+                    	}
+						
                         tests.forEach(function (test) {
 
                         	if(SharedTabService.tests) {
@@ -440,6 +455,7 @@ angular.module('e8MyTests')
                             defaultFolder.node.nodes.shift();
                         }
 
+                        $rootScope.blockLeftPanel.stop();
                     });
                     
                     if(callback) callback();

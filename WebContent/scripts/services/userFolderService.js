@@ -87,6 +87,7 @@ angular.module('evalu8Demo')
 			this.userFolders = function(folder, callback) {				
 
 				var userFolders = [];
+
 				$http.get(
 						evalu8config.apiUrl + "/my/folders/"+ folder.guid + "/folders", config)
 						.success(
@@ -100,10 +101,7 @@ angular.module('evalu8Demo')
 								})
 						.error(
 								function(error) {
-									var item = null;
-									item = {"draggable":"NotDraggable","title":"Empty folder", "sequence":0};
-									item.nodeType = "empty";
-									userFolders.push(item);
+
 									callback (userFolders);
 								})
 				

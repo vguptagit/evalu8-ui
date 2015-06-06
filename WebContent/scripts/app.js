@@ -131,7 +131,7 @@ angular.module('evalu8Demo', [
         	
 			$rootScope.blockPage = blockUI.instances.get('BlockPage');
 			$rootScope.blockRightPanel = blockUI.instances.get('RightPanel');
-			$rootScope.blockLeftPanel = blockUI.instances.get('leftPanel'); 
+			$rootScope.blockLeftPanel = blockUI.instances.get('LeftPanel'); 
 			
             var requireLogin = toState.data.requireLogin;
 
