@@ -2950,7 +2950,7 @@ var CustomQuestionTemplate =
 			 makeExtra: function(element,tag,xml){
 				 switch(tag.TAG){
 				 case "p":
-					 var printElement = element.find("p").eq(0);
+					 var printElement = element.find("div.optionLabelView").eq(0);
 					 var textEntries = printElement.find("textEntryInteraction");
 					 textEntries.each(function(){
 						 printElement.html(printElement.html().replace($(this).get(0).outerHTML,"<span class='blank'> _____________________ </span>"));

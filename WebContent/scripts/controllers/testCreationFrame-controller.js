@@ -1581,10 +1581,12 @@ angular
 											editedElement).scope();
 									scopeElement.node.IsEditView = false;
 									scopeElement.node.qstnLinkText = "Edit";
-									if($scope.showChoiceSelectionAlert(scopeElement)){
-										$rootScope.blockPage.stop();
-										return;										
-									}										
+									if (scopeElement.node.quizType == "MultipleResponse"){
+										if($scope.showChoiceSelectionAlert(scopeElement)){
+											$rootScope.blockPage.stop();
+											return;										
+										}	
+									}
 									convertHtmlToXmlNode(scopeElement);
 									SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode=false;    									
 								}
