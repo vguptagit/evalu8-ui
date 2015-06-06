@@ -528,8 +528,8 @@ angular.module('e8MyTests')
         	ArchiveService.archiveTest(test.node.guid, parentFolderId, function(archivedFolder) {
         		test.remove();  
         		
-        		test.node.nodeType= "archiveTest";
-        		
+        		test.node.nodeType = "archiveTest";
+        		test.node.draggable = false;
         		if(archivedFolder == null || archivedFolder == "") {
         			if($scope.archiveRoot && $scope.archiveRoot.node && $scope.archiveRoot.node.nodes && $scope.archiveRoot.node.nodes.length) {
         				if($scope.archiveRoot.node.nodes[0].nodeType == EnumService.NODE_TYPE.emptyFolder) {
@@ -588,7 +588,7 @@ angular.module('e8MyTests')
         		test.remove();
         		
         		test.node.nodeType= "test";
-
+        		test.node.draggable = true;
                 test.node.selectTestNode = false;//to show the edit icon
                 
         		if(restoredFolder == null || restoredFolder == "") {
