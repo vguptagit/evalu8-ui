@@ -392,12 +392,18 @@ angular
 								}
 							}
 							function getQuestions(currentNode, callBack) {
+								var node;
+								if($scope.isSearchMode){
+									node=$scope.searchedContainerId;	
+								}else{
+									node=currentNode.guid;
+								}
 								$http
 										.get(
 												evalu8config.apiUrl + "/books/"
 														+ currentNode.bookid
 														+ "/nodes/"
-														+ currentNode.guid
+														+ node
 														+ "/questions?flat=1",
 												config)
 										.success(function(response) {
