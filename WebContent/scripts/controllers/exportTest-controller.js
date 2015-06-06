@@ -124,14 +124,16 @@ angular.module('e8MyTests')
     
     //TODO : need to implement using $get
     $scope.onclick_exportTest = function () {
-		if($scope.selectedAnswerKey.value == $scope.answerKeys[2].value){
-			downloadFile($scope.answerKeys[0].value, false)
+    	var isSeperateFileSelected = false;
+		if($scope.selectedAnswerKey.value == $scope.answerKeys[2].value && !$scope.isIncludeRandomizedTest){
+			downloadFile($scope.answerKeys[0].value, false, isSeperateFileSelected);
+			isSeperateFileSelected= true;
 		}
-		downloadFile($scope.selectedAnswerKey.value,$scope.isSaveSettingsAsDefault)
+		downloadFile($scope.selectedAnswerKey.value,$scope.isSaveSettingsAsDefault,isSeperateFileSelected)
 		$modalInstance.dismiss('cancel');
     }
     
-    function downloadFile(answerKeyPreference, saveSettingsPreference){
+    function downloadFile(answerKeyPreference, saveSettingsPreference, isSeperateFileSelected){
     	var apiUrl = evalu8config.apiUrl + "/tests/"
 		+ testId + "/download/"
 		+ $scope.selectedFormat.value
@@ -153,7 +155,7 @@ angular.module('e8MyTests')
 			+ "$AT=" + $rootScope.globals.authToken;
 	
 			data = btoa(data);
-			if($("iframe#dnloadFrame").length == 1){
+			if($("iframe#dnloadFrame").length > 0 && isSeperateFileSelected == false){
 				$("iframe#dnloadFrame").remove();
 			}
 			var frm = $("<iframe>").attr("src",
