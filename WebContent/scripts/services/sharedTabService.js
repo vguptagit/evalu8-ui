@@ -3,8 +3,8 @@
 angular.module('evalu8Demo')
 
 .service('SharedTabService',
-		['$rootScope', '$modal','blockUI',
-		 function ($rootScope, $modal,blockUI) {
+		['$rootScope', '$modal', 'blockUI', 'EnumService',
+		 function ($rootScope, $modal, blockUI, EnumService) {
 
 		     var sharedTabService = {};
 		     sharedTabService.tests = [];
@@ -49,6 +49,7 @@ angular.module('evalu8Demo')
 		         this.treeNode = null;
 		         this.questionFolderNode = [];
 		         this.showCloseButton = true;
+		         this.saveMode = EnumService.SAVE_MODE.Save;
 		     }
 
 		     sharedTabService.Criteria = function () {

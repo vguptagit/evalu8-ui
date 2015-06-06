@@ -1545,12 +1545,11 @@ angular
 							}
 							$scope.saveAs_Test = function (title, containerFolder) {
 							    var test = SharedTabService.tests[SharedTabService.currentTabIndex];
-							    test.testId = null;
+							    test.saveMode = EnumService.SAVE_MODE.SaveAs;
 							    test.title = title;
 							    test.folderGuid = containerFolder == null ? null : containerFolder.guid;
 							    $scope.testTitle = title;
 							    $scope.containerFolder = containerFolder;
-							    $scope.testGuid = null;
 							    $scope.saveTest();
 							    $scope.testType = 'Test';
 							}
@@ -1602,18 +1601,20 @@ angular
                                         }
                                     });
                                     
-                                    if(duplicateTitle && test.testId == null) {
+                                    if (duplicateTitle && test.saveMode === EnumService.SAVE_MODE.SaveAs) {
                                         
                                     	$scope.IsConfirmation = false;
                                         $scope.message = "A test already exists with this name. Please save with another name.";
-                                        $modal.open(confirmObject); 
-                                        
-                                        $rootScope.blockPage.stop();
-                                        
-                                        test.testId = test.id;
-        							    $scope.testGuid = test.id;
-        							    
+                                        $modal.open(confirmObject);
+                                        test.saveMode = EnumService.SAVE_MODE.Save;
+                                        $rootScope.blockPage.stop();         							    
                                     	return;
+                                    }
+
+                                    if (test.saveMode === EnumService.SAVE_MODE.SaveAs) {
+                                        test.testId = null;
+                                        $scope.testGuid = null;
+                                        test.saveMode = EnumService.SAVE_MODE.Save;
                                     }
                                                                         
     								$scope.testTitle = test.title;

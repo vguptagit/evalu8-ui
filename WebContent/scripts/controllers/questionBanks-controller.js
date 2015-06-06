@@ -365,10 +365,12 @@ angular
 								for (var i = 0; i < $scope.selectedNodes.length; i++) {
 									currentNode = $scope.selectedNodes[i];
 									if (currentNode.showTestWizardIcon) {
-										currentNode.showTestWizardIcon = false;
+									    currentNode.showTestWizardIcon = false;
+									    $rootScope.blockPage.start();
 										getQuestions(
 												currentNode,
-												function(response, currentNode) {
+												function (response, currentNode) {
+												    try {												    
 													$rootScope
 															.$broadcast(
 																	"handleBroadcast_createTestWizardCriteria",
@@ -380,6 +382,11 @@ angular
 														if (SharedTabService.errorMessages.length > 0)
 															SharedTabService
 																	.TestWizardErrorPopup_Open();
+                                                    } catch (e) {
+                                                        console.log(e);
+                                                    } finally {
+                                                        $rootScope.blockPage.stop();
+                                                    }
 												});
 									}
 								}

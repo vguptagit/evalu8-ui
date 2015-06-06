@@ -36,4 +36,8 @@ angular.module('evalu8Demo')
     this.ERROR_MESSAGES = {
         EmptyTestTitle: "Please enter test title to save the test."
     };
+    this.SAVE_MODE = {
+        Save: "save",
+        SaveAs: "saveas"
+    };
 });
