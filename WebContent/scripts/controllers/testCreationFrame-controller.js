@@ -1730,12 +1730,14 @@ angular
 
     									TestService.saveTestData(testcreationdata, test.folderGuid, function(testResult) {
     									    var isEditMode = false,
+                                                oldGuid = null,
                                                 test = SharedTabService.tests[SharedTabService.currentTabIndex];
 
     									    if (test.testId) {
     									        isEditMode = true;
     									    }
     									    SharedTabService.currentTab = jQuery.extend(true, {}, test);
+    									    oldGuid = test.id;
     									    test.testId = testResult.guid;
     									    test.id = testResult.guid;
     									    test.tabTitle = test.title;
@@ -1751,7 +1753,7 @@ angular
     										
     										testResult.title = test.title;
     										testResult.modified = (new Date()).toJSON();
-    										$rootScope.$broadcast('handleBroadcast_AddNewTest', testResult, $scope.containerFolder, isEditMode);
+    										$rootScope.$broadcast('handleBroadcast_AddNewTest', testResult, $scope.containerFolder, isEditMode, oldGuid);
     										$scope.containerFolder = null; //clear selected folder in save as dialog popup.
                                              
     										if (test.isSaveAndClose) {

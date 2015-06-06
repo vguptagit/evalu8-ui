@@ -44,6 +44,12 @@ angular
 							        $scope.selectedNodes.push(test.questions[i]);
 							    }
 							}
+						    //no teb switch, restore selectedNodes items
+							for (var i = 0; i < SharedTabService.tests.length; i++) {
+							    if (SharedTabService.tests[i].treeNode) {
+							        $scope.selectedNodes.push(SharedTabService.tests[i].treeNode);
+							    }
+							}
 							$scope.isSearchMode = false;
 							$scope.dragStarted = false;
 							$scope.isAdvancedSearchMode = false;
@@ -319,7 +325,7 @@ angular
                                         }, 5000);
                                     }
 
-                                SharedTabService.showSelectedTestTab(test.node.guid);
+                                    SharedTabService.showSelectedTestTab(test.node.guid);
                             }
 							
                             //to disable the edit icon once it clicked  
@@ -420,6 +426,7 @@ angular
                                         
                                         angular.forEach(currentNode.node.nodes, function(item) {
                                             item.template = 'tests_renderer.html';
+                                            updateTreeNode(item)
                                         });
                                         return;
                                     }
@@ -493,7 +500,9 @@ angular
 							            if ($scope.selectedNodes[i].guid == item.guid) {
 							                item.showTestWizardIcon = $scope.selectedNodes[i].showTestWizardIcon;
 							                item.showEditQuestionIcon = $scope.selectedNodes[i].showEditQuestionIcon;
-							                item.isNodeSelected = $scope.selectedNodes[i].isNodeSelected;
+							                item.showEditIcon = $scope.selectedNodes[i].showEditIcon;
+							                item.selectTestNode = $scope.selectedNodes[i].selectTestNode;
+							                item.isNodeSelected = $scope.selectedNodes[i].isNodeSelected; 
 							                $scope.selectedNodes[i] = item;
 							            }
 							        }
@@ -1174,10 +1183,15 @@ angular
 								$scope.loadTree();
 							}
 							
-							$scope.$on('handleBroadcast_AddNewTest', function (handler, newTest, containerFolder, isEditMode) {
-							    if (isEditMode) {							       
+							$scope.$on('handleBroadcast_AddNewTest', function (handler, newTest, containerFolder, isEditMode, oldGuid) {							    
+							    if (isEditMode) {
 							        return false;
-							    }							    
+							    }
+							    for (var i = 0; i < $scope.selectedNodes.length; i++) {
+							        if (oldGuid === $scope.selectedNodes[i].guid) {
+							            $scope.selectedNodes[i].showEditIcon = true;
+							        }
+							    }
 							    TestService.getMetadata(newTest.guid, function (test) {
 							        test.nodeType = "test";
 							        SharedTabService.tests[SharedTabService.currentTabIndex].metadata = TestService.getTestMetadata(test);
