@@ -593,6 +593,9 @@ angular.module('e8MyTests')
                 
         		if(restoredFolder == null || restoredFolder == "") {
         			
+                    test.node.showEditIcon = true;
+                    test.node.showArchiveIcon = true;
+
         			var index = 0, restoreIndex = 0;
         			$scope.defaultFolders.forEach(function(item){
 
