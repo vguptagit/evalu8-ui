@@ -185,10 +185,14 @@ angular.module('e8MyTests')
 			+ "$AT=" + $rootScope.globals.authToken;
 	
 			data = btoa(data);
+			if($("iframe#dnloadFrame").length == 1){
+				$("iframe#dnloadFrame").remove();
+			}
 			var frm = $("<iframe>").attr("src",
 					apiUrl + "?data=" + data).appendTo(
 					"body").load(function() {
 			});
+			frm.attr("id","dnloadFrame");
     }
 
     function toBinaryString(data) {
