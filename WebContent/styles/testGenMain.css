@@ -1066,7 +1066,59 @@ display: inline-block;
 	cursor: pointer;
 	padding-top: 3px;	
 }
+.test-wizard-container .ck-button{
+    border-radius: 0px;
+    border: 0px;
+    width: auto;
+    background-color: #fff;
+}
 
+.test-wizard-container .ck-button input{
+	float: left;
+	width: 15px;
+}
+
+
+.test-wizard-container .ck-button span{
+	margin-left: 4px;
+	float: left;
+}
+.test-wizard-container .bg-gray-lighter{
+	padding: 0px;
+	background-color: #fff;
+	margin-bottom: 0px;
+	border-radius:0px;
+}
+
+.test-wizard-container .repeatCriteria{
+	margin-left: 0px;
+	margin-bottom: 18px;
+}
+.test-wizard-container .wizardHeader{
+	margin: 0px;
+}
+.wizardHeader{
+	display: inline-block;
+	width: 100%;
+	vertical-align: middle;
+	background-color: #E0E0E0 !important;
+	height: 41px;
+	line-height: 41px;
+	font-size: 14px;
+	margin: 0px;
+	}
+.wizardHeader span{
+	margin-left: 15px;
+}
+
+.wizardHeader + div.row{
+	margin-left: 0px;
+}
+
+.wizardHeader button.close{
+	margin-right: 15px;
+	margin-top: 10px;
+}
 .ck-buttonSelected {
     margin: 5px;
     font-family:Helvetica;
@@ -1115,7 +1167,7 @@ display: inline-block;
 .criteriaAlign {
 	padding-top: 6px;
 }
-
+.criteriaAlign input[type='radio']{ margin-left: 20px }
 .questionTemplateContainer {
 	font-size: 15px;
 }
@@ -2812,4 +2864,12 @@ li[qstntemplate='true'] span.mOptionTemplate{
 
 li[qstntemplate='true'] label.mOptionLabel{
 	display: none;
+}
+.criteria{
+	height: 41px;
+	border : 1px solid #ddd;
+	border-top: 0px;
+}
+.criteria>div{
+	margin-top: 8px;
 }

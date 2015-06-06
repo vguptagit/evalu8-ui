@@ -131,35 +131,15 @@
 		<!--<button type=" button" class="btn btn-default" ng-click="addTestWizardCriteria()">
         <span class="icon-magic"></span>Add Test wizard</button>-->
         <div class="test-wizard-container">
-            <div class="row"
+            <div class="row repeatCriteria"
                  ng-repeat="criteria in tests[currentIndex].criterias" ng-show="$first || !isApplySameCriteriaToAll">
                 <div class="col-lg-11  form-inline  panel panel-default bg-gray-lighter">
-                    <button type="button" class="close"
+                    <div class="row wizardHeader">
+                    	<span>{{criteria.folderTitle}} ({{criteria.totalQuestions}} Questions)</span>
+                    	<button type="button" class="close"
                                 ng-click="closeCriteria(criteria,true)" aria-label="Close" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Delete this section">
-                        <span aria-hidden="true">&times;</span>
-                    </button>                    
-                    <div class="row">
-                        <div class="col-lg-5">
-                            <b>Selected Questions :</b>
-                        </div>
-                        <div class="col-lg-6" ng-show="$first && !$last">
-                            <input id="applyCriteria" type="checkbox" ng-model="isApplySameCriteriaToAll"
-                                   ng-change='toggleApplySameCriteria(this)'>Use same
-                            criteria for all topics
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <ul>
-                                <li ng-repeat="topic in tests[currentIndex].criterias" ng-if="topic.folderTitle == criteria.folderTitle || isApplySameCriteriaToAll">
-                                    <span>{{topic.folderTitle}} ({{topic.totalQuestions}} Questions)</span>
-                                    <button type="button" class="close btnChapterClose" ng-show="isApplySameCriteriaToAll"
-                                              ng-click="closeCriteria(topic,false)" aria-label="Close" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Delete this section">
-                                         <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </li>
-                            </ul>
-                        </div>
+                        	<span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                     <div class="row form-group container-full">
                         <div class="col-lg-12">
@@ -169,20 +149,21 @@
                                 </div>
                                 <div class="col-lg-10">
                                     <div class="row criteriaAlign">
-                                        <div class="col-lg-2 text-right no-padding"
+                                        <div class="col-lg-2 text-left no-padding"
+                                        	ng-class="$last?'col-lg-3':'col-lg-2'"
                                              ng-repeat="defaultNumberOfQuestion in criteria.defaultNumberOfQuestions">
                                             <input type="radio" name="{{criteria.id}}"
                                                    ng-model="criteria.numberOfQuestionsSelected "
                                                    value="{{defaultNumberOfQuestion}}"
                                                    ng-change="fillQuestionCount(criteria)"
                                                    ng-disabled='criteria.totalQuestions < defaultNumberOfQuestion'>{{defaultNumberOfQuestion}}
-                                        </div>
-                                        <div class="col-lg-2">
+                                                   
                                             <input type="text"
                                                    ng-disabled='criteria.numberOfQuestionsSelected > 0'
                                                    ng-model="criteria.numberOfQuestionsEntered"
                                                    ng-change="SelecteNumberOnly(criteria)"
-                                                   placeholder="Enter #"
+                                                   ng-if="$last"
+                                                   placeholder="#"
                                                    class="form-control input-sm tw-no-of-qns-input" />
                                         </div>
                                     </div>
@@ -191,7 +172,7 @@
 
                             </div>
                             <div class="row">
-                                <div class="col-lg-2 text-center">
+                                <div class="col-lg-2 text-left">
                                     <h5>Type:</h5>
                                 </div>
                                 <div class="col-lg-10">
@@ -199,13 +180,11 @@
                                         <div class="col-lg-4"
                                              ng-repeat="questiontype in sharedTabService.QuestionTypes">
                                             <div class="ck-button">
-                                                <label ng-class="(criteria.questiontypes.indexOf(questiontype.key) == -1) ? 'disabled-cursor' : '' ">
-                                                    <input type="checkbox"
+                                                   <input type="checkbox"
                                                            ng-disabled='criteria.questiontypes.indexOf(questiontype.key) == -1'
                                                            ng-model="value" value="{{questiontype.key}}"
                                                            ng-click='toggleQuestiontypeSelection(criteria,questiontype.key)'
-                                                           ng-checked="criteria.selectedQuestiontypes.indexOf(questiontype.key) != -1"><span>{{questiontype.value}}</span>
-                                                </label>
+                                                           ng-checked="criteria.selectedQuestiontypes.indexOf(questiontype.key) != -1"><span style="float:left;white-space: ">{{questiontype.newValue}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -216,6 +195,22 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-lg-11 criteria" ng-show="$first">
+   	                <div class="">
+                       <input id="applyCriteria" type="checkbox" ng-model="isApplySameCriteriaToAll"
+                              ng-change='toggleApplySameCriteria(this)'>Use same criteria for all topics
+                  	</div>
+                </div>
+                <div class="col-lg-11 criteria" ng-repeat="topic in tests[currentIndex].criterias" ng-if="!$first && isApplySameCriteriaToAll">
+   	                <div class="">
+                       <span>{{topic.folderTitle}} ({{topic.totalQuestions}} Questions)</span>
+                       <button type="button" class="close"
+                                ng-click="closeCriteria(criteria,false)" aria-label="Close" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Delete this section">
+                        	<span aria-hidden="true">&times;</span>
+                        </button>
+                  	</div>
+                </div>
+                
             </div>
 
             <div class="row">
