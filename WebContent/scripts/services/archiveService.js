@@ -32,6 +32,7 @@ angular.module('evalu8Demo')
 
 									response.forEach (function(item) {  
 										item.nodeType = "archiveFolder";
+										item.draggable = false;
 										userFolders.push(item);    							    							
 									});
 									callback (userFolders);

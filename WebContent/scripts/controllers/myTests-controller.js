@@ -41,7 +41,7 @@ angular.module('e8MyTests')
                 	});
                 	
                 	if($scope.defaultFolders.length) {
-                		$scope.defaultFolders.push({'guid': null, 'nodeType': 'archiveRoot', "title": "Archive"});
+                		$scope.defaultFolders.push({'guid': null, 'nodeType': 'archiveRoot', 'draggable': false, 'title': 'Archive'});
                 	} else {
                     	ArchiveService.getArchiveFolders(null, function (userFolders) {
                     		if(userFolders.length && !(userFolders.length==1 && userFolders[0].nodeType=='empty')) {
@@ -52,7 +52,7 @@ angular.module('e8MyTests')
 
                                 	if(tests.length) {
                             			
-                                		$scope.defaultFolders.push({'guid': null, 'nodeType': 'archiveRoot', "title": "Archive"});	                            			                    			
+                                		$scope.defaultFolders.push({'guid': null, 'nodeType': 'archiveRoot', 'draggable': false, 'title': 'Archive'});	                            			                    			
                             		}
                                 });
                                 
@@ -155,10 +155,9 @@ angular.module('e8MyTests')
                     		$scope.insertTestBindingToDest(mouseOverNode, item.guid);                		
                     	});            		              	               	
                     }
-                    
+                  
+                    mouseOverNode.node.nodes = null;
                 })
-
-                mouseOverNode.node.nodes = null;
                 
             } else {
 
@@ -398,6 +397,7 @@ angular.module('e8MyTests')
 
         //to disable the edit icon once it clicked  
         $scope.editTest = function (selectedTest) {
+        	selectedTest.node.draggable = false;
         	selectedTest.node.showEditIcon=false;
         	selectedTest.node.showArchiveIcon=false;
         	$rootScope.$broadcast("editTest", selectedTest);
@@ -771,6 +771,8 @@ angular.module('e8MyTests')
             }
             TestService.getMetadata(newTest.guid, function (test) {               
                 test.nodeType = EnumService.NODE_TYPE.test;
+                test.draggable = false;
+                
                 if (containerFolder) {
                     test.parentId =  containerFolder.guid;
                     parentFolderNodes.push(test);

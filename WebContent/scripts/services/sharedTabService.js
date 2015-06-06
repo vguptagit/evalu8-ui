@@ -413,6 +413,7 @@ angular.module('evalu8Demo')
 		         }
 		         scope.tests.splice(index, 1);
 		         if (test.treeNode) {
+		        	 test.treeNode.draggable = true;
 		             test.treeNode.showEditIcon = true;
 		             test.treeNode.showArchiveIcon = true;
 		         }else{

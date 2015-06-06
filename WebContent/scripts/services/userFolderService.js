@@ -25,6 +25,7 @@ angular.module('evalu8Demo')
 									
 									response.forEach (function(item) {
 										item.nodeType = "folder";
+										item.draggable = true;
 										defaultFolders.push(item);																								    							    							
 									});
 									
@@ -95,6 +96,7 @@ angular.module('evalu8Demo')
 
 									response.forEach (function(item) {  
 										item.nodeType = "folder";
+										item.draggable = true;
 										userFolders.push(item);    							    							
 									});
 									callback (userFolders);

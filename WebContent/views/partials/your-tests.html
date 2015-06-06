@@ -22,9 +22,8 @@
 				<div><span class="glyphicon glyphicon-info-sign"></span>&nbsp;<strong class="tips">Tips:</strong> Drag test to right to edit OR select pencil icon.
 				Select Archive box icon to move <br>test to Archive directory</div>
 				</div>
-                <li data-ng-repeat="node in defaultFolders" data-ui-tree-node
-                    x-collapsed="true" data-ng-include="'defaultfolder_renderer.html'"
-                    draggable="{{node.nodeType != 'archiveRoot' && node.showEditIcon }}" />
+                <li data-ng-repeat="node in defaultFolders" data-ui-tree-node x-collapsed="true" 
+                data-ng-include="'defaultfolder_renderer.html'" draggable="{{node.draggable}}" />
             </ol>
         </div>
     </div>
@@ -92,8 +91,8 @@
 
 
         <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}" droppable="{{node.nodeType == 'test' && 'false' || 'true'}}">
-            <li ng-repeat="node in node.nodes" collapsed="true" ui-tree-node ng-include="'tests_renderer.html'"
-                draggable="{{(node.nodeType == 'empty' || node.nodeType == 'archiveRoot' || node.nodeType == 'archiveFolder' || node.nodeType == 'archiveTest') && 'false' || 'true'}}" />
+            <li ng-repeat="node in node.nodes" collapsed="true" ui-tree-node 
+			ng-include="'tests_renderer.html'" draggable="{{node.draggable}}" />
         </ol>
     </script>
 
@@ -180,8 +179,8 @@
         <ol ui-tree-nodes="" type="1" ng-model="node.nodes" class="questIndex" ng-class="{hidden: collapsed}"
             droppable="{{(node.nodeType == 'empty' || node.nodeType == 'archiveFolder') && 'false' || 'true'}}">
 
-            <li ng-repeat="node in node.nodes" collapsed="true" ui-tree-node ng-include="'tests_renderer.html'"
-                draggable="{{(node.nodeType == 'empty' || node.nodeType == 'archiveFolder') && 'false' || 'true'}}" />
+            <li ng-repeat="node in node.nodes" collapsed="true" ui-tree-node 
+			ng-include="'tests_renderer.html'" draggable="{{node.draggable}}" />
         </ol>
     </script>
 

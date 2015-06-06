@@ -920,6 +920,7 @@
               
               //prevent dragging of node having draggable == 'false'
               if(scope.$element.attr('draggable') == 'false') {
+            	  e.stopPropagation();
               	return false;
               }              
 
