@@ -97,8 +97,8 @@ angular
 
 							$scope.enableDisableNextButton = function(state) {
 								if (state) {
-									$(".nextButton").addClass("btnDisbled");
-									$("div.row.setupHeader input").addClass(
+									$(".btn-primary").addClass("btnDisbled");
+									$("div.row.setupHeader btn-primary").addClass(
 											"btnDisbled");
 								} else {
 									$(".nextButton").removeClass("btnDisbled");
