@@ -161,43 +161,33 @@ angular.module('e8MyTests')
     	else 
     		var filename=title+"_AnswerKeys"+fileExtention;
     	
-        var xhr = new XMLHttpRequest;
-        xhr.addEventListener("load", function () {
-        	
-            if (this.status === 417) {
-            	$scope.alert();
-               return false;
-            }
-            
-            if (this.status === 500) {
-                return false;
-            }
-            
-            var data = toBinaryString(this.responseText);
-            var element = angular.element('<a/>');
-            element.attr({
-                href: "data:application/" + format + ";base64," + btoa(data),
-                target: '_blank',
-                download: filename
-            })[0].click();
-            
-            if (!isSameFile && $scope.selectedAnswerKey.value == $scope.answerKeys[2].value && !$scope.isIncludeRandomizedTest) {
-                var apiUrl = evalu8config.apiUrl + "/tests/" + testId + "/download/" + $scope.selectedFormat.value 
-                	+ "?answerKey=" + $scope.answerKeys[0].value + "&answerArea=" + $scope.selectedAnswerArea.value
-                	+ "&includeRandomizedTests=" + $scope.isIncludeRandomizedTest + "&includeStudentName=" + $scope.isIncludeStudentName 
-                	+ "&saveSettings=false&margin="+$scope.selectedMargin.value+"&pageNumberDisplay="+$scope.selectedPageNumber.value;
-                
-                
-               download(title,fileExtention,format, apiUrl,true);	
-                 
-            }
-        }, false);
+		var apiUrl = evalu8config.apiUrl + "/tests/"
+		+ testId + "/download/"
+		+ $scope.selectedFormat.value
 
-        xhr.overrideMimeType("application/" + format + "; charset=x-user-defined;");
-        xhr.open("GET", apiUrl);
-        xhr.setRequestHeader("x-authorization", $rootScope.globals.authToken);
-        xhr.send(null);
-        $modalInstance.dismiss('cancel');
+		var data = "answerKey="
+				+ $scope.answerKeys[0].value
+				+ "$answerArea="
+				+ $scope.selectedAnswerArea.value
+				+ "$includeRandomizedTests="
+				+ $scope.isIncludeRandomizedTest
+				+ "$includeStudentName="
+				+ $scope.isIncludeStudentName
+				+ "$saveSettings=false$margin="
+				+ $scope.selectedMargin.value
+				+ "$pageNumberDisplay="
+				+ $scope.selectedPageNumber.value
+				+ "$AT=" + $rootScope.globals.authToken;
+		
+		data = btoa(data);
+		
+		// TestService.download(apiUrl);
+		
+		var frm = $("<iframe>").attr("src",
+				apiUrl + "?data=" + data).appendTo(
+				"body").load(function() {
+		//	$(this).remove();
+		});
     }
 
     function toBinaryString(data) {
