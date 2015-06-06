@@ -158,6 +158,7 @@ angular.module('e8MyTests')
                     
                 })
 
+                mouseOverNode.node.nodes = null;
                 
             } else {
 
