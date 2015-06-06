@@ -107,7 +107,7 @@
 
         <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}" droppable="false">
             <li ng-if="!node.isQuestion" draggable="false" ng-repeat="node in node.nodes" collapsed="{{node.isCollapsed?'true':'false'}}" ui-tree-node ng-include="'book_renderer.html'"></li>
-                        <li printmode="true" class="questIndex" ng-class="{questionSelected:node.isNodeSelected}" ng-if="node.isQuestion" ng-repeat="node in node.nodes" collapsed="{{node.isCollapsed?'true':'false'}}" ui-tree-node ng-include="'qb_questions_renderer.html'"></li>
+                        <li printmode="true" class="questIndex qbQuestions" ng-class="{questionSelected:node.isNodeSelected}" ng-if="node.isQuestion" ng-repeat="node in node.nodes" collapsed="{{node.isCollapsed?'true':'false'}}" ui-tree-node ng-include="'qb_questions_renderer.html'"></li>
 
         </ol>
     </script>
@@ -164,7 +164,7 @@
         </div>
         <ol ui-tree-nodes="" type="1" ng-model="node.nodes" ng-class="{hidden: collapsed}" droppable="false">
 
-            <li class="questIndex" printmode="true" ng-repeat="node in node.nodes" ng-class="{questionSelected:node.isNodeSelected}" collapsed="{{node.isCollapsed?'true':'false'}}" ui-tree-node draggable="{{node.nodeType=='question' || node.nodeType=='test'}}" ng-include="node.template">
+            <li class="questIndex qbQuestions" printmode="true" ng-repeat="node in node.nodes" ng-class="{questionSelected:node.isNodeSelected}" collapsed="{{node.isCollapsed?'true':'false'}}" ui-tree-node draggable="{{node.nodeType=='question' || node.nodeType=='test'}}" ng-include="node.template">
             </li>
         </ol>
     </script>
