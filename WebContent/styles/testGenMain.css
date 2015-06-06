@@ -823,6 +823,9 @@ ol {
 	border-left: 4px #007FA9 solid !important;
 	Border-Bottom: 2px #FFFFFF;
 }
+.folderHighlight label{
+color:white;
+} 
 .folderArchiveIcon{
 display: inline-block;
   color: #808080;
