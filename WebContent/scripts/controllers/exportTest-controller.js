@@ -156,38 +156,39 @@ angular.module('e8MyTests')
     
     //TODO : need to implement using $get
     function download(title,fileExtention,format, apiUrl, isSameFile) {
-    	if(isSameFile || $scope.selectedAnswerKey.value != "SEPARATEFILE" || $scope.isIncludeRandomizedTest)
-    		var filename=title+fileExtention;	
-    	else 
-    		var filename=title+"_AnswerKeys"+fileExtention;
-    	
-		var apiUrl = evalu8config.apiUrl + "/tests/"
+		if($scope.selectedAnswerKey.value == $scope.answerKeys[2].value){
+			downloadFile($scope.answerKeys[0].value, false)
+		}
+		downloadFile($scope.selectedAnswerKey.value,$scope.isSaveSettingsAsDefault)
+		$modalInstance.dismiss('cancel');
+    }
+    
+    function downloadFile(answerKeyPreference, saveSettingsPreference){
+    	var apiUrl = evalu8config.apiUrl + "/tests/"
 		+ testId + "/download/"
 		+ $scope.selectedFormat.value
-
+		
 		var data = "answerKey="
-				+ $scope.answerKeys[0].value
-				+ "$answerArea="
-				+ $scope.selectedAnswerArea.value
-				+ "$includeRandomizedTests="
-				+ $scope.isIncludeRandomizedTest
-				+ "$includeStudentName="
-				+ $scope.isIncludeStudentName
-				+ "$saveSettings=false$margin="
-				+ $scope.selectedMargin.value
-				+ "$pageNumberDisplay="
-				+ $scope.selectedPageNumber.value
-				+ "$AT=" + $rootScope.globals.authToken;
-		
-		data = btoa(data);
-		
-		// TestService.download(apiUrl);
-		
-		var frm = $("<iframe>").attr("src",
-				apiUrl + "?data=" + data).appendTo(
-				"body").load(function() {
-		//	$(this).remove();
-		});
+			+ answerKeyPreference
+			+ "$answerArea="
+			+ $scope.selectedAnswerArea.value
+			+ "$includeRandomizedTests="
+			+ $scope.isIncludeRandomizedTest
+			+ "$includeStudentName="
+			+ $scope.isIncludeStudentName
+			+ "$saveSettings="
+			+ saveSettingsPreference
+			+ "$margin="
+			+ $scope.selectedMargin.value
+			+ "$pageNumberDisplay="
+			+ $scope.selectedPageNumber.value
+			+ "$AT=" + $rootScope.globals.authToken;
+	
+			data = btoa(data);
+			var frm = $("<iframe>").attr("src",
+					apiUrl + "?data=" + data).appendTo(
+					"body").load(function() {
+			});
     }
 
     function toBinaryString(data) {
