@@ -34,6 +34,6 @@ angular.module('evalu8Demo')
     };
 
     this.ERROR_MESSAGES = {
-        EmptyTestTitle: "Please Enter Test Title to save the test."
+        EmptyTestTitle: "Please enter test title to save the test."
     };
 });

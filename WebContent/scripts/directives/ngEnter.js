@@ -19,6 +19,6 @@ angular.module('e8MyTests')
         };
     }).directive('ngMytestTooltip', function () {
         return function (scope, element, attrs) {
-        	element.tooltip();
+            element.tooltip();
         };
-    }); 
+    });

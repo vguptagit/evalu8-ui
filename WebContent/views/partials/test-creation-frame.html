@@ -41,21 +41,24 @@
             <ul class="nav nav-tabs test-tabs margin-lft-10 padding-top-6" id="mytab">
                 <li ng-click="addNewTest()">
                     <button type="button"
+                            event-focus="click" event-focus-id="testCaption"
                             class="btn btn-default glyphicon glyphicon-plus addNewTab" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="New tab"></button>
                 </li>
 
                 <li ng-show="$index < 5" ng-repeat="test in tests"
                     ng-class="{active: isActiveTab(test.id)}"
-                    ng-click="onClickTab(test)" id="{{test.id}}">
+                    ng-click="onClickTab(test)" id="{{test.id}}"
+                    event-focus="click" event-focus-id="testCaption">
                     <div class="newTest-close glyphicon glyphicon-remove" ng-show="test.showCloseButton"
                          ng-click="closeTabWithConfirmation($event,test)"></div> <a href="" title="{{test.tabTitle}}"
-                                                                             data-toggle="tab">{{test.tabTitle}}</a>
+                                                                                    data-toggle="tab">{{test.tabTitle}}</a>
                 </li>
                 <li class="dropdown" ng-show="tests.length > 5">
                     <a class="dropdown-toggle dot" data-toggle="dropdown" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="More tabs">...</a>
                     <ul class="dropdown-menu">
                         <li ng-show="$index >= 5" ng-repeat="test in tests" ng-class="{active: isActiveTab(test.id)}"
-                            ng-click="onClickTab(test)" id="{{test.id}}">
+                            ng-click="onClickTab(test)" id="{{test.id}}"
+                            event-focus="click" event-focus-id="testCaption">
                             <div class="newTest-close glyphicon glyphicon-remove"
                                  ng-click="closeTabWithConfirmation(test)"></div> <a href="" title="{{test.tabTitle}}">{{test.tabTitle}}</a>
                         </li>
@@ -134,11 +137,7 @@
                     <button type="button" class="close"
                                 ng-click="closeCriteria(criteria,true)" aria-label="Close" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Delete this section">
                         <span aria-hidden="true">&times;</span>
-                    </button>
-                    <!-- <div>
-                        <b>Selected Questions : {{criteria.folderTitle}}
-                            ({{criteria.totalQuestions}} Questions)</b>
-                    </div> -->
+                    </button>                    
                     <div class="row">
                         <div class="col-lg-5">
                             <b>Selected Questions :</b>
@@ -246,15 +245,7 @@
             </div>
         </div>
     </script>
-    <!--  <div class="questionCreationArea">
-            <div class="newtestCaptionDiv">
-                <label for="testCaption"> Test </label>    <input type="text" placeholder="Enter test title" ng-model="tests[currentIndex].title" ng-change="updateTestTitle(testTitle)" id="testCaption" />
-            </div>
-        </div>
-        <div>
-            <span class="testCreationName">Name:</span>
-        </div>
-    -->
+    
     <div id="qstnArea" ng-show="!tests[currentIndex].isTestWizard">
         <div data-ui-tree id="tree2-root">
             <!-- <div class="row"> -->
