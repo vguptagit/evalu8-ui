@@ -1574,12 +1574,11 @@ angular
 									//$modal.open(confirmObject);
 									return;
 								}
-								
+								var scopeElement;
 								var editedElement = document.querySelector("div#qstnArea li[printmode=false]")
 								if (editedElement) {
-									var scopeElement = angular.element(
-											editedElement).scope();
-									scopeElement.node.IsEditView = false;
+									scopeElement = angular.element(
+											editedElement).scope();								
 									scopeElement.node.qstnLinkText = "Edit";
 									if (scopeElement.node.quizType == "MultipleResponse"){
 										if($scope.showChoiceSelectionAlert(scopeElement)){
@@ -1662,7 +1661,11 @@ angular
     										else{														
     											qstn =  updateTemplatePrefilledtext(qstn);
     										}
+    										if(scopeElement){
+    											scopeElement.node.IsEditView = false;
+    										}    										
     									}
+    									
     									if (typeof (qstn.questionMetadata) == 'undefined') {
 
     									    qstn.questionMetadata = userSettings.questionMetadata;
