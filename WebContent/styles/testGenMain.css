@@ -2456,9 +2456,11 @@ div #BlanksCaption {
 }
 
 .plusIconQT {
-	line-height: 35px;
+	line-height: 28px;
 	margin-right: 5px;
 	font-size: 14px;
+	border:0;
+	background: :transparent;
 }
 	
 
