@@ -440,8 +440,8 @@ angular
 
 											angular.forEach(currentNode.node.nodes, function(item) {
 												item.template = 'nodes_renderer.html';
-												item.showTestWizardIcon = true;
-												item.showEditQuestionIcon = true;
+												item.showTestWizardIcon = false;
+												item.showEditQuestionIcon = false;
 												item.isNodeSelected = false;
                                                 item.nodeType = "topic";
 												item.isCollapsed=true;
