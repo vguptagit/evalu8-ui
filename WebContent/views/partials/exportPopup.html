@@ -110,7 +110,8 @@
                 <div class="bold">Margins:</div>
                 <div ng-repeat="margin in margins">
                     <label class="text-radio-label margin-top-5">
-                        <input data-ng-model="$parent.selectedMargin"
+                        <input data-ng-disabled="$parent.disableAnsAreaAndKey" 
+                        	   data-ng-model="$parent.selectedMargin"
                                data-ng-value="margin"
                                name="margins" type="radio" value="radio" checked="">
                         <span>{{margin.text}}</span>
@@ -139,7 +140,8 @@
                 <div class="bold">Page Number:</div>
                 <div ng-repeat="pageNumber in pageNumbers">
                     <label class="text-radio-label margin-top-5">
-                        <input data-ng-model="$parent.selectedPageNumber"
+                        <input data-ng-disabled="$parent.disableAnsAreaAndKey"
+                               data-ng-model="$parent.selectedPageNumber"
                                data-ng-value="pageNumber"
                                type="radio" value="radio" checked="">
                         <span>{{pageNumber.text}}</span>
