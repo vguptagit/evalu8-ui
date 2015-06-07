@@ -79,7 +79,7 @@ angular.module('e8MyTests')
   			if(!$scope.dragStarted) {
                 return false;
             }
-            if(source.node.nodeType==='test' && destParent.controller === EnumService.CONTROLLERS.testCreationFrame){        
+            if(source.node.nodeType === EnumService.NODE_TYPE.test && destParent.controller === EnumService.CONTROLLERS.testCreationFrame){        
                 source.node.showEditIcon=false;
                 source.node.showArchiveIcon=false;
                 $rootScope.$broadcast("dropTest", source, destIndex);
@@ -110,9 +110,9 @@ angular.module('e8MyTests')
                 
                 UserFolderService.userFolders(mouseOverNode.node, function (userFolders) {
                     	
-                	if(item.nodeType == "folder") {
+                	if(item.nodeType == EnumService.NODE_TYPE.folder) {
                 		userFolders.forEach(function(nodeItem) {                            
-                    		if(nodeItem.nodeType == 'folder' && nodeItem.title == item.title) {
+                    		if(nodeItem.nodeType == EnumService.NODE_TYPE.folder && nodeItem.title == item.title) {
                     			duplicateTitle = true;                			 
                     		}                        
                     	})
@@ -125,9 +125,9 @@ angular.module('e8MyTests')
                     	}                		
                 	}
 
-                	if(item.nodeType == "test") {
+                	if(item.nodeType == EnumService.NODE_TYPE.test) {
                 		userFolders.forEach(function(nodeItem) {                        
-                    		if(nodeItem.nodeType == 'test' && nodeItem.title == item.title) {
+                    		if(nodeItem.nodeType == EnumService.NODE_TYPE.test && nodeItem.title == item.title) {
                     			duplicateTitle = true;                			 
                         	}                        	                        
                     	})
@@ -142,7 +142,7 @@ angular.module('e8MyTests')
                                         
                     source.remove();                
                     
-                    if(item.nodeType == "folder") {
+                    if(item.nodeType == EnumService.NODE_TYPE.folder) {
                         item.parentId = mouseOverNode.node.guid;
                         UserFolderService.getFoldersMinSeq(mouseOverNode.node, function(minSeq) {
                         	item.sequence = minSeq==0.0 ? 1.0 : (0.0 + minSeq)/2;
@@ -166,9 +166,9 @@ angular.module('e8MyTests')
             	if(destParent && destParent.node && destParent.node.nodes) {
                 	var duplicateTitle = false;
                 	
-                	if(item.nodeType == "folder") {
+                	if(item.nodeType == EnumService.NODE_TYPE.folder) {
                 		destParent.node.nodes.forEach(function(nodeItem) {                        
-                    		if(nodeItem.nodeType == 'folder' && nodeItem.title == item.title && nodeItem.$$hashKey != item.$$hashKey) {
+                    		if(nodeItem.nodeType == EnumService.NODE_TYPE.folder && nodeItem.title == item.title && nodeItem.$$hashKey != item.$$hashKey) {
                     			duplicateTitle = true;                    			 
                     		}                        	
                         
@@ -190,9 +190,9 @@ angular.module('e8MyTests')
                     	}
                 	}
                 	
-            		if(item.nodeType == "test") {
+            		if(item.nodeType == EnumService.NODE_TYPE.test) {
                 		destParent.node.nodes.forEach(function(nodeItem) {
-                    		if(nodeItem.nodeType == 'test' && nodeItem.title == item.title && nodeItem.$$hashKey != item.$$hashKey) {
+                    		if(nodeItem.nodeType == EnumService.NODE_TYPE.test && nodeItem.title == item.title && nodeItem.$$hashKey != item.$$hashKey) {
                     			duplicateTitle = true;                			 
                     		}                        	
                     	})            			
@@ -222,13 +222,13 @@ angular.module('e8MyTests')
             	// delete empty previous and next node if any
             	$scope.deleteEmptyNode(prev, next, destParent);
             	
-            	if(item.nodeType == "test") {
+            	if(item.nodeType == EnumService.NODE_TYPE.test) {
             		var sourceFolder = $scope.removeTestBindingFromSource(sourceParent, item.guid);   
             		UserFolderService.saveUserFolder(sourceFolder, function() {
             			$scope.addTestToDest(destParent);
             		});            		            		
             	}
-            	else if(item.nodeType == "folder") {
+            	else if(item.nodeType == EnumService.NODE_TYPE.folder) {
 
             		if(prev) {
             			$scope.getFolderNodeSequence(prev.node);
@@ -289,7 +289,7 @@ angular.module('e8MyTests')
         	var testBindings = [];
         	var sequence = 1.0;
         	destNodes.forEach(function(test) {
-        		if(test.nodeType == 'test') {
+        		if(test.nodeType == EnumService.NODE_TYPE.test) {
         			
             		var testBinding = {
                 			testId: test.guid,
@@ -344,14 +344,14 @@ angular.module('e8MyTests')
         
         $scope.getFolderNodeSequence = function(node) {
         	$scope.itemSeq = 0.0;
-        	if(node.nodeType == "folder") {
+        	if(node.nodeType == EnumService.NODE_TYPE.folder) {
         		$scope.itemSeq = node.sequence;
         	}
         }
         
         $scope.getTestNodeSequence = function(node) {
         	$scope.itemSeq = 0.0;
-        	if(node.nodeType == "test") {
+        	if(node.nodeType == EnumService.NODE_TYPE.test) {
         		node.extendedMetadata.forEach(function(data) {
             		if(data.name=='sequence') {        			
             			$scope.itemSeq =  data.value;        			
@@ -361,7 +361,9 @@ angular.module('e8MyTests')
         }        
 
         $scope.treeNodeMouseEnter = function (node) {
-            if ($scope.dragStarted && node.collapsed && node.node.nodeType != 'archiveFolder' && node.node.nodeType != 'empty') {
+            if ($scope.dragStarted && node.collapsed 
+            		&& node.node.nodeType != EnumService.NODE_TYPE.archiveFolder 
+            		&& node.node.nodeType != EnumService.NODE_TYPE.emptyFolder) {
                 $rootScope.tree = { mouseOverNode: node };
                 node.hover = true;
             }
@@ -507,7 +509,7 @@ angular.module('e8MyTests')
         			return; // return if archived node is already displayed in Archive Section
         		}
         		        		
-        		archivedFolder.nodeType = "archiveFolder";
+        		archivedFolder.nodeType = EnumService.NODE_TYPE.archiveFolder;
         		archivedFolder.draggable = "false";
         		archivedFolder.droppable = "false";
         		var archivedFolderParent;        		
@@ -584,7 +586,7 @@ angular.module('e8MyTests')
 
         			restoredFolderParent = angular.element($('[id=' + restoredFolder.parentId + ']')).scope()
         			if(restoredFolderParent && restoredFolderParent.node) {
-        				if(restoredFolderParent.node.nodes[0] && restoredFolderParent.node.nodes[0].nodeType == "empty") {
+        				if(restoredFolderParent.node.nodes[0] && restoredFolderParent.node.nodes[0].nodeType == EnumService.NODE_TYPE.emptyFolder) {
         					restoredFolderParent.node.nodes.splice(0,1);
         				}
         				restoredFolderParent.node.nodes.unshift(restoredFolder);
@@ -732,7 +734,7 @@ angular.module('e8MyTests')
             	$scope.defaultFolders.unshift(userFolder);
                 
             	if($scope.defaultFolders.length == 1) {
-            		$scope.defaultFolders.push({'guid': null, 'nodeType': 'archiveRoot', "title": "Archive"});
+            		$scope.defaultFolders.push({'guid': null, 'nodeType': 'archiveRoot', 'draggable': false, 'droppable': false, 'title': 'Archive'});
             	}
             	
                 $scope.folderName = "";
@@ -806,7 +808,7 @@ angular.module('e8MyTests')
                 SharedTabService.tests[SharedTabService.currentTabIndex].treeNode = test;
                 
             	if($scope.defaultFolders.length == 1) {
-            		$scope.defaultFolders.push({'guid': null, 'nodeType': 'archiveRoot', "title": "Archive"});
+            		$scope.defaultFolders.push({'guid': null, 'nodeType': 'archiveRoot', 'draggable': false, 'droppable': false, 'title': 'Archive'});
             	}
             });
         });
