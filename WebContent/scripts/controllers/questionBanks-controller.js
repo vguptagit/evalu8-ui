@@ -248,64 +248,51 @@ angular
 							// Output collection will be append to input book
 							// angularjs node.
 							$scope.getNodes = function(book) {
-								// $scope.selectedNodes=[];
+
 								$scope.bookID = book.node.guid;
-								if ($rootScope.globals.authToken == '') {
-									$location.path('/login');
+
+								if (!book.collapsed) {
+									book.collapse();
 								} else {
-									if (!book.collapsed) {
-										book.collapse();
-									} else {
-										book.expand();
-										
-										if($scope.isSearchMode && $scope.searchedContainerId!=book.node.guid){
-											return;
-										}
-										
-                                        ContainerService.bookNodes(book.node.guid, $scope.selectedQuestionTypes.toString(),
-                                        		function(bookNodes) {
-                                            book.node.nodes = bookNodes;
-                                            angular.forEach(
-                                                book.node.nodes,
-                                                function(item) {
-                                                    item.showTestWizardIcon = false;
-                                                    item.showEditQuestionIcon = false;
-                                                    item.isNodeSelected = false;
-                                                    if ($scope.selectedNodes.length > 0)
-                                                        for (var i = 0; i < $scope.selectedNodes.length; i++) {
-                                                            if ($scope.selectedNodes[i].guid == item.guid) {
-                                                                item.showTestWizardIcon = $scope.selectedNodes[i].showTestWizardIcon;
-                                                                item.showEditQuestionIcon = $scope.selectedNodes[i].showEditQuestionIcon;
-                                                                item.isNodeSelected = $scope.selectedNodes[i].isNodeSelected;
-                                                                $scope.selectedNodes[i] = item;
-                                                            }
-                                                        }
-                                                    item.nodeType = "chapter";
-                                                    item.isCollapsed=true;
-                                                })
-                                                if(book.node.testBindings && book.node.testBindings.length) {
-                                                    var publisherTestsNode = {};
-                                                    publisherTestsNode.title = "Publisher Tests for this Book"
-                                                    publisherTestsNode.nodeType = EnumService.NODE_TYPE.publisherTests;
-                                                    book.node.nodes.push(publisherTestsNode);    
-                                                    publisherTestsNode.isCollapsed=true;
-                                                    publisherTestsNode.nodes = [];
-                                                    
-                                                    book.node.testBindings.forEach(function (testId) {
-                                                        TestService.getTest(testId, function(test){
-
-                                                            test.nodeType = EnumService.NODE_TYPE.test;
-                                                            test.testType = "PublisherTest";
-                                                            test.showEditIcon=true;
-                                                            test.selectTestNode = false;//to show the edit icon
-
-                                                            publisherTestsNode.nodes.push(test);                                                            
-                                                        });
-                                                    })
-                                                }                                                
-                                        });
+									book.expand();
+									
+									if($scope.isSearchMode && $scope.searchedContainerId!=book.node.guid){
+										return;
 									}
+									
+                                    ContainerService.bookNodes(book.node.guid, $scope.selectedQuestionTypes.toString(),
+                                    		function(bookNodes) {
+                                        book.node.nodes = bookNodes;
+                                        angular.forEach(
+                                            book.node.nodes,
+                                            function(item) {
+                                                item.showTestWizardIcon = false;
+                                                item.showEditQuestionIcon = false;
+                                                item.isNodeSelected = false;
+                                                if ($scope.selectedNodes.length > 0)
+                                                    for (var i = 0; i < $scope.selectedNodes.length; i++) {
+                                                        if ($scope.selectedNodes[i].guid == item.guid) {
+                                                            item.showTestWizardIcon = $scope.selectedNodes[i].showTestWizardIcon;
+                                                            item.showEditQuestionIcon = $scope.selectedNodes[i].showEditQuestionIcon;
+                                                            item.isNodeSelected = $scope.selectedNodes[i].isNodeSelected;
+                                                            $scope.selectedNodes[i] = item;
+                                                        }
+                                                    }
+                                                item.nodeType = "chapter";
+                                                item.isCollapsed=true;
+                                            })
+                                            if(book.node.testBindings && book.node.testBindings.length) {
+                                                var publisherTestsNode = {};
+                                                publisherTestsNode.title = "Publisher Tests for this Book"
+                                                publisherTestsNode.nodeType = EnumService.NODE_TYPE.publisherTests;
+                                                book.node.nodes.push(publisherTestsNode);    
+                                                publisherTestsNode.isCollapsed=true;
+                                                
+                                                publisherTestsNode.testBindings = book.node.testBindings;                                                    
+                                            }                                                
+                                    });
 								}
+								
 							}
 							
 					        $scope.closeTip=function(){
@@ -330,7 +317,7 @@ angular
 							
                             //to disable the edit icon once it clicked  
                             $scope.editTest = function (selectedTest) {
-                            	selectedTest.node.testType = 'PublisherTest';
+                            	selectedTest.node.testType = EnumService.TEST_TYPE.PublisherTest;
                                 selectedTest.node.showEditIcon=false;
                                 selectedTest.node.showArchiveIcon=false;
                                 $rootScope.$broadcast("editTest", selectedTest);
@@ -437,10 +424,23 @@ angular
 									
                                     if(currentNode.node.nodeType == 'publisherTests') {
                                         
-                                        angular.forEach(currentNode.node.nodes, function(item) {
-                                            item.template = 'tests_renderer.html';
-                                            updateTreeNode(item)
-                                        });
+                                    	currentNode.node.nodes = [];
+                                    	
+                                    	currentNode.node.testBindings.forEach(function (testId) {
+                                            TestService.getTest(testId, function(test){
+
+                                                test.nodeType = EnumService.NODE_TYPE.test;
+                                                test.testType = "PublisherTest";
+                                                test.showEditIcon=true;
+                                                test.selectTestNode = false;//to show the edit icon
+
+                                                currentNode.node.nodes.push(test);  
+                                                
+                                                test.template = 'tests_renderer.html';
+                                                updateTreeNode(test);
+                                            });
+                                        })
+                                    	
                                         return;
                                     }
 						                                        
