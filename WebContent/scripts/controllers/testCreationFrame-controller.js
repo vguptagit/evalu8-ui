@@ -1230,8 +1230,8 @@ angular
 								$scope.exportBtnCss = "";
 								
                         		$scope.testType = 'Test';
-                        		if(selectedTest.node.testType && selectedTest.node.testType == 'PublisherTest') {
-                        			$scope.testType = 'PublisherTest';
+                        		if(selectedTest.node.testType && selectedTest.node.testType == EnumService.TEST_TYPE.PublisherTest) {
+                        			$scope.testType = EnumService.TEST_TYPE.PublisherTest;
                         			$scope.newVersionBtnCss = "disabled";
                         		}                        		
 
