@@ -163,8 +163,56 @@ angular.module('e8MyTests')
 
             	var item = source.node;
             	
+            	var duplicateTitle = false;
+            	
+            	if(destParent == null || destParent.node == null) {
+                	if(item.nodeType == EnumService.NODE_TYPE.folder) {
+                		$scope.defaultFolders.forEach(function(nodeItem) {                        
+                    		if(nodeItem.nodeType == EnumService.NODE_TYPE.folder && nodeItem.title == item.title && nodeItem.$$hashKey != item.$$hashKey) {
+                    			duplicateTitle = true;                    			 
+                    		}                        	                        
+                		})
+                		
+                		if(duplicateTitle) {
+    			            $scope.IsConfirmation = false;
+    			            $scope.message = "A folder already exists with this name.";
+    			            $modal.open(confirmObject);
+    			            
+    			            if(sourceParent) {
+    			            	sourceParent.node.nodes.splice(sourceIndex, 0, source.node);	
+    			            } else {
+    			            	$scope.defaultFolders.splice(sourceIndex, 0, source.node);
+    			            }
+    			            
+    			            $scope.defaultFolders.splice(destIndex, 1);
+                    		return false;
+                    	}
+                	}
+            		if(item.nodeType == EnumService.NODE_TYPE.test) {
+            			$scope.defaultFolders.forEach(function(nodeItem) {
+                    		if(nodeItem.nodeType == EnumService.NODE_TYPE.test && nodeItem.title == item.title && nodeItem.$$hashKey != item.$$hashKey) {
+                    			duplicateTitle = true;                			 
+                    		}                        	
+                    	})            			
+                    	
+                    	if(duplicateTitle) {
+    			            $scope.IsConfirmation = false;
+    			            $scope.message = "A test already exists with this name.";
+    			            $modal.open(confirmObject);
+    			            
+    			            if(sourceParent) {
+    			            	sourceParent.node.nodes.splice(sourceIndex, 0, source.node);	
+    			            } else {
+    			            	$scope.defaultFolders.splice(sourceIndex, 0, source.node);
+    			            }
+    			                			            
+    			            $scope.defaultFolders.splice(destIndex, 1);
+                    		return false;
+                    	}
+            		}
+            	}
             	if(destParent && destParent.node && destParent.node.nodes) {
-                	var duplicateTitle = false;
+                	
                 	
                 	if(item.nodeType == EnumService.NODE_TYPE.folder) {
                 		destParent.node.nodes.forEach(function(nodeItem) {                        
