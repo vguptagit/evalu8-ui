@@ -2754,7 +2754,7 @@ li[printmode='true'] .qti-itemBody .qti-blockquote>div.optionLabelView:first-chi
 .questionCloseIcon {
   position: relative;
   right: -27px;
-  top : -17px;
+  top : -15px;
 }
 .advancedSearchText {
 	float: left;

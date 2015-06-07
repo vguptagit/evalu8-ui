@@ -78,7 +78,7 @@ angular
 								if(!isAnswerChoiceSelected){		
 									selectedQstnNode.node.IsEditView = true;
 									$scope.IsConfirmation = false;
-									$scope.message = "Minimum answer required is 1."
+									$scope.message = "Atlease one correct Answer should be defined."
 									$modal.open(confirmObject);			
 									return true;
 									
@@ -1661,11 +1661,12 @@ angular
     										}
     										else{														
     											qstn =  updateTemplatePrefilledtext(qstn);
-    										}
-    										if(scopeElement){
-    											scopeElement.node.IsEditView = false;
-    										}    										
+    										}    										 										
     									}
+    									
+    									if(scopeElement){
+											scopeElement.node.IsEditView = false;
+										}   
     									
     									if (typeof (qstn.questionMetadata) == 'undefined') {
 
