@@ -3168,6 +3168,27 @@ QTI.appendHTMLNodes = function(elm,val){
 	
 	return elm;
 }
+
+QTI.appendNodes = function(elm,val){
+	elm.empty();
+	var nodes = $.parseXML("<dummy>" + val + "</dummy>").childNodes[0];
+	while(nodes.childNodes.length != 0){
+		elm.append($(nodes.childNodes[0]));
+	}
+	
+	return elm;
+}
+
+QTI.prependNodeContent = function(elm,val){
+	if(QTI.getSerializedXML(elm).indexOf("<![CDATA[") == 0){
+		elm.get(0).childNodes[0].textContent = val;
+	}
+	else{
+		elm.prepend(val);
+	}
+	
+}
+
 QTI.prependContent = function(elm,val){
 	if(elm.html().indexOf("<![CDATA[") == 0){
 		elm.get(0).childNodes[0].textContent = val;

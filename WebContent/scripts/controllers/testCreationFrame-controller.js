@@ -148,8 +148,7 @@ angular
 								}
 								else{
 									
-									$(xml).find('itemBody').find('p').eq(0).html("<![CDATA[" +
-											qstnCaption + "]]>");
+									QTI.appendNodes($(xml).find('itemBody').find('p').eq(0),"<![CDATA[" +qstnCaption + "]]>");
 								}
 								
 
@@ -271,7 +270,7 @@ angular
 										
 										var item = $.parseXML(optionTagAppend); 
 										
-										$(item).find( "inlineChoiceInteraction" ).append(inlineChoiceTags.find( "inlineChoiceInteraction" ).html());
+										QTI.appendHTMLNodes($(item).find("inlineChoiceInteraction"),QTI.getSerializedXML(inlineChoiceTags.find("inlineChoiceInteraction")));	
 										
 										$(xml).find('itemBody').append(
 										$(item).children(0));
@@ -1444,12 +1443,12 @@ angular
 	                                                                optionHtmlText = CustomQuestionTemplate[qstnNode.quizType].printOption+ " "+ (i+1);
 	                                                            }
 	                                                            
-	                                                            QTI.prependContent($(this).find('p').eq(0),optionHtmlText)
+	                                                            QTI.prependNodeContent($(this).find('p').eq(0),optionHtmlText)
 
 
 	                                                        } else {
 	                                                        	
-	                                                        	QTI.prependContent($(this).find('p').eq(0),CustomQuestionTemplate[qstnNode.quizType].printOption)
+	                                                        	QTI.prependNodeContent($(this).find('p').eq(0),CustomQuestionTemplate[qstnNode.quizType].printOption)
 
 
 	                                                        }
