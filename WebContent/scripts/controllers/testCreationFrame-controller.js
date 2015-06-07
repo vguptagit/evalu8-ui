@@ -877,7 +877,7 @@ angular
                                     $scope.testType = 'Test';
 								}
 
-								if (test.testId && !test.questions.length) {
+								if (test.testId && !test.questions.length && !SharedTabService.isDirtyTab(test)) {
 									$scope.isLoading = true;
 									TestService
 											.getTest(

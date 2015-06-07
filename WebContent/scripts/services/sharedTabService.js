@@ -451,7 +451,20 @@ angular.module('evalu8Demo')
 		             $rootScope.$broadcast("handleBroadcast_deselectedNode", test.criterias[i].treeNode);
 		         }
 		     }
-
+		     sharedTabService.isDirtyTab = function (tab) {
+		         var isDirtyTab = false;
+		         $.each(sharedTabService.masterTests, function (j) {
+		             if (sharedTabService.masterTests[j].id === tab.id) {
+		                 if (!sharedTabService.isDirty(sharedTabService.masterTests[j], tab)) {
+		                     isDirtyTab = true;
+		                 } else {
+		                     isDirtyTab = false;
+		                 }		                  
+		                 return false;
+		             }
+		         });
+		         return isDirtyTab;
+		     }
 		     sharedTabService.isDirty = function (masterTest, test) {
 
 		         var isDirty = false;
@@ -472,6 +485,7 @@ angular.module('evalu8Demo')
 		         }
 		         return !isDirty;
 		     }
+
 
 		     sharedTabService.isEmptyTab = function (test) {
 		         if (test.testId == null && test.title == undefined && test.questions.length == 0) {
