@@ -41,6 +41,7 @@ label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D;
 .btn-secondary:hover {background-color:#D0D0D0; border:1px solid #D0D0D0;  color:#4D4D4D} 
 .btn-secondary.active, .btn-secondary:active {border-top:2px inset #D0D0D0;  color:#4D4D4D; background-color:#F0F0F0}
 .btn-secondary.disabled{background-color:#F8F8F8; border:1px solid #E8E8E8; color:#CACACA;}
+.btn-primary[disabled]{background-color: #A0D1E1; border-color: #A0D1E1;}
 
 /* Navbar CSS */
 .navbar-inverse .navbar-nav>li>a {color:#B0B0B0; font-size:14px; line-height:1em;}
