@@ -41,18 +41,18 @@ angular.module('e8MyTests')
                 	});
                 	
                 	if($scope.defaultFolders.length) {
-                		$scope.defaultFolders.push({'guid': null, 'nodeType': 'archiveRoot', 'draggable': false, 'title': 'Archive'});
+                		$scope.defaultFolders.push({'guid': null, 'nodeType': 'archiveRoot', 'draggable': false, 'droppable': false, 'title': 'Archive'});
                 	} else {
                     	ArchiveService.getArchiveFolders(null, function (userFolders) {
                     		if(userFolders.length && !(userFolders.length==1 && userFolders[0].nodeType=='empty')) {
-                				$scope.defaultFolders.push({'guid': null, 'nodeType': 'archiveRoot', "title": "Archive"});	                    			                			
+                				$scope.defaultFolders.push({'guid': null, 'nodeType': 'archiveRoot', 'draggable': false, 'droppable': false, 'title': 'Archive'});	                    			                			
                     		} else {
                     			
                                 TestService.getArchiveTests(null, function (tests) {
 
                                 	if(tests.length) {
                             			
-                                		$scope.defaultFolders.push({'guid': null, 'nodeType': 'archiveRoot', 'draggable': false, 'title': 'Archive'});	                            			                    			
+                                		$scope.defaultFolders.push({'guid': null, 'nodeType': 'archiveRoot', 'draggable': false, 'droppable': false, 'title': 'Archive'});	                            			                    			
                             		}
                                 });
                                 
@@ -433,10 +433,9 @@ angular.module('e8MyTests')
                     TestService.getTests(defaultFolder.node.guid, function (tests) {
                     	
                     	if(userFolders.length == 0 && tests.length == 0) {
-    						var item = null;
-    						item = {"draggable":"NotDraggable","title":"Empty folder", "sequence":0};
-    						item.nodeType = "empty";
-    						 defaultFolder.node.nodes.push(item);                    		
+    						var item = {"nodeType": "empty", "draggable": false, "title": "Empty folder", "sequence": 0};
+    								
+    						defaultFolder.node.nodes.push(item);                    		
                     	}
 						
                         tests.forEach(function (test) {
@@ -473,7 +472,15 @@ angular.module('e8MyTests')
 
                     defaultFolder.node.nodes = userFolders;
 
+                    $rootScope.blockLeftPanel.start();
                     TestService.getArchiveTests(defaultFolder.node.guid, function (tests) {
+                    	
+                    	if(userFolders.length == 0 && tests.length == 0) {
+                    		var item = {"nodeType": "empty", "draggable": false, "title": "Empty folder", "sequence": 0};
+    						 
+                    		defaultFolder.node.nodes.push(item);                    		
+                    	}
+                    	
                         tests.forEach(function (test) {
                             test.selectTestNode = false;//to show the edit icon
 
@@ -483,7 +490,8 @@ angular.module('e8MyTests')
                         if (defaultFolder.node.nodes.length > 1 && defaultFolder.node.nodes[0].sequence == 0) {
                             defaultFolder.node.nodes.shift();
                         }
-
+                        
+                        $rootScope.blockLeftPanel.stop();
                     });
                     
                     if(callback) callback();
@@ -500,6 +508,8 @@ angular.module('e8MyTests')
         		}
         		        		
         		archivedFolder.nodeType = "archiveFolder";
+        		archivedFolder.draggable = "false";
+        		archivedFolder.droppable = "false";
         		var archivedFolderParent;        		
         		
         		if(archivedFolder.parentId == null) {

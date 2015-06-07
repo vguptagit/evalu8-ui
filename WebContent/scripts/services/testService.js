@@ -81,6 +81,7 @@ angular.module('evalu8Demo')
 					tests.forEach(function(test){
 						test.nodeType = "test";
 						test.draggable = true;
+						test.droppable = false;
 						test.parentId = folderId;
 						test.showEditIcon=true;
 						test.showArchiveIcon=true;
@@ -99,6 +100,7 @@ angular.module('evalu8Demo')
 					tests.forEach(function(test){
 						test.nodeType = "archiveTest";
 						test.draggable = false;
+						test.droppable = false;
 						test.parentId = folderId;
 					})
 					callback(tests)

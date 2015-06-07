@@ -33,16 +33,14 @@ angular.module('evalu8Demo')
 									response.forEach (function(item) {  
 										item.nodeType = "archiveFolder";
 										item.draggable = false;
+										item.droppable = false;
 										userFolders.push(item);    							    							
 									});
 									callback (userFolders);
 								})
 						.error(
 								function(error) {
-									var item = null;
-									item = {"draggable":"NotDraggable","title":"Empty folder", "sequence":0};
-									item.nodeType = "empty";
-									userFolders.push(item);
+
 									callback (userFolders);
 								})				
 			};			
