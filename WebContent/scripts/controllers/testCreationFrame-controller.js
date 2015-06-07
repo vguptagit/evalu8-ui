@@ -1560,7 +1560,7 @@ angular
 							}
 							// Function is to save the Test details with the
 							// questions.
-							$scope.saveTest = function() {
+							$scope.saveTest = function(callback) {
 							    $rootScope.blockPage.start();
 								var test = SharedTabService.tests[SharedTabService.currentTabIndex];
 								if (test.title == null
@@ -1774,6 +1774,9 @@ angular
     													.removeMasterTest(SharedTabService.currentTab);
     											SharedTabService
     													.addMasterTest(test);
+    										}
+    										if (callback) {
+    										    callback();
     										}
     										$rootScope.blockPage.stop();
     									});
@@ -2168,10 +2171,12 @@ angular
 								$scope.tests[$scope.sharedTabService.currentTabIndex].tabTitle = "Untitled test";
 								$scope.tests[$scope.sharedTabService.currentTabIndex].questions = metadatas;
 								QTI.initialize();
-								$scope.saveTest();
-								$scope.tests[$scope.sharedTabService.currentTabIndex].questions = [];
-								$scope.render(metadatas);
-								$scope.isApplySameCriteriaToAll = false;
+								$scope.saveTest(function () {
+								        $rootScope.blockPage.start();
+                                        $scope.tests[$scope.sharedTabService.currentTabIndex].questions = [];
+								        $scope.render(metadatas);
+								        $scope.isApplySameCriteriaToAll = false;
+								});
 							}
 							function randomize(a, b) {
 								return Math.random() - 0.5;

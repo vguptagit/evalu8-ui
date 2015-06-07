@@ -808,6 +808,7 @@ ol {
 	font-weight: normal;
 	font-size: 12px;
 	width: 100%;
+    display:inline-table;
 }
 
 .testHighlight {
