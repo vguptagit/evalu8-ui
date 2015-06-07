@@ -913,10 +913,6 @@ angular
 							
 							$scope.parentNode;
 							$scope.showContainer = function(){
-								var isAdvancedSearch=false;
-								if($scope.selectedQuestionTypes.length>0){
-									isAdvancedSearch=true;
-								}
 								var searchedContainer = "";
 								var parentContainerid = "";
 								var hasParent = false;
@@ -964,8 +960,8 @@ angular
 									parentContainers
 											.forEach(function(container) {
 												container.template = "nodes_renderer.html";
-												container.showEditQuestionIcon=true;
-												container.showTestWizardIcon=true;
+												container.showEditQuestionIcon=false;
+												container.showTestWizardIcon=false;
 												container.nodeType = "chapter";
 												container.isCollapsed=false;
 												containerNode["nodes"] = [jQuery.extend(true,
@@ -973,41 +969,40 @@ angular
 												containerNode = containerNode.nodes[0];
 											})
 									$scope.parentNode = containerNode;		
-									$scope.addSearchedContainer(isAdvancedSearch,searchedContainer);
+									$scope.addSearchedContainer(searchedContainer);
 
 								} else {
 									$scope.parentNode = $scope.disciplines[0].nodes[0];
-									$scope.addSearchedContainer(isAdvancedSearch,searchedContainer);
+									$scope.addSearchedContainer(searchedContainer);
 								}
 							}
 
 
-							$scope.addSearchedContainer = function(isAdvancedSearch, searchedContainer) {
-								if(isAdvancedSearch){
-
+							$scope.addSearchedContainer = function(searchedContainer) {
+								if($scope.isAdvancedSearchMode){
 									$rootScope.blockPage.start();
-									var isQuestionTypeExists=false; 
 									ContainerService.containerNodes($scope.bookID,searchedContainer.guid,$scope.selectedQuestionTypes.toString(), true, function(response){
 										if(response.length > 0){
-											isQuestionTypeExists=true;
-										}
-										
-										if(isQuestionTypeExists){
 											searchedContainer.template = "nodes_renderer.html";
-											searchedContainer.showEditQuestionIcon=true;
-											searchedContainer.showTestWizardIcon=true;
+											searchedContainer.showEditQuestionIcon=false;
+											searchedContainer.showTestWizardIcon=false;
 											searchedContainer.nodeType = "topic";
 											searchedContainer.isCollapsed=true;
 											$scope.parentNode["nodes"] = [ jQuery.extend(true,
 													{}, searchedContainer) ];
+											$rootScope.blockPage.stop();
+										}else{
+											$rootScope.blockPage.stop();
+											$scope.IsConfirmation = false;
+											$scope.message = "No search results match your criteria, broaden your criteria, or select more question banks to search";
+											$modal.open(confirmObject);
 										}
-										$rootScope.blockPage.stop();
 									});
 								}
 								else{
 									searchedContainer.template = "nodes_renderer.html";
-									searchedContainer.showEditQuestionIcon=true;
-									searchedContainer.showTestWizardIcon=true;
+									searchedContainer.showEditQuestionIcon=false;
+									searchedContainer.showTestWizardIcon=false;
 									searchedContainer.nodeType = "topic";
 									searchedContainer.isCollapsed=true;
 									$scope.parentNode["nodes"] = [ jQuery.extend(true,
@@ -1131,6 +1126,7 @@ angular
 							$scope.searchBooksForQuestionTypes = function(node) {
 								$scope.showAdvancedSearch = false;
 								if($scope.selectedContainer!=undefined && $scope.selectedContainer!=""){
+									$scope.isAdvancedSearchMode=true;
 									$scope.showContainer();
 								}
 								else{
