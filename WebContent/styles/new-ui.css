@@ -398,13 +398,17 @@ span.glyphicon.glyphicon-info-sign {
   background-color: #f8f8f8;
   padding: 15px;
   border-radius: 5px;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
 } 
 
 .TestcreationInfo p {
   text-align: -webkit-match-parent;
   padding-left: 45px;
-  font-size: 16px;
+  font-size: 14px;
 } 
+.TestcreationInfo span{
+	font-size: 16px;
+}
 .tabs-content{
 	background-color: #FFF;
 }

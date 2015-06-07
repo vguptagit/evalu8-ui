@@ -83,9 +83,32 @@
             </button>
         </div>
     </div>
-    <div class="row" ng-show=" tests[currentIndex].isTestWizard">
-        <div class="col-lg-10">
-            <br /> <b>
+    
+    <!-- <div class="TestcreationInfo" ng-show="!tests[currentIndex].questions.length && !tests[currentIndex].isTestWizard">
+
+                <span class="fa fa-lightbulb-o circle-icon pull-left" aria-hidden="true"></span>
+                <p>
+                    To create a new test, drag questions here from the Question Banks
+                    or Custom Questions.
+                </p>
+                <p>
+                    To edit one of your tests, open Your Tests and drag test
+                    here.
+                </p>
+                <p>
+                    To create a test automatically from selected topics, select
+                    the Test Wizard button.
+                </p>
+            </div> -->
+    
+    
+    
+    
+    
+    
+    
+    <div class="TestcreationInfo" ng-show=" tests[currentIndex].isTestWizard">
+            
                 <p class='tw-helptext-head'>
                     <span class="glyphicon icon-magic" aria-hidden="true"></span>
                     Welcome to Evalu8 Test Wizard
@@ -106,15 +129,13 @@
                         <li>Select Create Test button</li>
                     </ol>
                 </div>
-            </b>
-        </div>
     </div>
     <div class="row"
          ng-hide="tests[currentIndex].isTestWizard && tests[currentIndex].criterias.length == 0">
-        <div class="col-lg-1">
+        <div class="col-lg-1 margin-rt-10neg margin-top-5">
             <h4>Test</h4>
         </div>
-        <div class="col-lg-11">
+        <div class="col-lg-11 margin-rt-5 margin-top-5">
             <input type="text" ng-model="tests[currentIndex].title"
                    ng-change="updateTestTitle(testTitle)" id="testCaption"
                    class="form-control input-sm" placeholder="Enter test title">
@@ -213,7 +234,7 @@
                 
             </div>
 
-            <div class="row">
+            <div class="margin-rt-5 row">
                 <div class="col-lg-7 text-right">
                     Add another topic or select
                     Create Test
