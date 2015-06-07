@@ -37,18 +37,31 @@ angular
 			});
 		};
 		
-		this.containerNodes = function(bookId,containerId, quizTypes ,callback) {
+		this.containerNodes = function(bookId,containerId, quizTypes , includeSelf ,callback) {
 			var url="";
-			if(quizTypes==""){
+			var queryStrings = "";
+			if(quizTypes!=""){
+				queryStrings=queryStrings+"quizTypes="+quizTypes;
+			}
+			if(includeSelf!=""){
+				if(queryStrings!=""){
+					queryStrings=queryStrings+"&";
+				}
+				queryStrings=queryStrings+"includeSelf="+includeSelf;
+			}
+				
+			if(queryStrings==""){
 				url=evalu8config.apiUrl+ "/books/"+ bookId+ "/nodes/"+ containerId+ "/nodes"
 			}else{
-				url=evalu8config.apiUrl+ "/books/"+ bookId+ "/nodes/"+ containerId+ "/nodes?quizTypes="+quizTypes;
+				url=evalu8config.apiUrl+ "/books/"+ bookId+ "/nodes/"+ containerId+ "/nodes?"+queryStrings;
 			}
-			
+			var nodes=[];
 			$http.get(url, config)
 				.success(function(response) {
 					callback(response);
-				})
+				}).error(function() {
+					callback(nodes);
+				});
 		};
 		
 		this.getQuestionTypeContainers = function(bookid,quizTypes, callback) {

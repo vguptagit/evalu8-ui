@@ -454,6 +454,7 @@ angular
 									ContainerService.containerNodes($scope.bookID, 
 										currentNode.node.guid,
 										$scope.selectedQuestionTypes.toString(),
+										false,
 										function(response) {
 
 											currentNode.node.nodes = currentNode.node.nodes.concat(response);
@@ -986,12 +987,11 @@ angular
 
 									$rootScope.blockPage.start();
 									var isQuestionTypeExists=false; 
-									questionService.getAllQuestionsOfContainer($scope.bookID,searchedContainer.guid, function(response){
-										response.forEach(function(question) {
-											if($scope.selectedQuestionTypes.toString().indexOf(question.quizType)>-1){
-												isQuestionTypeExists=true;
-											}
-										});
+									ContainerService.containerNodes($scope.bookID,searchedContainer.guid,$scope.selectedQuestionTypes.toString(), true, function(response){
+										if(response.length > 0){
+											isQuestionTypeExists=true;
+										}
+										
 										if(isQuestionTypeExists){
 											searchedContainer.template = "nodes_renderer.html";
 											searchedContainer.showEditQuestionIcon=true;
