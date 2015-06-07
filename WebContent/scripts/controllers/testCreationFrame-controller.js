@@ -1600,7 +1600,7 @@ angular
                                         }
                                     });
                                     
-                                    if (duplicateTitle && test.saveMode === EnumService.SAVE_MODE.SaveAs) {
+                                    if (duplicateTitle && (test.saveMode === EnumService.SAVE_MODE.SaveAs || test.testId == null)) {
                                         
                                     	$scope.IsConfirmation = false;
                                         $scope.message = "A test already exists with this name. Please save with another name.";
