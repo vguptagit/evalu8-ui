@@ -103,7 +103,9 @@ angular.module('evalu8Demo')
 						})
 				.error(
 						function(error) {
-
+							var item = {"nodeType": "empty", "draggable": false, "title": "Empty folder", "sequence": 0};
+							userFolders.push(item);
+							
 							callback (userFolders);
 						})					
 				

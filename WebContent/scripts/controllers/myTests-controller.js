@@ -476,12 +476,12 @@ angular.module('e8MyTests')
 
                     $rootScope.blockLeftPanel.start();
                     TestService.getTests(defaultFolder.node.guid, function (tests) {
-                    	
+                    	/*
                     	if(userFolders.length == 0 && tests.length == 0) {
     						var item = {"nodeType": "empty", "draggable": false, "title": "Empty folder", "sequence": 0};
     								
     						defaultFolder.node.nodes.push(item);                    		
-                    	}
+                    	}*/
 						
                         tests.forEach(function (test) {
 
@@ -520,12 +520,12 @@ angular.module('e8MyTests')
 
                     $rootScope.blockLeftPanel.start();
                     TestService.getArchiveTests(defaultFolder.node.guid, function (tests) {
-                    	
+                    	/*
                     	if(userFolders.length == 0 && tests.length == 0) {
                     		var item = {"nodeType": "empty", "draggable": false, "title": "Empty folder", "sequence": 0};
     						 
                     		defaultFolder.node.nodes.push(item);                    		
-                    	}
+                    	}*/
                     	
                         tests.forEach(function (test) {
                             test.selectTestNode = false;//to show the edit icon
