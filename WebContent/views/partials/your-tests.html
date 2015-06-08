@@ -104,7 +104,7 @@
                  ng-class="{treeNodeHover: hover}"
                  ng-mouseenter="treeNodeMouseEnter(this)"
                  ng-mouseleave="treeNodeMouseLeave(this)">
-                <div class="maindiv  padding-lft-30"  ng-class="{folderHighlight: node.selectTestNode}" id={{node.guid}}>
+                <div class="maindiv"  ng-class="{folderHighlight: node.selectTestNode}" id={{node.guid}}>
                     <div class="imagediv">
                         <input type="image" data-ng-if="node.nodeType != 'empty'" ng-click="getFolders(this)" class="collapseImg"
                                ng-src="{{collapsed && 'images/right_arrow2.png' || 'images/right_arrow.png'}}" />
@@ -122,7 +122,7 @@
             </div>
 
             <div data-ng-if="node.nodeType == 'archiveFolder'" class="treeDiv">
-                <div class="maindiv padding-lft-30" ng-class="{folderHighlight: node.selectTestNode}" id={{node.guid}}>
+                <div class="maindiv" ng-class="{folderHighlight: node.selectTestNode}" id={{node.guid}}>
                     <div class="imagediv">
                         <input type="image" data-ng-if="node.nodeType != 'empty'" ng-click="getFolders(this)" class="collapseImg"
                                ng-src="{{collapsed && 'images/right_arrow2.png' || 'images/right_arrow.png'}}" />

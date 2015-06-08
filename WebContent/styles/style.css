@@ -372,7 +372,7 @@ hr{margin: 0;}
 .botborderright { border-bottom: 1px solid #E0E0E0; background-color: #f8f8f8; min-height: 91px; }
 .resourcetab{height: 55px; padding-top: 10px;}
 
- .angular-ui-tree-nodes .angular-ui-tree-nodes {padding-right: 1px; padding-top: 1px;} 
+ .angular-ui-tree-nodes .angular-ui-tree-nodes {padding-right: 1px; padding-top: 1px; background-color:#f8f8f8;} 
 
 .full-width-tabs > ul.nav.test-tabs {
   /* display: table; */
