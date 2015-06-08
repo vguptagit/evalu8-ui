@@ -2876,3 +2876,7 @@ li[qstntemplate='true'] label.mOptionLabel{
 .criteria>div{
 	margin-top: 8px;
 }
+
+#Custom-Qstn-tree-root .angular-ui-tree-placeholder,#QuestArea .angular-ui-tree-placeholder{
+	background-color: #f8f8f8;	
+}
