@@ -416,6 +416,14 @@ h4, .h4, h5, .h5, h6, .h6 {  margin-top: 8px; margin-bottom: 8px;}
 .form-control {padding-right: 36px;}
 .welcomebackground{height: 94vh; background-color: #f8f8f8;}
 
+.angular-ui-tree-placeholder {
+   background: #D1EDF6;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+   box-sizing: border-box;
+   border-top: 2px solid #9FDAEE;
+  
+}
 .row { margin-right: -20px; margin-left: -20px;}
 
 .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {padding-right: 20px; padding-left: 20px;}
