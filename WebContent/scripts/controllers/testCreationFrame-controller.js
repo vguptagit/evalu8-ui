@@ -1546,6 +1546,7 @@ angular
 							    var test = SharedTabService.tests[SharedTabService.currentTabIndex];
 							    test.saveMode = EnumService.SAVE_MODE.SaveAs;
 							    test.title = title;
+							    test.tempFolderGuid = test.folderGuid;
 							    test.folderGuid = containerFolder == null ? null : containerFolder.guid;
 							    $scope.testTitle = title;
 							    $scope.containerFolder = containerFolder;
@@ -1593,18 +1594,26 @@ angular
                             	
                                 TestService.getTests(test.folderGuid, function(tests){
 
-                                    tests.forEach(function(folderTest){
-                                        if(folderTest.title == test.title) {
-
-                                        	duplicateTitle = true;                                        	                                                                                      
+                                    tests.forEach(function (folderTest) {
+                                        if (test.saveMode === EnumService.SAVE_MODE.SaveAs && folderTest.title == test.title) {
+                                            duplicateTitle = true;
+                                        } else if (test.saveMode === EnumService.SAVE_MODE.Save && folderTest.guid !== test.testId && folderTest.title == test.title) {
+                                            duplicateTitle = true;
                                         }
                                     });
                                     
-                                    if (duplicateTitle && (test.saveMode === EnumService.SAVE_MODE.SaveAs || test.testId == null)) {
+                                    if (duplicateTitle ) {
                                         
                                     	$scope.IsConfirmation = false;
                                         $scope.message = "A test already exists with this name. Please save with another name.";
                                         $modal.open(confirmObject);
+                                        if (test.saveMode === EnumService.SAVE_MODE.SaveAs) {
+                                            test.folderGuid = test.tempFolderGuid;
+                                            $scope.containerFolder = null;
+                                        }
+                                        if (callback) {
+                                            callback();
+                                        }
                                         test.saveMode = EnumService.SAVE_MODE.Save;
                                         $rootScope.blockPage.stop();         							    
                                     	return;
@@ -2163,8 +2172,6 @@ angular
 																criteria.treeNode);
 											})
 								}
-
-								// console.log(metadatas);
 								$scope.tests[$scope.sharedTabService.currentTabIndex].isTestWizard = false;
 								$scope.sharedTabService.isTestWizardTabPresent = false;
 								$scope.tests[$scope.sharedTabService.currentTabIndex].tabTitle = "Untitled test";
@@ -2172,7 +2179,7 @@ angular
 								QTI.initialize();
 								$scope.saveTest(function () {
 								        $rootScope.blockPage.start();
-                                        $scope.tests[$scope.sharedTabService.currentTabIndex].questions = [];
+								        $scope.tests[$scope.sharedTabService.currentTabIndex].questions = [];
 								        $scope.render(metadatas);
 								        $scope.isApplySameCriteriaToAll = false;
 								});

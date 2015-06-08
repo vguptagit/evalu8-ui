@@ -50,6 +50,7 @@ angular.module('evalu8Demo')
 		         this.questionFolderNode = [];
 		         this.showCloseButton = true;
 		         this.saveMode = EnumService.SAVE_MODE.Save;
+		         this.tempFolderGuid = null;
 		     }
 
 		     sharedTabService.Criteria = function () {

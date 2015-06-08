@@ -835,7 +835,9 @@ angular.module('e8MyTests')
                 if (containerFolder) {
                     test.parentId = containerFolder.guid;
                     test.selectTestNode = true;
-                    parentFolderNodes.push(test);
+                    if (parentFolderNodes) {
+                        parentFolderNodes.push(test);
+                    }
                 }
                 else {
                     test.parentId = null;
