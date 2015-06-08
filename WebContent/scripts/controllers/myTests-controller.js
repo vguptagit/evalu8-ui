@@ -154,9 +154,7 @@ angular.module('e8MyTests')
                     	UserFolderService.saveUserFolder(sourceFolder, function() {
                     		$scope.insertTestBindingToDest(mouseOverNode, item.guid);                		
                     	});            		              	               	
-                    }
-                  
-                    mouseOverNode.node.nodes = null;
+                    }                  
                 })
                 
             } else {
@@ -470,11 +468,8 @@ angular.module('e8MyTests')
 
             defaultFolder.toggle();
 
-            if (!defaultFolder.collapsed) {
-            	
-				if(defaultFolder.node.nodes) {
-					return;
-				}
+            if (!defaultFolder.collapsed) {            	
+				
 				UserFolderService.getUserFoldersByParentFolderId(defaultFolder.node.guid, function (userFolders) {
 
                     defaultFolder.node.nodes = userFolders;
@@ -517,7 +512,8 @@ angular.module('e8MyTests')
 
             defaultFolder.toggle();
 
-            if (!defaultFolder.collapsed) {
+            if (!defaultFolder.collapsed) {            	
+				
                 ArchiveService.getArchiveFolders(defaultFolder.node, function (userFolders) {
 
                     defaultFolder.node.nodes = userFolders;
