@@ -1184,7 +1184,7 @@ display: inline-block;
 { margin-left: 20px; vertical-align: top; }
 
 .criteriaAlign input[type='text']
-{ height: 23px; }
+{ height: 23px; padding-right: 0px; }
 .questionTemplateContainer {
 	font-size: 15px;
 }

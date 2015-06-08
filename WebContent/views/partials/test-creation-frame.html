@@ -245,7 +245,7 @@
   
                     </div>
                 </div>
-                <div class="col-lg-11 criteria" ng-show="$first">
+                <div class="col-lg-11 criteria" ng-show="$first && tests[currentIndex].criterias.length > 1">
    	                <div class="">
                        <input id="applyCriteria" type="checkbox" ng-model="isApplySameCriteriaToAll"
                               ng-change='toggleApplySameCriteria(this)'>Use same criteria for all topics
