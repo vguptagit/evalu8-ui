@@ -108,7 +108,7 @@ angular.module('e8MyTests')
                 
                 var duplicateTitle = false;
                 
-                UserFolderService.userFolders(mouseOverNode.node, function (userFolders) {
+                UserFolderService.getUserFoldersByParentFolderId(mouseOverNode.node.guid, function (userFolders) {
                     	
                 	if(item.nodeType == EnumService.NODE_TYPE.folder) {
                 		userFolders.forEach(function(nodeItem) {                            
@@ -475,7 +475,7 @@ angular.module('e8MyTests')
 				if(defaultFolder.node.nodes) {
 					return;
 				}
-            	UserFolderService.userFolders(defaultFolder.node, function (userFolders) {
+				UserFolderService.getUserFoldersByParentFolderId(defaultFolder.node.guid, function (userFolders) {
 
                     defaultFolder.node.nodes = userFolders;
 

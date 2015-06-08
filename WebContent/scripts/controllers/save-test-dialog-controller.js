@@ -50,7 +50,7 @@
 		     }
 		     
 		     $scope.getUserFolders = function (folder, callback) {
-		         UserFolderService.userFolders(folder, function (userFolders) {
+		         UserFolderService.getUserFoldersByParentFolderId(folder.guid, function (userFolders) {
 		             folder.nodes = userFolders;
 		             if (callback) callback();
 		         });

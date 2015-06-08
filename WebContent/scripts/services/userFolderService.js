@@ -3,8 +3,8 @@
 angular.module('evalu8Demo')
 
 .service('UserFolderService', 
-		['$http', '$rootScope', '$location', '$cookieStore', 
-		 function($http, $rootScope, $location, $cookieStore) {
+		['$http', '$rootScope', '$location', '$cookieStore', '$cacheFactory',
+		 function($http, $rootScope, $location, $cookieStore, $cacheFactory) {
 			
 			$rootScope.globals = $cookieStore.get('globals') || {};			
 			 
@@ -85,27 +85,27 @@ angular.module('evalu8Demo')
 				
 			};
 			
-			this.userFolders = function(folder, callback) {				
+			this.getUserFoldersByParentFolderId = function(parentFolderId, callback) {				
 
 				var userFolders = [];
 
-				$http.get(
-						evalu8config.apiUrl + "/my/folders/"+ folder.guid + "/folders", config)
-						.success(
-								function(response) {
+				$http.get(evalu8config.apiUrl + "/my/folders/"+ parentFolderId + "/folders", config)
+				.success(
+						function(response) {
 
-									response.forEach (function(item) {  
-										item.nodeType = "folder";
-										item.draggable = true;
-										userFolders.push(item);    							    							
-									});
-									callback (userFolders);
-								})
-						.error(
-								function(error) {
+							response.forEach (function(item) {  
+								item.nodeType = "folder";
+								item.draggable = true;
+								userFolders.push(item);    							    							
+							});
+							
+							callback (userFolders);
+						})
+				.error(
+						function(error) {
 
-									callback (userFolders);
-								})
+							callback (userFolders);
+						})					
 				
 			};			
 			
