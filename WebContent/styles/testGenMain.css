@@ -497,6 +497,7 @@ html, body {
 .questIndex {
 	list-style: decimal;
 	font-weight: 700;
+	background-color: #fff;
 }
 
 ol {
@@ -2553,6 +2554,7 @@ div #BlanksCaption {
 
 .questionIcon{
 	font-size: 12px;
+	background-color: #fff;
 }
 
 li[qstntemplate='true'] .qti-itemBody>div.optionLabelView {
