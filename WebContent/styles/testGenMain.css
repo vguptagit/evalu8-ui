@@ -873,7 +873,14 @@ display: inline-block;
 .container-full {
 	width: 100%;
 }
-
+.container-full ul { 
+	margin: 0px;
+	padding: 0px;
+	list-style-type: none;
+	float: left;
+}
+.container-full>div:first-child{height: 100%;float: left;margin-top: 15px;margin-left: 15px;}
+.container-full>div:last-child{padding-left: 20px;float: left}
 .vsViewVersions {
 	padding-left: 3px !important;
 }
@@ -1105,11 +1112,14 @@ display: inline-block;
 	width: 100%;
 	vertical-align: middle;
 	background-color: #E0E0E0 !important;
-	height: 41px;
-	line-height: 41px;
+	height: 40px;
+	line-height: 40px;
 	font-size: 14px;
 	margin: 0px;
 	}
+.wizardHeader .close{
+	opacity:.5;
+} 
 .wizardHeader span{
 	margin-left: 15px;
 }
@@ -1168,9 +1178,13 @@ display: inline-block;
 }
 
 .criteriaAlign {
-	padding-top: 6px;
+	padding-top: 15px;
 }
-.criteriaAlign input[type='radio']{ margin-left: 20px }
+.criteriaAlign input[type='radio']
+{ margin-left: 20px; vertical-align: top; }
+
+.criteriaAlign input[type='text']
+{ height: 23px; }
 .questionTemplateContainer {
 	font-size: 15px;
 }
@@ -2882,3 +2896,24 @@ li[qstntemplate='true'] label.mOptionLabel{
 #Custom-Qstn-tree-root .angular-ui-tree-placeholder,#QuestArea .angular-ui-tree-placeholder{
 	background-color: #f8f8f8;	
 }
+.typeHeader{
+	display: inline-block;margin-top: 26px;
+}
+.typeHeader h5{
+	margin: 0px
+}
+.questionHeader h5{
+	margin-bottom: 0px;
+	margin-top: 2px;
+}
+.questionColumns{
+	margin-top: 15px;
+}
+.questionColumns:first-child{margin-left: 0px;}
+.questionColumns:not(:first-child){margin-left: 20px;}
+.questionColumns li{line-height: 16px !important;margin-bottom: 15px;}
+.questionTypeSec{
+	padding-left: 20px;padding-top: 20px;
+}
+.questionColumns input{margin-top: 2px;}
+.questionColumns span{vertical-align: top;margin-left: 6px}

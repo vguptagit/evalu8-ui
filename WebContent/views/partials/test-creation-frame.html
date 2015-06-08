@@ -163,28 +163,34 @@
                         </button>
                     </div>
                     <div class="row form-group container-full">
-                        <div class="col-lg-12">
-                            <div class="row">
-                                <div class="col-lg-2">
-                                    <h5>Questions:</h5>
-                                </div>
-                                <div class="col-lg-10">
+                  		<div>
+							<span class="questionHeader">
+								<h5>Questions:</h5>
+							</span>
+							<span class="typeHeader">
+                                <h5>Type:</h5>
+							</span>
+                    	</div>
+                    	<div class="col-lg-10"">
+                    	   <div class="row">
+
+                                <div class="col-lg-12">
                                     <div class="row criteriaAlign">
-                                        <div class="col-lg-2 text-left no-padding"
+                                        <div class="text-left no-padding"
                                         	ng-class="$last?'col-lg-3':'col-lg-2'"
                                              ng-repeat="defaultNumberOfQuestion in criteria.defaultNumberOfQuestions">
                                             <input type="radio" name="{{criteria.id}}"
                                                    ng-model="criteria.numberOfQuestionsSelected "
                                                    value="{{defaultNumberOfQuestion}}"
                                                    ng-change="fillQuestionCount(criteria)"
-                                                   ng-disabled='criteria.totalQuestions < defaultNumberOfQuestion'>{{defaultNumberOfQuestion}}
-                                                   
+                                                   ng-disabled='criteria.totalQuestions < defaultNumberOfQuestion'/>
+                                            {{defaultNumberOfQuestion}}       
                                             <input type="text"
                                                    ng-disabled='criteria.numberOfQuestionsSelected > 0'
                                                    ng-model="criteria.numberOfQuestionsEntered"
                                                    ng-change="SelecteNumberOnly(criteria)"
                                                    ng-if="$last"
-                                                   placeholder="#"
+                                                   placeholder="Enter #"
                                                    class="form-control input-sm tw-no-of-qns-input" />
                                         </div>
                                     </div>
@@ -192,14 +198,10 @@
 
 
                             </div>
-                            <div class="row">
-                                <div class="col-lg-2 text-left">
-                                    <h5>Type:</h5>
-                                </div>
-                                <div class="col-lg-10">
-                                    <div class="row">
-                                        <div class="col-lg-4"
-                                             ng-repeat="questiontype in sharedTabService.QuestionTypes">
+							<div class="row">
+								<div class="col-lg-12 questionTypeSec">
+<!--                                          <div class="col-lg-4"
+                                             ng-repeat="questiontype in sharedTabService.QuestionTypes" ng-if="$first">
                                             <div class="ck-button">
                                                    <input type="checkbox"
                                                            ng-disabled='criteria.questiontypes.indexOf(questiontype.key) == -1'
@@ -207,13 +209,40 @@
                                                            ng-click='toggleQuestiontypeSelection(criteria,questiontype.key)'
                                                            ng-checked="criteria.selectedQuestiontypes.indexOf(questiontype.key) != -1"><span style="float:left;white-space: ">{{questiontype.newValue}}</span>
                                             </div>
-                                        </div>
-                                    </div>
+                                        </div>  -->
+                                        <ul class="questionColumns">
+                                        	<li ng-repeat="questiontype in sharedTabService.QuestionTypes" ng-if="$index % 3 == 0">
+                                        	 <input type="checkbox"
+                                                           ng-disabled='criteria.questiontypes.indexOf(questiontype.key) == -1'
+                                                           ng-model="value" value="{{questiontype.key}}"
+                                                           ng-click='toggleQuestiontypeSelection(criteria,questiontype.key)'
+                                                           ng-checked="criteria.selectedQuestiontypes.indexOf(questiontype.key) != -1"><span>{{questiontype.value}}</span>
+                                        	</li>
+                                        </ul>
+                                        <ul class="questionColumns">
+                                        	<li ng-repeat="questiontype in sharedTabService.QuestionTypes" ng-if="$index % 3 == 1">
+                                        	 <input type="checkbox"
+                                                           ng-disabled='criteria.questiontypes.indexOf(questiontype.key) == -1'
+                                                           ng-model="value" value="{{questiontype.key}}"
+                                                           ng-click='toggleQuestiontypeSelection(criteria,questiontype.key)'
+                                                           ng-checked="criteria.selectedQuestiontypes.indexOf(questiontype.key) != -1"><span>{{questiontype.value}}</span>
+                                        	</li>
+                                        </ul>
+                                        <ul class="questionColumns">
+                                        	<li ng-repeat="questiontype in sharedTabService.QuestionTypes" ng-if="$index % 3 == 2">
+                                        	 <input type="checkbox"
+                                                           ng-disabled='criteria.questiontypes.indexOf(questiontype.key) == -1'
+                                                           ng-model="value" value="{{questiontype.key}}"
+                                                           ng-click='toggleQuestiontypeSelection(criteria,questiontype.key)'
+                                                           ng-checked="criteria.selectedQuestiontypes.indexOf(questiontype.key) != -1"><span>{{questiontype.value}}</span>
+                                        	</li>
+                                        </ul>
+                                        
+                                   </div>
 
-                                </div>
-
-                            </div>
-                        </div>
+                              </div>
+                    	</div>
+  
                     </div>
                 </div>
                 <div class="col-lg-11 criteria" ng-show="$first">
