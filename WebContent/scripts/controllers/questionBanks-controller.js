@@ -854,6 +854,7 @@ angular
 							$scope.selectedBookIDs = [];
 							$scope.searchedContainerId="";
 							$scope.trackEnterKey=0;
+							var searchedQuestionTypes=[];
 							
 							$scope.selectBook = function(node) {
 								$scope.allContainers = [];
@@ -1059,22 +1060,20 @@ angular
 							
 							$scope.closeAdvancedSearch = function() {
 								$scope.showAdvancedSearch = false;
-								if(!$scope.isAdvancedSearchMode){
-									$scope.selectedQuestionTypes=[];
-									$scope.selectedQuestionTypesToShow=[];
-								}
+								$scope.selectedQuestionTypes=[];
+								searchedQuestionTypes.forEach(function(qt){
+									$scope.selectedQuestionTypes.push(qt);
+								});
 							}
 							
 							$scope.isThisQuizTypeSelected = function(questionType){
 								var index = $scope.selectedQuestionTypes.indexOf(questionType);
-								if (index > -1) {
+								if (index > -1 ) {
 									return true;
 								}else{
 									return false;
 								}
 							}
-							
-							var selectedQuestionTypesToShow=[];
 							
 							$scope.toggleQuestiontypeSelection = function(
 									questionType) {
@@ -1083,32 +1082,13 @@ angular
 										.indexOf(questionType);
 								if (index > -1) {
 									$scope.selectedQuestionTypes.splice(index,1);
-									selectedQuestionTypesToShow.splice(index,1);
 								} else {
 									$scope.selectedQuestionTypes.push(questionType);
-									$scope.addQuestionTypesToShow(questionType);
 								}
 								if($scope.selectedQuestionTypes.length == 0){
 									$scope.isSaveDisabled=true;
 								}else{
 									$scope.isSaveDisabled=false;
-								}
-							}
-							
-							$scope.addQuestionTypesToShow = function(quizTypes)
-							{
-								if(quizTypes=='Essay'){
-									selectedQuestionTypesToShow.push(" Essay") 
-								}else if(quizTypes=='MultipleResponse'){
-									selectedQuestionTypesToShow.push(" Multiple Response")
-								}else if(quizTypes=='Matching'){
-									selectedQuestionTypesToShow.push(" Matching")
-								}else if(quizTypes=='MultipleChoice'){
-									selectedQuestionTypesToShow.push(" Multiple Choice")
-								}else if(quizTypes=='TrueFalse'){
-									selectedQuestionTypesToShow.push(" True False")
-								}else if(quizTypes=='FillInBlanks'){
-									selectedQuestionTypesToShow.push(" Fill in the Blanks")
 								}
 							}
 							
@@ -1128,9 +1108,17 @@ angular
 								}
 							}
 							
+							var selectedQuestionTypesToShow=[];
 							
 							$scope.searchBooksForQuestionTypes = function(node) {
 								$scope.showAdvancedSearch = false;
+								selectedQuestionTypesToShow=[];
+								searchedQuestionTypes=[];
+								$scope.selectedQuestionTypes.forEach(function(questionType){
+									$scope.addQuestionTypesToShow(questionType);	
+									searchedQuestionTypes.push(questionType)
+								});
+								
 								if($scope.selectedContainer!=undefined && $scope.selectedContainer!=""){
 									$scope.isAdvancedSearchMode=true;
 									$scope.showContainer();
@@ -1167,6 +1155,23 @@ angular
 											}
 										});
 									});	
+								}
+							}
+							
+							$scope.addQuestionTypesToShow = function(quizTypes)
+							{
+								if(quizTypes=='Essay'){
+									selectedQuestionTypesToShow.push(" Essay") 
+								}else if(quizTypes=='MultipleResponse'){
+									selectedQuestionTypesToShow.push(" Multiple Response")
+								}else if(quizTypes=='Matching'){
+									selectedQuestionTypesToShow.push(" Matching")
+								}else if(quizTypes=='MultipleChoice'){
+									selectedQuestionTypesToShow.push(" Multiple Choice")
+								}else if(quizTypes=='TrueFalse'){
+									selectedQuestionTypesToShow.push(" True False")
+								}else if(quizTypes=='FillInBlanks'){
+									selectedQuestionTypesToShow.push(" Fill in the Blanks")
 								}
 							}
 							
