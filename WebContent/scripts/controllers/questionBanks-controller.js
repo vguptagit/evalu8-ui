@@ -323,9 +323,13 @@ angular
                                 $rootScope.$broadcast("editTest", selectedTest);
                             }
 							
+                            $scope.createTestWizardMode=false;
+                            
 							// TODO : need to move this to service.
 							$scope.createTestWizardCriteria = function(
 									currentNode) {
+								$scope.createTestWizardMode=true;
+								
 								if (!SharedTabService.isTestWizardTabPresent) {
 									$rootScope
 											.$broadcast('handleBroadcast_AddTestWizard');
@@ -357,7 +361,8 @@ angular
 										getQuestions(
 												currentNode,
 												function (response, currentNode) {
-												    try {												    
+												    try {
+												    	
 													$rootScope
 															.$broadcast(
 																	"handleBroadcast_createTestWizardCriteria",
@@ -372,6 +377,7 @@ angular
                                                     } catch (e) {
                                                         console.log(e);
                                                     } finally {
+                                                    	$scope.createTestWizardMode=false;
                                                         $rootScope.blockPage.stop();
                                                     }
 												});
@@ -379,37 +385,37 @@ angular
 								}
 							}
 							function getQuestions(currentNode, callBack) {
-								var node;
-								if($scope.isSearchMode){
-									node=$scope.searchedContainerId;	
+								var questions=[];
+								if($scope.isSearchMode && !$scope.createTestWizardMode && currentNode.guid!= $scope.searchedContainerId ){
+									callBack(questions, currentNode)
 								}else{
-									node=currentNode.guid;
+									
+									$http
+									.get(
+											evalu8config.apiUrl + "/books/"
+													+ currentNode.bookid
+													+ "/nodes/"
+													+ currentNode.guid
+													+ "/questions?flat=1",
+											config)
+									.success(function(response) {
+										callBack(response, currentNode)
+									})
+									.error(
+											function() {
+												SharedTabService
+														.addErrorMessage(
+																currentNode.title,
+																SharedTabService.errorMessageEnum.NoQuestionsAvailable);
+												//callBack()
+												currentNode.showTestWizardIcon = true;
+												// currentNode.isNodeSelected
+												// = false;
+												$scope
+														.selectNode(currentNode);
+												$rootScope.blockPage.stop();
+											})
 								}
-								$http
-										.get(
-												evalu8config.apiUrl + "/books/"
-														+ currentNode.bookid
-														+ "/nodes/"
-														+ node
-														+ "/questions?flat=1",
-												config)
-										.success(function(response) {
-											callBack(response, currentNode)
-										})
-										.error(
-												function() {
-													SharedTabService
-															.addErrorMessage(
-																	currentNode.title,
-																	SharedTabService.errorMessageEnum.NoQuestionsAvailable);
-													//callBack()
-													currentNode.showTestWizardIcon = true;
-													// currentNode.isNodeSelected
-													// = false;
-													$scope
-															.selectNode(currentNode);
-													$rootScope.blockPage.stop();
-												})
 							}
 
 
