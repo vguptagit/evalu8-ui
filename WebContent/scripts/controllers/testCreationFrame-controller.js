@@ -458,6 +458,7 @@ angular
 							var confirmObject = {
 								templateUrl : 'views/partials/alert.html',
 								controller : 'AlertMessageController',
+								windowClass: 'alert-Modal',
 								backdrop : 'static',
 								keyboard : false,
 								resolve : {

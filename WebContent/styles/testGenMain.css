@@ -997,6 +997,7 @@ display: inline-block;
 .alertMsg {
 	padding: 20px 20px 20px 20px;
 	text-align: center;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
 }
 
 .alertMsgFooter {
@@ -1872,12 +1873,12 @@ ul.a {
 .uploadImage {
 	height: 100px;
 	width: 420px;
-	background-color: #CADDEE;
+	background-color: #d9edf7;
 	position: relative;
 	top: -4px;
 	left: 1px;
 	display: inline-block;
-	border: solid 1px #A9A9A9;
+	border-bottom: 1px solid #bce8f1 !important;
 	margin-top: 5px;
 }
 
@@ -1909,6 +1910,7 @@ ul.a {
 	position: relative;
 	top: 3px;
 	padding-right: 5px;
+	color: #31708f;
 }
 
 .uploadImage .uploadBtn {

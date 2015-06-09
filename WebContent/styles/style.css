@@ -357,6 +357,9 @@ a.fa.fa-user{
   margin: auto
 }
 
+.alert-Modal .modal-dialog{
+  width:400px; height: 400px;
+}
 .testversion-Modal .modal-body{padding:0;}
 .testversion-Modal .modal-header {padding:5px 0;}
 .testversion-Modal modal-header .close{margin-top: -10px; margin-right: -20px;}
