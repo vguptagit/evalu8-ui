@@ -725,7 +725,12 @@ angular
 
 										} else if ($scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.chapter
 												|| $scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.topic) {
-										    $rootScope.blockPage.start();
+											if($scope.isSearchMode){
+												if($scope.searchedContainerId == $scope.selectedNodes[i].guid){
+													$rootScope.blockPage.start();	
+												}
+											}else{
+												$rootScope.blockPage.start();
 											$scope.selectedNodes[i].showEditQuestionIcon = false;
 											var questionFolder = $scope.selectedNodes[i];
 											getQuestions(
