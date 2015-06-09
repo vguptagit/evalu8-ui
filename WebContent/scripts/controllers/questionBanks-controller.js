@@ -117,8 +117,7 @@ angular
 									UserQuestionsService.userQuestions(function(userQuestions) {
 										if (userQuestions.length) {
 											$scope.userQuestions = userQuestions;
-											$scope.disciplines
-													.unshift({
+											$scope.disciplines.unshift({
 														"item" : "Your Questions (user created)",
 														"isCollapsed" : true	
 													});
@@ -144,6 +143,8 @@ angular
 							// mytest/books?discipline to get the books
 							// and append the collection to input discipline
 							// angularjs node
+							
+							$scope.yourQuestionsFolder = null;
 							$scope.getBooks = function(discipline) {
 								
 
@@ -163,6 +164,8 @@ angular
 
 										if (discipline.node.item == 'Your Questions (user created)') {
 
+											$scope.yourQuestionsFolder = discipline;
+											
 											discipline.node.nodes = [];
 
 											// qti player initialisation
@@ -1241,7 +1244,19 @@ angular
 								$scope.loadTree();
 							}
 							
-							$scope.$on('handleBroadcast_AddNewTest', function (handler, newTest, containerFolder, isEditMode, oldGuid) {							    
+							$scope.$on('handleBroadcast_AddNewTest', function (handler, newTest, containerFolder, isEditMode, oldGuid) {
+								
+								UserQuestionsService.userQuestions(function(userQuestions) {
+									if (userQuestions.length) {
+										$scope.userQuestions = userQuestions;
+									}
+									if($scope.yourQuestionsFolder) {
+										$scope.yourQuestionsFolder.collapse();
+										$scope.getBooks($scope.yourQuestionsFolder);
+									}
+										
+								})
+								
 							    if (isEditMode) {
 							        return false;
 							    }
