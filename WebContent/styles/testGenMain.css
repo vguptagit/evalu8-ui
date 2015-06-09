@@ -881,6 +881,7 @@ display: inline-block;
 }
 .container-full>div:first-child{height: 100%;float: left;margin-top: 15px;margin-left: 15px;}
 .container-full>div:last-child{padding-left: 20px;float: left}
+.container-full .questionTypeSec{padding-left: 15px;}
 .vsViewVersions {
 	padding-left: 3px !important;
 }
@@ -2912,7 +2913,7 @@ li[qstntemplate='true'] label.mOptionLabel{
 	margin-top: 15px;
 }
 .questionColumns:first-child{margin-left: 0px;}
-.questionColumns:not(:first-child){margin-left: 20px;}
+.questionColumns:not(:first-child){margin-left: 15px;}
 .questionColumns li{line-height: 16px !important;margin-bottom: 15px;}
 .questionTypeSec{
 	padding-left: 20px;padding-top: 20px;
