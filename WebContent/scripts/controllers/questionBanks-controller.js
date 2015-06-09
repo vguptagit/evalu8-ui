@@ -863,37 +863,65 @@ angular
 							}
 
 							$scope.selectedBooks = [];
-							$scope.selectedBookIDs = [];
 							$scope.searchedContainerId="";
 							$scope.trackEnterKey=0;
 							var searchedQuestionTypes=[];
+							var bookContainersArray=[];
+							$scope.allContainers=[];
 							
 							$scope.selectBook = function(node) {
-								$scope.allContainers = [];
 								var isBookSelected=false;
-								var index = $scope.selectedBookIDs
-										.indexOf(node.guid);
-								if (index > -1) {
-									$scope.selectedBookIDs.splice(index, 1);
-									$scope.selectedBooks.splice(index, 1);
-									isBookSelected=false;
-								} else {
-									$scope.selectedBookIDs.push(node.guid)
-									$scope.selectedBooks.push(node)
-									isBookSelected=true;
-								}
+								var bookIndex=0
+								var existingBookIndex=-1;
 
-								ContainerService.getAllContainers(
-										$scope.selectedBookIDs.toString(),
-										function(response) {
-											$scope.allContainers = response;
-											node.isNodeSelected = isBookSelected;
-										});
+								$scope.selectedBooks.forEach(function(book){
+									if(book.guid==node.guid){
+										isBookSelected=true;
+										existingBookIndex=bookIndex;
+									}
+									bookIndex++;
+								});
 								
+								if(isBookSelected){
+									node.isNodeSelected = false;
+									$scope.selectedBooks.splice(existingBookIndex, 1);
+									removeBookContainers(node.guid);
+								}else{
+									node.isNodeSelected = true;
+									$scope.selectedBooks.push(node);
+									ContainerService.getAllContainers(node.guid,
+											function(response) {
+												var bookContainers={};
+												bookContainers["bookid"]=node.guid;
+												bookContainers["containers"]=response;
+												bookContainersArray.push(bookContainers);
+												fillBookContainers();
+											});
+								}
+							}
+							
+							var fillBookContainers=function(){
+								$scope.allContainers=[];
+								bookContainersArray.forEach(function(book){
+									book.containers.forEach(function(container){
+										$scope.allContainers.push(container)	
+									});
+								});
+							}
+							
+							var removeBookContainers=function(bookid){
+								var i=0;
+								bookContainersArray.forEach(function(book){
+									if(book.bookid==bookid){
+										bookContainersArray.splice(i,1)
+									}
+									i++;
+								})
+								fillBookContainers();
 							}
 
 							$scope.validateSearch = function(){
-								if($scope.selectedBookIDs.length == 0){
+								if($scope.selectedBooks.length == 0){
 									$scope.selectedContainer="";
 									$scope.IsConfirmation = false;
 									$scope.message = "Please select a question bank to search";
@@ -1242,7 +1270,6 @@ angular
 							$scope.clearAdvancedSearch = function(){
 								$scope.selectedContainer="";
 								$scope.selectedQuestionTypes=[];
-								$scope.selectedBookIDs=[];
 								$scope.isAdvancedSearchMode = false;
 								$scope.isSearchMode = false;
 								$scope.selectedQuestionTypesToShow=[];
