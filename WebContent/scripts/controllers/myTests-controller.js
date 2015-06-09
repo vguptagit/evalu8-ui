@@ -86,6 +86,10 @@ angular.module('e8MyTests')
                 return false;
             }
             
+            if($rootScope.dropTest && $rootScope.dropTest == "cancel") {
+            	return false;
+            }
+            
             $scope.dragStarted = false;
 
             if (sourceIndex != destIndex) {
@@ -200,14 +204,14 @@ angular.module('e8MyTests')
     			            $scope.IsConfirmation = false;
     			            $scope.message = "A test already exists with this name.";
     			            $modal.open(confirmObject);
-    			            
+    			            /*
     			            if(sourceParent) {
     			            	sourceParent.node.nodes.splice(sourceIndex, 0, source.node);	
     			            } else {
     			            	$scope.defaultFolders.splice(sourceIndex, 0, source.node);
     			            }
     			                			            
-    			            $scope.defaultFolders.splice(destIndex, 1);
+    			            $scope.defaultFolders.splice(destIndex, 1);*/
                     		return false;
                     	}
             		}
