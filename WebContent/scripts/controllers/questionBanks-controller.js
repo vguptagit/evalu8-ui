@@ -385,37 +385,43 @@ angular
 								}
 							}
 							function getQuestions(currentNode, callBack) {
+								var node;
 								var questions=[];
-								if($scope.isSearchMode && !$scope.createTestWizardMode && currentNode.guid!= $scope.searchedContainerId ){
-									callBack(questions, currentNode)
+								if($scope.isSearchMode){
+									if($scope.selectedNodes.length > 1 && !$scope.createTestWizardMode && $scope.searchedContainerId!= currentNode.guid ){
+										return questions; 
+									}else{
+										node=$scope.searchedContainerId;
+									}
 								}else{
-									
-									$http
-									.get(
-											evalu8config.apiUrl + "/books/"
-													+ currentNode.bookid
-													+ "/nodes/"
-													+ currentNode.guid
-													+ "/questions?flat=1",
-											config)
-									.success(function(response) {
-										callBack(response, currentNode)
-									})
-									.error(
-											function() {
-												SharedTabService
-														.addErrorMessage(
-																currentNode.title,
-																SharedTabService.errorMessageEnum.NoQuestionsAvailable);
-												//callBack()
-												currentNode.showTestWizardIcon = true;
-												// currentNode.isNodeSelected
-												// = false;
-												$scope
-														.selectNode(currentNode);
-												$rootScope.blockPage.stop();
-											})
+									node=currentNode.guid;
 								}
+									
+								$http
+								.get(
+										evalu8config.apiUrl + "/books/"
+												+ currentNode.bookid
+												+ "/nodes/"
+												+ node
+												+ "/questions?flat=1",
+										config)
+								.success(function(response) {
+									callBack(response, currentNode)
+								})
+								.error(
+										function() {
+											SharedTabService
+													.addErrorMessage(
+															currentNode.title,
+															SharedTabService.errorMessageEnum.NoQuestionsAvailable);
+											//callBack()
+											currentNode.showTestWizardIcon = true;
+											// currentNode.isNodeSelected
+											// = false;
+											$scope
+													.selectNode(currentNode);
+											$rootScope.blockPage.stop();
+										})
 							}
 
 
