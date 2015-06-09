@@ -970,6 +970,8 @@
                 document.body.setAttribute('ui-tree-cursor', $document.find('body').css('cursor') || '');
                 $document.find('body').css({'cursor': hStyle.cursor + '!important'});
               }
+              
+              $('body *').css({'cursor':'-webkit-grabbing'});
 
               scope.$element.after(placeElm);
               scope.$element.after(hiddenPlaceElm);
@@ -1278,6 +1280,8 @@
                 $document.find('body').css({'cursor': oldCur});
                 document.body.removeAttribute('ui-tree-cursor');
               }
+              
+              $('body *').css({'cursor':''});
 
               angular.element($document).unbind('touchend', dragEndEvent); // Mobile
               angular.element($document).unbind('touchcancel', dragEndEvent); // Mobile
