@@ -1045,7 +1045,7 @@ angular
 														.push(container)
 												if (container.parentId != null
 														&& container.parentId != "") {
-													parentContainer = container.parentId;
+													parentContainerid = container.parentId;
 													hasParent = true;
 												}
 											}
