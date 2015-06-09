@@ -2464,6 +2464,8 @@ span.viewOptionDiv{
 .bottomonlyborder {
 	border-bottom: 1px solid #d0d0d0;
 	padding-bottom: 9px;
+	line-height: 36px;
+	
 }
 
 .btnGotoDispBook {
