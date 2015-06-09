@@ -115,20 +115,25 @@ angular
 
 							}
 
+							$rootScope.blockPage.start();
 							$scope.disciplines.all = DisciplineService
 									.allDisciplines();
 
 							UserService
 									.userDisciplines(function(userDisciplines,
 											status) {
-										if (status == "404") {
-											$scope
-													.enableDisableNextButton($scope
-															.isDesciplineEmpty());
-										} else {
-											$scope.disciplines.userSelected = userDisciplines;
+										try{
+											if (status == "404") {
+												$scope.enableDisableNextButton($scope
+																.isDesciplineEmpty());
+											} else {
+												$scope.disciplines.userSelected = userDisciplines;
+											}
+										}catch(e){
+											console.log(e);
+										}finally{
+											$rootScope.blockPage.stop();				
 										}
-
 									});
 
 							$scope.selectDiscipline = function(discipline) {
@@ -266,7 +271,7 @@ angular
 							$scope.searchedBook = undefined;
 							$scope.trackEnterKey = 0;
 							$scope.enterBook = function() {
-
+								$rootScope.blockPage.start();
 								$(".searchBook").val("");
 								$scope.disciplineBooks = [];
 
@@ -311,6 +316,7 @@ angular
 										.disciplineBooks(
 												discipline,
 												function(disciplineBooks) {
+													try{
 													disciplineBooks
 															.forEach(function(
 																	book) {
@@ -362,6 +368,14 @@ angular
 																return a.name
 																		.localeCompare(b.name)
 															});
+													
+													}catch(e){
+														console.log(e);
+													}
+													finally{
+														$rootScope.blockPage.stop();
+													}
+													
 												});
 
 							}
