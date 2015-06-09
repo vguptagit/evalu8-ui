@@ -269,6 +269,7 @@ angular
                                                 item.showTestWizardIcon = false;
                                                 item.showEditQuestionIcon = false;
                                                 item.isNodeSelected = false;
+                                                item.isHttpReqCompleted = true;
                                                 if ($scope.selectedNodes.length > 0)
                                                     for (var i = 0; i < $scope.selectedNodes.length; i++) {
                                                         if ($scope.selectedNodes[i].guid == item.guid) {
@@ -287,7 +288,7 @@ angular
                                                 publisherTestsNode.nodeType = EnumService.NODE_TYPE.publisherTests;
                                                 book.node.nodes.push(publisherTestsNode);    
                                                 publisherTestsNode.isCollapsed=true;
-                                                
+                                                publisherTestsNode.isHttpReqCompleted = true;
                                                 publisherTestsNode.testBindings = book.node.testBindings;                                                    
                                             }                                                
                                     });
@@ -432,6 +433,7 @@ angular
 									$(currentNode.$element).find(".captiondiv").removeClass('iconsChapterVisible');
 									currentNode.$element.children(1).removeClass('expandChapter');
 								} else {
+								    currentNode.node.isHttpReqCompleted = false;
 									currentNode.expand();
 									
                                     if(currentNode.node.nodeType == 'publisherTests') {
@@ -447,7 +449,7 @@ angular
                                                 test.selectTestNode = false;//to show the edit icon
 
                                                 currentNode.node.nodes.push(test);  
-                                                
+                                                currentNode.node.isHttpReqCompleted = true;
                                                 test.template = 'tests_renderer.html';
                                                 updateTreeNode(test);
                                             });
@@ -477,7 +479,8 @@ angular
 												item.showEditQuestionIcon = false;
 												item.isNodeSelected = false;
                                                 item.nodeType = "topic";
-												item.isCollapsed=true;
+                                                item.isCollapsed = true;
+                                                item.isHttpReqCompleted = true;
 												updateTreeNode(item);
 											})
 										})
@@ -491,7 +494,7 @@ angular
 													config)
 											.success(
 													function(response) {
-
+													    currentNode.node.isHttpReqCompleted = true;
 														var responseQuestions = response;
 														$(currentNode.$element).find(".captiondiv").addClass('iconsChapterVisible');
 														currentNode.$element.children(0).addClass('expandChapter');
@@ -513,7 +516,8 @@ angular
 															}
 														})
 
-													}).error(function() {
+													}).error(function () {
+													    currentNode.node.isHttpReqCompleted = true;
 											});
 										
 									}
