@@ -1764,6 +1764,7 @@ angular
     										if (oldGuid !== test.id && test.treeNode) {//save as
     										    test.treeNode.showEditIcon = true;
     										    test.treeNode.showArchiveIcon= true;
+    										    test.treeNode.draggable = true;
     										}
     										testResult.title = test.title;
     										testResult.modified = (new Date()).toJSON();
