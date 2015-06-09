@@ -124,37 +124,40 @@ angular.module('e8MyTests')
                     		return false;
                     	}                		
                 	}
-
-                	if(item.nodeType == EnumService.NODE_TYPE.test) {
-                		userFolders.forEach(function(nodeItem) {                        
-                    		if(nodeItem.nodeType == EnumService.NODE_TYPE.test && nodeItem.title == item.title) {
-                    			duplicateTitle = true;                			 
-                        	}                        	                        
-                    	})
+                	
+                	TestService.getTests(mouseOverNode.node.guid, function (tests) {
+                    	if(item.nodeType == EnumService.NODE_TYPE.test) {
+                    		tests.forEach(function(nodeItem) {                        
+                        		if(nodeItem.nodeType == EnumService.NODE_TYPE.test && nodeItem.title == item.title) {
+                        			duplicateTitle = true;                			 
+                            	}                        	                        
+                        	})
+                        	
+                        	if(duplicateTitle) {
+        			            $scope.IsConfirmation = false;
+        			            $scope.message = "A test already exists with this name.";
+        			            $modal.open(confirmObject);
+                        		return false;
+                        	}                		
+                    	}
                     	
-                    	if(duplicateTitle) {
-    			            $scope.IsConfirmation = false;
-    			            $scope.message = "A test already exists with this name.";
-    			            $modal.open(confirmObject);
-                    		return false;
-                    	}                		
-                	}	
-                                        
-                    source.remove();                
-                    
-                    if(item.nodeType == EnumService.NODE_TYPE.folder) {
-                        item.parentId = mouseOverNode.node.guid;
-                        UserFolderService.getFoldersMinSeq(mouseOverNode.node, function(minSeq) {
-                        	item.sequence = minSeq==0.0 ? 1.0 : (0.0 + minSeq)/2;
-                        	UserFolderService.saveUserFolder(item);                	
-                        })                	
-                    }
-                    else {
-                    	var sourceFolder = $scope.removeTestBindingFromSource(sourceParent, item.guid);
-                    	UserFolderService.saveUserFolder(sourceFolder, function() {
-                    		$scope.insertTestBindingToDest(mouseOverNode, item.guid);                		
-                    	});            		              	               	
-                    }                  
+                        source.remove();                
+                        
+                        if(item.nodeType == EnumService.NODE_TYPE.folder) {
+                            item.parentId = mouseOverNode.node.guid;
+                            UserFolderService.getFoldersMinSeq(mouseOverNode.node, function(minSeq) {
+                            	item.sequence = minSeq==0.0 ? 1.0 : (0.0 + minSeq)/2;
+                            	UserFolderService.saveUserFolder(item);                	
+                            })                	
+                        }
+                        else {
+                        	var sourceFolder = $scope.removeTestBindingFromSource(sourceParent, item.guid);
+                        	UserFolderService.saveUserFolder(sourceFolder, function() {
+                        		$scope.insertTestBindingToDest(mouseOverNode, item.guid);                		
+                        	});            		              	               	
+                        }
+                	})                                        
+                  
                 })
                 
             } else {
@@ -836,6 +839,9 @@ angular.module('e8MyTests')
                     test.parentId = containerFolder.guid;
                     test.selectTestNode = true;
                     if (parentFolderNodes) {
+                    	if(parentFolderNodes[0].nodeType == EnumService.NODE_TYPE.emptyFolder) {
+                    		parentFolderNodes.shift();
+                    	}
                         parentFolderNodes.push(test);
                     }
                 }
