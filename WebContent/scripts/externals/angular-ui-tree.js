@@ -159,13 +159,9 @@
                 	return;
                 }                                                
                 	
-               /* if($rootScope.tree && $rootScope.tree.mouseOverNode) {
+                if($rootScope.tree && $rootScope.tree.mouseOverNode) {
                 	return;
-                } */
-                
-/*                if($rootScope.tree.mouseOverNode) {
-                	return;
-                }*/ 
+                } 
                 
                 if(this.source.node.nodeType=="archiveRoot"
                 	|| this.source.node.nodeType=="archiveTest" 
