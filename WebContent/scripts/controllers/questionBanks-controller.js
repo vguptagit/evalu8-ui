@@ -433,28 +433,34 @@ angular
 									$(currentNode.$element).find(".captiondiv").removeClass('iconsChapterVisible');
 									currentNode.$element.children(1).removeClass('expandChapter');
 								} else {
-								    currentNode.node.isHttpReqCompleted = false;
 									currentNode.expand();
 									
                                     if(currentNode.node.nodeType == 'publisherTests') {
                                         
                                     	currentNode.node.nodes = [];
                                     	
+                                    	var responses = [];
                                     	currentNode.node.testBindings.forEach(function (testId) {
+                                    		var i = 0;
                                             TestService.getTest(testId, function(test){
 
                                                 test.nodeType = EnumService.NODE_TYPE.test;
                                                 test.testType = "PublisherTest";
                                                 test.showEditIcon=true;
                                                 test.selectTestNode = false;//to show the edit icon
-
-                                                currentNode.node.nodes.push(test);  
-                                                currentNode.node.isHttpReqCompleted = true;
+                                                if(currentNode.node.testBindings[i] == test.guid)
+                                                	currentNode.node.nodes.push(test);
+                                                else
+                                                	responses.push(test);
                                                 test.template = 'tests_renderer.html';
                                                 updateTreeNode(test);
+                                                if((responses.length + currentNode.node.nodes.length) == currentNode.node.testBindings.length)
+                                                {
+                                                	var sortedNodes = sortNodes(responses, currentNode,"testBindings");
+                                                	currentNode.node.nodes = currentNode.node.nodes.concat(sortedNodes);
+                                                }
                                             });
-                                        })
-                                    	
+                                        });
                                         return;
                                     }
 						                                        
@@ -499,7 +505,7 @@ angular
 														$(currentNode.$element).find(".captiondiv").addClass('iconsChapterVisible');
 														currentNode.$element.children(0).addClass('expandChapter');
 
-														var sortedNodes = sortNodes(response, currentNode);
+														var sortedNodes = sortNodes(response, currentNode,"questionBindings");
 
 														currentNode.node.nodes = currentNode.node.nodes.concat(sortedNodes);
 
@@ -643,7 +649,7 @@ angular
 							// Sorting questions based on the questionbindings
 							// property of the container
 							var sortNodes = function(response, currentNode) {
-								var sequenceBindings = currentNode.node.questionBindings;
+								var sequenceBindings = currentNode.node[binding];
 								var sortedNodes = new Array(
 										sequenceBindings.length);
 								for (var i = 0; i < sequenceBindings.length; i++) {
