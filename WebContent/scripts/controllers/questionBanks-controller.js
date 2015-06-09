@@ -930,6 +930,7 @@ angular
 							
 							$scope.parentNode;
 							$scope.showContainer = function(){
+								$scope.closeAdvancedSearch();
 								var searchedContainer = "";
 								var parentContainerid = "";
 								var hasParent = false;
@@ -1064,7 +1065,13 @@ angular
 										$scope.showAdvancedSearch = true;
 									} else {
 										$scope.showAdvancedSearch = false;
-									}	
+									}
+									
+									if(searchedQuestionTypes.length>0){
+										$scope.isSaveDisabled=false;
+									}else{
+										$scope.isSaveDisabled=true;
+									}
 								}
 							}
 							
@@ -1074,6 +1081,9 @@ angular
 								searchedQuestionTypes.forEach(function(qt){
 									$scope.selectedQuestionTypes.push(qt);
 								});
+								if($scope.selectedQuestionTypes == 0){
+									$scope.isSaveDisabled=true;
+								}
 							}
 							
 							$scope.isThisQuizTypeSelected = function(questionType){
@@ -1231,6 +1241,7 @@ angular
 								$scope.selectedQuestionTypesToShow=[];
 								$scope.selectedBooks=[];
 								selectedQuestionTypesToShow=[];
+								searchedQuestionTypes=[];
 								$scope.loadTree();
 							}
 							
