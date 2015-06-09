@@ -636,7 +636,7 @@ angular
 
 							// Sorting questions based on the questionbindings
 							// property of the container
-							var sortNodes = function(response, currentNode) {
+							var sortNodes = function (response, currentNode, binding) {
 								var sequenceBindings = currentNode.node[binding];
 								var sortedNodes = new Array(
 										sequenceBindings.length);
