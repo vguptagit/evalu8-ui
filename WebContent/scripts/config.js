@@ -6,6 +6,7 @@
 	
 	ns.viaPILogin = true;
 	
+	ns.clientId = "Odnmv55kBQbCBQfbRd4pCSHpvzmQmQ7u";
 	ns.signinUrl = ns.uiUrl + "/#/signin";
 	ns.homeUrl = ns.uiUrl + "/#/home/questionbanks";
 	ns.welcomeUrl = ns.uiUrl + "/#/welcome";
