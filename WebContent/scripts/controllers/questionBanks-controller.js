@@ -982,6 +982,7 @@ angular
 												container.showTestWizardIcon=false;
 												container.nodeType = "chapter";
 												container.isCollapsed=false;
+												container.isHttpReqCompleted = true;
 												containerNode["nodes"] = [jQuery.extend(true,
 														{}, container)];
 												containerNode = containerNode.nodes[0];
@@ -1006,10 +1007,12 @@ angular
 											searchedContainer.showTestWizardIcon=false;
 											searchedContainer.nodeType = "topic";
 											searchedContainer.isCollapsed=true;
+											searchedContainer.isHttpReqCompleted = true;
 											$scope.parentNode["nodes"] = [ jQuery.extend(true,
 													{}, searchedContainer) ];
 											$rootScope.blockPage.stop();
 										}else{
+											$scope.parentNode["nodes"]=[];
 											$rootScope.blockPage.stop();
 											$scope.IsConfirmation = false;
 											$scope.message = "No search results match your criteria, broaden your criteria, or select more question banks to search";
@@ -1023,6 +1026,7 @@ angular
 									searchedContainer.showTestWizardIcon=false;
 									searchedContainer.nodeType = "topic";
 									searchedContainer.isCollapsed=true;
+									searchedContainer.isHttpReqCompleted = true;
 									$scope.parentNode["nodes"] = [ jQuery.extend(true,
 											{}, searchedContainer) ];	
 								}
@@ -1156,6 +1160,7 @@ angular
 												container.isCollapsed=true;
 												container.nodeType = "chapter";
 												container.bookid = book.guid;
+												container.isHttpReqCompleted = true;
 											});
 											book.isCollapsed=false;
 											book.nodes=containers;
