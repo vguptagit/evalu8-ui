@@ -9,7 +9,6 @@ angular.module('e8SelectBooks', []);
 angular.module('e8SelectQuestionMetadata', []);
 angular.module('e8SelectPrintSettings', []);
 angular.module('e8MyTests', []);
-angular.module('e8PublisherTests', []);
 angular.module('e8QuestionBanks', []);
 angular.module('e8CustomQuestionBanks', []);
 
@@ -23,7 +22,6 @@ angular.module('evalu8Demo', [
     'e8SelectQuestionMetadata',
     'e8SelectPrintSettings',
     'e8MyTests',
-    'e8PublisherTests',
     'e8QuestionBanks',
     'e8CustomQuestionBanks',
     'ngRoute',

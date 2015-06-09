@@ -136,23 +136,8 @@ angular
 								$scope.loadTree();
 							})
 
-							$scope.disciplineFilterChange = function(option) {
-
-								$scope.disciplines = DisciplineService
-										.disciplineDropdownChange(option);
-
-								if ($scope.userQuestions.length) {
-									$scope.disciplines
-											.unshift({
-												"item" : "Your Questions (user created)",
-												"isCollapsed" : true
-											});
-								}
-							}
-
 							$scope.testTitle = "New Test";
-							// Function is to save the Test details with the
-							// questions.
+							// Function is to save the Test details with the questions.
 
 							// To get books for the given discipline.
 							// This method will call the api
