@@ -421,13 +421,6 @@ a.newFolder:hover {
 	overflow-x: hidden;
 }
 
-.myTest_scrollbar{
-    height: 76.0vh;
-}
-.question_bank_scrollbar{
-    height: 70vh;
-}
-
 .qti-simpleChoice span.tick {
 	visibility: hidden;
 	/* display: none; */
@@ -774,7 +767,6 @@ ol {
 
 #tree2-root {
 	width: 100%;
-	height: 67vh;
 	overflow-y: auto;
 	display: inline-block;
 }
@@ -2719,7 +2711,6 @@ li[qstntemplate='true'] .qti-simpleChoice .radio, li[printmode='true'] .qti-simp
 #Custom-Qstn-tree-root {
 	overflow: hidden;
 	overflow-y: auto;
-    height: 80.5vh;
 }
 
 .placeHolderForBlank {

@@ -2305,16 +2305,6 @@ angular
 							    
 											    $scope.addTestWizardCriteria(
 											    		filteredQuestions, currentNode);
-											    // TODO : need to revisit and
-											    // change JQuery implementation
-											    $('.test-wizard-container')
-														.height(
-																($(document)
-																		.height()
-																		- $(
-																				'.test-wizard-container')
-																				.offset().top - 15)
-																		+ 'px');
 											});
 							$rootScope.$on('handleBroadcast_AddQuestionsToTest', function (event, response, quizTypes, currentNode) {
 							    QTI.initialize();

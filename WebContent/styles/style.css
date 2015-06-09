@@ -467,3 +467,80 @@ h4, .h4, h5, .h5, h6, .h6 {  margin-top: 8px; margin-bottom: 8px;}
 .bookContainer{height: 410px;}
 	}
 
+
+.test-wizard-container{
+    height: 56vh;
+}
+.myTest_scrollbar{
+    height: 76.0vh;
+}
+.question_bank_scrollbar{
+    height: 70vh;
+} 
+#tree2-root {
+	height: 67vh;
+}
+#Custom-Qstn-tree-root {
+    height: 80.5vh;
+}
+@media (min-height: 700px) {
+    body {
+        padding-top: 40px;
+    }
+    .myTest_scrollbar{
+        height: 70vh;
+    }
+    .question_bank_scrollbar{
+        height: 63vh;
+    }
+    .test-wizard-container{
+        height: 45vh;
+    }
+    #tree2-root {
+        height: 62vh;
+    }
+    #Custom-Qstn-tree-root {
+        height: 70vh;
+    }
+}
+@media (min-height: 768px) {
+    body {
+        padding-top: 40px;
+    }
+    .myTest_scrollbar{
+        height: 70vh;
+    }
+    .question_bank_scrollbar{
+        height: 65vh;
+    }
+    .test-wizard-container{
+        height: 50vh;
+    }
+    #tree2-root {
+        height: 65vh;
+    }
+    #Custom-Qstn-tree-root {
+        height: 75vh;
+    }
+}
+
+@media (min-height: 868px) {
+    body {
+        padding-top: 45px;
+    }
+    .myTest_scrollbar{
+        height: 76vh;
+    }
+    .question_bank_scrollbar{
+        height: 70vh;
+    }
+    .test-wizard-container{
+        height: 56vh;
+    }
+    #tree2-root {
+        height: 70vh;
+    }
+    #Custom-Qstn-tree-root {
+        height: 80vh;
+    }
+}
