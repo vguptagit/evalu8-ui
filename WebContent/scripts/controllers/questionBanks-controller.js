@@ -719,9 +719,8 @@ angular
 											if($scope.isSearchMode){
 												if($scope.selectedNodes.length > 0 && $scope.searchedContainerId == $scope.selectedNodes[i].guid){
 													$rootScope.blockPage.start();	
-												}
-												else{
-													$rootScope.blockPage.start();	
+												}else if($scope.selectedNodes.length==0){
+													$rootScope.blockPage.start();
 												}
 											}else{
 												$rootScope.blockPage.start();
