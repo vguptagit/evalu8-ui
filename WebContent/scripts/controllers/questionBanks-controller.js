@@ -386,31 +386,20 @@ angular
 									node=currentNode.guid;
 								}
 									
-								$http
-								.get(
-										evalu8config.apiUrl + "/books/"
-												+ currentNode.bookid
-												+ "/nodes/"
-												+ node
-												+ "/questions?flat=1",
-										config)
-								.success(function(response) {
-									callBack(response, currentNode)
+							    //TODO : need to move this is services.	
+								$http.get(evalu8config.apiUrl + "/books/" + currentNode.bookid + "/nodes/" + node + "/questions?flat=1", config)
+								.success(function (response) {
+								    callBack(response, currentNode)
 								})
 								.error(
-										function() {
-											SharedTabService
-													.addErrorMessage(
-															currentNode.title,
-															SharedTabService.errorMessageEnum.NoQuestionsAvailable);
-											//callBack()
-											currentNode.showTestWizardIcon = true;
-											// currentNode.isNodeSelected
-											// = false;
-											$scope
-													.selectNode(currentNode);
-											$rootScope.blockPage.stop();
-										})
+										function () {
+										    SharedTabService.addErrorMessage(currentNode.title, SharedTabService.errorMessageEnum.NoQuestionsAvailable);
+										    //callBack()
+										    currentNode.showTestWizardIcon = true;
+										    currentNode.showEditQuestionIcon = true;
+										    $scope.selectNode(currentNode);
+										    $rootScope.blockPage.stop();
+								});
 							}
 
 
