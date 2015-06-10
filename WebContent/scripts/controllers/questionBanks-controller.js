@@ -869,6 +869,8 @@ angular
 							var searchedQuestionTypes=[];
 							var bookContainersArray=[];
 							$scope.allContainers=[];
+							$scope.showWaitingForAutoComplete=false;
+							$scope.selectedBookid="";
 							
 							$scope.selectBook = function(node) {
 								var isBookSelected=false;
@@ -888,6 +890,7 @@ angular
 									$scope.selectedBooks.splice(existingBookIndex, 1);
 									removeBookContainers(node.guid);
 								}else{
+									$scope.selectedBookid=node.guid;
 									node.isNodeSelected = true;
 									$scope.selectedBooks.push(node);
 									ContainerService.getAllContainers(node.guid,
@@ -908,6 +911,7 @@ angular
 										$scope.allContainers.push(container)	
 									});
 								});
+								$scope.showWaitingForAutoComplete=false;
 							}
 							
 							var removeBookContainers=function(bookid){
@@ -941,6 +945,18 @@ angular
 							}
 							
 							$scope.showContainerOnEnter = function(event) {
+								if (event.keyCode != 13 ){
+									var isContainersLoaded=false;
+									bookContainersArray.forEach(function(book){
+										if(book.bookid == $scope.selectedBookid){
+											isContainersLoaded=true;
+										}
+									});
+									if(!isContainersLoaded){
+										$scope.showWaitingForAutoComplete=true;	
+									}
+								}
+								
 								if($scope.selectedContainer==""){
 									return;
 								}

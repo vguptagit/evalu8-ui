@@ -2915,3 +2915,11 @@ li[qstntemplate='true'] label.mOptionLabel{
 .questionColumns input{margin-top: 2px;}
 .questionColumns span{vertical-align: top;margin-left: 6px}
 #applyCriteria{vertical-align: top;margin-right: 7px;margin-top: 3px;}
+
+.showWaitingForAutoComplete{
+  float: left;
+  position: absolute;
+  z-index: 1050;
+  margin-top: -24px;
+  margin-left: 74%;
+}

@@ -4,7 +4,7 @@
 			class="bookSearch form-control" ng-model="selectedContainer"
 			ng-focus="validateSearch()"
 			typeahead="container as container.title for container in allContainers | filter:{title:$viewValue}"
-			ng-keyup="showContainerOnEnter($event)"> <span
+			ng-keyup="showContainerOnEnter($event)"><i class="fa fa-spinner fa-pulse font-size-16 showWaitingForAutoComplete" ng-show="showWaitingForAutoComplete"></i> <span
 			class="glyphicon glyphicon-search bookSearchicon"
 			ng-click="showContainerOnClick()" tooltip-append-to-body="true"
 			tooltip-trigger="mouseenter" tooltip-placement="bottom"
