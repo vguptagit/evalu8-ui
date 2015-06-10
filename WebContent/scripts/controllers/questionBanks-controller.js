@@ -421,6 +421,7 @@ angular
 									$(currentNode.$element).find(".captiondiv").removeClass('iconsChapterVisible');
 									currentNode.$element.children(1).removeClass('expandChapter');
 								} else {
+								    currentNode.node.isHttpReqCompleted = false;
 									currentNode.expand();
 									
                                     if(currentNode.node.nodeType == 'publisherTests') {
