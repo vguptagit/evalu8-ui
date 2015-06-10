@@ -482,6 +482,7 @@ span.glyphicon.glyphicon-info-sign {
   width: 18em;
   overflow: hidden;
   text-overflow: ellipsis;
-  line-height: initial;
-  padding-left: initial;
+  padding-left: 0;
+  display: inline-block;
+  float:left;
 }
