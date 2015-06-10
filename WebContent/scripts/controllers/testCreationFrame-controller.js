@@ -78,7 +78,22 @@ angular
 								if(!isAnswerChoiceSelected){		
 									selectedQstnNode.node.IsEditView = true;
 									$scope.IsConfirmation = false;
-									$scope.message = "Atlease one correct Answer should be defined."
+									$scope.message = "Atleast one correct Answer should be defined."
+									$modal.open(confirmObject);			
+									return true;
+									
+								}
+							};
+							
+							$scope.showBlankAdditionAlert = function(selectedQstnNode) {
+								
+								var qstnHTML = $(selectedQstnNode.$element);
+								var blankLen = qstnHTML.find('#qtiCaption').find('button').length;
+																	
+								if(blankLen<=0){		
+									selectedQstnNode.node.IsEditView = true;
+									$scope.IsConfirmation = false;
+									$scope.message = "Atleast One Blank should be defined."
 									$modal.open(confirmObject);			
 									return true;
 									
@@ -98,12 +113,10 @@ angular
 									return;
 								}
 								
-								if(selectedQstnNode.node.quizType == "FillInBlanks"  &&  ($(selectedQstnNode.$element).find('#qtiCaption').find('button').length <= 0) && selectedQstnNode.node.IsEditView){
-									$scope.IsConfirmation = false;
-									$scope.message = "Add Blank to the Question";
-
-									$modal.open(confirmObject);
-									return;									
+								if(selectedQstnNode.node.quizType == "FillInBlanks"  &&  selectedQstnNode.node.IsEditView){
+									if($scope.showBlankAdditionAlert(selectedQstnNode))
+										return;
+									
 								}else if(selectedQstnNode.node.quizType == "MultipleResponse" && selectedQstnNode.node.IsEditView){
 									if($scope.showChoiceSelectionAlert(selectedQstnNode))
 										return;
@@ -1585,6 +1598,13 @@ angular
 											$rootScope.blockPage.stop();
 											return;										
 										}	
+									}
+									else if(scopeElement.node.quizType == "FillInBlanks"){
+										if($scope.showBlankAdditionAlert(scopeElement)){
+											$rootScope.blockPage.stop();
+											return;										
+										}
+										
 									}
 									convertHtmlToXmlNode(scopeElement);
 									SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode=false;    									
