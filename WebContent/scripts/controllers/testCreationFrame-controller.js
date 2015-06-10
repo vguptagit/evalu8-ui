@@ -1773,18 +1773,13 @@ angular
     										$scope.containerFolder = null; //clear selected folder in save as dialog popup.
                                              
     										if (test.isSaveAndClose) {
-    											SharedTabService
-    													.closeTab(
-    															SharedTabService.currentTab,
-    															$scope);
-    											SharedTabService
-    													.removeMasterTest(SharedTabService.currentTab);
+    										    SharedTabService.closeTab(test, $scope);
+    										    SharedTabService.removeMasterTest(test);
     										} else {
-    											SharedTabService
-    													.removeMasterTest(SharedTabService.currentTab);
-    											SharedTabService
-    													.addMasterTest(test);
+    										    SharedTabService.removeMasterTest(test);
+    										    SharedTabService.addMasterTest(test);
     										}
+
     										if (callback) {
     										    callback();
     										}
