@@ -2524,7 +2524,7 @@ button[disabled]+.tooltip {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 }
 
-li[printmode='false'][optionsview='true'].displayQuestionLI{
+li[printmode='false'].displayQuestionLI{
 	background-color: #f8f8f8;
 }
 
