@@ -79,7 +79,7 @@
 							ng-click="selectBook(book.guid,discipline.name)"
 							ng-class="{selectedDisc: book.isSelected}"
 							ng-show="book.showEdition" parentbookid="{{book.parentBookID}}">
-							<div ng-show="book.hasEdition" ng-click="showOldEdition(book.guid,discipline.name)">
+							<div class="expandIconForBookEdition" ng-show="book.hasEdition" ng-click="showOldEdition(book.guid,discipline.name)">
 								<img alt="Editions" id="{{book.guid}}" src=""
 									ng-class="book.isCollasped?'collapseBookEdition':'expandBookEdition'">
 							</div>

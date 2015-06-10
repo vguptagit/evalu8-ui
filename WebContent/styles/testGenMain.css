@@ -2938,3 +2938,12 @@ li[qstntemplate='true'] label.mOptionLabel{
   margin-top: -24px;
   margin-left: 74%;
 }
+
+.expandIconForBookEdition
+{
+	float: left; 
+	margin-right: 5px; 
+	vertical-align: middle; 
+	vertical-align: middle; 
+	margin-top: 7px;	
+}
