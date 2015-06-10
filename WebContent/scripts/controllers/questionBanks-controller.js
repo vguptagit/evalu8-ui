@@ -129,7 +129,18 @@ angular
 							$scope.loadTree();
 							
 							$scope.$on('SaveSettings', function() {
-								$scope.loadTree();
+								$scope.selectedContainer="";
+								$scope.selectedQuestionTypes=[];
+								$scope.isAdvancedSearchMode = false;
+								$scope.isSearchMode = false;
+								$scope.selectedQuestionTypesToShow=[];
+								$scope.selectedBooks=[];
+								selectedQuestionTypesToShow=[];
+								searchedQuestionTypes=[];
+								bookContainersArray=[];
+								$scope.allContainers=[];
+								$scope.selectedBookid="";
+								$scope.loadTree();								
 							})
 
 							$scope.testTitle = "New Test";
@@ -907,6 +918,7 @@ angular
 
 							$scope.validateSearch = function(){
 								if($scope.selectedBooks.length == 0){
+									$scope.showWaitingForAutoComplete=false;
 									$scope.selectedContainer="";
 									$scope.IsConfirmation = false;
 									$scope.message = "Please select a question bank to search";
@@ -979,6 +991,7 @@ angular
 															if (container.bookid == book.guid) {
 																searchedDiscipline["item"] = book.discipline;
 																searchedDiscipline["isCollapsed"]=false;
+																searchedDiscipline["isHttpReqCompleted"]=true;
 																book["isCollapsed"]=false;
 																searchedDiscipline["nodes"] = [ jQuery.extend(true,
 																		{}, book) ];
