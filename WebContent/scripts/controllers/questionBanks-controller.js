@@ -1293,6 +1293,9 @@ angular
 								$scope.selectedBooks=[];
 								selectedQuestionTypesToShow=[];
 								searchedQuestionTypes=[];
+								bookContainersArray=[];
+								$scope.allContainers=[];
+								$scope.selectedBookid="";
 								$scope.loadTree();
 							}
 							
