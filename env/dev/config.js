@@ -17,7 +17,7 @@
 	ns.messageTipLoginCount = 2;
 	
 	/// Google Analytics related configuration
-	ns.gaEnabled = false;
+	ns.gaEnabled = true;
 	ns.gaTracking = 'UA-63894857-1';
 		
 })(window.evalu8config = window.evalu8config || {})
