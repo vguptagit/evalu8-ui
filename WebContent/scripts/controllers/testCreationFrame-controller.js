@@ -1393,9 +1393,9 @@ angular
 	                                            captionHtml = CustomQuestionTemplate[qstnNode.quizType].printCaption;
 	                                        }
 
-	                                        QTI.setContent($(xml).find('itemBody').find('p').eq(0),captionHtml);
+	                                        QTI.prependNodeContent($(xml).find('itemBody').find('p').eq(0),captionHtml);
 	                                    }else{
-	                                    	QTI.setContent($(xml).find('itemBody').find('p').eq(0),CustomQuestionTemplate[qstnNode.quizType].printCaption);
+	                                    	QTI.prependNodeContent($(xml).find('itemBody').find('p').eq(0),CustomQuestionTemplate[qstnNode.quizType].printCaption);
 	                                    }
 	                                }
 	                                
