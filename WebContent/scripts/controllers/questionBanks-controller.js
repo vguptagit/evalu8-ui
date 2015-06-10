@@ -143,94 +143,89 @@ angular
 							
 							$scope.yourQuestionsFolder = null;
 							$scope.getBooks = function(discipline) {
-								
 
-								if ($rootScope.globals.authToken == '') {
-									$location.path('/login');
+								if (!discipline.collapsed) {
+									discipline.collapse();
 								} else {
+									discipline.expand();
+									
+									if($scope.isSearchMode){
+										return;
+									}
+									var ep;
 
-									if (!discipline.collapsed) {
-										discipline.collapse();
-									} else {
-										discipline.expand();
+									if (discipline.node.item == 'Your Questions (user created)') {
+
+										$scope.yourQuestionsFolder = discipline;
 										
-										if($scope.isSearchMode){
-											return;
-										}
-										var ep;
+										discipline.node.nodes = [];
 
-										if (discipline.node.item == 'Your Questions (user created)') {
+										// qti player initialisation
+										QTI.initialize();
 
-											$scope.yourQuestionsFolder = discipline;
+										var yourQuestions = [];
+										
+										discipline.node.isHttpReqCompleted = false;
+										UserQuestionsService.userQuestions(function(userQuestions) {
+											$scope.userQuestions = userQuestions;	
 											
-											discipline.node.nodes = [];
+											$scope.userQuestions.forEach(function(userQuestion) {
+												var yourQuestion = {};
+												var displayNode = $("<div></div>");
+												QTI.BLOCKQUOTE.id = 0;
+												QTI
+														.play(
+																userQuestion.qtixml,
+																displayNode,
+																false,
+																false,
+																userQuestion.metadata.quizType);
+												yourQuestion.isQuestion = true;
+												yourQuestion.questionXML = true;
 
-											// qti player initialisation
-											QTI.initialize();
+												yourQuestion.nodeType = "question";
+												yourQuestion.guid = userQuestion.guid;
+												yourQuestion.showEditQuestionIcon = false;
+												yourQuestion.isNodeSelected = false;
 
-											var yourQuestions = [];
-											
-											discipline.node.isHttpReqCompleted = false;
-											UserQuestionsService.userQuestions(function(userQuestions) {
-												$scope.userQuestions = userQuestions;	
-												
-												$scope.userQuestions.forEach(function(userQuestion) {
-													var yourQuestion = {};
-													var displayNode = $("<div></div>");
-													QTI.BLOCKQUOTE.id = 0;
-													QTI
-															.play(
-																	userQuestion.qtixml,
-																	displayNode,
-																	false,
-																	false,
-																	userQuestion.metadata.quizType);
-													yourQuestion.isQuestion = true;
-													yourQuestion.questionXML = true;
+												addToQuestionsArray(yourQuestion);
 
-													yourQuestion.nodeType = "question";
-													yourQuestion.guid = userQuestion.guid;
-													yourQuestion.showEditQuestionIcon = false;
-													yourQuestion.isNodeSelected = false;
+												yourQuestion.data = userQuestion.qtixml;
+												yourQuestion.quizType = userQuestion.metadata.quizType;
+												yourQuestion.extendedMetadata = userQuestion.metadata.extendedMetadata;
+												yourQuestion.textHTML = displayNode
+														.html();
 
-													addToQuestionsArray(yourQuestion);
+												yourQuestion.template = 'qb_questions_renderer.html';
 
-													yourQuestion.data = userQuestion.qtixml;
-													yourQuestion.quizType = userQuestion.metadata.quizType;
-													yourQuestion.extendedMetadata = userQuestion.metadata.extendedMetadata;
-													yourQuestion.textHTML = displayNode
-															.html();
-
-													yourQuestion.template = 'qb_questions_renderer.html';
-
-													yourQuestions.push(yourQuestion);
-												})
-
-												discipline.node.nodes = yourQuestions;
-												
-												discipline.node.isHttpReqCompleted = true;
+												yourQuestions.push(yourQuestion);
 											})
 
-										} else {
-											ep = evalu8config.apiUrl
-													+ "/books?discipline="
-													+ discipline.node.item
-													+ "&userBooks=true";
+											discipline.node.nodes = yourQuestions;
+											
+											discipline.node.isHttpReqCompleted = true;
+										})
 
-											$http
-													.get(ep, config)
-													.success(
-															function(response) {
-																response.forEach(function(book) {
-																	book["isCollapsed"]=true;
-																});
-																
-																discipline.node.nodes = response;
+									} else {
+										ep = evalu8config.apiUrl
+												+ "/books?discipline="
+												+ discipline.node.item
+												+ "&userBooks=true";
 
+										$http
+												.get(ep, config)
+												.success(
+														function(response) {
+															response.forEach(function(book) {
+																book["isCollapsed"]=true;
 															});
-										}
+															
+															discipline.node.nodes = response;
+
+														});
 									}
 								}
+								
 							}
 
 							// To get the Chapters for the given book
@@ -329,10 +324,7 @@ angular
 								if (!SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
 									return false;
 								}
-								if ($rootScope.globals.authToken == '') {
-									$location.path('/login');
-									return false;
-								}
+
 								if (!currentNode.node.isNodeSelected) {
 									$scope.selectedNodes.push(currentNode.node);
 									currentNode.node.isNodeSelected = !currentNode.node.isNodeSelected;
@@ -527,51 +519,45 @@ angular
 
 							$scope.getQuestions = function(currentNode) {
 								
-								if ($rootScope.globals.authToken == '') {
-									$location.path('/login');
+								if (!currentNode.collapsed) {
+									currentNode.collapse();
 								} else {
-									if (!currentNode.collapsed) {
-										currentNode.collapse();
-									} else {
-										currentNode.expand();
-										currentNode.node.nodes = [];
+									currentNode.expand();
+									currentNode.node.nodes = [];
 
-										$http
-												.get(
-														evalu8config.apiUrl
-																+ "/books/"
-																+ $scope.bookID
-																+ "/nodes/"
-																+ currentNode.node.guid
-																+ "/questions",
-														config)
-												.success(
-														function(response) {
+									$http.get(evalu8config.apiUrl
+															+ "/books/"
+															+ $scope.bookID
+															+ "/nodes/"
+															+ currentNode.node.guid
+															+ "/questions",
+													config)
+										.success(function(response) {
 
-															var responseQuestions = response;
+											var responseQuestions = response;
 
-															var sortedNodes = sortNodes(
-																	response,
-																	currentNode);
+											var sortedNodes = sortNodes(
+													response,
+													currentNode);
 
-															currentNode.node.nodes = currentNode.node.nodes
-																	.concat(sortedNodes);
+											currentNode.node.nodes = currentNode.node.nodes
+													.concat(sortedNodes);
 
-															angular
-																	.forEach(
-																			responseQuestions,
-																			function(
-																					item) {
-																				item.nodeType = "question";
-																				$scope
-																						.renderQuestion(item);
-																			})
+											angular
+													.forEach(
+															responseQuestions,
+															function(
+																	item) {
+																item.nodeType = "question";
+																$scope
+																		.renderQuestion(item);
+															})
 
-														}).error(function() {
-												});
-										;
-									}
+										})
+										.error(function() {
+										});									
 								}
+								
 							}
 
 							// This method will be called from callback function
