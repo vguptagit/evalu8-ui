@@ -101,29 +101,26 @@ angular
 
 							$scope.loadTree = function() {
 								DisciplineService.userDisciplines(function(userDisciplines) {
-
-									$rootScope.blockPage.start();
-									
+								
 									$scope.disciplines = userDisciplines;
 									
 									$scope.disciplines.forEach(function(discipline) {
 										discipline["isCollapsed"]=true;
+										discipline.isHttpReqCompleted = true;
 									});
 
 									$scope.disciplines.sort(function(a, b) {
 										return a.item.localeCompare(b.item)
 									});
 
-									UserQuestionsService.userQuestions(function(userQuestions) {
-										if (userQuestions.length) {
-											$scope.userQuestions = userQuestions;
+									UserQuestionsService.userQuestionsCount(function(userQuestionsCount) {
+										if (userQuestionsCount > 0) {
 											$scope.disciplines.unshift({
 														"item" : "Your Questions (user created)",
 														"isCollapsed" : true	
-													});
-										}
-										
-										$rootScope.blockPage.stop();
+											});	
+											$scope.disciplines[0].isHttpReqCompleted = true;
+										}										
 									})
 
 								});								
@@ -172,42 +169,48 @@ angular
 											QTI.initialize();
 
 											var yourQuestions = [];
-											$scope.userQuestions
-													.forEach(function(
-															userQuestion) {
-														var yourQuestion = {};
-														var displayNode = $("<div></div>");
-														QTI.BLOCKQUOTE.id = 0;
-														QTI
-																.play(
-																		userQuestion.qtixml,
-																		displayNode,
-																		false,
-																		false,
-																		userQuestion.metadata.quizType);
-														yourQuestion.isQuestion = true;
-														yourQuestion.questionXML = true;
+											
+											discipline.node.isHttpReqCompleted = false;
+											UserQuestionsService.userQuestions(function(userQuestions) {
+												$scope.userQuestions = userQuestions;	
+												
+												$scope.userQuestions.forEach(function(userQuestion) {
+													var yourQuestion = {};
+													var displayNode = $("<div></div>");
+													QTI.BLOCKQUOTE.id = 0;
+													QTI
+															.play(
+																	userQuestion.qtixml,
+																	displayNode,
+																	false,
+																	false,
+																	userQuestion.metadata.quizType);
+													yourQuestion.isQuestion = true;
+													yourQuestion.questionXML = true;
 
-														yourQuestion.nodeType = "question";
-														yourQuestion.guid = userQuestion.guid;
-														yourQuestion.showEditQuestionIcon = false;
-														yourQuestion.isNodeSelected = false;
+													yourQuestion.nodeType = "question";
+													yourQuestion.guid = userQuestion.guid;
+													yourQuestion.showEditQuestionIcon = false;
+													yourQuestion.isNodeSelected = false;
 
-														addToQuestionsArray(yourQuestion);
+													addToQuestionsArray(yourQuestion);
 
-														yourQuestion.data = userQuestion.qtixml;
-														yourQuestion.quizType = userQuestion.metadata.quizType;
-														yourQuestion.extendedMetadata = userQuestion.metadata.extendedMetadata;
-														yourQuestion.textHTML = displayNode
-																.html();
+													yourQuestion.data = userQuestion.qtixml;
+													yourQuestion.quizType = userQuestion.metadata.quizType;
+													yourQuestion.extendedMetadata = userQuestion.metadata.extendedMetadata;
+													yourQuestion.textHTML = displayNode
+															.html();
 
-														yourQuestion.template = 'qb_questions_renderer.html';
+													yourQuestion.template = 'qb_questions_renderer.html';
 
-														yourQuestions
-																.push(yourQuestion);
-													})
+													yourQuestions.push(yourQuestion);
+												})
 
-											discipline.node.nodes = yourQuestions;
+												discipline.node.nodes = yourQuestions;
+												
+												discipline.node.isHttpReqCompleted = true;
+											})
+
 										} else {
 											ep = evalu8config.apiUrl
 													+ "/books?discipline="

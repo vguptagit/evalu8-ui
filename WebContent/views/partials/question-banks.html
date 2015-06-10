@@ -95,7 +95,8 @@
             <div class="treeDiv">
                 <div class="maindiv">
                     <div class="imagediv">
-                        <input ng-click="getBooks(this)" type="image" class="collapseImg"
+						<i class="fa fa-spinner fa-pulse font-size-16" ng-show="!node.isHttpReqCompleted"></i>
+                        <input ng-click="getBooks(this)" type="image" class="collapseImg" ng-show="node.isHttpReqCompleted"
                                ng-src="{{collapsed?'images/right_arrow2.png':'images/right_arrow.png'}}"></input>
                     </div>
                     <div class="captiondiv">

@@ -27,5 +27,18 @@ angular.module('evalu8Demo')
 					callback(userQuestions);
 				})
 		};
+		
+		this.userQuestionsCount = function(callback) {	
+
+			var userQuestionsCount = 0;
+			$http.get(evalu8config.apiUrl + "/my/questions/count", config)
+				.success(function(response) {
+					userQuestionsCount = response;
+					callback(userQuestionsCount)
+				})
+				.error(function(){
+					callback(userQuestionsCount);
+				})
+		};
 	}
 ])		
