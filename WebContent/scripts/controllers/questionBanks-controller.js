@@ -717,7 +717,10 @@ angular
 												|| $scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.topic) {
 											
 											if($scope.isSearchMode){
-												if($scope.searchedContainerId == $scope.selectedNodes[i].guid){
+												if($scope.selectedNodes.length > 0 && $scope.searchedContainerId == $scope.selectedNodes[i].guid){
+													$rootScope.blockPage.start();	
+												}
+												else{
 													$rootScope.blockPage.start();	
 												}
 											}else{
