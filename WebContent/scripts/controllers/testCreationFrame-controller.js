@@ -2373,6 +2373,13 @@ angular.module('e8MyTests').service("directiveQtiService",
 					// assign it into the current DOM
 						if(value!=undefined){
 							element.html(value.$$unwrapTrustedValue());
+							setTimeout(
+									function() {
+										
+										$('.editViewContainer').find("#qtiCaption").eq(0).focus();
+								
+
+									}, 0);	
 						}
 							
 					
