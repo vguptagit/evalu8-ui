@@ -992,6 +992,21 @@ display: inline-block;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 }
 
+.alertMsg span {
+  font-size: 18px;
+}
+
+.wizardError{
+margin-left: 5px;
+  font-size: 18px;
+  margin-top: 4px;
+}
+
+.wizardErrorMsg{
+margin-top: -16px;
+  margin-left: 9px;
+}
+
 .alertMsgFooter {
 	padding: 10px 10px 10px 10px;
 	border-top: 1px solid #e5e5e5;
