@@ -449,7 +449,9 @@ angular.module('evalu8Demo')
 		         for (var i = 0; i < test.criterias.length; i++) {
 		             test.criterias[i].treeNode.showTestWizardIcon = true;
 		             //test.criterias[i].treeNode.isNodeSelected=false;
-		             $rootScope.$broadcast("handleBroadcast_deselectedNode", test.criterias[i].treeNode);
+		             
+		           //Dont delete below commented line, it may re-use in feature
+		             //$rootScope.$broadcast("handleBroadcast_deselectedNode", test.criterias[i].treeNode);
 		         }
 		     }
 		     sharedTabService.isDirtyTab = function (tab) {
@@ -501,7 +503,9 @@ angular.module('evalu8Demo')
 		             if (sharedTabService.tests[scope.currentIndex].criterias[i].id === criteria.id) {
 		            	 sharedTabService.tests[scope.currentIndex].criterias[i].treeNode.showTestWizardIcon=true;
 		            	 //sharedTabService.tests[scope.currentIndex].criterias[i].treeNode.isNodeSelected=false;
-		            	 $rootScope.$broadcast("handleBroadcast_deselectedNode", sharedTabService.tests[scope.currentIndex].criterias[i].treeNode);
+		            	 
+		            	//Dont delete below commented line, it may re-use in feature
+		            	 //$rootScope.$broadcast("handleBroadcast_deselectedNode", sharedTabService.tests[scope.currentIndex].criterias[i].treeNode);
 		                 sharedTabService.tests[scope.currentIndex].criterias.splice(i, 1);
 		                 return false;
 		             }
@@ -513,7 +517,9 @@ angular.module('evalu8Demo')
 		    	 while(criterias.length > 0){
 		    		 sharedTabService.tests[scope.currentIndex].criterias[0].treeNode.showTestWizardIcon = true;
 	                 //sharedTabService.tests[scope.currentIndex].criterias[i].treeNode.isNodeSelected=false;
-	                 $rootScope.$broadcast("handleBroadcast_deselectedNode", sharedTabService.tests[scope.currentIndex].criterias[0].treeNode);
+		    		 
+		    		//Dont delete below commented line, it may re-use in feature
+	                 //$rootScope.$broadcast("handleBroadcast_deselectedNode", sharedTabService.tests[scope.currentIndex].criterias[0].treeNode);
 	                 sharedTabService.tests[scope.currentIndex].criterias.splice(0, 1);
 		    	 }
 		     }
