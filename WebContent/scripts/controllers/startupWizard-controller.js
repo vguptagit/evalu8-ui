@@ -156,8 +156,7 @@ angular
 							$scope.searchDiscipline = function(event) {
 								$(".dropdown-menu")
 								.addClass("startupautocompleteList");
-								$scope.searchedDiscpline = $(".searchDiscpline")
-										.val();
+								$scope.searchedDiscpline = $(".searchDiscpline").val();
 								if ($scope.searchedDiscpline == undefined
 										|| $scope.searchedDiscpline == "") {
 									$(".discplineheight")[0].scrollTop = 0;
@@ -244,7 +243,9 @@ angular
 
 							$scope.saveDiscpline = function() {
 								UserService
-										.saveUserDisciplines($scope.disciplines.userSelected);
+										.saveUserDisciplines($scope.disciplines.userSelected,function() {
+											$scope.saveBooks();
+										});
 							};
 
 							$scope.exitDiscipline = function() {
@@ -566,16 +567,11 @@ angular
 								return bookGUID;
 							}
 
-							/*
-							 * $scope.enableDisableNextButton = function(state) {
-							 * if (state) {
-							 * $(".nextButton").addClass("btnDisbled"); } else {
-							 * $(".nextButton").removeClass("btnDisbled"); } }
-							 */
-
 							$scope.saveBooks = function() {
 								UserService
-										.saveUserBooks($scope.books.currentlySelected);
+										.saveUserBooks($scope.books.currentlySelected, function(){
+											$location.path('/home/questionbanks');
+										});
 							};
 
 							$scope.showOldEdition = function(parentbookid,
@@ -638,8 +634,6 @@ angular
 									return false
 								} else {
 									$scope.saveDiscpline();
-									$scope.saveBooks();
-									$location.path('/home/questionbanks');
 								}
 
 							}
