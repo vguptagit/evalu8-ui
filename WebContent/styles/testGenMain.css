@@ -2939,6 +2939,15 @@ li[qstntemplate='true'] label.mOptionLabel{
   margin-left: 74%;
 }
 
+.showWaiting{
+   font-size: 24px !important;
+  float: left;
+  position: absolute;
+  z-index: 100;
+  margin-top: -30px;
+  margin-left: 40%;
+}
+
 .expandIconForBookEdition
 {
 	float: left; 

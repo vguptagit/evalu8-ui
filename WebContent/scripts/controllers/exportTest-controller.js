@@ -11,7 +11,6 @@ angular.module('e8MyTests')
         BlackboardVista: 'vista',
         QTI: 'qti'
     };
-         
     $scope.exportFileFormats = [
                              { value: 'doc', text: 'MS Word' },
                              { value: 'pdf', text: 'PDF' },
@@ -49,8 +48,8 @@ angular.module('e8MyTests')
     $scope.isSaveSettingsAsDefault = false;
     $scope.disableAnsAreaAndKey = '';
 
+    $scope.showWaiting=true;
     UserService.userPrintSettings(function(printSettings) {
-	
     	$scope.isIncludeRandomizedTest = printSettings.includeRandomizedTests;
     	$scope.isIncludeStudentName = printSettings.includeStudentName;
     	
@@ -105,9 +104,8 @@ angular.module('e8MyTests')
     	if(printSettings.pageNumberDisplay == $scope.pageNumbers[2].value) 
     		$scope.selectedPageNumber = $scope.pageNumbers[2];
     	
-       
+    	$scope.showWaiting=false;
         $scope.format_change();
-        
     })
   
     $scope.format_change = function () {
