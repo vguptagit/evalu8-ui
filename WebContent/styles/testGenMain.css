@@ -2554,6 +2554,7 @@ div #BlanksCaption {
 	border-style: inset;
 	border-width: 2px;
 	height: 22px;
+	line-height:22px;
 	width: 175px;
 	display: inline-block;
 	border-radius: 5px;

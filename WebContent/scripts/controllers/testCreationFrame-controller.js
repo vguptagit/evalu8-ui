@@ -740,7 +740,7 @@ angular
 								var htmlOptionCnt = scope.$element.find('#crtAns').find('div').length;
 								var lastId = scope.$element.find('#crtAns').find('div').length;
 
-								var blankCount = qtiCaption.find("button").length;
+								var blankCount = scope.$element.find("#qtiCaption").eq(0).find("button").length;
 								blankCount = blankCount + 1;
 								qtiCaption.html(qtiCaption.html().replace(/&nbsp;/g," "))
 //								qtiCaption.html(optionText.substring(0,cursorPosition) + "<button contenteditable='false'><span class='blankWidth editView'>"+alphaArray[htmlOptionCnt]+"<span contenteditable='true' id='"+alphaArray[htmlOptionCnt]+"' onkeydown='QTI.getSpanId(this,event)' placeHolder='Blank Space' ></span></span></button>" + optionText.substring(cursorPosition + 1, optionText.length));
