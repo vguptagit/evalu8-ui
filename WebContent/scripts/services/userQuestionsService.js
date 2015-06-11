@@ -31,9 +31,9 @@ angular.module('evalu8Demo')
 		this.userQuestionsCount = function(callback) {	
 
 			var userQuestionsCount = 0;
-			$http.get(evalu8config.apiUrl + "/my/questions/count", config)
-				.success(function(response) {
-					userQuestionsCount = response;
+			$http.head(evalu8config.apiUrl + "/my/questions", config)
+				.success(function(data, status, headers) {
+					userQuestionsCount = parseInt(headers("x-return-count"));
 					callback(userQuestionsCount)
 				})
 				.error(function(){
