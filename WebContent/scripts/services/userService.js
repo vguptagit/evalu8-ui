@@ -54,7 +54,7 @@ angular
 												status);
 									}).error(
 									function(error, status) {
-										callback(error, status);
+										callback(userDisciplines, status);
 									});
 				};
 
