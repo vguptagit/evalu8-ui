@@ -18,6 +18,7 @@
 
 		     //populate the child nodes.
 		     $scope.getFolders = function (node, defaultFolder) {
+		         $('#scroll').scrollTop(0);
 		         var folderState = node.isSelected;
 		         clearNodes(node, defaultFolder);
                  
