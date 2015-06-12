@@ -108,7 +108,7 @@ angular
 								DisciplineService, UserQuestionsService, WizardHandler,
 								$modalInstance, blockUI, step, source) {
 
-							$scope.searched = "";
+							$scope.searchedDiscipline = "";
 							$scope.trackEnterKey = 0;
 							$scope.disciplines = {
 								all : [],
@@ -123,7 +123,7 @@ angular
 									$scope.exitDiscipline()
 									$scope.step = step;
 								} else if (step == '1') {
-									$scope.searchedBook="";
+									$scope.searchedDiscipline="";
 									$scope.step = step;
 								}
 							}
@@ -159,22 +159,22 @@ angular
 							}
 
 							$scope.searchDisciplineOnClick = function() {
-								$scope.searched = $(".searchDiscpline").val();
-								if ($scope.searched == undefined
-										|| $scope.searched == "") {
+								$scope.searchedDiscipline = $(".searchDiscpline").val();
+								if ($scope.searchedDiscipline == undefined
+										|| $scope.searchedDiscipline == "") {
 									return false;
 
 								}
-								$scope.addToselectedDiscipline($scope.searched,
+								$scope.addToselectedDiscipline($scope.searchedDiscipline,
 										true);
 							}
 
 							$scope.searchDiscipline = function(event) {
 								$(".dropdown-menu")
 								.addClass("autocompleteQuestionList");
-								$scope.searched = $(".searchDiscpline").val();
-								if ($scope.searched == undefined
-										|| $scope.searched == "") {
+								$scope.searchedDiscipline = $(".searchDiscpline").val();
+								if ($scope.searchedDiscipline == undefined
+										|| $scope.searchedDiscipline == "") {
 									$(".disciplineContainerInLightBox")[0].scrollTop = 0;
 									return false;
 
@@ -183,7 +183,7 @@ angular
 								if (event.keyCode === 13) {
 									if ($scope.trackEnterKey > 0) {
 										$scope.addToselectedDiscipline(
-												$scope.searched, true);
+												$scope.searchedDiscipline, true);
 									} else {
 										$scope.trackEnterKey = 1
 									}
@@ -266,7 +266,7 @@ angular
 							$scope.trackEnterKey = 0;
 
 							$scope.exitDiscipline = function() {
-								$scope.searched="";
+								$scope.searchedDiscipline="";
 								$scope.disciplineBooks = [];
 
 								$scope.books = {
@@ -306,6 +306,10 @@ angular
 										.disciplineBooks(
 												discipline,
 												function(disciplineBooks) {
+													disciplineBooks.sort(function(a, b) {
+														return new Date(b.created) - new Date(a.created);
+													});
+													
 													disciplineBooks
 															.forEach(function(
 																	book) {

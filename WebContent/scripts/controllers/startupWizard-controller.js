@@ -318,6 +318,9 @@ angular
 												discipline,
 												function(disciplineBooks) {
 													try{
+														disciplineBooks.sort(function(a, b) {
+															return new Date(b.created) - new Date(a.created);
+														});
 													disciplineBooks
 															.forEach(function(
 																	book) {

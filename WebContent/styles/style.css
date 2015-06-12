@@ -15,7 +15,7 @@ label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D;
 .searchicon{float: left; position: absolute; margin-left: -25px; z-index: 9999; margin-top: 30px;}
 #Discpline ul{padding:0; line-height:40px;}
 #Discpline ul li {height:40px; list-style:none;  border-bottom:1px solid #E0E0E0; padding-left:20px;}
-.discplineText {height:40px; list-style:none;  border-bottom:1px solid #E0E0E0; padding-left:20px;}
+.discplineText {min-height:40px; list-style:none;  border-bottom:1px solid #E0E0E0; padding-left:20px;}
 .discplineheight{height:650px; overflow:auto; overflow-x:hidden; width: 98%;}
 .bookContainer{height:650px; overflow:auto; overflow-x:hidden; width: 98%;}
 .form-group{position:relative;}

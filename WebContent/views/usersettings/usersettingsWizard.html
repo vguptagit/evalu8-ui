@@ -46,7 +46,7 @@
 						<div class="col-lg-12">
 							<div class="input-group searchdiv">
 							<input type="text" placeHolder="Search Discipline"
-						class="searchDiscpline form-control" ng-model="searched"
+						class="searchDiscpline form-control" ng-model="searchedDiscipline"
 						typeahead="discipline for discipline in disciplines.all.sort() | filter:$viewValue"
 						ng-keyup="searchDiscipline($event)"> <span class="glyphicon glyphicon-search searchicon" ng-click="searchDisciplineOnClick()"
 						tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Search"></span>
@@ -105,8 +105,7 @@
 										ng-class="{selectedDisc: book.isSelected}"
 										ng-show="book.showEdition"
 										parentbookid="{{book.parentBookID}}">
-										<div
-											style="float: left; margin-right: 5px; vertical-align: middle; vertical-align: middle; margin-top: 7px; background-color: #FFFFFF;"
+										<div class="expandIconForBookEditionUserSettings"
 											ng-show="book.hasEdition"
 											ng-click="showOldEdition(book.guid,discipline.name)">
 											<img alt="Editions" id="{{book.guid}}" src=""
