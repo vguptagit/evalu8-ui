@@ -12,7 +12,15 @@ angular.module('e8MyTests')
             element.off(attr.eventFocus);
         });
     };
-}).factory('focus', function ($timeout, $window) {
+}).directive('focusMe', function ($timeout) {
+    return function (scope, element, attr) {
+        $timeout(function () {
+            if (element)
+                element.focus();
+        }, 100);
+    };
+})
+.factory('focus', function ($timeout, $window) {
     return function (id) {
         // timeout makes sure that is invoked after any other event has been triggered.
         // e.g. click events that need to run before the focus or
