@@ -2,8 +2,6 @@
 
 // declare modules
 angular.module('e8Login', []);
-angular.module('e8Books', []);
-angular.module('e8Chapters', []);
 angular.module('e8SelectDisciplines', []);
 angular.module('e8SelectBooks', []);
 angular.module('e8SelectQuestionMetadata', []);
@@ -15,8 +13,6 @@ angular.module('e8CustomQuestionBanks', []);
 
 angular.module('evalu8Demo', [
     'e8Login',
-    'e8Books',
-    'e8Chapters',
     'e8SelectDisciplines',
     'e8SelectBooks',
     'e8SelectQuestionMetadata',
