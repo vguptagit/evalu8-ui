@@ -23,6 +23,7 @@ angular.module('evalu8Demo', [
     'ngRoute',
     'ngCookies',
     'blockUI',
+    'ui.tree',
     'ui.bootstrap',
     'ui.router',
     'angularFileUpload',
