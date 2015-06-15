@@ -75,13 +75,12 @@ angular
 					});
 			};
 		
-		this.getAllContainers = function(bookids, callback) {
+		this.getAllContainers = function(bookid, callback) {
 
 			var cointainers = [];
 
 			var url = evalu8config.apiUrl
-					+ "/books/nodes?bookids="
-					+ bookids;
+					+ "/books/"+ bookid +"/nodes?flat=1";
 
 			$http
 					.get(url, config)
