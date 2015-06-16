@@ -2713,7 +2713,7 @@ QTI.Elements.InlineChoiceInteraction.play = function(qtiNode, displayNode,
 
 	var inrText=$(displayNode)[0].innerText;
 
-	$(displayNode)[0].innerText="";
+	$(displayNode).text("");
 
 		var elementDisplayNode = QTI.prepare(qtiNode,
 				$("<span class='matchRight mOptionLabel'></span>"));
