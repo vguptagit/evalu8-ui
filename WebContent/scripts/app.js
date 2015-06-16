@@ -117,6 +117,44 @@ angular.module('evalu8Demo', [
         });
 
 })
+.factory('myHttpInterceptor',  function ( $location, $q) {
+    return {
+        responseError: function (response) {
+            if(response.status == 403) {            	
+
+            	piSession.logout();	
+            	$location.path("/signin");            	
+
+            	return;
+            } else {
+
+            	var errorText;
+            	if(response.config.method == "GET") {
+            		errorText = "Unable to fetch data! Please try again.";
+            	} else if(response.config.method == "POST") {
+            		errorText = "Unable to save data! Please try again.";
+            	}
+            		
+            	var divHtml = '<div class="errorMsgTip alert alert-danger">';
+				divHtml += '<div><span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp; ' + errorText + '</div>';
+				divHtml += '</div>';
+            	
+            	$('body').append(divHtml);
+				
+		        $('.errorMsgTip').offset({'top':($(window).height()/2)-$('.errorMsgTip').height()});
+		        window.setTimeout(function(){
+		        	$('.errorMsgTip').hide();	
+		        }, 5000);
+		        
+                return $q.reject(response);                            	
+            }
+
+        }
+    };
+})
+.config(function ($httpProvider) {
+    $httpProvider.interceptors.push('myHttpInterceptor');
+})
 .run(['$rootScope', '$location', '$cookieStore', '$http', '$modal', 'blockUI', 'AuthenticationService',
     function ($rootScope, $location, $cookieStore, $http, $modal, blockUI, AuthenticationService) {
         // keep user logged in after page refresh
