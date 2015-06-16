@@ -159,6 +159,9 @@ angular.module('e8MyTests')
 			var frm = $("<iframe>").attr("src",
 					apiUrl + "?data=" + data).appendTo(
 					"body").load(function() {
+						if(this.contentDocument.body.innerHTML.indexOf("No versions are there for this test") >= 0){
+							$scope.alert();
+						}
 			});
 			frm.attr("id","dnloadFrame");
     }
