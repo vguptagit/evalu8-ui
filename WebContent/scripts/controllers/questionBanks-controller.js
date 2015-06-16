@@ -461,18 +461,21 @@ angular
 										false,
 										function(response) {
 
-											currentNode.node.nodes = currentNode.node.nodes.concat(response);
+											if(response.length>0){
+												currentNode.node.nodes = currentNode.node.nodes.concat(response);
 
-											angular.forEach(currentNode.node.nodes, function(item) {
-												item.template = 'nodes_renderer.html';
-												item.showTestWizardIcon = false;
-												item.showEditQuestionIcon = false;
-												item.isNodeSelected = false;
-                                                item.nodeType = "topic";
-                                                item.isCollapsed = true;
-                                                item.isHttpReqCompleted = true;
-												updateTreeNode(item);
-											})
+												angular.forEach(currentNode.node.nodes, function(item) {
+													item.template = 'nodes_renderer.html';
+													item.showTestWizardIcon = false;
+													item.showEditQuestionIcon = false;
+													item.isNodeSelected = false;
+	                                                item.nodeType = "topic";
+	                                                item.isCollapsed = true;
+	                                                item.isHttpReqCompleted = true;
+													updateTreeNode(item);
+												})
+											}
+											
 										})
 
 									$http.get(evalu8config.apiUrl
@@ -1248,6 +1251,7 @@ angular
 									searchedDiscipline["item"] = book.discipline;
 									searchedDiscipline["isCollapsed"]=false;
 									searchedDiscipline["nodes"] = [book];
+									searchedDiscipline["isHttpReqCompleted"] = true;
 									$scope.disciplines.push(searchedDiscipline);
 								}else{
 									$scope.disciplines.forEach(function(discipline) {
