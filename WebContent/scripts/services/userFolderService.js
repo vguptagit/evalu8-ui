@@ -90,24 +90,20 @@ angular.module('evalu8Demo')
 				var userFolders = [];
 
 				$http.get(evalu8config.apiUrl + "/my/folders/"+ parentFolderId + "/folders", config)
-				.success(
-						function(response) {
+				.success(function(response) {
 
-							response.forEach (function(item) {  
-								item.nodeType = "folder";
-								item.draggable = true;
-								userFolders.push(item);    							    							
-							});
-							
-							callback (userFolders);
-						})
-				.error(
-						function(error) {
-							var item = {"nodeType": "empty", "draggable": false, "title": "Empty folder", "sequence": 0};
-							userFolders.push(item);
-							
-							callback (userFolders);
-						})					
+					response.forEach (function(item) {  
+						item.nodeType = "folder";
+						item.draggable = true;
+						userFolders.push(item);    							    							
+					});
+					
+					if(userFolders.length == 0) {
+						var item = {"nodeType": "empty", "draggable": false, "title": "Empty folder", "sequence": 0};
+						userFolders.push(item);
+					}
+					callback (userFolders);
+				})					
 				
 			};			
 			

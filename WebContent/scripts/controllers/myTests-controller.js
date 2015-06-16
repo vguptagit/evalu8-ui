@@ -14,13 +14,13 @@ angular.module('e8MyTests')
 
         $scope.dragStarted = false;
         
-        $scope.loadTree = function() {
-        	
-        	UserFolderService.myTestRootFolder(function(myTestRoot){
-        		$scope.myTestRoot = myTestRoot;
-        	});
+        $scope.loadTree = function() {        	
         	
         	UserFolderService.defaultFolders(function (defaultFolders) {
+        		
+            	UserFolderService.myTestRootFolder(function(myTestRoot){
+            		$scope.myTestRoot = myTestRoot;
+            	});
             	
                 $scope.defaultFolders = defaultFolders;
                 
@@ -914,5 +914,5 @@ angular.module('e8MyTests')
         	
         	destNode.testBindings = testBindings;
         	UserFolderService.saveUserFolder(destNode);
-        }
+        }        
     }]);

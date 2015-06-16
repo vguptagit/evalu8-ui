@@ -75,22 +75,23 @@ angular.module('evalu8Demo')
 					url = evalu8config.apiUrl + '/my/folders/' + folderId + '/tests';
 				}
 				
+				var tests = [];
+				
 				$http.get(url, config)
 				.success(function(response) {
-					var tests = response;
-					tests.forEach(function(test){
+
+					response.forEach(function(test){
 						test.nodeType = "test";
 						test.draggable = true;
 						test.droppable = false;
 						test.parentId = folderId;
 						test.showEditIcon=true;
 						test.showArchiveIcon=true;
+						
+						tests.push(test);
 					})
-					callback(tests)
+					callback(tests);
 				})
-				.error(function(error, status) {
-					callback([]);
-				})				
 			};
 			
 			this.getArchiveTests = function(folderId, callback) {				

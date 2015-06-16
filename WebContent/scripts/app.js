@@ -141,7 +141,7 @@ angular.module('evalu8Demo', [
             	
             	$('body').append(divHtml);
 				
-		        $('.errorMsgTip').offset({'top':($(window).height()/2)-$('.errorMsgTip').height()});
+		        $('.errorMsgTip').offset({'top': '40'});
 		        window.setTimeout(function(){
 		        	$('.errorMsgTip').hide();	
 		        }, 5000);
