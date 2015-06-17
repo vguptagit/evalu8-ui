@@ -4,7 +4,6 @@
 angular.module('e8Login', []);
 angular.module('e8SelectDisciplines', []);
 angular.module('e8SelectBooks', []);
-angular.module('e8SelectQuestionMetadata', []);
 angular.module('e8SelectPrintSettings', []);
 angular.module('e8MyTests', []);
 angular.module('e8QuestionBanks', []);
@@ -15,7 +14,6 @@ angular.module('evalu8Demo', [
     'e8Login',
     'e8SelectDisciplines',
     'e8SelectBooks',
-    'e8SelectQuestionMetadata',
     'e8SelectPrintSettings',
     'e8MyTests',
     'e8QuestionBanks',
