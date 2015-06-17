@@ -700,6 +700,10 @@ angular
 									$rootScope
 											.$broadcast('handleBroadcast_AddNewTab');
 								}
+								if (SharedTabService.isQuestionFolderAlreadyAdded(scope.node, $scope.selectedNodes)) {
+								    SharedTabService.TestWizardErrorPopup_Open();
+								    return false;
+								}
 								for (var i = 0; i < $scope.selectedNodes.length; i++) {
 									if ($scope.selectedNodes[i].showEditQuestionIcon) {										
 										if ($scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.question) {

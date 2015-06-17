@@ -193,10 +193,31 @@ angular.module('evalu8Demo')
 		         NotEnoughQuestionsAvailableForTypes_suffix: ' types, Please select additional question banks or reduce the number of questions in your test.',
 		         NoQuestionTypeSelected: 'No Question Type selected, please select question Type first and click on "Create Test" button',
 		         ChapterIsAlreadyAdded: 'This topic is included in the chapter already added to Test Wizard. If you wish to add separate topics from a chapter, delete the chapter in the Test Wizard first.',
-		         TopicInChapterIsAlreadyAdded: 'This chapter includes the topic(s) that you have already added to the Wizard. If you want to  add the entire chapter, please delete the topic(s) in the Wizard first.',
+		         TopicInChapterIsAlreadyAdded: 'This chapter includes the topic(s) that you have already added to the Test Wizard. If you want to  add the entire chapter, please delete the topic(s) in the Wizard first.',
 		         NoQuestionsAvailable: 'No questions available.',
-		         AlreadyAdded: 'Chapter or topic is already added'
+		         AlreadyAdded: 'Chapter or topic is already added',
+                 ChapterIsAlreadyAddedToTest: 'This topic is included in the chapter already added to Test. If you wish to add separate topics from a chapter, delete the chapter in the Test Wizard first.',
+                 TopicInChapterIsAlreadyAddedToTest: 'This chapter includes the topic(s) that you have already added to the Test. If you want to  add the entire chapter, please delete the topic(s) in the Wizard first.'
+		        
 		     };
+
+		     sharedTabService.isQuestionFolderAlreadyAdded = function (currentNode, selectedNodes) {
+		         var isExist = false;
+		         sharedTabService.errorMessages = [];
+		         $.each(sharedTabService.tests[sharedTabService.currentTabIndex].questionFolderNode, function (i) {
+		             if (sharedTabService.tests[sharedTabService.currentTabIndex].questionFolderNode[i].guid === currentNode.parentId) {
+		                 isExist = true;
+		                 sharedTabService.addErrorMessage(currentNode.title, sharedTabService.errorMessageEnum.ChapterIsAlreadyAddedToTest);
+		                 return false;
+		             } else if (sharedTabService.tests[sharedTabService.currentTabIndex].questionFolderNode[i].parentId === currentNode.guid) {
+		                 isExist = true;
+		                 sharedTabService.addErrorMessage(currentNode.title, sharedTabService.errorMessageEnum.TopicInChapterIsAlreadyAddedToTest);
+		                 return false;
+		             }
+		         }); 
+		         return isExist;
+		     }
+
 		     sharedTabService.isErrorExist = function (currentNode, selectedNodes) {
 		         var isExist = false;
 		         sharedTabService.errorMessages = [];
