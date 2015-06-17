@@ -133,8 +133,9 @@ angular
 
 							};
 
-							$scope.disciplines.all = DisciplineService
-									.allDisciplines();
+							DisciplineService.allDisciplines(function(allDisciplines) {
+								$scope.disciplines.all = allDisciplines;	
+							});
 
 							UserService
 									.userDisciplines(function(userDisciplines) {

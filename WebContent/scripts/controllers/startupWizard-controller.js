@@ -116,25 +116,24 @@ angular
 							}
 
 							$rootScope.blockPage.start();
-							$scope.disciplines.all = DisciplineService
-									.allDisciplines();
+							
+							DisciplineService.allDisciplines(function(allDisciplines) {
+								$scope.disciplines.all = allDisciplines;	
+							});
 
-							UserService
-									.userDisciplines(function(userDisciplines,
-											status) {
-										try{
-											if (status == "404") {
-												$scope.enableDisableNextButton($scope
-																.isDesciplineEmpty());
-											} else {
-												$scope.disciplines.userSelected = userDisciplines;
-											}
-										}catch(e){
-											console.log(e);
-										}finally{
-											$rootScope.blockPage.stop();				
-										}
-									});
+							UserService.userDisciplines(function(userDisciplines) {
+								try{
+									if (userDisciplines.length == 0) {
+										$scope.enableDisableNextButton($scope.isDesciplineEmpty());
+									} else {
+										$scope.disciplines.userSelected = userDisciplines;
+									}
+								}catch(e){
+									console.log(e);
+								}finally{
+									$rootScope.blockPage.stop();				
+								}
+							});
 
 							$scope.selectDiscipline = function(discipline) {
 								$scope.addToselectedDiscipline(

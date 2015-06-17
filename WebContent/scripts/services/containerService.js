@@ -55,12 +55,13 @@ angular
 			}else{
 				url=evalu8config.apiUrl+ "/books/"+ bookId+ "/nodes/"+ containerId+ "/nodes?"+queryStrings;
 			}
-			var nodes=[];
+
 			$http.get(url, config)
 				.success(function(response) {
+					if(response == null) {
+						response = []
+					}
 					callback(response);
-				}).error(function() {
-					callback(nodes);
 				});
 		};
 		

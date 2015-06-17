@@ -31,31 +31,11 @@ angular
 
 				this.userDisciplines = function(callback) {
 
-					var userDisciplines = [];
-					$http
-							.get(
-									evalu8config.apiUrl
-											+ "/settings/disciplines/",
-											this.getConfig())
-							.success(
-									function(response, status) {
+					$http.get(evalu8config.apiUrl + "/settings/disciplines/", this.getConfig())
+					.success(function(response) {
 
-										if (response != "") {
-											response
-													.forEach(function(
-															item) {
-														userDisciplines
-																.push(item);
-													});
-
-										}
-
-										callback(userDisciplines,
-												status);
-									}).error(
-									function(error, status) {
-										callback(userDisciplines, status);
-									});
+						callback(response);
+					});
 				};
 
 				this.userBookIDs = function(callback) {
