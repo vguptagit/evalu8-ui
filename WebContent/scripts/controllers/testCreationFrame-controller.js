@@ -1117,6 +1117,7 @@ angular
 
 											});
 						    $rootScope.$on('dropTest', function (event, selectedTest, destIndex) {
+						    				selectedTest.node.draggable = false;
 											$scope.editTest(selectedTest);
 									});
 
