@@ -134,17 +134,17 @@ angular
 							};
 
 							DisciplineService.allDisciplines(function(allDisciplines) {
-								$scope.disciplines.all = allDisciplines;	
+								$scope.disciplines.all = allDisciplines;
+								
+								UserService.userDisciplines(function(userDisciplines) {
+									$scope.disciplines.userSelected = userDisciplines;
+									if ($scope.step == '2') {
+										$scope.exitDiscipline();
+									}
+								});
 							});
 
-							UserService
-									.userDisciplines(function(userDisciplines) {
-										$scope.disciplines.userSelected = userDisciplines;
-
-										if ($scope.step == '2') {
-											$scope.exitDiscipline();
-										}
-									});
+							
 
 							$scope.isDesciplineEmpty = function() {
 								if ($scope.disciplines.userSelected.length > 0)
