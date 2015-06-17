@@ -286,7 +286,7 @@ angular
                                                 book.node.nodes.push(publisherTestsNode);    
                                                 publisherTestsNode.isCollapsed=true;
                                                 publisherTestsNode.isHttpReqCompleted = true;
-                                                publisherTestsNode.testBindings = book.node.testBindings;                                                    
+                                                publisherTestsNode.bookId = book.node.guid;                                                    
                                             }                                                
                                     });
 								}
@@ -422,29 +422,24 @@ angular
                                     if(currentNode.node.nodeType == 'publisherTests') {
                                         
                                     	currentNode.node.nodes = [];
-                                    	
-                                    	var responses = [];
-                                    	currentNode.node.testBindings.forEach(function (testId) {
-                                    		var i = 0;
-                                            TestService.getTest(testId, function(test){
+                                    	                                   		
+                                        TestService.getPublisherTestsByBookId(currentNode.node.bookId, function(tests){
 
+                                        	tests.forEach(function(test) {
                                                 test.nodeType = EnumService.NODE_TYPE.test;
                                                 test.testType = "PublisherTest";
                                                 test.showEditIcon=true;
                                                 test.selectTestNode = false;//to show the edit icon
-                                                if(currentNode.node.testBindings[i] == test.guid)
-                                                	currentNode.node.nodes.push(test);
-                                                else
-                                                	responses.push(test);
+                                                                                        	
+                                                currentNode.node.nodes.push(test);
+                                                                                                
                                                 test.template = 'tests_renderer.html';
-                                                updateTreeNode(test);
-                                                if((responses.length + currentNode.node.nodes.length) == currentNode.node.testBindings.length)
-                                                {
-                                                	var sortedNodes = sortNodes(responses, currentNode,"testBindings");
-                                                	currentNode.node.nodes = currentNode.node.nodes.concat(sortedNodes);
-                                                }
-                                            });
+                                                updateTreeNode(test);                                        		
+                                        	})
+                                        	
+                                        	currentNode.node.isHttpReqCompleted = true;
                                         });
+                                        
                                         return;
                                     }
 						                                        
