@@ -2089,7 +2089,7 @@ angular
 								var isError = false;
 								// $scope.tests[currentIndex].criterias.metadata.sort(randomize);
 								// console.log($scope.tests[currentIndex].criterias.metadata.sort(randomize));
-								var metadatas = [];
+							    var metadatas = [];
 								SharedTabService.errorMessages = [];
 								$scope.sharedTabService.tests[$scope.sharedTabService.currentTabIndex].criterias
 										.forEach(function(criteria) {
@@ -2139,8 +2139,7 @@ angular
 
 												}
 											} else {
-												SharedTabService
-														.addErrorMessage(
+												SharedTabService.addErrorMessage(
 																criteria.treeNode.title,
 																SharedTabService.errorMessageEnum.NoQuestionTypeSelected);
 												isError = true;
@@ -2150,26 +2149,17 @@ angular
 											if (criteria.numberOfQuestionsEntered > 0) {
 												criteria.numberOfQuestionsSelected = criteria.numberOfQuestionsEntered;
 											}
-											if (criteria.numberOfQuestionsSelected > criteria.totalQuestions) {
+											if (!criteria.numberOfQuestionsSelected || criteria.numberOfQuestionsSelected > criteria.totalQuestions) {
 												criteria.isError = true;
-												SharedTabService
-														.addErrorMessage(
-																criteria.treeNode.title,
-																SharedTabService.errorMessageEnum.NotEnoughQuestionsAvailable);
+												SharedTabService.addErrorMessage(criteria.treeNode.title, SharedTabService.errorMessageEnum.NotEnoughQuestionsAvailable);
 												isError = true;
 												return false;
 											} else {
-												metadatas = metadatas
-														.concat(arr
-																.slice(
-																		0,
-																		criteria.numberOfQuestionsSelected));
-
+												metadatas = metadatas.concat(arr.slice(0, criteria.numberOfQuestionsSelected));
 											}
 										});
 								if (isError) {
-									SharedTabService
-											.TestWizardErrorPopup_Open(SharedTabService.errorMessages);
+									SharedTabService.TestWizardErrorPopup_Open(SharedTabService.errorMessages);
 									return false;
 								} else {
 									var test = SharedTabService.tests[SharedTabService.currentTabIndex];
