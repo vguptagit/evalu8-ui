@@ -74,8 +74,10 @@ angular.module('evalu8Demo')
 						evalu8config.apiUrl + "/my/folders/"+ folder.guid + "/folders", config)
 						.success(
 								function(userFolders) {
-
-									callback (userFolders[0].sequence);
+									if(userFolders.length)
+										callback (userFolders[0].sequence);
+									else
+										callback (0.0);
 								})
 						.error(
 								function(error) {
