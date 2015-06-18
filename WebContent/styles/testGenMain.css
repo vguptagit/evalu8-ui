@@ -1796,6 +1796,10 @@ ul.a {
 	cursor: pointer;
 }
 
+.font10 {
+	font-size: 7px;
+}
+
 .discplineText1 {
 	font-family: Helvetica;
 	font-size: 14px;
@@ -2963,5 +2967,5 @@ li[qstntemplate='true'] label.mOptionLabel{
 	margin-right: 5px; 
 	vertical-align: middle; 
 	margin-top: 7px; 
-	background-color: #FFFFFF !important;
+	background-color:transparent;
 }

@@ -99,7 +99,6 @@
 							<div class="bookContainerInLightBox">
 								<div data-ng-repeat="discipline in disciplineBooks">
 									<div class="discplineText1" style="font-weight: bold;">{{discipline.name}}</div>
-
 									<div data-ng-repeat="book in discipline.books"
 										ng-click="selectBook(book.guid,discipline.name)"
 										ng-class="{selectedDisc: book.isSelected}"
@@ -111,9 +110,8 @@
 											<img alt="Editions" id="{{book.guid}}" src=""
 												ng-class="book.isCollasped?'collapseBookEdition':'expandBookEdition'">
 										</div>
-										<div class="discplineText" style="margin-left: 25px;">
-											{{book.title}}</div>
-										
+										<div class="discplineText"><i class="fa fa-circle font10" ng-show="book.parentBookID != undefined"></i>
+											<span class="margin-lft-5">{{book.title}}</span></div>
 									</div>
 									<div style="margin-top: 40px;"></div>
 								</div>
