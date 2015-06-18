@@ -310,79 +310,90 @@ angular
 								return true;
 							}
 
+							var arrangedBooks=[];
 							// To get books for the given discipline.
-							$scope.getBooks = function(discipline,
-									useSelectedBooks) {
-
-								BookService
-										.disciplineBooks(
-												discipline,
-												function(disciplineBooks) {
-													try{
-														disciplineBooks.sort(function(a, b) {
-															return new Date(b.created) - new Date(a.created);
-														});
-													disciplineBooks
-															.forEach(function(
-																	book) {
-																disciplineBooks
-																		.forEach(function(
-																				filtBook) {
-																			if ((book.isbn10 != null
-																					&& filtBook.isbn10 != null && book.isbn10 == filtBook.isbn10)
-																					&& (book.isbn13 != null
-																							&& filtBook.isbn13 != null && book.isbn13 == filtBook.isbn13)
-																					&& (book.created != null
-																							&& filtBook.created != null && new Date(
-																							book.created) > new Date(
-																							filtBook.created))) {
-
-																				book.hasEdition = true;
-																				filtBook.showEdition = false;
-																				filtBook.parentBookID = book.guid;
-
-																				if (useSelectedBooks
-																						.indexOf(filtBook.guid) > -1) {
-																					filtBook.showEdition = true;
-																					book.isCollasped = true;
-																				}
-
-																			}
-
-																		});
-																if (useSelectedBooks
-																		.indexOf(book.guid) > -1) {
-																	book.isSelected = true;
-																	$scope.books.currentlySelected
-																			.push(book.guid)
-																}
-
-																$scope.books.all
-																		.push(book);
-															});
-
-													$scope.disciplineBookMaping = {};
-													$scope.disciplineBookMaping["name"] = discipline
-													$scope.disciplineBookMaping["books"] = disciplineBooks
-
-													$scope.disciplineBooks
-															.push($scope.disciplineBookMaping);
-
-													$scope.disciplineBooks
-															.sort(function(a, b) {
-																return a.name
-																		.localeCompare(b.name)
-															});
-													
-													}catch(e){
-														console.log(e);
+							$scope.getBooks = function(discipline,useSelectedBooks) {
+								BookService.disciplineBooks(discipline,function(disciplineBooks) {
+									try{
+										disciplineBooks.sort(function(a, b) {
+											return new Date(b.created) - new Date(a.created);
+										});
+										disciplineBooks.forEach(function(book) {
+											if (useSelectedBooks.indexOf(book.guid) > -1) {
+												book.isSelected = true;
+												$scope.books.currentlySelected.push(book.guid)
+											}
+											$scope.books.all.push(book);
+											var i = 0;
+											var versionedBook=false;
+											var versionedBookPosition=false;
+											
+											arrangedBooks.forEach(function(filtBook) {
+												if (isEditionBook(filtBook, book)) {
+													if(isLatestEditionBook(filtBook, book)){
+														filtBook.hasEdition = true;
 													}
-													finally{
-														$rootScope.blockPage.stop();
-													}
-													
-												});
+													book.showEdition = false;
+													book.parentBookID = filtBook.guid;
+													setParentBookStatus(book);
+													versionedBook=true;
+													versionedBookPosition=i;
+												}
+												i=i+1;
+											});	
+											if(versionedBook){
+												arrangedBooks.splice(versionedBookPosition+1, 0, book);
+											}else{
+												arrangedBooks.push(book);	
+											}
+										});
 
+										$scope.disciplineBookMaping = {};
+										$scope.disciplineBookMaping["name"] = discipline
+										$scope.disciplineBookMaping["books"] = arrangedBooks
+										arrangedBooks=[];
+										$scope.disciplineBooks.push($scope.disciplineBookMaping);
+									
+									}catch(e){
+										console.log(e);
+									}
+									finally{
+										$rootScope.blockPage.stop();
+									}
+									
+								});
+
+							}
+							
+							var isEditionBook = function(book1, book2){
+								var editionBook=false;
+								if(book1.isbn13 == null && book2.isbn13 == null && book1.isbn10 != null && book2.isbn10 != null && book1.isbn10 == book2.isbn10){
+									editionBook=true;
+								}else if (book1.isbn10 == null && book2.isbn10 == null && book1.isbn13 != null && book2.isbn13 != null && book1.isbn13 == book2.isbn13){
+									editionBook=true;
+								}else if(book1.isbn10 != null && book2.isbn10 != null && book1.isbn13 != null && book2.isbn13 != null && book1.isbn10 == book2.isbn10 && book1.isbn13 == book2.isbn13){
+									editionBook=true;
+								}
+								return editionBook;
+							}
+							
+							var isLatestEditionBook = function(book1, book2){
+								if(book1.created != null && book2.created != null && new Date(book1.created) > new Date(book2.created)){
+									return true;
+								}else {
+									return false;
+								}
+							}
+							var setParentBookStatus = function(book){
+								if ($scope.books.userSelected.indexOf(book.guid) > -1) {
+									var parentBookID=book.parentBookID;
+									arrangedBooks.forEach(function(filtBook) {
+										if(filtBook.guid==parentBookID){
+											book.showEdition = true;
+											filtBook.isCollasped = true;
+										}
+									});
+								}
 							}
 
 							$scope.selectBook = function(bookid, disciplineName) {
