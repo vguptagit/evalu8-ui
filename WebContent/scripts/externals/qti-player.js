@@ -2923,7 +2923,8 @@ var CustomQuestionTemplate =
 						 "printOption": "Option" ,
 						 "editOption_Column_A": "Enter item # in column ",
 						 "editOption_Column_B": "Enter match in column B for A",
-						 "editMainText":"Enter Column A Items and Correct Column B Match System will scramble Column B in Print View",
+						 "editMainText1": "Enter Column A Items and Correct Column B Match System will scramble Column B in Print View",
+						 "editMainText": "Enter Column A items and Correct Column B Match. System will scramble Column B when you print or export the test.",
 						 "DISPLAY": false,
 						 makeExtra: function(element,tag,xml){}}
 		,
