@@ -205,11 +205,11 @@ angular.module('evalu8Demo')
 		         var isExist = false;
 		         sharedTabService.errorMessages = [];
 		         $.each(sharedTabService.tests[sharedTabService.currentTabIndex].questionFolderNode, function (i) {
-		             if (sharedTabService.tests[sharedTabService.currentTabIndex].questionFolderNode[i].guid === currentNode.parentId) {
+		             if (!sharedTabService.tests[sharedTabService.currentTabIndex].questionFolderNode[i].showEditQuestionIcon && sharedTabService.tests[sharedTabService.currentTabIndex].questionFolderNode[i].guid === currentNode.parentId) {
 		                 isExist = true;
 		                 sharedTabService.addErrorMessage(currentNode.title, sharedTabService.errorMessageEnum.ChapterIsAlreadyAddedToTest);
 		                 return false;
-		             } else if (sharedTabService.tests[sharedTabService.currentTabIndex].questionFolderNode[i].parentId === currentNode.guid) {
+		             } else if (!sharedTabService.tests[sharedTabService.currentTabIndex].questionFolderNode[i].showEditQuestionIcon && sharedTabService.tests[sharedTabService.currentTabIndex].questionFolderNode[i].parentId === currentNode.guid) {
 		                 isExist = true;
 		                 sharedTabService.addErrorMessage(currentNode.title, sharedTabService.errorMessageEnum.TopicInChapterIsAlreadyAddedToTest);
 		                 return false;
