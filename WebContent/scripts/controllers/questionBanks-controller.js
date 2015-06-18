@@ -695,7 +695,7 @@ angular
 									$rootScope
 											.$broadcast('handleBroadcast_AddNewTab');
 								}
-								if (scope && SharedTabService.isQuestionFolderAlreadyAdded(scope.node, $scope.selectedNodes)) {
+								if (scope && scope.node && (scope.node.nodeType === EnumService.NODE_TYPE.chapter || scope.node.nodeType === EnumService.NODE_TYPE.topic) && SharedTabService.isQuestionFolderAlreadyAdded(scope.node, $scope.selectedNodes)) {
 								    SharedTabService.TestWizardErrorPopup_Open();
 								    return false;
 								}
