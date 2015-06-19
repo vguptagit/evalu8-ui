@@ -340,6 +340,9 @@ angular
 									$scope.disciplineBookMaping["books"] = arrangedBooks
 									arrangedBooks=[];
 									$scope.disciplineBooks.push($scope.disciplineBookMaping);
+									$scope.disciplineBooks.sort(function(a, b) {
+										return a.name.localeCompare(b.name)
+									});
 								});
 							}
 							
