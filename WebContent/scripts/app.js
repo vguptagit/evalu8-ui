@@ -152,7 +152,7 @@ angular.module('evalu8Demo', [
     };
 })
 .config(function ($httpProvider) {
-    $httpProvider.interceptors.push('myHttpInterceptor');
+    //$httpProvider.interceptors.push('myHttpInterceptor');
 })
 .run(['$rootScope', '$location', '$cookieStore', '$http', '$modal', 'blockUI', 'AuthenticationService',
     function ($rootScope, $location, $cookieStore, $http, $modal, blockUI, AuthenticationService) {
