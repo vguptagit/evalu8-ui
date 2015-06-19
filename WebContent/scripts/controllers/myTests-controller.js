@@ -437,6 +437,9 @@ angular.module('e8MyTests')
         $('.testMessagetip').hide();
         $scope.selectTestNode = function ($event,test) {
         	
+        	if(test.node.nodeType == EnumService.NODE_TYPE.emptyFolder) {
+        		return;
+        	}
             test.node.selectTestNode = !test.node.selectTestNode;
             if(test.node.selectTestNode 
             		&& $rootScope.globals.loginCount <= evalu8config.messageTipLoginCount 
