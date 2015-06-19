@@ -225,7 +225,7 @@ a.fa.fa-user{
   height: 30px;
   width: 40px;
   right: 54px;
-  top: 5px;
+  top: 6px;
 }
 
 .editiconButtons:hover{
@@ -431,19 +431,25 @@ span.glyphicon.glyphicon-info-sign {
 }
 
 .errorMsgTip{
-  height: 40px;
+   height: 40px;
   width: 30%;
   position: absolute;
-  left: 33%; 
+  left: 33%;
   display: inline-block;
   text-align: center;
   font-size: 14px;
-  font-family:Helvetica;
+  font-family: Helvetica;
   padding-bottom: 30px;
-  box-shadow: 0 6px 12px rgba(0,0,0,.175);
   padding-top: 15px;
-  border-radius: 4px;
   z-index: 9999;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  border-bottom: 1px solid #ebccd1;
+}
+
+.errorMsgTip span {
+  color: rgb(243, 28, 28);
+  font-size: 16px;
 }
 
 .testMessagetip {

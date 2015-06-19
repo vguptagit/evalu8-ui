@@ -985,6 +985,15 @@ display: inline-block;
 	background-color: #B6B4B4;
 }
 
+#tree-root .activeFolder {
+	background-color: #007FA9;
+	color: #FFFFFF;
+}
+
+.activeFolder label{
+	color:white;
+} 
+
 .alertMsg {
 	padding: 20px 20px 20px 20px;
 	text-align: center;
