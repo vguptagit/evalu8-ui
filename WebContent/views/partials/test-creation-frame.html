@@ -311,9 +311,7 @@
        						 <span aria-hidden="true">&times;</span>
     					</button>   
 					</div>
-                    <div class="questionEditCaption editView">
-                        {{node.editMainText}}
-                    </div>
+                    <div class="questionEditCaption editView" ng-trim="true" >{{node.editMainText}}</div>                 
                     <a class="qstnViewLink" ng-click="showQstnPrintOrEditMode(this)"
                        ng-show="showQstnEditIcon" tooltip="{{node.qstnLinkTitle}}" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="bottom">{{node.qstnLinkText}}</a>
                 </div>

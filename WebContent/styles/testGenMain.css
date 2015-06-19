@@ -1472,10 +1472,12 @@ li[printmode='true'].displayQuestionLI .questionEditCaption {
 li[printmode='false'].displayQuestionLI .questionEditCaption {
 	display: inline-block;
 	float: left;
-	font-size: 14px;		
-	padding-bottom: 20px;
+	font-size: 13px;		
+	font-family: Helvetica;
+	padding-bottom: 0px;
 	padding-left:6px;
-	width: 85%;
+	max-width: 94%;
+    white-space: pre-wrap;
 }
 
 li[printmode='true'] .editMetdata {
