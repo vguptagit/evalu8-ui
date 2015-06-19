@@ -133,7 +133,7 @@ angular.module('evalu8Demo', [
             	}
             		
             	var divHtml = '<div class="errorMsgTip">';
-				divHtml += '<div><span class="glyphicon glyphicon-alert"></span>&nbsp;<strong>Erro!:</strong> ' + errorText + '</div>';
+				divHtml += '<div><span class="glyphicon glyphicon-alert"></span>&nbsp;<strong>Erro:</strong> ' + errorText + '</div>';
 				divHtml += '</div>';
             	
             	$('body').append(divHtml);
