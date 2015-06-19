@@ -122,7 +122,7 @@ angular
 								if (step == '2' && !$scope.isDesciplineEmpty()) {
 									$scope.exitDiscipline()
 									$scope.step = step;
-								} else if (step == '1') {
+								} else if (step == '1' && !$scope.isBookLoading) {
 									$scope.searchedDiscipline="";
 									$scope.step = step;
 								}
@@ -265,10 +265,11 @@ angular
 							/* books related starts */
 							$scope.searchedBook = undefined;
 							$scope.trackEnterKey = 0;
-
 							$scope.exitDiscipline = function() {
 								$scope.searchedDiscipline="";
 								$scope.disciplineBooks = [];
+								$scope.isBookLoading=true;
+								$(".btnGotoDispBook").addClass("btnDisbledGotoDispBook");
 
 								$scope.books = {
 									all : [],
@@ -279,19 +280,13 @@ angular
 								if ($scope.disciplines.userSelected.length > 0) {
 
 									// Getting User selected books
-									UserService
-											.userBookIDs(function(userBookIDs) {
-												$scope.books.userSelected = userBookIDs;
-
-												$scope.disciplines.userSelected
-														.forEach(function(
-																discipline) {
-															$scope
-																	.getBooks(
-																			discipline,
-																			$scope.books.userSelected);
-														});
-											});
+									UserService.userBookIDs(function(userBookIDs) {
+											$scope.books.userSelected = userBookIDs;
+											$scope.selectedDisciplineCounter=0;
+											$scope.disciplines.userSelected.forEach(function(discipline) {
+														$scope.getBooks(discipline,$scope.books.userSelected);
+													});
+										});
 
 									return true;
 								} else {
@@ -343,6 +338,11 @@ angular
 									$scope.disciplineBooks.sort(function(a, b) {
 										return a.name.localeCompare(b.name)
 									});
+									$scope.selectedDisciplineCounter++;
+									if($scope.selectedDisciplineCounter==$scope.disciplines.userSelected.length){
+										$scope.isBookLoading=false;
+										$(".btnGotoDispBook").removeClass("btnDisbledGotoDispBook");
+									}
 								});
 							}
 							
