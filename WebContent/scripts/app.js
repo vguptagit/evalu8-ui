@@ -127,10 +127,11 @@ angular.module('evalu8Demo', [
             		errorText = "Unable to fetch data! Please try again.";
             	} else if(response.config.method == "POST") {
             		if(response.config.url.indexOf("/login") > 1){
-            			errorText= "unable to login please try again.";
-            			return false;
+            			errorText= "Unable to login! Please try again.";            			
             		}
-            		errorText = "Unable to save data! Please try again.";
+            		else {
+            		    errorText = "Unable to save data! Please try again.";
+            		}
             	}
             		
             	var divHtml = '<div class="errorMsgTip">';

@@ -641,6 +641,7 @@ angular
 								return sortedNodes;
 							}
 
+						    //TODO : need to revisit and look for better way instead of using JQuery.
 							// Message tip
 							$scope.closeQuestionTip = function() {
 								$('.questionMessagetip').hide();
@@ -668,6 +669,11 @@ angular
 									node.isNodeSelected = true;
 									node.showEditQuestionIcon = true;
 									node.showTestWizardIcon = true;
+									for (var j = 0; j < test.questions.length; j++) {
+									    if (node.guid === test.questions[j].guid) {
+									        node.showEditQuestionIcon = false;
+									    }
+									}
 								} else {
 									for (var i = 0; i < $scope.selectedNodes.length; i++) {
 										if ($scope.selectedNodes[i].guid == node.guid
