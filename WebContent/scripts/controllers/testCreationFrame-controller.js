@@ -869,7 +869,6 @@ angular
 												response, currentNode);
 							}
 
-							$scope.isLoading = false;
 							$scope.onClickTab = function(test) {
 								var editedElement = document
 										.querySelector("div#qstnArea li[printmode=false]")
@@ -892,7 +891,6 @@ angular
 								}
 
 								if (test.testId && !test.questions.length && !SharedTabService.isDirtyTab(test)) {
-									$scope.isLoading = true;
 									TestService
 											.getTest(
 													test.testId,
@@ -1261,7 +1259,6 @@ angular
 								}
 
 								$("#testCaption").val(selectedTest.node.title);
-								$scope.isLoading = true;
 								TestService
 										.getTest(
 												selectedTest.node.guid,
@@ -1280,7 +1277,6 @@ angular
 							$scope.renderQuestions = function(qBindings,
 									currentIndex) {
 								if (qBindings.length == 0) {
-									$scope.isLoading = false;
 									$rootScope.blockPage.stop();
 									return false;
 								}
@@ -1345,7 +1341,6 @@ angular
 															displayNode.BlankSize = displayNode.qstnMasterData.BlankSize;
 													
 															// $scope.tree2.push(displayNode);
-															$scope.isLoading = false;
 															SharedTabService.tests[currentIndex].questions
 																	.push(displayNode);
 															SharedTabService.masterTests[currentIndex].masterQuestions
@@ -2243,7 +2238,6 @@ angular
 													displayNode.textHTML = displayNode.html();
 
 													// $scope.tree2.push(displayNode);
-													$scope.isLoading = false;
 													SharedTabService.tests[SharedTabService.currentTabIndex].questions
 															.push(displayNode);
 													SharedTabService.masterTests[SharedTabService.currentTabIndex].masterQuestions
