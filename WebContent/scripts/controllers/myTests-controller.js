@@ -529,12 +529,12 @@ angular.module('e8MyTests')
 
                     $rootScope.blockLeftPanel.start();
                     TestService.getArchiveTests(defaultFolder.node.guid, function (tests) {
-                    	/*
+                    	
                     	if(userFolders.length == 0 && tests.length == 0) {
                     		var item = {"nodeType": "empty", "draggable": false, "title": "Empty folder", "sequence": 0};
     						 
                     		defaultFolder.node.nodes.push(item);                    		
-                    	}*/
+                    	}
                     	
                         tests.forEach(function (test) {
                             test.selectTestNode = false;//to show the edit icon
@@ -676,10 +676,11 @@ angular.module('e8MyTests')
         			if(testParent && testParent.node && testParent.node.nodes && testParent.node.nodes.length) {
         				
         				for(var tesstItemIndex=testParent.node.nodes.length-1; tesstItemIndex>=0; tesstItemIndex--) {
-        					if(testParent.node.nodes[tesstItemIndex].nodeType == 'test') {
+        					if(testParent.node.nodes[tesstItemIndex].nodeType == EnumService.NODE_TYPE.test 
+        						|| testParent.node.nodes[tesstItemIndex].nodeType == EnumService.NODE_TYPE.emptyFolder) {
         						testParent.node.nodes.splice(tesstItemIndex, 1);
         					}
-        				}
+        				}        				
         			}
         			
                     TestService.getTests(restoredFolder.guid, function (tests) {
