@@ -1798,6 +1798,13 @@ ul.a {
 
 .font10 {
 	font-size: 7px;
+	float:left;
+	margin-top: 4px;
+	margin-right: 5px;
+}
+
+.floatLeft {
+	float:left;
 }
 
 .discplineText1 {
@@ -2968,4 +2975,5 @@ li[qstntemplate='true'] label.mOptionLabel{
 	vertical-align: middle; 
 	margin-top: 7px; 
 	background-color:transparent;
+	cursor: pointer; 
 }

@@ -386,10 +386,10 @@ angular
 							}
 							var setParentBookStatus = function(book){
 								if ($scope.books.userSelected.indexOf(book.guid) > -1) {
+									book.showEdition = true;
 									var parentBookID=book.parentBookID;
 									arrangedBooks.forEach(function(filtBook) {
 										if(filtBook.guid==parentBookID){
-											book.showEdition = true;
 											filtBook.isCollasped = true;
 										}
 									});
@@ -589,7 +589,7 @@ angular
 										});
 							};
 
-							$scope.showOldEdition = function(parentbookid,
+							$scope.showOldEdition = function(event,parentbookid,
 									disciplineName) {
 								var parentBook = null;
 								var oldEditions = [];
@@ -633,7 +633,6 @@ angular
 								}
 
 								event.stopPropagation();
-
 							}
 
 							$scope.isBookEmpty = function() {
