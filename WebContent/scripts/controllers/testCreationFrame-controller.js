@@ -131,12 +131,6 @@ angular
 										: " View Question in print mode";
 								if (selectedQstnNode.node.IsEditView) {
 									$scope.imageClicked = false;
-									var p = $(
-											angular
-													.element(document
-															.querySelector("#uploadImage")))
-											.detach();
-									$("#qstnArea").append(p);
 									convertHtmlToXmlNode(selectedQstnNode);
 									SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode = false;
 								} else {
@@ -147,6 +141,16 @@ angular
 							}
 
 							function convertHtmlToXmlNode(selectedQstnNode) {
+								//Removing the image place holder from custom question html section
+								//and place it in bottom of test area.
+								var p = $(
+										angular
+												.element(document
+														.querySelector("#uploadImage")))
+										.detach();
+								$("#qstnArea").append(p);
+								
+								
 								var xml = jQuery
 								.parseXML(selectedQstnNode.node.data);
 								var qstnHTML = $(selectedQstnNode.$element);
