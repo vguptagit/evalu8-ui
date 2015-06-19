@@ -121,7 +121,7 @@ angular.module('evalu8Demo', [
 
             	return;
             } else {
-
+/*
             	var errorText;
             	if(response.config.method == "GET") {
             		errorText = "Unable to fetch data! Please try again.";
@@ -145,14 +145,14 @@ angular.module('evalu8Demo', [
 		        	$('.errorMsgTip').hide();	
 		        }, 5000);
 		        
-                return $q.reject(response);                            	
+                return $q.reject(response);*/                            	
             }
 
         }
     };
 })
 .config(function ($httpProvider) {
-    //$httpProvider.interceptors.push('myHttpInterceptor');
+    $httpProvider.interceptors.push('myHttpInterceptor');
 })
 .run(['$rootScope', '$location', '$cookieStore', '$http', '$modal', 'blockUI', 'AuthenticationService',
     function ($rootScope, $location, $cookieStore, $http, $modal, blockUI, AuthenticationService) {
