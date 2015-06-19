@@ -414,7 +414,9 @@ angular
 								if (!currentNode.collapsed) {
 									currentNode.collapse();
 									$(currentNode.$element).find(".captiondiv").removeClass('iconsChapterVisible');
-									currentNode.$element.children(1).removeClass('expandChapter');
+									
+									// Dont delete the below commented line, will delete after few days.
+									/*currentNode.$element.children(1).removeClass('expandChapter');*/
 								} else {
 								    currentNode.node.isHttpReqCompleted = false;
 									currentNode.expand();
@@ -485,7 +487,9 @@ angular
 													    currentNode.node.isHttpReqCompleted = true;
 														var responseQuestions = response;
 														$(currentNode.$element).find(".captiondiv").addClass('iconsChapterVisible');
-														currentNode.$element.children(0).addClass('expandChapter');
+														
+														// Dont delete the below commented line, will delete after few days.
+														/*currentNode.$element.children(0).addClass('expandChapter');*/
 
 														var sortedNodes = sortNodes(response, currentNode,"questionBindings");
 
