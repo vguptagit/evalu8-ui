@@ -1574,7 +1574,10 @@ angular
 							}
 							// Function is to save the Test details with the
 							// questions.
+							
 							$scope.saveTest = function(callback) {
+								$scope.editedQuestions = [];
+								
 							    $rootScope.blockPage.start();
 								var test = SharedTabService.tests[SharedTabService.currentTabIndex];
 								if (test.title == null
@@ -1747,6 +1750,12 @@ angular
     										var guid = question[0].guid;
 
     										test.questions[questionIndex].guid = guid;
+    										
+    										if(test.questions[questionIndex].IsEdited) {
+    											test.questions[questionIndex].extendedMetadata = QuestionEnvelops[questionIndex].metadata.extendedMetadata;
+    											$scope.editedQuestions.push(test.questions[questionIndex]);
+    										}
+    										
     										test.questions[questionIndex].IsEdited = false; 
     										questionIndex = questionIndex + 1;
     										
@@ -1789,7 +1798,7 @@ angular
     										}
     										testResult.title = test.title;
     										testResult.modified = (new Date()).toJSON();
-    										$rootScope.$broadcast('handleBroadcast_AddNewTest', testResult, $scope.containerFolder, isEditMode, oldGuid);
+    										$rootScope.$broadcast('handleBroadcast_AddNewTest', testResult, $scope.containerFolder, isEditMode, oldGuid, $scope.editedQuestions);
     										$scope.containerFolder = null; //clear selected folder in save as dialog popup.
                                              
     										if (test.isSaveAndClose) {
@@ -1805,8 +1814,10 @@ angular
     										}
     										$rootScope.blockPage.stop();
     									});
+    									        								
     								});                                                                
 
+    								
 								});
 
 							}

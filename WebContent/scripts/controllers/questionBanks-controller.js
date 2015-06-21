@@ -1303,17 +1303,32 @@ angular
 								$scope.allContainers=[];
 								$scope.selectedBookid="";
 								$scope.loadTree();
-							}
+							}							
 							
-							$scope.$on('handleBroadcast_AddNewTest', function (handler, newTest, containerFolder, isEditMode, oldGuid) {
+							$scope.$on('handleBroadcast_AddNewTest', function (handler, newTest, containerFolder, isEditMode, oldGuid, editedQuestions) {
+								
+								editedQuestions.forEach(function(editedQuestion) {
+									editedQuestion.isQuestion = true;
+									editedQuestion.questionXML = true;
+
+									editedQuestion.nodeType = "question";
+
+									editedQuestion.extendedMetadata = editedQuestion.extendedMetadata;
+								
+									editedQuestion.showEditQuestionIcon = false;
+									editedQuestion.isNodeSelected = false;
+									addToQuestionsArray(editedQuestion);
+									editedQuestion.template = 'qb_questions_renderer.html';
+									$scope.yourQuestionsFolder.node.nodes.push(editedQuestion);	
+								})
 								
 								UserQuestionsService.userQuestions(function(userQuestions) {
 									if (userQuestions.length) {
 										$scope.userQuestions = userQuestions;
 									}
 									if($scope.yourQuestionsFolder) {
-										$scope.yourQuestionsFolder.collapse();
-										$scope.getBooks($scope.yourQuestionsFolder);
+										//$scope.yourQuestionsFolder.collapse();
+										//$scope.getBooks($scope.yourQuestionsFolder);
 									}
 										
 								})
