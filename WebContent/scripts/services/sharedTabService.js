@@ -376,6 +376,8 @@ angular.module('evalu8Demo')
 		                             //scope.tests.splice(i, 1);
 		                         } else {
 		                             scope.open_CloseTabConfirmation(tab);
+		                             sharedTabService.currentTabIndex = j;
+		                             sharedTabService.prepForBroadcastCurrentTabIndex(j);
 		                         }
 		                         isComeOutFreomLoop = true;
 		                         return false;
