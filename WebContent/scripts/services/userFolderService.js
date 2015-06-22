@@ -3,8 +3,8 @@
 angular.module('evalu8Demo')
 
 .service('UserFolderService', 
-		['$http', '$rootScope', '$location', '$cookieStore', '$cacheFactory',
-		 function($http, $rootScope, $location, $cookieStore, $cacheFactory) {
+		['$http', '$rootScope', '$location', '$cookieStore', '$cacheFactory', 'CommonService',
+		 function($http, $rootScope, $location, $cookieStore, $cacheFactory, CommonService) {
 			
 			$rootScope.globals = $cookieStore.get('globals') || {};			
 			 
@@ -101,8 +101,8 @@ angular.module('evalu8Demo')
 					});
 					
 					if(userFolders.length == 0) {
-						var item = {"nodeType": "empty", "draggable": false, "title": "Empty folder", "sequence": 0};
-						userFolders.push(item);
+
+						userFolders.push(CommonService.getEmptyFolder());
 					}
 					callback (userFolders);
 				})					

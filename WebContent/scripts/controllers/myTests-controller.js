@@ -41,18 +41,18 @@ angular.module('e8MyTests')
                 	});
                 	
                 	if($scope.defaultFolders.length) {
-                		$scope.defaultFolders.push({'guid': null, 'nodeType': 'archiveRoot', 'draggable': false, 'droppable': false, 'title': 'Archive'});
+                		$scope.defaultFolders.push(CommonService.getArchiveRoot());
                 	} else {
                     	ArchiveService.getArchiveFolders(null, function (userFolders) {
-                    		if(userFolders.length && !(userFolders.length==1 && userFolders[0].nodeType=='empty')) {
-                				$scope.defaultFolders.push({'guid': null, 'nodeType': 'archiveRoot', 'draggable': false, 'droppable': false, 'title': 'Archive'});	                    			                			
+                    		if(userFolders.length) {
+                				$scope.defaultFolders.push(CommonService.getArchiveRoot());	                    			                			
                     		} else {
                     			
                                 TestService.getArchiveTests(null, function (tests) {
 
                                 	if(tests.length) {
                             			
-                                		$scope.defaultFolders.push({'guid': null, 'nodeType': 'archiveRoot', 'draggable': false, 'droppable': false, 'title': 'Archive'});	                            			                    			
+                                		$scope.defaultFolders.push(CommonService.getArchiveRoot());	                            			                    			
                             		}
                                 });
                                 
@@ -485,35 +485,32 @@ angular.module('e8MyTests')
 
                     defaultFolder.node.nodes = userFolders;
 
-                    $rootScope.blockLeftPanel.start();
-                    TestService.getTests(defaultFolder.node.guid, function (tests) {
-                    	/*
-                    	if(userFolders.length == 0 && tests.length == 0) {
-    						var item = {"nodeType": "empty", "draggable": false, "title": "Empty folder", "sequence": 0};
-    								
-    						defaultFolder.node.nodes.push(item);                    		
-                    	}*/
-						
-                        tests.forEach(function (test) {
+                    if(defaultFolder.node.testBindings.length) {
+                        $rootScope.blockLeftPanel.start();
+                        TestService.getTests(defaultFolder.node.guid, function (tests) {                        	
+    						
+                            tests.forEach(function (test) {
 
-                        	if(SharedTabService.tests) {
-	                        	SharedTabService.tests.forEach(function(testTab) {
-	                        		if(testTab.testId == test.guid) {
-	                        			test.showEditIcon = false;
-	                        			test.showArchiveIcon = false;
-	                        			testTab.treeNode = test;
-	                        		}
-	                        	});
+                            	if(SharedTabService.tests) {
+    	                        	SharedTabService.tests.forEach(function(testTab) {
+    	                        		if(testTab.testId == test.guid) {
+    	                        			test.showEditIcon = false;
+    	                        			test.showArchiveIcon = false;
+    	                        			testTab.treeNode = test;
+    	                        		}
+    	                        	});
+                            	}
+                                defaultFolder.node.nodes.push(test);
+                            })
+                            
+                            if (defaultFolder.node.nodes.length > 1 && defaultFolder.node.nodes[0].sequence == 0) {
+                            	defaultFolder.node.nodes.shift();
                         	}
-                            defaultFolder.node.nodes.push(test);
-                        })
 
-                        if (defaultFolder.node.nodes.length > 1 && defaultFolder.node.nodes[0].sequence == 0) {
-                            defaultFolder.node.nodes.shift();
-                        }
+                            $rootScope.blockLeftPanel.stop();
+                        });
+                    }
 
-                        $rootScope.blockLeftPanel.stop();
-                    });
                     
                     if(callback) callback();
                 });                
@@ -530,27 +527,25 @@ angular.module('e8MyTests')
 
                     defaultFolder.node.nodes = userFolders;
 
-                    $rootScope.blockLeftPanel.start();
-                    TestService.getArchiveTests(defaultFolder.node.guid, function (tests) {
-                    	
-                    	if(userFolders.length == 0 && tests.length == 0) {
-                    		var item = {"nodeType": "empty", "draggable": false, "title": "Empty folder", "sequence": 0};
+                    if(defaultFolder.node.testBindings.length) {
+                        $rootScope.blockLeftPanel.start();
+                        TestService.getArchiveTests(defaultFolder.node.guid, function (tests) {                        	
+                        	
+                            tests.forEach(function (test) {
+                                test.selectTestNode = false;//to show the edit icon
+
+                                defaultFolder.node.nodes.push(test);
+                            })
+                            
+                            $rootScope.blockLeftPanel.stop();
+                        });
+                    } else {
+                    	if(userFolders.length == 0) {
     						 
-                    		defaultFolder.node.nodes.push(item);                    		
+                    		defaultFolder.node.nodes.push(CommonService.getEmptyFolder());                    		
                     	}
-                    	
-                        tests.forEach(function (test) {
-                            test.selectTestNode = false;//to show the edit icon
+                    }
 
-                            defaultFolder.node.nodes.push(test);
-                        })
-
-                        if (defaultFolder.node.nodes.length > 1 && defaultFolder.node.nodes[0].sequence == 0) {
-                            defaultFolder.node.nodes.shift();
-                        }
-                        
-                        $rootScope.blockLeftPanel.stop();
-                    });
                     
                     if(callback) callback();
                 });                
@@ -791,7 +786,7 @@ angular.module('e8MyTests')
             	$scope.defaultFolders.unshift(userFolder);
                 
             	if($scope.defaultFolders.length == 1) {
-            		$scope.defaultFolders.push({'guid': null, 'nodeType': 'archiveRoot', 'draggable': false, 'droppable': false, 'title': 'Archive'});
+            		$scope.defaultFolders.push(CommonService.getArchiveRoot());
             	}
             	
                 $scope.folderName = "";
@@ -871,7 +866,7 @@ angular.module('e8MyTests')
                 SharedTabService.tests[SharedTabService.currentTabIndex].treeNode = test;
                 
             	if($scope.defaultFolders.length == 1) {
-            		$scope.defaultFolders.push({'guid': null, 'nodeType': 'archiveRoot', 'draggable': false, 'droppable': false, 'title': 'Archive'});
+            		$scope.defaultFolders.push(CommonService.getArchiveRoot());
             	}
             });
         });

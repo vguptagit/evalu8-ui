@@ -51,6 +51,16 @@ angular.module('evalu8Demo')
         }
         return searchItem;
     }
+    
+    commonService.getEmptyFolder = function() {
+    	
+    	return {"nodeType": "empty", "draggable": false, "title": "Empty folder", "sequence": 0};
+    }
+    
+    commonService.getArchiveRoot = function() {
+    	
+    	return {'guid': null, 'nodeType': 'archiveRoot', 'draggable': false, 'droppable': false, 'title': 'Archive'};
+    }
 
     return commonService;
 }]);
