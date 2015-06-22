@@ -14,12 +14,19 @@ angular.module('evalu8Demo')
 						'Accept' : 'application/json;odata=verbose'
 					}
 			};
+			var configCacheDisabledForIE = {
+			    headers: {
+			        'x-authorization': $rootScope.globals.authToken,
+			        'Accept': 'application/json;odata=verbose',
+			        'If-Modified-Since': '0'
+			    }
+			};
 					
 			this.defaultFolders = function(callback) {				
 
 				var defaultFolders = [];
 				$http.get(
-						evalu8config.apiUrl + "/my/folders", config)
+						evalu8config.apiUrl + "/my/folders", configCacheDisabledForIE)
 						.success(
 								function(response) {
 									
