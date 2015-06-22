@@ -1321,19 +1321,17 @@ angular
 									editedQuestion.isNodeSelected = false;
 									addToQuestionsArray(editedQuestion);
 									editedQuestion.template = 'qb_questions_renderer.html';
-									$scope.yourQuestionsFolder.node.nodes.push(editedQuestion);	
-								})
-								
-								UserQuestionsService.userQuestions(function(userQuestions) {
-									if (userQuestions.length) {
-										$scope.userQuestions = userQuestions;
+									if($scope.yourQuestionsFolder == null) {
+										$scope.disciplines.unshift({
+											"item" : "Your Questions (user created)",
+											"isCollapsed" : true	
+										});	
+										$scope.yourQuestionsFolder = $scope.disciplines[0];
+										$scope.yourQuestionsFolder.isHttpReqCompleted = true;
+									} else {
+										$scope.yourQuestionsFolder.node.nodes.push(editedQuestion);	
 									}
-									if($scope.yourQuestionsFolder) {
-										//$scope.yourQuestionsFolder.collapse();
-										//$scope.getBooks($scope.yourQuestionsFolder);
-									}
-										
-								})
+								})							
 								
 							    if (isEditMode) {
 							        return false;
