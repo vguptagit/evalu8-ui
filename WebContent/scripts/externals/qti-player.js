@@ -2846,9 +2846,10 @@ QTI.customize = function(xml) {
 		ele.setAttribute("index", indexResponse[i]);
 	});
 	if (xml.find("mapping").length == 1) {
-		var scores = xml.find("mapEntry[mappedValue='1']");
+		var scores = xml.find("mapEntry[mappedValue]");
 		$.each(scores, function() {
-			QTI.correctResponse[$(this).attr("mapKey")] = true;
+			if(parseFloat($(this).attr("mappedValue")) > 0)
+				QTI.correctResponse[$(this).attr("mapKey")] = true;
 		})
 	} else {
 		var scores = xml.find("responseProcessing").find(
