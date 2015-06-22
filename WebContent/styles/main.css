@@ -4,9 +4,6 @@ body {
 
 .divider {
     background-color: #E8E8E8;
-    background-image: url("/images/divider.png");
-    background-repeat-y: no-repeat;
-    background-position-y: 50%;
     border-left : 1px solid #D0d0d0;
     border-right : 1px solid #D0d0d0;
     height: 94.0vh;
