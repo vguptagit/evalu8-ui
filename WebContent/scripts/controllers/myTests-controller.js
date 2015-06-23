@@ -31,6 +31,7 @@ angular.module('e8MyTests')
 	                        	SharedTabService.tests.forEach(function(testTab) {
 	                        		if(testTab.testId == test.guid) {
 	                        			test.showEditIcon = false;
+	                        			test.draggable = false;
 	                        			test.showArchiveIcon = false;
 	                        			testTab.treeNode = test;
 	                        		}
@@ -499,6 +500,7 @@ angular.module('e8MyTests')
 	                        	SharedTabService.tests.forEach(function(testTab) {
 	                        		if(testTab.testId == test.guid) {
 	                        			test.showEditIcon = false;
+	                        			test.draggable=false;
 	                        			test.showArchiveIcon = false;
 	                        			testTab.treeNode = test;
 	                        		}
