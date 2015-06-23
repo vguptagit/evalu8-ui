@@ -3112,6 +3112,8 @@ QTI.getCursorElement = function(elm){
 				elements.eq(i).html("");
 				return QTI.getCursorElement(elements.eq(i));
 			}
+			if(elements.eq(i).get(0).tagName.toUpperCase() == "BR")
+				return QTI.getCursorElement(elements.eq(i)); 
 		return QTI.getCursorElement(elements.eq(i-1));
 	}
 	
