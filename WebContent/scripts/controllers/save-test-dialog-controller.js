@@ -5,7 +5,7 @@
 
 		     $scope.selectedfolder = null;
 		     $scope.loadRootFolders = function () {
-		         UserFolderService.myTestRootFolder(function (myTestRoot) {
+		         UserFolderService.testRootFolder(function (myTestRoot) {
 		             $scope.myTestRoot = myTestRoot;
 		         });
 

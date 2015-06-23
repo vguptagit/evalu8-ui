@@ -47,7 +47,7 @@ angular.module('evalu8Demo')
 				
 			};
 			
-			this.myTestRootFolder = function(callback) {
+			this.testRootFolder = function(callback) {
 				var myTestRoot = null;
 				$http.get(
 						evalu8config.apiUrl + "/my/testroot", config)

@@ -18,49 +18,52 @@ angular.module('e8MyTests')
         	
         	UserFolderService.defaultFolders(function (defaultFolders) {
         		
-            	UserFolderService.myTestRootFolder(function(myTestRoot){
+            	UserFolderService.testRootFolder(function(myTestRoot){
             		$scope.myTestRoot = myTestRoot;
+            	            	
+	                $scope.defaultFolders = defaultFolders;
+	                
+	                $rootScope.blockLeftPanel.start();
+	                TestService.getTests($scope.myTestRoot.guid, function(tests){
+	                	tests.forEach(function(test) {
+	                		
+	                    	if(SharedTabService.tests) {
+	                        	SharedTabService.tests.forEach(function(testTab) {
+	                        		if(testTab.testId == test.guid) {
+	                        			test.showEditIcon = false;
+	                        			test.showArchiveIcon = false;
+	                        			testTab.treeNode = test;
+	                        		}
+	                        	});
+	                    	}
+	                		$scope.defaultFolders.push(test);	
+	                	});
+	                	
+	                	if($scope.defaultFolders.length) {
+	                		$scope.defaultFolders.push(CommonService.getArchiveRoot());
+	                	} else {
+	                    	ArchiveService.getArchiveFolders(null, function (userFolders) {
+	                    		if(userFolders.length && !(userFolders.length==1 && userFolders[0].nodeType=='empty')) {
+	                				$scope.defaultFolders.push(CommonService.getArchiveRoot());	                    			                			
+	                    		} else {
+	                    			
+	                                TestService.getArchiveTests(null, function (tests) {
+	
+	                                	if(tests.length) {
+	                            			
+	                                		$scope.defaultFolders.push(CommonService.getArchiveRoot());	                            			                    			
+	                            		}
+	                                });
+	                                
+	                    		}
+	                    	});                		
+	                	}
+	                	$rootScope.blockLeftPanel.stop();
+	                });
+	                
             	});
-            	
-                $scope.defaultFolders = defaultFolders;
                 
-                $rootScope.blockLeftPanel.start();
-                TestService.getTests(null, function(tests){
-                	tests.forEach(function(test) {
-                		
-                    	if(SharedTabService.tests) {
-                        	SharedTabService.tests.forEach(function(testTab) {
-                        		if(testTab.testId == test.guid) {
-                        			test.showEditIcon = false;
-                        			test.showArchiveIcon = false;
-                        			testTab.treeNode = test;
-                        		}
-                        	});
-                    	}
-                		$scope.defaultFolders.push(test);	
-                	});
-                	
-                	if($scope.defaultFolders.length) {
-                		$scope.defaultFolders.push(CommonService.getArchiveRoot());
-                	} else {
-                    	ArchiveService.getArchiveFolders(null, function (userFolders) {
-                    		if(userFolders.length) {
-                				$scope.defaultFolders.push(CommonService.getArchiveRoot());	                    			                			
-                    		} else {
-                    			
-                                TestService.getArchiveTests(null, function (tests) {
-
-                                	if(tests.length) {
-                            			
-                                		$scope.defaultFolders.push(CommonService.getArchiveRoot());	                            			                    			
-                            		}
-                                });
-                                
-                    		}
-                    	});                		
-                	}
-                	$rootScope.blockLeftPanel.stop();
-                });            
+                
             });
         }
         
@@ -485,32 +488,29 @@ angular.module('e8MyTests')
 
                     defaultFolder.node.nodes = userFolders;
 
-                    if(defaultFolder.node.testBindings.length) {
-                        $rootScope.blockLeftPanel.start();
-                        TestService.getTests(defaultFolder.node.guid, function (tests) {                        	
-    						
-                            tests.forEach(function (test) {
+                    $rootScope.blockLeftPanel.start();
+                    TestService.getTests(defaultFolder.node.guid, function (tests) {
+						
+                        tests.forEach(function (test) {
 
-                            	if(SharedTabService.tests) {
-    	                        	SharedTabService.tests.forEach(function(testTab) {
-    	                        		if(testTab.testId == test.guid) {
-    	                        			test.showEditIcon = false;
-    	                        			test.showArchiveIcon = false;
-    	                        			testTab.treeNode = test;
-    	                        		}
-    	                        	});
-                            	}
-                                defaultFolder.node.nodes.push(test);
-                            })
-                            
-                            if (defaultFolder.node.nodes.length > 1 && defaultFolder.node.nodes[0].sequence == 0) {
-                            	defaultFolder.node.nodes.shift();
+                        	if(SharedTabService.tests) {
+	                        	SharedTabService.tests.forEach(function(testTab) {
+	                        		if(testTab.testId == test.guid) {
+	                        			test.showEditIcon = false;
+	                        			test.showArchiveIcon = false;
+	                        			testTab.treeNode = test;
+	                        		}
+	                        	});
                         	}
+                            defaultFolder.node.nodes.push(test);
+                        })
 
-                            $rootScope.blockLeftPanel.stop();
-                        });
-                    }
+                        if (defaultFolder.node.nodes.length > 1 && defaultFolder.node.nodes[0].sequence == 0) {
+                            defaultFolder.node.nodes.shift();
+                        }
 
+                        $rootScope.blockLeftPanel.stop();
+                    });	
                     
                     if(callback) callback();
                 });                
@@ -527,25 +527,26 @@ angular.module('e8MyTests')
 
                     defaultFolder.node.nodes = userFolders;
 
-                    if(defaultFolder.node.testBindings.length) {
-                        $rootScope.blockLeftPanel.start();
-                        TestService.getArchiveTests(defaultFolder.node.guid, function (tests) {                        	
-                        	
-                            tests.forEach(function (test) {
-                                test.selectTestNode = false;//to show the edit icon
-
-                                defaultFolder.node.nodes.push(test);
-                            })
-                            
-                            $rootScope.blockLeftPanel.stop();
-                        });
-                    } else {
-                    	if(userFolders.length == 0) {
+                    $rootScope.blockLeftPanel.start();
+                    TestService.getArchiveTests(defaultFolder.node.guid, function (tests) {
+                    	
+                    	if(userFolders.length == 0 && tests.length == 0) {
     						 
                     		defaultFolder.node.nodes.push(CommonService.getEmptyFolder());                    		
                     	}
-                    }
+                    	
+                        tests.forEach(function (test) {
+                            test.selectTestNode = false;//to show the edit icon
 
+                            defaultFolder.node.nodes.push(test);
+                        })
+
+                        if (defaultFolder.node.nodes.length > 1 && defaultFolder.node.nodes[0].sequence == 0) {
+                            defaultFolder.node.nodes.shift();
+                        }
+                        
+                        $rootScope.blockLeftPanel.stop();
+                    });
                     
                     if(callback) callback();
                 });                
