@@ -68,12 +68,7 @@ angular.module('evalu8Demo')
 			};
 				
 			this.getTests = function(folderId, callback) {				
-				var url;
-				if(folderId==null) {
-					url = evalu8config.apiUrl + '/my/tests';
-				} else {
-					url = evalu8config.apiUrl + '/my/folders/' + folderId + '/tests';
-				}
+				var url = evalu8config.apiUrl + '/my/folders/' + folderId + '/tests';
 				
 				var tests = [];
 				
