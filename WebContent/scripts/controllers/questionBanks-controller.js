@@ -100,7 +100,7 @@ angular
 											});
 
 							$scope.userQuestions = [];
-
+							$scope.yourQuestionsFolder = null;
 							$scope.loadTree = function() {
 								DisciplineService.userDisciplines(function(userDisciplines) {
 								
@@ -122,6 +122,7 @@ angular
 														"isCollapsed" : true	
 											});	
 											$scope.disciplines[0].isHttpReqCompleted = true;
+											$scope.yourQuestionsFolder = $scope.disciplines[0];
 										}										
 									})
 
@@ -154,7 +155,7 @@ angular
 							// and append the collection to input discipline
 							// angularjs node
 							
-							$scope.yourQuestionsFolder = null;
+							
 							$scope.getBooks = function(discipline) {
 
 								if (!discipline.collapsed) {
@@ -1328,8 +1329,9 @@ angular
 										});	
 										$scope.yourQuestionsFolder = $scope.disciplines[0];
 										$scope.yourQuestionsFolder.isHttpReqCompleted = true;
-									} else {							
-										$scope.yourQuestionsFolder.node.nodes.push(editedQuestion);	
+									} else {					
+										if($scope.yourQuestionsFolder.node)
+											$scope.yourQuestionsFolder.node.nodes.push(editedQuestion);	
 									}
 								})				
 								
