@@ -44,6 +44,7 @@ angular
 							
 							// $scope.isTestWizardTabPresent = false;
 							$scope.sharedTabService = SharedTabService;
+							$scope.enumService = EnumService;
 
 							/**
 							 * ***************************************Start
