@@ -447,7 +447,9 @@ angular.module('e8MyTests')
             if(test.node.selectTestNode 
             		&& $rootScope.globals.loginCount <= evalu8config.messageTipLoginCount 
             		&& test.node.nodeType != EnumService.NODE_TYPE.archiveTest 
-            		&& test.node.nodeType != EnumService.NODE_TYPE.folder){
+            		&& test.node.nodeType != EnumService.NODE_TYPE.folder
+            		&& test.node.nodeType != EnumService.NODE_TYPE.archiveFolder)
+            {
 	        	$('.testMessagetip').show()
 	        	setTimeout(function(){ 
 	        		$('.testMessagetip').hide();
