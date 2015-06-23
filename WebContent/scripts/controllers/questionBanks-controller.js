@@ -1307,7 +1307,7 @@ angular
 								$scope.loadTree();
 							}							
 							
-							$scope.$on('handleBroadcast_AddNewTest', function (handler, newTest, containerFolder, isEditMode, oldGuid, editedQuestions) {
+							$scope.$on('handleBroadcast_AddNewTest', function (handler, newTest, containerFolder, isEditMode, oldGuid, editedQuestions,editedMigratedQuestions) {
 								
 								editedQuestions.forEach(function(editedQuestion) {
 									editedQuestion.isQuestion = true;
@@ -1328,10 +1328,23 @@ angular
 										});	
 										$scope.yourQuestionsFolder = $scope.disciplines[0];
 										$scope.yourQuestionsFolder.isHttpReqCompleted = true;
-									} else {
+									} else {							
 										$scope.yourQuestionsFolder.node.nodes.push(editedQuestion);	
 									}
-								})							
+								})				
+								
+								//this loop is to deselect the edited existing question.
+								$.each( editedMigratedQuestions, function( key, value ) {											
+											 for (var i = 0; i < $scope.selectedNodes.length; i++) {												 
+											        if (value === $scope.selectedNodes[i].guid) {											        	
+											            $scope.selectedNodes[i].showEditQuestionIcon = false;
+											            $scope.selectedNodes[i].isNodeSelected = false;			
+											            return true;
+											        }
+											    }											
+											
+								});						
+								
 								
 							    if (isEditMode) {
 							        return false;

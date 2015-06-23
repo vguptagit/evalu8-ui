@@ -1596,6 +1596,7 @@ angular
 							
 							$scope.saveTest = function(callback) {
 								$scope.editedQuestions = [];
+								$scope.editedMigratedQuestions = [];
 								
 							    $rootScope.blockPage.start();
 								var test = SharedTabService.tests[SharedTabService.currentTabIndex];
@@ -1768,11 +1769,17 @@ angular
     										var question = JSON.parse(questionItem);
     										var guid = question[0].guid;
 
-    										test.questions[questionIndex].guid = guid;
+    										
     										
     										if(test.questions[questionIndex].IsEdited) {
+    											if(!test.questions[questionIndex].qstnTemplate){
+    												$scope.editedMigratedQuestions.push(test.questions[questionIndex].guid);
+    											}
+    											test.questions[questionIndex].guid = guid;
     											test.questions[questionIndex].extendedMetadata = QuestionEnvelops[questionIndex].metadata.extendedMetadata;
     											$scope.editedQuestions.push(test.questions[questionIndex]);
+    										}else{
+    											test.questions[questionIndex].guid = guid;
     										}
     										
     										test.questions[questionIndex].IsEdited = false; 
@@ -1817,7 +1824,7 @@ angular
     										}
     										testResult.title = test.title;
     										testResult.modified = (new Date()).toJSON();
-    										$rootScope.$broadcast('handleBroadcast_AddNewTest', testResult, $scope.containerFolder, isEditMode, oldGuid, $scope.editedQuestions);
+    										$rootScope.$broadcast('handleBroadcast_AddNewTest', testResult, $scope.containerFolder, isEditMode, oldGuid, $scope.editedQuestions,$scope.editedMigratedQuestions);
     										$scope.containerFolder = null; //clear selected folder in save as dialog popup.
                                              
     										if (test.isSaveAndClose) {
