@@ -806,22 +806,41 @@ angular
 																			/&nbsp;/g,
 																			" ");
 															cursorPosition = QTI.getActualCursorPosition1(cursorPosition,element,optionText);
-															if(element.html().length == 0)
-																element.html("Image");
-															element
-																	.html(optionText
-																			.substring(
-																					0,
-																					cursorPosition)
-																			+ "<u contenteditable='false' url='"
-																			+ data
-																			+ "'><i>"
-																			+ file.name
-																			+ "</i></u>&nbsp;"
-																			+ optionText
-																					.substring(
-																							cursorPosition,
-																							optionText.length))
+															if(element.get(0).tagName.toUpperCase() == "BR")
+															{
+																element.after(optionText
+																		.substring(
+																				0,
+																				cursorPosition)
+																		+ "<u contenteditable='false' url='"
+																		+ data
+																		+ "'><i>"
+																		+ file.name
+																		+ "</i></u>&nbsp;"
+																		+ optionText
+																				.substring(
+																						cursorPosition,
+																						optionText.length));
+															}
+															else{
+																if(element.html().length == 0)
+																	element.html("Image");
+																element
+																		.html(optionText
+																				.substring(
+																						0,
+																						cursorPosition)
+																				+ "<u contenteditable='false' url='"
+																				+ data
+																				+ "'><i>"
+																				+ file.name
+																				+ "</i></u>&nbsp;"
+																				+ optionText
+																						.substring(
+																								cursorPosition,
+																								optionText.length))
+															}
+															
 															$scope.imageClicked = false;
 														});
 
