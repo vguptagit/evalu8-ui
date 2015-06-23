@@ -596,6 +596,7 @@ angular.module('e8MyTests')
         		
         		test.node.nodeType = "archiveTest";
         		test.node.draggable = false;
+        		test.node.selectTestNode= false;// To deselect the test in archive folder when test is archived
         		if(archivedFolder == null || archivedFolder == "") {
         			if($scope.archiveRoot && $scope.archiveRoot.node && $scope.archiveRoot.node.nodes && $scope.archiveRoot.node.nodes.length) {
         				if($scope.archiveRoot.node.nodes[0].nodeType == EnumService.NODE_TYPE.emptyFolder) {
