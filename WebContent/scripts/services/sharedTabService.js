@@ -34,7 +34,7 @@ angular.module('evalu8Demo')
 		             this.id = "tab" + (new Date).getTime();
 		             this.testId = null;
 		             this.folderGuid = null;
-		             this.title;
+		             this.title="";
 		             this.tabTitle = "Untitled test";
 		             this.course;
 		             this.metadata = [];
@@ -513,7 +513,7 @@ angular.module('evalu8Demo')
 
 
 		     sharedTabService.isEmptyTab = function (test) {
-		         if (test.testId == null && test.title == undefined && test.questions.length == 0) {
+		         if (test.testId == null && test.title == "" && test.questions.length == 0) {
 		             return true;
 		         }
 		         return false;
