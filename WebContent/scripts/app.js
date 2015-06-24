@@ -145,7 +145,9 @@ angular.module('evalu8Demo', [
 		        	$('.errorMsgTip').hide();	
 		        }, 5000);
 		        
-                return $q.reject(response);*/                            	
+                return $q.reject(response);*/ 
+            	
+            	return $q.reject(response);
             }
 
         }
