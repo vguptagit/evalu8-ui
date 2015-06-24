@@ -91,6 +91,7 @@ angular.module('e8MyTests')
             }
             
             if($rootScope.dropTest && $rootScope.dropTest == "cancel") {
+            	$rootScope.dropTest == "";
             	return false;
             }
             
@@ -603,11 +604,12 @@ angular.module('e8MyTests')
         		
         		if(archivedFolder.parentId == null) {
         			
-        			if($scope.archiveRoot && $scope.archiveRoot.node && $scope.archiveRoot.node.nodes && $scope.archiveRoot.node.nodes.length)
+        			if($scope.archiveRoot && $scope.archiveRoot.node && $scope.archiveRoot.node.nodes && $scope.archiveRoot.node.nodes.length) {
         				if($scope.archiveRoot.node.nodes[0].nodeType == EnumService.NODE_TYPE.emptyFolder) {
         					$scope.archiveRoot.node.nodes.splice(0,1);
         				}
-        				$scope.archiveRoot.node.nodes.unshift(archivedFolder)	        				        				    
+        				$scope.archiveRoot.node.nodes.unshift(archivedFolder)        				
+        			}	        				        				    
         		} else {
         			
         			archivedFolderParent = angular.element($('[id=' + archivedFolder.parentId + ']')).scope()
