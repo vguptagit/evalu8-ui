@@ -8,6 +8,14 @@ angular.module('evalu8Demo')
 			
 			$rootScope.globals = $cookieStore.get('globals') || {};
 			 
+			var configCacheDisabledForIE = {
+				    headers: {
+				        'x-authorization': $rootScope.globals.authToken,
+				        'Accept': 'application/json;odata=verbose',
+				        'If-Modified-Since': '0'
+				    }
+				};
+			
 			var config = {
 					headers : {
 						'x-authorization' : $rootScope.globals.authToken,
@@ -84,7 +92,7 @@ angular.module('evalu8Demo')
 				
 				var tests = [];
 				
-				$http.get(url, config)
+				$http.get(url, configCacheDisabledForIE)
 				.success(function(response) {
 
 					response.forEach(function(test){
