@@ -1308,7 +1308,7 @@ angular
 								$scope.loadTree();
 							}							
 							
-							$scope.$on('handleBroadcast_AddNewTest', function (handler, newTest, containerFolder, isEditMode, oldGuid, editedQuestions,editedMigratedQuestions) {
+							$scope.$on('handleBroadcast_AddNewTest', function (handler, newTest, containerFolder, isEditMode, oldGuid, editedQuestions, editedMigratedQuestions, createdTab, testCreationFrameScope) {
 								
 								editedQuestions.forEach(function(editedQuestion) {
 									editedQuestion.isQuestion = true;

@@ -392,6 +392,7 @@ angular.module('evalu8Demo')
 		     }
 
 		     //close tab Without Save.
+		     //TODO : need to remove the dioendency of variable "scope".
 		     sharedTabService.closeTab = function (tab, scope) {
 		         //sharedTabService.onClickTab(tab, scope);
 		         $.each(scope.tests, function (i) {
@@ -406,6 +407,7 @@ angular.module('evalu8Demo')
 		         }
 		     }
 
+		     //TODO : need to remove the dioendency of variable "scope".
 		     sharedTabService.closeQuestions = function(tab, scope ,index){
 		    	 var node = scope.tests[scope.currentIndex].questions[index];
 		    	 scope.tests[scope.currentIndex].questions.splice(index,1);
@@ -429,6 +431,7 @@ angular.module('evalu8Demo')
 		         });
 		         sharedTabService.masterTests.push(clonedTest);
 		     }
+             //TODO : need to remove the dioendency of variable "scope".
 		     var removeTest = function (index, scope, test) {
 		         if (test.isTestWizard) {
 		             //scope.isTestWizardTabPresent = false;

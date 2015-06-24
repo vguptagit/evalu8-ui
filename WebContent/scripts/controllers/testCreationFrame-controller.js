@@ -1365,14 +1365,12 @@ angular
 															displayNode.BlankSize = displayNode.qstnMasterData.BlankSize;
 													
 															// $scope.tree2.push(displayNode);
-															SharedTabService.tests[currentIndex].questions
-																	.push(displayNode);
-															SharedTabService.masterTests[currentIndex].masterQuestions
-																	.push(displayNode);// is
-																						// to
-																						// check
-																						// for
-																						// dirty.
+															SharedTabService.tests[currentIndex].questions.push(displayNode);
+															for (var i = 0; i < SharedTabService.masterTests.length; i++) {
+															    if (SharedTabService.masterTests[i].id === SharedTabService.tests[currentIndex].id) {
+															        SharedTabService.masterTests[i].masterQuestions.push(displayNode);// is to check for dirty.
+															    }
+															}
 															if (qBindings.length > 0) {
 																$scope.renderQuestions(
 																		qBindings,
@@ -1825,16 +1823,10 @@ angular
     										}
     										testResult.title = test.title;
     										testResult.modified = (new Date()).toJSON();
-    										$rootScope.$broadcast('handleBroadcast_AddNewTest', testResult, $scope.containerFolder, isEditMode, oldGuid, $scope.editedQuestions,$scope.editedMigratedQuestions);
+    										$rootScope.$broadcast('handleBroadcast_AddNewTest', testResult, $scope.containerFolder, isEditMode, oldGuid, $scope.editedQuestions, $scope.editedMigratedQuestions, test, $scope);
     										$scope.containerFolder = null; //clear selected folder in save as dialog popup.
                                              
-    										if (test.isSaveAndClose) {
-    										    SharedTabService.closeTab(test, $scope);
-    										    SharedTabService.removeMasterTest(test);
-    										} else {
-    										    SharedTabService.removeMasterTest(test);
-    										    SharedTabService.addMasterTest(test);
-    										}
+    										
 
     										if (callback) {
     										    callback();
@@ -1976,9 +1968,12 @@ angular
 														// create
 														// tabs
 														if ($scope.isViewVersions) {
-															var newTestTab = new SharedTabService.Test(
-																	SharedTabService.tests[SharedTabService.currentTabIndex]);
+														    var test = SharedTabService.tests[SharedTabService.currentTabIndex];
+															var newTestTab = new SharedTabService.Test(test);
 															newTestTab.questions = [];
+															for (var i = 0; i < test.questions.length; i++) {
+															    newTestTab.questions.push(test.questions[i]);
+															}
 															newTestTab.id = node.guid;
 															newTestTab.testId = node.guid;
 															newTestTab.title = result.title;
