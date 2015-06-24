@@ -3,8 +3,8 @@
 angular.module('evalu8Demo')
 
 .service('TestService', 
-		['$http', '$rootScope', '$location', '$cookieStore', '$upload','blockUI',
-		 function($http, $rootScope, $location, $cookieStore,$upload,blockUI) {
+		['$http', '$rootScope', '$location', '$cookieStore', '$upload','blockUI','$modal',
+		 function($http, $rootScope, $location, $cookieStore,$upload,blockUI,$modal) {
 			
 			$rootScope.globals = $cookieStore.get('globals') || {};
 			 
@@ -66,6 +66,18 @@ angular.module('evalu8Demo')
 						//$location.path('/login');
 				})				
 			};
+			
+	        var confirmObject = {
+	                templateUrl: 'views/partials/alert.html',
+	                controller: 'AlertMessageController',
+	                backdrop: 'static',
+	                keyboard: false,
+	                resolve: {
+	                    parentScope: function () {
+	                        return $rootScope;
+	                    }
+	                }
+	            };
 				
 			this.getTests = function(folderId, callback) {				
 				var url = evalu8config.apiUrl + '/my/folders/' + folderId + '/tests';
@@ -86,6 +98,16 @@ angular.module('evalu8Demo')
 						tests.push(test);
 					})
 					callback(tests);
+				})
+				.error(function(error, status) {
+					if(status == 400) {
+		            	
+						$rootScope.IsConfirmation = false;
+						$rootScope.message = "Unable to save test! Parent folder seems to be archived";
+                        $modal.open(confirmObject); 
+				        
+						$rootScope.blockPage.stop();
+					}
 				})
 			};
 			
