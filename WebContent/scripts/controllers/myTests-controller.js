@@ -894,11 +894,18 @@ angular.module('e8MyTests')
                 }
             }             
         });
-        $scope.$on('handleBroadcast_AddNewTest', function (handler, newTest, containerFolder, isEditMode) {
+        $scope.$on('handleBroadcast_AddNewTest', function (handler, newTest, containerFolder, isEditMode, oldGuid, editedQuestions, editedMigratedQuestions, createdTab, testCreationFrameScope) {
             if (isEditMode) {
                 var updatedTest = CommonService.SearchItem($scope.defaultFolders, newTest.guid);
                 updatedTest.title = newTest.title;
                 updatedTest.modified = newTest.modified;
+                if (createdTab.isSaveAndClose) {
+                    SharedTabService.closeTab(createdTab, testCreationFrameScope);
+                    SharedTabService.removeMasterTest(createdTab);
+                } else {
+                    SharedTabService.removeMasterTest(createdTab);
+                    SharedTabService.addMasterTest(createdTab);
+                }
                 return false;
             }
 
@@ -935,8 +942,15 @@ angular.module('e8MyTests')
                     });
                     parentFolderNodes.splice(position, 0, test)
                 }
-                SharedTabService.tests[SharedTabService.currentTabIndex].metadata = TestService.getTestMetadata(test);
-                SharedTabService.tests[SharedTabService.currentTabIndex].treeNode = test;
+                createdTab.metadata = TestService.getTestMetadata(test);
+                createdTab.treeNode = test;
+                if (createdTab.isSaveAndClose) {
+                    SharedTabService.closeTab(createdTab, testCreationFrameScope);
+                    SharedTabService.removeMasterTest(createdTab);
+                } else {
+                    SharedTabService.removeMasterTest(createdTab);
+                    SharedTabService.addMasterTest(createdTab);
+                }
                 
             	if($scope.defaultFolders.length == 1) {
             		$scope.defaultFolders.push(CommonService.getArchiveRoot());
