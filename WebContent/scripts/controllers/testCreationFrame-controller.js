@@ -1968,12 +1968,8 @@ angular
 														// create
 														// tabs
 														if ($scope.isViewVersions) {
-														    var test = SharedTabService.tests[SharedTabService.currentTabIndex];
-															var newTestTab = new SharedTabService.Test(test);
+														    var newTestTab = new SharedTabService.Test(SharedTabService.tests[SharedTabService.currentTabIndex]);
 															newTestTab.questions = [];
-															for (var i = 0; i < test.questions.length; i++) {
-															    newTestTab.questions.push(test.questions[i]);
-															}
 															newTestTab.id = node.guid;
 															newTestTab.testId = node.guid;
 															newTestTab.title = result.title;
