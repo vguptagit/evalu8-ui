@@ -83,6 +83,9 @@ angular.module('e8MyTests')
   			if(!$scope.dragStarted) {
                 return false;
             }
+  			
+  			$scope.dragStarted = false;
+  			
             if(source.node.nodeType === EnumService.NODE_TYPE.test && destParent.controller === EnumService.CONTROLLERS.testCreationFrame){        
                 source.node.showEditIcon=false;
                 source.node.showArchiveIcon=false;
@@ -91,13 +94,11 @@ angular.module('e8MyTests')
             }
             
             if($rootScope.dropTest && $rootScope.dropTest == "cancel") {
-            	$rootScope.dropTest == "";
+            	$rootScope.dropTest = null;
             	return false;
             }
             
-            $rootScope.blockLeftPanel.start();
-            
-            $scope.dragStarted = false;
+            $rootScope.blockLeftPanel.start();                        
 
             if (sourceIndex != destIndex) {
                 source.node.selectTestNode = false;
