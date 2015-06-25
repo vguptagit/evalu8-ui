@@ -31,10 +31,17 @@ angular.module('evalu8Demo', [
 	blockUIConfig.autoInjectBodyBlock = false;
 	blockUIConfig.delay = 100;
 })
-.config(function ($stateProvider, $urlRouterProvider) {
+.config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
+
+	//initialize get if not there
+    if (!$httpProvider.defaults.headers.get) {
+        $httpProvider.defaults.headers.get = {};    
+    } 
+    //disable IE ajax request caching
+    $httpProvider.defaults.headers.get['If-Modified-Since'] = '0';
 
     $urlRouterProvider.otherwise('/home/questionbanks');
-
+    
     $stateProvider
 
         // HOME STATES AND NESTED VIEWS ========================================

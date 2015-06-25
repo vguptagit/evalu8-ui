@@ -27,17 +27,8 @@ angular.module('evalu8Demo')
 		};
 		
 		this.userDisciplines = function(callback) {				
-
-			var configCacheDisabledForIE = {
-					headers : {
-						'x-authorization' : $rootScope.globals.authToken,
-						'Accept' : 'application/json;odata=verbose',
-						'If-Modified-Since': '0'
-					}
-			};
-			
 			var userDisciplines = [];
-			$http.get(evalu8config.apiUrl + "/settings/disciplines/", configCacheDisabledForIE)
+			$http.get(evalu8config.apiUrl + "/settings/disciplines/", config)
 			.success(function(response) {
 						
 				response.forEach (function(item) {    							
