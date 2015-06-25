@@ -111,7 +111,7 @@ angular.module('evalu8Demo')
 					if(status == 400) {
 		            	
 						$rootScope.IsConfirmation = false;
-						$rootScope.message = "Unable to save test! Parent folder seems to be archived";
+						$rootScope.message = "Unable to save test! Parent folder is archived";
                         $modal.open(confirmObject); 
 				        
 						$rootScope.blockPage.stop();
