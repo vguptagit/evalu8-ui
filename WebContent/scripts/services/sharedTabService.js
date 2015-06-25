@@ -46,6 +46,7 @@ angular.module('evalu8Demo')
 		         this.masterQuestions = [];
 		         this.isSaveAndClose = false;
 		         this.isTestWizard = false;
+		         this.isTabClicked = false;
 		         this.treeNode = null;
 		         this.questionFolderNode = [];
 		         this.showCloseButton = true;
@@ -193,6 +194,7 @@ angular.module('evalu8Demo')
 		         NotEnoughQuestionsAvailableForTypes_suffix: ' types, Please select additional question banks or reduce the number of questions in your test.',
 		         NoQuestionTypeSelected: 'No Question Type selected, please select question Type first and click on "Create Test" button',
 		         ChapterIsAlreadyAdded: 'This topic is included in the chapter already added to Test Wizard. If you wish to add separate topics from a chapter, delete the chapter in the Test Wizard first.',
+		         NoQuestionTypeSelected_Subsection:'The selected questions bank topics do not contain this question type.',
 		         TopicInChapterIsAlreadyAdded: 'This chapter includes the topic(s) that you have already added to the Test Wizard. If you want to  add the entire chapter, please delete the topic(s) in the Wizard first.',
 		         NoQuestionsAvailable: 'No questions available.',
 		         AlreadyAdded: 'Chapter or topic is already added',
@@ -370,7 +372,7 @@ angular.module('evalu8Demo')
 
 		                 $.each(sharedTabService.masterTests, function (j) {
 		                     if (sharedTabService.masterTests[j].id === tab.id) {
-		                         if (sharedTabService.isDirty(sharedTabService.masterTests[j], scope.tests[i])) {
+		                         if (sharedTabService.isDirty(sharedTabService.masterTests[j], scope.tests[i]) || sharedTabService.tests[i].isTestWizard) {
 		                             removeTest(i, scope, tab);
 		                             removeMasterTestByIndex(j);
 		                             //scope.tests.splice(i, 1);
@@ -567,8 +569,10 @@ angular.module('evalu8Demo')
 		    	 var criterias = sharedTabService.tests[scope.currentIndex].criterias;
 		    	 if(isNew){
 		    		 for (var i = 1; i < criterias.length; i++) {
-		    			 criterias[i].selectedQuestiontypes.push(questiontype);
+		    			 if(criterias[i].questiontypes.indexOf(questiontype) != -1)
+		    				 criterias[i].selectedQuestiontypes.push(questiontype);
 		    		 }
+		    		 
 		    	 }
 		    	 else{
 			    	 for (var i = 1; i < criterias.length; i++) {

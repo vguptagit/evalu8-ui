@@ -914,7 +914,8 @@ angular
                                     $scope.testType = 'Test';
 								}
 
-								if (test.testId && !test.questions.length && !SharedTabService.isDirtyTab(test)) {
+								if (test.testId && !test.questions.length && !SharedTabService.isDirtyTab(test) && !test.isTabClicked) {
+									test.isTabClicked=true;
 									TestService
 											.getTest(
 													test.testId,
@@ -2167,9 +2168,11 @@ angular
 
 												}
 											} else {
-												SharedTabService.addErrorMessage(
-																criteria.treeNode.title,
-																SharedTabService.errorMessageEnum.NoQuestionTypeSelected);
+												var errorMessage=SharedTabService.errorMessageEnum.NoQuestionTypeSelected;
+												if ($scope.isApplySameCriteriaToAll) {
+													var errorMessage=SharedTabService.errorMessageEnum.NoQuestionTypeSelected_Subsection;
+												}
+												SharedTabService.addErrorMessage(criteria.treeNode.title, errorMessage);
 												isError = true;
 												arr = criteria.metadata
 														.sort(randomize);

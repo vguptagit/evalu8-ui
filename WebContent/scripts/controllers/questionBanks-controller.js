@@ -255,6 +255,9 @@ angular
 									book.collapse();
 								} else {
 									book.expand();
+									if(book.node.nodes){
+										return false;
+									}
 									
 									if($scope.isSearchMode && $scope.searchedContainerId!=book.node.guid){
 										return;
@@ -421,8 +424,12 @@ angular
 									// Dont delete the below commented line, will delete after few days.
 									/*currentNode.$element.children(1).removeClass('expandChapter');*/
 								} else {
-								    currentNode.node.isHttpReqCompleted = false;
+								    
 									currentNode.expand();
+									if(currentNode.node.nodes){
+										return false;
+									}
+									currentNode.node.isHttpReqCompleted = false;
 									
                                     if(currentNode.node.nodeType == 'publisherTests') {
                                         
@@ -448,10 +455,7 @@ angular
                                         return;
                                     }
 						                                        
-									if($scope.isSearchMode && $scope.searchedContainerId!=currentNode.node.guid){
-										currentNode.node.isHttpReqCompleted = true;
-										return;
-									}else if ($scope.isAdvancedSearchMode){
+									if ($scope.isAdvancedSearchMode){
 										$scope.bookID=currentNode.node.bookid;
 									}
 									
@@ -676,6 +680,7 @@ angular
 									for (var j = 0; j < test.questions.length; j++) {
 									    if (node.guid === test.questions[j].guid) {
 									        node.showEditQuestionIcon = false;
+									        test.questions[j] = node;
 									    }
 									}
 								} else {
@@ -804,6 +809,7 @@ angular
 												&& (node.showTestWizardIcon && !node.showEditQuestionIcon)) {
 												$scope.selectedNodes.splice(i, 1);																			
 												$scope.setDeselectedNodeState(node);
+												node.isNodeSelected=false;
 												break;
 											}									
 								}
