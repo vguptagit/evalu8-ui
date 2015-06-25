@@ -164,6 +164,11 @@ angular.module('e8MyTests')
                             UserFolderService.getFoldersMinSeq(mouseOverNode.node, function(minSeq) {
                             	item.sequence = minSeq==0.0 ? 1.0 : (0.0 + minSeq)/2;
                             	UserFolderService.saveUserFolder(item, function() {
+                            		
+                        			if(sourceParent && sourceParent.node && sourceParent.node.nodes.length==0) {
+                        				sourceParent.node.nodes.push(CommonService.getEmptyFolder());
+                        			}
+                        			
                             		$rootScope.blockLeftPanel.stop();
                             	});                	
                             })                	
@@ -171,6 +176,11 @@ angular.module('e8MyTests')
                         	var sourceFolder = $scope.removeTestBindingFromSource(sourceParent, item.guid);
                         	UserFolderService.saveUserFolder(sourceFolder, function() {
                         		$scope.insertTestBindingToDest(mouseOverNode, item.guid, function() {
+                        			
+                        			if(sourceParent && sourceParent.node && sourceParent.node.nodes.length==0) {
+                        				sourceParent.node.nodes.push(CommonService.getEmptyFolder());
+                        			}
+                        			
                             		$rootScope.blockLeftPanel.stop();                        			
                         		});
 
@@ -222,6 +232,14 @@ angular.module('e8MyTests')
     			            $scope.IsConfirmation = false;
     			            $scope.message = "A test already exists with this name.";
     			            $modal.open(confirmObject);
+    			            
+    			            if(sourceParent) {
+    			            	sourceParent.node.nodes.splice(sourceIndex, 0, source.node);	
+    			            } else {
+    			            	$scope.defaultFolders.splice(sourceIndex, 0, source.node);
+    			            }
+    			            
+    			            $scope.defaultFolders.splice(destIndex, 1);
 
     			            $rootScope.blockLeftPanel.stop();
                     		return false;

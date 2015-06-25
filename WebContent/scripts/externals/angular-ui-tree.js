@@ -155,7 +155,7 @@
                 
                 if(this.index == this.source.index()) {
                     // if source and destination are same node at root level then abort
-                    if(this.parent == this.source.$nodesScope.$parent.$nodesScope) {
+                    if(this.parent == this.source.$parentNodeScope) {
                     	$('body *').css({'cursor':''});
                     	return;
                     }
