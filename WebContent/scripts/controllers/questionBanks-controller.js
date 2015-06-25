@@ -449,6 +449,7 @@ angular
                                     }
 						                                        
 									if($scope.isSearchMode && $scope.searchedContainerId!=currentNode.node.guid){
+										currentNode.node.isHttpReqCompleted = true;
 										return;
 									}else if ($scope.isAdvancedSearchMode){
 										$scope.bookID=currentNode.node.bookid;
@@ -1026,8 +1027,8 @@ angular
 								$scope.disciplines.push(searchedDiscipline);
 
 								if (hasParent) {
-									var parentContainers = $scope
-											.getParentContainers(parentContainerid)
+									var parentContainers=[];
+									$scope.getParentContainers(parentContainerid,parentContainers)
 									parentContainers.reverse();
 									var containerNode = $scope.disciplines[0].nodes[0];
 									parentContainers
@@ -1088,18 +1089,14 @@ angular
 								
 							}
 							
-							$scope.getParentContainers = function(containerid) {
-								var parentContainers = [];
+							$scope.getParentContainers = function(containerid, parentContainers) {
 								var parentContainerid = "";
 								var hasParent = false;
-
 								$scope.allContainers
 										.forEach(function(container) {
 											if (container.guid == containerid) {
-												parentContainers
-														.push(container)
-												if (container.parentId != null
-														&& container.parentId != "") {
+												parentContainers.push(container)
+												if (container.parentId != null&& container.parentId != "") {
 													parentContainerid = container.parentId;
 													hasParent = true;
 												}
@@ -1107,11 +1104,8 @@ angular
 										});
 
 								if (hasParent) {
-									$scope
-											.getParentContainers(parentContainerid)
+									$scope.getParentContainers(parentContainerid, parentContainers)
 								}
-
-								return parentContainers;
 							}
 							
 							$scope.showAdvancedSearch = false;
