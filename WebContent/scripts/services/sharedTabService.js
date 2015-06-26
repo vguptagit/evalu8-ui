@@ -496,7 +496,6 @@ angular.module('evalu8Demo')
 		         return isDirtyTab;
 		     }
 		     sharedTabService.isDirty = function (masterTest, test) {
-
 		         var isDirty = false;
 		         if (test.testId == null && (test.title != "" || test.questions.length > 0)) { //empty node without save.
 		             isDirty = true;
@@ -512,6 +511,14 @@ angular.module('evalu8Demo')
 		                     return false;
 		                 }
 		             }
+		             if(!isDirty){
+			        	 for (var i = 0; i < test.questions.length; i++) {
+			                 if (test.questions[i].IsEdited) {
+			                     isDirty = true;
+			                     return false;
+			                 }
+			             }
+			         } 
 		         }
 		         return !isDirty;
 		     }
