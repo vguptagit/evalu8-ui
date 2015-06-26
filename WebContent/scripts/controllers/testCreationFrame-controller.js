@@ -2321,6 +2321,7 @@ angular
 							    $scope.addNewTest($scope);
 							});
 							$rootScope.$on('handleBroadcast_AddTestWizard', function () {
+								$scope.isApplySameCriteriaToAll = false;
 							    resetTabs();
 							    SharedTabService.addTestWizard($scope);
 							});
