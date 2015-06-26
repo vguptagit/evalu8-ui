@@ -108,6 +108,7 @@ angular.module('evalu8Demo')
 				        
 						$rootScope.blockPage.stop();
 					}
+					$rootScope.blockLeftPanel.stop();
 				})
 			};
 			
