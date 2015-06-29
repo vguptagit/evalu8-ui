@@ -771,13 +771,15 @@ angular.module('e8MyTests')
         				}        				
         			}
         			
-                    TestService.getTests(restoredFolder.guid, function (tests) {
-                        tests.forEach(function (test) {
-                            test.selectTestNode = false;//to show the edit icon
+                    if(testParent && testParent.node) {
+                        TestService.getTests(restoredFolder.guid, function (tests) {
+                            tests.forEach(function (test) {
+                                test.selectTestNode = false;//to show the edit icon
 
-                            testParent.node.nodes.push(test);
-                        })
-                    });
+                                testParent.node.nodes.push(test);
+                            })
+                        });
+                    }
         		}  
         		
         		$rootScope.blockLeftPanel.stop();
