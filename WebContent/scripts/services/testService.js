@@ -24,6 +24,12 @@ angular.module('evalu8Demo')
 				})
 				.error(function(error, status) {
 				    $rootScope.blockPage.stop();
+					if(status == 400) {
+		            	
+						$rootScope.IsConfirmation = false;
+						$rootScope.message = "Unable to save test! Parent folder is archived";
+                        $modal.open(confirmObject); 				        
+					}
 				})				
 			};
 			
@@ -100,15 +106,8 @@ angular.module('evalu8Demo')
 					callback(tests);
 				})
 				.error(function(error, status) {
-					if(status == 400) {
-		            	
-						$rootScope.IsConfirmation = false;
-						$rootScope.message = "Unable to save test! Parent folder is archived";
-                        $modal.open(confirmObject); 
-				        
-						$rootScope.blockPage.stop();
-					}
-					$rootScope.blockLeftPanel.stop();
+
+					callback(tests);
 				})
 			};
 			
