@@ -13,10 +13,8 @@ angular.module('e8MyTests')
     };
     $scope.exportFileFormats = [
                              { value: 'doc', text: 'MS Word' },
-                             { value: 'pdf', text: 'PDF' },
-                             { value: 'pool', text: 'Blackboard Pool manager' },
-                             { value: 'test', text: 'Blackboard Test manager' },
-                             { value: 'qti', text: 'QTI 2.1' }
+                             { value: 'pdf', text: 'PDF' }
+                             
     ];
 
     $scope.answerAreas = [
