@@ -1073,8 +1073,7 @@ angular
 								
 
 								var qstnMasterData = {
-									caption : $(qstnXML).find('itemBody').find('p')
-											.html(),
+									caption : $(qstnXML).find('itemBody').find('p').text(),
 									options : optionList,
 									optionCount : $(qstnXML).find('itemBody').find(
 											'choiceInteraction').find(
@@ -1107,7 +1106,7 @@ angular
 								
 
 								var qstnMasterData = {
-									caption : $(qstnXML).find('itemBody').find('p').eq(0).html(),
+									caption : $(qstnXML).find('itemBody').find('p').eq(0).text(),
 									leftOptions: leftOptionList ,
 									rightOptions: rightOptionList,									
 									optionCount : $(qstnXML).find('itemBody').find(
