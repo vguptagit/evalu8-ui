@@ -76,7 +76,12 @@ angular
 									if (!source.node.isNodeSelected) {
 										$scope.selectNode(source.node);
 									}
-								  $scope.editQuestion(source.node,destIndex);
+									if (SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
+									    $scope.createTestWizardCriteria(source)
+									} else {
+									    $scope.editQuestion(source.node, destIndex);
+									}
+
 								}
 							});
 
