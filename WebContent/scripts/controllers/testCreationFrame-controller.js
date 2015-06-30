@@ -1192,7 +1192,8 @@ angular
 											        } else {
 
 											            $.each(SharedTabService.userQuestionSettings, function (index, value) {
-											                newNode['questionMetadata'][value] = '';
+											            	      newNode['questionMetadata'][value] = '';
+											                
 											            });
 
 											            newNode.IsEditView = false;
@@ -1200,11 +1201,14 @@ angular
 
 											            $.each(newNode.extendedMetadata, function (index, item) {
 											                var name = item['name'].charAt(0).toUpperCase() + item['name'].slice(1);
-											                if (item['name'] == "questionLevelOfDifficulty")
-											                    newNode['questionMetadata']['Difficulty'] = item['value'];
-											                else
-											                    newNode['questionMetadata'][name] = item['value'];
-
+											                if(typeof(newNode['questionMetadata'][name])!='undefined'){
+											                	if (item['name'] == "questionLevelOfDifficulty")
+											                		newNode['questionMetadata']['Difficulty'] = item['value'];
+											                	else{
+											                		
+											                		newNode['questionMetadata'][name] = item['value'];
+											                	}
+											                }
 											            });
 
 											            newNode.selectedLevel = newNode.questionMetadata['Difficulty'] == undefined ? { name: 'Select Level', value: '0' } : { name: newNode.questionMetadata['Difficulty'], value: newNode.questionMetadata['Difficulty'] };
@@ -1348,10 +1352,12 @@ angular
 															
                                                             $.each(displayNode.extendedMetadata, function(index, item){                                                                    
                                                                 var name = item['name'].charAt(0).toUpperCase() + item['name'].slice(1);
+                                                                if(typeof(displayNode['questionMetadata'][name])!='undefined'){
                                                                  if(item['name'] == "questionLevelOfDifficulty")
                                                                      displayNode['questionMetadata']['Difficulty'] = item['value'];
                                                                  else
-                                                                     displayNode['questionMetadata'][name]=item['value'];            
+                                                                     displayNode['questionMetadata'][name]=item['value'];  
+                                                                }
                                                             });
 											
 												
