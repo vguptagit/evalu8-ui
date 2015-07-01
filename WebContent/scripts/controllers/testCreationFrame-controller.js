@@ -1328,17 +1328,20 @@ angular
 												.getQuestionById(
 														question.guid,
 														function(response) {
-															var displayNode = $("<div></div>")
+															var qtiDisplayNode = $("<div></div>");
+															QTI.play(response,
+																	qtiDisplayNode, false,false,questionMetadataResponse.quizType);
+															
+															var displayNode = {};
 															displayNode.guid = question.guid;	
 															displayNode.quizType = questionMetadataResponse.quizType;
 															displayNode.IsUserMetdataAvailable = false;
 															 if (SharedTabService.userQuestionSettings.length>0){
 																 displayNode.IsUserMetdataAvailable = true;
 															 }
-															QTI.play(response,
-																	displayNode, false,false,displayNode.quizType);
 															
-															displayNode.textHTML = displayNode.html();
+															
+															displayNode.textHTML = qtiDisplayNode.html();
 															
 															displayNode.IsEditView = false;
 															displayNode.qstnLinkText = displayNode.IsEditView ? "View"
@@ -1781,8 +1784,9 @@ angular
     												$scope.editedMigratedQuestions.push(test.questions[questionIndex].guid);
     											}
     											test.questions[questionIndex].guid = guid;
-    											test.questions[questionIndex].extendedMetadata = QuestionEnvelops[questionIndex].metadata.extendedMetadata;
-    											$scope.editedQuestions.push(test.questions[questionIndex]);
+    											test.questions[questionIndex].extendedMetadata = QuestionEnvelops[questionIndex].metadata.extendedMetadata;   
+    											var createdQstnCopy = angular.copy(test.questions[questionIndex]);
+    											$scope.editedQuestions.push(createdQstnCopy);
     										}else{
     											test.questions[questionIndex].guid = guid;
     										}

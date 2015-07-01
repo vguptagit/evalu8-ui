@@ -685,7 +685,8 @@ angular
 									for (var j = 0; j < test.questions.length; j++) {
 									    if (node.guid === test.questions[j].guid) {
 									        node.showEditQuestionIcon = false;
-									        test.questions[j] = node;
+									        var nodeCopy = angular.copy(node);
+									        test.questions[j] = nodeCopy;
 									    }
 									}
 								} else {
