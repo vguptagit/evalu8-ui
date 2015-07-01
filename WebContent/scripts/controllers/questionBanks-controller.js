@@ -1353,7 +1353,14 @@ angular
 								});						
 								
 								
-							    if (isEditMode) {
+								if (isEditMode) {
+								    if (createdTab.isSaveAndClose) {
+								        SharedTabService.closeTab(createdTab, testCreationFrameScope);
+								        SharedTabService.removeMasterTest(createdTab);
+								    } else {
+								        SharedTabService.removeMasterTest(createdTab);
+								        SharedTabService.addMasterTest(createdTab);
+								    }
 							        return false;
 							    }
 							    for (var i = 0; i < $scope.selectedNodes.length; i++) {
@@ -1363,8 +1370,16 @@ angular
 							    }
 							    TestService.getMetadata(newTest.guid, function (test) {
 							        test.nodeType = "test";
-							        SharedTabService.tests[SharedTabService.currentTabIndex].metadata = TestService.getTestMetadata(test);
-							        SharedTabService.tests[SharedTabService.currentTabIndex].treeNode = null;
+							        createdTab.metadata = TestService.getTestMetadata(test);
+							        createdTab.treeNode = null;
+
+							        if (createdTab.isSaveAndClose) {
+							            SharedTabService.closeTab(createdTab, testCreationFrameScope);
+							            SharedTabService.removeMasterTest(createdTab);
+							        } else {
+							            SharedTabService.removeMasterTest(createdTab);
+							            SharedTabService.addMasterTest(createdTab);
+							        }
 							    });
 							});
 						} ]);

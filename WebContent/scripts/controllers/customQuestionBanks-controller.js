@@ -3,8 +3,8 @@
 angular.module('e8CustomQuestionBanks')
 
 .controller('CustomQuestionBanksController',
-    ['$scope', '$rootScope', '$location', '$cookieStore', '$http', '$sce','CustomQuestionBanksService','EnumService','SharedTabService','$modal', 
-    function ($scope, $rootScope, $location, $cookieStore, $http, $sce,CustomQuestionBanksService,EnumService,SharedTabService,$modal) {
+    ['$scope', '$rootScope', '$location', '$cookieStore', '$http', '$sce', 'CustomQuestionBanksService', 'EnumService', 'SharedTabService', '$modal', 'TestService',
+    function ($scope, $rootScope, $location, $cookieStore, $http, $sce,CustomQuestionBanksService,EnumService,SharedTabService,$modal,TestService) {
   
     	
     //binding all Question format template to the "questionTemplates" Model.
@@ -75,6 +75,34 @@ angular.module('e8CustomQuestionBanks')
      });
 
    //to set Active Resources Tab , handled in ResourcesTabsController
-   $rootScope.$broadcast('handleBroadcast_setActiveResourcesTab', EnumService.RESOURCES_TABS.customquestions);
+     $rootScope.$broadcast('handleBroadcast_setActiveResourcesTab', EnumService.RESOURCES_TABS.customquestions);
+
+     $scope.$on('handleBroadcast_AddNewTest', function (handler, newTest, containerFolder, isEditMode, oldGuid, editedQuestions, editedMigratedQuestions, createdTab, testCreationFrameScope) {
+
+         if (isEditMode) {
+             if (createdTab.isSaveAndClose) {
+                 SharedTabService.closeTab(createdTab, testCreationFrameScope);
+                 SharedTabService.removeMasterTest(createdTab);
+             } else {
+                 SharedTabService.removeMasterTest(createdTab);
+                 SharedTabService.addMasterTest(createdTab);
+             }
+             return false;
+         }
+         
+         TestService.getMetadata(newTest.guid, function (test) {
+             test.nodeType = "test";
+             createdTab.metadata = TestService.getTestMetadata(test);
+             createdTab.treeNode = null;
+
+             if (createdTab.isSaveAndClose) {
+                 SharedTabService.closeTab(createdTab, testCreationFrameScope);
+                 SharedTabService.removeMasterTest(createdTab);
+             } else {
+                 SharedTabService.removeMasterTest(createdTab);
+                 SharedTabService.addMasterTest(createdTab);
+             }
+         });
+     });
     
 }]);

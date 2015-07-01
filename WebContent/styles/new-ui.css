@@ -509,3 +509,8 @@ span.glyphicon.glyphicon-info-sign {
   display: inline-block;
   float:left;
 }
+.navbar-popover-text{
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
