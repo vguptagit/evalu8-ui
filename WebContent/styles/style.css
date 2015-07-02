@@ -549,21 +549,31 @@ h4, .h4, h5, .h5, h6, .h6 {  margin-top: 8px; margin-bottom: 8px;}
     }
 }
 
-.importTestdiv{
+.importTestDiv{
 	margin-top: 10px;	
-	background-color:#f8f8f8; 
+	color: #4D4D4D;
+  	line-height: 1em;
+  	background-color: #F6F7F5;
 	margin-bottom: 2px;
-	padding: 14px 0px 14px 14px;	
+	padding: 12px 0px 10px 14px;	
 	width:97%; 	
 }
+
 .importTestTitle{
 	font-family:Helvetica; 
 	font-size:14px; 
 	font-weight:bold; 
 	color: #4D4D4D; 	
 }
+
 .importAllTest{
 	float: right;	
 	padding-right: 35px;
 }
+
+.importAllTest > input{
+	height: 16px;
+	width: 16px;		
+    opacity: 0.8;
+ }
 
