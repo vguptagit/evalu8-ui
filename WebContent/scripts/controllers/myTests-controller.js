@@ -814,9 +814,9 @@ angular.module('e8MyTests')
     		})    		
         };
         
+        
         $scope.deleteTest = function(test) {
-
-    		$scope.IsConfirmation=true;        		    		
+    		$scope.IsConfirmation=true;   
     		$scope.message="Are you sure you want to permanently delete this test. This action cannot be undone. Click OK if you want to delete this test";
 
     		$modal.open(confirmObject).result.then(function(ok) {
@@ -960,6 +960,10 @@ angular.module('e8MyTests')
                             return false;
                         }
                         position++;
+                    });
+                    
+                    UserFolderService.testRootFolder(function(myTestRoot){
+                		$scope.myTestRoot = myTestRoot;
                     });
                     parentFolderNodes.splice(position, 0, test)
                 }
