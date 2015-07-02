@@ -321,7 +321,7 @@ angular
                                         }, 5000);
                                     }
 
-                                    SharedTabService.showSelectedTestTab(test.node.guid);
+                                    SharedTabService.showSelectedTestTab(test.node);
                             }
 							
                             //to disable the edit icon once it clicked  

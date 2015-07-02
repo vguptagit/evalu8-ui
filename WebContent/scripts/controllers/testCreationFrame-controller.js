@@ -1921,84 +1921,57 @@ angular
 
 								$rootScope.blockPage.start();
 
-								TestService.createVersions(this, function(scope, testResult) {
-									
-										try {
-																									
-											$scope.versionedTests = testResult;
+								TestService.createVersions(this, function (scope, testResult) {
+								    try {
+								        $scope.versionedTests = testResult;
+								        $scope.currentTab = SharedTabService.tests[SharedTabService.currentTabIndex];
+								        $scope.currentTab.modified = (new Date()).toJSON();
+								        $scope.count = 0;
 
-										$scope.currentTab = SharedTabService.tests[SharedTabService.currentTabIndex];
-										$scope.currentTab.modified = (new Date())
-												.toJSON();
+								        $scope.versionedTests.forEach(function (node) {
+								            var testID = node.guid;
+								            TestService.getMetadata(testID, function (result) {
+								                $scope.count = $scope.count + 1;
 
-										$scope.maping = {};
-										$scope.count = 0;
+								                if ($scope.count == $scope.versionedTests.length) {
+								                    result.showEditIcon = false;
+								                    result.showArchiveIcon = false;
+								                    result.draggable = false;
+								                    $scope.bindTabs(result);
+								                }
+								            });
+								        });
 
-										$scope.versionedTests
-												.forEach(function(
-														node) {
-													var testID = node.guid;
-													TestService
-															.getMetadata(
-																	testID,
-																	function(
-																			result) {
-																		$scope.maping[node.guid] = result;
-																		$scope.count = $scope.count + 1;
+								        $scope.bindTabs = function (treeNode) {
 
-																		if ($scope.count == $scope.versionedTests.length)
-																			$scope
-																					.bindTabs();
-																	});
-												})
+								            $scope.versionedTests.forEach(function (node) {
+								                treeNode.nodeType = EnumService.NODE_TYPE.test;
+								                treeNode.folderGuid = $scope.currentTab.folderGuid;
 
-										$scope.bindTabs = function() {
-											$scope.versionedTests
-													.forEach(function(
-															node) {
-														var result = $scope.maping[node.guid];
-														// update
-														// MyTest
-														// tree
-														node.testId = $scope.currentTab.testId;
-														node.folderGuid = $scope.currentTab.folderGuid;
-														node.nodeType = "test";
-														node.title = result.title;
-														node.tabTitle = result.title;
-														node.modified = $scope.currentTab.modified;
-
-														if (SharedTabService.selectedMenu == SharedTabService.menu.myTest) {
-															$rootScope
-																	.$broadcast(
-																			'handleBroadcast_CreateVersion',
-																			SharedTabService.tests[SharedTabService.currentTabIndex],
-																			node);
-
-														}
-														// create
-														// tabs
-														if ($scope.isViewVersions) {
-														    var newTestTab = new SharedTabService.Test(SharedTabService.tests[SharedTabService.currentTabIndex]);
-															newTestTab.questions = [];
-															newTestTab.id = node.guid;
-															newTestTab.testId = node.guid;
-															newTestTab.title = result.title;
-															newTestTab.tabTitle = result.title;
-															newTestTab.metadata = result;
-															newTestTab.folderGuid = (typeof (result.folderId) == 'undefined') ? null
-																	: result.folderId;
-															SharedTabService
-																	.prepForBroadcastTest(newTestTab);
-														}
-													});
-										}
-										} catch (e) {
-											console.log(e);
-										} finally {
-											$rootScope.blockPage.stop();
-										}
-
-									});
+								                if (SharedTabService.selectedMenu == SharedTabService.menu.myTest) {
+								                    $rootScope.$broadcast('handleBroadcast_CreateVersion', SharedTabService.tests[SharedTabService.currentTabIndex], treeNode);
+								                }
+								                // create tabs
+								                if ($scope.isViewVersions) {
+								                    var newTestTab = new SharedTabService.Test(SharedTabService.tests[SharedTabService.currentTabIndex]);
+								                    newTestTab.questions = [];
+								                    newTestTab.id = treeNode.guid;
+								                    newTestTab.testId = treeNode.guid;
+								                    newTestTab.title = treeNode.title;
+								                    newTestTab.tabTitle = treeNode.title;
+								                    newTestTab.metadata = treeNode;
+								                    newTestTab.treeNode = treeNode;
+								                    newTestTab.folderGuid = (typeof (treeNode.folderId) == 'undefined') ? null : treeNode.folderId;
+								                    SharedTabService.prepForBroadcastTest(newTestTab);
+								                }
+								            });
+								        };
+								    } catch (e) {
+								        console.log(e);
+								    } finally {
+								        $rootScope.blockPage.stop();
+								    };
+								});
 
 								return true;
 							}

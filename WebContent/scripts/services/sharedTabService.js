@@ -331,12 +331,15 @@ angular.module('evalu8Demo')
 		         });
 		     }
 
-		     sharedTabService.showSelectedTestTab = function (testId) {
+		     sharedTabService.showSelectedTestTab = function (treenode) {
 		         $.each(sharedTabService.tests, function (i) {
-		             if (sharedTabService.tests[i].id === testId) {
+		             if (sharedTabService.tests[i].id === treenode.testId) {
 		                 sharedTabService.currentTab = sharedTabService.tests[i];
 		                 sharedTabService.currentTabIndex = i;
 		                 sharedTabService.prepForBroadcastCurrentTabIndex(i);
+		                 if (!sharedTabService.tests[i].treeNode && sharedTabService.tests[i].treeNode.nodeType === EnumService.NODE_TYPE.test) {
+		                     sharedTabService.tests[i].treeNode = treenode;
+		                 }
 		                 return false;
 		             }
 		         });
