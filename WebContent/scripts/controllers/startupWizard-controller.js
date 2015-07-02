@@ -84,9 +84,10 @@ angular
 						'UserService',
 						'BookService',
 						'DisciplineService',
+						'UserBookService',
 						function($scope, $rootScope, $location, $routeParams,
 								$http, UserService, BookService,
-								DisciplineService) {
+								DisciplineService,UserBookService) {
 
 							$scope.searchedDiscpline = "";
 							$scope.trackEnterKey = 0;
@@ -307,6 +308,20 @@ angular
 															});
 										});
 
+								return true;
+							}
+							
+							$scope.enterUserBooks = function() {
+								$rootScope.blockPage.start();							
+								// Getting User books
+								UserBookService
+											.getUserBooks(function(userBooks) {
+												if (userBooks.length == 0) {
+													''
+												} else {
+													$scope.userBooks = userBooks;
+												}
+								});
 								return true;
 							}
 
