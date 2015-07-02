@@ -548,3 +548,22 @@ h4, .h4, h5, .h5, h6, .h6 {  margin-top: 8px; margin-bottom: 8px;}
         height: 80vh;
     }
 }
+
+.importTestdiv{
+	margin-top: 10px;	
+	background-color:#f8f8f8; 
+	margin-bottom: 2px;
+	padding: 14px 0px 14px 14px;	
+	width:97%; 	
+}
+.importTestTitle{
+	font-family:Helvetica; 
+	font-size:14px; 
+	font-weight:bold; 
+	color: #4D4D4D; 	
+}
+.importAllTest{
+	float: right;	
+	padding-right: 35px;
+}
+

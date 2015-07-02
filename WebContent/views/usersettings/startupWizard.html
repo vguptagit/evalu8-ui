@@ -11,7 +11,7 @@
 
 
 <wizard on-finish="finishWizard()"
-	template="views/usersettings/startupWizardTemplate.html"> <wz-step title="Discipline"
+	template="views/usersettings/startupWizardTemplate.html"> 	<wz-step title="Choose Your Discipline"
 	canenter="enterDiscipline" canexit="exitDiscipline">
 
 <div class="row"
@@ -47,7 +47,7 @@
 	</div>
 </div>
 
-</wz-step> <wz-step title="Books" canenter="enterBook">
+</wz-step> <wz-step title="Choose Your Books" canenter="enterBook">
 <div class="row margin-top-20">
 	<div class="col-lg-5">
 		<div>
@@ -71,6 +71,40 @@
 						typeahead="book.title for book in books.all | searchFields:$viewValue"
 						ng-keyup="searchedBookOnEnter($event)"> <span class="glyphicon glyphicon-search searchicon" ng-click="searchedBookOnClick()"
 						tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Search"></span>
+				</div>
+				<div class="bookContainer">
+					<div data-ng-repeat="discipline in disciplineBooks">
+						<div class="discplineText1" style="font-weight: bold;">{{discipline.name}}</div>					
+						<div data-ng-repeat="book in discipline.books"
+							ng-click="selectBook(book.guid,discipline.name)"
+							ng-class="{selectedDisc: book.isSelected}"
+							ng-show="book.showEdition" parentbookid="{{book.parentBookID}}">
+							<div class="expandIconForBookEdition" ng-show="book.hasEdition" ng-click="showOldEdition($event,book.guid,discipline.name)">
+								<i id="{{book.guid}}" class="margin-lft-10" ng-class="book.isCollasped?'fa fa-minus-square-o':'fa fa-plus-square-o'"></i>
+							</div>
+							<div class="discplineText"><i class="fa fa-circle font10" ng-show="book.parentBookID != undefined"></i>
+								<div class="margin-lft-5 floatLeft">{{book.title}}</div></div>
+						</div>
+					</div>
+				</div>
+	</div>
+</div>
+</wz-step>
+<wz-step title="Import Tests or Questions (Optional)" canenter="enterBook">
+<div class="row margin-top-20">
+	<div class="col-lg-5">
+		<div>
+			<ul class="a">
+				<li class="discription">Import tests and/or questions 
+				from previous test </br>generators or a file on your computer.</li>			
+				<li class="discription">Skip step by selecting Finish button</li>
+			</ul>
+		</div>
+	</div>
+	<div class="col-lg-7">
+				<div class="input-group importTestdiv">
+						<span class="importTestTitle">1. Select tests/questions from your MyTest account</span>
+						<div class="importAllTest"><input class="importAllTestChk"  type='checkbox'/></div>
 				</div>
 				<div class="bookContainer">
 					<div data-ng-repeat="discipline in disciplineBooks">
