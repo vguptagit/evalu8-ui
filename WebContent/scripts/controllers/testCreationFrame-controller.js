@@ -2000,9 +2000,10 @@ angular
 							}
 
 							$scope.TestVersion_open = function() {
-
-								$modal
-										.open({
+							    if (!SharedTabService.tests[SharedTabService.currentTabIndex].testId) {
+							        return false;
+							    }
+								$modal.open({
 											templateUrl : 'views/partials/testVersionPopup.html',
 											controller : 'TestVersionCreationController',
 											windowClass: 'testversion-Modal',
@@ -2017,9 +2018,10 @@ angular
 							};
 
 							$scope.open = function() {
-
-								$modal
-										.open({
+							    if (!SharedTabService.tests[SharedTabService.currentTabIndex].testId) {
+							        return false;
+							    }
+								$modal.open({
 											templateUrl : 'views/partials/exportPopup.html',
 											controller : 'ExportTestController',
 											size : 'md',
