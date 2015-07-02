@@ -111,20 +111,11 @@
 			</div>
 		</div>
 		<div class="bookContainer">
-			<div data-ng-repeat="book in userBooks"
-				ng-click="selectBook(book.name)"
-				ng-class="{selectedDisc: book.isSelected}"
-				ng-show="book.showEdition" parentbookid="{{book.parentBookID}}">
-				<div class="expandIconForBookEdition" ng-show="book.hasEdition"
-					ng-click="showOldEdition($event,book.guid,discipline.name)">
-					<i id="{{book.guid}}" class="margin-lft-10"
-						ng-class="book.isCollasped?'fa fa-minus-square-o':'fa fa-plus-square-o'"></i>
+			<div data-ng-repeat="book in userBooks">						
+				<div class="discplineText">					
+					<div class="margin-lft-5 floatLeft"></div>
 				</div>
-				<div class="discplineText">
-					<i class="fa fa-circle font10"
-						ng-show="book.parentBookID != undefined"></i>
-					<div class="margin-lft-5 floatLeft">{{book.title}}</div>
-				</div>
+				
 			</div>
 		</div>
 	</div>
