@@ -84,10 +84,10 @@ angular
 						'UserService',
 						'BookService',
 						'DisciplineService',
-						'UserBookService',
+						'UserBookService','$modal',
 						function($scope, $rootScope, $location, $routeParams,
 								$http, UserService, BookService,
-								DisciplineService,UserBookService) {
+								DisciplineService,UserBookService,$modal) {
 
 							$scope.searchedDiscpline = "";
 							$scope.trackEnterKey = 0;
@@ -95,7 +95,7 @@ angular
 								all : [],
 								userSelected : []
 							};
-
+							$scope.selectedAllUserBooks = false;
 							$scope.enableDisableNextButton = function(state) {
 								if (state) {
 									$(".btn-primary").addClass("btnDisbled");
@@ -313,6 +313,7 @@ angular
 							
 							$scope.enterUserBooks = function() {
 								// Getting User books
+								$scope.userBooks = [];
 								UserBookService.getUserBooks(function(userBooks) {									
 									if (userBooks.length == 0) {
 										var book={};
@@ -324,6 +325,27 @@ angular
 								});
 							
 								return true;
+							}
+							
+							$scope.selectUserBook = function(bookid, bookTitle) {
+								$scope.userBooks
+								.forEach(function(book) {
+									if (book.guid == bookid){
+										if((typeof (book.isSelected) == 'undefined') || (book.isSelected == false)) {
+											book.isSelected = true;
+										} else if (book.isSelected == true) {
+											book.isSelected = false;
+										}
+									}												
+								});
+							}
+
+							$scope.checkAllUserBook = function(bookid) {
+								$scope.selectedAllUserBooks = !$scope.selectedAllUserBooks;						     
+								$scope.userBooks
+								.forEach(function(book) {											
+									book.isSelected = $scope.selectedAllUserBooks;											
+								});
 							}
 
 							var arrangedBooks=[];
@@ -604,7 +626,7 @@ angular
 							$scope.saveBooks = function() {
 								UserService
 										.saveUserBooks($scope.books.currentlySelected, function(){
-											$location.path('/home/questionbanks');
+											//$location.path('/home/questionbanks');
 										});
 							};
 
@@ -662,13 +684,58 @@ angular
 								}
 							}
 
-							$scope.finishWizard = function() {
+							$scope.saveDiscplineAndBook = function() {
 								if ($scope.isBookEmpty()) {
-									return false
+									return false;
 								} else {
 									$scope.saveDiscpline();
+									return true;
 								}
 
 							}
+							
+							var confirmObject = {
+									templateUrl : 'views/partials/alert.html',
+									controller : 'AlertMessageController',
+									windowClass: 'alert-Modal',
+									backdrop : 'static',
+									keyboard : false,
+									resolve : {
+										parentScope : function() {
+											return $scope;
+										}
+									}
+								};
+
+							
+							$scope.finishWizard = function() {				
+								var isSelectedBookEmpty=false;
+								var selectedUserBook=[];
+
+								if($scope.userBooks.length==1){
+									isSelectedBookEmpty = $scope.userBooks[0].emptyRecords
+								}
+
+								$.grep($scope.userBooks, function(book) {
+									if (book.isSelected) {
+										selectedUserBook.push(book);									
+									}
+								});				
+
+								if (!isSelectedBookEmpty && selectedUserBook.length==0) {
+									$scope.IsConfirmation = true;
+									$scope.message = "Are you sure you don’t want to import any tests now? Select items below to import or choose Next to skip this step"
+
+										$modal.open(confirmObject).result.then(function(ok) {
+											if(ok) {
+												$location.path('/home/questionbanks');
+											}																		
+											return false;
+										});
+								} else {
+									$location.path('/home/yourtests');									
+								}
+							}
+							
 
 						} ]);
