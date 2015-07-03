@@ -47,7 +47,7 @@
 	</div>
 </div>
 
-</wz-step> <wz-step title="Choose Your Books" canenter="enterBook">
+</wz-step> <wz-step title="Choose Your Books" canenter="enterBook" canexit="saveDiscplineAndBook" >
 <div class="row margin-top-20">
 	<div class="col-lg-5">
 		<div>
@@ -107,14 +107,14 @@
 			<span class="importTestTitle">1. Select tests/questions from
 				your MyTest account</span>
 			<div class="importAllTest">
-				<input class="importAllTestChk" type='checkbox' />
+				<input class="importAllTestChk" type='checkbox' ng-modal="selectedAllUserBooks" ng-click='checkAllUserBook()' />
 			</div>
 		</div>
 		<div class="userBookContainer">
 		<div ng-if="userBooks[0].emptyRecords">
 			<div class="emptyUserBooks">{{userBooks[0].title}}</div>
 		</div>		
-		<div ng-if="!userBooks[0].emptyRecords" data-ng-repeat="book in userBooks">						
+		<div ng-if="!userBooks[0].emptyRecords" ng-click="selectUserBook(book.guid,book.title)" ng-class="{selectedDisc: book.isSelected}" data-ng-repeat="book in userBooks">						
 				<div class="discplineText userBookTitle">					
 					<div class="margin-lft-5 floatLeft">{{book.title}}</div>
 				</div>
