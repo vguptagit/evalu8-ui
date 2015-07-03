@@ -110,13 +110,19 @@
 				<input class="importAllTestChk" type='checkbox' />
 			</div>
 		</div>
-		<div class="bookContainer">
-			<div data-ng-repeat="book in userBooks">						
-				<div class="discplineText">					
-					<div class="margin-lft-5 floatLeft"></div>
+		<div class="userBookContainer">
+		<div ng-if="userBooks[0].emptyRecords">
+			<div class="emptyUserBooks">{{userBooks[0].title}}</div>
+		</div>		
+		<div ng-if="!userBooks[0].emptyRecords" data-ng-repeat="book in userBooks">						
+				<div class="discplineText userBookTitle">					
+					<div class="margin-lft-5 floatLeft">{{book.title}}</div>
 				</div>
 				
-			</div>
+		</div>
+		</div>
+		<div class="input-group importTestDiv uploadFilesDiv">
+			<span class="importTestTitle">2. Upload Files (TestGen, WPS, QTI 2.1 from any LMS)</span>			
 		</div>
 	</div>
 </div>

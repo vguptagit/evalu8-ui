@@ -320,6 +320,7 @@ angular
 										if (userBooks.length == 0) {
 											var book={};
 											book.title="There are no Books/Tests available for Import";
+											book.emptyRecords=true;
 											userBooks.push(book);
 											$scope.userBooks = userBooks;
 										} else {
