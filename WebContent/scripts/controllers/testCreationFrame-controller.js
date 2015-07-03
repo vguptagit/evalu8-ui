@@ -1926,18 +1926,29 @@ angular
 								        $scope.versionedTests = testResult;
 								        $scope.currentTab = SharedTabService.tests[SharedTabService.currentTabIndex];
 								        $scope.currentTab.modified = (new Date()).toJSON();
+								        $scope.maping = {};
+								        $scope.count = 0;
 
 								        $scope.versionedTests.forEach(function (node) {
 								            var testID = node.guid;
 								            TestService.getMetadata(testID, function (result) {
-								                result.showEditIcon = false;
-								                result.showArchiveIcon = false;
-								                result.draggable = false;
-								                $scope.bindTabs(result);
+								                $scope.maping[node.guid] = result;
+								                $scope.count = $scope.count + 1;
+								                if ($scope.count == $scope.versionedTests.length) {
+								                    result.showEditIcon = false;
+								                    result.showArchiveIcon = false;
+								                    result.draggable = false;
+								                    $scope.bindTabs();
+								                }
 								            });
 								        });
 
-								        $scope.bindTabs = function (treeNode) {
+								        $scope.bindTabs = function () {
+								            $scope.versionedTests.forEach(function (node) {
+								                var treeNode = $scope.maping[node.guid];
+								                if (treeNode.guid != node.guid) {
+								                    return false;
+								                }
 								                treeNode.nodeType = EnumService.NODE_TYPE.test;
 								                treeNode.folderGuid = $scope.currentTab.folderGuid;
 
@@ -1957,6 +1968,7 @@ angular
 								                    newTestTab.folderGuid = (typeof (treeNode.folderId) == 'undefined') ? null : treeNode.folderId;
 								                    SharedTabService.prepForBroadcastTest(newTestTab);
 								                }
+								            });
 								        };
 								    } catch (e) {
 								        console.log(e);
