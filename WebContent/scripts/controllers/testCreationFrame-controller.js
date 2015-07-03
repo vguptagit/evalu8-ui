@@ -2233,8 +2233,14 @@ angular
 										.getQuestionById(
 												question.guid,
 												function(response) {
-													var displayNode = $("<div></div>");													
+													var displayNodes = $("<div></div>");	
+
+													QTI.play(response,
+													displayNodes, false,false,question.quizType);
+													var displayNode = {};
+
 													displayNode.guid = question.guid;
+													displayNode.textHTML = displayNodes.html();
 													
 													displayNode.IsEditView = false;
 													displayNode.qstnLinkText = displayNode.IsEditView ? "View"
@@ -2256,11 +2262,6 @@ angular
 													displayNode.optionsView = displayNode.qstnMasterData.optionsView;
 													displayNode.EssayPageSize = displayNode.qstnMasterData.EssayPageSize;
 																							
-													QTI.play(response,
-															displayNode, false,false,question.quizType);
-													
-													displayNode.textHTML = displayNode.html();
-
 													// $scope.tree2.push(displayNode);
 													SharedTabService.tests[SharedTabService.currentTabIndex].questions
 															.push(displayNode);

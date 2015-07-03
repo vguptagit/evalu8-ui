@@ -1,7 +1,7 @@
 /* CSS Document */
 /* generic css */
-body {background-color:#FFF; font-family:Helvetica; font-size:14px; color: #4D4D4D !important; Line-Height: 20px !important;}
-label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D; Line-Height: 1em;}
+body {background-color:#FFF; font-family:Helvetica Neue Light; font-size:14px; color: #4D4D4D !important; Line-Height: 20px !important;}
+label{font-family:Helvetica Neue Light; font-size:14px; font-weight:normal; color: #4D4D4D; Line-Height: 1em;}
 .container{margin: 0 20px;}
 .circlenumber{font-size:34px; line-height:1em; background-color:#fff; padding:10px 20px; border:1px solid #d0d0d0; -moz-border-radius: 50%; -webkit-border-radius: 50%; border-radius: 30px; margin-left:27%; margin-bottom:15px; cursor:pointer;}
 .form-signin { max-width: 470px; padding: 15px; margin: 0 auto; background-color:#fff;-webkit-box-shadow: 0px 0px 8px #C0C0C0; -moz-box-shadow: 0px 0px 8px #C0C0C0; box-shadow: 0px 0px 8px #C0C0C0; border:0px solid #C0C0C0; margin-top:80px; padding:40px; display: inline-block;}
@@ -25,10 +25,10 @@ label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D;
 
 /* Text CSS */
 .bold{font-weight:bold;}
-.text34{font-size:34px; line-height:25px; font-family:Arial, Helvetica, sans-serif}
-.text18 {font-size:18px; line-height:25px; font-family:Arial, Helvetica, sans-serif}
-.text16 {font-size:16px; line-height:25px; font-family:Arial, Helvetica, sans-serif}
-.text14 {font-size:14px; line-height:25px; font-family:Arial, Helvetica, sans-serif}
+.text34{font-size:34px; line-height:25px; font-family:Helvetica Neue Light}
+.text18 {font-size:18px; line-height:25px; font-family:Helvetica Neue Light}
+.text16 {font-size:16px; line-height:25px; font-family:Helvetica Neue Light}
+.text14 {font-size:14px; line-height:25px; font-family:Helvetica Neue Light}
 
 /*Font size CSS*/
 .font-size-16 {font-size:14px;}
@@ -135,6 +135,12 @@ label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D;
   display: block;
   float:left;
 }
+
+@font-face {
+  font-family: 'Helvetica Neue Light';
+  src: url('../fonts/HelveticaLTCom-Light.ttf');
+}
+
 .savearrow{background-color: #d5d5d5; line-height: 35px; top:0;}
 
 .folder-main {
@@ -266,7 +272,7 @@ label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D;
   font-size: 14px;
   border: 1px solid #989898;
   background-color: #FFFFF;
-  font-family:Helvetica;
+  font-family:Helvetica Neue Light;
   color:#4D4D4D;
 }
 
@@ -292,7 +298,7 @@ label{font-family:Helvetica; font-size:14px; font-weight:normal; color: #4D4D4D;
   border: 1px solid rgba(0, 0, 0, .2);
   border-radius: 5px;
   outline: none;
-  font-family: helvetica;
+  font-family: Helvetica Neue Light;
   line-height: 1em;
   -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
   box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
@@ -560,7 +566,7 @@ h4, .h4, h5, .h5, h6, .h6 {  margin-top: 8px; margin-bottom: 8px;}
 }
 
 .importTestTitle{
-	font-family:Helvetica; 
+	font-family:Helvetica Neue Light; 
 	font-size:14px; 
 	font-weight:bold; 
 	color: #4D4D4D; 	

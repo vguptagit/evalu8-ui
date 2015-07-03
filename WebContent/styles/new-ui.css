@@ -84,7 +84,7 @@
   font-size: 14px;
   border: 1px solid #989898;
   background-color: #FFFFF;
-  font-family:Helvetica;
+  font-family:Helvetica Neue Light;
   color:#4D4D4D;
 }
 
@@ -100,7 +100,7 @@
 .input-sm-add {
   height: 20px;
   padding: 5px 10px;
-  font-family:Helvetica;
+  font-family:Helvetica Neue Light;
   font-size: 14px;
   line-height: 1.5;
   width:400px;
@@ -115,7 +115,7 @@
   border: 1px solid #989898;
   background-color: #FFFFF;
   padding: 5px 10px;
-  font-family:Helvetica;
+  font-family:Helvetica Neue Light;
   color:#4D4D4D;
   line-height: 1.5;
   width:400px;
@@ -140,7 +140,7 @@
   border: 1px solid rgba(0, 0, 0, .2);
   border-radius: 5px;
   outline: none;
-  font-family: helvetica;
+  font-family:Helvetica Neue Light;
   line-height: 1em;
   -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
   box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
@@ -158,14 +158,14 @@
   font-size: 14px;
   font-weight:bold;
   line-height: 1em;
-  font-family: Helvetica;
+  font-family: Helvetica Neue Light;
 }
 
 .modal-default-header-title{
 	font-size: 20px;
   font-weight:bold;
   line-height: 1em;
-  font-family: Helvetica;
+  font-family:Helvetica Neue Light;
 }
 
 .iconButtons {
@@ -376,7 +376,7 @@ a.fa.fa-user{
   top: 5px;
   padding-left: 10px;
   font-size: 14px;
-  font-family: helvetica;
+  font-family: Helvetica Neue Light;
   font-weight: 100;
   padding-bottom:0;
   }
@@ -398,7 +398,7 @@ span.glyphicon.glyphicon-info-sign {
   background-color: #f8f8f8;
   padding: 15px;
   border-radius: 5px;
-  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-family: Helvetica Neue Light;
 } 
 
 .TestcreationInfo p {
@@ -438,7 +438,7 @@ span.glyphicon.glyphicon-info-sign {
   display: inline-block;
   text-align: center;
   font-size: 14px;
-  font-family: Helvetica;
+  font-family: Helvetica Neue Light;
   padding-bottom: 30px;
   padding-top: 15px;
   z-index: 9999;
