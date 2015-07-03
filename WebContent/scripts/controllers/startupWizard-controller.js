@@ -312,28 +312,17 @@ angular
 							}
 							
 							$scope.enterUserBooks = function() {
-								$rootScope.blockPage.start();							
 								// Getting User books
-								UserBookService
-								.getUserBooks(function(userBooks) {
-									try{
-										if (userBooks.length == 0) {
-											var book={};
-											book.title="There are no Books/Tests available for Import";
-											book.emptyRecords=true;
-											userBooks.push(book);
-											$scope.userBooks = userBooks;
-										} else {
-											$scope.userBooks = userBooks;
-										}
-
-									}catch(e){
-										console.log(e);
-									}
-									finally{
-										$rootScope.blockPage.stop();
-									}
+								UserBookService.getUserBooks(function(userBooks) {									
+									if (userBooks.length == 0) {
+										var book={};
+										book.title="There are no Books/Tests available for Import";
+										book.emptyRecords=true;
+										userBooks.push(book);
+									} 
+									$scope.userBooks = userBooks;
 								});
+							
 								return true;
 							}
 

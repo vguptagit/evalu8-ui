@@ -553,8 +553,7 @@ h4, .h4, h5, .h5, h6, .h6 {  margin-top: 8px; margin-bottom: 8px;}
 	margin-top: 10px;	
 	color: #4D4D4D;
   	line-height: 1em;
-  	background-color: #F6F7F5;
-	margin-bottom: 10px;
+  	background-color: #F6F7F5;	
 	padding: 12px 0px 10px 14px;	
 	width:97%; 	
 	border-bottom: 1px solid #D0D0D0 !important;
@@ -591,7 +590,7 @@ h4, .h4, h5, .h5, h6, .h6 {  margin-top: 8px; margin-bottom: 8px;}
  }
  
  .uploadFilesDiv{
-     margin-top: 20px;
+     margin-top: 26px;
  }
  
  .userBookTitle{
