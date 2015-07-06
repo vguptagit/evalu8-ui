@@ -11,12 +11,12 @@
 	};
 	
 	ns.success = {
-			importUserBooks : "Success to import! Please try again."
+			importUserBooks : "Success to import! Please try again." //TODO :need to remove
 	};
 	
 	ns.warning = {
-			importUserBooks : "Warning to import! Please try again."
+			importUserBooks : "Warning to import! Please try again."//TODO :need to remove
 	};
 		
-})(window.e8messages = window.e8messages || {});
+})(window.e8msg = window.e8msg || {});
 

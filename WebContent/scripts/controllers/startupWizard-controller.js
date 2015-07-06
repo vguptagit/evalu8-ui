@@ -708,34 +708,39 @@ angular
 								};
 
 							
-							$scope.finishWizard = function() {				
-								var isSelectedBookEmpty=false;
-								var selectedUserBook=[];
+							$scope.finishWizard = function() {
+								var isUserBookEmpty = false;
+								var selectedUserBook = [];
 
-								if($scope.userBooks.length==1){
-									isSelectedBookEmpty = $scope.userBooks[0].emptyRecords
+								if ($scope.userBooks.length == 1) {
+									isUserBookEmpty = $scope.userBooks[0].emptyRecords
 								}
 
 								$.grep($scope.userBooks, function(book) {
 									if (book.isSelected) {
 										book.isImported = true;
 										delete book.isSelected;
-										selectedUserBook.push(book);									
+										selectedUserBook.push(book);
 									}
-								});				
+								});
 
-								if (!isSelectedBookEmpty && selectedUserBook.length==0) {
+								if (isUserBookEmpty) {
+									$location.path('/home/questionbanks');
+								} else if (!isUserBookEmpty
+										&& selectedUserBook.length == 0) {
 									$scope.IsConfirmation = true;
 									$scope.message = "Are you sure you don’t want to import any tests now? Select items below to import or choose Next to skip this step"
 
-										$modal.open(confirmObject).result.then(function(ok) {
-											if(ok) {
-												$location.path('/home/questionbanks');
-											}																		
-											return false;
-										});
+									$modal.open(confirmObject).result
+											.then(function(ok) {
+												if (ok) {
+													$location
+															.path('/home/questionbanks');
+												}
+												return false;
+											});
 								} else {
-									$scope.importUserBooks(selectedUserBook);				
+									$scope.importUserBooks(selectedUserBook);
 								}
 							}							
 							
@@ -751,7 +756,7 @@ angular
 							}
 							
 							$scope.showErrorMessage = function(){
-								var msg = e8messages.error.importUserBooks;
+								var msg = e8msg.error.importUserBooks;
 								var messageTemplate ='<p class="alert-danger"><span class="glyphicon glyphicon-alert"></span><span class="warnMessage">' + msg  + '</p> ';
 								$scope.positions = ['center', 'left', 'right'];
 								$scope.position = $scope.positions[0];
