@@ -603,11 +603,6 @@ h4, .h4, h5, .h5, h6, .h6 {  margin-top: 8px; margin-bottom: 8px;}
  	min-height: 35px !important;
  }
 
- .cg-notify-message {
- background-color: #f2dede;
- border: 1px solid #f2dede;
- color:inherit; 
-}
 .cg-notify-close{
   font-size: 15px;
   right: 6px;

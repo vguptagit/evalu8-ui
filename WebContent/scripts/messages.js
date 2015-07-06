@@ -6,7 +6,17 @@
 
 (function(ns){
 	
-	ns.importUserBookError = "Unable to import! Please try again." 
+	ns.error = {
+			importUserBooks : "Unable to import! Please try again."
+	};
+	
+	ns.success = {
+			importUserBooks : "Success to import! Please try again."
+	};
+	
+	ns.warning = {
+			importUserBooks : "Warning to import! Please try again."
+	};
 		
-})(window.e8msg=window.e8msg || {});
+})(window.e8messages = window.e8messages || {});
 
