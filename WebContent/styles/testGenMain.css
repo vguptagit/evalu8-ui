@@ -799,7 +799,7 @@ ol {
 	line-height: 40px;
 	font-family: Helvetica Neue Light;
 	font-weight: normal;
-	font-size: 12px;
+	font-size: 14px;
 	width: 100%;
 }
 
@@ -1149,6 +1149,7 @@ margin-top: -16px;
 .wizardHeader button.close{
 	margin-right: 15px;
 	margin-top: 10px;
+	outline: 0;
 }
 .ck-buttonSelected {
     margin: 5px;
@@ -1280,7 +1281,7 @@ li[printmode='false'].displayQuestionLI {
 
 .qstnView {
 	  float:left;
-	  font-size: 11px;
+	  font-size: 12px;
 	  cursor: pointer;
 	  padding-right: 17px;
 	  height: 14px !important;

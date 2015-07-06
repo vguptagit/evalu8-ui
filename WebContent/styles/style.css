@@ -384,7 +384,10 @@ hr{margin: 0;}
 .botborder { border-bottom: 1px solid #E0E0E0; background-color: #f8f8f8; height: 91px; }
 .botborderright { border-bottom: 1px solid #E0E0E0; background-color: #f8f8f8; min-height: 91px; }
 .resourcetab{height: 55px; padding-top: 10px;}
-
+.resourcetab h4 {
+  font-size: 20px;
+}
+.botborderright h4 {font-size: 20px; margin-top: 6px; margin-right: -10px;}
  .angular-ui-tree-nodes .angular-ui-tree-nodes {padding-right: 1px; padding-top: 1px; background-color:#f8f8f8;} 
 
 .full-width-tabs > ul.nav.test-tabs {
