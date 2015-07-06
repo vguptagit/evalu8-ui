@@ -6,7 +6,7 @@ angular.module('evalu8Demo')
 		['$http', '$rootScope', '$location', '$cookieStore', 'blockUI',
 		 function($http, $rootScope, $location, $cookieStore,blockUI) {
 			
-			$rootScope.globals = $cookieStore.get('globals') || {};			
+			$rootScope.globals = JSON.parse(sessionStorage.getItem('globals'));			
 			 
 			var config = {
 					headers : {
