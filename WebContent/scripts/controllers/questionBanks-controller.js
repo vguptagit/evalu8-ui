@@ -29,8 +29,9 @@ angular
 								EnumService, $modal, blockUI,ContainerService,questionService) {
 						    SharedTabService.selectedMenu = SharedTabService.menu.questionBanks;
 						    $rootScope.blockPage = blockUI.instances.get('BlockPage');
-							$rootScope.globals = $cookieStore.get('globals')
-									|| {};
+						    
+						    $rootScope.globals = JSON.parse(sessionStorage.getItem('globals'));
+						    
 							var config = {
 								headers : {
 									'x-authorization' : $rootScope.globals.authToken,
