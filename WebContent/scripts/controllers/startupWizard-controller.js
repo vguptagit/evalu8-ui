@@ -751,7 +751,7 @@ angular
 							}
 							
 							$scope.showErrorMessage = function(){
-								var msg = e8msg.importUserBookError;
+								var msg = e8messages.error.importUserBooks;
 								var messageTemplate ='<p class="alert-danger"><span class="glyphicon glyphicon-alert"></span><span class="warnMessage">' + msg  + '</p> ';
 								$scope.positions = ['center', 'left', 'right'];
 								$scope.position = $scope.positions[0];
