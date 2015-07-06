@@ -84,10 +84,10 @@ angular
 						'UserService',
 						'BookService',
 						'DisciplineService',
-						'UserBookService','$modal',
+						'UserBookService','$modal','notify',
 						function($scope, $rootScope, $location, $routeParams,
 								$http, UserService, BookService,
-								DisciplineService,UserBookService,$modal) {
+								DisciplineService,UserBookService,$modal,notify) {
 
 							$scope.searchedDiscpline = "";
 							$scope.trackEnterKey = 0;
@@ -718,6 +718,8 @@ angular
 
 								$.grep($scope.userBooks, function(book) {
 									if (book.isSelected) {
+										book.isImported = true;
+										delete book.isSelected;
 										selectedUserBook.push(book);									
 									}
 								});				
@@ -733,9 +735,32 @@ angular
 											return false;
 										});
 								} else {
-									$location.path('/home/yourtests');									
+									$scope.importUserBooks(selectedUserBook);				
 								}
+							}							
+							
+							
+							$scope.importUserBooks = function(selectedUserBook) {											
+								UserBookService.importUserBooks(selectedUserBook,function(status) {	
+									if(status){
+										$location.path('/home/yourtests');		
+									}else {										
+										$scope.showErrorMessage();
+									}									
+								});		
 							}
 							
+							$scope.showErrorMessage = function(){
+								var msg = e8msg.importUserBookError;
+								var messageTemplate ='<p class="alert-danger"><span class="glyphicon glyphicon-alert"></span><span class="warnMessage">' + msg  + '</p> ';
+								$scope.positions = ['center', 'left', 'right'];
+								$scope.position = $scope.positions[0];
+								notify({
+									messageTemplate: messageTemplate,						                
+									classes: 'alert alert-danger',	
+									position: $scope.position,
+									duration: '1500'
+								});
+							};
 
 						} ]);

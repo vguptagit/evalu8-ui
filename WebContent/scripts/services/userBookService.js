@@ -30,5 +30,17 @@ angular
 				 callback(userBooks);
 			 });
 		 };
+		 
+		 this.importUserBooks = function(userBooks,callback) {				
+
+			 $http.post(evalu8config.apiUrl + "/userbooks/import", userBooks,config)
+			 .success(function() {					
+				 callback(true);
+			 })
+			 .error(function() {				 
+				 callback(false);			
+			 });
+		 };
+		 
 	} 
 ])
