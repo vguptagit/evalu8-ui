@@ -149,6 +149,8 @@ angular
 								bookContainersArray=[];
 								$scope.allContainers=[];
 								$scope.selectedBookid="";
+								$scope.expandedNodes=[];
+								$scope.selectedNodes=[];
 								$scope.loadTree();								
 							})
 
@@ -253,6 +255,7 @@ angular
 							// mytest/books/{bookid}/nodes.
 							// Output collection will be append to input book
 							// angularjs node.
+							$scope.expandedNodes=[];
 							$scope.getNodes = function(book) {
 
 								$scope.bookID = book.node.guid;
@@ -272,6 +275,7 @@ angular
                                     ContainerService.bookNodes(book.node.guid, $scope.selectedQuestionTypes.toString(),
                                     		function(bookNodes) {
                                         book.node.nodes = bookNodes;
+                                        $scope.expandedNodes=$scope.expandedNodes.concat(book.node.nodes);
                                         angular.forEach(
                                             book.node.nodes,
                                             function(item) {
@@ -395,10 +399,16 @@ angular
 								var node;
 								var questions=[];
 								if($scope.isSearchMode){
-									if($scope.selectedNodes.length > 1 && !$scope.createTestWizardMode && $scope.searchedContainerId!= currentNode.guid ){
-										return questions; 
+									var isParentContainer=false; 
+									parentContainers.forEach(function(parentContainer){
+										if(parentContainer.guid==currentNode.guid){
+											isParentContainer=true;
+										}
+									});
+									if(currentNode.guid==$scope.searchedContainerId || isParentContainer){
+										node=$scope.searchedContainerId; 
 									}else{
-										node=$scope.searchedContainerId;
+										node=currentNode.guid;
 									}
 								}else{
 									node=currentNode.guid;
@@ -474,7 +484,7 @@ angular
 
 											if(response.length>0){
 												currentNode.node.nodes = currentNode.node.nodes.concat(response);
-
+												$scope.expandedNodes=$scope.expandedNodes.concat(currentNode.node.nodes);
 												angular.forEach(currentNode.node.nodes, function(item) {
 													item.template = 'nodes_renderer.html';
 													item.showTestWizardIcon = false;
@@ -690,6 +700,8 @@ angular
 									        test.questions[j] = nodeCopy;
 									    }
 									}
+									$scope.deselectParentNode(node);
+									$scope.deselectChildNode(node);
 								} else {
 									for (var i = 0; i < $scope.selectedNodes.length; i++) {
 										if ($scope.selectedNodes[i].guid == node.guid
@@ -709,6 +721,39 @@ angular
 									}
 								}
 							};
+							
+							$scope.deselectParentNode = function(selectedNode) {
+								$scope.expandedNodes.forEach(function(container) {
+									if (container.guid == selectedNode.parentId) {
+										$scope.deselectNode(container);
+										if (container.parentId != null&& container.parentId != "") {
+											$scope.deselectParentNode(container)
+										}
+									}
+								});
+							}
+							
+							$scope.deselectChildNode = function(selectedNode) {
+								$scope.expandedNodes.forEach(function(container) {
+									if (container.parentId==selectedNode.guid) {
+										$scope.deselectNode(container);
+										$scope.deselectChildNode(container)
+									}
+								});
+							}
+							
+							$scope.deselectNode = function(node){
+								var i=0;
+								$scope.selectedNodes.forEach(function(selectedContainer){
+									if(selectedContainer.guid==node.guid){
+										$scope.selectedNodes.splice(i, 1);
+										node.isNodeSelected = false;
+										node.showEditQuestionIcon = false;
+										node.showTestWizardIcon = false;
+									}
+									i++;
+								});
+							}
 
 							$scope.$on('handleBroadcast_deselectedNode',
 									function(handler, node) {
@@ -744,16 +789,8 @@ angular
 										} else if ($scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.chapter
 												|| $scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.topic) {
 											
-											if($scope.isSearchMode){
-												if($scope.selectedNodes.length > 1 && $scope.searchedContainerId == $scope.selectedNodes[i].guid){
-													$rootScope.blockPage.start();	
-												}else if($scope.selectedNodes.length == 1){
-													$rootScope.blockPage.start();
-												}
-											}else{
-												$rootScope.blockPage.start();
-											}
-										    
+											$rootScope.blockPage.start();
+											
 											$scope.selectedNodes[i].showEditQuestionIcon = false;
 											var questionFolder = $scope.selectedNodes[i];
 											getQuestions(
@@ -997,8 +1034,11 @@ angular
 							}
 							
 							$scope.parentNode;
+							var parentContainers=[];
 							$scope.showContainer = function(){
 								$scope.closeAdvancedSearch();
+								$scope.expandedNodes=[];
+								$scope.selectedNodes=[];
 								var searchedContainer = "";
 								var parentContainerid = "";
 								var hasParent = false;
@@ -1040,7 +1080,7 @@ angular
 								$scope.disciplines.push(searchedDiscipline);
 
 								if (hasParent) {
-									var parentContainers=[];
+									parentContainers=[];
 									$scope.getParentContainers(parentContainerid,parentContainers)
 									parentContainers.reverse();
 									var containerNode = $scope.disciplines[0].nodes[0];
@@ -1055,6 +1095,7 @@ angular
 												containerNode["nodes"] = [jQuery.extend(true,
 														{}, container)];
 												containerNode = containerNode.nodes[0];
+												$scope.expandedNodes=$scope.expandedNodes.concat(containerNode);
 											})
 									$scope.parentNode = containerNode;		
 									$scope.addSearchedContainer(searchedContainer);
@@ -1079,6 +1120,7 @@ angular
 											searchedContainer.isHttpReqCompleted = true;
 											$scope.parentNode["nodes"] = [ jQuery.extend(true,
 													{}, searchedContainer) ];
+											$scope.expandedNodes=$scope.expandedNodes.concat($scope.parentNode.nodes);
 											$rootScope.blockPage.stop();
 										}else{
 											$scope.parentNode["nodes"]=[];
@@ -1097,7 +1139,8 @@ angular
 									searchedContainer.isCollapsed=true;
 									searchedContainer.isHttpReqCompleted = true;
 									$scope.parentNode["nodes"] = [ jQuery.extend(true,
-											{}, searchedContainer) ];	
+											{}, searchedContainer) ];
+									$scope.expandedNodes=$scope.expandedNodes.concat($scope.parentNode.nodes);
 								}
 								
 							}
@@ -1312,6 +1355,8 @@ angular
 								bookContainersArray=[];
 								$scope.allContainers=[];
 								$scope.selectedBookid="";
+								$scope.expandedNodes=[];
+								$scope.selectedNodes=[];
 								$scope.loadTree();
 							}							
 							
