@@ -881,6 +881,7 @@ angular
 							}
 
 							$scope.addTestWizard = function() {
+								$scope.isApplySameCriteriaToAll = false;
 								SharedTabService.addTestWizard($scope);
 							}
 							$scope.addTestWizardCriteria = function(response,

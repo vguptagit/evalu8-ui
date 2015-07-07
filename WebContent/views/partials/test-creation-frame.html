@@ -218,13 +218,14 @@
                         </div>
                     </div>
                     <div class="col-lg-11 criteria" ng-repeat="topic in tests[currentIndex].criterias" ng-if="!$first && isApplySameCriteriaToAll">
-                        <div class="">
-                            <span>{{topic.folderTitle}} ({{topic.totalQuestions}} Questions)</span>
-                            <button type="button" class="close"
+                        <div class="wizardSectionTitle">
+                            <span title="{{topic.folderTitle}} ({{topic.totalQuestions}} Questions)">{{topic.folderTitle}} ({{topic.totalQuestions}} Questions)</span>
+                            </div>
+                            <button type="button" class="close margin-rt-5neg margin-top-20neg"
                                     ng-click="closeCriteria(topic,false)" aria-label="Close" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Delete this section">
                                 <span aria-hidden="true">&times;</span>
                             </button>
-                        </div>
+                        
                     </div>
                 </div>
             </div>

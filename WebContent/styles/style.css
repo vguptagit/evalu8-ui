@@ -71,10 +71,12 @@ label{font-family:Helvetica Neue Light; font-size:14px; font-weight:normal; colo
 .margin-bot-15{margin-bottom:15px;}
 .margin-lft-5neg{margin-left:-5px;}
 .margin-rt-15neg{margin-right:-15px;}
+.margin-rt-5neg{margin-right:-5px;}
 .margin-rt-10neg{margin-right:-10px;}
 .margin-lft-10neg{margin-left:-10px;}
 .margin-top-5neg{margin-top:-5px;}
 .margin-top-20{margin-top:20px;}
+.margin-top-20neg{margin-top:-20px;}
 .margin-top-22{margin-top:22px;}
 .margin-top-4{margin-top:4px;}
 .margin-bot-20{margin-bottom:20px;}

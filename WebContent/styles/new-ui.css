@@ -499,7 +499,6 @@ span.glyphicon.glyphicon-info-sign {
   text-overflow: ellipsis;
   height:15px;
 }
-
 .testCaptionLabel {
   white-space: nowrap;
   width: 18em;
@@ -515,4 +514,10 @@ span.glyphicon.glyphicon-info-sign {
     text-overflow:ellipsis;
     padding: 1px;
     width: 90%;
+}
+.wizardSectionTitle{
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 95%;
 }
