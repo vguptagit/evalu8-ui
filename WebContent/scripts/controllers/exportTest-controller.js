@@ -1,8 +1,9 @@
 angular.module('e8MyTests')
 .controller('ExportTestController', 
-		['$scope', '$rootScope', '$modalInstance', 'testId', 'UserService','TestService','$modal',
-		 function ($scope, $rootScope, $modalInstance, testId, UserService, TestService,$modal) {
-
+		['$scope', '$rootScope', '$modalInstance', 'parentScope', 'UserService','TestService','$modal',
+		 function ($scope, $rootScope, $modalInstance, parentScope, UserService, TestService,$modal) {
+			
+	parentScope.tests[parentScope.currentIndex].isTabClicked=false;
     var FileFormats = {
         MSWord: 'doc',
         PDF: 'pdf',
@@ -131,7 +132,7 @@ angular.module('e8MyTests')
     
     function downloadFile(answerKeyPreference, saveSettingsPreference, isSeperateFileSelected){
     	var apiUrl = evalu8config.apiUrl + "/tests/"
-		+ testId + "/download/"
+		+ parentScope.tests[parentScope.currentIndex].testId + "/download/"
 		+ $scope.selectedFormat.value
 		
 		var data = "answerKey="

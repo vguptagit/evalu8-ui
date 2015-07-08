@@ -83,7 +83,7 @@
 								<i id="{{book.guid}}" class="margin-lft-10" ng-class="book.isCollasped?'fa fa-minus-square-o':'fa fa-plus-square-o'"></i>
 							</div>
 							<div class="discplineText"><i class="fa fa-circle font10" ng-show="book.parentBookID != undefined"></i>
-								<div class="margin-lft-5 floatLeft">{{book.title}}</div></div>
+								<div class="bookList margin-lft-5 floatLeft" title="{{book.title}}">{{book.title}}</div></div>
 						</div>
 					</div>
 				</div>
@@ -122,7 +122,7 @@
 				ng-class="{selectedDisc: book.isSelected}"
 				data-ng-repeat="book in userBooks">
 				<div class="discplineText userBookTitle">
-					<div class="margin-lft-5 floatLeft">{{book.title}}</div>
+					<div class="bookList margin-lft-5 floatLeft" title="{{book.title}}">{{book.title}}</div>
 				</div>
 			</div>
 		</div>

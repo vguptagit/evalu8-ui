@@ -11,7 +11,8 @@ angular.module('e8MyTests')
         $scope.controller = EnumService.CONTROLLERS.myTest;
     	SharedTabService.selectedMenu = SharedTabService.menu.myTest;
         $scope.testTitle = "New Test";
-
+        $scope.isTestDeleteClicked=false;
+        $scope.isFolderDeleteClicked=false;
         $scope.dragStarted = false;
         
         $scope.loadTree = function() {        	
@@ -799,7 +800,7 @@ angular.module('e8MyTests')
             };
         
         $scope.deleteFolder = function(folder) {
-
+        	$scope.isFolderDeleteClicked=true;
     		$scope.IsConfirmation = true;        		
     		$scope.message="Are you sure you want to permanently delete this folder. This action cannot be undone. Click OK if you want to delete this folder";
     		
@@ -816,6 +817,7 @@ angular.module('e8MyTests')
         
         
         $scope.deleteTest = function(test) {
+        	$scope.isTestDeleteClicked=true;
     		$scope.IsConfirmation=true;   
     		$scope.message="Are you sure you want to permanently delete this test. This action cannot be undone. Click OK if you want to delete this test";
 
@@ -993,6 +995,7 @@ angular.module('e8MyTests')
                 treeItems = testFolder.nodes;
             }
             addVersionTest(testFolder, treeItems, test, newTest);
+            
         })
         var addVersionTest = function (testFolder, treeItems, test, newTest) {
             $.each(treeItems, function (i, v) {

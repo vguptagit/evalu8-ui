@@ -521,3 +521,10 @@ span.glyphicon.glyphicon-info-sign {
   overflow: hidden;
   width: 95%;
 }
+.bookList{
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 97%;
+  padding: 1px;
+}

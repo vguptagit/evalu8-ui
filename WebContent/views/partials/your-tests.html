@@ -132,7 +132,7 @@
                     </div>
                     <div class="iconsCourseNode">
                         <span ng-show="node.selectTestNode">
-                            <button ng-click="deleteFolder(this)" class="removeIcon fa fa-trash-o" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Delete. Cannot be undone"/>
+                            <button ng-click="deleteFolder(this)" ng-disabled="isFolderDeleteClicked" class="removeIcon fa fa-trash-o" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Delete. Cannot be undone"/>
                             <button ng-click="restoreFolder(this)" class="restoreicon fa fa-undo" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Restore to main directory"/>
                         </span>
                     </div>
@@ -168,7 +168,7 @@
                     </div>
                     <div class="testimagesdiv" ng-class="{testHighlight: node.selectTestNode}">
                         <span ng-show="node.selectTestNode">
-                            <button ng-click="deleteTest(this)" class="removeTestIcon fa fa-trash-o" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Delete. Cannot be undone"/>
+                            <button  ng-click="deleteTest(this)" ng-disabled="isTestDeleteClicked" class="removeTestIcon fa fa-trash-o" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Delete. Cannot be undone"/>
                             <button ng-click="restoreTest(this)" class="restoretesticon fa fa-undo" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Restore to main directory"/>
                         </span>
                     </div>

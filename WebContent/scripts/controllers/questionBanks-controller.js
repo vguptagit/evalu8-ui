@@ -1062,6 +1062,7 @@ angular
 									EnumService.RESOURCES_TABS.questionbanks);
 
 							$scope.openUserSettings = function(step) {
+								$scope.isAddQstbBankClicked=true;
 								$modal
 										.open({
 											templateUrl : 'views/usersettings/usersettingsWizard.html',
@@ -1076,6 +1077,9 @@ angular
 												},
 												source : function() {
 													return "questionBankTab";
+												},
+												parentScope : function() {
+													return $scope;
 												}
 											}
 										})
@@ -1160,6 +1164,7 @@ angular
 							}
 
 							$scope.validateSearch = function(){
+								$scope.isSimpleSearchClicked=true;
 								if($scope.selectedBooks.length == 0){
 									$scope.showWaitingForAutoComplete=false;
 									$scope.selectedContainer="";
@@ -1344,8 +1349,12 @@ angular
 							$scope.showAdvancedSearch = false;
 							$scope.selectedQuestionTypes = [];
 							$scope.isSaveDisabled=true;
+							$scope.isAdvancedSearchClicked=false;
+							$scope.isSimpleSearchClicked=false;
+							$scope.isAddQstbBankClicked=false;
 							
 							$scope.openAdvancedSearch = function() {
+								$scope.isAdvancedSearchClicked=true;
 								if($scope.validateSearch()){
 									if (!$scope.showAdvancedSearch) {
 										$scope.showAdvancedSearch = true;

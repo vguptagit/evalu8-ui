@@ -138,7 +138,6 @@ angular.module('evalu8Demo')
 		     }
 		     //TODO : need to do code optimization.
 		     sharedTabService.addTestWizard = function (scope) {
-		    	 
                  $rootScope.blockPage.start();
 		         var newTest = new sharedTabService.Test();
 		         newTest.tabTitle = "Test Wizard";
@@ -538,9 +537,11 @@ angular.module('evalu8Demo')
 		     sharedTabService.closeCriteria = function (criteria, scope) {
 		         $.each(sharedTabService.tests[scope.currentIndex].criterias, function (i) {
 		             if (sharedTabService.tests[scope.currentIndex].criterias[i].id === criteria.id) {
+		            	 if(sharedTabService.tests[sharedTabService.currentTabIndex].criterias.length==1){
+			             		sharedTabService.tests[sharedTabService.currentTabIndex].title="";
+			             	}
 		            	 sharedTabService.tests[scope.currentIndex].criterias[i].treeNode.showTestWizardIcon=true;
 		            	 //sharedTabService.tests[scope.currentIndex].criterias[i].treeNode.isNodeSelected=false;
-		            	 
 		            	//Dont delete below commented line, it may re-use in feature
 		            	 //$rootScope.$broadcast("handleBroadcast_deselectedNode", sharedTabService.tests[scope.currentIndex].criterias[i].treeNode);
 		                 sharedTabService.tests[scope.currentIndex].criterias.splice(i, 1);
@@ -550,6 +551,7 @@ angular.module('evalu8Demo')
 		     }
 		     
 		     sharedTabService.closeAllCriteria = function (criteria, scope) {
+		    	 sharedTabService.tests[sharedTabService.currentTabIndex].title="";
 		    	 var criterias = sharedTabService.tests[scope.currentIndex].criterias;
 		    	 while(criterias.length > 0){
 		    		 sharedTabService.tests[scope.currentIndex].criterias[0].treeNode.showTestWizardIcon = true;
