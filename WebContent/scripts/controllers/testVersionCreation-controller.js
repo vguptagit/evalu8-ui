@@ -4,8 +4,8 @@ angular.module('e8MyTests')
 		['$scope', '$rootScope', '$modalInstance', 'parentScope', 'UserService','SharedTabService','TestService','$modal',
 		 function ($scope, $rootScope, $modalInstance, parentScope, UserService, TestService, SharedTabService,$modal) {
 			
+			parentScope.tests[parentScope.currentIndex].isTabClicked=false;
 			$scope.sharedTabService = SharedTabService;
-			
 			 $scope.cancel = function () {
 		            $modalInstance.dismiss('cancel');
 		        }; 

@@ -102,12 +102,13 @@ angular
 						'WizardHandler',
 						'$modalInstance',
 						'blockUI',
-						'step','source',
+						'step','source','parentScope',
 						function($scope, $rootScope, $location, $routeParams,
 								$http, UserService, BookService,
 								DisciplineService, UserQuestionsService, WizardHandler,
-								$modalInstance, blockUI, step, source) {
-
+								$modalInstance, blockUI, step, source,parentScope) {
+							
+							parentScope.isAddQstbBankClicked=false;
 							$scope.searchedDiscipline = "";
 							$scope.trackEnterKey = 0;
 							$scope.disciplines = {

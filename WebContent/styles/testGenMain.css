@@ -2420,6 +2420,9 @@ li[qstntemplate=true] .printViewContainer  .qti-blockquote .matchIndex {
 	font-family: Helvetica Neue Light;
 	font-size: 14px;
 	text-decoration: none !important;
+	background: transparent;
+  	border: 0;
+  	outline: 0;
 }
 
 .mOptionLabel {
@@ -2817,6 +2820,9 @@ li[printmode='true'] .qti-itemBody .qti-blockquote>div.optionLabelView:first-chi
 	font-size: 14px;
 	text-decoration: none !important;
 	margin-top: 7px;
+	background-color: transparent;
+    border: 0;
+    outline:0;
 }
 
 .advancedSearchText:hover {

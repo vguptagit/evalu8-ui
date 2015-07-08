@@ -23,6 +23,8 @@ angular
 
 							// $scope.tree2 =
 							// SharedTabService.tests[SharedTabService.currentTabIndex].questions;
+							$scope.isDeleteAnswerClicked=false;
+							$scope.isBlockQuoteClicked=false;
 							$scope.controller = EnumService.CONTROLLERS.testCreationFrame;
 							$scope.tests = SharedTabService.tests;							
 							
@@ -487,6 +489,7 @@ angular
 							};
 
 							$scope.removOption = function(selectedNode, event) {
+								$scope.isDeleteAnswerClicked=true;
 								var qstnOptionContainer = $(
 										selectedNode.$element).find(
 										'form.qti-choiceInteraction');
@@ -498,7 +501,6 @@ angular
 												.attr("checked")) {
 									$scope.selectedNode = selectedNode;
 									$scope.event = event;
-
 									$scope.IsConfirmation = true;
 
 									$scope.message = "Are you sure you want to delete this answer?";
@@ -606,7 +608,7 @@ angular
 							
 							
 							$scope.deleteBlockquote = function(selectedNode, event) {
-								
+								$scope.isBlockQuoteClicked=true;
 								var qstnBlockquote = $(selectedNode.$element).find('blockquote');
 								var tagCnt = qstnBlockquote.length;
 								
@@ -982,12 +984,13 @@ angular
 														.eq(0)).scope();
 								isWizardCloseBtnClicked = isWizardCloseBtnClicked
 										&& scope.isApplySameCriteriaToAll
-								if (isWizardCloseBtnClicked)
+								if (isWizardCloseBtnClicked){
 									SharedTabService.closeAllCriteria(folder,
 											$scope);
-								else
+								}else{
 									SharedTabService.closeCriteria(folder,
 											$scope);
+								}
 								if (SharedTabService.tests[SharedTabService.currentTabIndex].criterias.length <= 1) {
 									scope.isApplySameCriteriaToAll = false;
 									$scope.isApplySameCriteriaToAll = false;
@@ -1985,6 +1988,7 @@ angular
 							    if (!SharedTabService.tests[SharedTabService.currentTabIndex].testId) {
 							        return false;
 							    }
+							    SharedTabService.tests[SharedTabService.currentTabIndex].isTabClicked=true;
 								$modal.open({
 											templateUrl : 'views/partials/testVersionPopup.html',
 											controller : 'TestVersionCreationController',
@@ -2003,6 +2007,7 @@ angular
 							    if (!SharedTabService.tests[SharedTabService.currentTabIndex].testId) {
 							        return false;
 							    }
+							    SharedTabService.tests[SharedTabService.currentTabIndex].isTabClicked=true;
 								$modal.open({
 											templateUrl : 'views/partials/exportPopup.html',
 											controller : 'ExportTestController',
@@ -2010,8 +2015,8 @@ angular
 											backdrop : 'static',
 											keyboard : false,
 											resolve : {
-												testId : function() {
-                                                    return SharedTabService.tests[SharedTabService.currentTabIndex].testId;
+												parentScope : function() {
+                                                    return $scope;
 												}
 											}
 										});

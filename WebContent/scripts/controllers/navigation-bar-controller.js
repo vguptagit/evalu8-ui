@@ -6,7 +6,7 @@ angular.module('evalu8Demo')
 		'NavigationBarController',
 		[ '$scope', '$rootScope', '$modal', 'AuthenticationService',
 				function($scope, $rootScope, $modal, AuthenticationService) {
-
+			$scope.isSettingsClicked=false;
 			$scope.showUserInNavBar = function() {
 				return (window.location.href.indexOf("signin") == -1) ? true : false;				
 			}
@@ -17,13 +17,18 @@ angular.module('evalu8Demo')
 			}
 			
 			$scope.settings_open = function() {
-
+				$scope.isSettingsClicked=true;
 				$modal.open({
 					templateUrl : 'views/usersettings.htm',
 					controller : 'UserSettingsController',
 					size : 'lg',
 					backdrop : 'static',
-					keyboard : false
+					keyboard : false,
+					resolve: {
+			            parentScope: function () {
+			                return $scope;
+			            }
+			        }
 				});
 			}
 
