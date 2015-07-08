@@ -188,45 +188,58 @@ angular
 										var yourQuestions = [];
 										
 										discipline.node.isHttpReqCompleted = false;
-										UserQuestionsService.userQuestions(function(userQuestions) {
-											$scope.userQuestions = userQuestions;	
+										
+										UserQuestionsService.userQuestionsFolders(function(userQuestionsFolders) {
 											
-											$scope.userQuestions.forEach(function(userQuestion) {
-												var yourQuestion = {};
-												var displayNode = $("<div></div>");
-												QTI.BLOCKQUOTE.id = 0;
-												QTI
-														.play(
-																userQuestion.qtixml,
-																displayNode,
-																false,
-																false,
-																userQuestion.metadata.quizType);
-												yourQuestion.isQuestion = true;
-												yourQuestion.questionXML = true;
-
-												yourQuestion.nodeType = "question";
-												yourQuestion.guid = userQuestion.guid;
-												yourQuestion.showEditQuestionIcon = false;
-												yourQuestion.isNodeSelected = false;
-
-												addToQuestionsArray(yourQuestion);
-
-												yourQuestion.data = userQuestion.qtixml;
-												yourQuestion.quizType = userQuestion.metadata.quizType;
-												yourQuestion.extendedMetadata = userQuestion.metadata.extendedMetadata;
-												yourQuestion.textHTML = displayNode
-														.html();
-
-												yourQuestion.template = 'qb_questions_renderer.html';
-
-												yourQuestions.push(yourQuestion);
-											})
-
-											discipline.node.nodes = yourQuestions;
-											
-											discipline.node.isHttpReqCompleted = true;
-										})
+											userQuestionsFolders.forEach(function(userQuestionsFolder) {
+												var yourQuestionFolder = {};
+												yourQuestionFolder.guid = userQuestionsFolder.guid;												
+												yourQuestionFolder.title = userQuestionsFolder.title;
+												yourQuestionFolder.isCollapsed = true;
+												yourQuestionFolder.nodeType = "UserQuestionsFolder"
+												yourQuestions.push(yourQuestionFolder);
+											});
+											UserQuestionsService.userQuestions(function(userQuestions) {
+												$scope.userQuestions = userQuestions;	
+												
+												$scope.userQuestions.forEach(function(userQuestion) {
+													var yourQuestion = {};
+													var displayNode = $("<div></div>");
+													QTI.BLOCKQUOTE.id = 0;
+													QTI
+															.play(
+																	userQuestion.qtixml,
+																	displayNode,
+																	false,
+																	false,
+																	userQuestion.metadata.quizType);
+													yourQuestion.isQuestion = true;
+													yourQuestion.questionXML = true;
+	
+													yourQuestion.nodeType = "question";
+													yourQuestion.guid = userQuestion.guid;
+													yourQuestion.showEditQuestionIcon = false;
+													yourQuestion.isNodeSelected = false;
+	
+													addToQuestionsArray(yourQuestion);
+	
+													yourQuestion.data = userQuestion.qtixml;
+													yourQuestion.quizType = userQuestion.metadata.quizType;
+													yourQuestion.extendedMetadata = userQuestion.metadata.extendedMetadata;
+													yourQuestion.textHTML = displayNode
+															.html();
+	
+													yourQuestion.template = 'qb_questions_renderer.html';
+	
+													yourQuestions.push(yourQuestion);
+												})
+	
+												discipline.node.nodes = yourQuestions;
+												
+												discipline.node.isHttpReqCompleted = true;
+											});
+										});
+										
 
 									} else {
 										ep = evalu8config.apiUrl
@@ -264,47 +277,92 @@ angular
 									book.collapse();
 								} else {
 									book.expand();
-									if(book.node.nodes){
-										return false;
-									}
 									
-									if($scope.isSearchMode && $scope.searchedContainerId!=book.node.guid){
-										return;
+									if(book.node.nodeType == 'UserQuestionsFolder') {
+										
+										QTI.initialize();
+										
+										var yourQuestions = [];
+
+										UserQuestionsService.userBookQuestions(book.node.guid, function(userQuestions) {	
+											
+											userQuestions.forEach(function(userQuestion) {
+												var yourQuestion = {};
+												var displayNode = $("<div></div>");
+												QTI.BLOCKQUOTE.id = 0;
+												QTI.play(
+													userQuestion.qtixml,
+													displayNode,
+													false,
+													false,
+													userQuestion.metadata.quizType);
+												yourQuestion.isQuestion = true;
+												yourQuestion.questionXML = true;
+
+												yourQuestion.nodeType = "question";
+												yourQuestion.guid = userQuestion.guid;
+												yourQuestion.showEditQuestionIcon = false;
+												yourQuestion.isNodeSelected = false;
+												
+												addToQuestionsArray(yourQuestion);
+
+												yourQuestion.data = userQuestion.qtixml;
+												yourQuestion.quizType = userQuestion.metadata.quizType;
+												yourQuestion.extendedMetadata = userQuestion.metadata.extendedMetadata;
+												yourQuestion.textHTML = displayNode.html();
+
+												yourQuestion.template = 'qb_questions_renderer.html';
+
+												yourQuestion.isHttpReqCompleted = true;
+												
+												yourQuestions.push(yourQuestion);
+											})
+
+											book.node.nodes = yourQuestions;											
+										})
+									} else {
+										if(book.node.nodes){
+											return false;
+										}
+										
+										if($scope.isSearchMode && $scope.searchedContainerId!=book.node.guid){
+											return;
+										}
+										
+	                                    ContainerService.bookNodes(book.node.guid, $scope.selectedQuestionTypes.toString(),
+	                                    		function(bookNodes) {
+	                                        book.node.nodes = bookNodes;
+	                                        $scope.expandedNodes=$scope.expandedNodes.concat(book.node.nodes);
+	                                        angular.forEach(
+	                                            book.node.nodes,
+	                                            function(item) {
+	                                                item.showTestWizardIcon = false;
+	                                                item.showEditQuestionIcon = false;
+	                                                item.isNodeSelected = false;
+	                                                item.isHttpReqCompleted = true;
+	                                                if ($scope.selectedNodes.length > 0)
+	                                                    for (var i = 0; i < $scope.selectedNodes.length; i++) {
+	                                                        if ($scope.selectedNodes[i].guid == item.guid) {
+	                                                            item.showTestWizardIcon = $scope.selectedNodes[i].showTestWizardIcon;
+	                                                            item.showEditQuestionIcon = $scope.selectedNodes[i].showEditQuestionIcon;
+	                                                            item.isNodeSelected = $scope.selectedNodes[i].isNodeSelected;
+	                                                            $scope.selectedNodes[i] = item;
+	                                                        }
+	                                                    }
+	                                                item.nodeType = "chapter";
+	                                                item.isCollapsed=true;
+	                                            })
+	                                            if(book.node.testBindings && book.node.testBindings.length) {
+	                                                var publisherTestsNode = {};
+	                                                publisherTestsNode.title = "Publisher Tests for this Book"
+	                                                publisherTestsNode.nodeType = EnumService.NODE_TYPE.publisherTests;
+	                                                book.node.nodes.push(publisherTestsNode);    
+	                                                publisherTestsNode.isCollapsed=true;
+	                                                publisherTestsNode.isHttpReqCompleted = true;
+	                                                publisherTestsNode.bookId = book.node.guid;                                                    
+	                                            }                                                
+	                                    });	
 									}
-									
-                                    ContainerService.bookNodes(book.node.guid, $scope.selectedQuestionTypes.toString(),
-                                    		function(bookNodes) {
-                                        book.node.nodes = bookNodes;
-                                        $scope.expandedNodes=$scope.expandedNodes.concat(book.node.nodes);
-                                        angular.forEach(
-                                            book.node.nodes,
-                                            function(item) {
-                                                item.showTestWizardIcon = false;
-                                                item.showEditQuestionIcon = false;
-                                                item.isNodeSelected = false;
-                                                item.isHttpReqCompleted = true;
-                                                if ($scope.selectedNodes.length > 0)
-                                                    for (var i = 0; i < $scope.selectedNodes.length; i++) {
-                                                        if ($scope.selectedNodes[i].guid == item.guid) {
-                                                            item.showTestWizardIcon = $scope.selectedNodes[i].showTestWizardIcon;
-                                                            item.showEditQuestionIcon = $scope.selectedNodes[i].showEditQuestionIcon;
-                                                            item.isNodeSelected = $scope.selectedNodes[i].isNodeSelected;
-                                                            $scope.selectedNodes[i] = item;
-                                                        }
-                                                    }
-                                                item.nodeType = "chapter";
-                                                item.isCollapsed=true;
-                                            })
-                                            if(book.node.testBindings && book.node.testBindings.length) {
-                                                var publisherTestsNode = {};
-                                                publisherTestsNode.title = "Publisher Tests for this Book"
-                                                publisherTestsNode.nodeType = EnumService.NODE_TYPE.publisherTests;
-                                                book.node.nodes.push(publisherTestsNode);    
-                                                publisherTestsNode.isCollapsed=true;
-                                                publisherTestsNode.isHttpReqCompleted = true;
-                                                publisherTestsNode.bookId = book.node.guid;                                                    
-                                            }                                                
-                                    });
 								}
 								
 							}

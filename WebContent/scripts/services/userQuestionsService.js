@@ -21,10 +21,36 @@ angular.module('evalu8Demo')
 			$http.get(evalu8config.apiUrl + "/my/questions", config)
 				.success(function(response) {
 					userQuestions= response;
+					callback(userQuestions);
+				})
+				.error(function(){
+					callback(userQuestions);
+				})
+		};
+		
+		this.userBookQuestions = function(questionFolderId, callback) {	
+
+			var userQuestions = [];
+			$http.get(evalu8config.apiUrl + "/my/questions?folderId=" + questionFolderId, config)
+				.success(function(response) {
+					userQuestions= response;
 					callback(userQuestions)
 				})
 				.error(function(){
 					callback(userQuestions);
+				})
+		};
+		
+		this.userQuestionsFolders = function(callback) {	
+
+			var userQuestionsFolders = [];
+			$http.get(evalu8config.apiUrl + "/my/questionfolders", config)
+				.success(function(response) {
+					userQuestionsFolders= response;
+					callback(userQuestionsFolders)
+				})
+				.error(function(){
+					callback(userQuestionsFolders);
 				})
 		};
 		
