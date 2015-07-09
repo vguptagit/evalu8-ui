@@ -108,7 +108,7 @@ angular
 								DisciplineService, UserQuestionsService, WizardHandler,
 								$modalInstance, blockUI, step, source,parentScope) {
 							
-							parentScope.isAddQstbBankClicked=false;
+							parentScope.isAddQstBankClicked=false;
 							$scope.searchedDiscipline = "";
 							$scope.trackEnterKey = 0;
 							$scope.disciplines = {
