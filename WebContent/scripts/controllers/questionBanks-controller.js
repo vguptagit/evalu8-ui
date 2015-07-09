@@ -758,8 +758,17 @@ angular
 									}else{
 										$scope.selectedNodes.push(node);
 										node.isNodeSelected = true;
-										node.showEditQuestionIcon = true;
-										node.showTestWizardIcon = true;
+										if($scope.isNodeUsedForEdit(node,test)){
+											node.showEditQuestionIcon = false;
+										}else{
+											node.showEditQuestionIcon = true;	
+										}
+										
+										if($scope.isNodeUsedForWizard(node,test)){
+											node.showTestWizardIcon = false;
+										}else{
+											node.showTestWizardIcon = true;	
+										}
 										for (var j = 0; j < test.questions.length; j++) {
 										    if (node.guid === test.questions[j].guid) {
 										        node.showEditQuestionIcon = false;
@@ -819,19 +828,26 @@ angular
 							}
 							
 							$scope.isNodeUsed = function(node, test){
-								var isNodeUsed=false
+								return ($scope.isNodeUsedForEdit(node, test) || $scope.isNodeUsedForWizard(node, test));
+							}
+							
+							$scope.isNodeUsedForEdit = function(node, test){
+								var isNodeUsed=false;
 								test.questionFolderNode.forEach(function(usedNode) {
 									if(usedNode.guid === node.guid){
 										isNodeUsed=true;
 									}
 								});
-								
+								return isNodeUsed;
+							}
+							
+							$scope.isNodeUsedForWizard = function(node, test){
+								var isNodeUsed=false;
 								test.criterias.forEach(function(usedNode) {
 									if(usedNode.folderId === node.guid){
 										isNodeUsed=true;
 									}
 								});
-								
 								return isNodeUsed;
 							}
 							//#Ends
