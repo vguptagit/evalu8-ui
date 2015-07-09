@@ -68,6 +68,9 @@ angular.module('evalu8Demo')
 					},
 					source : function() {
 						return "userSettings";
+					},
+					parentScope : function() {
+						return $scope;
 					}
 				}
 			});			

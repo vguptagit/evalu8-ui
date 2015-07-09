@@ -11,6 +11,7 @@ angular.module('e8MyTests')
         $scope.controller = EnumService.CONTROLLERS.myTest;
     	SharedTabService.selectedMenu = SharedTabService.menu.myTest;
         $scope.testTitle = "New Test";
+        $scope.isAddFolderClicked=false;
         $scope.isTestDeleteClicked=false;
         $scope.isFolderDeleteClicked=false;
         $scope.dragStarted = false;
@@ -857,6 +858,7 @@ angular.module('e8MyTests')
             		if(rootFolder.title == $scope.folderName && rootFolder.nodeType == EnumService.NODE_TYPE.folder) {
             			duplicateTitle = true;	
             			
+            			$scope.isAddFolderClicked=true;
                         $scope.IsConfirmation = false;
                         $scope.message = "A folder already exists with this name. Please save with another name.";
                         $modal.open(confirmObject); 

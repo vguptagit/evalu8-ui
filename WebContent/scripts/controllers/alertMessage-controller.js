@@ -16,6 +16,8 @@ angular.module('e8MyTests').controller('AlertMessageController',
         parentScope.isSimpleSearchClicked=false;
     }else if(parentScope.isDeleteAnswerClicked){
         parentScope.isDeleteAnswerClicked=false;
+    }else if(parentScope.isAddFolderClicked){
+        parentScope.isAddFolderClicked=false;
     }else {
         parentScope.isBlockQuoteClicked=false;
     }
