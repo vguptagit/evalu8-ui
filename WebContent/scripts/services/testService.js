@@ -183,6 +183,18 @@ angular.module('evalu8Demo')
 				})				
 			};
 			
+			this.getTestQuestions = function(testId, callback) {				
+				var questions=[];
+				$http.get(evalu8config.apiUrl + '/test/' + testId + '/questions', config)
+				.success(function(response) {
+					questions = response;
+					callback(questions)
+				})
+				.error(function(error, status) {
+
+				})				
+			};
+			
 			this.getPublisherTestsByBookId = function(bookId, callback) {
 				$http.get(evalu8config.apiUrl + '/books/' + bookId + '/tests', config)
 				.success(function(response) {

@@ -918,16 +918,10 @@ angular
 								}
 
 								if (test.testId && !test.questions.length && !SharedTabService.isDirtyTab(test) && !test.isTabClicked) {
-									test.isTabClicked=true;
-									TestService
-											.getTest(
-													test.testId,
-													function(testResult) {
-														$scope
-																.renderTest(
-																		testResult.assignmentContents.binding,
-																		testResult.title);
-													})
+									test.isTabClicked=true;									
+									TestService.getTestQuestions(test.testId,function(questions) {
+												$scope.bindTestQuestions(questions,$scope.currentIndex);
+											})
 								}
 							}
 
@@ -1291,21 +1285,88 @@ angular
 								}
 
 								$("#testCaption").val(selectedTest.node.title);
-								TestService
-										.getTest(
-												selectedTest.node.guid,
-												function(test) {
-													$scope
-															.renderTest(
-																	test.assignmentContents.binding,
-																	selectedTest.node.title);
-												})
+							
+								TestService.getTestQuestions(selectedTest.node.guid,function(questions) {
+                                                $scope.bindTestQuestions(questions,$scope.currentIndex);
+                                            })												
+												
 								$scope.testTitle = selectedTest.node.title;
 								$scope.metadata = TestService
 										.getTestMetadata(selectedTest.node);
 								SharedTabService.editTest($scope);
 							}
 
+							 $scope.bindTestQuestions = function(questions,currentIndex) {
+	                                if (questions.length == 0) {
+	                                    $rootScope.blockPage.stop();
+	                                    return false;
+	                                }
+	                                     
+	                                     var userSettings= {};    
+	                                     userSettings.questionMetadata = {};
+	                                     
+	                                     $.each(SharedTabService.userQuestionSettings, function( index, value ) {    
+	                                         userSettings['questionMetadata'][value]='';                                                                                                        
+	                                        });            
+	                                     QTI.initialize();
+	                                     $.each(questions,function(index,question){
+	                                            var qtiDisplayNode = $("<div></div>");
+	                                            QTI.play(question.qtixml,
+	                                                    qtiDisplayNode, false,false,question.metadata.quizType);
+	                                            
+	                                            var displayNode = {};
+	                                            displayNode.guid = question.guid;    
+	                                            displayNode.quizType = question.metadata.quizType;
+	                                            displayNode.IsUserMetdataAvailable = false;
+	                                             if (SharedTabService.userQuestionSettings.length>0){
+	                                                 displayNode.IsUserMetdataAvailable = true;
+	                                             }
+	                                            
+	                                            
+	                                            displayNode.textHTML = qtiDisplayNode.html();
+	                                            
+	                                            displayNode.IsEditView = false;
+	                                            displayNode.qstnLinkText = displayNode.IsEditView ? "View"
+	                                                    : "Edit";
+	                                            displayNode.extendedMetadata =  question.metadata.extendedMetadata;
+	                                            displayNode.questionMetadata = userSettings.questionMetadata;    
+	                                            
+
+	                                            displayNode.editMainText = CustomQuestionTemplate[displayNode.quizType].editMainText;
+	                                            
+	                                            $.each(displayNode.extendedMetadata, function(index, item){                                                                    
+	                                                var name = item['name'].charAt(0).toUpperCase() + item['name'].slice(1);
+	                                                if(typeof(displayNode['questionMetadata'][name])!='undefined'){
+	                                                 if(item['name'] == "questionLevelOfDifficulty")
+	                                                     displayNode['questionMetadata']['Difficulty'] = item['value'];
+	                                                 else
+	                                                     displayNode['questionMetadata'][name]=item['value'];  
+	                                                }
+	                                            });
+	                            
+	                                
+	                                            displayNode.selectedLevel = displayNode.questionMetadata['Difficulty']==undefined?{name:'Select Level',value:'0'}:{name:displayNode.questionMetadata['Difficulty'],value:displayNode.questionMetadata['Difficulty']};
+	                                
+	                                
+	                                            displayNode.data=question.qtixml;
+	                                            
+	                                            displayNode.qstnMasterData = buildQstnMasterDetails(displayNode);
+	                                            displayNode.optionsView = displayNode.qstnMasterData.optionsView;
+	                                            displayNode.EssayPageSize = displayNode.qstnMasterData.EssayPageSize;    
+	                                            displayNode.BlankSize = displayNode.qstnMasterData.BlankSize;
+	                                    
+	                                            // $scope.tree2.push(displayNode);
+	                                            SharedTabService.tests[currentIndex].questions.push(displayNode);
+	                                            for (var i = 0; i < SharedTabService.masterTests.length; i++) {
+	                                                if (SharedTabService.masterTests[i].id === SharedTabService.tests[currentIndex].id) {
+	                                                    SharedTabService.masterTests[i].masterQuestions.push(displayNode);// is to check for dirty.
+	                                                }
+	                                            }
+	                                    
+	                                });
+	                                     $rootScope.blockPage.stop(); 
+	                                
+	                            };
 							$scope.renderQuestions = function(qBindings,
 									currentIndex) {
 								if (qBindings.length == 0) {
