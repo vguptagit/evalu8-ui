@@ -416,6 +416,10 @@ angular.module('evalu8Demo')
 		    	 var node = scope.tests[scope.currentIndex].questions[index];
 		    	 scope.tests[scope.currentIndex].questions.splice(index,1);
 		    	 scope.tests[scope.currentIndex].IsAnyQstnEditMode = false;
+		    	 if(scope.tests[scope.currentIndex].questions.length==0){
+		    		 tab.questionFolderNode=[];
+		    		 $rootScope.$broadcast("handleBroadcast_onClickTab", tab);
+		    	 }
 		    	 $rootScope.$broadcast("handleBroadcast_deselectQuestionNode", node);
 		     }
 		     
