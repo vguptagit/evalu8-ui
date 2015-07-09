@@ -753,7 +753,7 @@ angular
 									$scope.isParentNodeUsed(node,test);
 									if(isParentNodeUsed){
 										$scope.IsConfirmation = false;
-										$scope.message = "Parent container is already selected for test creation.Please open new tab to perform any other operation on it.";
+										$scope.message = "Parent chapter is already selected for test creation.Please open new tab to perform any other operation on it.";
 										$modal.open(confirmObject)
 									}else{
 										$scope.selectedNodes.push(node);
@@ -912,7 +912,7 @@ angular
 								
 								if(isChildNodeUsed){
 									$scope.IsConfirmation = true;
-									$scope.message = "This chapter includes the topic(s) that you have already added to the test. If you want to add the entire chapter, please select 'ok'";
+									$scope.message = "This chapter includes the topic(s) that you have already added to the test. If you want to add the entire chapter, please click OK";
 									$modal.open(confirmObject).result.then(function(ok) {
 										if(ok) {
 											$scope.addQuestionsToTestTab(test, destIndex);
@@ -1457,6 +1457,7 @@ angular
 								}
 								else{
 									$rootScope.blockPage.start();
+									$scope.expandedNodes=[];
 									var count = 0;
 									var emptyBooks=0;
 									$scope.selectedBooks.forEach(function(book){
@@ -1470,6 +1471,7 @@ angular
 												container.bookid = book.guid;
 												container.isHttpReqCompleted = true;
 											});
+											$scope.expandedNodes=$scope.expandedNodes.concat(containers);
 											book.isCollapsed=false;
 											book.nodes=containers;
 											if(count == 0){
