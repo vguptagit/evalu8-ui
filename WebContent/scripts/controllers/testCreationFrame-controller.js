@@ -1136,7 +1136,7 @@ angular
 												 $scope.questionEditAlert();
 
 											});
-						    $rootScope.$on('dropTest', function (event, selectedTest, destIndex) {
+							$scope.$on('dropTest', function (event, selectedTest, destIndex) {
 						    				selectedTest.node.draggable = false;
 											$scope.editTest(selectedTest);
 									});
@@ -2373,15 +2373,15 @@ angular
 							$scope.$on('handleBroadcastCurrentTabIndex', function () {
 							    $scope.currentIndex = SharedTabService.currentTabIndex;
 							});
-							$rootScope.$on('handleBroadcast_AddNewTab', function () {
+							$scope.$on('handleBroadcast_AddNewTab', function () {
 							    $scope.addNewTest($scope);
 							});
-							$rootScope.$on('handleBroadcast_AddTestWizard', function () {
+							$scope.$on('handleBroadcast_AddTestWizard', function () {
 								$scope.isApplySameCriteriaToAll = false;
 							    resetTabs();
 							    SharedTabService.addTestWizard($scope);
 							});
-							$rootScope.$on('handleBroadcast_createTestWizardCriteria',
+							$scope.$on('handleBroadcast_createTestWizardCriteria',
 											function (event, response,quizTypes,
 													currentNode) {
 								
@@ -2399,7 +2399,7 @@ angular
 											    $scope.addTestWizardCriteria(
 											    		filteredQuestions, currentNode);
 											});
-							$rootScope.$on('handleBroadcast_AddQuestionsToTest', function (event, response, quizTypes, currentNode) {
+							$scope.$on('handleBroadcast_AddQuestionsToTest', function (event, response, quizTypes, currentNode) {
 							    QTI.initialize();
 							    
 							    response = $.grep(response,function(obj, index){
