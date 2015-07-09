@@ -899,15 +899,15 @@ angular
 									$scope.message = "This chapter includes the topic(s) that you have already added to the test. If you want to add the entire chapter, please select 'ok'";
 									$modal.open(confirmObject).result.then(function(ok) {
 										if(ok) {
-											$scope.addQuestionsToTestTab(test);
+											$scope.addQuestionsToTestTab(test, destIndex);
 										}
 									});
 								}else{
-									$scope.addQuestionsToTestTab(test);
+									$scope.addQuestionsToTestTab(test, destIndex);
 								}
 							}
 							
-							$scope.addQuestionsToTestTab=function(test){
+							$scope.addQuestionsToTestTab=function(test, destIndex){
 								for (var i = 0; i < $scope.selectedNodes.length; i++) {
 									test.questionFolderNode.push($scope.selectedNodes[i]);
 									$scope.getRemoveChildNodesFromQuestionFolderNodes($scope.selectedNodes[i], test);
