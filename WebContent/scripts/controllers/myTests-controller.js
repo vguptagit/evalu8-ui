@@ -11,7 +11,9 @@ angular.module('e8MyTests')
         $scope.controller = EnumService.CONTROLLERS.myTest;
     	SharedTabService.selectedMenu = SharedTabService.menu.myTest;
         $scope.testTitle = "New Test";
-
+        $scope.isAddFolderClicked=false;
+        $scope.isTestDeleteClicked=false;
+        $scope.isFolderDeleteClicked=false;
         $scope.dragStarted = false;
         
         $scope.loadTree = function() {        	
@@ -501,7 +503,7 @@ angular.module('e8MyTests')
 	        	}, 5000);
         	}
 
-            SharedTabService.showSelectedTestTab(test.node.guid);
+            SharedTabService.showSelectedTestTab(test.node);
         }
 
         //to disable the edit icon once it clicked  
@@ -799,7 +801,7 @@ angular.module('e8MyTests')
             };
         
         $scope.deleteFolder = function(folder) {
-
+        	$scope.isFolderDeleteClicked=true;
     		$scope.IsConfirmation = true;        		
     		$scope.message="Are you sure you want to permanently delete this folder. This action cannot be undone. Click OK if you want to delete this folder";
     		
@@ -814,9 +816,10 @@ angular.module('e8MyTests')
     		})    		
         };
         
+        
         $scope.deleteTest = function(test) {
-
-    		$scope.IsConfirmation=true;        		    		
+        	$scope.isTestDeleteClicked=true;
+    		$scope.IsConfirmation=true;   
     		$scope.message="Are you sure you want to permanently delete this test. This action cannot be undone. Click OK if you want to delete this test";
 
     		$modal.open(confirmObject).result.then(function(ok) {
@@ -855,6 +858,7 @@ angular.module('e8MyTests')
             		if(rootFolder.title == $scope.folderName && rootFolder.nodeType == EnumService.NODE_TYPE.folder) {
             			duplicateTitle = true;	
             			
+            			$scope.isAddFolderClicked=true;
                         $scope.IsConfirmation = false;
                         $scope.message = "A folder already exists with this name. Please save with another name.";
                         $modal.open(confirmObject); 
@@ -961,6 +965,10 @@ angular.module('e8MyTests')
                         }
                         position++;
                     });
+                    
+                    UserFolderService.testRootFolder(function(myTestRoot){
+                		$scope.myTestRoot = myTestRoot;
+                    });
                     parentFolderNodes.splice(position, 0, test)
                 }
                 createdTab.metadata = TestService.getTestMetadata(test);
@@ -989,6 +997,7 @@ angular.module('e8MyTests')
                 treeItems = testFolder.nodes;
             }
             addVersionTest(testFolder, treeItems, test, newTest);
+            
         })
         var addVersionTest = function (testFolder, treeItems, test, newTest) {
             $.each(treeItems, function (i, v) {

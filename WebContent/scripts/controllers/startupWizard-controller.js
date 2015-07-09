@@ -84,9 +84,10 @@ angular
 						'UserService',
 						'BookService',
 						'DisciplineService',
+						'UserBookService','$modal','notify',
 						function($scope, $rootScope, $location, $routeParams,
 								$http, UserService, BookService,
-								DisciplineService) {
+								DisciplineService,UserBookService,$modal,notify) {
 
 							$scope.searchedDiscpline = "";
 							$scope.trackEnterKey = 0;
@@ -94,7 +95,7 @@ angular
 								all : [],
 								userSelected : []
 							};
-
+							$scope.selectedAllUserBooks = false;
 							$scope.enableDisableNextButton = function(state) {
 								if (state) {
 									$(".btn-primary").addClass("btnDisbled");
@@ -308,6 +309,43 @@ angular
 										});
 
 								return true;
+							}
+							
+							$scope.enterUserBooks = function() {
+								// Getting User books
+								$scope.userBooks = [];
+								UserBookService.getUserBooks(function(userBooks) {									
+									if (userBooks.length == 0) {
+										var book={};
+										book.title="There are no Instructor Books available for Import";
+										book.emptyRecords=true;
+										userBooks.push(book);
+									} 
+									$scope.userBooks = userBooks;
+								});
+							
+								return true;
+							}
+							
+							$scope.selectUserBook = function(bookid, bookTitle) {
+								$scope.userBooks
+								.forEach(function(book) {
+									if (book.guid == bookid){
+										if((typeof (book.isSelected) == 'undefined') || (book.isSelected == false)) {
+											book.isSelected = true;
+										} else if (book.isSelected == true) {
+											book.isSelected = false;
+										}
+									}												
+								});
+							}
+
+							$scope.checkAllUserBook = function(bookid) {
+								$scope.selectedAllUserBooks = !$scope.selectedAllUserBooks;						     
+								$scope.userBooks
+								.forEach(function(book) {											
+									book.isSelected = $scope.selectedAllUserBooks;											
+								});
 							}
 
 							var arrangedBooks=[];
@@ -588,7 +626,7 @@ angular
 							$scope.saveBooks = function() {
 								UserService
 										.saveUserBooks($scope.books.currentlySelected, function(){
-											$location.path('/home/questionbanks');
+											//$location.path('/home/questionbanks');
 										});
 							};
 
@@ -646,13 +684,88 @@ angular
 								}
 							}
 
-							$scope.finishWizard = function() {
+							$scope.saveDiscplineAndBook = function() {
 								if ($scope.isBookEmpty()) {
-									return false
+									return false;
 								} else {
 									$scope.saveDiscpline();
+									return true;
 								}
 
 							}
+							
+							var confirmObject = {
+									templateUrl : 'views/partials/alert.html',
+									controller : 'AlertMessageController',
+									windowClass: 'alert-Modal',
+									backdrop : 'static',
+									keyboard : false,
+									resolve : {
+										parentScope : function() {
+											return $scope;
+										}
+									}
+								};
+
+							
+							$scope.finishWizard = function() {
+								var isUserBookEmpty = false;
+								var selectedUserBook = [];
+
+								if ($scope.userBooks.length == 1) {
+									isUserBookEmpty = $scope.userBooks[0].emptyRecords
+								}
+
+								$.grep($scope.userBooks, function(book) {
+									if (book.isSelected) {
+										book.isImported = true;
+										delete book.isSelected;
+										selectedUserBook.push(book);
+									}
+								});
+
+								if (isUserBookEmpty) {
+									$location.path('/home/questionbanks');
+								} else if (!isUserBookEmpty
+										&& selectedUserBook.length == 0) {
+									$scope.IsConfirmation = true;
+									$scope.message = "Are you sure you don’t want to import any tests now? Select items below to import or choose Next to skip this step"
+
+									$modal.open(confirmObject).result
+											.then(function(ok) {
+												if (ok) {
+													$location
+															.path('/home/questionbanks');
+												}
+												return false;
+											});
+								} else {
+									$scope.importUserBooks(selectedUserBook);
+								}
+							}							
+							
+							
+							$scope.importUserBooks = function(selectedUserBook) {											
+								UserBookService.importUserBooks(selectedUserBook,function(status) {	
+									if(status){
+										$location.path('/home/yourtests');		
+									}else {										
+										$scope.showErrorMessage();
+									}									
+								});		
+							}
+							
+							$scope.showErrorMessage = function(){
+								var msg = e8msg.error.importUserBooks;
+								var messageTemplate ='<p class="alert-danger"><span class="glyphicon glyphicon-alert"></span><span class="warnMessage">' + msg  + '</p> ';
+								$scope.positions = ['center', 'left', 'right'];
+								$scope.position = $scope.positions[0];
+								notify({
+									messageTemplate: messageTemplate,						                
+									classes: 'alert alert-danger',	
+									position: $scope.position,
+									duration: '1500'
+								});
+							};
 
 						} ]);

@@ -6,7 +6,7 @@ angular.module('evalu8Demo')
 		['$http', '$rootScope', '$location', '$cookieStore', '$upload','blockUI','$modal',
 		 function($http, $rootScope, $location, $cookieStore,$upload,blockUI,$modal) {
 			
-			$rootScope.globals = $cookieStore.get('globals') || {};
+			$rootScope.globals = JSON.parse(sessionStorage.getItem('globals'));
 			 
 			var config = {
 					headers : {
@@ -178,6 +178,18 @@ angular.module('evalu8Demo')
 				.success(function(response) {
 					var test = response;
 					callback(test)
+				})
+				.error(function(error, status) {
+
+				})				
+			};
+			
+			this.getTestQuestions = function(testId, callback) {				
+				var questions=[];
+				$http.get(evalu8config.apiUrl + '/test/' + testId + '/questions', config)
+				.success(function(response) {
+					questions = response;
+					callback(questions)
 				})
 				.error(function(error, status) {
 

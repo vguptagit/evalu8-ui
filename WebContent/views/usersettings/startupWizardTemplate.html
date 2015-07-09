@@ -2,13 +2,13 @@
 	<div class="row setupHeader">
 		<div class="col-lg-5">
 			<span class="selectDiscipline">{{currentStepNumber()}} of
-				{{steps.length}}: Choose Your {{steps[currentStepNumber()-1].title
-				|| steps[currentStepNumber()-1].wzTitle}}</span>
+				{{steps.length}}: {{steps[currentStepNumber()-1].title}}</span>
 		</div>
 		<div class="col-lg-7">
 			<div class="pull-right" >
 				<input type="button" class="btn btn-default" ng-if="currentStepNumber() > 1" wz-previous value="Back" /> 
-				<input type="button" class="btn btn-primary" wz-next value="Next" />
+				<input type="button" class="btn btn-primary" ng-if="currentStepNumber() <= 2"  wz-next value="Next" />
+				<input type="button" class="btn btn-primary" ng-if="currentStepNumber() == 3" wz-next value="Finish" />
 			</div>
 		</div>
 	</div>

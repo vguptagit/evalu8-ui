@@ -11,7 +11,7 @@
 
 
 <wizard on-finish="finishWizard()"
-	template="views/usersettings/startupWizardTemplate.html"> <wz-step title="Discipline"
+	template="views/usersettings/startupWizardTemplate.html"> 	<wz-step title="Choose Your Discipline"
 	canenter="enterDiscipline" canexit="exitDiscipline">
 
 <div class="row"
@@ -47,7 +47,7 @@
 	</div>
 </div>
 
-</wz-step> <wz-step title="Books" canenter="enterBook">
+</wz-step> <wz-step title="Choose Your Books" canenter="enterBook" canexit="saveDiscplineAndBook" >
 <div class="row margin-top-20">
 	<div class="col-lg-5">
 		<div>
@@ -83,10 +83,49 @@
 								<i id="{{book.guid}}" class="margin-lft-10" ng-class="book.isCollasped?'fa fa-minus-square-o':'fa fa-plus-square-o'"></i>
 							</div>
 							<div class="discplineText"><i class="fa fa-circle font10" ng-show="book.parentBookID != undefined"></i>
-								<div class="margin-lft-5 floatLeft">{{book.title}}</div></div>
+								<div class="bookList margin-lft-5 floatLeft" title="{{book.title}}">{{book.title}}</div></div>
 						</div>
 					</div>
 				</div>
+	</div>
+</div>
+</wz-step> <wz-step title="Import Tests or Questions (Optional)"
+	canenter="enterUserBooks">
+<div class="row margin-top-20">
+	<div class="col-lg-5">
+		<div>
+			<ul class="a">
+				<li class="discription">Import Instructor Books, tests and/or questions from
+					previous test </br>generators or a file on your computer.
+				</li>
+				<li class="discription">Skip step by selecting Finish button</li>
+			</ul>
+		</div>
+	</div>
+	<div class="col-lg-7">
+		<div class="input-group importTestDiv">
+			<span class="importTestTitle">1. Select Instructor Books from
+				your MyTest account</span>
+			<div class="importAllTest">
+				<input class="importAllTestChk" type='checkbox'
+					ng-disabled="userBooks[0].emptyRecords"
+					ng-class="{disabled:userBooks[0].emptyRecords}"
+					ng-modal="selectedAllUserBooks" ng-click='checkAllUserBook()' />
+			</div>
+		</div>
+		<div class="userBookContainer">
+			<div ng-if="userBooks[0].emptyRecords">
+				<div class="emptyUserBooks discplineText">{{userBooks[0].title}}</div>
+			</div>
+			<div ng-if="!userBooks[0].emptyRecords"
+				ng-click="selectUserBook(book.guid,book.title)"
+				ng-class="{selectedDisc: book.isSelected}"
+				data-ng-repeat="book in userBooks">
+				<div class="discplineText userBookTitle">
+					<div class="bookList margin-lft-5 floatLeft" title="{{book.title}}">{{book.title}}</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 </wz-step>

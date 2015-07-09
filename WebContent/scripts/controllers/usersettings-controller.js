@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('evalu8Demo')
-  .controller('UserSettingsController', ['$scope', '$rootScope', '$modalInstance', '$modal', 'UserService', 'BookService','SharedTabService',
-     function ($scope, $rootScope, $modalInstance, $modal, UserService, BookService,SharedTabService) {
+  .controller('UserSettingsController', ['$scope', '$rootScope', '$modalInstance', '$modal', 'UserService', 'BookService','SharedTabService','parentScope',
+     function ($scope, $rootScope, $modalInstance, $modal, UserService, BookService,SharedTabService,parentScope) {
 
 	  $scope.activeTab = "questionBanks";
-	  
+	  parentScope.isSettingsClicked=false;
 	  $scope.cancel = function () {
 		  $modalInstance.dismiss('cancel');
 
@@ -68,6 +68,9 @@ angular.module('evalu8Demo')
 					},
 					source : function() {
 						return "userSettings";
+					},
+					parentScope : function() {
+						return $scope;
 					}
 				}
 			});			

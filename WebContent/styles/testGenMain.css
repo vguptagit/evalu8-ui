@@ -28,7 +28,7 @@
 	margin-left: 34%;
 	margin-top: 10px;
 	float: left;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-family: Helvetica Neue Light;
 	font-weight: bold;
 	font-size: large;
 }
@@ -123,7 +123,7 @@ span.resource {
 	float: left;
 	margin-left: 2%;
 	margin-top: 1%;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-family: Helvetica Neue Light;
 	font-weight: bold;
 }
 
@@ -155,7 +155,7 @@ div.resource {
 
 .button {
 	background-color: #007FA9;
-	font-family: Helvetica;
+	font-family: Helvetica Neue Light;
 	color: #FFFFFF;
 	height: 30px;
 	padding-left: 20px;
@@ -173,7 +173,7 @@ div.resource {
 .selected {
 	background-color: #007FA9;
 	color: #FFFFFF;
-	font-family: Helvetica;
+	font-family: Helvetica Neue Light;
 	padding-left: 20px;
 	padding-right: 20px;
 	height: 30px;
@@ -241,7 +241,7 @@ div.resource {
 	height: 40px;
 	width: 96%;
 	text-align: left;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-family: Verdana, Arial, Helvetica Neue Light, sans-serif;
 	font-weight: bold;
 	margin-left: 2%;
 	margin-right: 2%;
@@ -251,7 +251,7 @@ div.resource {
 .createNewNode {
 	width: 100%;
 	text-align: left;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-family: Helvetica Neue Light;
 	font-weight: bold;
 	white-space: normal;
 	background-color: #F8f8f8;
@@ -266,7 +266,7 @@ div.resource {
 .treeDiv {
 	width: 100%;
 	text-align: left;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-family: Helvetica Neue Light;
 	font-weight: bold;
 	white-space: normal;
 	background-color: #F8f8f8;
@@ -304,7 +304,7 @@ a.newFolder:hover {
 .disciplineFilterDiv {
 	width: 65%;
 	text-align: left;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-family:Helvetica Neue Light;
 	font-weight: bold;
 	margin-left: 2%;
 	margin-right: 2%;
@@ -641,7 +641,7 @@ ol {
 
 .testcaption {
 	float: left;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-family:Helvetica Neue Light;
 	font-weight: bold;
 	width: 100%;
 }
@@ -672,14 +672,14 @@ ol {
 	font-size: 14px;
 	font-weight: bold;
 	line-height: 1em;
-	font-family: Helvetica;
+	font-family: Helvetica Neue Light;
 }
 
 .modal-default-header-title {
 	font-size: 20px;
 	font-weight: bold;
 	line-height: 1em;
-	font-family: Helvetica;
+	font-family: Helvetica Neue Light;
 }
 
 .QuestionArea {
@@ -705,7 +705,7 @@ ol {
 }
 
 .subButtons {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-family: Helvetica Neue Light;
 	font-size: 12px;
 	color: #909090;
 	padding: 5px;
@@ -724,7 +724,7 @@ ol {
 }
 
 .newtestName {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-family: Helvetica Neue Light;
 	font-weight: bold;
 	font-size: 12px;
 	color: #333;
@@ -747,7 +747,7 @@ ol {
 }
 
 .newtestenter {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-family: Helvetica Neue Light;
 	font-size: 12px;
 	color: #909090;
 	padding: 5px;
@@ -797,9 +797,9 @@ ol {
 	text-align: left;
 	padding-left: 25px;
 	line-height: 40px;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-family: Helvetica Neue Light;
 	font-weight: normal;
-	font-size: 12px;
+	font-size: 14px;
 	width: 100%;
 }
 
@@ -997,7 +997,7 @@ display: inline-block;
 .alertMsg {
 	padding: 20px 20px 20px 20px;
 	text-align: center;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-family: Helvetica Neue Light;
 }
 
 .alertMsg span {
@@ -1082,7 +1082,7 @@ margin-top: -16px;
 
 .ck-button {
     margin: 5px;
-    font-family:Helvetica;
+    font-family:Helvetica Neue Light;
     font-size:14px;
     background-color: #EFEFEF;
     border-radius: 4px;
@@ -1149,10 +1149,11 @@ margin-top: -16px;
 .wizardHeader button.close{
 	margin-right: 15px;
 	margin-top: 10px;
+	outline: 0;
 }
 .ck-buttonSelected {
     margin: 5px;
-    font-family:Helvetica;
+    font-family:Helvetica Neue Light;
     font-size:14px;
     background-color: #999;
     color:#ffffff;
@@ -1280,7 +1281,7 @@ li[printmode='false'].displayQuestionLI {
 
 .qstnView {
 	  float:left;
-	  font-size: 11px;
+	  font-size: 12px;
 	  cursor: pointer;
 	  padding-right: 17px;
 	  height: 14px !important;
@@ -1429,7 +1430,7 @@ li[quiztype='TrueFalse'] #viewHeader {
 }
 
 li .editViewContainer #qtiCaption {
-	font-family: Helvetica;
+	font-family: Helvetica Neue Light;
 	font-weight: normal;
 	padding-top: 3px;
 	font-size: 12px;
@@ -1439,13 +1440,13 @@ li .editViewContainer #qtiCaption {
 }
 
 li.questIndex .angular-ui-tree-handle {
-	font-family: Helvetica;
+	font-family: Helvetica Neue Light;
 	font-weight: normal !important;
 	font-size: 14px;
 }
 
 li.questionTemplates {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-family: Helvetica Neue Light;
 	font-weight: normal !important;
 	font-size: 12px;
 }
@@ -1482,7 +1483,7 @@ li[printmode='false'].displayQuestionLI .questionEditCaption {
 	display: inline-block;
 	float: left;
 	font-size: 13px;		
-	font-family: Helvetica;
+	font-family:Helvetica Neue Light;
 	padding-bottom: 0px;
 	padding-left:6px;
 	max-width: 94%;
@@ -1614,7 +1615,7 @@ li[quiztype='TrueFalse'] .qti-simpleChoice .radio {
 }
 
 .welcomeText {
-	font-family: Helvetica;
+	font-family:Helvetica Neue Light;
 	font-size: 34px;
 	vertical-align: middle;
 	line-height: 1em;
@@ -1623,7 +1624,7 @@ li[quiztype='TrueFalse'] .qti-simpleChoice .radio {
 }
 
 .welcomeText1 {
-	font-family: Helvetica;
+	font-family:Helvetica Neue Light;
 	font-size: 18px;
 	padding: 10px 10px 10px 10px;
 	position: initial;
@@ -1636,7 +1637,7 @@ li[quiztype='TrueFalse'] .qti-simpleChoice .radio {
 	color: #FFFFFF;
 	background-color: #007FA9;
 	height: 40px;
-	font-family: Helvetica;
+	font-family: Helvetica Neue Light;
 	font-size: 18px;
 	width: 100%;
 	border: 0px;
@@ -1644,7 +1645,7 @@ li[quiztype='TrueFalse'] .qti-simpleChoice .radio {
 }
 
 .one, .two, .three {
-	font-family: Helvetica;
+	font-family:Helvetica Neue Light;
 	color: #4D4D4D;
 	border-radius: 30px;
 	background: #FFFFFF;
@@ -1655,7 +1656,7 @@ li[quiztype='TrueFalse'] .qti-simpleChoice .radio {
 }
 
 .welcomeText2 {
-	font-family: Helvetica;
+	font-family: Helvetica Neue Light;
 	font-size: 18px;
 	padding: 10px 10px 10px 10px;
 	position: initial;
@@ -1664,7 +1665,7 @@ li[quiztype='TrueFalse'] .qti-simpleChoice .radio {
 }
 
 .welcomeText3 {
-	font-family: Helvetica;
+	font-family:Helvetica Neue Light;
 	font-size: 14px;
 	padding: 15px 15px 15px 15px;
 	position: initial;
@@ -1673,7 +1674,7 @@ li[quiztype='TrueFalse'] .qti-simpleChoice .radio {
 }
 
 .selectedSteps {
-	font-family: Helvetica;
+	font-family: Helvetica Neue Light
 	color: #FFFFFF;
 	border-radius: 30px;
 	background: #2D2E2D;
@@ -1684,7 +1685,7 @@ li[quiztype='TrueFalse'] .qti-simpleChoice .radio {
 }
 
 .steps {
-	font-family: Helvetica;
+	font-family:Helvetica Neue Light;
 	color: #FFFFFF;
 	border-radius: 30px;
 	background: #999C98;
@@ -1695,7 +1696,7 @@ li[quiztype='TrueFalse'] .qti-simpleChoice .radio {
 }
 
 .selectDiscipline {
-	font-family: Helvetica;
+	font-family: Helvetica Neue Light;
 	font-size: 20px;
 	padding: 15px 15px 15px 5px;
 	position: initial;
@@ -1710,7 +1711,7 @@ li[quiztype='TrueFalse'] .qti-simpleChoice .radio {
 	background-color: #007FA9;
 	border-radius: 3px;
 	height: 30px;
-	font-family: Helvetica;
+	font-family: Helvetica Neue Light;
 	font-size: 14px;
 	width: 100px;
 	border: 0px;
@@ -1725,7 +1726,7 @@ li[quiztype='TrueFalse'] .qti-simpleChoice .radio {
 	background-color: #e4e4e7;
 	border-radius: 3px;
 	height: 30px;
-	font-family: Helvetica;
+	font-family: Helvetica Neue Light;
 	font-size: 14px;
 	width: 100px;
 	border: 1px solid;
@@ -1768,7 +1769,7 @@ li[quiztype='TrueFalse'] .qti-simpleChoice .radio {
 }
 
 .setup {
-	font-family: Helvetica;
+	font-family:Helvetica Neue Light;
 	font-size: 18px;
 	font-weight: bold;
 	padding: 15px 15px 15px 15px;
@@ -1778,7 +1779,7 @@ li[quiztype='TrueFalse'] .qti-simpleChoice .radio {
 }
 
 .setup1 {
-	font-family: Helvetica;
+	font-family: Helvetica Neue Light;
 	font-size: 14px;
 	font-weight: bold;
 	padding: 15px 15px 15px 15px;
@@ -1793,12 +1794,12 @@ ul.a {
 
 .discription {
 	margin-top: 10px;
-	font-family: Helvetica;
+	font-family:Helvetica Neue Light;
 	font-size: 14px;
 }
 
 .discplineText {
-	font-family: Helvetica;
+	font-family:Helvetica Neue Light;
 	font-size: 14px;
 	padding: 10px;
 	position: initial;
@@ -1819,7 +1820,7 @@ ul.a {
 }
 
 .discplineText1 {
-	font-family: Helvetica;
+	font-family: Helvetica Neue Light;
 	font-size: 14px;
 	padding: 10px;
 	position: initial;
@@ -1895,7 +1896,7 @@ ul.a {
 
 .instructionsHeader {
 	margin-left: 24px;
-	font-family: Helvetica;
+	font-family: Helvetica Neue Light;
 }
 
 /* Welcome Screen CSS  ends*/
@@ -1997,7 +1998,7 @@ ul.a {
 .newFolderDiv {
 	width: 100%;
 	text-align: left;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-family:Helvetica Neue Light;
 	font-weight: bold;
 	white-space: normal;
 	background-color: #e0e0e0;
@@ -2254,7 +2255,7 @@ ul.a {
 	top: 5px;
 	padding-left: 32px;
 	font-size: 14px;
-	font-family: helvetica;
+	font-family: Helvetica Neue Light;
 	font-weight: 100;
 }
 
@@ -2382,7 +2383,7 @@ li[quiztype='FillInBlanks'] .qstnContainer .qti-blockquote,li[quiztype='Essay'] 
 
 .printViewContainer{
 	font-size: 14px;
-	font-family: Helvetica;
+	font-family: Helvetica Neue Light;
 	padding-left: 4px;
 }
 
@@ -2416,15 +2417,18 @@ li[qstntemplate=true] .printViewContainer  .qti-blockquote .matchIndex {
 	padding: 15px 10px 10px 7px;
 	float: left;
 	color: #4D4D4D;
-	font-family: Helvetica;
+	font-family: Helvetica Neue Light;
 	font-size: 14px;
 	text-decoration: none !important;
+	background: transparent;
+  	border: 0;
+  	outline: 0;
 }
 
 .mOptionLabel {
 	max-width: 91%;
 	font-size: 14px;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-family:Helvetica Neue Light;
 	float: left;
 }
 
@@ -2445,7 +2449,7 @@ li[qstntemplate=true] .printViewContainer  .qti-blockquote .matchIndex {
 .metadataSectionCaption {
 	font-size: 14px;
 	font-weight: bold;
-	font-family: Helvetica;
+	font-family: Helvetica Neue Light;
 	padding-bottom: 5px;
 }
 
@@ -2459,13 +2463,13 @@ span.viewOptionDiv{
 	  padding-bottom: 12px;
 	  font-size: 14px;
 	  font-weight: normal;
-	  font-family: Helvetica;
+	  font-family: Helvetica Neue Light;
 }
 
 .metadataQlvl {
 	font-size: 13px;
 	font-weight: normal;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-family: Helvetica Neue Light;
 }
 
 .metdataVal {
@@ -2543,7 +2547,7 @@ button[disabled]+.tooltip {
 	margin-top: 10px;
 	font-size: 13px;
 	font-weight: normal;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-family: Helvetica Neue Light;
 }
 
 li[printmode='false'].displayQuestionLI{
@@ -2557,7 +2561,7 @@ button.blankButton[disabled] {
   font-size: 13px;
   font-size: 13px;
   font-weight: normal;
-  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-family:Helvetica Neue Light;
   box-shadow: none; 
   opacity: .65;
 }
@@ -2680,7 +2684,7 @@ li[quiztype='Matching'] .qti-itemBody .textBoxContainer + blockquote{
 
 label.optionLabelView,.matchOptionContainer .mOptionLabel,.matchOptionContainer .matchOptionImage{	
 	font-size: 14px;
-	font-family:Helvetica;
+	font-family:Helvetica Neue Light;
 	word-wrap: break-word;
 }
 
@@ -2726,7 +2730,7 @@ li[printmode='true'] .matchingOption {
 
 .printViewContainer  .qti-blockquote .matchIndex {
 	font-size: 14px;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-family: Helvetica Neue Light;
 }
 
 li[printmode='true'] .matchOptionContainer{
@@ -2812,16 +2816,19 @@ li[printmode='true'] .qti-itemBody .qti-blockquote>div.optionLabelView:first-chi
 .advancedSearchText {
 	float: left;
 	color: #007FA9;
-	font-family: Helvetica;
+	font-family: Helvetica Neue Light;
 	font-size: 14px;
 	text-decoration: none !important;
 	margin-top: 7px;
+	background-color: transparent;
+    border: 0;
+    outline:0;
 }
 
 .advancedSearchText:hover {
     float: left;
     color: #006688;
-    font-family: Helvetica;
+    font-family: Helvetica Neue Light;
     font-size: 14px;
     text-decoration: none !important;
     margin-top: 7px;
@@ -2857,7 +2864,7 @@ li[printmode='false'][optionsview='true'] .blankBtnDiv{
 .selectedQuestionTypes{
 	float: left; 
 	color: #4D4D4D; 
-	font-family: Helvetica; 
+	font-family: Helvetica Neue Light; 
 	font-size: 14px; 
 	text-decoration: none !important; 
 	margin-top: 10px;
@@ -2867,7 +2874,7 @@ li[printmode='false'][optionsview='true'] .blankBtnDiv{
 .clearAdvancedSearch{
 	float: left; 
 	color: #007FA9; 
-	font-family: Helvetica; 
+	font-family: Helvetica Neue Light; 
 	font-size: 14px; 
 	text-decoration: none !important; 
 	margin-top: 10px; 
@@ -2877,7 +2884,7 @@ li[printmode='false'][optionsview='true'] .blankBtnDiv{
 .clearAdvancedSearch:hover{
     float: left; 
     color: #006688; 
-    font-family: Helvetica; 
+    font-family: Helvetica Neue Light; 
     font-size: 14px; 
     text-decoration: none !important; 
     margin-top: 10px; 

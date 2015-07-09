@@ -1748,7 +1748,8 @@ if(state.questionType=="Matching"){
 					$("<button title='Delete this answer'></button>").attr({					
 						"name" : "delete",				
 						"class" : "iconButtons glyphicon glyphicon-remove",
-						"ng-click" : "deleteBlockquote(this,$event)"
+						"ng-click" : "deleteBlockquote(this,$event)",
+						"ng-disabled" : "isBlockQuoteClicked"
 					}));
 			
 		}else{
@@ -2185,7 +2186,8 @@ QTI.Elements.SimpleChoice.play = function(qtiNode, displayNode, state) {
 				"id" : id,				
 				"name" : "delete",				
 				"class" : "iconButtons glyphicon glyphicon-remove",
-				"ng-click" : "removOption(this,$event)"
+				"ng-click" : "removOption(this,$event)",
+				"ng-disabled" : "isDeleteAnswerClicked"
 			}));
 	
 
@@ -3077,7 +3079,7 @@ QTI.getActualCursorPosition1 = function(cursorPosition,element,htmlContent){
 			//return cursorPosition;
 		}
 	})
-	if(element.html().substr(cursorPosition) == "<br><br>")
+	if(element.html().substr(cursorPosition).indexOf("<br><br>") == 0 && element.html().indexOf("<br><br>") != 0)
 		cursorPosition = cursorPosition + 4;
 	return cursorPosition;
 }

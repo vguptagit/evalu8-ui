@@ -138,7 +138,6 @@ angular.module('evalu8Demo')
 		     }
 		     //TODO : need to do code optimization.
 		     sharedTabService.addTestWizard = function (scope) {
-		    	 
                  $rootScope.blockPage.start();
 		         var newTest = new sharedTabService.Test();
 		         newTest.tabTitle = "Test Wizard";
@@ -331,12 +330,15 @@ angular.module('evalu8Demo')
 		         });
 		     }
 
-		     sharedTabService.showSelectedTestTab = function (testId) {
+		     sharedTabService.showSelectedTestTab = function (treenode) {
 		         $.each(sharedTabService.tests, function (i) {
-		             if (sharedTabService.tests[i].id === testId) {
+		             if (sharedTabService.tests[i].id === treenode.testId) {
 		                 sharedTabService.currentTab = sharedTabService.tests[i];
 		                 sharedTabService.currentTabIndex = i;
 		                 sharedTabService.prepForBroadcastCurrentTabIndex(i);
+		                 if (!sharedTabService.tests[i].treeNode && sharedTabService.tests[i].treeNode.nodeType === EnumService.NODE_TYPE.test) {
+		                     sharedTabService.tests[i].treeNode = treenode;
+		                 }
 		                 return false;
 		             }
 		         });
@@ -496,7 +498,6 @@ angular.module('evalu8Demo')
 		         return isDirtyTab;
 		     }
 		     sharedTabService.isDirty = function (masterTest, test) {
-
 		         var isDirty = false;
 		         if (test.testId == null && (test.title != "" || test.questions.length > 0)) { //empty node without save.
 		             isDirty = true;
@@ -512,6 +513,14 @@ angular.module('evalu8Demo')
 		                     return false;
 		                 }
 		             }
+		             if(!isDirty){
+			        	 for (var i = 0; i < test.questions.length; i++) {
+			                 if (test.questions[i].IsEdited) {
+			                     isDirty = true;
+			                     return false;
+			                 }
+			             }
+			         } 
 		         }
 		         return !isDirty;
 		     }
@@ -528,9 +537,11 @@ angular.module('evalu8Demo')
 		     sharedTabService.closeCriteria = function (criteria, scope) {
 		         $.each(sharedTabService.tests[scope.currentIndex].criterias, function (i) {
 		             if (sharedTabService.tests[scope.currentIndex].criterias[i].id === criteria.id) {
+		            	 if(sharedTabService.tests[sharedTabService.currentTabIndex].criterias.length==1){
+			             		sharedTabService.tests[sharedTabService.currentTabIndex].title="";
+			             	}
 		            	 sharedTabService.tests[scope.currentIndex].criterias[i].treeNode.showTestWizardIcon=true;
 		            	 //sharedTabService.tests[scope.currentIndex].criterias[i].treeNode.isNodeSelected=false;
-		            	 
 		            	//Dont delete below commented line, it may re-use in feature
 		            	 //$rootScope.$broadcast("handleBroadcast_deselectedNode", sharedTabService.tests[scope.currentIndex].criterias[i].treeNode);
 		                 sharedTabService.tests[scope.currentIndex].criterias.splice(i, 1);
@@ -540,6 +551,7 @@ angular.module('evalu8Demo')
 		     }
 		     
 		     sharedTabService.closeAllCriteria = function (criteria, scope) {
+		    	 sharedTabService.tests[sharedTabService.currentTabIndex].title="";
 		    	 var criterias = sharedTabService.tests[scope.currentIndex].criterias;
 		    	 while(criterias.length > 0){
 		    		 sharedTabService.tests[scope.currentIndex].criterias[0].treeNode.showTestWizardIcon = true;

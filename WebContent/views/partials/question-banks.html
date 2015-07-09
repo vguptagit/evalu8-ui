@@ -1,7 +1,7 @@
 <div class="row margin-top-5neg">
 	<div class="col-lg-6">
 		<input type="text" placeHolder="Search selected banks"
-			class="bookSearch form-control" ng-model="selectedContainer"
+			class="bookSearch form-control" ng-model="selectedContainer" ng-disabled="isSimpleSearchClicked"
 			ng-focus="validateSearch()"
 			typeahead="container as container.title for container in allContainers | filter:{title:$viewValue}"
 			ng-keyup="showContainerOnEnter($event)"><i class="fa fa-spinner fa-pulse font-size-16 showWaitingForAutoComplete" ng-show="showWaitingForAutoComplete"></i> <span
@@ -11,8 +11,8 @@
 			tooltip="Search"></span>
 	</div>
 	<div class="col-lg-6">
-		<a href="" class="advancedSearchText" ng-click="openAdvancedSearch()">Advanced
-			Search</a>
+		<button href="" class="advancedSearchText" ng-disabled="isAdvancedSearchClicked" ng-click="openAdvancedSearch()">Advanced
+			Search</button>
 	</div>
 </div>
 <div class="advancedSearchCriteria" ng-show="showAdvancedSearch">
@@ -83,8 +83,8 @@
 		<div class="addFolderContainer">
 			<div class="glyphicon glyphicon-plus addFolderIcon"
 				ng-click="openUserSettings(2)"></div>
-			<a href="" class="addFolderText" ng-click="openUserSettings(2)">Add
-				Question Banks</a>
+			<button href="" class="addFolderText" ng-disabled="isAddQstBankClicked" ng-click="openUserSettings(2)">Add
+				Question Banks</button>
 		</div>
 
 	</div>
@@ -132,8 +132,9 @@
         </div>
 
         <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}" droppable="false">
-            <li draggable="{{node.nodeType=='chapter' || node.nodeType=='topic'}}" ng-repeat="node in node.nodes" collapsed="{{node.isCollapsed?'true':'false'}}" ui-tree-node ng-include="'nodes_renderer.html'">
+            <li ng-if="!node.isQuestion" draggable="{{node.nodeType=='chapter' || node.nodeType=='topic'}}" ng-repeat="node in node.nodes" collapsed="{{node.isCollapsed?'true':'false'}}" ui-tree-node ng-include="'nodes_renderer.html'">
             </li>
+			<li printmode="true" class="questIndex qbQuestions" ng-class="{questionSelected:node.isNodeSelected}" ng-if="node.isQuestion" ng-repeat="node in node.nodes" collapsed="{{node.isCollapsed?'true':'false'}}" ui-tree-node ng-include="'qb_questions_renderer.html'"></li>
         </ol>
     </script>
 	<script type="text/ng-template" id="nodes_renderer.html">

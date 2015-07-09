@@ -3,8 +3,8 @@
 angular.module('e8Login')
 
 .factory('AuthenticationService',
-		['$http', '$cookieStore', '$rootScope', '$timeout',
-		 function ($http, $cookieStore, $rootScope, $timeout) {
+		['$http', '$rootScope', '$timeout',
+		 function ($http, $rootScope, $timeout) {
 			var service = {};
 
 			service.Login = function (username, password, callback) {
@@ -33,19 +33,13 @@ angular.module('e8Login')
 						emailAddress: emailAddress
 				};
 
-				$cookieStore.put('globals', $rootScope.globals);
+				sessionStorage.setItem('globals', JSON.stringify($rootScope.globals));
 			};
 
 			service.ClearCredentials = function () {
-				$rootScope.globals = {
-						authToken: '',
-						loginCount: '',
-						givenName: '', 
-						familyName: '', 
-						emailAddress: ''
-				};
+				$rootScope.globals = null;
 
-				$cookieStore.put('globals', $rootScope.globals);       
+				sessionStorage.removeItem('globals');       
 			};
 			
 			service.logout = function() {

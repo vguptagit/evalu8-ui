@@ -11,8 +11,7 @@ angular
 						'$cookieStore',
 						function($http, $rootScope, $cookieStore) {
 
-							$rootScope.globals = $cookieStore.get('globals')
-									|| {};
+							$rootScope.globals = JSON.parse(sessionStorage.getItem('globals'));
 
 							var config = {
 								headers : {
