@@ -1250,7 +1250,7 @@ angular
 												 });
 												
 												
-							$rootScope.$on('editTest',
+							$scope.$on('editTest',
 									function(event, selectedTest) {								
                                 		
 										$scope.editTest(selectedTest);
