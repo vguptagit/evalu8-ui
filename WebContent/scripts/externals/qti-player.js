@@ -3079,7 +3079,7 @@ QTI.getActualCursorPosition1 = function(cursorPosition,element,htmlContent){
 			//return cursorPosition;
 		}
 	})
-	if(element.html().substr(cursorPosition) == "<br><br>")
+	if(element.html().substr(cursorPosition).indexOf("<br><br>") == 0 && element.html().indexOf("<br><br>") != 0)
 		cursorPosition = cursorPosition + 4;
 	return cursorPosition;
 }
