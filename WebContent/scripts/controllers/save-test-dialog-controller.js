@@ -1,17 +1,24 @@
 ﻿angular.module('e8MyTests')
 .controller('SaveTestDialogController',
-		['$scope', '$rootScope', '$modalInstance', 'parentScope', '$modal', 'UserFolderService', 'EnumService', 'CommonService',
-		 function ($scope, $rootScope, $modalInstance, parentScope, $modal, UserFolderService, EnumService, CommonService) {
-
+		['$scope', '$rootScope', '$modalInstance', 'parentScope', '$modal', 'UserFolderService', 'EnumService', 'CommonService', 'blockUI',
+		 function ($scope, $rootScope, $modalInstance, parentScope, $modal, UserFolderService, EnumService, CommonService, blockUI) {
+		     $rootScope.blockPage = blockUI.instances.get('BlockPage');
 		     $scope.selectedfolder = null;
 		     $scope.loadRootFolders = function () {
-		         UserFolderService.testRootFolder(function (myTestRoot) {
-		             $scope.myTestRoot = myTestRoot;
-		         });
+		         try {
+		             $rootScope.blockPage.start();
+		             UserFolderService.testRootFolder(function (myTestRoot) {
+		                 $scope.myTestRoot = myTestRoot;
+		             });
 
-		         UserFolderService.defaultFolders(function (defaultFolders) {
-		             $scope.node = defaultFolders;
-		         });
+		             UserFolderService.defaultFolders(function (defaultFolders) {
+		                 $rootScope.blockPage.stop();
+		                 $scope.node = defaultFolders;
+		             });
+		         } catch (e) {
+		             $rootScope.blockPage.stop();
+		             console.log(e);
+		         }
 		     }
 
 		     $scope.loadRootFolders();
