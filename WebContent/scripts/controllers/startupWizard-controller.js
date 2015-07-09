@@ -317,7 +317,7 @@ angular
 								UserBookService.getUserBooks(function(userBooks) {									
 									if (userBooks.length == 0) {
 										var book={};
-										book.title="There are no Books/Tests available for Import";
+										book.title="There are no Instructor Books available for Import";
 										book.emptyRecords=true;
 										userBooks.push(book);
 									} 
