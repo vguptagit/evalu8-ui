@@ -445,7 +445,7 @@ angular.module('evalu8Demo')
 		         $.each(test.questions, function (i) {
 		             clonedTest.masterQuestions.push(test.questions[i]);
 		         });
-		         sharedTabService.masterTests.push(clonedTest);
+		         sharedTabService.masterTests[sharedTabService.currentTabIndex] = clonedTest;
 		     }
              //TODO : need to remove the dioendency of variable "scope".
 		     var removeTest = function (index, scope, test) {
