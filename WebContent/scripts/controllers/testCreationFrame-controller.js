@@ -2233,7 +2233,10 @@ angular
 												arr = criteria.metadata
 														.sort(randomize);
 											}
-											if (criteria.numberOfQuestionsEntered > 0) {
+											//assign the numberOfQuestionsEntered to numberOfQuestionsSelected only if there is 
+											//no error while creating the test. 
+											//ref : Bug 6582 - Radio button de-selected when alert message appears while creating Test using Test Wizard
+											if (criteria.numberOfQuestionsEntered > 0 && isError == false) {
 												criteria.numberOfQuestionsSelected = criteria.numberOfQuestionsEntered;
 											}
 											if (!criteria.numberOfQuestionsSelected || criteria.numberOfQuestionsSelected > criteria.totalQuestions) {
