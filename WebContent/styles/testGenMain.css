@@ -1147,9 +1147,18 @@ margin-top: -16px;
 }
 
 .wizardHeader button.close{
-	margin-right: 15px;
-	margin-top: 10px;
-	outline: 0;
+	margin-right: 7px;
+  	margin-top: 5px;
+  	outline: 0;
+}
+.wizardHeader label{
+	white-space: nowrap;
+  	text-overflow: ellipsis;
+  	overflow: hidden;
+  	width: 93%;
+  	padding: 1px;
+  	margin-top: 10px;
+  	padding-left: 15px;
 }
 .ck-buttonSelected {
     margin: 5px;

@@ -3,7 +3,7 @@ angular.module('e8MyTests')
 		['$scope', '$rootScope', '$modalInstance', 'parentScope', 'UserService','TestService','$modal',
 		 function ($scope, $rootScope, $modalInstance, parentScope, UserService, TestService,$modal) {
 			
-	parentScope.tests[parentScope.currentIndex].isTabClicked=false;
+	parentScope.tests[parentScope.currentIndex].isBtnClicked=false;
     var FileFormats = {
         MSWord: 'doc',
         PDF: 'pdf',

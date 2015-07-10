@@ -47,6 +47,7 @@ angular.module('evalu8Demo')
 		         this.isSaveAndClose = false;
 		         this.isTestWizard = false;
 		         this.isTabClicked = false;
+		         this.isBtnClicked = false;
 		         this.treeNode = null;
 		         this.questionFolderNode = [];
 		         this.showCloseButton = true;
