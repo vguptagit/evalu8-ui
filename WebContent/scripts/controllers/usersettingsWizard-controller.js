@@ -109,6 +109,7 @@ angular
 								$modalInstance, blockUI, step, source,parentScope) {
 							
 							parentScope.isAddQstBankClicked=false;
+							parentScope.isClicked=false;
 							$scope.searchedDiscipline = "";
 							$scope.trackEnterKey = 0;
 							$scope.disciplines = {

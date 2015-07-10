@@ -3,7 +3,7 @@
 angular.module('evalu8Demo')
   .controller('UserSettingsController', ['$scope', '$rootScope', '$modalInstance', '$modal', 'UserService', 'BookService','SharedTabService','parentScope',
      function ($scope, $rootScope, $modalInstance, $modal, UserService, BookService,SharedTabService,parentScope) {
-
+	  $scope.isClicked=false;
 	  $scope.activeTab = "questionBanks";
 	  parentScope.isSettingsClicked=false;
 	  $scope.cancel = function () {
@@ -55,6 +55,7 @@ angular.module('evalu8Demo')
 	 };
 	 
 	  $scope.edit = function(step) {
+		  $scope.isClicked=true;
 		  var modalInstance = $modal.open({
 				templateUrl : 'views/usersettings/usersettingsWizard.html',
 				controller : 'usersettingsWizardController',

@@ -1732,6 +1732,7 @@ angular
                                             callback();
                                         }
                                         test.saveMode = EnumService.SAVE_MODE.Save;
+                                        $scope.testType = EnumService.TEST_TYPE.PublisherTest;
                                         $rootScope.blockPage.stop();         							    
                                     	return;
                                     }
@@ -2049,7 +2050,7 @@ angular
 							    if (!SharedTabService.tests[SharedTabService.currentTabIndex].testId) {
 							        return false;
 							    }
-							    SharedTabService.tests[SharedTabService.currentTabIndex].isTabClicked=true;
+							    SharedTabService.tests[SharedTabService.currentTabIndex].isBtnClicked=true;
 								$modal.open({
 											templateUrl : 'views/partials/testVersionPopup.html',
 											controller : 'TestVersionCreationController',
@@ -2068,7 +2069,7 @@ angular
 							    if (!SharedTabService.tests[SharedTabService.currentTabIndex].testId) {
 							        return false;
 							    }
-							    SharedTabService.tests[SharedTabService.currentTabIndex].isTabClicked=true;
+							    SharedTabService.tests[SharedTabService.currentTabIndex].isBtnClicked=true;
 								$modal.open({
 											templateUrl : 'views/partials/exportPopup.html',
 											controller : 'ExportTestController',
