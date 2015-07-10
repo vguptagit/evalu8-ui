@@ -985,6 +985,7 @@
                 $document.find('body').css({'cursor': hStyle.cursor + '!important'});
               }
               
+              $('body *').css({'cursor':'-moz-grabbing'});
               $('body *').css({'cursor':'-webkit-grabbing'});
 
               scope.$element.after(placeElm);
