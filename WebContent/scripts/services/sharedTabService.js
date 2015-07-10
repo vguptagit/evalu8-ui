@@ -387,7 +387,8 @@ angular.module('evalu8Demo')
 		                             //scope.tests.splice(i, 1);
 		                         } else {
 		                             scope.open_CloseTabConfirmation(tab);
-		                             sharedTabService.onClickTab(sharedTabService.tests[i], scope);
+		                           //Commenting out below line to fix issue of retaining selected node when test is closed
+		                           //sharedTabService.onClickTab(sharedTabService.tests[i], scope);
 		                         }
 		                         isComeOutFreomLoop = true;
 		                         return false;
@@ -481,13 +482,17 @@ angular.module('evalu8Demo')
 		     
 		     var showQuestionEditIcons=function (test){
 		    	 for (var i = 0; i < test.questionFolderNode.length; i++) {
-		             test.questionFolderNode[i].showEditQuestionIcon = true;
+		    		 if(test.questionFolderNode[i].isNodeSelected==true){
+		    			 test.questionFolderNode[i].showEditQuestionIcon = true;	 
+		    		 }
 		         }
 		     }
 		     
 		     var showTestWizardIcons = function (test) {
 		         for (var i = 0; i < test.criterias.length; i++) {
-		             test.criterias[i].treeNode.showTestWizardIcon = true;
+		        	 if(test.criterias[i].isNodeSelected==true){
+		        		 test.criterias[i].treeNode.showTestWizardIcon = true;	 
+		        	 }
 		             //test.criterias[i].treeNode.isNodeSelected=false;
 		             
 		           //Dont delete below commented line, it may re-use in feature
