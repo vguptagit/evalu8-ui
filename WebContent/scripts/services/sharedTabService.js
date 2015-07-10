@@ -331,6 +331,7 @@ angular.module('evalu8Demo')
 		     }
 
 		     sharedTabService.showSelectedTestTab = function (treenode) {
+		         var found = false;
 		         $.each(sharedTabService.tests, function (i) {
 		             if (sharedTabService.tests[i].id === treenode.testId) {
 		                 sharedTabService.currentTab = sharedTabService.tests[i];
@@ -339,9 +340,15 @@ angular.module('evalu8Demo')
 		                 if (!sharedTabService.tests[i].treeNode && sharedTabService.tests[i].treeNode.nodeType === EnumService.NODE_TYPE.test) {
 		                     sharedTabService.tests[i].treeNode = treenode;
 		                 }
+		                 found = true;
 		                 return false;
 		             }
 		         });
+		         if (!found) {
+		             treenode.draggable = true;
+		             treenode.showEditIcon = true;
+		             treenode.showArchiveIcon = true;
+		         }
 		     }
 
 		     sharedTabService.isActiveTab = function (tabUrl, scope) {
