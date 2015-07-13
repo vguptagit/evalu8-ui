@@ -15,11 +15,12 @@ angular
 						'TestService',
 						'SharedTabService',
 						'$modal',
+						'notify',
 						'$compile',
 						'directiveQtiService', 'EnumService', 'UserService', 'CommonService','blockUI',
 						function($scope, $rootScope, $location, $cookieStore,
 								$http, $sce, TestService, SharedTabService,
-								$modal, $compile, directiveQtiService, EnumService, UserService, CommonService,blockUI) {
+								$modal, notify, $compile, directiveQtiService, EnumService, UserService, CommonService,blockUI) {
 
 							// $scope.tree2 =
 							// SharedTabService.tests[SharedTabService.currentTabIndex].questions;
@@ -1667,6 +1668,19 @@ angular
 							// Function is to save the Test details with the
 							// questions.
 							
+							$scope.showSaveErrorMessage = function(){
+								var msg = e8msg.error.save;
+								var messageTemplate ='<p class="alert-danger"><span class="glyphicon glyphicon-alert"></span><span class="warnMessage">' + msg  + '</p> ';
+								$scope.positions = ['center', 'left', 'right'];
+								$scope.position = $scope.positions[0];
+								notify({
+									messageTemplate: messageTemplate,						                
+									classes: 'alert alert-danger',	
+									position: $scope.position,
+									duration: '1500'
+								});
+							};
+							
 							$scope.saveTest = function(callback) {
 								$scope.editedQuestions = [];
 								$scope.editedMigratedQuestions = [];
@@ -1838,6 +1852,12 @@ angular
 
     								TestService.saveQuestions(QuestionEnvelops, function(questionsResult) {
     									
+										if(questionsResult == null) {
+											$rootScope.blockPage.stop();
+											$scope.showSaveErrorMessage();
+											return;
+										}
+										
     									var questionIndex = 0;
     									questionsResult.forEach(function(questionItem) {
     										var question = JSON.parse(questionItem);
@@ -1870,6 +1890,13 @@ angular
     									})									
 
     									TestService.saveTestData(testcreationdata, test.folderGuid, function(testResult) {
+    										
+    										if(testResult == null) {
+    											$rootScope.blockPage.stop();
+    											$scope.showSaveErrorMessage();
+    											return;
+    										}
+    										
     									    var isEditMode = false,
                                                 oldGuid = null,
                                                 test = SharedTabService.tests[SharedTabService.currentTabIndex];

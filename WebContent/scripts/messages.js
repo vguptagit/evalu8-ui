@@ -7,7 +7,8 @@
 (function(ns){
 	
 	ns.error = {
-			importUserBooks : "Unable to import! Please try again."
+			importUserBooks : "Unable to import! Please try again.",
+			save : "Unable to save! Please try again."
 	};
 	
 	ns.success = {
