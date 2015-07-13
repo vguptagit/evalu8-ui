@@ -3,8 +3,8 @@
 angular.module('evalu8Demo')
 
 .service('TestService', 
-		['$http', '$rootScope', '$location', '$cookieStore', '$upload','blockUI','$modal',
-		 function($http, $rootScope, $location, $cookieStore,$upload,blockUI,$modal) {
+		['$http', '$rootScope', '$location', '$cookieStore', '$upload','blockUI',
+		 function($http, $rootScope, $location, $cookieStore,$upload,blockUI) {
 			
 			$rootScope.globals = JSON.parse(sessionStorage.getItem('globals'));
 			 
@@ -16,31 +16,26 @@ angular.module('evalu8Demo')
 			};						
 			
 			this.saveTestData = function(testData,folderId,callback) {				
-				var defaultFolders = [];
+				var testResult = null;
 				$http.post(evalu8config.apiUrl + '/my/folders/'+folderId+'/tests', testData, config)
 				.success(function(response) {	
 					var testResult = response;
 					callback(testResult);
 				})
 				.error(function(error, status) {
-				    $rootScope.blockPage.stop();
-					if(status == 400) {
-		            	
-						$rootScope.IsConfirmation = false;
-						$rootScope.message = "Unable to save test! Parent folder is archived";
-                        $modal.open(confirmObject); 				        
-					}
+					callback(testResult);
 				})				
 			};
 			
             this.saveQuestions = function(editedQstns, callback) {
+            	var questionsResult = null;
                 $http.post(evalu8config.apiUrl + '/my/questions', editedQstns, config)
                 .success(function(response) {    
-                    var questionsResult = response;
+                    questionsResult = response;
                     callback(questionsResult);                     
                 })
                 .error(function(error, status) {
-                    $rootScope.blockPage.stop();
+                	callback(questionsResult);
                 })                
                 
             };
