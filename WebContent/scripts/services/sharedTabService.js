@@ -167,6 +167,17 @@ angular.module('evalu8Demo')
 		         newCriteria.scope = scope;
 		         newCriteria.metadata = response;
 		         newCriteria.treeNode = currentNode;
+		         if(scope.isApplySameCriteriaToAll){
+			    	 var criterias = sharedTabService.tests[scope.currentIndex].criterias;
+			    	 newCriteria.numberOfQuestionsSelected = criterias[0].numberOfQuestionsSelected;
+			    	 newCriteria.numberOfQuestionsEntered = criterias[0].numberOfQuestionsEntered;
+			    	 newCriteria.selectedQuestiontypes.splice(0,newCriteria.selectedQuestiontypes.length);
+			    		 for ( var questionType in criterias[0].selectedQuestiontypes) {
+			    			 if(newCriteria.questiontypes.indexOf(criterias[0].selectedQuestiontypes[questionType]) != -1)
+			    				 newCriteria.selectedQuestiontypes.push(criterias[0].selectedQuestiontypes[questionType])
+			    		 
+					}
+		         }
 		         test.criterias.push(newCriteria);
 		     }
 		     sharedTabService.setDefault_numberOfQuestionsSelected = function (QuestionCount) {
