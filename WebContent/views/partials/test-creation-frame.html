@@ -288,7 +288,8 @@
                 type="1" ng-model="tests[currentIndex].questions">
                 <li draggable="{{!node.IsEditView}}" quiztype={{node.quizType}} class="questIndex displayQuestionLI" printmode="{{!node.IsEditView}}"
                     templateqstn="{{node.templateQstn}}" ng-mouseover="hoverIn(this)" ng-mouseleave="hoverOut()"
-                    optionsview="{{node.optionsView}}" ng-class="{testQuestionSelected:node.isNodeSelected}" 
+                    optionsview="{{node.optionsView}}" 
+                    ng-class="{testQuestionSelected:node.isNodeSelected , twoDigitIndex: $index + 1 > 9 ,threedigitIndex: $index + 1 > 99, fourDigitIndex: $index + 1 > 999}"
                     ng-repeat="node in tests[currentIndex].questions" ui-tree-node
                     ng-include="'rf_question_renderer.html'"></li>
             </ol>
