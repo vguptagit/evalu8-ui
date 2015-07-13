@@ -2263,7 +2263,7 @@ angular
 											//assign the numberOfQuestionsEntered to numberOfQuestionsSelected only if there is 
 											//no error while creating the test. 
 											//ref : Bug 6582 - Radio button de-selected when alert message appears while creating Test using Test Wizard
-											if (criteria.numberOfQuestionsEntered > 0 && isError == false) {
+											if (criteria.numberOfQuestionsEntered > 0 && isError == false && !isTestTitleEmpty()) {
 												criteria.numberOfQuestionsSelected = criteria.numberOfQuestionsEntered;
 											}
 											if (!criteria.numberOfQuestionsSelected || criteria.numberOfQuestionsSelected > criteria.totalQuestions) {
@@ -2280,8 +2280,7 @@ angular
 									return false;
 								} else {
 									var test = SharedTabService.tests[SharedTabService.currentTabIndex];
-									if (test.title == null
-											|| test.title.length <= 0) {
+									if (isTestTitleEmpty(test)) {
 										$scope.IsConfirmation = false;
 										$scope.message = "Please enter test title to save the test.";
 
@@ -2311,6 +2310,15 @@ angular
 							}
 							function randomize(a, b) {
 								return Math.random() - 0.5;
+							}
+							var isTestTitleEmpty = function(test) {
+								if(test == null)
+									test = SharedTabService.tests[SharedTabService.currentTabIndex];
+								if (test.title == null
+										|| test.title.length <= 0)
+									return true;
+								else
+									return false;
 							}
 							// TODO: code optimization is need.
 							$scope.render = function(metadatas) {
