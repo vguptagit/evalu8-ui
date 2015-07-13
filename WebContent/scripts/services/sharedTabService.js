@@ -249,7 +249,14 @@ angular.module('evalu8Demo')
 		         $.each(sharedTabService.tests[sharedTabService.currentTabIndex].criterias, function (i) {
 		             if (sharedTabService.tests[sharedTabService.currentTabIndex].criterias[i].treeNode.guid === currentNode.guid) {
 		                 isExist = true;
-		                 sharedTabService.addErrorMessage(currentNode.title, sharedTabService.errorMessageEnum.AlreadyAdded);
+		                 //sharedTabService.addErrorMessage(currentNode.title, sharedTabService.errorMessageEnum.AlreadyAdded);
+		                 $.each(sharedTabService.tests[sharedTabService.currentTabIndex].criterias, function (j) {
+			                 $.each(selectedNodes, function (k) {
+			                 if (sharedTabService.tests[sharedTabService.currentTabIndex].criterias[j].treeNode.guid === selectedNodes[k].guid) {
+			                     sharedTabService.addErrorMessage(selectedNodes[k].title, sharedTabService.errorMessageEnum.AlreadyAdded);
+			                 }
+			                 });
+			             });
 		                 return false;
 		             } else if (sharedTabService.tests[sharedTabService.currentTabIndex].criterias[i].treeNode.guid === currentNode.parentId) {
 		                 isExist = true;
@@ -344,7 +351,7 @@ angular.module('evalu8Demo')
 
 		     sharedTabService.showSelectedTestTab = function (treenode) {
 		         $.each(sharedTabService.tests, function (i) {
-		             if (sharedTabService.tests[i].id === treenode.testId) {
+		             if (sharedTabService.tests[i].id === treenode.guid) {
 		                 sharedTabService.currentTab = sharedTabService.tests[i];
 		                 sharedTabService.currentTabIndex = i;
 		                 sharedTabService.prepForBroadcastCurrentTabIndex(i);
