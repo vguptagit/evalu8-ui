@@ -6,18 +6,19 @@
 
 (function(ns){
 	
-	ns.error = {
-			importUserBooks : "Unable to import! Please try again.",
-			save : "Unable to save! Please try again."
-	};
+    ns.error = {
+        importUserBooks : "Unable to import! Please try again.",
+        save : "Unable to save! Please try again."
+    };
 	
-	ns.success = {
-			importUserBooks : "Success to import! Please try again." //TODO :need to remove
-	};
+    ns.success = {
+        importUserBooks : "Success to import! Please try again." //TODO :need to remove
+    };
 	
-	ns.warning = {
-			importUserBooks : "Warning to import! Please try again."//TODO :need to remove
-	};
+    ns.warning = {
+        importUserBooks: "Warning to import! Please try again.", //TODO :need to remove
+        emptyFolder : "This folder is empty."
+};
 		
 })(window.e8msg = window.e8msg || {});
 

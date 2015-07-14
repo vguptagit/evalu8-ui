@@ -919,7 +919,17 @@ angular
 										}
 									});
 								}else{
-									$scope.addQuestionsToTestTab(test, destIndex);
+								    SharedTabService.errorMessages = [];
+								    for (var i = 0; i < $scope.selectedNodes.length; i++) {
+								        if (!$scope.selectedNodes[i].questionBindings.length) {
+								            SharedTabService.addErrorMessage($scope.selectedNodes[i].title, e8msg.warning.emptyFolder);
+								        }
+								    }
+								    if (SharedTabService.errorMessages.length > 0) {
+								        SharedTabService.TestWizardErrorPopup_Open();
+								    } else {
+								        $scope.addQuestionsToTestTab(test, destIndex);
+								    }
 								}
 							}
 							

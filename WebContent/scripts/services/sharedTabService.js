@@ -268,6 +268,14 @@ angular.module('evalu8Demo')
 		                 return false;
 		             }
 		         });
+
+		         for (var i = 0; i < selectedNodes.length; i++) {
+		             if (!selectedNodes[i].questionBindings.length) {
+		                 sharedTabService.addErrorMessage(selectedNodes[i].title, e8msg.warning.emptyFolder);
+		                 isExist = true;
+		             }
+		         }		         
+
 		         return isExist;
 		     }
 		     sharedTabService.deSelectNode = function (selectedNodes, node) {
@@ -280,8 +288,8 @@ angular.module('evalu8Demo')
 		         }
 		     };
 
-		     sharedTabService.addErrorMessage = function (criteria, message) {
-		         sharedTabService.errorMessages.push({ criteria: criteria, message: message });
+		     sharedTabService.addErrorMessage = function (title, message) {
+		         sharedTabService.errorMessages.push({ title: title, message: message });
 		     }
 
 		     sharedTabService.TestWizardErrorPopup_Open = function (errorMessages) {
