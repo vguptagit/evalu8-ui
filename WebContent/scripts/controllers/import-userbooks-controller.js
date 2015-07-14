@@ -7,7 +7,7 @@ angular
 		 function($scope,UserBookService) {
 
 			 $scope.selectedAllUserBooks = false;			 
-
+			 
 			 UserBookService
 			 .getUserBooks(function(userBooks) {
 				 if (userBooks.length == 0) {
@@ -18,30 +18,30 @@ angular
 				 }
 				 $scope.$parent.userBook.books = userBooks;
 				 $scope.userBooks = $scope.$parent.userBook.books;
+				 $scope.$parent.isUserSelectedItem = $scope.isUserSelectedBook;
 
 			 });
 
 			 $scope.selectUserBook = function(bookid, bookTitle) {
 
-				 $scope.isUserSelectedBook = false;
+				 $scope.$parent.isUserSelectedItem  = false;
 
 				 $scope.userBooks.forEach(function(book) {
-					 if (book.guid == bookid) {
+					 if (book.guid == bookid ) {
 						 book.isSelected = book.isSelected ? !book.isSelected
 								 : true;
 					 }
 
-					 if (book.isSelected == true) {
-						 $scope.isUserSelectedBook = true;
+					 if (book.isSelected == true && !book.isImported) {
+						 $scope.$parent.isUserSelectedItem  = true;
 					 }
 				 });
 			 }
 
 			 $scope.checkAllUserBook = function(bookid) {
 				 $scope.selectedAllUserBooks = !$scope.selectedAllUserBooks;
-				 $scope.$parent.isUserSelectedBook = $scope.selectedAllUserBooks;
-				 $scope.userBooks
-				 .forEach(function(book) {
+				 $scope.$parent.isUserSelectedItem = $scope.selectedAllUserBooks;
+				 $scope.userBooks.forEach(function(book) {
 					 book.isSelected = $scope.selectedAllUserBooks;
 				 });
 			 }

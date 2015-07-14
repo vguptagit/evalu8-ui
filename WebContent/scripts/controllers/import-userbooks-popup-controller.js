@@ -16,8 +16,7 @@
 			$scope.importUserBooks = function() {		
 				var selectedUserBook = [];
 				$.grep($scope.userBook.books, function(book) {
-					if (book.isSelected) {		
-						book.isImported=true;
+					if (book.isSelected && !book.isImported) {								
 						delete book.isSelected;
 						selectedUserBook.push(book);
 					}
@@ -25,7 +24,8 @@
 
 				UserBookService.importUserBooks(selectedUserBook,function(status) {	
 					if(status){
-						$location.path('/home/yourtests');		
+                        $rootScope.$broadcast("ImportUserBooks");    
+                        $scope.$close();	
 					}else {										
 						$scope.showErrorMessage();
 					}									

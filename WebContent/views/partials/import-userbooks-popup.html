@@ -22,7 +22,7 @@
 				<div class="col-md-5"></div>
 				<div class="col-md-7 text-right">
 					<button data-ng-click="cancel()" class="backButton">Cancel</button>
-					<button class="nextButton" data-ng-click="importUserBooks()">Import</button>
+					<button class="nextButton btnDisbled" data-ng-class="{btnDisbled:!isUserSelectedItem}"  data-ng-disabled="!isUserSelectedItem"  data-ng-click="importUserBooks()">Import</button>
 				</div>
 			</div>
 		</div>

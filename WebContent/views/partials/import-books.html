@@ -5,18 +5,18 @@
 
 		<div class="importAllTest">
 			<input class="importAllTestChk" type='checkbox'
-				data-ng-disabled="books[0].emptyRecords"
-				data-ng-class="{disabled:books[0].emptyRecords}"
+				data-ng-disabled="userBooks[0].emptyRecords"
+				data-ng-class="{disabled:userBooks[0].emptyRecords}"
 				data-ng-modal="selectedAllUserBooks"
 				data-ng-click='checkAllUserBook()' />
 		</div>
 	</div>
 	<div class="userBooksContainer">
-		<div data-ng-if="books[0].emptyRecords">
-			<div class="emptyUserBooks discplineText">{{books[0].title}}</div>
+		<div data-ng-if="userBooks[0].emptyRecords">
+			<div class="emptyUserBooks discplineText">{{userBooks[0].title}}</div>
 		</div>
-		<div class="userBooks" data-ng-repeat="book in userBooks">
-			<button data-ng-if="!books[0].emptyRecords" class="userBookRow"
+		<div data-ng-if="!books[0].emptyRecords" class="userBooks" data-ng-repeat="book in userBooks">
+			<button class="userBookRow"
 				data-ng-click="selectUserBook(book.guid,book.title)"
 				data-ng-class="{'selectedUserBook' : book.isSelected  ,'selectedUserBook disableUserBook' : book.isImported}"
 				data-ng-disabled="{{book.isImported}}">

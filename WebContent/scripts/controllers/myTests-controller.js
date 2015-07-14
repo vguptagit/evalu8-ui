@@ -71,6 +71,12 @@ angular.module('e8MyTests')
         }
         
         $scope.loadTree();
+        
+        $scope.$on('ImportUserBooks', function() {		
+			$scope.loadTree();								
+		})
+
+		
         $scope.$on('dragStarted', function () {
             $scope.dragStarted = true;
         });
