@@ -54,4 +54,54 @@
 .workSpaceSection{
 	padding-top: 21px;
 }
-	
+
+.disableUserBook {
+	opacity: .65;
+}
+
+.userBooksContainer {
+	display: inline-block;
+	width: 100%;
+}
+
+.userBooks {
+	display: inline-block;
+	width: 100%;
+	float: left;
+	margin-bottom: 1px;
+}
+
+.userBookRow {	
+	width: 97%;
+	border: solid 0px #fff;
+	border-bottom: 1px solid #E0E0E0;
+	background-color: #fff;
+	outline: none;
+}
+
+.importInPopUp .importTestDiv {
+	width: 100%;
+}
+
+.importInPopUp .userBookRow {
+	width: 100%;
+}
+
+.selectedUserBook {
+	background-color: #007FA9;
+	color: #fff;
+	cursor: pointer;
+	border: solid 0px #fff;
+}
+
+.bookTitleContainer {
+	min-height: 40px;
+	padding-left: 20px;
+	font-family: Helvetica Neue Light;
+	font-size: 14px;
+	padding: 10px;
+	position: initial;
+	line-height: 1em;
+	cursor: pointer;
+	text-align: left;
+}
