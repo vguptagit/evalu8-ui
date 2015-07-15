@@ -685,7 +685,7 @@ angular
 								$.grep($scope.userBook.books, function(book) {
 									if (book.isSelected && !book.isImported) {			
 										delete book.isSelected;
-										selectedUserBook.push(book);
+										selectedUserBook.push(book.guid);
 									}
 								});	
 
