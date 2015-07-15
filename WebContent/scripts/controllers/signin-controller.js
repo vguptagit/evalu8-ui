@@ -1,6 +1,8 @@
 angular.module('e8MyTests').controller('SigninController', ['$scope', '$rootScope', '$location', '$http', 'AuthenticationService',
 function($scope, $rootScope, $location, $http, AuthenticationService) {
 	
+	$scope.unauthorised = false;
+	
 	piSession.getToken(function(error, token) {
 		
     	if(piSession.currentToken()) {
@@ -26,6 +28,9 @@ function($scope, $rootScope, $location, $http, AuthenticationService) {
 			})
 			.error(function(data, status) {
 				
+				if(status == 401) {
+					$scope.unauthorised = true;
+				}
 				AuthenticationService.ClearCredentials();
 			})				    			
     	} else {
@@ -34,4 +39,8 @@ function($scope, $rootScope, $location, $http, AuthenticationService) {
     	}
 	});
 	
+	$scope.logout = function() {
+
+		AuthenticationService.logout();
+	}
 }]);
