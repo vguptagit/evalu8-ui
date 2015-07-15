@@ -3,28 +3,36 @@ angular
 .controller(
 		'ImportUserBooksController',
 		[
-		 '$scope','UserBookService'	,
-		 function($scope,UserBookService) {
+		 '$scope','UserBookService'	,'$filter',
+		 function($scope,UserBookService,$filter) {
 
-			 $scope.selectedAllUserBooks = false;			 
-			 
+			 $scope.selectedAllUserBooks = false;			
+			 $scope.disableCheckAllBooks = false;			
+			 var totalBookCount=0;
+			 var selectedBookCount=0;
+						 
 			 UserBookService
 			 .getUserBooks(function(userBooks) {
 				 if (userBooks.length == 0) {
 					 var book = {};
 					 book.title = "There are no Instructor Books available for Import";
 					 book.emptyRecords = true;
-					 userBooks.push(book);
+					 userBooks.push(book);					 
 				 }
 				 $scope.$parent.userBook.books = userBooks;
-				 $scope.userBooks = $scope.$parent.userBook.books;
-				 $scope.$parent.isUserSelectedItem = $scope.isUserSelectedBook;
+				 $scope.userBooks = $scope.$parent.userBook.books;				 
+				 
+				 totalBookCount = $filter('filter')($scope.userBooks, {isImported: 'false'}).length;
+				 if(totalBookCount==0){
+					 $scope.disableCheckAllBooks =true
+				 }
 
 			 });
 
 			 $scope.selectUserBook = function(bookid, bookTitle) {
 
 				 $scope.$parent.isUserSelectedItem  = false;
+				 selectedBookCount = 0;
 
 				 $scope.userBooks.forEach(function(book) {
 					 if (book.guid == bookid ) {
@@ -34,8 +42,15 @@ angular
 
 					 if (book.isSelected == true && !book.isImported) {
 						 $scope.$parent.isUserSelectedItem  = true;
+						 selectedBookCount = selectedBookCount + 1;
 					 }
 				 });
+				 
+				 if(selectedBookCount==totalBookCount){
+					 $scope.selectedAllUserBooks =true;
+				 }else{
+					 $scope.selectedAllUserBooks =false;
+				 }
 			 }
 
 			 $scope.checkAllUserBook = function(bookid) {

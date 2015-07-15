@@ -5,9 +5,9 @@
 
 		<div class="importAllTest">
 			<input class="importAllTestChk" type='checkbox'
-				data-ng-disabled="userBooks[0].emptyRecords"
-				data-ng-class="{disabled:userBooks[0].emptyRecords}"
-				data-ng-modal="selectedAllUserBooks"
+				data-ng-disabled="disableCheckAllBooks"
+				data-ng-class="{disabled:disableCheckAllBooks}"
+				data-ng-model="selectedAllUserBooks"
 				data-ng-click='checkAllUserBook()' />
 		</div>
 	</div>
