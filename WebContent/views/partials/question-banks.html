@@ -96,7 +96,7 @@
                 <div class="maindiv">
                     <div class="imagediv">
 						<i class="fa fa-spinner fa-pulse font-size-16" ng-show="!node.isHttpReqCompleted"></i>
-                        <input ng-click="getBooks(this)" type="image" class="collapseImg" ng-show="node.isHttpReqCompleted"
+                        <input ng-click="getBooks(this)" type="image" class="collapseImg" value="" ng-show="node.isHttpReqCompleted"
                                ng-src="{{collapsed?'images/right_arrow2.png':'images/right_arrow.png'}}"></input>
                     </div>
                     <div class="captiondiv">
@@ -117,7 +117,7 @@
             <div class="treeDiv" ng-class="{activeFolder:node.isNodeSelected}">
                 <div class="maindiv">
                     <div class="imagediv">
-                        <input ng-click="getNodes(this)" type="image" class="collapseImg" ng-src="{{collapsed?'images/right_arrow2.png':'images/right_arrow.png'}}"></input>
+                        <input ng-click="getNodes(this)" type="image" class="collapseImg" value="" ng-src="{{collapsed?'images/right_arrow2.png':'images/right_arrow.png'}}"></input>
                     </div>
                     <div class="captiondiv" ng-mousedown="selectBook(this.node)">
                         <label class="captionLabel" title="{{node.title}}">{{node.title}}</label>
@@ -143,7 +143,7 @@
                 <div class="maindivChapter">
                     <div class="imagediv">
                         <i class="fa fa-spinner fa-pulse font-size-16" ng-show="!node.isHttpReqCompleted"></i>
-                        <input ng-mousedown="getNodesWithQuestion(this)" type="image" class="collapseImg" ng-show="node.isHttpReqCompleted" ng-src="{{collapsed?'images/right_arrow2.png':'images/right_arrow.png'}}"></input>
+                        <input ng-mousedown="getNodesWithQuestion(this)" type="image" value="" class="collapseImg" ng-show="node.isHttpReqCompleted" ng-src="{{collapsed?'images/right_arrow2.png':'images/right_arrow.png'}}"></input>
                         <!--<input ng-mousedown="getNodesWithQuestion(this)" type="image" class="collapseImg" ng-src="{{collapsed?'images/right_arrow2.png':'images/right_arrow.png'}}"></input>-->
                     </div>
                     <div class="captiondiv" ng-mousedown="selectNode(this.node)">
