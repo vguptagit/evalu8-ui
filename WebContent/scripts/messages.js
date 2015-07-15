@@ -16,8 +16,8 @@
 
 	};
 
-	ns.warning = {
-
+	ns.warning = {	
+		emptyFolder : "This folder is empty."
 	};
 
 })(window.e8msg = window.e8msg || {});
