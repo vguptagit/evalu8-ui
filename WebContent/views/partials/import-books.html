@@ -1,6 +1,6 @@
 <div>
 	<div class="input-group importTestDiv">
-		<span class="importTestTitle">1. Select Instructor Books from
+		<span class="importTestTitle">1. Select Books from
 			your MyTest account </span>
 
 		<div class="importAllTest">
@@ -15,7 +15,7 @@
 		<div data-ng-if="userBooks[0].emptyRecords">
 			<div class="emptyUserBooks discplineText">{{userBooks[0].title}}</div>
 		</div>
-		<div data-ng-if="!books[0].emptyRecords" class="userBooks" data-ng-repeat="book in userBooks">
+		<div data-ng-if="!userBooks[0].emptyRecords" class="userBooks" data-ng-repeat="book in userBooks">
 			<button class="userBookRow"
 				data-ng-click="selectUserBook(book.guid,book.title)"
 				data-ng-class="{'selectedUserBook' : book.isSelected  ,'selectedUserBook disableUserBook' : book.isImported}"

@@ -57,6 +57,9 @@
 
 .disableUserBook {
 	opacity: .65;
+	background-color: #A0D1E1 !important;
+  	color: #EEF8FC;
+  	cursor: default !important;
 }
 
 .userBooksContainer {
@@ -92,6 +95,7 @@
 	color: #fff;
 	cursor: pointer;
 	border: solid 0px #fff;
+	float: left;
 }
 
 .bookTitleContainer {
@@ -101,7 +105,6 @@
 	font-size: 14px;
 	padding: 10px;
 	position: initial;
-	line-height: 1em;
-	cursor: pointer;
+	line-height: 1em;	
 	text-align: left;
 }
