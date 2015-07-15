@@ -35,7 +35,7 @@
             <div data-ng-if="node.nodeType == 'archiveRoot'" class="treeDiv">
                 <div class="newFolderDiv padding-lft-15">
                     <div class="imagediv">
-                        <input type="image" ng-click="getFolders(this)" class="collapseImg"
+                        <input type="image" ng-click="getFolders(this)" class="collapseImg" value=""
                                ng-src="{{collapsed && 'images/right_arrow2.png' || 'images/right_arrow.png'}}" />
                     </div>
                     <div class="captiondiv">
@@ -73,7 +73,7 @@
                  ng-mouseleave="treeNodeMouseLeave(this)">
                 <div class="maindiv" ng-class="{folderHighlight: node.selectTestNode}" id={{node.guid}}>
                     <div class="imagediv">
-                        <input type="image" ng-click="getFolders(this)" class="collapseImg"
+                        <input type="image" ng-click="getFolders(this)" class="collapseImg" value=""
                                ng-src="{{collapsed && 'images/right_arrow2.png' || 'images/right_arrow.png'}}" />
                     </div>
                     <div class="captiondiv" ng-mousedown="selectTestNode($event,this);">
@@ -106,7 +106,7 @@
                  ng-mouseleave="treeNodeMouseLeave(this)">
                 <div class="maindiv"  ng-class="{folderHighlight: node.selectTestNode}" id={{node.guid}}>
                     <div class="imagediv">
-                        <input type="image" data-ng-if="node.nodeType != 'empty'" ng-click="getFolders(this)" class="collapseImg"
+                        <input type="image" data-ng-if="node.nodeType != 'empty'" ng-click="getFolders(this)" class="collapseImg" value=""
                                ng-src="{{collapsed && 'images/right_arrow2.png' || 'images/right_arrow.png'}}" />
                     </div>
                     <div class="captiondiv" ng-mousedown="selectTestNode($event,this);">
@@ -124,7 +124,7 @@
             <div data-ng-if="node.nodeType == 'archiveFolder'" class="treeDiv">
                 <div class="maindiv" ng-class="{folderHighlight: node.selectTestNode}" id={{node.guid}}>
                     <div class="imagediv">
-                        <input type="image" data-ng-if="node.nodeType != 'empty'" ng-click="getFolders(this)" class="collapseImg"
+                        <input type="image" data-ng-if="node.nodeType != 'empty'" ng-click="getFolders(this)" class="collapseImg" value=""
                                ng-src="{{collapsed && 'images/right_arrow2.png' || 'images/right_arrow.png'}}" />
                     </div>
                     <div class="captiondiv" ng-mousedown="selectTestNode($event,this);">
