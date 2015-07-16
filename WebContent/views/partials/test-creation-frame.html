@@ -26,7 +26,7 @@
                 </div>
                 <!--<button type="button" class="btn btn-primary" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Print and Format Tests">Print</button>-->
                 
-                <button type="button" class="btn btn-primary" ng-class="{disabled : (!sharedTabService.tests[sharedTabService.currentTabIndex].testId || sharedTabService.tests[sharedTabService.currentTabIndex].isTabClicked)}"
+                <button type="button" class="btn btn-primary" ng-class="{disabled : (!sharedTabService.tests[sharedTabService.currentTabIndex].testId || sharedTabService.tests[sharedTabService.currentTabIndex].isBtnClicked)}"
                         ng-click="open()" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Export Test Files">
                     Export
                 </button>
@@ -77,7 +77,7 @@
     <div class="row">
         <div class="questionFeature">
             <button ng-click="TestVersion_open()"
-                    class="btn btn-primary pull-right" ng-class="{disabled : (!sharedTabService.tests[sharedTabService.currentTabIndex].testId || sharedTabService.tests[sharedTabService.currentTabIndex].treeNode.testType == enumService.TEST_TYPE.PublisherTest || sharedTabService.tests[sharedTabService.currentTabIndex].isTabClicked)}" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Create test versions">
+                    class="btn btn-primary pull-right" ng-class="{disabled : (!sharedTabService.tests[sharedTabService.currentTabIndex].testId || sharedTabService.tests[sharedTabService.currentTabIndex].treeNode.testType == enumService.TEST_TYPE.PublisherTest || sharedTabService.tests[sharedTabService.currentTabIndex].isBtnClicked)}" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Create test versions">
                 New
                 Version
             </button>
@@ -134,7 +134,7 @@
                             <div ng-show="$first || !isApplySameCriteriaToAll">
                                 <div class="col-lg-11  form-inline  panel panel-default bg-gray-lighter">
                                     <div class="row wizardHeader">
-                                        <span>{{criteria.folderTitle}} ({{criteria.totalQuestions}} Questions)</span>
+                                        <label title="{{criteria.folderTitle}} ({{criteria.totalQuestions}} Questions)">{{criteria.folderTitle}} ({{criteria.totalQuestions}} Questions)</label>
                                         <button type="button" class="close"
                                                 ng-click="closeCriteria(criteria,true)" aria-label="Close" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Delete this section">
                                             <span aria-hidden="true">&times;</span>
@@ -288,7 +288,8 @@
                 type="1" ng-model="tests[currentIndex].questions">
                 <li draggable="{{!node.IsEditView}}" quiztype={{node.quizType}} class="questIndex displayQuestionLI" printmode="{{!node.IsEditView}}"
                     templateqstn="{{node.templateQstn}}" ng-mouseover="hoverIn(this)" ng-mouseleave="hoverOut()"
-                    optionsview="{{node.optionsView}}" ng-class="{testQuestionSelected:node.isNodeSelected}" 
+                    optionsview="{{node.optionsView}}" 
+                    ng-class="{testQuestionSelected:node.isNodeSelected , twoDigitIndex: $index + 1 > 9 ,threedigitIndex: $index + 1 > 99, fourDigitIndex: $index + 1 > 999}"
                     ng-repeat="node in tests[currentIndex].questions" ui-tree-node
                     ng-include="'rf_question_renderer.html'"></li>
             </ol>

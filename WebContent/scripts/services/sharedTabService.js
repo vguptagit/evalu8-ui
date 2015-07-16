@@ -47,6 +47,7 @@ angular.module('evalu8Demo')
 		         this.isSaveAndClose = false;
 		         this.isTestWizard = false;
 		         this.isTabClicked = false;
+		         this.isBtnClicked = false;
 		         this.treeNode = null;
 		         this.questionFolderNode = [];
 		         this.showCloseButton = true;
@@ -166,6 +167,17 @@ angular.module('evalu8Demo')
 		         newCriteria.scope = scope;
 		         newCriteria.metadata = response;
 		         newCriteria.treeNode = currentNode;
+		         if(scope.isApplySameCriteriaToAll){
+			    	 var criterias = sharedTabService.tests[scope.currentIndex].criterias;
+			    	 newCriteria.numberOfQuestionsSelected = criterias[0].numberOfQuestionsSelected;
+			    	 newCriteria.numberOfQuestionsEntered = criterias[0].numberOfQuestionsEntered;
+			    	 newCriteria.selectedQuestiontypes.splice(0,newCriteria.selectedQuestiontypes.length);
+			    		 for ( var questionType in criterias[0].selectedQuestiontypes) {
+			    			 if(newCriteria.questiontypes.indexOf(criterias[0].selectedQuestiontypes[questionType]) != -1)
+			    				 newCriteria.selectedQuestiontypes.push(criterias[0].selectedQuestiontypes[questionType])
+			    		 
+					}
+		         }
 		         test.criterias.push(newCriteria);
 		     }
 		     sharedTabService.setDefault_numberOfQuestionsSelected = function (QuestionCount) {
@@ -237,7 +249,14 @@ angular.module('evalu8Demo')
 		         $.each(sharedTabService.tests[sharedTabService.currentTabIndex].criterias, function (i) {
 		             if (sharedTabService.tests[sharedTabService.currentTabIndex].criterias[i].treeNode.guid === currentNode.guid) {
 		                 isExist = true;
-		                 sharedTabService.addErrorMessage(currentNode.title, sharedTabService.errorMessageEnum.AlreadyAdded);
+		                 //sharedTabService.addErrorMessage(currentNode.title, sharedTabService.errorMessageEnum.AlreadyAdded);
+		                 $.each(sharedTabService.tests[sharedTabService.currentTabIndex].criterias, function (j) {
+			                 $.each(selectedNodes, function (k) {
+			                 if (sharedTabService.tests[sharedTabService.currentTabIndex].criterias[j].treeNode.guid === selectedNodes[k].guid) {
+			                     sharedTabService.addErrorMessage(selectedNodes[k].title, sharedTabService.errorMessageEnum.AlreadyAdded);
+			                 }
+			                 });
+			             });
 		                 return false;
 		             } else if (sharedTabService.tests[sharedTabService.currentTabIndex].criterias[i].treeNode.guid === currentNode.parentId) {
 		                 isExist = true;
@@ -331,17 +350,24 @@ angular.module('evalu8Demo')
 		     }
 
 		     sharedTabService.showSelectedTestTab = function (treenode) {
+		         var found = false;
 		         $.each(sharedTabService.tests, function (i) {
-		             if (sharedTabService.tests[i].id === treenode.testId) {
+		             if (sharedTabService.tests[i].id === treenode.guid) {
 		                 sharedTabService.currentTab = sharedTabService.tests[i];
 		                 sharedTabService.currentTabIndex = i;
 		                 sharedTabService.prepForBroadcastCurrentTabIndex(i);
 		                 if (!sharedTabService.tests[i].treeNode && sharedTabService.tests[i].treeNode.nodeType === EnumService.NODE_TYPE.test) {
 		                     sharedTabService.tests[i].treeNode = treenode;
 		                 }
+		                 found = true;
 		                 return false;
 		             }
 		         });
+		         if (!found) {
+		             treenode.draggable = true;
+		             treenode.showEditIcon = true;
+		             treenode.showArchiveIcon = true;
+		         }
 		     }
 
 		     sharedTabService.isActiveTab = function (tabUrl, scope) {
@@ -380,7 +406,8 @@ angular.module('evalu8Demo')
 		                             //scope.tests.splice(i, 1);
 		                         } else {
 		                             scope.open_CloseTabConfirmation(tab);
-		                             sharedTabService.onClickTab(sharedTabService.tests[i], scope);
+		                           //Commenting out below line to fix issue of retaining selected node when test is closed
+		                           //sharedTabService.onClickTab(sharedTabService.tests[i], scope);
 		                         }
 		                         isComeOutFreomLoop = true;
 		                         return false;
@@ -416,6 +443,10 @@ angular.module('evalu8Demo')
 		    	 var node = scope.tests[scope.currentIndex].questions[index];
 		    	 scope.tests[scope.currentIndex].questions.splice(index,1);
 		    	 scope.tests[scope.currentIndex].IsAnyQstnEditMode = false;
+		    	 if(scope.tests[scope.currentIndex].questions.length==0){
+		    		 tab.questionFolderNode=[];
+		    		 $rootScope.$broadcast("handleBroadcast_onClickTab", tab);
+		    	 }
 		    	 $rootScope.$broadcast("handleBroadcast_deselectQuestionNode", node);
 		     }
 		     
@@ -433,7 +464,7 @@ angular.module('evalu8Demo')
 		         $.each(test.questions, function (i) {
 		             clonedTest.masterQuestions.push(test.questions[i]);
 		         });
-		         sharedTabService.masterTests.push(clonedTest);
+		         sharedTabService.masterTests[sharedTabService.currentTabIndex] = clonedTest;
 		     }
              //TODO : need to remove the dioendency of variable "scope".
 		     var removeTest = function (index, scope, test) {
@@ -470,13 +501,17 @@ angular.module('evalu8Demo')
 		     
 		     var showQuestionEditIcons=function (test){
 		    	 for (var i = 0; i < test.questionFolderNode.length; i++) {
-		             test.questionFolderNode[i].showEditQuestionIcon = true;
+		    		 if(test.questionFolderNode[i].isNodeSelected==true){
+		    			 test.questionFolderNode[i].showEditQuestionIcon = true;	 
+		    		 }
 		         }
 		     }
 		     
 		     var showTestWizardIcons = function (test) {
 		         for (var i = 0; i < test.criterias.length; i++) {
-		             test.criterias[i].treeNode.showTestWizardIcon = true;
+		        	 if(test.criterias[i].isNodeSelected==true){
+		        		 test.criterias[i].treeNode.showTestWizardIcon = true;	 
+		        	 }
 		             //test.criterias[i].treeNode.isNodeSelected=false;
 		             
 		           //Dont delete below commented line, it may re-use in feature

@@ -19,7 +19,7 @@ angular
 	
 			 var userBooks = [];
 	
-			 $http.get(evalu8config.apiUrl + "/userbooks", config)
+			 $http.get(evalu8config.apiUrl + "/my/importbooks", config)
 			 .success(function(response) {
 	
 				 userBooks = response;
@@ -32,7 +32,7 @@ angular
 		 
 		 this.importUserBooks = function(userBooks,callback) {				
 
-			 $http.post(evalu8config.apiUrl + "/userbooks/import", userBooks,config)
+			 $http.post(evalu8config.apiUrl + "/my/importbooks", userBooks,config)
 			 .success(function() {					
 				 callback(true);
 			 })

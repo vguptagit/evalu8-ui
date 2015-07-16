@@ -15,11 +15,12 @@ angular
 						'TestService',
 						'SharedTabService',
 						'$modal',
+						'notify',
 						'$compile',
 						'directiveQtiService', 'EnumService', 'UserService', 'CommonService','blockUI',
 						function($scope, $rootScope, $location, $cookieStore,
 								$http, $sce, TestService, SharedTabService,
-								$modal, $compile, directiveQtiService, EnumService, UserService, CommonService,blockUI) {
+								$modal, notify, $compile, directiveQtiService, EnumService, UserService, CommonService,blockUI) {
 
 							// $scope.tree2 =
 							// SharedTabService.tests[SharedTabService.currentTabIndex].questions;
@@ -1667,6 +1668,19 @@ angular
 							// Function is to save the Test details with the
 							// questions.
 							
+							$scope.showSaveErrorMessage = function(){
+								var msg = e8msg.error.save;
+								var messageTemplate ='<p class="alert-danger"><span class="glyphicon glyphicon-alert"></span><span class="warnMessage">' + msg  + '</p> ';
+								$scope.positions = ['center', 'left', 'right'];
+								$scope.position = $scope.positions[0];
+								notify({
+									messageTemplate: messageTemplate,						                
+									classes: 'alert alert-danger',	
+									position: $scope.position,
+									duration: '1500'
+								});
+							};
+							
 							$scope.saveTest = function(callback) {
 								$scope.editedQuestions = [];
 								$scope.editedMigratedQuestions = [];
@@ -1732,6 +1746,7 @@ angular
                                             callback();
                                         }
                                         test.saveMode = EnumService.SAVE_MODE.Save;
+                                        $scope.testType = EnumService.TEST_TYPE.PublisherTest;
                                         $rootScope.blockPage.stop();         							    
                                     	return;
                                     }
@@ -1837,6 +1852,12 @@ angular
 
     								TestService.saveQuestions(QuestionEnvelops, function(questionsResult) {
     									
+										if(questionsResult == null) {
+											$rootScope.blockPage.stop();
+											$scope.showSaveErrorMessage();
+											return;
+										}
+										
     									var questionIndex = 0;
     									questionsResult.forEach(function(questionItem) {
     										var question = JSON.parse(questionItem);
@@ -1869,6 +1890,13 @@ angular
     									})									
 
     									TestService.saveTestData(testcreationdata, test.folderGuid, function(testResult) {
+    										
+    										if(testResult == null) {
+    											$rootScope.blockPage.stop();
+    											$scope.showSaveErrorMessage();
+    											return;
+    										}
+    										
     									    var isEditMode = false,
                                                 oldGuid = null,
                                                 test = SharedTabService.tests[SharedTabService.currentTabIndex];
@@ -2049,7 +2077,7 @@ angular
 							    if (!SharedTabService.tests[SharedTabService.currentTabIndex].testId) {
 							        return false;
 							    }
-							    SharedTabService.tests[SharedTabService.currentTabIndex].isTabClicked=true;
+							    SharedTabService.tests[SharedTabService.currentTabIndex].isBtnClicked=true;
 								$modal.open({
 											templateUrl : 'views/partials/testVersionPopup.html',
 											controller : 'TestVersionCreationController',
@@ -2068,7 +2096,7 @@ angular
 							    if (!SharedTabService.tests[SharedTabService.currentTabIndex].testId) {
 							        return false;
 							    }
-							    SharedTabService.tests[SharedTabService.currentTabIndex].isTabClicked=true;
+							    SharedTabService.tests[SharedTabService.currentTabIndex].isBtnClicked=true;
 								$modal.open({
 											templateUrl : 'views/partials/exportPopup.html',
 											controller : 'ExportTestController',
@@ -2232,7 +2260,10 @@ angular
 												arr = criteria.metadata
 														.sort(randomize);
 											}
-											if (criteria.numberOfQuestionsEntered > 0) {
+											//assign the numberOfQuestionsEntered to numberOfQuestionsSelected only if there is 
+											//no error while creating the test. 
+											//ref : Bug 6582 - Radio button de-selected when alert message appears while creating Test using Test Wizard
+											if (criteria.numberOfQuestionsEntered > 0 && isError == false && !isTestTitleEmpty()) {
 												criteria.numberOfQuestionsSelected = criteria.numberOfQuestionsEntered;
 											}
 											if (!criteria.numberOfQuestionsSelected || criteria.numberOfQuestionsSelected > criteria.totalQuestions) {
@@ -2249,8 +2280,7 @@ angular
 									return false;
 								} else {
 									var test = SharedTabService.tests[SharedTabService.currentTabIndex];
-									if (test.title == null
-											|| test.title.length <= 0) {
+									if (isTestTitleEmpty(test)) {
 										$scope.IsConfirmation = false;
 										$scope.message = "Please enter test title to save the test.";
 
@@ -2280,6 +2310,15 @@ angular
 							}
 							function randomize(a, b) {
 								return Math.random() - 0.5;
+							}
+							var isTestTitleEmpty = function(test) {
+								if(test == null)
+									test = SharedTabService.tests[SharedTabService.currentTabIndex];
+								if (test.title == null
+										|| test.title.length <= 0)
+									return true;
+								else
+									return false;
 							}
 							// TODO: code optimization is need.
 							$scope.render = function(metadatas) {

@@ -95,6 +95,9 @@ angular
 								all : [],
 								userSelected : []
 							};
+
+							$scope.userBook = {	books:[] };
+							
 							$scope.selectedAllUserBooks = false;
 							$scope.enableDisableNextButton = function(state) {
 								if (state) {
@@ -311,43 +314,6 @@ angular
 								return true;
 							}
 							
-							$scope.enterUserBooks = function() {
-								// Getting User books
-								$scope.userBooks = [];
-								UserBookService.getUserBooks(function(userBooks) {									
-									if (userBooks.length == 0) {
-										var book={};
-										book.title="There are no Instructor Books available for Import";
-										book.emptyRecords=true;
-										userBooks.push(book);
-									} 
-									$scope.userBooks = userBooks;
-								});
-							
-								return true;
-							}
-							
-							$scope.selectUserBook = function(bookid, bookTitle) {
-								$scope.userBooks
-								.forEach(function(book) {
-									if (book.guid == bookid){
-										if((typeof (book.isSelected) == 'undefined') || (book.isSelected == false)) {
-											book.isSelected = true;
-										} else if (book.isSelected == true) {
-											book.isSelected = false;
-										}
-									}												
-								});
-							}
-
-							$scope.checkAllUserBook = function(bookid) {
-								$scope.selectedAllUserBooks = !$scope.selectedAllUserBooks;						     
-								$scope.userBooks
-								.forEach(function(book) {											
-									book.isSelected = $scope.selectedAllUserBooks;											
-								});
-							}
-
 							var arrangedBooks=[];
 							// To get books for the given discipline.
 							$scope.getBooks = function(discipline,useSelectedBooks) {
@@ -712,17 +678,16 @@ angular
 								var isUserBookEmpty = false;
 								var selectedUserBook = [];
 
-								if ($scope.userBooks.length == 1) {
-									isUserBookEmpty = $scope.userBooks[0].emptyRecords
+								if ($scope.userBook.books.length == 1) {
+									isUserBookEmpty = $scope.userBook.books[0].emptyRecords ||  $scope.userBook.books[0].isImported
 								}
 
-								$.grep($scope.userBooks, function(book) {
-									if (book.isSelected) {
-										book.isImported = true;
+								$.grep($scope.userBook.books, function(book) {
+									if (book.isSelected && !book.isImported) {			
 										delete book.isSelected;
-										selectedUserBook.push(book);
+										selectedUserBook.push(book.guid);
 									}
-								});
+								});	
 
 								if (isUserBookEmpty) {
 									$location.path('/home/questionbanks');

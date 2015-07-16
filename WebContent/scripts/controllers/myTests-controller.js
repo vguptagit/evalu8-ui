@@ -71,6 +71,12 @@ angular.module('e8MyTests')
         }
         
         $scope.loadTree();
+        
+        $scope.$on('ImportUserBooks', function() {		
+			$scope.loadTree();								
+		})
+
+		
         $scope.$on('dragStarted', function () {
             $scope.dragStarted = true;
         });
@@ -998,7 +1004,15 @@ angular.module('e8MyTests')
             }
             addVersionTest(testFolder, treeItems, test, newTest);
             
-        })
+        })       
+               
+        $scope.openImportBooksViewModal = function () {
+        	$modal.open({	            
+        		templateUrl: 'views/partials/import-userbooks-popup.html',	   
+        		controller : 'ImportUserBooksPopUpController'	                   
+        	});
+        }        
+       
         var addVersionTest = function (testFolder, treeItems, test, newTest) {
             $.each(treeItems, function (i, v) {
                 if (v.guid == test.id) {

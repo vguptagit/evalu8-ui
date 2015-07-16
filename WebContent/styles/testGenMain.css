@@ -515,12 +515,47 @@ ol {
 .testContainer ol li .questionList {
 	padding-left: 15px;
 } */
+
+
+.twoDigitIndex .optionLabelView {
+	margin-left: 8px;
+}
+
+.twoDigitIndex  .qti-blockquote {
+	margin-left: 5px;
+}
+.twoDigitIndex .textBoxContainer {
+	margin-left: 5px;
+}
+
+
+.threedigitIndex .optionLabelView {
+	margin-left: 15px;
+}
+.threedigitIndex .qti-blockquote  {
+	margin-left: 13px;
+}
+.threedigitIndex .textBoxContainer {
+	margin-left: 11px;
+}
+
+
+.fourDigitIndex .optionLabelView {
+	margin-left: 20px;
+}
+.fourDigitIndex .qti-blockquote {
+	margin-left: 20px;
+}
+.fourDigitIndex .textBoxContainer {
+	margin-left: 20px;
+}
+
 .questionList:before {
 	counter-reset: none;
 	counter-increment: list;
 	content: counter(list) ") ";
 	position: absolute;
-	margin-left: -15px;
+	margin-left: -10px;
 }
 
 .blank {
@@ -1147,9 +1182,18 @@ margin-top: -16px;
 }
 
 .wizardHeader button.close{
-	margin-right: 15px;
-	margin-top: 10px;
-	outline: 0;
+	margin-right: 7px;
+  	margin-top: 5px;
+  	outline: 0;
+}
+.wizardHeader label{
+	white-space: nowrap;
+  	text-overflow: ellipsis;
+  	overflow: hidden;
+  	width: 93%;
+  	padding: 1px;
+  	margin-top: 10px;
+  	padding-left: 15px;
 }
 .ck-buttonSelected {
     margin: 5px;
