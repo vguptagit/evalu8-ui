@@ -46,6 +46,8 @@ angular.module('e8MyTests')
     
     $scope.isSaveSettingsAsDefault = false;
     $scope.disableAnsAreaAndKey = '';
+    $scope.testDownloadLink="";
+	$scope.answerKeyDownloadLink="";
 
     $scope.showWaiting=true;
     UserService.userPrintSettings(function(printSettings) {
@@ -152,17 +154,32 @@ angular.module('e8MyTests')
 			+ "$AT=" + $rootScope.globals.authToken;
 	
 			data = btoa(data);
-			if($("iframe#dnloadFrame").length > 0 && isSeperateFileSelected == false){
-				$("iframe#dnloadFrame").remove();
-			}
-			var frm = $("<iframe>").attr("src",
-					apiUrl + "?data=" + data).appendTo(
-					"body").load(function() {
-						if(this.contentDocument.body.innerHTML.indexOf("No versions are there for this test") >= 0){
+			
+			var ua = window.navigator.userAgent;
+			var msie = ua.indexOf("Trident/");
+
+			if(msie>-1 && $scope.selectedAnswerKey.value == $scope.answerKeys[2].value){
+				if(!isSeperateFileSelected)
+					$scope.testDownloadLink= apiUrl + "?data=" + data
+					else{
+						$scope.answerKeyDownloadLink=apiUrl + "?data=" + data
+						$scope.message="Can not download in IE "
 							$scope.alert();
-						}
-			});
-			frm.attr("id","dnloadFrame");
+					}
+			        }else{
+			        	if($("iframe#dnloadFrame").length > 0 && isSeperateFileSelected == false){
+			        		$("iframe#dnloadFrame").remove();
+			        	}
+			        	var frm = $("<iframe>").attr("src",
+			        			apiUrl + "?data=" + data).appendTo(
+			        			"body").load(function() {
+			        				if(this.contentDocument.body.innerHTML.indexOf("No versions are there for this test") >= 0){
+			        					$scope.message="There are no versions for this test.Please uncheck 'Include randomized test' option to export test."
+			        						$scope.alert();
+			        				}
+			        			});
+			        	frm.attr("id","dnloadFrame");
+			        }
     }
 
     function toBinaryString(data) {

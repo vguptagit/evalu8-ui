@@ -2,6 +2,11 @@
 	<div class="alertMsg">
 		<label><span class="glyphicon glyphicon-info-sign"></span>&nbsp;{{message}} </label>
 	</div>
+	
+	<div class="ieDownloadLink" ng-show="isIEDownload" >
+	<a ng-href="{{testDownloadLink}}">Download Test</a>
+	<a class="margin-lft-10" ng-href="{{answerKeyDownloadLink}}">Download Answerkey</a>
+	</div>
 </section>
 <div class="alertMsgFooter">
 	<button type="button" class="btn btn-primary" data-dismiss="modal" data-ng-click="Ok()">OK</button>
