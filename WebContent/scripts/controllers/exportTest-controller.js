@@ -163,7 +163,7 @@ angular.module('e8MyTests')
 					$scope.testDownloadLink= apiUrl + "?data=" + data
 					else{
 						$scope.answerKeyDownloadLink=apiUrl + "?data=" + data
-						$scope.message="Can not download in IE "
+						$scope.message="Multiple file download is not supported in IE browser. Click below links to download Test and Answer key files"
 							$scope.alert();
 					}
 			        }else{
