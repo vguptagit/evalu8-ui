@@ -579,13 +579,14 @@ h4, .h4, h5, .h5, h6, .h6 {  margin-top: 8px; margin-bottom: 8px;}
 
 .importAllTest{
 	float: right;	
-	padding-right: 20px;
+	padding-right: 20px;	
 }
 
 .importAllTest > input{
 	height: 16px;
 	width: 16px;		    
     margin-top: 0px;
+    cursor: pointer;
  }
  
  .emptyUserBooks{
