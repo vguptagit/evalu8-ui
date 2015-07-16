@@ -406,7 +406,8 @@ angular
 									$rootScope
 											.$broadcast('handleBroadcast_AddTestWizard');
 								}
-								if (!SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
+								var tab = SharedTabService.tests[SharedTabService.currentTabIndex];
+								if (!tab.isTestWizard) {
 									return false;
 								}
 
@@ -414,12 +415,17 @@ angular
 									$scope.selectedNodes.push(currentNode.node);
 									currentNode.node.isNodeSelected = !currentNode.node.isNodeSelected;
 								}
-								if (SharedTabService.isErrorExist(
-										currentNode.node, $scope.selectedNodes)) {
-									SharedTabService
-											.TestWizardErrorPopup_Open();
-									return false;
-								}
+								isChildNodeUsed=false;
+                                $scope.selectedNodes.forEach(function(selectedNode){
+                                    $scope.isChildNodeUsed(selectedNode,tab)    
+                                });
+                                
+                                if(isChildNodeUsed){
+                                    SharedTabService.addErrorMessage(childNodesUsedForTestCreation,SharedTabService.errorMessageEnum.TopicInChapterIsAlreadyAdded);
+                                    SharedTabService.TestWizardErrorPopup_Open();
+                                    SharedTabService.errorMessages = [];
+                                    return false;    
+                                }
 								var selectedNodesLength = $scope.selectedNodes.length;
 								var nodeCounter = 0;
 								for (var i = 0; i < $scope.selectedNodes.length; i++) {
@@ -815,12 +821,15 @@ angular
 								}
 							}
 							
+							var childNodesUsedForTestCreation="";
 							$scope.isChildNodeUsed = function(selectedNode, test) {
 								for (var i = 0; i < $scope.expandedNodes.length; i++) {
 									if ($scope.expandedNodes[i].parentId==selectedNode.guid) {
 										isChildNodeUsed=$scope.isNodeUsed($scope.expandedNodes[i],test);
-										if(isChildNodeUsed)
-											break;
+										if(isChildNodeUsed){
+											 childNodesUsedForTestCreation = selectedNode.title;
+											 break;
+										}
 										else
 											$scope.isChildNodeUsed($scope.expandedNodes[i], test);	
 									}

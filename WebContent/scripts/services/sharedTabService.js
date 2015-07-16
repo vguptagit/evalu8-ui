@@ -281,6 +281,12 @@ angular.module('evalu8Demo')
 		     };
 
 		     sharedTabService.addErrorMessage = function (criteria, message) {
+		    	 var isMsgExists=false;
+                 sharedTabService.errorMessages.forEach(function(msg){
+                     if(msg.title==title)
+                         isMsgExists=true; 
+                 })
+                 if(!isMsgExists)
 		         sharedTabService.errorMessages.push({ criteria: criteria, message: message });
 		     }
 
