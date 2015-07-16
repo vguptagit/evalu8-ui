@@ -2973,6 +2973,7 @@ li[qstntemplate='true'] label.mOptionLabel{
 	height: 41px;
 	border : 1px solid #ddd;
 	border-top: 0px;
+	background-color: #f8f8f8;
 }
 .criteria>div{
 	margin-top: 8px;
