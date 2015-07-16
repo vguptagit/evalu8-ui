@@ -417,14 +417,21 @@ angular
 								}
 								isChildNodeUsed=false;
                                 $scope.selectedNodes.forEach(function(selectedNode){
-                                    $scope.isChildNodeUsed(selectedNode,tab)    
+                                    $scope.isChildNodeUsed(selectedNode, tab)
+                                    if (!selectedNode.questionBindings.length) {
+                                        SharedTabService.addErrorMessage(selectedNode.title, e8msg.warning.emptyFolder);
+                                    }
                                 });
                                 
                                 if(isChildNodeUsed){
                                     SharedTabService.addErrorMessage(childNodesUsedForTestCreation,SharedTabService.errorMessageEnum.TopicInChapterIsAlreadyAdded);
                                     SharedTabService.TestWizardErrorPopup_Open();
                                     return false;    
+                                }else if (SharedTabService.errorMessages.length > 0) {
+                                    SharedTabService.TestWizardErrorPopup_Open();
+                                    return false;
                                 }
+
 								var selectedNodesLength = $scope.selectedNodes.length;
 								var nodeCounter = 0;
 								for (var i = 0; i < $scope.selectedNodes.length; i++) {
@@ -927,7 +934,17 @@ angular
 										}
 									});
 								}else{
-									$scope.addQuestionsToTestTab(test, destIndex);
+								    SharedTabService.errorMessages = [];
+								    for (var i = 0; i < $scope.selectedNodes.length; i++) {
+								        if (!$scope.selectedNodes[i].questionBindings.length) {
+								            SharedTabService.addErrorMessage($scope.selectedNodes[i].title, e8msg.warning.emptyFolder);
+								        }
+								    }
+								    if (SharedTabService.errorMessages.length > 0) {
+								        SharedTabService.TestWizardErrorPopup_Open();
+								    } else {
+								        $scope.addQuestionsToTestTab(test, destIndex);
+								    }
 								}
 							}
 							

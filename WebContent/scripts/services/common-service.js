@@ -54,7 +54,8 @@ angular.module('evalu8Demo')
     
     commonService.getEmptyFolder = function() {
     	
-    	return {"nodeType": "empty", "draggable": false, "title": "Empty folder", "sequence": 0};
+        return { "nodeType": "empty", "draggable": false, "title": "This folder is empty.", "sequence": 0 };
+
     }
     
     commonService.getArchiveRoot = function() {
