@@ -297,8 +297,8 @@ angular.module('evalu8Demo')
 		             backdrop: 'static',
 		             keyboard: false,
 		             resolve: {
-		                 errorMessages: function () {
-		                     return sharedTabService.errorMessages;
+		            	 sharedTabService: function () {
+		                     return sharedTabService;
 		                 }
 		             }
 		         });

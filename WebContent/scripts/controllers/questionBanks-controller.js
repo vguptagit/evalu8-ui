@@ -423,7 +423,6 @@ angular
                                 if(isChildNodeUsed){
                                     SharedTabService.addErrorMessage(childNodesUsedForTestCreation,SharedTabService.errorMessageEnum.TopicInChapterIsAlreadyAdded);
                                     SharedTabService.TestWizardErrorPopup_Open();
-                                    SharedTabService.errorMessages = [];
                                     return false;    
                                 }
 								var selectedNodesLength = $scope.selectedNodes.length;
