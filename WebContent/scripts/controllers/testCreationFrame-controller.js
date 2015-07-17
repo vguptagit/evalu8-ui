@@ -1148,7 +1148,10 @@ angular
 							                       {name:'Difficult',value:'Difficult'}
 							                      ];	
 							 
-							                 
+							  $scope.difficultyChange = function(selectedQuestion,selectedDifficulty) {
+								  selectedQuestion.node.selectedLevel = selectedDifficulty;
+								  selectedQuestion.node.questionMetadata.Difficulty = selectedDifficulty.value;
+							  }
 							  
 							  $scope
 									.$on(
