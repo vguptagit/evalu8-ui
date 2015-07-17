@@ -909,12 +909,13 @@ angular
 									});
 							
 							var isChildNodeUsed=false;
-							$scope.editQuestion = function (scope, destIndex) {							    
-								var test = SharedTabService.tests[SharedTabService.currentTabIndex];
+							
+							$scope.editQuestion = function (scope, destIndex) {		
+								$scope.editQuestionMode=true;
 								if (SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
 									$rootScope.$broadcast('handleBroadcast_AddNewTab');
 								}
-								
+								var test = SharedTabService.tests[SharedTabService.currentTabIndex];
 								isChildNodeUsed=false;
 								for (var i = 0; i < $scope.selectedNodes.length; i++) {
 									var isNodeUsed=false
@@ -987,6 +988,7 @@ angular
 																		response,
 																		$scope.selectedQuestionTypes.toString(),
 																		questionFolder);
+														$scope.editQuestionMode=false;
 													});
 										}
 
@@ -1050,13 +1052,13 @@ angular
 															}
 														}
 													}
-												}else{
+												}else if (!$scope.createTestWizardMode && !$scope.editQuestionMode){
 													for (var i = 0; i < $scope.selectedNodes.length; i++) {
-													    if ($scope.selectedNodes[i].nodeType != EnumService.NODE_TYPE.question) {
-													        $scope.selectedNodes[i].showEditQuestionIcon = true;
-													        $scope.selectedNodes[i].showTestWizardIcon = true;
-													    }
-													}	
+														$scope.selectedNodes[i].isNodeSelected = false;
+														$scope.selectedNodes[i].showTestWizardIcon = false;
+														$scope.selectedNodes[i].showEditQuestionIcon = false;
+													}
+													$scope.selectedNodes=[];
 												}
 											});
 							$scope

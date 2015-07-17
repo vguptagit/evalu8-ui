@@ -2294,10 +2294,6 @@ angular
 									test.criterias
 											.forEach(function(criteria) {
 												criteria.treeNode.showTestWizardIcon = true;
-												$rootScope
-														.$broadcast(
-																"handleBroadcast_deselectedNode",
-																criteria.treeNode);
 											})
 								}
 								$scope.tests[$scope.sharedTabService.currentTabIndex].isTestWizard = false;
