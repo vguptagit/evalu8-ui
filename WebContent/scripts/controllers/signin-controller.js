@@ -1,7 +1,7 @@
 angular
 .module('e8MyTests')
-.controller('SigninController', ['$scope', '$rootScope', '$location', '$http', 'AuthenticationService', 'notify',
-function($scope, $rootScope, $location, $http, AuthenticationService, notify) {
+.controller('SigninController', ['$scope', '$rootScope', '$location', '$http', 'AuthenticationService', 'CommonService',
+function($scope, $rootScope, $location, $http, AuthenticationService, CommonService) {
 	
 	$scope.unauthorised = false;
 	
@@ -33,7 +33,7 @@ function($scope, $rootScope, $location, $http, AuthenticationService, notify) {
 				if(status == 401) {
 					$scope.unauthorised = true;
 				} else {
-					$scope.showErrorMessage();
+					CommonService.showErrorMessage(e8msg.error.login);
 				}
 					
 				AuthenticationService.ClearCredentials();
@@ -49,16 +49,4 @@ function($scope, $rootScope, $location, $http, AuthenticationService, notify) {
 		AuthenticationService.logout();
 	}
 	
-	$scope.showErrorMessage = function(){
-		var msg = e8msg.error.login;
-		var messageTemplate ='<p class="alert-danger"><span class="glyphicon glyphicon-alert"></span><span class="warnMessage">' + msg  + '</p> ';
-		$scope.positions = ['center', 'left', 'right'];
-		$scope.position = $scope.positions[0];
-		notify({
-			messageTemplate: messageTemplate,						                
-			classes: 'alert alert-danger',	
-			position: $scope.position,
-			duration: '4000'
-		});
-	};
 }]);
