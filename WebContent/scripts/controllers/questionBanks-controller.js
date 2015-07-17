@@ -903,11 +903,6 @@ angular
 								});
 							}
 
-							$scope.$on('handleBroadcast_deselectedNode',
-									function(handler, node) {
-										$scope.selectNode(node);
-									});
-							
 							var isChildNodeUsed=false;
 							
 							$scope.editQuestion = function (scope, destIndex) {		
