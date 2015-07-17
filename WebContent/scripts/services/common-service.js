@@ -2,7 +2,7 @@
 
 angular.module('evalu8Demo')
 
-.service('CommonService', ['EnumService',function (EnumService) {
+.service('CommonService', ['EnumService', 'notify',function (EnumService, notify) {
     var commonService = {};
 
     //search folder by giving guid or parentid;
@@ -62,6 +62,18 @@ angular.module('evalu8Demo')
     	
     	return {'guid': null, 'nodeType': 'archiveRoot', 'draggable': false, 'droppable': false, 'title': 'Archive'};
     }
+    
+    commonService.showErrorMessage = function(msg){
+		
+		var messageTemplate ='<p class="alert-danger"><span class="glyphicon glyphicon-alert"></span><span class="warnMessage">' + msg  + '</p> ';
+
+		notify({
+			messageTemplate: messageTemplate,						                
+			classes: 'alert alert-danger',	
+			position: 'center',
+			duration: '4000'
+		});
+	};
 
     return commonService;
 }]);

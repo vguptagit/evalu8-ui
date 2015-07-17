@@ -10,7 +10,9 @@
 	ns.error = {
 		importUserBooks : "Unable to import! Please try again.",
 		save : "Unable to save! Please try again.",
-		login : "Unable to login! Please try again."
+		login : "Unable to login! Please try again.",
+		archive : "Unable to archive! Please try again.",
+		restore : "Unable to restore! Please try again."			
 	};
 
 	ns.success = {
