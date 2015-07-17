@@ -23,10 +23,11 @@ angular
 						'blockUI',
 						'ContainerService',
 						'questionService',
+                        'CommonService',
 						function($scope, $rootScope, $location, $cookieStore,
 								$http, $sce, DisciplineService, TestService,
 								SharedTabService, UserQuestionsService,
-								EnumService, $modal, blockUI,ContainerService,questionService) {
+								EnumService, $modal, blockUI, ContainerService, questionService, CommonService) {
 						    SharedTabService.selectedMenu = SharedTabService.menu.questionBanks;
 						    $rootScope.blockPage = blockUI.instances.get('BlockPage');
 						    
@@ -418,7 +419,7 @@ angular
 								isChildNodeUsed=false;
                                 $scope.selectedNodes.forEach(function(selectedNode){
                                     $scope.isChildNodeUsed(selectedNode, tab)
-                                    if (!selectedNode.questionBindings.length) {
+                                    if (!selectedNode.questionBindings.length && selectedNode.nodeType === EnumService.NODE_TYPE.topic) {
                                         SharedTabService.addErrorMessage(selectedNode.title, e8msg.warning.emptyFolder);
                                     }
                                 });
@@ -579,7 +580,10 @@ angular
 											.success(
 													function(response) {
 													    currentNode.node.isHttpReqCompleted = true;
-														var responseQuestions = response;
+													    var responseQuestions = response;
+													    if (!responseQuestions.length && !currentNode.node.nodes.length) {
+													        currentNode.node.nodes.push(CommonService.getEmptyFolder());
+													    }
 														$(currentNode.$element).find(".captiondiv").addClass('iconsChapterVisible');
 														
 														// Dont delete the below commented line, will delete after few days.
@@ -597,8 +601,7 @@ angular
 																item.isNodeSelected = false;
 																updateTreeNode(item);
 																addToQuestionsArray(item);
-																$scope
-																		.renderQuestion(item);
+																$scope.renderQuestion(item);
 															}
 														})
 
@@ -936,7 +939,7 @@ angular
 								}else{
 								    SharedTabService.errorMessages = [];
 								    for (var i = 0; i < $scope.selectedNodes.length; i++) {
-								        if (!$scope.selectedNodes[i].questionBindings.length) {
+								        if (!$scope.selectedNodes[i].questionBindings.length && $scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.topic) {
 								            SharedTabService.addErrorMessage($scope.selectedNodes[i].title, e8msg.warning.emptyFolder);
 								        }
 								    }
