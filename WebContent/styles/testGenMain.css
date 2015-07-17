@@ -1151,11 +1151,13 @@ margin-top: -16px;
 	background-color: #fff;
 	margin-bottom: 0px;
 	border-radius:0px;
+    margin-top: 20px;
 }
 
 .test-wizard-container .repeatCriteria{
 	margin-left: 0px;
-	margin-bottom: 18px;
+	padding-bottom: 15px;
+    margin-top: -20px;
 }
 .test-wizard-container .wizardHeader{
 	margin: 0px;
@@ -3003,7 +3005,7 @@ li[qstntemplate='true'] label.mOptionLabel{
 }
 .questionColumns input{margin-top: 2px;}
 .questionColumns span{vertical-align: top;margin-left: 6px}
-#applyCriteria{vertical-align: top;margin-right: 7px;margin-top: 3px;}
+#applyCriteria{vertical-align: top;margin-right: 7px;margin-top: 3px; outline: 0;}
 
 .showWaitingForAutoComplete{
   float: left;
