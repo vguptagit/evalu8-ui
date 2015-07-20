@@ -1399,6 +1399,7 @@ angular
 														question.guid,
 														function(response) {
 															var qtiDisplayNode = $("<div></div>");
+															 QTI.BLOCKQUOTE.id = 0;
 															QTI.play(response,
 																	qtiDisplayNode, false,false,questionMetadataResponse.quizType);
 															
@@ -2341,7 +2342,7 @@ angular
 												question.guid,
 												function(response) {
 													var displayNodes = $("<div></div>");	
-
+													QTI.BLOCKQUOTE.id = 0;
 													QTI.play(response,
 													displayNodes, false,false,question.quizType);
 													var displayNode = {};
@@ -2527,16 +2528,3 @@ angular.module('e8MyTests').service("directiveQtiService",
 				});
 			};
 		} ]);
-angular.module('e8MyTests').directive('ngReallyClick', [ function() {
-	return {
-		restrict : 'A',
-		link : function(scope, element, attrs) {
-			element.bind('click', function() {
-				var message = attrs.ngReallyMessage;
-				if (message && confirm(message)) {
-					scope.$apply(attrs.ngReallyClick);
-				}
-			});
-		}
-	}
-} ]);
