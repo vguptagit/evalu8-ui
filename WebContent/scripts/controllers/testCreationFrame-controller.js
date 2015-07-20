@@ -1315,6 +1315,7 @@ angular
 	                                     QTI.initialize();
 	                                     $.each(questions,function(index,question){
 	                                            var qtiDisplayNode = $("<div></div>");
+	                                            QTI.BLOCKQUOTE.id = 0;
 	                                            QTI.play(question.qtixml,
 	                                                    qtiDisplayNode, false,false,question.metadata.quizType);
 	                                            
