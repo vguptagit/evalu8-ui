@@ -171,10 +171,10 @@
                ng-class="{questionSelected:node.isNodeSelected,qbQuestions:node.nodeType=='question', twoDigitIndex:({{$index + 1}}>9),threedigitIndex:({{$index + 1}}>99), fourDigitIndex:({{$index + 1}}>999)}" 
                collapsed="{{node.isCollapsed?'true':'false'}}" ui-tree-node draggable="true" ng-include="node.template"></li>
             <li class="tree-node tree-node-content" ng-repeat="node in node.nodes"
-                ui-tree-node draggable="false" node="{{node}}" data-ng-if="node.nodeType=='empty'">
+                ui-tree-node draggable="false" node="{{node}}" data-ng-if="node.nodeType=='empty'" ng-show="node.isHttpReqCompleted">
                 <div ui-tree-handle class="tree-node tree-node-content">
                     {{node.title}}
-                </div>                    
+                </div>
             </li>
             <!--<li class="questIndex" printmode="true" ng-repeat="node in node.nodes" ng-class="{questionSelected:node.isNodeSelected,qbQuestions:node.nodeType=='question'}" collapsed="{{node.isCollapsed?'true':'false'}}" ui-tree-node draggable="{{node.nodeType=='question' || node.nodeType=='test'}}" ng-include="node.template"></li>-->
         </ol>
