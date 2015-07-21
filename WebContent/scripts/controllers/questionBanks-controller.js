@@ -949,11 +949,13 @@ angular
 							}
 							
 							$scope.addQuestionsToTestTab = function (test, destIndex) {
-							    var requestCount = 0;
+							    var httpReqCount = 0,
+                                    httpReqCompletedCount = 0;
 								for (var i = 0; i < $scope.selectedNodes.length; i++) {
 									test.questionFolderNode.push($scope.selectedNodes[i]);
 									$scope.getRemoveChildNodesFromQuestionFolderNodes($scope.selectedNodes[i], test);
-									if ($scope.selectedNodes[i].showEditQuestionIcon) {										
+									if ($scope.selectedNodes[i].showEditQuestionIcon) {
+									    httpReqCount++;
 										if ($scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.question) {
                                             if (SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode) {
                                             	$scope.selectedNodes[i].showEditQuestionIcon = true;
@@ -986,12 +988,12 @@ angular
 																		$scope.selectedQuestionTypes.toString(),
 																		questionFolder);
 														$scope.editQuestionMode = false;
-														requestCount++;
+														httpReqCompletedCount++;
 														if (!response.length) {
 														    SharedTabService.addErrorMessage(questionFolder.title, e8msg.warning.emptyFolder);
 														}
 
-														if (requestCount == $scope.selectedNodes.length && SharedTabService.errorMessages.length > 0) {
+														if (httpReqCount == httpReqCompletedCount && SharedTabService.errorMessages.length > 0) {
 														    SharedTabService.TestWizardErrorPopup_Open();
 														}
 													});
