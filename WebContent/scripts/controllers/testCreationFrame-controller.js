@@ -1150,7 +1150,7 @@ angular
 							 
 							  $scope.difficultyChange = function(selectedQuestion,selectedDifficulty) {
 								  selectedQuestion.node.selectedLevel = selectedDifficulty;
-								  selectedQuestion.node.questionMetadata.Difficulty = selectedDifficulty.value;
+								  selectedQuestion.node.questionMetadata.Difficulty = selectedDifficulty.value;								
 							  }
 							  
 							  $scope
@@ -1202,7 +1202,7 @@ angular
 
 											            $.each(newNode.extendedMetadata, function (index, item) {
 											                var name = item['name'].charAt(0).toUpperCase() + item['name'].slice(1);
-											                if(typeof(newNode['questionMetadata'][name])!='undefined'){
+											                if((typeof(newNode['questionMetadata'][name])!='undefined')||((typeof(newNode['questionMetadata']['Difficulty'])!='undefined') && (name=='QuestionLevelOfDifficulty'))) {
 											                	if (item['name'] == "questionLevelOfDifficulty")
 											                		newNode['questionMetadata']['Difficulty'] = item['value'];
 											                	else{
@@ -1341,7 +1341,7 @@ angular
 	                                            
 	                                            $.each(displayNode.extendedMetadata, function(index, item){                                                                    
 	                                                var name = item['name'].charAt(0).toUpperCase() + item['name'].slice(1);
-	                                                if(typeof(displayNode['questionMetadata'][name])!='undefined'){
+	                                                if((typeof(displayNode['questionMetadata'][name])!='undefined')||((typeof(displayNode['questionMetadata']['Difficulty'])!='undefined') && (name=='QuestionLevelOfDifficulty'))){
 	                                                 if(item['name'] == "questionLevelOfDifficulty")
 	                                                     displayNode['questionMetadata']['Difficulty'] = item['value'];
 	                                                 else
@@ -1425,7 +1425,7 @@ angular
 															
                                                             $.each(displayNode.extendedMetadata, function(index, item){                                                                    
                                                                 var name = item['name'].charAt(0).toUpperCase() + item['name'].slice(1);
-                                                                if(typeof(displayNode['questionMetadata'][name])!='undefined'){
+                                                                if((typeof(displayNode['questionMetadata'][name])!='undefined')||((typeof(displayNode['questionMetadata']['Difficulty'])!='undefined') && (name=='QuestionLevelOfDifficulty'))){
                                                                  if(item['name'] == "questionLevelOfDifficulty")
                                                                      displayNode['questionMetadata']['Difficulty'] = item['value'];
                                                                  else
