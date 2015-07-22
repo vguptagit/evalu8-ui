@@ -1,5 +1,7 @@
-angular.module('e8MyTests').controller('SigninController', ['$scope', '$rootScope', '$location', '$http', 'AuthenticationService',
-function($scope, $rootScope, $location, $http, AuthenticationService) {
+angular
+.module('e8MyTests')
+.controller('SigninController', ['$scope', '$rootScope', '$location', '$http', 'AuthenticationService', 'CommonService',
+function($scope, $rootScope, $location, $http, AuthenticationService, CommonService) {
 	
 	$scope.unauthorised = false;
 	
@@ -30,7 +32,10 @@ function($scope, $rootScope, $location, $http, AuthenticationService) {
 				
 				if(status == 401) {
 					$scope.unauthorised = true;
+				} else {
+					CommonService.showErrorMessage(e8msg.error.login);
 				}
+					
 				AuthenticationService.ClearCredentials();
 			})				    			
     	} else {
@@ -43,4 +48,5 @@ function($scope, $rootScope, $location, $http, AuthenticationService) {
 
 		AuthenticationService.logout();
 	}
+	
 }]);

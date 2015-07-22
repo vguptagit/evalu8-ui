@@ -613,6 +613,13 @@ angular.module('e8MyTests')
         	
         	$rootScope.blockLeftPanel.start();
         	ArchiveService.archiveFolder(folder.node.guid, function(archivedFolder) {
+        		
+        		if(archivedFolder == null) {
+        			$rootScope.blockLeftPanel.stop();
+        			
+        			CommonService.showErrorMessage(e8msg.error.archive)
+        			return;
+        		}
         		folder.remove();        		
         		
         		if(folder.$parentNodeScope && folder.$parentNodeScope.node && folder.$parentNodeScope.node.nodes.length == 0) {
@@ -657,6 +664,14 @@ angular.module('e8MyTests')
         	$rootScope.blockLeftPanel.start();
         	var parentFolderId = (test.$parentNodeScope == null) ? null : test.$parentNodeScope.node.guid; 
         	ArchiveService.archiveTest(test.node.guid, parentFolderId, function(archivedFolder) {
+        		
+        		if(archivedFolder == null) {
+        			$rootScope.blockLeftPanel.stop();
+        			
+        			CommonService.showErrorMessage(e8msg.error.archive)
+        			return;
+        		}
+        		
         		test.remove(); 
         		
         		if(test.$parentNodeScope && test.$parentNodeScope.node && test.$parentNodeScope.node.nodes.length == 0) {
@@ -693,6 +708,13 @@ angular.module('e8MyTests')
         	
         	$rootScope.blockLeftPanel.start();
         	ArchiveService.restoreFolder(folder.node.guid, function(restoredFolder) {
+        		
+        		if(restoredFolder == null) {
+        			$rootScope.blockLeftPanel.stop();
+        			
+        			CommonService.showErrorMessage(e8msg.error.restore)
+        			return;
+        		}
         		folder.remove();
         		
         		if(folder.$parentNodeScope && folder.$parentNodeScope.node && folder.$parentNodeScope.node.nodes.length == 0) {
@@ -738,6 +760,14 @@ angular.module('e8MyTests')
         	
         	$rootScope.blockLeftPanel.start();
         	ArchiveService.restoreTest(test.node.guid, test.$parentNodeScope.node.guid, function(restoredFolder) {
+        		
+        		if(restoredFolder == null) {
+        			$rootScope.blockLeftPanel.stop();
+        			
+        			CommonService.showErrorMessage(e8msg.error.restore)
+        			return;
+        		}
+        		
         		test.remove();
         		
         		if(test.$parentNodeScope && test.$parentNodeScope.node && test.$parentNodeScope.node.nodes.length == 0) {

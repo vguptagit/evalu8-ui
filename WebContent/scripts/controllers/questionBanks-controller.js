@@ -23,10 +23,11 @@ angular
 						'blockUI',
 						'ContainerService',
 						'questionService',
+                        'CommonService',
 						function($scope, $rootScope, $location, $cookieStore,
 								$http, $sce, DisciplineService, TestService,
 								SharedTabService, UserQuestionsService,
-								EnumService, $modal, blockUI,ContainerService,questionService) {
+								EnumService, $modal, blockUI, ContainerService, questionService, CommonService) {
 						    SharedTabService.selectedMenu = SharedTabService.menu.questionBanks;
 						    $rootScope.blockPage = blockUI.instances.get('BlockPage');
 						    
@@ -406,7 +407,8 @@ angular
 									$rootScope
 											.$broadcast('handleBroadcast_AddTestWizard');
 								}
-								if (!SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
+								var tab = SharedTabService.tests[SharedTabService.currentTabIndex];
+								if (!tab.isTestWizard) {
 									return false;
 								}
 
@@ -414,12 +416,17 @@ angular
 									$scope.selectedNodes.push(currentNode.node);
 									currentNode.node.isNodeSelected = !currentNode.node.isNodeSelected;
 								}
-								if (SharedTabService.isErrorExist(
-										currentNode.node, $scope.selectedNodes)) {
-									SharedTabService
-											.TestWizardErrorPopup_Open();
-									return false;
-								}
+								isChildNodeUsed=false;
+                                $scope.selectedNodes.forEach(function(selectedNode){
+                                    $scope.isChildNodeUsed(selectedNode, tab)
+                                });
+                                
+                                if(isChildNodeUsed){
+                                    SharedTabService.addErrorMessage(childNodesUsedForTestCreation,SharedTabService.errorMessageEnum.TopicInChapterIsAlreadyAdded);
+                                    SharedTabService.TestWizardErrorPopup_Open();
+                                    return false;    
+                                }
+
 								var selectedNodesLength = $scope.selectedNodes.length;
 								var nodeCounter = 0;
 								for (var i = 0; i < $scope.selectedNodes.length; i++) {
@@ -432,17 +439,20 @@ angular
 												function (response, currentNode) {
 												    try {
 												    	
-													$rootScope
-															.$broadcast(
-																	"handleBroadcast_createTestWizardCriteria",
-																	response,
-																	$scope.selectedQuestionTypes.toString(),
-																	currentNode);
-													nodeCounter++;
-													if (nodeCounter == selectedNodesLength)
-														if (SharedTabService.errorMessages.length > 0)
-															SharedTabService
-																	.TestWizardErrorPopup_Open();
+												        if (response.length) {
+												            $rootScope.$broadcast(
+																	        "handleBroadcast_createTestWizardCriteria",
+																	        response,
+																	        $scope.selectedQuestionTypes.toString(),
+																	        currentNode);
+												        } else {
+												            SharedTabService.addErrorMessage(currentNode.title, e8msg.warning.emptyFolder);
+												        }
+
+												        nodeCounter++;
+												        if (nodeCounter == selectedNodesLength && SharedTabService.errorMessages.length > 0) {
+												            SharedTabService.TestWizardErrorPopup_Open();
+												        }
                                                     } catch (e) {
                                                         console.log(e);
                                                     } finally {
@@ -534,12 +544,14 @@ angular
 									}
 									
 									currentNode.node.nodes = [];
+									currentNode.node.IsContainerReqCompleted = false;
+									currentNode.node.IsQuestionsReqCompleted = false;
 									ContainerService.containerNodes($scope.bookID, 
 										currentNode.node.guid,
 										$scope.selectedQuestionTypes.toString(),
 										false,
 										function(response) {
-
+										    currentNode.node.IsContainerReqCompleted = true;
 											if(response.length>0){
 												currentNode.node.nodes = currentNode.node.nodes.concat(response);
 												$scope.expandedNodes=$scope.expandedNodes.concat(currentNode.node.nodes);
@@ -553,6 +565,13 @@ angular
 	                                                item.isHttpReqCompleted = true;
 													updateTreeNode(item);
 												})
+											} else if (!response.length && !currentNode.node.nodes.length) {
+											    var emptyNode = CommonService.getEmptyFolder()
+											    emptyNode.isHttpReqCompleted = false;
+											    if (currentNode.node.IsContainerReqCompleted && currentNode.node.IsQuestionsReqCompleted) {
+											        emptyNode.isHttpReqCompleted = true;
+											    }
+											    currentNode.node.nodes.push(emptyNode);
 											}
 											
 										})
@@ -565,9 +584,16 @@ angular
 															+ "/questions",
 													config)
 											.success(
-													function(response) {
+													function (response) {
+													    currentNode.node.IsQuestionsReqCompleted = true;
 													    currentNode.node.isHttpReqCompleted = true;
-														var responseQuestions = response;
+													    var responseQuestions = response;
+													    if (responseQuestions.length && currentNode.node.nodes.length && currentNode.node.nodes[0].nodeType === EnumService.NODE_TYPE.emptyFolder) {
+													        currentNode.node.nodes = [];
+													    } else if (!responseQuestions.length && currentNode.node.nodes.length && currentNode.node.nodes[0].nodeType === EnumService.NODE_TYPE.emptyFolder
+                                                            && currentNode.node.IsContainerReqCompleted && currentNode.node.IsQuestionsReqCompleted) {
+													        currentNode.node.nodes[0].isHttpReqCompleted = true;
+													    }
 														$(currentNode.$element).find(".captiondiv").addClass('iconsChapterVisible');
 														
 														// Dont delete the below commented line, will delete after few days.
@@ -585,8 +611,7 @@ angular
 																item.isNodeSelected = false;
 																updateTreeNode(item);
 																addToQuestionsArray(item);
-																$scope
-																		.renderQuestion(item);
+																$scope.renderQuestion(item);
 															}
 														})
 
@@ -815,12 +840,15 @@ angular
 								}
 							}
 							
+							var childNodesUsedForTestCreation="";
 							$scope.isChildNodeUsed = function(selectedNode, test) {
 								for (var i = 0; i < $scope.expandedNodes.length; i++) {
 									if ($scope.expandedNodes[i].parentId==selectedNode.guid) {
 										isChildNodeUsed=$scope.isNodeUsed($scope.expandedNodes[i],test);
-										if(isChildNodeUsed)
-											break;
+										if(isChildNodeUsed){
+											 childNodesUsedForTestCreation = selectedNode.title;
+											 break;
+										}
 										else
 											$scope.isChildNodeUsed($scope.expandedNodes[i], test);	
 									}
@@ -885,18 +913,14 @@ angular
 								});
 							}
 
-							$scope.$on('handleBroadcast_deselectedNode',
-									function(handler, node) {
-										$scope.selectNode(node);
-									});
-							
 							var isChildNodeUsed=false;
-							$scope.editQuestion = function (scope, destIndex) {							    
-								var test = SharedTabService.tests[SharedTabService.currentTabIndex];
+							
+							$scope.editQuestion = function (scope, destIndex) {		
+								$scope.editQuestionMode=true;
 								if (SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
 									$rootScope.$broadcast('handleBroadcast_AddNewTab');
 								}
-								
+								var test = SharedTabService.tests[SharedTabService.currentTabIndex];
 								isChildNodeUsed=false;
 								for (var i = 0; i < $scope.selectedNodes.length; i++) {
 									var isNodeUsed=false
@@ -919,15 +943,19 @@ angular
 										}
 									});
 								}else{
-									$scope.addQuestionsToTestTab(test, destIndex);
+								    SharedTabService.errorMessages = [];
+								    $scope.addQuestionsToTestTab(test, destIndex);								     
 								}
 							}
 							
-							$scope.addQuestionsToTestTab=function(test, destIndex){
+							$scope.addQuestionsToTestTab = function (test, destIndex) {
+							    var httpReqCount = 0,
+                                    httpReqCompletedCount = 0;
 								for (var i = 0; i < $scope.selectedNodes.length; i++) {
 									test.questionFolderNode.push($scope.selectedNodes[i]);
 									$scope.getRemoveChildNodesFromQuestionFolderNodes($scope.selectedNodes[i], test);
-									if ($scope.selectedNodes[i].showEditQuestionIcon) {										
+									if ($scope.selectedNodes[i].showEditQuestionIcon) {
+									    httpReqCount++;
 										if ($scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.question) {
                                             if (SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode) {
                                             	$scope.selectedNodes[i].showEditQuestionIcon = true;
@@ -959,6 +987,15 @@ angular
 																		response,
 																		$scope.selectedQuestionTypes.toString(),
 																		questionFolder);
+														$scope.editQuestionMode = false;
+														httpReqCompletedCount++;
+														if (!response.length) {
+														    SharedTabService.addErrorMessage(questionFolder.title, e8msg.warning.emptyFolder);
+														}
+
+														if (httpReqCount == httpReqCompletedCount && SharedTabService.errorMessages.length > 0) {
+														    SharedTabService.TestWizardErrorPopup_Open();
+														}
 													});
 										}
 
@@ -966,6 +1003,7 @@ angular
 								}
 							}
 							
+
 							$scope.getRemoveChildNodesFromQuestionFolderNodes = function(Node, test) {
 								for (var i = 0; i < $scope.expandedNodes.length; i++) {
 									if ($scope.expandedNodes[i].parentId==Node.guid) {
@@ -1022,13 +1060,13 @@ angular
 															}
 														}
 													}
-												}else{
+												}else if (!$scope.createTestWizardMode && !$scope.editQuestionMode){
 													for (var i = 0; i < $scope.selectedNodes.length; i++) {
-													    if ($scope.selectedNodes[i].nodeType != EnumService.NODE_TYPE.question) {
-													        $scope.selectedNodes[i].showEditQuestionIcon = true;
-													        $scope.selectedNodes[i].showTestWizardIcon = true;
-													    }
-													}	
+														$scope.selectedNodes[i].isNodeSelected = false;
+														$scope.selectedNodes[i].showTestWizardIcon = false;
+														$scope.selectedNodes[i].showEditQuestionIcon = false;
+													}
+													$scope.selectedNodes=[];
 												}
 											});
 							$scope

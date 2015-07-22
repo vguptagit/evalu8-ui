@@ -70,8 +70,7 @@
 .userBooks {
 	display: inline-block;
 	width: 100%;
-	float: left;
-	margin-bottom: 1px;
+	float: left;	
 }
 
 .userBookRow {	
@@ -94,8 +93,7 @@
 	background-color: #007FA9;
 	color: #fff;
 	cursor: pointer;
-	border: solid 0px #fff;
-	float: left;
+	border: solid 0px #fff;	
 }
 
 .bookTitleContainer {

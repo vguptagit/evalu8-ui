@@ -21,6 +21,13 @@ angular.module('e8MyTests').controller('AlertMessageController',
     }else {
         parentScope.isBlockQuoteClicked=false;
     }
+
+    $scope.isIEDownload=false;
+       if(parentScope.testDownloadLink || parentScope.answerKeyDownloadLink){
+       	$scope.isIEDownload=true;	
+        $scope.testDownloadLink=parentScope.testDownloadLink;
+        $scope.answerKeyDownloadLink=parentScope.answerKeyDownloadLink;
+       }
     $scope.Ok = function () {    	
     	$modalInstance.close(true);    
     };

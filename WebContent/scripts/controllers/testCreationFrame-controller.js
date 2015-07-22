@@ -1148,7 +1148,10 @@ angular
 							                       {name:'Difficult',value:'Difficult'}
 							                      ];	
 							 
-							                 
+							  $scope.difficultyChange = function(selectedQuestion,selectedDifficulty) {
+								  selectedQuestion.node.selectedLevel = selectedDifficulty;
+								  selectedQuestion.node.questionMetadata.Difficulty = selectedDifficulty.value;
+							  }
 							  
 							  $scope
 									.$on(
@@ -1312,6 +1315,7 @@ angular
 	                                     QTI.initialize();
 	                                     $.each(questions,function(index,question){
 	                                            var qtiDisplayNode = $("<div></div>");
+	                                            QTI.BLOCKQUOTE.id = 0;
 	                                            QTI.play(question.qtixml,
 	                                                    qtiDisplayNode, false,false,question.metadata.quizType);
 	                                            
@@ -1395,6 +1399,7 @@ angular
 														question.guid,
 														function(response) {
 															var qtiDisplayNode = $("<div></div>");
+															 QTI.BLOCKQUOTE.id = 0;
 															QTI.play(response,
 																	qtiDisplayNode, false,false,questionMetadataResponse.quizType);
 															
@@ -2266,7 +2271,8 @@ angular
 											if (criteria.numberOfQuestionsEntered > 0 && isError == false && !isTestTitleEmpty()) {
 												criteria.numberOfQuestionsSelected = criteria.numberOfQuestionsEntered;
 											}
-											if (!criteria.numberOfQuestionsSelected || criteria.numberOfQuestionsSelected > criteria.totalQuestions) {
+											var noOfQuestionsSelected = criteria.numberOfQuestionsEntered > 0 ? criteria.numberOfQuestionsEntered : criteria.numberOfQuestionsSelected; 
+                                            if (!noOfQuestionsSelected || noOfQuestionsSelected > criteria.totalQuestions) {
 												criteria.isError = true;
 												SharedTabService.addErrorMessage(criteria.treeNode.title, SharedTabService.errorMessageEnum.NotEnoughQuestionsAvailable);
 												isError = true;
@@ -2290,10 +2296,6 @@ angular
 									test.criterias
 											.forEach(function(criteria) {
 												criteria.treeNode.showTestWizardIcon = true;
-												$rootScope
-														.$broadcast(
-																"handleBroadcast_deselectedNode",
-																criteria.treeNode);
 											})
 								}
 								$scope.tests[$scope.sharedTabService.currentTabIndex].isTestWizard = false;
@@ -2340,7 +2342,7 @@ angular
 												question.guid,
 												function(response) {
 													var displayNodes = $("<div></div>");	
-
+													QTI.BLOCKQUOTE.id = 0;
 													QTI.play(response,
 													displayNodes, false,false,question.quizType);
 													var displayNode = {};
@@ -2526,16 +2528,3 @@ angular.module('e8MyTests').service("directiveQtiService",
 				});
 			};
 		} ]);
-angular.module('e8MyTests').directive('ngReallyClick', [ function() {
-	return {
-		restrict : 'A',
-		link : function(scope, element, attrs) {
-			element.bind('click', function() {
-				var message = attrs.ngReallyMessage;
-				if (message && confirm(message)) {
-					scope.$apply(attrs.ngReallyClick);
-				}
-			});
-		}
-	}
-} ]);
