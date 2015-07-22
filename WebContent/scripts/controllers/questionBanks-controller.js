@@ -427,11 +427,12 @@ angular
                                     return false;    
                                 }
 
-								var selectedNodesLength = $scope.selectedNodes.length;
-								var nodeCounter = 0;
+								var httpReqCount = 0,
+                                    httpReqCompletedCount = 0;
 								for (var i = 0; i < $scope.selectedNodes.length; i++) {
 									currentNode = $scope.selectedNodes[i];
 									if (currentNode.showTestWizardIcon) {
+									    httpReqCount++;
 									    currentNode.showTestWizardIcon = false;
 									    $rootScope.blockPage.start();
 										getQuestions(
@@ -449,8 +450,8 @@ angular
 												            SharedTabService.addErrorMessage(currentNode.title, e8msg.warning.emptyFolder);
 												        }
 
-												        nodeCounter++;
-												        if (nodeCounter == selectedNodesLength && SharedTabService.errorMessages.length > 0) {
+												        httpReqCompletedCount++;
+												        if (httpReqCount == httpReqCompletedCount && SharedTabService.errorMessages.length > 0) {
 												            SharedTabService.TestWizardErrorPopup_Open();
 												        }
                                                     } catch (e) {
