@@ -1751,6 +1751,7 @@ angular
                                             callback();
                                         }
                                         test.saveMode = EnumService.SAVE_MODE.Save;
+                                        $scope.testType = EnumService.TEST_TYPE.PublisherTest;
                                         $rootScope.blockPage.stop();         							    
                                     	return;
                                     }
@@ -2303,6 +2304,7 @@ angular
 								$scope.tests[$scope.sharedTabService.currentTabIndex].tabTitle = "Untitled test";
 								$scope.tests[$scope.sharedTabService.currentTabIndex].questions = metadatas;
 								QTI.initialize();
+								test.criterias=[];
 								$scope.saveTest(function () {
 								        $rootScope.blockPage.start();
 								        $scope.tests[$scope.sharedTabService.currentTabIndex].questions = [];

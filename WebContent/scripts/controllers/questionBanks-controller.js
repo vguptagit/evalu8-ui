@@ -416,6 +416,12 @@ angular
 									$scope.selectedNodes.push(currentNode.node);
 									currentNode.node.isNodeSelected = !currentNode.node.isNodeSelected;
 								}
+								if(SharedTabService.isErrorExist(
+                                        currentNode.node, $scope.selectedNodes)) {
+                                    SharedTabService
+                                            .TestWizardErrorPopup_Open();
+                                    return false;
+                                }
 								isChildNodeUsed=false;
                                 $scope.selectedNodes.forEach(function(selectedNode){
                                 	if(!isChildNodeUsed){
