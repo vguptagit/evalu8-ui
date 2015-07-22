@@ -1751,7 +1751,7 @@ angular
                                             callback();
                                         }
                                         test.saveMode = EnumService.SAVE_MODE.Save;
-                                        $scope.testType = EnumService.TEST_TYPE.PublisherTest;
+                                        $scope.setTestType();
                                         $rootScope.blockPage.stop();         							    
                                     	return;
                                     }
