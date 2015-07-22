@@ -1212,8 +1212,7 @@ angular
 											                }
 											            });
 
-											            newNode.selectedLevel = newNode.questionMetadata['Difficulty'] == undefined ? { name: 'Select Level', value: '0' } : { name: newNode.questionMetadata['Difficulty'], value: newNode.questionMetadata['Difficulty'] };
-
+											            newNode.selectedLevel = newNode.questionMetadata['Difficulty'] == undefined ? { name: 'Select Level', value:'0'}:{name:newNode.questionMetadata['Difficulty']==""?'Select Level':newNode.questionMetadata['Difficulty'],value:newNode.questionMetadata['Difficulty']==""?'0':newNode.questionMetadata['Difficulty']};
 											            newNode.qstnMasterData = buildQstnMasterDetails(newNode);
 											            newNode.optionsView = newNode.qstnMasterData.optionsView;
 											            newNode.EssayPageSize = newNode.qstnMasterData.EssayPageSize;
@@ -1304,14 +1303,8 @@ angular
 	                                if (questions.length == 0) {
 	                                    $rootScope.blockPage.stop();
 	                                    return false;
-	                                }
-	                                     
-	                                     var userSettings= {};    
-	                                     userSettings.questionMetadata = {};
-	                                     
-	                                     $.each(SharedTabService.userQuestionSettings, function( index, value ) {    
-	                                         userSettings['questionMetadata'][value]='';                                                                                                        
-	                                        });            
+	                                }	                                     
+	                                          
 	                                     QTI.initialize();
 	                                     $.each(questions,function(index,question){
 	                                            var qtiDisplayNode = $("<div></div>");
@@ -1320,6 +1313,14 @@ angular
 	                                                    qtiDisplayNode, false,false,question.metadata.quizType);
 	                                            
 	                                            var displayNode = {};
+	                                            
+	                                            var userSettings= {};    
+	   	                                     	userSettings.questionMetadata = {};
+	   	                                     
+	   	                                     	$.each(SharedTabService.userQuestionSettings, function( index, value ) {    
+	   	                                     		userSettings['questionMetadata'][value]='';                                                                                                        
+	   	                                        });       
+	   	                                     
 	                                            displayNode.guid = question.guid;    
 	                                            displayNode.quizType = question.metadata.quizType;
 	                                            displayNode.IsUserMetdataAvailable = false;
@@ -1350,7 +1351,7 @@ angular
 	                                            });
 	                            
 	                                
-	                                            displayNode.selectedLevel = displayNode.questionMetadata['Difficulty']==undefined?{name:'Select Level',value:'0'}:{name:displayNode.questionMetadata['Difficulty'],value:displayNode.questionMetadata['Difficulty']};
+	                                            displayNode.selectedLevel = displayNode.questionMetadata['Difficulty']==undefined?{name:'Select Level',value:'0'}:{name:displayNode.questionMetadata['Difficulty']==""?'Select Level':displayNode.questionMetadata['Difficulty'],value:displayNode.questionMetadata['Difficulty']==""?'0':displayNode.questionMetadata['Difficulty']};
 	                                
 	                                
 	                                            displayNode.data=question.qtixml;
