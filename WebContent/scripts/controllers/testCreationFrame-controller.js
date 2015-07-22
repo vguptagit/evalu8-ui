@@ -1751,7 +1751,6 @@ angular
                                             callback();
                                         }
                                         test.saveMode = EnumService.SAVE_MODE.Save;
-                                        $scope.testType = EnumService.TEST_TYPE.PublisherTest;
                                         $rootScope.blockPage.stop();         							    
                                     	return;
                                     }
@@ -2295,7 +2294,8 @@ angular
 									}
 									test.criterias
 											.forEach(function(criteria) {
-												criteria.treeNode.showTestWizardIcon = true;
+												criteria.treeNode.isNodeSelected=false;
+												criteria.treeNode.showEditQuestionIcon = false;
 											})
 								}
 								$scope.tests[$scope.sharedTabService.currentTabIndex].isTestWizard = false;

@@ -418,7 +418,9 @@ angular
 								}
 								isChildNodeUsed=false;
                                 $scope.selectedNodes.forEach(function(selectedNode){
-                                    $scope.isChildNodeUsed(selectedNode, tab)
+                                	if(!isChildNodeUsed){
+                                        $scope.isChildNodeUsed(selectedNode, tab)
+                                    }
                                 });
                                 
                                 if(isChildNodeUsed){
@@ -953,7 +955,9 @@ angular
 							    var httpReqCount = 0,
                                     httpReqCompletedCount = 0;
 								for (var i = 0; i < $scope.selectedNodes.length; i++) {
+									if($scope.selectedNodes[i].nodeType != EnumService.NODE_TYPE.question){
 									test.questionFolderNode.push($scope.selectedNodes[i]);
+									}
 									$scope.getRemoveChildNodesFromQuestionFolderNodes($scope.selectedNodes[i], test);
 									if ($scope.selectedNodes[i].showEditQuestionIcon) {
 									    httpReqCount++;

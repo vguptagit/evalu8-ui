@@ -581,7 +581,9 @@ angular.module('evalu8Demo')
 		            	 if(sharedTabService.tests[sharedTabService.currentTabIndex].criterias.length==1){
 			             		sharedTabService.tests[sharedTabService.currentTabIndex].title="";
 			             	}
-		            	 sharedTabService.tests[scope.currentIndex].criterias[i].treeNode.showTestWizardIcon=true;
+		            	 if(sharedTabService.tests[scope.currentIndex].criterias[i].treeNode.isNodeSelected){
+                             sharedTabService.tests[scope.currentIndex].criterias[i].treeNode.showTestWizardIcon=true;
+                           }
 		            	 //sharedTabService.tests[scope.currentIndex].criterias[i].treeNode.isNodeSelected=false;
 		            	//Dont delete below commented line, it may re-use in feature
 		            	 //$rootScope.$broadcast("handleBroadcast_deselectedNode", sharedTabService.tests[scope.currentIndex].criterias[i].treeNode);
