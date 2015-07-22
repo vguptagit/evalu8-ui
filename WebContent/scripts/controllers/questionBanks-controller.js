@@ -434,7 +434,6 @@ angular
                                     SharedTabService.TestWizardErrorPopup_Open();
                                     return false;    
                                 }
-
 								var httpReqCount = 0,
                                     httpReqCompletedCount = 0;
 								for (var i = 0; i < $scope.selectedNodes.length; i++) {
@@ -806,8 +805,6 @@ angular
 										for (var j = 0; j < test.questions.length; j++) {
 										    if (node.guid === test.questions[j].guid) {
 										        node.showEditQuestionIcon = false;
-										        var nodeCopy = angular.copy(node);
-										        test.questions[j] = nodeCopy;
 										    }
 										}
 										if($scope.selectedNodes.length > 0){
@@ -1091,8 +1088,7 @@ angular
 							
 							$scope.deselectQuestionNode = function (node) {							 
 									for (var i = 0; i < $scope.selectedNodes.length; i++) {
-										if ($scope.selectedNodes[i].guid == node.guid
-												&& (node.showTestWizardIcon && !node.showEditQuestionIcon)) {
+										if ($scope.selectedNodes[i].guid == node.guid) {
 												$scope.selectedNodes.splice(i, 1);																			
 												$scope.setDeselectedNodeState(node);
 												node.isNodeSelected=false;
