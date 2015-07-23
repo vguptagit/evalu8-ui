@@ -455,6 +455,12 @@ angular
 																	        currentNode);
 												        } else {
 												            SharedTabService.addErrorMessage(currentNode.title, e8msg.warning.emptyFolder);
+												            currentNode.showTestWizardIcon = true;
+												            for (var j = 0; j < test.questionFolderNode.length; j++) {
+												                if (test.questionFolderNode[j].guid == currentNode.guid) {
+												                    test.questionFolderNode.splice(j, 1);
+												                }
+												            }                                                        
 												        }
 
 												        httpReqCompletedCount++;
@@ -963,7 +969,6 @@ angular
 									}
 									$scope.getRemoveChildNodesFromQuestionFolderNodes($scope.selectedNodes[i], test);
 									if ($scope.selectedNodes[i].showEditQuestionIcon) {
-									    httpReqCount++;
 										if ($scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.question) {
                                             if (SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode) {
                                             	$scope.selectedNodes[i].showEditQuestionIcon = true;
@@ -981,6 +986,7 @@ angular
 										} else if ($scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.chapter
 												|| $scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.topic) {
 											
+									        httpReqCount++;
 											$rootScope.blockPage.start();
 											
 											$scope.selectedNodes[i].showEditQuestionIcon = false;
@@ -999,6 +1005,12 @@ angular
 														httpReqCompletedCount++;
 														if (!response.length) {
 														    SharedTabService.addErrorMessage(questionFolder.title, e8msg.warning.emptyFolder);
+														    questionFolder.showEditQuestionIcon = true;
+														    for (var j = 0; j < test.questionFolderNode.length; j++) {
+														        if (test.questionFolderNode[j].guid == questionFolder.guid) {
+														            test.questionFolderNode.splice(j, 1);
+														        }
+														    }
 														}
 
 														if (httpReqCount == httpReqCompletedCount && SharedTabService.errorMessages.length > 0) {
