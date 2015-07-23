@@ -416,9 +416,17 @@ angular
 									$scope.selectedNodes.push(currentNode.node);
 									currentNode.node.isNodeSelected = !currentNode.node.isNodeSelected;
 								}
+								if(SharedTabService.isErrorExist(
+                                        currentNode.node, $scope.selectedNodes)) {
+                                    SharedTabService
+                                            .TestWizardErrorPopup_Open();
+                                    return false;
+                                }
 								isChildNodeUsed=false;
                                 $scope.selectedNodes.forEach(function(selectedNode){
-                                    $scope.isChildNodeUsed(selectedNode, tab)
+                                	if(!isChildNodeUsed){
+                                        $scope.isChildNodeUsed(selectedNode, tab)
+                                    }
                                 });
                                 
                                 if(isChildNodeUsed){
@@ -426,12 +434,12 @@ angular
                                     SharedTabService.TestWizardErrorPopup_Open();
                                     return false;    
                                 }
-
-								var selectedNodesLength = $scope.selectedNodes.length;
-								var nodeCounter = 0;
+								var httpReqCount = 0,
+                                    httpReqCompletedCount = 0;
 								for (var i = 0; i < $scope.selectedNodes.length; i++) {
 									currentNode = $scope.selectedNodes[i];
 									if (currentNode.showTestWizardIcon) {
+									    httpReqCount++;
 									    currentNode.showTestWizardIcon = false;
 									    $rootScope.blockPage.start();
 										getQuestions(
@@ -447,10 +455,16 @@ angular
 																	        currentNode);
 												        } else {
 												            SharedTabService.addErrorMessage(currentNode.title, e8msg.warning.emptyFolder);
+												            currentNode.showTestWizardIcon = true;
+												            for (var j = 0; j < test.questionFolderNode.length; j++) {
+												                if (test.questionFolderNode[j].guid == currentNode.guid) {
+												                    test.questionFolderNode.splice(j, 1);
+												                }
+												            }                                                        
 												        }
 
-												        nodeCounter++;
-												        if (nodeCounter == selectedNodesLength && SharedTabService.errorMessages.length > 0) {
+												        httpReqCompletedCount++;
+												        if (httpReqCount == httpReqCompletedCount && SharedTabService.errorMessages.length > 0) {
 												            SharedTabService.TestWizardErrorPopup_Open();
 												        }
                                                     } catch (e) {
@@ -797,8 +811,6 @@ angular
 										for (var j = 0; j < test.questions.length; j++) {
 										    if (node.guid === test.questions[j].guid) {
 										        node.showEditQuestionIcon = false;
-										        var nodeCopy = angular.copy(node);
-										        test.questions[j] = nodeCopy;
 										    }
 										}
 										if($scope.selectedNodes.length > 0){
@@ -952,10 +964,11 @@ angular
 							    var httpReqCount = 0,
                                     httpReqCompletedCount = 0;
 								for (var i = 0; i < $scope.selectedNodes.length; i++) {
+									if($scope.selectedNodes[i].nodeType != EnumService.NODE_TYPE.question){
 									test.questionFolderNode.push($scope.selectedNodes[i]);
+									}
 									$scope.getRemoveChildNodesFromQuestionFolderNodes($scope.selectedNodes[i], test);
 									if ($scope.selectedNodes[i].showEditQuestionIcon) {
-									    httpReqCount++;
 										if ($scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.question) {
                                             if (SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode) {
                                             	$scope.selectedNodes[i].showEditQuestionIcon = true;
@@ -973,6 +986,7 @@ angular
 										} else if ($scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.chapter
 												|| $scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.topic) {
 											
+									        httpReqCount++;
 											$rootScope.blockPage.start();
 											
 											$scope.selectedNodes[i].showEditQuestionIcon = false;
@@ -991,6 +1005,12 @@ angular
 														httpReqCompletedCount++;
 														if (!response.length) {
 														    SharedTabService.addErrorMessage(questionFolder.title, e8msg.warning.emptyFolder);
+														    questionFolder.showEditQuestionIcon = true;
+														    for (var j = 0; j < test.questionFolderNode.length; j++) {
+														        if (test.questionFolderNode[j].guid == questionFolder.guid) {
+														            test.questionFolderNode.splice(j, 1);
+														        }
+														    }
 														}
 
 														if (httpReqCount == httpReqCompletedCount && SharedTabService.errorMessages.length > 0) {
@@ -1080,8 +1100,7 @@ angular
 							
 							$scope.deselectQuestionNode = function (node) {							 
 									for (var i = 0; i < $scope.selectedNodes.length; i++) {
-										if ($scope.selectedNodes[i].guid == node.guid
-												&& (node.showTestWizardIcon && !node.showEditQuestionIcon)) {
+										if ($scope.selectedNodes[i].guid == node.guid) {
 												$scope.selectedNodes.splice(i, 1);																			
 												$scope.setDeselectedNodeState(node);
 												node.isNodeSelected=false;

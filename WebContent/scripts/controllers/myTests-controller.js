@@ -674,6 +674,10 @@ angular.module('e8MyTests')
         		
         		test.remove(); 
         		
+        		if(test.$parentNodeScope && test.$parentNodeScope.node) {
+        			$scope.removeTestBindingFromSource(test.$parentNodeScope, test.node.guid);	
+        		} 
+        		
         		if(test.$parentNodeScope && test.$parentNodeScope.node && test.$parentNodeScope.node.nodes.length == 0) {
         			test.$parentNodeScope.node.nodes.push(CommonService.getEmptyFolder());
         		}
