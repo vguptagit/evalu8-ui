@@ -1207,7 +1207,7 @@ angular
 											                		newNode['questionMetadata']['Difficulty'] = item['value'];
 											                	else{
 											                		
-											                		newNode['questionMetadata'][name] = item['value'];
+											                		newNode['questionMetadata'][name] = item['value'].replace(/&ndash;/g, '-');
 											                	}
 											                }
 											            });
@@ -1346,7 +1346,7 @@ angular
 	                                                 if(item['name'] == "questionLevelOfDifficulty")
 	                                                     displayNode['questionMetadata']['Difficulty'] = item['value'];
 	                                                 else
-	                                                     displayNode['questionMetadata'][name]=item['value'];  
+	                                                     displayNode['questionMetadata'][name]=item['value'].replace(/&ndash;/g, '-');  
 	                                                }
 	                                            });
 	                            
@@ -1430,7 +1430,7 @@ angular
                                                                  if(item['name'] == "questionLevelOfDifficulty")
                                                                      displayNode['questionMetadata']['Difficulty'] = item['value'];
                                                                  else
-                                                                     displayNode['questionMetadata'][name]=item['value'];  
+                                                                     displayNode['questionMetadata'][name]=item['value'].replace(/&ndash;/g, '-');  
                                                                 }
                                                             });
 											
@@ -1821,7 +1821,7 @@ angular
     									    $.each(qstn.extendedMetadata, function (index, item) {
 
     									        if (typeof (qstn['questionMetadata'][item['name']]) != 'undefined') {
-    									            qstn['questionMetadata'][item['name']] = item['value'];
+    									            qstn['questionMetadata'][item['name']] = item['value'].replace(/&ndash;/g, '-');
     									        }
 
     									    });
@@ -2363,7 +2363,7 @@ angular
 													displayNode.extendedMetadata = question.extendedMetadata;
 													$.each(displayNode.extendedMetadata, function(index, item){																							
 														if(typeof(displayNode['questionMetadata'][item['name']])!='undefined'){
-															displayNode['questionMetadata'][item['name']]=item['value'];	
+															displayNode['questionMetadata'][item['name']]=item['value'].replace(/&ndash;/g, '-');	
 														}
 													});	
 													
