@@ -2269,9 +2269,11 @@ angular
 											//assign the numberOfQuestionsEntered to numberOfQuestionsSelected only if there is 
 											//no error while creating the test. 
 											//ref : Bug 6582 - Radio button de-selected when alert message appears while creating Test using Test Wizard
+										    /*
 											if (criteria.numberOfQuestionsEntered > 0 && isError == false && !isTestTitleEmpty()) {
 												criteria.numberOfQuestionsSelected = criteria.numberOfQuestionsEntered;
 											}
+                                            */
 											var noOfQuestionsSelected = criteria.numberOfQuestionsEntered > 0 ? criteria.numberOfQuestionsEntered : criteria.numberOfQuestionsSelected; 
                                             if (!noOfQuestionsSelected || noOfQuestionsSelected > criteria.totalQuestions) {
 												criteria.isError = true;
@@ -2279,7 +2281,7 @@ angular
 												isError = true;
 												return false;
 											} else {
-												metadatas = metadatas.concat(arr.slice(0, criteria.numberOfQuestionsSelected));
+                                                metadatas = metadatas.concat(arr.slice(0, noOfQuestionsSelected));
 											}
 										});
 								if (isError) {
