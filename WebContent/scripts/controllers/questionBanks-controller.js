@@ -456,9 +456,9 @@ angular
 												        } else {
 												            SharedTabService.addErrorMessage(currentNode.title, e8msg.warning.emptyFolder);
 												            currentNode.showTestWizardIcon = true;
-												            for (var j = 0; j < test.questionFolderNode.length; j++) {
-												                if (test.questionFolderNode[j].guid == currentNode.guid) {
-												                    test.questionFolderNode.splice(j, 1);
+												            for (var j = 0; j < tab.questionFolderNode.length; j++) {
+												                if (tab.questionFolderNode[j].guid == currentNode.guid) {
+												                    tab.questionFolderNode.splice(j, 1);
 												                }
 												            }                                                        
 												        }
