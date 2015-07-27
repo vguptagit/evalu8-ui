@@ -1208,14 +1208,41 @@ h4, .h4, h5, .h5, h6, .h6 {
 
 .importAllTest {
 	float: right;
-	padding-right: 35px;
+	padding-right: 20px;	
 }
 
 .importAllTest>input {
 	height: 16px;
-	width: 16px;
-	margin-top: 0px;
-}
+	width: 16px;		    
+    margin-top: 0px;
+    cursor: pointer;
+ }
+ 
+ .emptyUserBooks{
+	text-align:center;
+	padding-top: 10px;
+	min-height: 40px;	
+	border-bottom: 1px solid #E0E0E0;
+	padding-left: 20px;		
+	color: #4D4D4D;
+	line-height: 1em;
+	cursor: default;
+ }
+ 
+ .userBookContainer{
+ 	max-height:650px; 
+ 	overflow:auto; 
+ 	overflow-x:hidden; 
+ 	width: 97%;
+ }
+ 
+ .uploadFilesDiv{
+     margin-top: 26px;
+ }
+ 
+ .userBookTitle{
+ 	min-height: 35px !important;
+ }
 
 .emptyUserBooks {
 	text-align: center;

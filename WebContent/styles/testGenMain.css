@@ -1191,11 +1191,13 @@ ol {
 	background-color: #fff;
 	margin-bottom: 0px;
 	border-radius: 0px;
+    margin-top: 20px;
 }
 
 .test-wizard-container .repeatCriteria {
 	margin-left: 0px;
-	margin-bottom: 18px;
+	padding-bottom: 15px;
+    margin-top: -20px;
 }
 
 .test-wizard-container .wizardHeader {
@@ -1437,9 +1439,14 @@ li .editViewContainer {
 	padding-left: 8px;
 }
 
-.editViewContainer .editView {
+.editViewContainer .editView:not(.EssayHeader) {
 	display: inline-block;
 }
+
+li[printmode='false'] #crtAns{
+	padding-right: 45px;
+}
+
 
 .editViewContainer .printView {
 	display: none;
@@ -3035,6 +3042,7 @@ li[qstntemplate='true'] label.mOptionLabel {
 	height: 41px;
 	border: 1px solid #ddd;
 	border-top: 0px;
+	background-color: #f8f8f8;
 }
 
 .criteria>div {
@@ -3068,6 +3076,9 @@ li[qstntemplate='true'] label.mOptionLabel {
 .questionColumns:first-child {
 	margin-left: 0px;
 }
+.questionColumns input{margin-top: 2px;}
+.questionColumns span{vertical-align: top;margin-left: 6px}
+#applyCriteria{vertical-align: top;margin-right: 7px;margin-top: 3px; outline: 0;}
 
 .questionColumns
 :not

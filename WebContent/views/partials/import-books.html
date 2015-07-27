@@ -1,0 +1,31 @@
+<div>
+	<div class="input-group importTestDiv">
+		<span class="importTestTitle">1. Select Books from
+			your MyTest account </span>
+
+		<div class="importAllTest">
+			<input class="importAllTestChk" type='checkbox'
+				data-ng-disabled="disableCheckAllBooks"
+				data-ng-class="{disabled:disableCheckAllBooks}"
+				data-ng-model="selectedAllUserBooks"
+				data-ng-click='checkAllUserBook()' />
+		</div>
+	</div>
+	<div class="userBooksContainer">
+		<div data-ng-if="userBooks[0].emptyRecords">
+			<div class="emptyUserBooks discplineText">{{userBooks[0].title}}</div>
+		</div>
+		<div data-ng-if="!userBooks[0].emptyRecords" class="userBooks" data-ng-repeat="book in userBooks">
+			<button class="userBookRow"
+				data-ng-click="selectUserBook(book.guid,book.title)"
+				data-ng-class="{'selectedUserBook' : book.isSelected  ,'selectedUserBook disableUserBook' : book.isImported}"
+				data-ng-disabled="{{book.isImported}}">
+				<div class="bookTitleContainer userBookTitle">
+					<div class="bookList margin-lft-5 floatLeft" title="{{book.title}}">{{book.title}}</div>
+				</div>
+			</button>
+		</div>
+	</div>
+	
+</div>
+

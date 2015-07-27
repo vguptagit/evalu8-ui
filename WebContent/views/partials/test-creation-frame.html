@@ -89,15 +89,15 @@
 
 		<p class='tw-helptext-head'>
                         <span class="glyphicon icon-magic" aria-hidden="true"></span>
-                        Welcome to Evalu8 Test Wizard
+                        Welcome to Pearson Test Builder Test Wizard
                     </p>
                     <p>
-                        Evaluate will create a test from the topics and criteria you
+                        Pearson Test Builder will create a test from the topics and criteria you
                         pick
                     </p>
                     <p ng-show="tests[currentIndex].criterias.length == 0">
                         1. Select
-                        topic(s) or chapter(s) in the questions bank on the left and drag
+                        topic(s) or chapter(s) in the question bank on the left and drag
                         here or click the Wizard wand icon on the topic.
                     </p>
                     <div ng-show="tests[currentIndex].criterias.length != 0">
@@ -382,7 +382,7 @@
                                 <div ng-show={{node.questionMetadata['Difficulty']==undefined?false:true}} class='metadatarow'>
                                     <span class='metdatalabel'>Difficulty:</span>
                                     <div class="metdataVal">
-                                        <select class='metadataQlvl' ng-model="node.selectedLevel" ng-options="level.name for level in Difficulty  track by level.value"></select>
+                                        <select class='metadataQlvl' ng-change="difficultyChange(this,node.selectedLevel)" ng-model="node.selectedLevel" ng-options="level.name for level in Difficulty  track by level.value"></select>
                                     </div>
                                 </div>
                                 <div ng-show={{node.questionMetadata['Topic']==undefined?false:true}} class='metadatarow'>

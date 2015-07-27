@@ -1148,7 +1148,10 @@ angular
 							                       {name:'Difficult',value:'Difficult'}
 							                      ];	
 							 
-							                 
+							  $scope.difficultyChange = function(selectedQuestion,selectedDifficulty) {
+								  selectedQuestion.node.selectedLevel = selectedDifficulty;
+								  selectedQuestion.node.questionMetadata.Difficulty = selectedDifficulty.value;								
+							  }
 							  
 							  $scope
 									.$on(
@@ -1199,18 +1202,17 @@ angular
 
 											            $.each(newNode.extendedMetadata, function (index, item) {
 											                var name = item['name'].charAt(0).toUpperCase() + item['name'].slice(1);
-											                if(typeof(newNode['questionMetadata'][name])!='undefined'){
+											                if((typeof(newNode['questionMetadata'][name])!='undefined')||((typeof(newNode['questionMetadata']['Difficulty'])!='undefined') && (name=='QuestionLevelOfDifficulty'))) {
 											                	if (item['name'] == "questionLevelOfDifficulty")
 											                		newNode['questionMetadata']['Difficulty'] = item['value'];
 											                	else{
 											                		
-											                		newNode['questionMetadata'][name] = item['value'];
+											                		newNode['questionMetadata'][name] = item['value'].replace(/&ndash;/g, '-');
 											                	}
 											                }
 											            });
 
-											            newNode.selectedLevel = newNode.questionMetadata['Difficulty'] == undefined ? { name: 'Select Level', value: '0' } : { name: newNode.questionMetadata['Difficulty'], value: newNode.questionMetadata['Difficulty'] };
-
+											            newNode.selectedLevel = newNode.questionMetadata['Difficulty'] == undefined ? { name: 'Select Level', value:'0'}:{name:newNode.questionMetadata['Difficulty']==""?'Select Level':newNode.questionMetadata['Difficulty'],value:newNode.questionMetadata['Difficulty']==""?'0':newNode.questionMetadata['Difficulty']};
 											            newNode.qstnMasterData = buildQstnMasterDetails(newNode);
 											            newNode.optionsView = newNode.qstnMasterData.optionsView;
 											            newNode.EssayPageSize = newNode.qstnMasterData.EssayPageSize;
@@ -1301,21 +1303,24 @@ angular
 	                                if (questions.length == 0) {
 	                                    $rootScope.blockPage.stop();
 	                                    return false;
-	                                }
-	                                     
-	                                     var userSettings= {};    
-	                                     userSettings.questionMetadata = {};
-	                                     
-	                                     $.each(SharedTabService.userQuestionSettings, function( index, value ) {    
-	                                         userSettings['questionMetadata'][value]='';                                                                                                        
-	                                        });            
+	                                }	                                     
+	                                          
 	                                     QTI.initialize();
 	                                     $.each(questions,function(index,question){
 	                                            var qtiDisplayNode = $("<div></div>");
+	                                            QTI.BLOCKQUOTE.id = 0;
 	                                            QTI.play(question.qtixml,
 	                                                    qtiDisplayNode, false,false,question.metadata.quizType);
 	                                            
 	                                            var displayNode = {};
+	                                            
+	                                            var userSettings= {};    
+	   	                                     	userSettings.questionMetadata = {};
+	   	                                     
+	   	                                     	$.each(SharedTabService.userQuestionSettings, function( index, value ) {    
+	   	                                     		userSettings['questionMetadata'][value]='';                                                                                                        
+	   	                                        });       
+	   	                                     
 	                                            displayNode.guid = question.guid;    
 	                                            displayNode.quizType = question.metadata.quizType;
 	                                            displayNode.IsUserMetdataAvailable = false;
@@ -1337,16 +1342,16 @@ angular
 	                                            
 	                                            $.each(displayNode.extendedMetadata, function(index, item){                                                                    
 	                                                var name = item['name'].charAt(0).toUpperCase() + item['name'].slice(1);
-	                                                if(typeof(displayNode['questionMetadata'][name])!='undefined'){
+	                                                if((typeof(displayNode['questionMetadata'][name])!='undefined')||((typeof(displayNode['questionMetadata']['Difficulty'])!='undefined') && (name=='QuestionLevelOfDifficulty'))){
 	                                                 if(item['name'] == "questionLevelOfDifficulty")
 	                                                     displayNode['questionMetadata']['Difficulty'] = item['value'];
 	                                                 else
-	                                                     displayNode['questionMetadata'][name]=item['value'];  
+	                                                     displayNode['questionMetadata'][name]=item['value'].replace(/&ndash;/g, '-');  
 	                                                }
 	                                            });
 	                            
 	                                
-	                                            displayNode.selectedLevel = displayNode.questionMetadata['Difficulty']==undefined?{name:'Select Level',value:'0'}:{name:displayNode.questionMetadata['Difficulty'],value:displayNode.questionMetadata['Difficulty']};
+	                                            displayNode.selectedLevel = displayNode.questionMetadata['Difficulty']==undefined?{name:'Select Level',value:'0'}:{name:displayNode.questionMetadata['Difficulty']==""?'Select Level':displayNode.questionMetadata['Difficulty'],value:displayNode.questionMetadata['Difficulty']==""?'0':displayNode.questionMetadata['Difficulty']};
 	                                
 	                                
 	                                            displayNode.data=question.qtixml;
@@ -1395,6 +1400,7 @@ angular
 														question.guid,
 														function(response) {
 															var qtiDisplayNode = $("<div></div>");
+															 QTI.BLOCKQUOTE.id = 0;
 															QTI.play(response,
 																	qtiDisplayNode, false,false,questionMetadataResponse.quizType);
 															
@@ -1420,11 +1426,11 @@ angular
 															
                                                             $.each(displayNode.extendedMetadata, function(index, item){                                                                    
                                                                 var name = item['name'].charAt(0).toUpperCase() + item['name'].slice(1);
-                                                                if(typeof(displayNode['questionMetadata'][name])!='undefined'){
+                                                                if((typeof(displayNode['questionMetadata'][name])!='undefined')||((typeof(displayNode['questionMetadata']['Difficulty'])!='undefined') && (name=='QuestionLevelOfDifficulty'))){
                                                                  if(item['name'] == "questionLevelOfDifficulty")
                                                                      displayNode['questionMetadata']['Difficulty'] = item['value'];
                                                                  else
-                                                                     displayNode['questionMetadata'][name]=item['value'];  
+                                                                     displayNode['questionMetadata'][name]=item['value'].replace(/&ndash;/g, '-');  
                                                                 }
                                                             });
 											
@@ -1746,7 +1752,7 @@ angular
                                             callback();
                                         }
                                         test.saveMode = EnumService.SAVE_MODE.Save;
-                                        $scope.testType = EnumService.TEST_TYPE.PublisherTest;
+                                        $scope.setTestType();
                                         $rootScope.blockPage.stop();         							    
                                     	return;
                                     }
@@ -1815,7 +1821,7 @@ angular
     									    $.each(qstn.extendedMetadata, function (index, item) {
 
     									        if (typeof (qstn['questionMetadata'][item['name']]) != 'undefined') {
-    									            qstn['questionMetadata'][item['name']] = item['value'];
+    									            qstn['questionMetadata'][item['name']] = item['value'].replace(/&ndash;/g, '-');
     									        }
 
     									    });
@@ -2263,16 +2269,19 @@ angular
 											//assign the numberOfQuestionsEntered to numberOfQuestionsSelected only if there is 
 											//no error while creating the test. 
 											//ref : Bug 6582 - Radio button de-selected when alert message appears while creating Test using Test Wizard
-											if (criteria.numberOfQuestionsEntered > 0 && isError == false) {
+										    /*
+											if (criteria.numberOfQuestionsEntered > 0 && isError == false && !isTestTitleEmpty()) {
 												criteria.numberOfQuestionsSelected = criteria.numberOfQuestionsEntered;
 											}
-											if (!criteria.numberOfQuestionsSelected || criteria.numberOfQuestionsSelected > criteria.totalQuestions) {
+                                            */
+											var noOfQuestionsSelected = criteria.numberOfQuestionsEntered > 0 ? criteria.numberOfQuestionsEntered : criteria.numberOfQuestionsSelected; 
+                                            if (!noOfQuestionsSelected || noOfQuestionsSelected > criteria.totalQuestions) {
 												criteria.isError = true;
 												SharedTabService.addErrorMessage(criteria.treeNode.title, SharedTabService.errorMessageEnum.NotEnoughQuestionsAvailable);
 												isError = true;
 												return false;
 											} else {
-												metadatas = metadatas.concat(arr.slice(0, criteria.numberOfQuestionsSelected));
+                                                metadatas = metadatas.concat(arr.slice(0, noOfQuestionsSelected));
 											}
 										});
 								if (isError) {
@@ -2280,8 +2289,7 @@ angular
 									return false;
 								} else {
 									var test = SharedTabService.tests[SharedTabService.currentTabIndex];
-									if (test.title == null
-											|| test.title.length <= 0) {
+									if (isTestTitleEmpty(test)) {
 										$scope.IsConfirmation = false;
 										$scope.message = "Please enter test title to save the test.";
 
@@ -2290,11 +2298,8 @@ angular
 									}
 									test.criterias
 											.forEach(function(criteria) {
-												criteria.treeNode.showTestWizardIcon = true;
-												$rootScope
-														.$broadcast(
-																"handleBroadcast_deselectedNode",
-																criteria.treeNode);
+												criteria.treeNode.isNodeSelected=false;
+												criteria.treeNode.showEditQuestionIcon = false;
 											})
 								}
 								$scope.tests[$scope.sharedTabService.currentTabIndex].isTestWizard = false;
@@ -2302,6 +2307,7 @@ angular
 								$scope.tests[$scope.sharedTabService.currentTabIndex].tabTitle = "Untitled test";
 								$scope.tests[$scope.sharedTabService.currentTabIndex].questions = metadatas;
 								QTI.initialize();
+								test.criterias=[];
 								$scope.saveTest(function () {
 								        $rootScope.blockPage.start();
 								        $scope.tests[$scope.sharedTabService.currentTabIndex].questions = [];
@@ -2311,6 +2317,15 @@ angular
 							}
 							function randomize(a, b) {
 								return Math.random() - 0.5;
+							}
+							var isTestTitleEmpty = function(test) {
+								if(test == null)
+									test = SharedTabService.tests[SharedTabService.currentTabIndex];
+								if (test.title == null
+										|| test.title.length <= 0)
+									return true;
+								else
+									return false;
 							}
 							// TODO: code optimization is need.
 							$scope.render = function(metadatas) {
@@ -2332,7 +2347,7 @@ angular
 												question.guid,
 												function(response) {
 													var displayNodes = $("<div></div>");	
-
+													QTI.BLOCKQUOTE.id = 0;
 													QTI.play(response,
 													displayNodes, false,false,question.quizType);
 													var displayNode = {};
@@ -2350,7 +2365,7 @@ angular
 													displayNode.extendedMetadata = question.extendedMetadata;
 													$.each(displayNode.extendedMetadata, function(index, item){																							
 														if(typeof(displayNode['questionMetadata'][item['name']])!='undefined'){
-															displayNode['questionMetadata'][item['name']]=item['value'];	
+															displayNode['questionMetadata'][item['name']]=item['value'].replace(/&ndash;/g, '-');	
 														}
 													});	
 													
@@ -2518,16 +2533,3 @@ angular.module('e8MyTests').service("directiveQtiService",
 				});
 			};
 		} ]);
-angular.module('e8MyTests').directive('ngReallyClick', [ function() {
-	return {
-		restrict : 'A',
-		link : function(scope, element, attrs) {
-			element.bind('click', function() {
-				var message = attrs.ngReallyMessage;
-				if (message && confirm(message)) {
-					scope.$apply(attrs.ngReallyClick);
-				}
-			});
-		}
-	}
-} ]);

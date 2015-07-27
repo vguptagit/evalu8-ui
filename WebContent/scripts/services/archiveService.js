@@ -52,7 +52,7 @@ angular.module('evalu8Demo')
 					if(callback) callback(archivedFolder);
 				})
 				.error(function(error, status) {
-
+					if(callback) callback(null);
 				})				
 			};
 			
@@ -63,7 +63,7 @@ angular.module('evalu8Demo')
 					if(callback) callback(archivedFolder);
 				})
 				.error(function(error, status) {
-
+					if(callback) callback(null);
 				})				
 			};
 			
@@ -74,7 +74,7 @@ angular.module('evalu8Demo')
 					if(callback) callback(restoredFolder);
 				})
 				.error(function(error, status) {
-
+					if(callback) callback(null);
 				})				
 			};
 			
@@ -85,7 +85,7 @@ angular.module('evalu8Demo')
 					if(callback) callback(restoredFolder);
 				})
 				.error(function(error, status) {
-
+					if(callback) callback(null);
 				})				
 			};
 			

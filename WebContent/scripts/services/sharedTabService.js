@@ -249,7 +249,14 @@ angular.module('evalu8Demo')
 		         $.each(sharedTabService.tests[sharedTabService.currentTabIndex].criterias, function (i) {
 		             if (sharedTabService.tests[sharedTabService.currentTabIndex].criterias[i].treeNode.guid === currentNode.guid) {
 		                 isExist = true;
-		                 sharedTabService.addErrorMessage(currentNode.title, sharedTabService.errorMessageEnum.AlreadyAdded);
+		                 //sharedTabService.addErrorMessage(currentNode.title, sharedTabService.errorMessageEnum.AlreadyAdded);
+		                 $.each(sharedTabService.tests[sharedTabService.currentTabIndex].criterias, function (j) {
+			                 $.each(selectedNodes, function (k) {
+			                 if (sharedTabService.tests[sharedTabService.currentTabIndex].criterias[j].treeNode.guid === selectedNodes[k].guid) {
+			                     sharedTabService.addErrorMessage(selectedNodes[k].title, sharedTabService.errorMessageEnum.AlreadyAdded);
+			                 }
+			                 });
+			             });
 		                 return false;
 		             } else if (sharedTabService.tests[sharedTabService.currentTabIndex].criterias[i].treeNode.guid === currentNode.parentId) {
 		                 isExist = true;
@@ -273,8 +280,14 @@ angular.module('evalu8Demo')
 		         }
 		     };
 
-		     sharedTabService.addErrorMessage = function (criteria, message) {
-		         sharedTabService.errorMessages.push({ criteria: criteria, message: message });
+		     sharedTabService.addErrorMessage = function (title, message) {
+		    	 var isMsgExists=false;
+                 sharedTabService.errorMessages.forEach(function(msg){
+                     if(msg.title==title)
+                         isMsgExists=true; 
+                 })
+                 if(!isMsgExists)
+                	 sharedTabService.errorMessages.push({ title: title, message: message });
 		     }
 
 		     sharedTabService.TestWizardErrorPopup_Open = function (errorMessages) {
@@ -284,8 +297,8 @@ angular.module('evalu8Demo')
 		             backdrop: 'static',
 		             keyboard: false,
 		             resolve: {
-		                 errorMessages: function () {
-		                     return sharedTabService.errorMessages;
+		            	 sharedTabService: function () {
+		                     return sharedTabService;
 		                 }
 		             }
 		         });
@@ -345,7 +358,7 @@ angular.module('evalu8Demo')
 		     sharedTabService.showSelectedTestTab = function (treenode) {
 		         var found = false;
 		         $.each(sharedTabService.tests, function (i) {
-		             if (sharedTabService.tests[i].id === treenode.testId) {
+		             if (sharedTabService.tests[i].id === treenode.guid) {
 		                 sharedTabService.currentTab = sharedTabService.tests[i];
 		                 sharedTabService.currentTabIndex = i;
 		                 sharedTabService.prepForBroadcastCurrentTabIndex(i);
@@ -568,7 +581,9 @@ angular.module('evalu8Demo')
 		            	 if(sharedTabService.tests[sharedTabService.currentTabIndex].criterias.length==1){
 			             		sharedTabService.tests[sharedTabService.currentTabIndex].title="";
 			             	}
-		            	 sharedTabService.tests[scope.currentIndex].criterias[i].treeNode.showTestWizardIcon=true;
+		            	 if(sharedTabService.tests[scope.currentIndex].criterias[i].treeNode.isNodeSelected){
+                             sharedTabService.tests[scope.currentIndex].criterias[i].treeNode.showTestWizardIcon=true;
+                           }
 		            	 //sharedTabService.tests[scope.currentIndex].criterias[i].treeNode.isNodeSelected=false;
 		            	//Dont delete below commented line, it may re-use in feature
 		            	 //$rootScope.$broadcast("handleBroadcast_deselectedNode", sharedTabService.tests[scope.currentIndex].criterias[i].treeNode);
@@ -582,7 +597,11 @@ angular.module('evalu8Demo')
 		    	 sharedTabService.tests[sharedTabService.currentTabIndex].title="";
 		    	 var criterias = sharedTabService.tests[scope.currentIndex].criterias;
 		    	 while(criterias.length > 0){
-		    		 sharedTabService.tests[scope.currentIndex].criterias[0].treeNode.showTestWizardIcon = true;
+		    		 $.each(criterias, function(selectedNode){
+				    	 if(sharedTabService.tests[scope.currentIndex].criterias[selectedNode].treeNode.isNodeSelected){
+				    		 sharedTabService.tests[scope.currentIndex].criterias[selectedNode].treeNode.showTestWizardIcon = true;
+				    	 }
+				    });
 	                 //sharedTabService.tests[scope.currentIndex].criterias[i].treeNode.isNodeSelected=false;
 		    		 
 		    		//Dont delete below commented line, it may re-use in feature

@@ -17,6 +17,11 @@ angular.module('evalu8Demo')
 			
 			this.saveTestData = function(testData,folderId,callback) {				
 				var testResult = null;
+				delete testData.metadata.showEditIcon;
+				delete testData.metadata.showArchiveIcon;
+				delete testData.metadata.draggable;
+				delete testData.metadata.folderGuid;
+				delete testData.metadata.nodeType;
 				$http.post(evalu8config.apiUrl + '/my/folders/'+folderId+'/tests', testData, config)
 				.success(function(response) {	
 					var testResult = response;

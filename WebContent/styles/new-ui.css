@@ -528,3 +528,7 @@ span.glyphicon.glyphicon-info-sign {
   width: 97%;
   padding: 1px;
 }
+.ieDownloadLink{
+	text-align: center;
+	line-height: 2em;
+}
