@@ -6,9 +6,7 @@ body {
 	background-color: #E8E8E8;
 	border-left: 1px solid #D0d0d0;
 	border-right: 1px solid #D0d0d0;
-	height: 100%;
 	position: absolute;
-	width: 10px;
 	z-index: 9;
 }
 

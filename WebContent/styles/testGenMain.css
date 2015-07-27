@@ -124,6 +124,18 @@
 body {
 	height: 100%;
 }
+@media ( min-width : 304px) {
+	.leftPanel, .rightPanel {
+		height:50vh;
+	}
+    .qstnArea{
+        top: 140px !important;
+    }
+    .divider{
+        height: 10px;
+        width: 100%;
+    }
+}
 
 @media ( min-width : 767px) {
 	.leftPanel, .rightPanel {
@@ -133,6 +145,7 @@ body {
 		width: 50%;
 		overflow-y: auto;
 		margin-top: 0px;
+        height:initial;
 	}
 	.leftPanel {
 		left: 0px;
@@ -140,6 +153,10 @@ body {
 	.rightPanel {
 		right: 0px;
 	}
+    .divider{
+        height: 100%;
+        width: 10px;
+    }
 }
 
 
