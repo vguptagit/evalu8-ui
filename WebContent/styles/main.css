@@ -1,118 +1,127 @@
 body {
-    padding-top: 50px;
+	padding-top: 50px;
 }
 
 .divider {
-    background-color: #E8E8E8;
-    border-left : 1px solid #D0d0d0;
-    border-right : 1px solid #D0d0d0;
-    height: 100%;
-    position: absolute;
-    width: 10px;
-    z-index: 9;
+	background-color: #E8E8E8;
+	border-left: 1px solid #D0d0d0;
+	border-right: 1px solid #D0d0d0;
+	height: 100%;
+	position: absolute;
+	width: 10px;
+	z-index: 9;
 }
 
 .header-text {
-    left: 43%;
-    position: absolute;
+	left: 43%;
+	position: absolute;
 }
 
 .navbar-inverse {
-    border-bottom: 0px #49BDDF solid;
+	border-bottom: 0px #49BDDF solid;
 }
 
 /*login*/
 .login-container .panel {
-    margin-top: 35%;
+	margin-top: 35%;
 }
 
 .login-container .panel-heading {
-    padding: 5px 15px;
+	padding: 5px 15px;
 }
 
 login-container .panel-footer {
-    padding: 1px 15px;
-    color: #A0A0A0;
+	padding: 1px 15px;
+	color: #A0A0A0;
 }
 
 .profile-img {
-    width: 96px;
-    height: 96px;
-    margin: 0 auto 10px;
-    display: block;
-    -moz-border-radius: 50%;
-    -webkit-border-radius: 50%;
-    border-radius: 50%;
+	width: 96px;
+	height: 96px;
+	margin: 0 auto 10px;
+	display: block;
+	-moz-border-radius: 50%;
+	-webkit-border-radius: 50%;
+	border-radius: 50%;
 }
 
 .center-block h4 {
-    color: #707070;
-    font-size: 29px;
-    text-align: center;
-    /* font-weight: bold; */
-    padding-bottom: 20px;
+	color: #707070;
+	font-size: 29px;
+	text-align: center;
+	/* font-weight: bold; */
+	padding-bottom: 20px;
 }
 
 .btn-login {
-    color: #FFFFFF;
-    background-color: #0080ff;
-    border-color: #006A8D;
-    height: 35px;
-    padding-left: 20px;
-    font-family: Helvetica Neue Light;
-    padding-right: 20px;
-    border-radius: 0px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    width: 100%;
-    font-size: 16px;
+	color: #FFFFFF;
+	background-color: #0080ff;
+	border-color: #006A8D;
+	height: 35px;
+	padding-left: 20px;
+	font-family: Helvetica Neue Light;
+	padding-right: 20px;
+	border-radius: 0px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	width: 100%;
+	font-size: 16px;
 }
 
 /* resource-tabs*/
 .resources-tabs {
-    /* margin-left: -15px; */
-    padding-left: 30px;
+	/* margin-left: -15px; */
+	padding-left: 30px;
 }
 
- .resources-tabs li.active > a {
-        line-height: 1.4;
+.resources-tabs li.active>a {
+	line-height: 1.4;
 }
 
 /* new css of testGen.css*/
 #MyTest-tree-root, #tree-root {
-    position: inherit;
+	position: absolute;
 }
 
-.searchTopic{
-    float:left;
+.searchTopic {
+	float: left;
 }
-.myTest_scrollbar{
-      position: relative;
-      top: 0;
+
+.myTest_scrollbar {
+	left: 20px;
+	position: relative;
+	right: 20px;
+	top: 156px;
 }
-.save-dropdown a{
-    cursor:pointer;
-    outline: 0;
+
+.save-dropdown a {
+	cursor: pointer;
+	outline: 0;
 }
-.save-dropdown ul{
-    min-width:100px;
+
+.save-dropdown ul {
+	min-width: 100px;
 }
-.header-nav-bar .dropdown-menu{
-    width :312px;
+
+.header-nav-bar .dropdown-menu {
+	width: 312px;
 }
 
 /*TODO : Need to check the dropdowns*/
-.test-creation-frame .dropdown-menu:before,
-.test-creation-frame .dropdown-menu:after {
-  display:none;
+.test-creation-frame .dropdown-menu:before, .test-creation-frame .dropdown-menu:after
+	{
+	display: none;
 }
-.botborderright .dropdown-menu:before,
-.botborderright .dropdown-menu:after {
-  display:none;
+
+.botborderright .dropdown-menu:before, .botborderright .dropdown-menu:after
+	{
+	display: none;
 }
-.test-creation-frame-btn-group{
-    margin-left:-10px;
+
+.test-creation-frame-btn-group {
+	margin-left: -10px;
 }
-.custom-qstn-tree-root{
-    overflow-y:scroll;
+
+.custom-qstn-tree-root {
+	overflow-y: scroll;
 }
