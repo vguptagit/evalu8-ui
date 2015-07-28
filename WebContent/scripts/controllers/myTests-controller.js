@@ -786,7 +786,7 @@ angular.module('e8MyTests')
         			
         			CommonService.showErrorMessage(e8msg.error.restore)
         			return;
-        		} else if(restoredFolder == 409) {
+        		} else if(restoredFolder == HttpStatus.CONFLICT) {
         			$rootScope.blockLeftPanel.stop();
         			
     	            $scope.IsConfirmation = false;

@@ -40,4 +40,8 @@ angular.module('evalu8Demo')
         Save: "save",
         SaveAs: "saveas"
     };
+    
+    this.HttpStatus = {
+    	CONFLICT: 409
+    };
 });

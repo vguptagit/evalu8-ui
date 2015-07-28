@@ -85,8 +85,8 @@ angular.module('evalu8Demo')
 					if(callback) callback(restoredFolder);
 				})
 				.error(function(error, status) { 
-					if(status == 409) {
-						callback(409);
+					if(status == HttpStatus.CONFLICT) {
+						callback(HttpStatus.CONFLICT);
 					} else {
 						callback(null);
 					}					
