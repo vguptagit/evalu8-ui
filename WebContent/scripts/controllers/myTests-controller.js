@@ -762,6 +762,22 @@ angular.module('e8MyTests')
         
         $scope.restoreTest = function(test) {
         	
+        	var duplicateTitle = false;
+        	if(test.$parentNodeScope.node.guid == null) {
+        		$scope.defaultFolders.forEach(function(item) {
+        			if(item.title == test.node.title) {
+        				duplicateTitle = true;
+        			}
+        		});
+        	} 
+        	
+        	if(duplicateTitle) {
+	            $scope.IsConfirmation = false;
+	            $scope.message = "A test already exists with this name.";
+	            $modal.open(confirmObject);        		
+        		return false;
+        	}
+        	
         	$rootScope.blockLeftPanel.start();
         	ArchiveService.restoreTest(test.node.guid, test.$parentNodeScope.node.guid, function(restoredFolder) {
         		
@@ -770,6 +786,13 @@ angular.module('e8MyTests')
         			
         			CommonService.showErrorMessage(e8msg.error.restore)
         			return;
+        		} else if(restoredFolder == 409) {
+        			$rootScope.blockLeftPanel.stop();
+        			
+    	            $scope.IsConfirmation = false;
+    	            $scope.message = "A test already exists with this name.";
+    	            $modal.open(confirmObject);        		
+            		return;
         		}
         		
         		test.remove();

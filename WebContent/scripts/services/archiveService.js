@@ -60,10 +60,10 @@ angular.module('evalu8Demo')
 				var archiveItem = {"id": testId, "folderId": folderId};
 				$http.post(evalu8config.apiUrl + '/my/archive/tests', archiveItem, config)
 				.success(function(archivedFolder) {									
-					if(callback) callback(archivedFolder);
+					callback(archivedFolder);
 				})
 				.error(function(error, status) {
-					if(callback) callback(null);
+					callback(null);
 				})				
 			};
 			
@@ -84,8 +84,12 @@ angular.module('evalu8Demo')
 				.success(function(restoredFolder) {									
 					if(callback) callback(restoredFolder);
 				})
-				.error(function(error, status) {
-					if(callback) callback(null);
+				.error(function(error, status) { 
+					if(status == 409) {
+						callback(409);
+					} else {
+						callback(null);
+					}					
 				})				
 			};
 			
