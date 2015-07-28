@@ -19,6 +19,11 @@
 
 	};
 
+	ns.validation = {
+		duplicateTestTitle : "A test already exists with this name.",
+		duplicateFolderTitle : "A folder already exists with this name."
+	};
+	
 	ns.warning = {	
 		emptyFolder : "This folder is empty."
 	};

@@ -773,7 +773,7 @@ angular.module('e8MyTests')
         	
         	if(duplicateTitle) {
 	            $scope.IsConfirmation = false;
-	            $scope.message = "A test already exists with this name.";
+	            $scope.message = e8msg.validation.duplicateTestTitle;
 	            $modal.open(confirmObject);        		
         		return false;
         	}
@@ -790,7 +790,7 @@ angular.module('e8MyTests')
         			$rootScope.blockLeftPanel.stop();
         			
     	            $scope.IsConfirmation = false;
-    	            $scope.message = "A test already exists with this name.";
+    	            $scope.message = e8msg.validation.duplicateTestTitle;
     	            $modal.open(confirmObject);        		
             		return;
         		}
