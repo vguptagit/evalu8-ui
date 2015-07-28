@@ -409,6 +409,7 @@ angular
 								}
 								var tab = SharedTabService.tests[SharedTabService.currentTabIndex];
 								if (!tab.isTestWizard) {
+									$scope.createTestWizardMode=false;
 									return false;
 								}
 
