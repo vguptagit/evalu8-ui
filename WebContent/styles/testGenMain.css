@@ -124,10 +124,10 @@
 body {
 	height: 100%;
 }
-@media ( min-width : 304px) {
 	.leftPanel, .rightPanel {
-		height:50vh;
+	min-height :50vh;
 	}
+@media ( max-width : 768px) {
     .qstnArea{
         top: 140px !important;
     }
@@ -137,7 +137,7 @@ body {
     }
 }
 
-@media ( min-width : 767px) {
+@media ( min-width : 768px) {
 	.leftPanel, .rightPanel {
 		position: absolute !important;
 		top: 51px;
