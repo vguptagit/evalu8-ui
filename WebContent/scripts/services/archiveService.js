@@ -3,8 +3,8 @@
 angular.module('evalu8Demo')
 
 .service('ArchiveService', 
-		['$http', '$rootScope', '$location', '$cookieStore', 'blockUI',
-		 function($http, $rootScope, $location, $cookieStore,blockUI) {
+		['$http', '$rootScope', '$location', '$cookieStore', 'blockUI', 'EnumService',
+		 function($http, $rootScope, $location, $cookieStore, blockUI, EnumService) {
 			
 			$rootScope.globals = JSON.parse(sessionStorage.getItem('globals'));			
 			 
@@ -60,10 +60,10 @@ angular.module('evalu8Demo')
 				var archiveItem = {"id": testId, "folderId": folderId};
 				$http.post(evalu8config.apiUrl + '/my/archive/tests', archiveItem, config)
 				.success(function(archivedFolder) {									
-					if(callback) callback(archivedFolder);
+					callback(archivedFolder);
 				})
 				.error(function(error, status) {
-					if(callback) callback(null);
+					callback(null);
 				})				
 			};
 			
@@ -84,8 +84,12 @@ angular.module('evalu8Demo')
 				.success(function(restoredFolder) {									
 					if(callback) callback(restoredFolder);
 				})
-				.error(function(error, status) {
-					if(callback) callback(null);
+				.error(function(error, status) { 
+					if(status == EnumService.HttpStatus.CONFLICT) {
+						callback(EnumService.HttpStatus.CONFLICT);
+					} else {
+						callback(null);
+					}					
 				})				
 			};
 			
