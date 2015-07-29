@@ -71,10 +71,14 @@ angular.module('evalu8Demo')
 				var archiveItem = {"id": folderId};
 				$http.post(evalu8config.apiUrl + '/my/restore/folders', archiveItem, config)
 				.success(function(restoredFolder) {									
-					if(callback) callback(restoredFolder);
+					callback(restoredFolder);
 				})
 				.error(function(error, status) {
-					if(callback) callback(null);
+					if(status == EnumService.HttpStatus.CONFLICT) {
+						callback(EnumService.HttpStatus.CONFLICT);
+					} else {
+						callback(null);
+					}
 				})				
 			};
 			
@@ -82,7 +86,7 @@ angular.module('evalu8Demo')
 				var archiveItem = {"id": testId, "folderId": folderId};
 				$http.post(evalu8config.apiUrl + '/my/restore/tests', archiveItem, config)
 				.success(function(restoredFolder) {									
-					if(callback) callback(restoredFolder);
+					callback(restoredFolder);
 				})
 				.error(function(error, status) { 
 					if(status == EnumService.HttpStatus.CONFLICT) {

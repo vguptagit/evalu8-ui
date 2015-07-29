@@ -718,7 +718,15 @@ angular.module('e8MyTests')
         			
         			CommonService.showErrorMessage(e8msg.error.restore)
         			return;
+        		} else if(restoredFolder == EnumService.HttpStatus.CONFLICT) {
+        			$rootScope.blockLeftPanel.stop();
+        			
+    	            $scope.IsConfirmation = false;
+    	            $scope.message = e8msg.validation.duplicateFolderTitle;
+    	            $modal.open(confirmObject);        		
+            		return;
         		}
+        		
         		folder.remove();
         		
         		if(folder.$parentNodeScope && folder.$parentNodeScope.node && folder.$parentNodeScope.node.nodes.length == 0) {
