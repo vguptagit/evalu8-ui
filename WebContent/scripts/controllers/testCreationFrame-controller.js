@@ -2363,11 +2363,23 @@ angular
 													
 													displayNode.questionMetadata = userSettings.questionMetadata;
 													displayNode.extendedMetadata = question.extendedMetadata;
+													
+													 displayNode.IsUserMetdataAvailable = false;
+													 if (SharedTabService.userQuestionSettings.length>0){
+														 displayNode.IsUserMetdataAvailable = true;
+													 }
 													$.each(displayNode.extendedMetadata, function(index, item){																							
-														if(typeof(displayNode['questionMetadata'][item['name']])!='undefined'){
-															displayNode['questionMetadata'][item['name']]=item['value'].replace(/&ndash;/g, '-');	
-														}
-													});	
+														var name = item['name'].charAt(0).toUpperCase() + item['name'].slice(1);
+										                if((typeof(displayNode['questionMetadata'][name])!='undefined')||((typeof(displayNode['questionMetadata']['Difficulty'])!='undefined') && (name=='QuestionLevelOfDifficulty'))) {
+										                	if (item['name'] == "questionLevelOfDifficulty")
+										                		displayNode['questionMetadata']['Difficulty'] = item['value'];
+										                	else{
+										                		
+										                		displayNode['questionMetadata'][name] = item['value'].replace(/&ndash;/g, '-');
+										                	}
+										                }
+													});
+													
 													
 													displayNode.selectedLevel = displayNode.questionMetadata['Difficulty']==undefined?{name:'Select Level',value:'0'}:{name:displayNode.questionMetadata['Difficulty'],value:displayNode.questionMetadata['Difficulty']};
 													
