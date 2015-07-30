@@ -4,13 +4,13 @@
 			<span class="selectDiscipline">{{currentStepNumber()}} of
 				{{steps.length}}: {{steps[currentStepNumber()-1].title}}</span>
 		</div>
-		<div class="col-lg-7">
-			<div class="pull-right" >
-				<input type="button" class="btn btn-default" ng-if="currentStepNumber() > 1" wz-previous value="Back" /> 
-				<input type="button" class="btn btn-primary" ng-if="currentStepNumber() <= 2"  wz-next value="Next" />
-				<input type="button" class="btn btn-primary" ng-if="currentStepNumber() == 3" wz-next value="Finish" />
-			</div>
-		</div>
+        <div class="col-lg-7 padding-right-0">
+            <div class="pull-right">
+                <input type="button" class="btn btn-default" ng-if="currentStepNumber() > 1" wz-previous value="Back" />
+                <input type="button" class="btn btn-primary" ng-if="currentStepNumber() <= 2" wz-next value="Next" />
+                <input type="button" class="btn btn-primary" ng-if="currentStepNumber() == 3" wz-next value="Finish" />
+            </div>
+        </div>
 	</div>
 	<div class="row" ng-transclude></div>
 </div>

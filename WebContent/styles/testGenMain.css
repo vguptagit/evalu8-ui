@@ -457,7 +457,7 @@ a.newFolder:hover {
 	overflow-y: auto;
 	position: absolute;
 	top: 268px;
-	bottom: 10px;
+	bottom: 0;
 	left: 0;
 	right: 0;
 	overflow-x: hidden;
@@ -766,7 +766,7 @@ ol {
 .questionFeature {
 	float: right;
 	margin: 5px;
-	margin-right: 15px;
+	margin-right: 20px;
 }
 
 .questionFeature button {
@@ -1059,8 +1059,8 @@ ol {
 }
 
 #content .dropdown-menu {
-	left: -75px;
-	top: 46px;
+	left: -90px;
+	top: 40px;
 }
 
 .dot {
@@ -1115,6 +1115,13 @@ ol {
 
 /*test wizard*/
 .test-wizard-container {
+    position: absolute;
+    top: 240px;
+    bottom: 0px;
+    right: 0px;
+    left: 0px;
+    overflow-y: auto;
+
 	width: 99%;
 	min-height: 185px;
 	margin-left: 10px;
@@ -1954,6 +1961,7 @@ ul.a {
 	border-bottom-color: #D9D9DB;
 	border-bottom-style: solid;
 	border-bottom-width: 1px;
+    padding-right: 20px;
 }
 
 .selectedDisc div {

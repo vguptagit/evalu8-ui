@@ -410,7 +410,7 @@ label {
 
 /* Padding CSS */
 .padding-lft-20 {
-	padding-left: 15px;
+	padding-left: 20px;
 }
 
 .padding-lft-30 {
@@ -427,6 +427,9 @@ label {
 
 .padding-top-6 {
 	padding-top: 8px;
+}
+.padding-right-0 {
+	padding-right: 0px;
 }
 
 /* Width height CSS */
@@ -864,7 +867,7 @@ a.fa.fa-user {
 
 section {
 	display: inline-block;
-	width: 100%;
+	width: 98%;
 }
 
 .padding-lft-15 {
@@ -912,6 +915,7 @@ hr {
 	font-size: 20px;
 	margin-top: 6px;
 	margin-right: -10px;
+    margin-left: -5px;
 }
 
 .angular-ui-tree-nodes .angular-ui-tree-nodes {
@@ -1104,7 +1108,7 @@ h4, .h4, h5, .h5, h6, .h6 {
 	top: 92px;
 	bottom: 0px;
 	right: 20px;
-	left: 20px;
+	left: 30px;
 }
 
 .qstnArea
@@ -1195,7 +1199,7 @@ h4, .h4, h5, .h5, h6, .h6 {
 	line-height: 1em;
 	background-color: #F6F7F5;
 	padding: 12px 0px 10px 14px;
-	width: 97%;
+	width: 98%;
 	border-bottom: 1px solid #D0D0D0 !important;
 }
 
@@ -1227,6 +1231,7 @@ h4, .h4, h5, .h5, h6, .h6 {
 	color: #4D4D4D;
 	line-height: 1em;
 	cursor: default;
+    margin-right:15px;
  }
  
  .userBookContainer{

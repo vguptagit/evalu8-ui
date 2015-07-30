@@ -29,22 +29,22 @@
 			</ul>
 		</div>
 	</div>
-	<div class="col-lg-7">
-				<div class="input-group searchdiv">
-					<input type="text" placeHolder="Search Discipline"
-						class="searchDiscpline form-control" ng-model="searchedDiscpline"
-						typeahead="discipline for discipline in disciplines.all.sort() | filter:$viewValue"
-						ng-keyup="searchDiscipline($event)"> <span class="glyphicon glyphicon-search searchicon" ng-click="searchDisciplineOnClick()"
-						tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Search"></span>
-				</div>
-				<div class="discplineheight">
-					<div data-ng-repeat="discipline in disciplines.all.sort()"
-						ng-click="selectDiscipline(this)"
-						ng-class="{selectedDisc: isSelectedDiscipline(this)}">
-						<div class="discplineText">{{discipline}}</div>						
-					</div>
-				</div>
-	</div>
+    <div class="col-lg-7 padding-right-0">
+        <div class="input-group searchdiv">
+            <input type="text" placeholder="Search Discipline"
+                   class="searchDiscpline form-control" ng-model="searchedDiscpline"
+                   typeahead="discipline for discipline in disciplines.all.sort() | filter:$viewValue"
+                   ng-keyup="searchDiscipline($event)"> <span class="glyphicon glyphicon-search searchicon" ng-click="searchDisciplineOnClick()"
+                                                              tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Search"></span>
+        </div>
+        <div class="discplineheight">
+            <div data-ng-repeat="discipline in disciplines.all.sort()"
+                 ng-click="selectDiscipline(this)"
+                 ng-class="{selectedDisc: isSelectedDiscipline(this)}">
+                <div class="discplineText">{{discipline}}</div>
+            </div>
+        </div>
+    </div>
 </div>
 
 </wz-step> <wz-step title="Choose Your Books" canenter="enterBook" canexit="saveDiscplineAndBook" >
@@ -61,33 +61,35 @@
 			</ul>
 		</div>
 	</div>
-	<div class="col-lg-7">
-				<div class="input-group searchdiv">
-					<input type="text"
-						placeHolder="Enter title, author, publisher, bookid or ISBN"
-						class="searchDiscpline form-control searchBook" ng-model="searchedBook"
-						placeholder="Custom template"
-						typeahead-template-url="customTemplate.html"
-						typeahead="book.title for book in books.all | searchFields:$viewValue"
-						ng-keyup="searchedBookOnEnter($event)"> <span class="glyphicon glyphicon-search searchicon" ng-click="searchedBookOnClick()"
-						tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Search"></span>
-				</div>
-				<div class="bookContainer">
-					<div data-ng-repeat="discipline in disciplineBooks">
-						<div class="discplineText1" style="font-weight: bold;">{{discipline.name}}</div>					
-						<div data-ng-repeat="book in discipline.books"
-							ng-click="selectBook(book.guid,discipline.name)"
-							ng-class="{selectedDisc: book.isSelected}"
-							ng-show="book.showEdition" parentbookid="{{book.parentBookID}}">
-							<div class="expandIconForBookEdition" ng-show="book.hasEdition" ng-click="showOldEdition($event,book.guid,discipline.name)">
-								<i id="{{book.guid}}" class="margin-lft-10" ng-class="book.isCollasped?'fa fa-minus-square-o':'fa fa-plus-square-o'"></i>
-							</div>
-							<div class="discplineText"><i class="fa fa-circle font10" ng-show="book.parentBookID != undefined"></i>
-								<div class="bookList margin-lft-5 floatLeft" title="{{book.title}}">{{book.title}}</div></div>
-						</div>
-					</div>
-				</div>
-	</div>
+    <div class="col-lg-7 padding-right-0">
+        <div class="input-group searchdiv">
+            <input type="text"
+                   placeholder="Enter title, author, publisher, bookid or ISBN"
+                   class="searchDiscpline form-control searchBook" ng-model="searchedBook"
+                   placeholder="Custom template"
+                   typeahead-template-url="customTemplate.html"
+                   typeahead="book.title for book in books.all | searchFields:$viewValue"
+                   ng-keyup="searchedBookOnEnter($event)"> <span class="glyphicon glyphicon-search searchicon" ng-click="searchedBookOnClick()"
+                                                                 tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Search"></span>
+        </div>
+        <div class="bookContainer">
+            <div data-ng-repeat="discipline in disciplineBooks">
+                <div class="discplineText1" style="font-weight: bold;">{{discipline.name}}</div>
+                <div data-ng-repeat="book in discipline.books"
+                     ng-click="selectBook(book.guid,discipline.name)"
+                     ng-class="{selectedDisc: book.isSelected}"
+                     ng-show="book.showEdition" parentbookid="{{book.parentBookID}}">
+                    <div class="expandIconForBookEdition" ng-show="book.hasEdition" ng-click="showOldEdition($event,book.guid,discipline.name)">
+                        <i id="{{book.guid}}" class="margin-lft-10" ng-class="book.isCollasped?'fa fa-minus-square-o':'fa fa-plus-square-o'"></i>
+                    </div>
+                    <div class="discplineText">
+                        <i class="fa fa-circle font10" ng-show="book.parentBookID != undefined"></i>
+                        <div class="bookList margin-lft-5 floatLeft" title="{{book.title}}">{{book.title}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </wz-step>  <wz-step title="Import Tests or Questions (Optional)"
 	canenter="enterUserBooks">
@@ -102,9 +104,9 @@
 			</ul>
 		</div>
 	</div>
-	<div class="col-lg-7">
-		<div x-ng-controller="ImportUserBooksController"
-			x-ng-include="'views/partials/import-books.html'"></div>
-	</div>
+    <div class="col-lg-7 padding-right-0">
+        <div x-ng-controller="ImportUserBooksController"
+             x-ng-include="'views/partials/import-books.html'"></div>
+    </div>
 </div>
 </wz-step>

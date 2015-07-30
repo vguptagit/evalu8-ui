@@ -4,10 +4,10 @@
         <div id="caption" class="col-sm-4 col-md-4 col-lg-4 pull-left">
             <h4>Create or Edit Tests</h4>
         </div>
-        <div class="col-sm-8 col-md-8 col-lg-8 text-right">
+        <div class="col-sm-8 col-md-8 col-lg-8 text-right padding-right-0">
             <a type="button" class="btn btn-primary"
-                    ng-disabled="sharedTabService.isTestWizardTabPresent"
-                    ng-click="addTestWizard()" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Test Creation Wizard">
+               ng-disabled="sharedTabService.isTestWizardTabPresent"
+               ng-click="addTestWizard()" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Test Creation Wizard">
                 <span class="icon-magic"></span> Test Wizard
             </a>
 
@@ -25,7 +25,7 @@
                     </ul>
                 </div>
                 <!--<button type="button" class="btn btn-primary" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Print and Format Tests">Print</button>-->
-                
+
                 <button type="button" class="btn btn-primary" ng-class="{disabled : (!sharedTabService.tests[sharedTabService.currentTabIndex].testId || sharedTabService.tests[sharedTabService.currentTabIndex].isBtnClicked)}"
                         ng-click="open()" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Export Test Files">
                     Export
@@ -110,7 +110,7 @@
     </div>
     <div class="row"
          ng-hide="tests[currentIndex].isTestWizard && tests[currentIndex].criterias.length == 0">
-        <div class="col-lg-1 margin-rt-10neg margin-top-5">
+        <div class="col-lg-1 margin-rt-10neg margin-top-5 margin-lft-5">
             <h4>Test</h4>
         </div>
         <div class="col-lg-11 margin-rt-5 margin-top-5">
@@ -120,7 +120,7 @@
         </div>
     </div>
     <div class="row" ng-show="!tests[currentIndex].isTestWizard">
-        <div class="col-lg-1">
+        <div class="col-lg-1 margin-lft-5">
             <h4>Name</h4>
         </div>
     </div>
