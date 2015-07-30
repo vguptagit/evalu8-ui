@@ -1177,7 +1177,6 @@ angular
 
 							$scope.selectedBooks = [];
 							$scope.searchedContainerId="";
-							$scope.trackEnterKey=0;
 							var searchedQuestionTypes=[];
 							var bookContainersArray=[];
 							$scope.allContainers=[];
@@ -1278,14 +1277,7 @@ angular
 								$(".dropdown-menu")
 								.addClass("autocompleteList");
 								if (event.keyCode === 13) {
-									if ($scope.trackEnterKey > 0) {
 										$scope.showContainer();
-									}
-									else{
-										$scope.trackEnterKey = 1;
-									}
-								}else {
-									$scope.trackEnterKey = 0
 								}
 							}
 							

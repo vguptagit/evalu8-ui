@@ -45,34 +45,6 @@ angular.module('evalu8Demo')
                 
             };
 			
-			this.updateTestMetaData = function(testData,folderId,callback) {				
-			
-				var testMetadata = {
-					crawlable: testData.crawlable,
-					description: testData.description,
-					extendedMetadata: testData.extendedMetadata,
-					guid: testData.guid,
-					keywords: testData.keywords,
-					quizType: testData.quizType,
-					subject: testData.subject,
-					timeRequired: testData.timeRequired,
-					title: testData.title,
-					version: testData.version,
-					versionOf: testData.versionOf
-				}
-								
-				$http.post(evalu8config.apiUrl + '/my/folders/'+folderId+'/tests/'+testMetadata.guid+'/metadata', testMetadata, config)
-				.success(function(response) {	
-					var testResult = response;
-					if(callback) callback(testResult);
-				})
-				.error(function(error, status) {
-
-					//if(status == 403)
-						//$location.path('/login');
-				})				
-			};
-			
 	        var confirmObject = {
 	                templateUrl: 'views/partials/alert.html',
 	                controller: 'AlertMessageController',
@@ -127,49 +99,6 @@ angular.module('evalu8Demo')
 				})				
 			};
 			
-			this.getTestsMaxSeq = function(folderId, callback) {				
-
-				var maxSeq = 0.0;
-				$http.get(evalu8config.apiUrl + '/my/folders/' + folderId + '/tests', config)
-				.success(function(response) {
-					var tests = response;
-					tests.forEach(function(item){
-	                	
-						item.extendedMetadata.forEach(function(data) {
-	                		if(data.name=='sequence') {
-	                			maxSeq = data.value;	                			
-	                		}
-	                	}) 
-	                	
-					})
-					callback(maxSeq)
-				})
-				.error(function(error, status) {
-					callback(0.0);
-				})				
-			};
-			
-			this.getTestsMinSeq = function(folderId, callback) {				
-
-				var maxSeq = 0.0;
-				$http.get(evalu8config.apiUrl + '/my/folders/' + folderId + '/tests', config)
-				.success(function(response) {
-					var tests = response;
-					tests.every(function(item){
-	                	
-						item.extendedMetadata.forEach(function(data) {
-	                		if(data.name=='sequence') {
-	                			maxSeq = data.value;	                			
-	                		}
-	                	})
-	                	return false;	                	
-					})
-					callback(maxSeq)
-				})
-				.error(function(error, status) {
-					callback(0.0);
-				})				
-			};
 			
 			this.getTest = function(testId, callback) {				
 
