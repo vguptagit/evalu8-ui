@@ -23,6 +23,9 @@ angular.module('evalu8Demo')
 					response = [];
 				}
 				callback(response);
+			})
+			.error(function(){
+				callback(null);
 			});
 		};
 		
@@ -35,6 +38,9 @@ angular.module('evalu8Demo')
 					userDisciplines.push({"item": item});    							    							
 				});
 				callback (userDisciplines);
+			})
+			.error(function(){
+				callback(null);
 			});
 			
 		};			

@@ -91,6 +91,10 @@ angular.module('e8CustomQuestionBanks')
          }
          
          TestService.getMetadata(newTest.guid, function (test) {
+        	 if(test==null){
+        		 CommonService.showErrorMessage(e8msg.error.metadata);
+         		return;
+        	 }
              test.nodeType = "test";
              createdTab.metadata = TestService.getTestMetadata(test);
              createdTab.treeNode = null;

@@ -40,7 +40,12 @@ angular
 											});
 
 											callback(disciplineBooks);
-										});
+										})
+										.error(
+												function(error) {
+
+													callback (null);
+												})	
 							};
 
 							this.userBooks = function(callback) {
@@ -52,6 +57,11 @@ angular
 										function(response) {
 
 											callback(response);
-										});
+										})
+										.error(
+												function(error) {
+
+													callback (null);
+												})
 							};
 						} ])

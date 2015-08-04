@@ -26,7 +26,7 @@ angular
 				 callback(userBooks);
 			 })
 			 .error(function() {
-				 callback(userBooks);
+				 callback(null);
 			 });
 		 };
 		 

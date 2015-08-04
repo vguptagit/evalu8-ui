@@ -34,8 +34,11 @@ angular
 							$scope.captionFocus = true;
 							
 							if (SharedTabService.userQuestionSettings.length == 0){
-								
-								UserService.userQuestionMetadata(function(userQuestionMetadata){	
+								UserService.userQuestionMetadata(function(userQuestionMetadata){
+									if(userQuestionMetadata==null){
+										CommonService.showErrorMessage(e8msg.error.metadata)
+				            			return;
+									}
 										$.each(userQuestionMetadata, function(index, item){	
 												SharedTabService.userQuestionSettings.push(item);						
 
@@ -921,6 +924,10 @@ angular
 								if (test.testId && !test.questions.length && !SharedTabService.isDirtyTab(test) && !test.isTabClicked) {
 									test.isTabClicked=true;									
 									TestService.getTestQuestions(test.testId,function(questions) {
+										if(questions==null){
+											CommonService.showErrorMessage(e8msg.error.testQuestions);
+				                    		return;
+										}
 												$scope.bindTestQuestions(questions,$scope.currentIndex);
 											})
 								}
@@ -2021,6 +2028,11 @@ angular
 								$rootScope.blockPage.start();
 
 								TestService.createVersions(this, function (scope, testResult) {
+									if(testResult==null){
+										$rootScope.blockPage.stop();
+										CommonService.showErrorMessage(e8msg.error.versions);
+			                    		return;
+									}
 								    try {
 								        $scope.versionedTests = testResult;
 								        $scope.currentTab = SharedTabService.tests[SharedTabService.currentTabIndex];

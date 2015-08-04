@@ -21,11 +21,18 @@ angular.module('evalu8Demo')
 	  
 	  $scope.userBooks = [];
 	  UserService.userDisciplines(function(userDisciplines) {
-		 
+		  if(userDisciplines==null){
+				CommonService.showErrorMessage(e8msg.error.discipline)
+				return;
+			}
 		  $scope.disciplines = userDisciplines;		  	  		  
 	  });
 	  
 	  BookService.userBooks(function(response) {
+		  if(response==null){
+				CommonService.showErrorMessage(e8msg.error.book)
+				return;
+			}
 		  $scope.userBooks= response;
 	  })	  	  	  		
 		 

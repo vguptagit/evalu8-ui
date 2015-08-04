@@ -154,16 +154,10 @@
                 var nodeData = this.source.$modelValue;
                 
                 if(this.index == this.source.index()) {
-                    // if source and destination are same node at root level then abort
-                    if(this.parent == this.source.$parentNodeScope) {
+                    if(this.source.node.nodes) {
                     	$('body *').css({'cursor':''});
                     	return;
                     }
-                    // if source and destination are same node at non root levels then abort                
-                    if(this.source.$parentNodeScope && this.source.$parentNodeScope.node == this.parent.node) {
-                    	$('body *').css({'cursor':''});
-                    	return;
-                    }                	
                 }
                 
                 // if source and destination are same tree then remove the node from the source

@@ -34,7 +34,7 @@ angular.module('evalu8Demo')
 						.error(
 								function(error, status) {
 
-									callback(defaultFolders)
+									callback(null)
 								});
 
 				

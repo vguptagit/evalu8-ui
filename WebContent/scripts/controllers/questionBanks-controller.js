@@ -110,7 +110,10 @@ angular
 							$scope.yourQuestionsFolder = null;
 							$scope.loadTree = function() {
 								DisciplineService.userDisciplines(function(userDisciplines) {
-								
+									if(userDisciplines==null){
+										CommonService.showErrorMessage(e8msg.error.discipline)
+					        			return;
+									}
 									$scope.disciplines = userDisciplines;
 									
 									$scope.disciplines.forEach(function(discipline) {
@@ -332,6 +335,10 @@ angular
 										
 	                                    ContainerService.bookNodes(book.node.guid, $scope.selectedQuestionTypes.toString(),
 	                                    		function(bookNodes) {
+	                                    	if(bookNodes==null){
+	                                    		CommonService.showErrorMessage(e8msg.error.nodes)
+	                                    		return;
+	                                    	}
 	                                        book.node.nodes = bookNodes;
 	                                        $scope.expandedNodes=$scope.expandedNodes.concat(book.node.nodes);
 	                                        angular.forEach(
@@ -535,6 +542,11 @@ angular
                                     	currentNode.node.nodes = [];
                                     	                                   		
                                         TestService.getPublisherTestsByBookId(currentNode.node.bookId, function(tests){
+                                        	if(tests==null){
+                                        		currentNode.node.isHttpReqCompleted = true;
+                                        		CommonService.showErrorMessage(e8msg.error.publisherTests);
+                                        		return;
+                                        	}
 
                                         	tests.forEach(function(test) {
                                                 test.nodeType = EnumService.NODE_TYPE.test;
@@ -566,6 +578,11 @@ angular
 										$scope.selectedQuestionTypes.toString(),
 										false,
 										function(response) {
+										if(response){
+											currentNode.node.isHttpReqCompleted = true;
+											CommonService.showErrorMessage(e8msg.error.nodes)
+					            			return;
+										}
 										    currentNode.node.IsContainerReqCompleted = true;
 											if(response.length>0){
 												currentNode.node.nodes = currentNode.node.nodes.concat(response);
@@ -1206,6 +1223,10 @@ angular
 									$scope.selectedBooks.push(node);
 									ContainerService.getAllContainers(node.guid,
 											function(response) {
+										if(response==null){
+											CommonService.showErrorMessage(e8msg.error.nodes)
+				                			return;
+										}
 												var bookContainers={};
 												bookContainers["bookid"]=node.guid;
 												bookContainers["containers"]=response;
@@ -1359,6 +1380,10 @@ angular
 								if($scope.isAdvancedSearchMode){
 									$rootScope.blockPage.start();
 									ContainerService.containerNodes($scope.bookID,searchedContainer.guid,$scope.selectedQuestionTypes.toString(), true, function(response){
+										if(response){
+											CommonService.showErrorMessage(e8msg.error.nodes)
+					            			return;
+										}
 										if(response.length > 0){
 											searchedContainer.template = "nodes_renderer.html";
 											searchedContainer.showEditQuestionIcon=false;
@@ -1512,6 +1537,10 @@ angular
 									var emptyBooks=0;
 									$scope.selectedBooks.forEach(function(book){
 										ContainerService.getQuestionTypeContainers(book.guid,$scope.selectedQuestionTypes.toString(),function(containers){
+											if(containers==null){
+												CommonService.showErrorMessage(e8msg.error.book)
+						            			return;
+											}
 											if(containers.length==0){
 												emptyBooks = emptyBooks+1;
 											}

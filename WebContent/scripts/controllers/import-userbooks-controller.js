@@ -13,6 +13,10 @@ angular
 						 
 			 UserBookService
 			 .getUserBooks(function(userBooks) {
+				 if(userBooks==null){
+					 CommonService.showErrorMessage(e8msg.error.book)
+         			 return;
+				 }
 				 if (userBooks.length == 0) {
 					 var book = {};
 					 book.title = "There are no Instructor Books available for Import";

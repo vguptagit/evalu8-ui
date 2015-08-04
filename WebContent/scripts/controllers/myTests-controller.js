@@ -19,6 +19,10 @@ angular.module('e8MyTests')
         $scope.loadTree = function() {        	
         	
         	UserFolderService.defaultFolders(function (defaultFolders) {
+        		if(defaultFolders==null){
+        			CommonService.showErrorMessage(e8msg.error.restore)
+        			return;
+        		}
         		
             	UserFolderService.testRootFolder(function(myTestRoot){
             		$scope.myTestRoot = myTestRoot;
@@ -27,6 +31,11 @@ angular.module('e8MyTests')
 	                
 	                $rootScope.blockLeftPanel.start();
 	                TestService.getTests($scope.myTestRoot.guid, function(tests){
+	                	if(tests==null){
+	                		$rootScope.blockLeftPanel.stop();
+	                		CommonService.showErrorMessage(e8msg.error.tests)
+	            			return;
+	                	}
 	                	tests.forEach(function(test) {
 	                		
 	                    	if(SharedTabService.tests) {
@@ -148,6 +157,11 @@ angular.module('e8MyTests')
                 	}
                 	
                 	TestService.getTests(mouseOverNode.node.guid, function (tests) {
+                		if(tests==null){
+                			$rootScope.blockLeftPanel.stop();
+                			CommonService.showErrorMessage(e8msg.error.tests)
+                			return;
+                		}
                     	if(item.nodeType == EnumService.NODE_TYPE.test) {
                     		tests.forEach(function(nodeItem) {                        
                         		if(nodeItem.nodeType == EnumService.NODE_TYPE.test && nodeItem.title == item.title) {
@@ -545,7 +559,11 @@ angular.module('e8MyTests')
 
                     $rootScope.blockLeftPanel.start();
                     TestService.getTests(defaultFolder.node.guid, function (tests) {
-						
+						if(tests==null){
+							$rootScope.blockLeftPanel.stop();
+							CommonService.showErrorMessage(e8msg.error.tests)
+                			return;
+						}
                         tests.forEach(function (test) {
 
                         	if(SharedTabService.tests) {
@@ -578,14 +596,22 @@ angular.module('e8MyTests')
             defaultFolder.toggle();
 
             if (!defaultFolder.collapsed) {            	
-				
+            	   $rootScope.blockLeftPanel.start();
                 ArchiveService.getArchiveFolders(defaultFolder.node, function (userFolders) {
+                	if(userFolders==null){
+               		 $rootScope.blockLeftPanel.stop();
+               		 CommonService.showErrorMessage(e8msg.error.archiveFolders);
+               		 return;
+               	}
 
                     defaultFolder.node.nodes = userFolders;
 
-                    $rootScope.blockLeftPanel.start();
                     TestService.getArchiveTests(defaultFolder.node.guid, function (tests) {
-                    	
+                    	if(tests==null){
+                    		$rootScope.blockLeftPanel.stop();
+                    		 CommonService.showErrorMessage(e8msg.error.archiveTests);
+                    		return;
+                    	}
                     	if(userFolders.length == 0 && tests.length == 0) {
     						 
                     		defaultFolder.node.nodes.push(CommonService.getEmptyFolder());                    		
@@ -791,7 +817,6 @@ angular.module('e8MyTests')
         		
         		if(restoredFolder == null) {
         			$rootScope.blockLeftPanel.stop();
-        			
         			CommonService.showErrorMessage(e8msg.error.restore)
         			return;
         		} else if(restoredFolder == EnumService.HttpStatus.CONFLICT) {
@@ -846,6 +871,11 @@ angular.module('e8MyTests')
         			
                     if(testParent && testParent.node) {
                         TestService.getTests(restoredFolder.guid, function (tests) {
+                        	if(tests==null){
+    							$rootScope.blockLeftPanel.stop();
+    							CommonService.showErrorMessage(e8msg.error.tests)
+                    			return;
+    						}
                             tests.forEach(function (test) {
                                 test.selectTestNode = false;//to show the edit icon
 
@@ -878,7 +908,11 @@ angular.module('e8MyTests')
     		
     		$modal.open(confirmObject).result.then(function(ok) {
 	    		if(ok) {
-        			ArchiveService.deleteFolder(folder.node.guid, function() {
+        			ArchiveService.deleteFolder(folder.node.guid, function(response) {
+        				if(response==null){
+        					CommonService.showErrorMessage(e8msg.error.deleteFolder)
+                			return;
+        				}
         				folder.remove(); 
 	                    if($scope.archiveRoot && $scope.archiveRoot.node && $scope.archiveRoot.node.nodes && $scope.archiveRoot.node.nodes.length == 0 && $scope.defaultFolders.length == 1)
 	                    	$scope.loadTree();
@@ -895,7 +929,11 @@ angular.module('e8MyTests')
 
     		$modal.open(confirmObject).result.then(function(ok) {
 	    		if(ok) {
-	                ArchiveService.deleteTest(test.node.guid, test.$parentNodeScope.node.guid, function() {
+	                ArchiveService.deleteTest(test.node.guid, test.$parentNodeScope.node.guid, function(response) {
+	                	if(response==null){
+        					CommonService.showErrorMessage(e8msg.error.deleteTest)
+                			return;
+        				}
 	                    test.remove();
 	                    
 	                    if($scope.archiveRoot && $scope.archiveRoot.node && $scope.archiveRoot.node.nodes && $scope.archiveRoot.node.nodes.length == 0 && $scope.defaultFolders.length == 1)
