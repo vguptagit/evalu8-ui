@@ -20,7 +20,7 @@ angular.module('e8MyTests')
         	
         	UserFolderService.defaultFolders(function (defaultFolders) {
         		if(defaultFolders==null){
-        			CommonService.showErrorMessage(e8msg.error.restore)
+        			CommonService.showErrorMessage(e8msg.error.folder)
         			return;
         		}
         		

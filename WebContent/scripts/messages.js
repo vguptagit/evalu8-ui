@@ -15,6 +15,7 @@
 		restore : "Unable to restore! Please try again.",
 		deleteFolder: "Unable to deleteFolder! Please try again.",
 		deleteTest: "Unable to deleteTest! Please try again.",
+		folder : "Unable to fetch folders! Please try again.",
 		archiveFolders : "Unable to fetch archived folders! Please try again.",
 		archiveTests : "Unable to fetch archived tests! Please try again.",
 		testQuestions: "Unable to fetch testQuestions! Please try again.",
