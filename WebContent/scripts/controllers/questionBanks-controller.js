@@ -649,6 +649,8 @@ angular
 
 													}).error(function () {
 													    currentNode.node.isHttpReqCompleted = true;
+													    CommonService.showErrorMessage(e8msg.error.cantFetchQuestions)
+									        			return;
 											});
 										
 									}
@@ -1535,12 +1537,13 @@ angular
 									$scope.expandedNodes=[];
 									var count = 0;
 									var emptyBooks=0;
+									var isErrorExists=false;
 									$scope.selectedBooks.forEach(function(book){
 										ContainerService.getQuestionTypeContainers(book.guid,$scope.selectedQuestionTypes.toString(),function(containers){
 											if(containers==null){
-												CommonService.showErrorMessage(e8msg.error.cantFetchBooks)
-						            			return;
+												isErrorExists=true;
 											}
+											
 											if(containers.length==0){
 												emptyBooks = emptyBooks+1;
 											}
@@ -1560,6 +1563,9 @@ angular
 											count=count+1;
 											if(count == $scope.selectedBooks.length){
 												$rootScope.blockPage.stop();
+												if(isErrorExists){
+													CommonService.showErrorMessage(e8msg.error.cantFetchSelectedQuestionType)
+												}
 											}
 											if(emptyBooks == $scope.selectedBooks.length){
 												$rootScope.blockPage.stop();

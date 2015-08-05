@@ -25,7 +25,10 @@
 		cantFetchNodes: "Unable to fetch nodes! Please try again.",
 		cantFetchDisciplines: "Unable to fetch descipline! Please try again.",
 		cantFetchTests: "Unable to fetch tests! Please try again.",
-		cantFetchBooks: "Unable to fetch books! Please try again."
+		cantFetchBooks: "Unable to fetch books! Please try again.",
+		cantFetchSelectedQuestionType: "Unable to fetch selected question type for some/all books! Please try again.",
+		cantFetchQuestions: "Unable to fetch questions! Please try again."
+		
 	};
 
 	ns.success = {
