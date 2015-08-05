@@ -20,7 +20,7 @@ angular.module('e8MyTests')
         	
         	UserFolderService.defaultFolders(function (defaultFolders) {
         		if(defaultFolders==null){
-        			CommonService.showErrorMessage(e8msg.error.folder)
+        			CommonService.showErrorMessage(e8msg.error.cantFetchFolders)
         			return;
         		}
         		
@@ -33,7 +33,7 @@ angular.module('e8MyTests')
 	                TestService.getTests($scope.myTestRoot.guid, function(tests){
 	                	if(tests==null){
 	                		$rootScope.blockLeftPanel.stop();
-	                		CommonService.showErrorMessage(e8msg.error.tests)
+	                		CommonService.showErrorMessage(e8msg.error.cantFetchTests)
 	            			return;
 	                	}
 	                	tests.forEach(function(test) {
@@ -159,7 +159,7 @@ angular.module('e8MyTests')
                 	TestService.getTests(mouseOverNode.node.guid, function (tests) {
                 		if(tests==null){
                 			$rootScope.blockLeftPanel.stop();
-                			CommonService.showErrorMessage(e8msg.error.tests)
+                			CommonService.showErrorMessage(e8msg.error.cantFetchTests)
                 			return;
                 		}
                     	if(item.nodeType == EnumService.NODE_TYPE.test) {
@@ -561,7 +561,7 @@ angular.module('e8MyTests')
                     TestService.getTests(defaultFolder.node.guid, function (tests) {
 						if(tests==null){
 							$rootScope.blockLeftPanel.stop();
-							CommonService.showErrorMessage(e8msg.error.tests)
+							CommonService.showErrorMessage(e8msg.error.cantFetchTests)
                 			return;
 						}
                         tests.forEach(function (test) {
@@ -600,7 +600,7 @@ angular.module('e8MyTests')
                 ArchiveService.getArchiveFolders(defaultFolder.node, function (userFolders) {
                 	if(userFolders==null){
                		 $rootScope.blockLeftPanel.stop();
-               		 CommonService.showErrorMessage(e8msg.error.archiveFolders);
+               		 CommonService.showErrorMessage(e8msg.error.cantFetchArchiveFolders);
                		 return;
                	}
 
@@ -609,7 +609,7 @@ angular.module('e8MyTests')
                     TestService.getArchiveTests(defaultFolder.node.guid, function (tests) {
                     	if(tests==null){
                     		$rootScope.blockLeftPanel.stop();
-                    		 CommonService.showErrorMessage(e8msg.error.archiveTests);
+                    		 CommonService.showErrorMessage(e8msg.error.cantFetchArchiveTests);
                     		return;
                     	}
                     	if(userFolders.length == 0 && tests.length == 0) {
@@ -643,7 +643,7 @@ angular.module('e8MyTests')
         		if(archivedFolder == null) {
         			$rootScope.blockLeftPanel.stop();
         			
-        			CommonService.showErrorMessage(e8msg.error.archive)
+        			CommonService.showErrorMessage(e8msg.error.cantArchive)
         			return;
         		}
         		folder.remove();        		
@@ -694,7 +694,7 @@ angular.module('e8MyTests')
         		if(archivedFolder == null) {
         			$rootScope.blockLeftPanel.stop();
         			
-        			CommonService.showErrorMessage(e8msg.error.archive)
+        			CommonService.showErrorMessage(e8msg.error.cantArchive)
         			return;
         		}
         		
@@ -742,7 +742,7 @@ angular.module('e8MyTests')
         		if(restoredFolder == null) {
         			$rootScope.blockLeftPanel.stop();
         			
-        			CommonService.showErrorMessage(e8msg.error.restore)
+        			CommonService.showErrorMessage(e8msg.error.cantRestore)
         			return;
         		} else if(restoredFolder == EnumService.HttpStatus.CONFLICT) {
         			$rootScope.blockLeftPanel.stop();
@@ -817,7 +817,7 @@ angular.module('e8MyTests')
         		
         		if(restoredFolder == null) {
         			$rootScope.blockLeftPanel.stop();
-        			CommonService.showErrorMessage(e8msg.error.restore)
+        			CommonService.showErrorMessage(e8msg.error.cantRestore)
         			return;
         		} else if(restoredFolder == EnumService.HttpStatus.CONFLICT) {
         			$rootScope.blockLeftPanel.stop();
@@ -873,7 +873,7 @@ angular.module('e8MyTests')
                         TestService.getTests(restoredFolder.guid, function (tests) {
                         	if(tests==null){
     							$rootScope.blockLeftPanel.stop();
-    							CommonService.showErrorMessage(e8msg.error.tests)
+    							CommonService.showErrorMessage(e8msg.error.cantFetchTests)
                     			return;
     						}
                             tests.forEach(function (test) {
@@ -910,7 +910,7 @@ angular.module('e8MyTests')
 	    		if(ok) {
         			ArchiveService.deleteFolder(folder.node.guid, function(response) {
         				if(response==null){
-        					CommonService.showErrorMessage(e8msg.error.deleteFolder)
+        					CommonService.showErrorMessage(e8msg.error.cantDeleteFolder)
                 			return;
         				}
         				folder.remove(); 
@@ -931,7 +931,7 @@ angular.module('e8MyTests')
 	    		if(ok) {
 	                ArchiveService.deleteTest(test.node.guid, test.$parentNodeScope.node.guid, function(response) {
 	                	if(response==null){
-        					CommonService.showErrorMessage(e8msg.error.deleteTest)
+        					CommonService.showErrorMessage(e8msg.error.cantDeleteTest)
                 			return;
         				}
 	                    test.remove();

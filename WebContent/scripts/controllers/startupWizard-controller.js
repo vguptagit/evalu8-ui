@@ -84,10 +84,10 @@ angular
 						'UserService',
 						'BookService',
 						'DisciplineService',
-						'UserBookService','$modal','notify',
+						'UserBookService','$modal','notify','CommonService',
 						function($scope, $rootScope, $location, $routeParams,
 								$http, UserService, BookService,
-								DisciplineService,UserBookService,$modal,notify) {
+								DisciplineService,UserBookService,$modal,notify,CommonService) {
 
 							$scope.searchedDiscpline = "";
 							$scope.disciplines = {
@@ -122,7 +122,7 @@ angular
 							
 							DisciplineService.allDisciplines(function(allDisciplines) {
 								if(allDisciplines==null){
-									CommonService.showErrorMessage(e8msg.error.discipline)
+									CommonService.showErrorMessage(e8msg.error.cantFetchDisciplines)
 				        			return;
 								}
 								$scope.disciplines.all = allDisciplines;
@@ -289,7 +289,7 @@ angular
 										.userBookIDs(function(userBookIDs,
 												status) {
 											if(userBookIDs==null){
-												CommonService.showErrorMessage(e8msg.error.book)
+												CommonService.showErrorMessage(e8msg.error.cantFetchBooks)
 					                			return;
 											}
 											if (userBookIDs.length == 0) {
@@ -320,7 +320,7 @@ angular
 							$scope.getBooks = function(discipline,useSelectedBooks) {
 								BookService.disciplineBooks(discipline,function(disciplineBooks) {
 									if(disciplineBooks==null){
-										CommonService.showErrorMessage(e8msg.error.discipline)
+										CommonService.showErrorMessage(e8msg.error.cantFetchDisciplines)
 				            			return;
 									}
 									try{

@@ -111,7 +111,7 @@ angular
 							$scope.loadTree = function() {
 								DisciplineService.userDisciplines(function(userDisciplines) {
 									if(userDisciplines==null){
-										CommonService.showErrorMessage(e8msg.error.discipline)
+										CommonService.showErrorMessage(e8msg.error.cantFetchDisciplines)
 					        			return;
 									}
 									$scope.disciplines = userDisciplines;
@@ -336,7 +336,7 @@ angular
 	                                    ContainerService.bookNodes(book.node.guid, $scope.selectedQuestionTypes.toString(),
 	                                    		function(bookNodes) {
 	                                    	if(bookNodes==null){
-	                                    		CommonService.showErrorMessage(e8msg.error.nodes)
+	                                    		CommonService.showErrorMessage(e8msg.error.cantFetchNodes)
 	                                    		return;
 	                                    	}
 	                                        book.node.nodes = bookNodes;
@@ -544,7 +544,7 @@ angular
                                         TestService.getPublisherTestsByBookId(currentNode.node.bookId, function(tests){
                                         	if(tests==null){
                                         		currentNode.node.isHttpReqCompleted = true;
-                                        		CommonService.showErrorMessage(e8msg.error.publisherTests);
+                                        		CommonService.showErrorMessage(e8msg.error.cantFetchPublisherTests);
                                         		return;
                                         	}
 
@@ -578,9 +578,9 @@ angular
 										$scope.selectedQuestionTypes.toString(),
 										false,
 										function(response) {
-										if(response){
+										if(response == null){
 											currentNode.node.isHttpReqCompleted = true;
-											CommonService.showErrorMessage(e8msg.error.nodes)
+											CommonService.showErrorMessage(e8msg.error.cantFetchNodes)
 					            			return;
 										}
 										    currentNode.node.IsContainerReqCompleted = true;
@@ -1224,7 +1224,7 @@ angular
 									ContainerService.getAllContainers(node.guid,
 											function(response) {
 										if(response==null){
-											CommonService.showErrorMessage(e8msg.error.nodes)
+											CommonService.showErrorMessage(e8msg.error.cantFetchNodes)
 				                			return;
 										}
 												var bookContainers={};
@@ -1380,8 +1380,8 @@ angular
 								if($scope.isAdvancedSearchMode){
 									$rootScope.blockPage.start();
 									ContainerService.containerNodes($scope.bookID,searchedContainer.guid,$scope.selectedQuestionTypes.toString(), true, function(response){
-										if(response){
-											CommonService.showErrorMessage(e8msg.error.nodes)
+										if(response == null){
+											CommonService.showErrorMessage(e8msg.error.cantFetchNodes)
 					            			return;
 										}
 										if(response.length > 0){
@@ -1538,7 +1538,7 @@ angular
 									$scope.selectedBooks.forEach(function(book){
 										ContainerService.getQuestionTypeContainers(book.guid,$scope.selectedQuestionTypes.toString(),function(containers){
 											if(containers==null){
-												CommonService.showErrorMessage(e8msg.error.book)
+												CommonService.showErrorMessage(e8msg.error.cantFetchBooks)
 						            			return;
 											}
 											if(containers.length==0){

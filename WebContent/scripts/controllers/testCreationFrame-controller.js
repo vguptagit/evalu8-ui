@@ -36,7 +36,7 @@ angular
 							if (SharedTabService.userQuestionSettings.length == 0){
 								UserService.userQuestionMetadata(function(userQuestionMetadata){
 									if(userQuestionMetadata==null){
-										CommonService.showErrorMessage(e8msg.error.metadata)
+										CommonService.showErrorMessage(e8msg.error.cantFetchMetadata)
 				            			return;
 									}
 										$.each(userQuestionMetadata, function(index, item){	
@@ -925,7 +925,7 @@ angular
 									test.isTabClicked=true;									
 									TestService.getTestQuestions(test.testId,function(questions) {
 										if(questions==null){
-											CommonService.showErrorMessage(e8msg.error.testQuestions);
+											CommonService.showErrorMessage(e8msg.error.cantFetchTestQuestions);
 				                    		return;
 										}
 												$scope.bindTestQuestions(questions,$scope.currentIndex);
@@ -2030,7 +2030,7 @@ angular
 								TestService.createVersions(this, function (scope, testResult) {
 									if(testResult==null){
 										$rootScope.blockPage.stop();
-										CommonService.showErrorMessage(e8msg.error.versions);
+										CommonService.showErrorMessage(e8msg.error.cantCreateVersions);
 			                    		return;
 									}
 								    try {

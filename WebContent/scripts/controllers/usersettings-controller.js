@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('evalu8Demo')
-  .controller('UserSettingsController', ['$scope', '$rootScope', '$modalInstance', '$modal', 'UserService', 'BookService','SharedTabService','parentScope',
-     function ($scope, $rootScope, $modalInstance, $modal, UserService, BookService,SharedTabService,parentScope) {
+  .controller('UserSettingsController', ['$scope', '$rootScope', '$modalInstance', '$modal', 'UserService', 'BookService','SharedTabService','parentScope','CommonService',
+     function ($scope, $rootScope, $modalInstance, $modal, UserService, BookService,SharedTabService,parentScope,CommonService) {
 	  $scope.isClicked=false;
 	  $scope.activeTab = "questionBanks";
 	  parentScope.isSettingsClicked=false;
@@ -22,7 +22,7 @@ angular.module('evalu8Demo')
 	  $scope.userBooks = [];
 	  UserService.userDisciplines(function(userDisciplines) {
 		  if(userDisciplines==null){
-				CommonService.showErrorMessage(e8msg.error.discipline)
+				CommonService.showErrorMessage(e8msg.error.cantFetchDisciplines)
 				return;
 			}
 		  $scope.disciplines = userDisciplines;		  	  		  
@@ -30,7 +30,7 @@ angular.module('evalu8Demo')
 	  
 	  BookService.userBooks(function(response) {
 		  if(response==null){
-				CommonService.showErrorMessage(e8msg.error.book)
+				CommonService.showErrorMessage(e8msg.error.cantFetchBooks)
 				return;
 			}
 		  $scope.userBooks= response;

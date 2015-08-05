@@ -3,8 +3,8 @@ angular
 .controller(
 		'ImportUserBooksController',
 		[
-		 '$scope','UserBookService'	,'$filter',
-		 function($scope,UserBookService,$filter) {
+		 '$scope','UserBookService'	,'$filter','CommonService',
+		 function($scope,UserBookService,$filter,CommonService) {
 
 			 $scope.selectedAllUserBooks = false;			
 			 $scope.disableCheckAllBooks = false;			
@@ -14,7 +14,7 @@ angular
 			 UserBookService
 			 .getUserBooks(function(userBooks) {
 				 if(userBooks==null){
-					 CommonService.showErrorMessage(e8msg.error.book)
+					 CommonService.showErrorMessage(e8msg.error.cantFetchBooks)
          			 return;
 				 }
 				 if (userBooks.length == 0) {

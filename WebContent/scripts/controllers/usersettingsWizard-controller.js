@@ -102,11 +102,11 @@ angular
 						'WizardHandler',
 						'$modalInstance',
 						'blockUI',
-						'step','source','parentScope',
+						'step','source','parentScope','CommonService',
 						function($scope, $rootScope, $location, $routeParams,
 								$http, UserService, BookService,
 								DisciplineService, UserQuestionsService, WizardHandler,
-								$modalInstance, blockUI, step, source,parentScope) {
+								$modalInstance, blockUI, step, source,parentScope,CommonService) {
 							
 							parentScope.isAddQstBankClicked=false;
 							parentScope.isClicked=false;
@@ -137,12 +137,12 @@ angular
 							DisciplineService.allDisciplines(function(allDisciplines) {
 								$scope.disciplines.all = allDisciplines;
 								if(allDisciplines==null){
-									CommonService.showErrorMessage(e8msg.error.discipline)
+									CommonService.showErrorMessage(e8msg.error.cantFetchDisciplines)
 				        			return;
 								}
 								UserService.userDisciplines(function(userDisciplines) {
 									if(userDisciplines==null){
-										CommonService.showErrorMessage(e8msg.error.discipline)
+										CommonService.showErrorMessage(e8msg.error.cantFetchDisciplines)
 					        			return;
 									}
 									$scope.disciplines.userSelected = userDisciplines;
@@ -299,7 +299,7 @@ angular
 							$scope.getBooks = function(discipline,useSelectedBooks) {
 								BookService.disciplineBooks(discipline,function(disciplineBooks) {
 									if(disciplineBooks==null){
-										CommonService.showErrorMessage(e8msg.error.discipline)
+										CommonService.showErrorMessage(e8msg.error.cantFetchDisciplines)
 				            			return;
 									}
 									disciplineBooks.sort(function(a, b) {
@@ -626,7 +626,7 @@ angular
 										
                                         BookService.userBooks(function(response) {
                                         	if(response==null){
-                                				CommonService.showErrorMessage(e8msg.error.book)
+                                				CommonService.showErrorMessage(e8msg.error.cantFetchBooks)
                                 				return;
                                 			}
                                         	$scope.$parent.userBooks = response;
