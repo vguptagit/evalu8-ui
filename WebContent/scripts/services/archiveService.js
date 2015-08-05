@@ -104,7 +104,7 @@ angular.module('evalu8Demo')
 					if(callback) callback(1);
 				})
 				.error(function(error, status) {
-					callback(null);
+					if(callback) callback(null);
 				})				
 			};
 			
@@ -122,7 +122,7 @@ angular.module('evalu8Demo')
                     if(callback) callback(1);
                 })
                 .error(function(error, status) {
-                	callback(null);
+                	if(callback) callback(null);
                 })                
             };
 						

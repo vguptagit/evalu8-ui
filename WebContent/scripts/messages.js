@@ -10,7 +10,7 @@
 	ns.error = {
 		cantImportUserBooks : "Unable to import! Please try again.",
 		cantSave : "Unable to save! Please try again.",
-		CantLogin : "Unable to login! Please try again.",
+		cantLogin : "Unable to login! Please try again.",
 		cantArchive : "Unable to archive! Please try again.",
 		cantRestore : "Unable to restore! Please try again.",
 		cantDeleteFolder: "Unable to deleteFolder! Please try again.",
