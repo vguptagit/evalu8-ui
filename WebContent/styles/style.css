@@ -68,7 +68,7 @@ label {
 .searchdiv {
 	background-color: #f8f8f8;
 	height: 70px;
-	width: 98%;
+	width: 100%;
 	padding: 20px;
 }
 
@@ -120,18 +120,14 @@ label {
 	padding-left: 20px;
 }
 
-.discplineheight {
-	height: 650px;
+.discplineheight, .bookContainer {
+	position: absolute;
+    top: 80px;
+    bottom: 0;
 	overflow: auto;
 	overflow-x: hidden;
-	width: 98%;
-}
-
-.bookContainer {
-	height: 650px;
-	overflow: auto;
-	overflow-x: hidden;
-	width: 98%;
+	width: 100%;
+	right: 0;
 }
 
 .form-group {
@@ -993,8 +989,10 @@ h4, .h4, h5, .h5, h6, .h6 {
 }
 
 .welcomebackground {
-	height: 94vh;
 	background-color: #f8f8f8;
+	margin: auto;
+  	position: absolute;
+  	top: 40px; left: 0; bottom: 0; right: 0;
 }
 
 #MyTest-tree-root .angular-ui-tree-placeholder {

@@ -14,9 +14,9 @@
 	template="views/usersettings/startupWizardTemplate.html"> 	<wz-step title="Choose Your Discipline"
 	canenter="enterDiscipline" canexit="exitDiscipline">
 
-<div class="row"
+<div class="row startup-wizard-main"
 	style="vertical-align: middle; middle; margin-top: 20px;">
-	<div class="col-lg-5">
+	<div class="col-lg-5 startup-wizard-leftPanel">
 		<div class="instructionsHeader">Pick the discipline(s) on the
 			right in which you create tests</div>
 		<div>
@@ -29,7 +29,7 @@
 			</ul>
 		</div>
 	</div>
-    <div class="col-lg-7 padding-right-0">
+    <div class="col-lg-7 startup-wizard-rightPanel">
         <div class="input-group searchdiv">
             <input type="text" placeholder="Search Discipline"
                    class="searchDiscpline form-control" ng-model="searchedDiscpline"
@@ -49,7 +49,7 @@
 
 </wz-step> <wz-step title="Choose Your Books" canenter="enterBook" canexit="saveDiscplineAndBook" >
 <div class="row margin-top-20">
-	<div class="col-lg-5">
+	<div class="col-lg-5 startup-wizard-leftPanel">
 		<div>
 			<ul class="a">
 				<li class="discription">Pick the textbooks or topics on the
@@ -61,7 +61,7 @@
 			</ul>
 		</div>
 	</div>
-    <div class="col-lg-7 padding-right-0">
+    <div class="col-lg-7 startup-wizard-rightPanel">
         <div class="input-group searchdiv">
             <input type="text"
                    placeholder="Enter title, author, publisher, bookid or ISBN"
@@ -94,7 +94,7 @@
 </wz-step>  <wz-step title="Import Tests or Questions (Optional)"
 	canenter="enterUserBooks">
 <div class="row margin-top-20">
-	<div class="col-lg-5">
+	<div class="col-lg-5 startup-wizard-leftPanel">
 		<div>
 			<ul class="a">
 				<li class="discription">Import Books, tests and/or
@@ -104,7 +104,7 @@
 			</ul>
 		</div>
 	</div>
-    <div class="col-lg-7 padding-right-0">
+    <div class="col-lg-7 startup-wizard-rightPanel">
         <div x-ng-controller="ImportUserBooksController"
              x-ng-include="'views/partials/import-books.html'"></div>
     </div>
