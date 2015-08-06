@@ -102,16 +102,15 @@ angular
 						'WizardHandler',
 						'$modalInstance',
 						'blockUI',
-						'step','source','parentScope',
+						'step','source','parentScope','CommonService',
 						function($scope, $rootScope, $location, $routeParams,
 								$http, UserService, BookService,
 								DisciplineService, UserQuestionsService, WizardHandler,
-								$modalInstance, blockUI, step, source,parentScope) {
+								$modalInstance, blockUI, step, source,parentScope,CommonService) {
 							
 							parentScope.isAddQstBankClicked=false;
 							parentScope.isClicked=false;
 							$scope.searchedDiscipline = "";
-							$scope.trackEnterKey = 0;
 							$scope.disciplines = {
 								all : [],
 								userSelected : []
@@ -137,8 +136,15 @@ angular
 
 							DisciplineService.allDisciplines(function(allDisciplines) {
 								$scope.disciplines.all = allDisciplines;
-								
+								if(allDisciplines==null){
+									CommonService.showErrorMessage(e8msg.error.cantFetchDisciplines)
+				        			return;
+								}
 								UserService.userDisciplines(function(userDisciplines) {
+									if(userDisciplines==null){
+										CommonService.showErrorMessage(e8msg.error.cantFetchDisciplines)
+					        			return;
+									}
 									$scope.disciplines.userSelected = userDisciplines;
 									if ($scope.step == '2') {
 										$scope.exitDiscipline();
@@ -184,16 +190,9 @@ angular
 								}
 
 								if (event.keyCode === 13) {
-									if ($scope.trackEnterKey > 0) {
 										$scope.addToselectedDiscipline(
 												$scope.searchedDiscipline, true);
-									} else {
-										$scope.trackEnterKey = 1
 									}
-
-								} else {
-									$scope.trackEnterKey = 0
-								}
 							}
 
 							$scope.addToselectedDiscipline = function(
@@ -266,7 +265,6 @@ angular
 
 							/* books related starts */
 							$scope.searchedBook = undefined;
-							$scope.trackEnterKey = 0;
 							$scope.exitDiscipline = function() {
 								$scope.searchedDiscipline="";
 								$scope.disciplineBooks = [];
@@ -300,6 +298,10 @@ angular
 							// To get books for the given discipline.
 							$scope.getBooks = function(discipline,useSelectedBooks) {
 								BookService.disciplineBooks(discipline,function(disciplineBooks) {
+									if(disciplineBooks==null){
+										CommonService.showErrorMessage(e8msg.error.cantFetchDisciplines)
+				            			return;
+									}
 									disciplineBooks.sort(function(a, b) {
 										return new Date(b.created) - new Date(a.created);
 									});
@@ -413,7 +415,6 @@ angular
 
 								}
 								if (event.keyCode === 13) {
-									if ($scope.trackEnterKey > 0) {
 										var bookguid = $scope
 												.getGUIDByTitle($scope.searchedBook);
 										$scope.addBookToSelectedList(bookguid,
@@ -449,12 +450,7 @@ angular
 															})
 												});
 
-									} else {
-										$scope.trackEnterKey = 1;
-									}
-								} else {
-									$scope.trackEnterKey = 0
-								}
+								} 
 
 							}
 
@@ -629,7 +625,10 @@ angular
 									UserService.saveUserBooks($scope.books.currentlySelected, function() {
 										
                                         BookService.userBooks(function(response) {
-
+                                        	if(response==null){
+                                				CommonService.showErrorMessage(e8msg.error.cantFetchBooks)
+                                				return;
+                                			}
                                         	$scope.$parent.userBooks = response;
                                         	
                                         	if(source && source == "questionBankTab") {

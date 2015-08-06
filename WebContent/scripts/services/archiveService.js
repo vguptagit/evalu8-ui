@@ -41,7 +41,7 @@ angular.module('evalu8Demo')
 						.error(
 								function(error) {
 
-									callback (userFolders);
+									callback (null);
 								})				
 			};			
 			
@@ -101,10 +101,10 @@ angular.module('evalu8Demo')
 
 				$http.delete(evalu8config.apiUrl + '/my/delete/folders/' + folderId, config)
 				.success(function(response) {									
-					if(callback) callback();
+					if(callback) callback(1);
 				})
 				.error(function(error, status) {
-
+					if(callback) callback(null);
 				})				
 			};
 			
@@ -119,10 +119,10 @@ angular.module('evalu8Demo')
                 
                 $http.delete(evalu8config.apiUrl + url, config)
                 .success(function(response) {                                    
-                    if(callback) callback();
+                    if(callback) callback(1);
                 })
                 .error(function(error, status) {
-
+                	if(callback) callback(null);
                 })                
             };
 						

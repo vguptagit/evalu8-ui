@@ -84,13 +84,12 @@ angular
 						'UserService',
 						'BookService',
 						'DisciplineService',
-						'UserBookService','$modal','notify',
+						'UserBookService','$modal','notify','CommonService',
 						function($scope, $rootScope, $location, $routeParams,
 								$http, UserService, BookService,
-								DisciplineService,UserBookService,$modal,notify) {
+								DisciplineService,UserBookService,$modal,notify,CommonService) {
 
 							$scope.searchedDiscpline = "";
-							$scope.trackEnterKey = 0;
 							$scope.disciplines = {
 								all : [],
 								userSelected : []
@@ -122,6 +121,10 @@ angular
 							$rootScope.blockPage.start();
 							
 							DisciplineService.allDisciplines(function(allDisciplines) {
+								if(allDisciplines==null){
+									CommonService.showErrorMessage(e8msg.error.cantFetchDisciplines)
+				        			return;
+								}
 								$scope.disciplines.all = allDisciplines;
 								
 								UserService.userDisciplines(function(userDisciplines) {
@@ -170,16 +173,11 @@ angular
 								}
 
 								if (event.keyCode === 13) {
-									if ($scope.trackEnterKey > 0) {
 										$scope.addToselectedDiscipline(
 												$scope.searchedDiscpline, true);
-									} else {
-										$scope.trackEnterKey = 1
-									}
+									
 
-								} else {
-									$scope.trackEnterKey = 0
-								}
+								} 
 							}
 
 							$scope.addToselectedDiscipline = function(
@@ -275,7 +273,6 @@ angular
 
 							/* books related starts */
 							$scope.searchedBook = undefined;
-							$scope.trackEnterKey = 0;
 							$scope.enterBook = function() {
 								$rootScope.blockPage.start();
 								$(".searchBook").val("");
@@ -291,6 +288,10 @@ angular
 								UserService
 										.userBookIDs(function(userBookIDs,
 												status) {
+											if(userBookIDs==null){
+												CommonService.showErrorMessage(e8msg.error.cantFetchBooks)
+					                			return;
+											}
 											if (userBookIDs.length == 0) {
 												$scope
 														.enableDisableNextButton($scope
@@ -318,6 +319,10 @@ angular
 							// To get books for the given discipline.
 							$scope.getBooks = function(discipline,useSelectedBooks) {
 								BookService.disciplineBooks(discipline,function(disciplineBooks) {
+									if(disciplineBooks==null){
+										CommonService.showErrorMessage(e8msg.error.cantFetchDisciplines)
+				            			return;
+									}
 									try{
 										disciplineBooks.sort(function(a, b) {
 											return new Date(b.created) - new Date(a.created);
@@ -437,7 +442,6 @@ angular
 
 								}
 								if (event.keyCode === 13) {
-									if ($scope.trackEnterKey > 0) {
 										var bookguid = $scope
 												.getGUIDByTitle($scope.searchedBook);
 										$scope.addBookToSelectedList(bookguid,
@@ -472,12 +476,8 @@ angular
 																}
 															})
 												});
-									} else {
-										$scope.trackEnterKey = 1;
-									}
-								} else {
-									$scope.trackEnterKey = 0
-								}
+									
+								} 
 
 							}
 

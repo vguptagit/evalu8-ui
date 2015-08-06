@@ -3,8 +3,8 @@
 angular.module('e8CustomQuestionBanks')
 
 .controller('CustomQuestionBanksController',
-    ['$scope', '$rootScope', '$location', '$cookieStore', '$http', '$sce', 'CustomQuestionBanksService', 'EnumService', 'SharedTabService', '$modal', 'TestService',
-    function ($scope, $rootScope, $location, $cookieStore, $http, $sce,CustomQuestionBanksService,EnumService,SharedTabService,$modal,TestService) {
+    ['$scope', '$rootScope', '$location', '$cookieStore', '$http', '$sce', 'CustomQuestionBanksService', 'EnumService', 'SharedTabService', '$modal', 'TestService','CommonService',
+    function ($scope, $rootScope, $location, $cookieStore, $http, $sce,CustomQuestionBanksService,EnumService,SharedTabService,$modal,TestService,CommonService) {
   
     	
     //binding all Question format template to the "questionTemplates" Model.
@@ -91,6 +91,10 @@ angular.module('e8CustomQuestionBanks')
          }
          
          TestService.getMetadata(newTest.guid, function (test) {
+        	 if(test==null){
+        		 CommonService.showErrorMessage(e8msg.error.cantFetchMetadata);
+         		return;
+        	 }
              test.nodeType = "test";
              createdTab.metadata = TestService.getTestMetadata(test);
              createdTab.treeNode = null;

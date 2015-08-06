@@ -34,7 +34,10 @@ angular
 					.success(function(response) {
 
 						callback(response);
-					});
+					})
+					.error(function (error, status) {
+					callback(null);
+				  })
 				};
 
 				this.userBookIDs = function(callback) {
@@ -52,7 +55,10 @@ angular
 						}
 
 						callback(userBookIDs);
-					});
+					})
+					.error(function (error, status) {
+						callback(null);
+					}) 
 				};
 
 				this.userQuestionMetadata = function(callback) {
@@ -76,7 +82,10 @@ angular
 										}
 
 										callback(userQuestionMetadata);
-									});
+									})
+									.error(function (error, status) {
+										callback(null);
+									}) 
 
 				};
 
@@ -89,7 +98,7 @@ angular
 								if (callback)
 									callback();
 							}).error(function(error, status) {
-
+								callback(null);
 					})
 				}
 
@@ -117,14 +126,10 @@ angular
 									userQuestionMetadata, config)
 							.success(
 									function(response) {
-										document
-												.getElementById("divSaveMessage").innerHTML = "<p style='color:green'>Settings saved successfully</p>";
 										callback(true);
 									})
 							.error(
 									function(error, status) {
-										document
-												.getElementById("divSaveMessage").innerText = "<p style='color:red'>Error saving settings</p>" + "<p>" + error.message + "</p>";
 										callback(false);
 									})
 				}

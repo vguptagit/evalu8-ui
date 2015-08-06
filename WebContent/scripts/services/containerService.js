@@ -33,7 +33,7 @@ angular
 				callback(bookNodes);
 			})
 			.error(function(){
-				callback(bookNodes);
+				callback(null);
 			});
 		};
 		
@@ -62,6 +62,9 @@ angular
 						response = []
 					}
 					callback(response);
+				})
+				.error(function(){
+					callback(null);
 				});
 		};
 		
@@ -72,7 +75,7 @@ angular
 					function(response) {
 						callback(response);
 					}).error(function() {
-						callback(nodes);
+						callback(null);
 					});
 			};
 		
@@ -97,7 +100,7 @@ angular
 
 								callback(cointainers);
 							}).error(function(){
-								callback(cointainers);
+								callback(null);
 							});
 
 		};
