@@ -707,6 +707,7 @@ label {
 	border: 1px solid transparent;
 	border-radius: 4px 4px 0 0;
 	Padding: 10px 15px;
+	cursor:pointer;
 }
 
 .nav-tabs>li>a:hover {

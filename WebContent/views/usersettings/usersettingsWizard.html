@@ -14,9 +14,9 @@
 		aria-label="Close">
 		<span aria-hidden="true">&times;</span>
 	</button>
-	<h4 ng-if="step == '2'" class="modal-default-header-title"
+	<h4 ng-if="step == '2'" class="modal-default-header-title margin-lft-15"
 		id="myModalLabel">Add Question Banks</h4>
-	<h4 ng-if="step == '1'" class="modal-default-header-title"
+	<h4 ng-if="step == '1'" class="modal-default-header-title margin-lft-15"
 		id="myModalLabel">Add Disciplines</h4>
 </div>
 
@@ -117,7 +117,7 @@
 			style="border-bottom: 1px solid #ddd; padding-top: 15px;">&nbsp;</div>
 		<div class="row" style="padding-top: 12px;">
 			<div class="col-md-5"></div>
-			<div class="col-md-7 text-right">
+			<div class="col-md-7 text-right margin-lft-10neg">
 				<button ng-click="cancel()" class="backButton">Cancel</button>
 				<button class="nextButton" ng-if="step == '2'"
 					ng-click="save()">Save</button>

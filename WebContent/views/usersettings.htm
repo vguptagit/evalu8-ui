@@ -3,7 +3,7 @@
     <h4 class="modal-default-header-title" id="myModalLabel">Settings</h4>
 	</div>
 	  <div class="col-md-10 text-right  margin-top-10">
-        <div class="margin-rt-15neg">
+        <div class="margin-rt-10neg">
 		<button ng-click="cancel()" class="backButton">Cancel</button>
 		<button ng-click="savePref()" class="nextButton">Save</button>
 	</div>
@@ -47,7 +47,7 @@
                     <div class="col-md-6"></div>                              
                     </div>                                
                     <div style="clear:left;">&nbsp;</div>
-					 <div class="col-md-12" style="height: 350px; overflow-y: auto;">
+					 <div class="col-md-12 booksContainer">
 						<div ng-repeat="(key, value) in userBooks | groupBy: 'discipline'">					
 							<div ng-repeat = "book in value">
 						
