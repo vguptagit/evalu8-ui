@@ -147,11 +147,24 @@ body {
 		margin-top: 0px;
         height:initial;
 	}
-	.leftPanel {
+	.leftPanel, .startup-wizard-leftPanel {
 		left: 0px;
 	}
-	.rightPanel {
+	.rightPanel,  .startup-wizard-rightPanel{
 		right: 0px;
+	}
+	
+	.startup-wizard-leftPanel, .startup-wizard-rightPanel{
+		position: fixed;
+		top: 130px;
+		bottom: 0px;
+		width: 50%;
+		overflow-y: auto;
+		margin-top: 0px;
+        height:initial;
+        padding-left: 0px;
+        padding-right: 0px;
+        margin-right: 20px;        
 	}
     .divider{
         height: 100%;
@@ -945,6 +958,7 @@ ol {
 	padding: 0px;
 	list-style-type: none;
 	float: left;
+	margin-left: 5px;
 }
 
 .container-full>div:first-child {
@@ -1216,6 +1230,7 @@ ol {
 	margin-bottom: 0px;
 	border-radius: 0px;
     margin-top: 20px;
+    margin-left: 25px;
 }
 
 .test-wizard-container .repeatCriteria {
@@ -2098,7 +2113,7 @@ ul.a {
 	top: 157px;
 }
 
-.disciplineContainer, .bookContainer {
+.disciplineContainer {
 	height: 700px;
 	overflow: auto;
 	width: 98%;
@@ -3068,6 +3083,7 @@ li[qstntemplate='true'] label.mOptionLabel {
 	border: 1px solid #ddd;
 	border-top: 0px;
 	background-color: #f8f8f8;
+	margin-left: 25px;
 }
 
 .criteria>div {
@@ -3099,7 +3115,7 @@ li[qstntemplate='true'] label.mOptionLabel {
 }
 
 .questionColumns:first-child {
-	margin-left: 0px;
+	margin-left: 5px;
 }
 .questionColumns input{margin-top: 2px;}
 .questionColumns span{vertical-align: top;margin-left: 6px}

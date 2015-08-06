@@ -532,3 +532,9 @@ span.glyphicon.glyphicon-info-sign {
 	text-align: center;
 	line-height: 2em;
 }
+.booksContainer{
+	height: 350px;
+    overflow-y: auto;
+    margin-top: -15px;
+    padding-top: 10px;
+}
