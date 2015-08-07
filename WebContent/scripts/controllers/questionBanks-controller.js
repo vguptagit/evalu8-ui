@@ -1203,6 +1203,9 @@ angular
 							$scope.selectedBookid="";
 							
 							$scope.selectBook = function(node) {
+								if(node.nodeType==EnumService.NODE_TYPE.userQuestionFolder){
+                                    return false;
+                                }
 								var isBookSelected=false;
 								var bookIndex=0
 								var existingBookIndex=-1;
@@ -1293,7 +1296,7 @@ angular
 									}
 								}
 								
-								if($scope.selectedContainer==""){
+								if($scope.selectedContainer=="" || $scope.selectedContainer.guid== undefined){
 									return;
 								}
 								
@@ -1453,6 +1456,7 @@ angular
 										$scope.showAdvancedSearch = true;
 										$scope.isAdvancedSearchClicked=false;
 									} else {
+										$scope.isAdvancedSearchClicked=false;
 										$scope.showAdvancedSearch = false;
 									}
 									
