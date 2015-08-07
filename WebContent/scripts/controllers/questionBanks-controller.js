@@ -987,9 +987,6 @@ angular
 									if($scope.selectedNodes[i].nodeType != EnumService.NODE_TYPE.question){
 									test.questionFolderNode.push($scope.selectedNodes[i]);
 									}
-									if(!$scope.selectedNodes[i].showEditQuestionIcon){
-										$scope.selectedNodes[i].showEditQuestionIcon=true;
-									}
 									$scope.getRemoveChildNodesFromQuestionFolderNodes($scope.selectedNodes[i], test);
 									if ($scope.selectedNodes[i].showEditQuestionIcon) {
 										if ($scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.question) {
@@ -1119,7 +1116,6 @@ angular
 												for (var i = 0; i < $scope.questions.length; i++) {
 													$scope.questions[i].isNodeSelected = false;
 												}
-												$scope.selectedNodes=[];
 											});
 							
 							$scope.deselectQuestionNode = function (node) {							 
