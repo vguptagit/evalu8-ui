@@ -6,9 +6,9 @@
 		</div>
         <div class="col-lg-7 padding-right-0">
             <div class="pull-right margin-rt-5">
-                <input type="button" class="btn btn-default" ng-if="currentStepNumber() > 1" wz-previous value="Back" />
-                <input type="button" class="btn btn-primary" ng-if="currentStepNumber() <= 2" wz-next value="Next" />
-                <input type="button" class="btn btn-primary" ng-if="currentStepNumber() == 3" wz-next value="Finish" />
+                <input type="button" id="back" class="btn btn-default" ng-if="currentStepNumber() > 1" wz-previous value="Back" />
+                <input type="button" id="next" class="btn btn-primary" ng-if="currentStepNumber() <= 2" wz-next value="Next" />
+                <input type="button" id="finish" class="btn btn-primary" ng-if="currentStepNumber() == 3" wz-next value="Finish" />
             </div>
         </div>
 	</div>

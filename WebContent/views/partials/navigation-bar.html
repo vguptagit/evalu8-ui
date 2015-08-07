@@ -22,8 +22,8 @@
                         <span class="settingsdiv blockinline width100 margin-bot-10"> <li class="text-center"><label class="margin-lft-20 navbar-popover-text" title="{{$root.globals.givenName}} {{$root.globals.familyName}}"><strong>{{$root.globals.givenName}} {{$root.globals.familyName}}</strong></label></li>
                         <li class ="text-center"><label class="margin-lft-20 navbar-popover-text" title="{{$root.globals.emailAddress}}">{{$root.globals.emailAddress}}</label></li></span>
                         <li>
-                            <button type="button" class="btn btn-default margin-lft-45" ng-disabled="isSettingsClicked"ng-click="settings_open()">Settings</button>
-                            <button type="button" class="btn btn-default" ng-click="logout()">Sign Out</button>
+                            <button id="settings" type="button" class="btn btn-default margin-lft-45" ng-disabled="isSettingsClicked"ng-click="settings_open()">Settings</button>
+                            <button id="signout" type="button" class="btn btn-default" ng-click="logout()">Sign Out</button>
                         </li>
                     </ul>
                 </li>
