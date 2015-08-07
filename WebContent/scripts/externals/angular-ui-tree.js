@@ -979,8 +979,7 @@
                 $document.find('body').css({'cursor': hStyle.cursor + '!important'});
               }
               
-              $('body *').css({'cursor':'-moz-grabbing'});
-              $('body *').css({'cursor':'-webkit-grabbing'});
+              $('body *').css({'cursor':'url("images/grabbing.cur"), move'});
 
               scope.$element.after(placeElm);
               scope.$element.after(hiddenPlaceElm);
