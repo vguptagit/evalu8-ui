@@ -987,6 +987,9 @@ angular
 									if($scope.selectedNodes[i].nodeType != EnumService.NODE_TYPE.question){
 									test.questionFolderNode.push($scope.selectedNodes[i]);
 									}
+									if(!$scope.selectedNodes[i].showEditQuestionIcon){
+										$scope.selectedNodes[i].showEditQuestionIcon=true;
+									}
 									$scope.getRemoveChildNodesFromQuestionFolderNodes($scope.selectedNodes[i], test);
 									if ($scope.selectedNodes[i].showEditQuestionIcon) {
 										if ($scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.question) {
@@ -1116,6 +1119,7 @@ angular
 												for (var i = 0; i < $scope.questions.length; i++) {
 													$scope.questions[i].isNodeSelected = false;
 												}
+												$scope.selectedNodes=[];
 											});
 							
 							$scope.deselectQuestionNode = function (node) {							 
@@ -1203,6 +1207,9 @@ angular
 							$scope.selectedBookid="";
 							
 							$scope.selectBook = function(node) {
+								if(node.nodeType==EnumService.NODE_TYPE.userQuestionFolder){
+                                    return false;
+                                }
 								var isBookSelected=false;
 								var bookIndex=0
 								var existingBookIndex=-1;
@@ -1293,7 +1300,7 @@ angular
 									}
 								}
 								
-								if($scope.selectedContainer==""){
+								if($scope.selectedContainer=="" || $scope.selectedContainer.guid== undefined){
 									return;
 								}
 								
@@ -1453,6 +1460,7 @@ angular
 										$scope.showAdvancedSearch = true;
 										$scope.isAdvancedSearchClicked=false;
 									} else {
+										$scope.isAdvancedSearchClicked=false;
 										$scope.showAdvancedSearch = false;
 									}
 									
