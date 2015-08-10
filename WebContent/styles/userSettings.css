@@ -65,6 +65,8 @@
 .userBooksContainer {
 	display: inline-block;
 	width: 100%;
+    overflow: auto;
+    overflow-x: hidden;	
 }
 
 .userBooks {
@@ -87,6 +89,10 @@
 
 .importInPopUp .userBookRow {
 	width: 100%;
+}
+
+.importInPopUp .userBooksContainer {
+	height: 300px;
 }
 
 .selectedUserBook {
