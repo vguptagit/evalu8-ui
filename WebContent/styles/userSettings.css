@@ -95,6 +95,13 @@
 	height: 300px;
 }
 
+section[canenter="enterUserBooks"] div.userBooksContainer{
+	position:absolute !important;
+	top: 52px;
+    bottom: 0;
+    right: 0;
+    }
+
 .selectedUserBook {
 	background-color: #007FA9;
 	color: #fff;

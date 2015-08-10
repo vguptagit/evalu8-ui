@@ -1281,9 +1281,3 @@ h4, .h4, h5, .h5, h6, .h6 {
 	font-family: Helvetica Neue Light;
 	color: #4D4D4D;
 }
-section[canenter="enterUserBooks"] div.userBooksContainer{
-	position:absolute !important;
-	top: 52px;
-    bottom: 0;
-    right: 0;
-    }
