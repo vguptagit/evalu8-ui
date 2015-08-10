@@ -1277,7 +1277,7 @@ angular
 							}
 							
 							$scope.showContainerOnClick = function(){
-								if($scope.selectedContainer==""){
+								if($scope.selectedContainer=="" || $scope.selectedContainer.guid == undefined ){
 									return;
 								}
 								$scope.showContainer();
@@ -1532,7 +1532,7 @@ angular
 									searchedQuestionTypes.push(questionType)
 								});
 								
-								if($scope.selectedContainer!=undefined && $scope.selectedContainer!=""){
+								if($scope.selectedContainer!=undefined && $scope.selectedContainer!="" && $scope.selectedContainer.guid != undefined){
 									$scope.isAdvancedSearchMode=true;
 									$scope.showContainer();
 								}

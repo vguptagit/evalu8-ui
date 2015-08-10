@@ -2797,6 +2797,7 @@ li[qstntemplate='true'] .printViewContainer .optionLabelView {
 	padding-left: 10px;
 	max-width: 100% !important;
 	vertical-align: inherit;
+	cursor: move;
 }
 
 li[qstntemplate='true'] .qti-itemBody:first-child blockquote>div.optionLabelView,
