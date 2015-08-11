@@ -559,6 +559,10 @@ angular.module('e8MyTests')
 
                     $rootScope.blockLeftPanel.start();
                     TestService.getTests(defaultFolder.node.guid, function (tests) {
+                    	if(userFolders.length == 0 && (tests == null || tests.length == 0)) {
+
+    						userFolders.push(CommonService.getEmptyFolder());
+    					}
 						if(tests==null){
 							$rootScope.blockLeftPanel.stop();
 							CommonService.showErrorMessage(e8msg.error.cantFetchTests)

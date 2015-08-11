@@ -99,11 +99,6 @@ angular.module('evalu8Demo')
 						item.draggable = true;
 						userFolders.push(item);    							    							
 					});
-					
-					if(userFolders.length == 0) {
-
-						userFolders.push(CommonService.getEmptyFolder());
-					}
 					callback (userFolders);
 				})					
 				
