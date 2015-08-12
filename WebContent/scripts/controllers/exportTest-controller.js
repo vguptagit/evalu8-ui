@@ -12,9 +12,13 @@ angular.module('e8MyTests')
         BlackboardVista: 'vista',
         QTI: 'qti'
     };
+    
     $scope.exportFileFormats = [
                              { value: 'doc', text: 'MS Word' },
-                             { value: 'pdf', text: 'PDF' }
+                             { value: 'pdf', text: 'PDF' },
+                             { value: 'pool', text: 'Blackboard Pool manager' },
+                             { value: 'test', text: 'Blackboard Test manager' },
+                             { value: 'qti', text: 'QTI 2.1' }
                              
     ];
 
@@ -45,9 +49,9 @@ angular.module('e8MyTests')
     
     
     $scope.isSaveSettingsAsDefault = false;
-    $scope.disableAnsAreaAndKey = '';
     $scope.testDownloadLink="";
 	$scope.answerKeyDownloadLink="";
+	$scope.showMSWordSetting=true;
 
     $scope.showWaiting=true;
     UserService.userPrintSettings(function(printSettings) {
@@ -55,6 +59,12 @@ angular.module('e8MyTests')
     	$scope.isIncludeStudentName = printSettings.includeStudentName;
     	
     	$scope.selectedFormat = $scope.exportFileFormats[0];
+    	if(printSettings.exportFileFormat==$scope.exportFileFormats[2] ||
+    			printSettings.exportFileFormat==$scope.exportFileFormats[3] ||
+    			printSettings.exportFileFormat==$scope.exportFileFormats[4]){
+    		 $scope.showMSWordSetting=false;
+    	}
+    	
     	
     	if(printSettings.exportFileFormat == null) {
     		$scope.selectedFormat = $scope.exportFileFormats[0];
@@ -65,7 +75,6 @@ angular.module('e8MyTests')
     			}
     		});
     	}
-        
     	$scope.selectedAnswerArea = $scope.answerAreas[0];
     	
         if(printSettings.includeAreaForStudentResponse == $scope.answerAreas[0].value)         	
@@ -106,15 +115,15 @@ angular.module('e8MyTests')
     		$scope.selectedPageNumber = $scope.pageNumbers[2];
     	
     	$scope.showWaiting=false;
-        $scope.format_change();
+    	$scope.format_change();
     })
-  
+
     $scope.format_change = function () {
         if ($scope.selectedFormat.value == FileFormats.MSWord || $scope.selectedFormat.value == FileFormats.PDF) {
-            $scope.disableAnsAreaAndKey = '';
+            $scope.showMSWordSetting=true;
             return false;
         }
-        $scope.disableAnsAreaAndKey = 'disabled';
+        $scope.showMSWordSetting=false;
     }
     
     $scope.cancel = function () {

@@ -89,13 +89,12 @@
                     </label>
                 </div>
             </div>
-            <div class="col-sm-6 col-md-6 col-lg-6">
+            <div class="col-sm-6 col-md-6 col-lg-6" ng-show="showMSWordSetting">
                 <div class="bold">Answer Area:</div>
                 <div data-ng-repeat="answerArea in answerAreas">
 
                     <label class="text-radio-label margin-top-5">
-                        <input data-ng-disabled="$parent.disableAnsAreaAndKey"
-                               data-ng-model="$parent.selectedAnswerArea"
+                        <input data-ng-model="$parent.selectedAnswerArea"
                                data-ng-value="answerArea"
                                name="answerOptions" type="radio" id="ContactMethod_0" value="radio" checked="">
                         <span>{{answerArea.text}}</span>
@@ -104,15 +103,14 @@
             </div>
         </div>
     </section>
-    <hr class="margin-top-10">
-    <section>
+    <hr class="margin-top-10" ng-show="showMSWordSetting">
+    <section ng-show="showMSWordSetting">
         <div class="col-sm-12 col-md-12 col-lg-12 blockinline row  margin-top-20">
             <div class="col-sm-6 col-md-6 col-lg-6">
                 <div class="bold">Margins:</div>
                 <div ng-repeat="margin in margins">
                     <label class="text-radio-label margin-top-5">
-                        <input data-ng-disabled="$parent.disableAnsAreaAndKey" 
-                        	   data-ng-model="$parent.selectedMargin"
+                        <input data-ng-model="$parent.selectedMargin"
                                data-ng-value="margin"
                                name="margins" type="radio" value="radio" checked="">
                         <span>{{margin.text}}</span>
@@ -124,8 +122,7 @@
                 <div data-ng-repeat="answerKey in answerKeys">
 
                     <label class="text-radio-label margin-top-5">
-                        <input data-ng-disabled="$parent.disableAnsAreaAndKey"
-                               data-ng-model="$parent.selectedAnswerKey"
+                        <input data-ng-model="$parent.selectedAnswerKey"
                                data-ng-value="answerKey"
                                name="answerKeys" type="radio" id="ContactMethod_0" value="radio" checked="">
                         <span>{{answerKey.text}}</span>
@@ -134,15 +131,14 @@
             </div>
         </div>
     </section>
-    <hr class="margin-top-10">
-    <section>
+    <hr class="margin-top-10" ng-show="showMSWordSetting">
+    <section ng-show="showMSWordSetting">
         <div class="col-sm-12 col-md-12 col-lg-12 row margin-top-20 ">
             <div class="col-sm-6 col-md-6 col-lg-6">
                 <div class="bold">Page Number:</div>
                 <div ng-repeat="pageNumber in pageNumbers">
                     <label class="text-radio-label margin-top-5">
-                        <input data-ng-disabled="$parent.disableAnsAreaAndKey"
-                               data-ng-model="$parent.selectedPageNumber"
+                        <input data-ng-model="$parent.selectedPageNumber"
                                data-ng-value="pageNumber"
                                type="radio" value="radio" checked="">
                         <span>{{pageNumber.text}}</span>
@@ -153,15 +149,13 @@
                 <div class="checkbox margin-top-20">
                     <label>
                         <input type="checkbox"
-                               data-ng-model="isIncludeStudentName"
-                               data-ng-disabled="disableAnsAreaAndKey"> Add student name label &amp; space
+                               data-ng-model="isIncludeStudentName"> Add student name label &amp; space
                     </label>
                 </div>
                <div class="checkbox" style="margin-top: 0px;">
                     <label>
                         <input type="checkbox"
-                               data-ng-model="isIncludeRandomizedTest"
-                               data-ng-disabled="disableAnsAreaAndKey"> Include
+                               data-ng-model="isIncludeRandomizedTest"> Include
                         randomized tests
                     </label>
                 </div>
