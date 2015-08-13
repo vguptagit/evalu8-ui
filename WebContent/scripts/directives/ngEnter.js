@@ -15,7 +15,7 @@ angular.module('e8MyTests')
 })
     .directive('ngAutoScroll', function () {
         return function (scope, element, attrs) {
-            $('#scroll').scrollLeft(element.offset().left - $('#scroll').offset().left);
+        	$('#scroll').scrollLeft(element.offset().left - $('#scroll').offset().left + $('#scroll').scrollLeft()); 
         };
     }).directive('ngMytestTooltip', function () {
         return function (scope, element, attrs) {
