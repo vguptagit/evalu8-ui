@@ -1006,6 +1006,7 @@ angular.module('e8MyTests')
             });
             
             $("#MyTest-tree-root")[0].scrollTop = 0;
+            $("#txtFolderName").blur(); 
 
         }
       //evalu8-ui : to set Active Resources Tab , handled in ResourcesTabsController

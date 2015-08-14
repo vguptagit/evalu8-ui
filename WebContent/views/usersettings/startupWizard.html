@@ -11,7 +11,7 @@
 
 
 <wizard on-finish="finishWizard()"
-	    template="views/usersettings/startupWizardTemplate.html">     <wz-step title="Choose Your Discipline"
+	    template="views/usersettings/startupWizardTemplate.html">     <wz-step data-title="Choose Your Discipline"
 	canenter="enterDiscipline" canexit="exitDiscipline">
 
 <div class="row startup-wizard-main"
@@ -47,7 +47,7 @@
     </div>
 </div>
 
-</wz-step> <wz-step title="Choose Your Books" canenter="enterBook" canexit="saveDiscplineAndBook" >
+</wz-step> <wz-step data-title="Choose Your Books" canenter="enterBook" canexit="saveDiscplineAndBook" >
 <div class="row margin-top-20">
 	<div class="col-lg-5 startup-wizard-leftPanel">
 		<div>
@@ -91,7 +91,7 @@
         </div>
     </div>
 </div>
-</wz-step>  <wz-step title="Import Tests or Questions (Optional)"
+</wz-step>  <wz-step data-title="Import Tests or Questions (Optional)"
 	canenter="enterUserBooks">
 <div class="row margin-top-20">
 	<div class="col-lg-5 startup-wizard-leftPanel">
