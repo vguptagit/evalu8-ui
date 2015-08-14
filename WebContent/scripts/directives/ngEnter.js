@@ -17,8 +17,4 @@ angular.module('e8MyTests')
         return function (scope, element, attrs) {
             $('#scroll').scrollLeft(element.offset().left - $('#scroll').offset().left);
         };
-    }).directive('ngMytestTooltip', function () {
-        return function (scope, element, attrs) {
-            element.tooltip();
-        };
     });
