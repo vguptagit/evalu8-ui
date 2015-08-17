@@ -27,6 +27,7 @@
 <link href="styles/main.css" rel="stylesheet" />
 <link href="styles/angular-block-ui.css" rel="stylesheet" />
 <link href="styles/style.css" rel="stylesheet" />
+<link href="styles/qti.css" rel="stylesheet" />
 <!-- endbuild -->
 
 </head>
@@ -63,10 +64,13 @@
 	<script src="bower_components/angular-block-ui/dist/angular-block-ui.js"></script>
 	<script src="bower_components/angulartics/src/angulartics.js"></script>
 	<script src="bower_components/angulartics/src/angulartics-ga.js"></script>
+	<script src="bower_components/angular-ckeditor/angular-ckeditor.js"></script>
 	<!-- endbuild -->
 
 	<!-- build:js({WebContent,.tmp}) scripts/qtip.js -->
 	<script src="scripts/externals/qti-player.js"></script>
+	<script src="scripts/externals/ckeditor/ckeditor.js"></script>
+	<script src="scripts/externals/ckeditor/adapters/jquery.js"></script>
 	<!-- endbuild -->
 	
 	<!-- build:js({WebContent,.tmp}) scripts/main.js -->
@@ -103,6 +107,7 @@
 	<!-- build:js({WebContent,.tmp}) scripts/directive.js -->
     <script src="scripts/directives/ngEnter.js"></script>
     <script src="scripts/directives/ngFocus.js"></script>
+    <script src="scripts/directives/ngQtiPlayer.js"></script>
 	<!-- endbuild -->
 
 	<!-- build:js({WebContent,.tmp}) scripts/services.js -->
@@ -123,6 +128,7 @@
     <script src="scripts/services/userBookService.js"></script>    
     <script src="scripts/ga.js"></script>
     <script src="scripts/messages.js"></script>
+    <script src="scripts/services/qtiService.js"></script>
 	<!-- endbuild -->
 
 

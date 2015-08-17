@@ -1,0 +1,53 @@
+<div data-ng-if="!node.IsEditView" class="qtiPrintView" ng-mousedown="selectQuestion(node);">
+	<div class="printEditLink" ng-show="showQstnEditIcon">
+		<a class="qstnViewLink" data-ng-click="toggleEdit(node)">{{node.qstnLinkText}}</a>
+	</div>
+	<div class="qstnArea"
+		data-ng-bind-html="getTrustedHTML(node.qtiModel.Caption==''?node.qtiModel.PrintCaption:node.qtiModel.Caption)"></div>
+	<div>
+		<div data-ng-repeat="Option in node.qtiModel.Options track by $index">
+			<div ng-if="$index==node.qtiModel.CorrectAnswer"
+				class='printCorrectAnswer'>
+				<span class="tick glyphicon glyphicon-ok" tooltip="correct answer"
+					tooltip-placement="bottom"></span>
+			</div>
+			<div
+				data-ng-bind-html="getTrustedHTML(Option==''?node.qtiModel.PrintOption:Option)"></div>
+		</div>
+	</div>
+</div>
+
+<div data-ng-if="node.IsEditView">
+	<div class="divLink">
+		<a class="qstnViewLink" data-ng-click="toggleEdit(node)">{{node.qstnLinkText}}</a>
+	</div>
+	<div class='qstnSectionTitle'>{{node.qtiModel.QstnSectionTitle}}</div>
+	<div class="mainCaption">
+		<div class="captionContainer" id="fbCaption" contenteditable="true"
+			placeholder={{node.qtiModel.EditCaption}}
+			ckeditor="htmlEditorOptions" data-ng-model="node.qtiModel.FbCaption">
+			<!-- data-ng-model="node.qtiModel.FbCaption" ready="getFbCaptionHTML(node)">		 -->
+		</div>
+	</div>
+	<div>
+		<div class="blankBtnDiv">
+			<button class="editView blankButton"
+				ng-mousedown="addBlank(this,$event)" ng-disabled="captionFocus">Add
+				Blank</button>
+			<div id="crtAnsSpace"></div>
+			<div class="editView EssayHeader" id="crtAns">
+				Correct Answer
+				<div
+					data-ng-repeat="element in getFbCorrectAnswer(node) track by $index">
+					<div class="editView editablediv crtAnsDiv" type="text"
+						id="RESPONSE_1">
+						{{$index}}.
+						<div contenteditable="true" class="placeHolderForBlank"
+							data-ng-model="node.qtiModel.CorrectAnswer[$index]"
+							data-placeholder="Enter the correct answer for blank {{$index}}"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

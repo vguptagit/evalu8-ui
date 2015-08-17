@@ -1,0 +1,129 @@
+<div id="TestCreationArea" class="metaDataContainer">
+	<div class="editMetdata editView">
+		<div class="imagecaptionMetadata">
+			<input
+				data-ng-src="{{isMetadataExpand && 'images/right_arrow.png' || 'images/right_arrow2.png' }}"
+				data-ng-click="isMetadataExpand = !isMetadataExpand"
+				class="downArrowImage allignimage" type="image" />
+			<!--  src="images/right_arrow.png" /> -->
+		</div>
+		<div class="mainClass">
+			<div class="captionMetadata	">Format and add metadata</div>
+			<div data-ng-show="isMetadataExpand" class="metadataView">
+				<div class="vhDiv"
+					data-ng-show=" node.quizType == 'MultipleChoice' || node.quizType == 'MultipleResponse' ">
+					<div id="viewHeader">
+						<span class="captionMetadata">Format</span><span
+							class="normalText"> (visible in Print View) </span>
+					</div>
+					<div class="viewOptionDiv viewOptionHV">
+						<input class="radioView" 
+						data-ng-value="true" data-ng-model="node.qtiModel.Orientation" 						
+							name="radioView_{{$index}}_HV"		type="radio"></input>
+						<span class='radioText'>Vertical Question Display </span>
+					</div>
+					<div class="viewOptionDiv viewOptionHV">
+						<input class="radioView" name="radioView_{{$index}}_HV"	
+							data-ng-value="false" data-ng-model="node.qtiModel.Orientation" 		
+							 type="radio"></input>
+						<span class='radioText'>Horizontal Question Display </span>
+					</div>
+				</div>
+				<div class="EssaySpaceDiv" data-ng-show="node.quizType == 'Essay'">
+					<span class="essayViewOptionDiv normalText">Essay Space:</span>
+					<div class="viewOptionDiv viewOptionHV">
+						<input class="radioView"
+							data-ng-checked="node.qtiModel.EssayPageSize == '0'" pagesize='0'
+							name="radioView_{{$index}}_PV"
+							data-ng-click="qstnEssayPageSize(this,'0')" type="radio"></input>
+						<span class='radioText'>None</span>
+					</div>
+					<div class="viewOptionDiv viewOptionHV">
+						<input class="radioView" name="radioView_{{$index}}_PV"
+							data-ng-checked="node.qtiModel.EssayPageSize == '10'"
+							data-ng-click="qstnEssayPageSize(this,'10')" pagesize='10'
+							type="radio"></input> <span class='radioText'>1/4 page</span>
+					</div>
+					<div class="viewOptionDiv viewOptionHV">
+						<input class="radioView" name="radioView_{{$index}}_PV"
+							data-ng-checked="node.qtiModel.EssayPageSize == '20'"
+							data-ng-click="qstnEssayPageSize(this,'20')" pagesize='20'
+							type="radio"></input> <span class='radioText'>1/2 page</span>
+					</div>
+					<div class="viewOptionDiv viewOptionHV">
+						<input class="radioView" name="radioView_{{$index}}_PV"
+							data-ng-checked="node.qtiModel.EssayPageSize == '40'"
+							data-ng-click="qstnEssayPageSize(this,'40')" pagesize='40'
+							type="radio"></input> <span class='radioText'>1 page</span>
+					</div>
+				</div>
+				<div class="BlankSizeDiv"
+					data-ng-show="node.quizType == 'FillInBlanks'">
+					<span class="viewOptionDiv normalText">Blank Size:</span>
+					<div class="viewOptionDiv viewOptionHV">
+						<input class="radioView" name="radioView_{{$index}}_BS"
+							data-ng-checked="node.BlankSize == '20'"
+							data-ng-click="qstnBlankSize(this,'20')" blanksize='20'
+							type="radio"></input> <span class='radioText'>Small</span>
+					</div>
+					<div class="viewOptionDiv viewOptionHV">
+						<input class="radioView" name="radioView_{{$index}}_BS"
+							data-ng-checked="node.BlankSize == '50'"
+							data-ng-click="qstnBlankSize(this,'50')" blanksize='50'
+							type="radio"></input> <span class='radioText'>Medium</span>
+					</div>
+					<div class="viewOptionDiv viewOptionHV">
+						<input class="radioView" name="radioView_{{$index}}_BS"
+							data-ng-checked="node.BlankSize == '100'"
+							data-ng-click="qstnBlankSize(this,'100')" blanksize='100'
+							type="radio"></input> <span class='radioText'>Large</span>
+					</div>
+				</div>
+				<div data-ng-show={{node.IsUserMetdataAvailable}}
+					class="metadataSection">
+					<div class='metadataSectionCaption'>Metadata</div>
+					<div data-ng-show={{node.questionMetadata.hasOwnProperty('Difficulty')}} class='metadatarow'>
+						<span class='metdatalabel'>Difficulty:</span>
+						<div class="metdataVal">
+							<select class='metadataQlvl' data-ng-model="node.selectedLevel"
+								data-ng-options="level.name for level in Difficulty  track by level.value"></select>
+						</div>
+					</div>
+					<div data-ng-show={{node.questionMetadata.hasOwnProperty('Topic')}} class='metadatarow'>
+						<span class='metdatalabel'>Topic:</span>
+						<div class="metdataVal">
+							<input class='metdataInput'
+								data-ng-model="node.questionMetadata.Topic" type="textbox"></input>
+						</div>
+					</div>
+					<div data-ng-show={{node.questionMetadata.hasOwnProperty('Objective')}} class='metadatarow'>
+						<span class='metdatalabel'>Objective:</span>
+						<div class="metdataVal">
+							<input class='metdataInput'
+								data-ng-model="node.questionMetadata.Objective" type="textbox"></input>
+						</div>
+					</div>
+					<div data-ng-show={{node.questionMetadata.hasOwnProperty('PageReference')}}  class='metadatarow'>
+						<span class='metdatalabel'>Page Reference:</span>
+						<div class="metdataVal">
+							<input class='metdataInput'
+								data-ng-model="node.questionMetadata['PageReference']"
+								type="textbox" /></input>
+						</div>
+					</div>
+					<div data-ng-show={{node.questionMetadata.hasOwnProperty('Skill')}} class='metadatarow'>
+						<span class='metdatalabel'>Skill:</span>
+						<div class="metdataVal">
+							<input class='metdataInput'
+								data-ng-model="node.questionMetadata.Skill"  type="textbox" /></input>
+						</div>
+					</div>
+					<div data-ng-show={{node.questionMetadata.hasOwnProperty('QuestionId')}} class='metadatarow'>
+						<span class='metdatalabel'>Question ID:</span>
+						<div class='metdataVal'>{{node.guid}}</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

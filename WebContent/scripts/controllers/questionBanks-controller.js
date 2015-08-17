@@ -1663,7 +1663,12 @@ angular
 									editedQuestion.nodeType = "question";
 
 									editedQuestion.extendedMetadata = editedQuestion.extendedMetadata;
-								
+									
+									var displayNodes = $("<div></div>");    
+                                    QTI.BLOCKQUOTE.id = 0;
+                                    QTI.play(editedQuestion.data,displayNodes, false,false,editedQuestion.quizType);                                
+                                    editedQuestion.textHTML = displayNodes.html();
+                                    
 									editedQuestion.showEditQuestionIcon = false;
 									editedQuestion.isNodeSelected = false;
 									addToQuestionsArray(editedQuestion);

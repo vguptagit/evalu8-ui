@@ -1112,14 +1112,22 @@ h4, .h4, h5, .h5, h6, .h6 {
 	left: 30px;
 }
 
-.qstnArea
+.qstnArea,.qstnAreaPrint
 {
-	position: absolute;
-	top: 116px;
+	position: absolute;	
 	bottom: 0px;
 	right: 0px;
 	left: 0px;
 	overflow-y: auto;
+}
+.qstnArea
+{	
+	top: 166px;
+}
+
+.qstnAreaPrint
+{	
+	top: 116px;	
 }
 
 

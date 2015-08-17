@@ -25,7 +25,8 @@
 		'cgNotify',
 		'angular.filter',
 		'angulartics',
-		'angulartics.google.analytics'
+		'angulartics.google.analytics',
+		 'ckeditor',
 	]).config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
 
 		//initialize get if not there

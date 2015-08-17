@@ -915,6 +915,7 @@
               var eventElmTagName = eventElm.prop('tagName').toLowerCase();
               var editable= eventElm.attr('contentEditable');
               if (eventElmTagName == 'input' ||
+            	eventElmTagName == 'a' ||
                 eventElmTagName == 'textarea' ||
                 eventElmTagName == 'button' ||
                 editable  ||

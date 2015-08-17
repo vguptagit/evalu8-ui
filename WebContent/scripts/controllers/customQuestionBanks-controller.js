@@ -11,7 +11,9 @@ angular.module('e8CustomQuestionBanks')
     $scope.questionTemplates=CustomQuestionBanksService.questionTemplates();
         
 	$scope.editQuestion = function(question) {		
+		 $rootScope.blockPage.start();
 		 $scope.questionEditAlert(question);
+		 $rootScope.blockPage.stop();
 	}
 	
 	  
@@ -19,6 +21,12 @@ angular.module('e8CustomQuestionBanks')
 		  if (SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode) {
 				$scope.IsConfirmation = false;
 				$scope.message = "A question is already in Edit mode, save it before adding or reordering questions.";
+				$modal.open(confirmObject);
+				$scope.dragStarted = false;
+			}
+		  else if (SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
+				$scope.IsConfirmation = false;
+				$scope.message = "A Custom Question cannot be added to the TEST Wizard.";
 				$modal.open(confirmObject);
 				$scope.dragStarted = false;
 			}else{
@@ -59,6 +67,11 @@ angular.module('e8CustomQuestionBanks')
     	if (SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode) {
 			$scope.IsConfirmation = false;
 			$scope.message = "A question is already in Edit mode, save it before adding or reordering questions.";
+			$modal.open(confirmObject);
+			$scope.dragStarted = false;
+		}  else if (SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
+			$scope.IsConfirmation = false;
+			$scope.message = "A Custom Question cannot be added to the TEST Wizard.";
 			$modal.open(confirmObject);
 			$scope.dragStarted = false;
 		}
