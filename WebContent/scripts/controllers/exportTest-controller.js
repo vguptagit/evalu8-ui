@@ -16,9 +16,9 @@ angular.module('e8MyTests')
     $scope.exportFileFormats = [
                              { value: 'doc', text: 'MS Word' },
                              { value: 'pdf', text: 'PDF' },
-                             { value: 'pool', text: 'Blackboard Pool manager' },
-                             { value: 'test', text: 'Blackboard Test manager' },
-                             { value: 'qti', text: 'QTI 2.1' }
+                             { value: 'bbpm', text: 'Blackboard Pool manager' },
+                             { value: 'bbtm', text: 'Blackboard Test manager' },
+                             { value: 'qti21', text: 'QTI 2.1' }
                              
     ];
 
