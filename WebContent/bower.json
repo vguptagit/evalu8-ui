@@ -26,7 +26,7 @@
     "angular-block-ui": "0.2.0",
     "font-awesome": "4.3.0",
     "angular-route": "1.2.19",
-    "angular-ckeditor": "0.4.2",
+    "angular-ckeditor": "0.4.2"
   },
   "resolutions": {
     "angular": "1.2.17",
