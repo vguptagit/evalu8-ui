@@ -1,7 +1,7 @@
 ﻿'use strict';
 angular.module('e8MyTests')
-.directive("qtiPlayer",['$modal','QtiService','TestService','$sce',
-                        function($modal,QtiService,TestService,$sce) {	
+.directive("qtiPlayer",['$modal','QtiService','TestService','$sce','$rootScope',
+                        function($modal,QtiService,TestService,$sce,$rootScope) {	
 	return {
 		template : '<ng-include src="getQtiTemplate()"/>',
 		restrict : 'E',
@@ -206,6 +206,7 @@ angular.module('e8MyTests')
 
 			$scope.upload = function(files) {
 				if (files && files.length) {
+					$rootScope.blockPage.start();
 					for (var i = 0; i < files.length; i++) {
 						var file = files[i];
 						TestService
@@ -233,6 +234,7 @@ angular.module('e8MyTests')
 							} else {
 								$scope.node.qtiModel.Caption = editorData;
 							}
+							$rootScope.blockPage.stop();
 
 						});
 

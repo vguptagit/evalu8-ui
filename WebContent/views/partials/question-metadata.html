@@ -2,14 +2,14 @@
 	<div class="editMetdata editView">
 		<div class="imagecaptionMetadata">
 			<input
-				data-ng-src="{{isMetadataExpand && 'images/right_arrow.png' || 'images/right_arrow2.png' }}"
-				data-ng-click="isMetadataExpand = !isMetadataExpand"
+				data-ng-src="{{node.isMetadataExpand && 'images/right_arrow.png' || 'images/right_arrow2.png' }}"
+				data-ng-click="node.isMetadataExpand = !node.isMetadataExpand"
 				class="downArrowImage allignimage" type="image" />
 			<!--  src="images/right_arrow.png" /> -->
 		</div>
 		<div class="mainClass">
 			<div class="captionMetadata	">Format and add metadata</div>
-			<div data-ng-show="isMetadataExpand" class="metadataView">
+			<div data-ng-show="node.isMetadataExpand" class="metadataView">
 				<div class="vhDiv"
 					data-ng-show=" node.quizType == 'MultipleChoice' || node.quizType == 'MultipleResponse' ">
 					<div id="viewHeader">
