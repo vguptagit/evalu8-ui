@@ -81,9 +81,7 @@
 							data-ng-click="addOption($index,node)"></button>
 						<button  id={{$index}} name="Delete"
 							class="optionImageIcon glyphicon glyphicon-remove"
-							tooltip-append-to-body="true" tooltip="Move template to right to create question"
-							tooltip-placement="bottom"
-							tooltip-trigger="mouseenter"
+							 title='Delete this answer'						
 							data-ng-click="removeOption($index,$index==node.qtiModel.CorrectAnswer)"></button>					
 					</div>
 				</div>
