@@ -1820,7 +1820,10 @@ angular
     									
     									qstn.qstnLinkText = qstn.IsEditView ? "Edit": "View";
     									qstn.IsEditView = false;
-    								
+    									
+    									if(qstn.qstnTemplate){
+                                            qstn.qstnTemplate = false;
+                                        }    								
 										
     									if (typeof (qstn.questionMetadata) == 'undefined') {
 

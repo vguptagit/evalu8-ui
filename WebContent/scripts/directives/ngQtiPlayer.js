@@ -38,10 +38,9 @@ angular.module('e8MyTests')
 
 			}
 
-			$scope.htmlEditorOptions = {
-					autoParagraph : true,				
-					extraPlugins : 'sharedspace,confighelper,justify,dialog,dialogui,colordialog,button,panelbutton,colorbutton,font,indent,indentblock,table',	
-					toolbar : [
+			$scope.htmlEditorOptions = {			
+					 extraPlugins : 'sharedspace,confighelper,font,justify,dialog,dialogui,colordialog,button,panelbutton,colorbutton,indent,indentblock,table',
+					 toolbar : [
 					           ['FontSize','Bold','Italic','Underline','TextColor','JustifyLeft', 'JustifyCenter', 'JustifyRight','Indent','Outdent','Table', 'Undo', 'Redo' ]
 					          ],
 					fontSize_sizes : '8/8px;9/9px;10/10px;11/11px;12/12px;14/14px;16/16px',

@@ -26,10 +26,10 @@
 			<div class="col-md-12">
 				<div>
 					<div ng-if="step == '2'" ng-click="setStep('1')"
-						class="btnGotoDispBook">
+						id="changeDisciplineLinkId" class="btnGotoDispBook">
 						<i class="glyphicon glyphicon-arrow-left"></i> Change Discipline
 					</div>
-					<span style="float: right"><div ng-if="step == '1'"
+					<span style="float: right"><div ng-if="step == '1'" id="changeBooksLinkId" 
 							ng-click="setStep('2')" class="btnGotoDispBook">
 							<i class="glyphicon glyphicon-arrow-right"></i> Change Books
 						</div>
@@ -48,7 +48,7 @@
 								<input id="disciplineSearchTextId" type="text" placeHolder="Search Discipline"
 								class="searchDiscpline form-control" ng-model="searchedDiscipline"
 								typeahead="discipline for discipline in disciplines.all.sort() | filter:$viewValue"
-								ng-keyup="searchDiscipline($event)"> <span id="disciplineSearchIconID" class="glyphicon glyphicon-search searchicon" ng-click="searchDisciplineOnClick()"
+								ng-keyup="searchDiscipline($event)"> <span id="disciplineSearchIconId" class="glyphicon glyphicon-search searchicon" ng-click="searchDisciplineOnClick()"
 								tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Search"></span>
 							</div>
 						</div>
