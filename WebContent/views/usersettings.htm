@@ -69,7 +69,7 @@
 				  <div class="col-md-6 margin-top-20 ">
 					<div style="float:left;" data-ng-repeat="filter in questionMetadata.all">
 						<div class="checkboxDiv">
-							<input type="checkbox" checklist-model="questionMetadata.userSelected" data-checklist-value="filter">
+							<input id="{{filter}}" type="checkbox" checklist-model="questionMetadata.userSelected" data-checklist-value="filter">
 						</div>
 						<div ng-if="filter == 'PageReference'" style="padding: 5px;" class="checkboxLabelDiv">Page Reference</div>
 						<div ng-if="filter == 'QuestionId'" style="padding: 5px;" class="checkboxLabelDiv">Question Id (provided by Evalu8)</div>						

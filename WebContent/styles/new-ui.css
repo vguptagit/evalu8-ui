@@ -538,3 +538,7 @@ span.glyphicon.glyphicon-info-sign {
     margin-top: -15px;
     padding-top: 10px;
 }
+.form-signin button {
+    width: 380px;
+    margin-left: -15px;
+}
