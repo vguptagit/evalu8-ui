@@ -2120,7 +2120,7 @@ ul.a {
 }
 
 .disciplineContainerInLightBox, .bookContainerInLightBox {
-	height: 400px;
+	height: 325px;
 	overflow: auto;
 	width: 98%;
 	border: solid 1px #DEDEDE;

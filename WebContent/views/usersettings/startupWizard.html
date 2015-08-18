@@ -31,10 +31,10 @@
 	</div>
     <div class="col-lg-7 startup-wizard-rightPanel">
         <div class="input-group searchdiv">
-            <input type="text" placeholder="Search Discipline"
+            <input id="disciplineSearchTextId" type="text" placeholder="Search Discipline"
                    class="searchDiscpline form-control" ng-model="searchedDiscpline"
                    typeahead="discipline for discipline in disciplines.all.sort() | filter:$viewValue"
-                   ng-keyup="searchDiscipline($event)"> <span class="glyphicon glyphicon-search searchicon" ng-click="searchDisciplineOnClick()"
+                   ng-keyup="searchDiscipline($event)"> <span id="disciplineSearchIconID" class="glyphicon glyphicon-search searchicon" ng-click="searchDisciplineOnClick()"
                                                               tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Search"></span>
         </div>
         <div class="discplineheight">
@@ -63,13 +63,13 @@
 	</div>
     <div class="col-lg-7 startup-wizard-rightPanel">
         <div class="input-group searchdiv">
-            <input type="text"
+            <input id="bookSearchTextId" type="text"
                    placeholder="Enter title, author, publisher, bookid or ISBN"
                    class="searchDiscpline form-control searchBook" ng-model="searchedBook"
                    placeholder="Custom template"
                    typeahead-template-url="customTemplate.html"
                    typeahead="book.title for book in books.all | searchFields:$viewValue"
-                   ng-keyup="searchedBookOnEnter($event)"> <span class="glyphicon glyphicon-search searchicon" ng-click="searchedBookOnClick()"
+                   ng-keyup="searchedBookOnEnter($event)"> <span id="bookSearchIconID" class="glyphicon glyphicon-search searchicon" ng-click="searchedBookOnClick()"
                                                                  tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Search"></span>
         </div>
         <div class="bookContainer">
