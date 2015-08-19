@@ -27,6 +27,7 @@
 		'angulartics',
 		'angulartics.google.analytics',
 		 'ckeditor',
+		 'ckeditorPlaceholder'
 	]).config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
 
 		//initialize get if not there

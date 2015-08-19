@@ -39,11 +39,11 @@ angular.module('e8MyTests')
 			}
 
 			$scope.htmlEditorOptions = {			
-					 extraPlugins : 'sharedspace,confighelper,font,justify,dialog,dialogui,colordialog,button,panelbutton,colorbutton,indent,indentblock,table',
+					 extraPlugins : 'sharedspace,font,justify,dialog,dialogui,colordialog,button,panelbutton,colorbutton,indent,indentblock,table',
 					 toolbar : [
 					           ['FontSize','Bold','Italic','Underline','TextColor','JustifyLeft', 'JustifyCenter', 'JustifyRight','Indent','Outdent','Table', 'Undo', 'Redo' ]
 					          ],
-					fontSize_sizes : '8/8px;9/9px;10/10px;11/11px;12/12px;14/14px;16/16px',
+					fontSize_sizes : '8/8px;9/9px;10/10px;11/11px;12/12px;14/14px;16/16px;18/18px;20/20px;22/22px;24/24px;26/26px;28/28px;30/30px;32/32px',
 					fontSize_defaultLabel : '12',					
 					allowedContent : true,					
 					title : false,
@@ -288,23 +288,23 @@ angular.module('e8MyTests')
 			/** * ***************************************End Image Upload ****************************************************************/			
 
 			// Called when the editor is completely ready.
-			$scope.onReady = function (focuseditorindex) {
-				var i = 0;						  
-				for (var name in CKEDITOR.instances){		
-					CKEDITOR.instances[name].focus();  
-				}
-
-				var focusIndex = focuseditorindex==undefined?0:parseInt(focuseditorindex);     			
-				for (var name in CKEDITOR.instances){		     				
-					if(i==focusIndex){
-						CKEDITOR.instances[name].focus();     					
-						break;			
+			$scope.onReady = function (focuseditorindex) {				
+				if(focuseditorindex==undefined || focuseditorindex=="0"){					
+					var editor = CKEDITOR.instances['questionCaption'];					
+					var range = new CKEDITOR.dom.range(editor.document);   
+					range.moveToElementEditablePosition( editor.editable(), true ); // bar.^</p>
+					editor.getSelection().selectRanges( [ range ] );					
+				}else{
+					var i = 0;	
+					var focusIndex = parseInt(focuseditorindex);     			
+					for (var name in CKEDITOR.instances){		     				
+						if(i==focusIndex){
+							CKEDITOR.instances[name].focus();     							
+							break;			
+						}
+						i++;
 					}
-
-					i++;
-
 				}
-
 			};
 
 			// adding options
