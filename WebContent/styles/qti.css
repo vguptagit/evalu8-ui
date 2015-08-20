@@ -506,7 +506,7 @@
 	margin-left: 20px;
 	margin-top: 10px;
 	font-size: 14px;
-  	font-weight: bold;
+  	font-weight: bold;  
 }
 
 .recommendedAnswer{
@@ -518,6 +518,7 @@
   font-size: 12px;
   font-weight: normal;	
   font-family: Helvetica Neue Light;
+  resize: none;
 }
 
 /* Matching - question - EDIT  END */

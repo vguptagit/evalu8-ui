@@ -1564,7 +1564,7 @@ li[quiztype='TrueFalse'] #viewHeader {
 }
 
 .qstnContainer div:empty:before {
-	content: attr(data-placeholder);
+	content: attr(placeholder);
 	color: gray
 }
 
@@ -2999,7 +2999,7 @@ li[printmode='true'] .qti-itemBody .qti-blockquote>div.optionLabelView:first-chi
 }
 
 .qstnContainer div:empty:before {
-	content: attr(data-placeholder);
+	content: attr(placeholder);
 	color: gray;
 	/* 	position: absolute; */
 	/* top:4px; */

@@ -98,7 +98,7 @@ angular.module('evalu8Demo')
 					var slashAarray = srcUri.split('/');
 					var file = slashAarray[slashAarray.length - 1];
 					var imageAarray = file.split('?');
-					$(obj).replaceWith($('<u contenteditable="false" src="'	+ srcUri + '">' + imageAarray[0]	+ '</u>'));
+                    $(obj).replaceWith($('<u contenteditable="false" src="'    + srcUri + '">' + imageAarray[0]    + '</u>'));
 				});
 
 				return element[0].innerHTML;
@@ -258,20 +258,35 @@ angular.module('evalu8Demo')
 						correctAnswerIndex=i;
 					}
 				});
+				var responseIndex = correctAnswerIndex+1;
+				correctAnswerIndex= $(qtiXML).find('itemBody').find('choiceInteraction').find(
+						"simpleChoice[identifier='RESPONSE_"+ responseIndex + "']").index();
+
 				return correctAnswerIndex;
 			}
 
 			var getMultipleResponseCorrectAnswer = function(qtiXML) {
 				var correctAnswerList = [];
+				var responseAnswerList = [];
 				$(qtiXML).find('responseDeclaration mapEntry').each(
-						function(i, e) {
+						function(i, e) {							
+							responseAnswerList.push(false);
 							if ($(this).attr("mappedValue") == "1") {
 								correctAnswerList.push(true);
 							}else{
 								correctAnswerList.push(false);
 							}
 						});
-				return correctAnswerList;
+
+				$.each(correctAnswerList, function( index, item ) {	
+					if (item) {								
+						var responseIndex= $(qtiXML).find('itemBody').find('choiceInteraction').find(
+								"simpleChoice[identifier='RESPONSE_"+ (index+1) + "']").index();								
+						responseAnswerList[responseIndex]=true;
+					}
+				});
+
+				return responseAnswerList;
 			}
 
 			var getSerializedXML = function(qtiNode) {

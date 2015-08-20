@@ -293,7 +293,8 @@ angular.module('e8MyTests')
 					var editor = CKEDITOR.instances['questionCaption'];					
 					var range = new CKEDITOR.dom.range(editor.document);   
 					range.moveToElementEditablePosition( editor.editable(), true ); // bar.^</p>
-					editor.getSelection().selectRanges( [ range ] );					
+					editor.getSelection().selectRanges( [ range ] );		
+					editor.focus();
 				}else{
 					var i = 0;	
 					var focusIndex = parseInt(focuseditorindex);     			
