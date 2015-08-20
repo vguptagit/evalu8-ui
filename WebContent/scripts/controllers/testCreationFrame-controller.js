@@ -2320,11 +2320,13 @@ angular
 								}
 								$scope.tests[$scope.sharedTabService.currentTabIndex].isTestWizard = false;
 								$scope.sharedTabService.isTestWizardTabPresent = false;
-								$scope.tests[$scope.sharedTabService.currentTabIndex].tabTitle = "Untitled test";								
+								$scope.tests[$scope.sharedTabService.currentTabIndex].tabTitle = "Untitled test";
+								$scope.tests[$scope.sharedTabService.currentTabIndex].questions = metadatas;
 								QTI.initialize();
 								test.criterias=[];
 								$scope.saveTest(function () {
-								        $rootScope.blockPage.start();								       
+								        $rootScope.blockPage.start();	
+								        $scope.tests[$scope.sharedTabService.currentTabIndex].questions = [];
 								        $scope.render(metadatas);
 								        $scope.isApplySameCriteriaToAll = false;
 								});
