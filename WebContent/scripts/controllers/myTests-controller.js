@@ -1028,6 +1028,9 @@ angular.module('e8MyTests')
                     }
                 }
                 if (!found) {
+                	if(parentFolder.nodes.length && parentFolder.nodes[0].nodeType == EnumService.NODE_TYPE.emptyFolder) {
+                		parentFolder.nodes.shift();
+                	}
                     parentFolder.nodes.unshift(newFolder);
                 }
                 }

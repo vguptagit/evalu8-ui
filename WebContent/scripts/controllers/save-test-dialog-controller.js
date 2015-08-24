@@ -102,7 +102,7 @@
 	            
 		         var sequence = 1;
 		         if ($scope.selectedfolder && $scope.selectedfolder.nodes) {
-		             if ($scope.selectedfolder.nodes[0].nodeType === EnumService.NODE_TYPE.emptyFolder) {
+		             if ($scope.selectedfolder.nodes.length == 0 || $scope.selectedfolder.nodes[0].nodeType === EnumService.NODE_TYPE.emptyFolder) {
 		                 sequence = 1;
 		             } else {
 		                 sequence = ($scope.selectedfolder.nodes[0].sequence / 2);
@@ -121,7 +121,12 @@
 		             newFolder.guid = response.guid;
 		             newFolder.nodeType = EnumService.NODE_TYPE.folder;
 		             if ($scope.selectedfolder) {
-		                 $scope.selectedfolder.nodes.unshift(newFolder);
+		            	 if ($scope.selectedfolder.nodes.length == 0) {
+		            		 $scope.selectedfolder.nodes = [newFolder];
+		            	 } else {
+		            		 $scope.selectedfolder.nodes.unshift(newFolder);	 
+		            	 }
+		                 
 		             }
 		             else {
 		                 $scope.node.unshift(newFolder);
