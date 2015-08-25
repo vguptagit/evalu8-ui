@@ -1997,7 +1997,7 @@ ul.a {
 }
 
 .autocompleteList {
-	max-height: 700px;
+	max-height: 425px;
 	max-width: 700px;
 	overflow: auto;
 }
@@ -3193,7 +3193,11 @@ px
 	font-weight: normal;
 	font-size: 12px;
 }
-li[printmode='true'] .qti-itemBody .qti-blockquote>div.optionLabelView {
+#tree-root li[printmode='true'] .qti-itemBody .qti-blockquote>div.optionLabelView{
+    margin-top: -19px !important;
+    margin-left: -10px !important;
+}
+#tree-root li[printmode='true'] .qti-itemBody>div.optionLabelView{
     margin-top: -19px !important;
     margin-left: -10px !important;
 }

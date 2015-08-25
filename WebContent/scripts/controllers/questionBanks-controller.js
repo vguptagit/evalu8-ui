@@ -1284,6 +1284,16 @@ angular
 							}
 							
 							$scope.showContainerOnEnter = function(event) {
+								$(".dropdown-menu")
+								.addClass("autocompleteList");								
+								
+				                if(event.which === 40){
+				                    $('ul.dropdown-menu').scrollTop ( ($('ul.dropdown-menu li.active').index() ) * 25);				                    										
+				                }
+				                if(event.which === 38){
+				                    $('ul.dropdown-menu').scrollTop ( ($('ul.dropdown-menu li.active').index() ) * 25);
+				                    										
+				                }
 								if (event.keyCode != 13 ){
 									var isContainersLoaded=false;
 									bookContainersArray.forEach(function(book){
@@ -1300,8 +1310,6 @@ angular
 									return;
 								}
 								
-								$(".dropdown-menu")
-								.addClass("autocompleteList");
 								if (event.keyCode === 13) {
 										$scope.showContainer();
 								}

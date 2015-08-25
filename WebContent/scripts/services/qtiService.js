@@ -47,6 +47,7 @@ angular.module('evalu8Demo')
 
 					qtiModel.Options = getQuestionOptions(xml, quizType);
 					qtiModel.PrintOption = QuestionPrefilledModal[quizType].printOption;
+					qtiModel.printMatchingOption = QuestionPrefilledModal[quizType].printMatchingOption;					
 					qtiModel.editOption_Column_A1 = QuestionPrefilledModal[quizType].editOption_Column_A1;
 					qtiModel.editOption_Column_A2 = QuestionPrefilledModal[quizType].editOption_Column_A2;						
 					qtiModel.editOption_Column_B = QuestionPrefilledModal[quizType].editOption_Column_B;					
@@ -340,6 +341,7 @@ angular.module('evalu8Demo')
 						"printCaption" : "Matching Question",
 						"editCaption" : "Enter Matching Question",
 						"printOption" : "Option",
+						"printMatchingOption" : "Match",
 						"editOption_Column_A1" : "Enter item ",
 						"editOption_Column_A2" : " in column ",
 						"editOption_Column_B" : "Enter match in column B for A ",
@@ -555,7 +557,7 @@ angular.module('evalu8Demo')
 						if(optionText.startsWith('<p>')){
 							optionText = optionText.substring(3, optionText.length-4);
 						}		
-						optionText = optionText==""?QuestionPrefilledModal[node.quizType].printOption:optionText;
+						optionText = optionText==""?QuestionPrefilledModal[node.quizType].printMatchingOption:optionText;
 
 						var optionTagAppend = inlineChoiceTag.replace('@RESP', 'RESP_' + (i + 1));						
 						optionTagAppend = optionTagAppend.replace('@RESP_Val', "<![CDATA[" + optionText + "]]>");
