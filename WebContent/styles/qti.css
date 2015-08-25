@@ -60,20 +60,13 @@
 	margin-bottom: 5px;
     margin-top: 10px;
 }
-.questionPrintContainer:before{
-	counter-reset: 90;
-	counter-increment: list;
-	content: counter(list) ") ";
-	position: absolute;
-}
-
-
 /* MC-Print */
 
 .printQuestionCaption{
 	width: 90%;	
 	margin-bottom: 10px;
-	margin-left: 20px;	
+	margin-top: -19px;
+	margin-left: 24px;	
 }
 
 .printQuestionOptionContainer{	
@@ -114,22 +107,16 @@
 	width: 90%;	
 }
 
-.questionEditContainer:before {
-	counter-reset: 90;
-	counter-increment: list;
-	content: counter(list) ") ";	
-	float: left;
-}
-
 /* MC-Edit_CaptionArea */
 
  .captionContainer{
   cursor: pointer; 
   border: 1px solid #D0D0D0;
   border-radius: 3px; 
-  margin-left: 9px;
+  margin-left: 19px;
   width: 90%;
-  background-color: #fff;	
+  background-color: #fff;
+  margin-top: -19px;	
  }
  
  #questionCaption{
@@ -288,15 +275,9 @@
     margin-top: 10px;
 }
 
-.tf_questionPrintContainer:before{
-	counter-reset: 99;
-	counter-increment: list;
-	content: counter(list) ") ";
-	 position: absolute;
-}
-
 .tf_printQuestionCaption{	
 	margin-bottom: 10px;
+	margin-top: -19px;
 	margin-left: 20px;	
 	width: 90%;
 }
@@ -351,10 +332,11 @@
   cursor: pointer;
   border: 1px solid #D0D0D0;
   border-radius: 3px;
-  margin-left: 10px; 
+  margin-left: 19px; 
   background-color: #fff;
   float: left;
   width: 83%;	
+  margin-top: -19px;
 }
 }
 
@@ -363,14 +345,6 @@
 .tf_questionEditContainer{
 	float: left;	
 	width: 90% !important;
-	display: inline-block;
-}
-
-.tf_questionEditContainer:before {
-	counter-reset: 90;
-	counter-increment: list;
-	content: counter(list) ") ";	
-	float: left;		
 	display: inline-block;
 }
 

@@ -7,7 +7,7 @@
 			</button>
 			<a class="qstnViewLink" data-ng-click="toggleEdit(node)">{{node.qstnLinkText}}</a>
 		</div>
-		<div class="questionPrintContainer">
+		<div class="questionPrintContainer">{{$index +1}})
 			<div class="printQuestionCaption"
 				data-ng-bind-html="getTrustedHTML(node.qtiModel.Caption==''?node.qtiModel.PrintCaption:node.qtiModel.Caption)"></div>
 			<div class="matchingOptionContainer"
@@ -42,6 +42,7 @@
 			</div>
 		</div>
 		<div class='questionSectionTitle'>{{node.qtiModel.QstnSectionTitle}}</div>
+		<div>{{$index + 1}})</div>
 		<div class="questionEditContainer">
 			<div class="captionContainer">
 				<div id="questionCaption" contenteditable="true"

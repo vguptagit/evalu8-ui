@@ -609,14 +609,6 @@ ol {
 	margin-left: 20px;
 }
 
-.questionList:before {
-	counter-reset: none;
-	counter-increment: list;
-	content: counter(list) ") ";
-	position: absolute;
-	margin-left: -10px;
-}
-
 .blank {
 	padding-left: 12px;
 	font-size: 12px;
@@ -3194,4 +3186,14 @@ px
 	margin-top: 7px;
 	background-color: transparent;
 	cursor: pointer;
+}
+
+.questionListIndex{
+	margin-left: 5px;
+	font-weight: normal;
+	font-size: 12px;
+}
+li[printmode='true'] .qti-itemBody .qti-blockquote>div.optionLabelView {
+    margin-top: -19px !important;
+    margin-left: -10px !important;
 }
