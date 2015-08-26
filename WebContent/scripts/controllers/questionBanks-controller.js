@@ -12,6 +12,7 @@ angular
 						'$rootScope',
 						'$location',
 						'$cookieStore',
+						'$timeout',
 						'$http',
 						'$sce',
 						'DisciplineService',
@@ -23,7 +24,7 @@ angular
 						'blockUI',
 						'ContainerService',
                         'CommonService',
-						function($scope, $rootScope, $location, $cookieStore,
+						function($scope, $rootScope, $location, $cookieStore, $timeout,
 								$http, $sce, DisciplineService, TestService,
 								SharedTabService, UserQuestionsService,
 								EnumService, $modal, blockUI, ContainerService, CommonService) {
@@ -162,18 +163,33 @@ angular
 
 							$scope.addFolderClick = function(node) {
                                 
-                                document.getElementById("txtFolderName").value = "";
+                                document.getElementById("txtFolderName").value = "";                                
+                                $scope.YourQuestionRoot = node;
                                 
                                 if(node.collapsed) {
-                                    $scope.getBooks(node, function() {
+                                	if(node.node.nodes) {
+                                		node.expand();
                                         $scope.showAddFolderPanel= !$scope.showAddFolderPanel;
-                                        $scope.YourQuestionRoot = node;
-                                    });                                    
+                                        
+                                	} else {
+                                        $scope.getBooks(node, function() {
+                                        	
+                                        	$timeout(function() {
+                                        	    angular.element('#addfolder').triggerHandler('click');
+                                        	}, 0);                                        	                                           
+                                        });                               
+                                	}     
                                 } else {
                                     $scope.showAddFolderPanel= !$scope.showAddFolderPanel;
-                                    $scope.YourQuestionRoot = node;
                                 }                                
-                            }							
+                            }
+							
+							$scope.folderNameTextBoxBlur = function() {
+                                if(document.getElementById("txtFolderName").value.trim().length==0) {
+                                    $scope.showAddFolderPanel = false;
+                                    return; 
+                                }
+                            }
 							
 							$scope.addNewFolder = function () {
                                 
