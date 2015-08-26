@@ -102,6 +102,18 @@
                     <div class="captiondiv">
                         <label class="captionLabel" title="{{node.item}}">{{node.item}}</label>
                     </div>
+					<div class="iconsChapter" ng-if="node.type=='YourQuestionRoot'">
+                        <button id="addfolder" class="plusIconQT newTest-close glyphicon glyphicon-plus" 
+                        event-focus="click" event-focus-id="txtFolderName" 
+                        ng-click='addFolderClick(this)' value="Add Folder" 
+                        tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Add new folder"></button>
+                    </div>
+                </div>
+            </div>
+			<div class="treeDiv" ng-show="node.type=='YourQuestionRoot' && showAddFolderPanel">
+                <div class="createNewNode">
+                    <input type="text" ng-model="folderName" id="txtFolderName" ng-disabled="isAddFolderClicked" class="form-control"
+                       placeholder="Untitled Folder " ng-enter="addNewFolder()" />
                 </div>
             </div>
         </div>
