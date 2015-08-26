@@ -1,6 +1,6 @@
 <div data-ng-if="!node.IsEditView" class="qtiPrintView" ng-mousedown="selectQuestion(node);">
 	<div class="printEditLink" ng-show="showQstnEditIcon">
-		<a class="qstnViewLink" data-ng-click="toggleEdit(node)">{{node.qstnLinkText}}</a>
+		<a id="switchLink" class="qstnViewLink" data-ng-click="toggleEdit(node)">{{node.qstnLinkText}}</a>
 	</div>
 	<div class="qstnArea"
 		data-ng-bind-html="getTrustedHTML(node.qtiModel.Caption==''?node.qtiModel.PrintCaption:node.qtiModel.Caption)"></div>
@@ -19,7 +19,7 @@
 
 <div data-ng-if="node.IsEditView">
 	<div class="divLink">
-		<a class="qstnViewLink" data-ng-click="toggleEdit(node)">{{node.qstnLinkText}}</a>
+		<a id="switchLink" class="qstnViewLink" data-ng-click="toggleEdit(node)">{{node.qstnLinkText}}</a>
 	</div>
 	<div class='qstnSectionTitle'>{{node.qtiModel.QstnSectionTitle}}</div>
 	<div class="mainCaption">
