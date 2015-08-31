@@ -1064,7 +1064,7 @@
                 var treeScrollTop = $('div#qstnArea').scrollTop();
                 
                 var dragBottom = dragElm[0].offsetTop  + dragElm[0].offsetHeight ;	
-                var treeBottom = $('#tree2-root')[0].offsetTop +  $('div#qstnArea')[0].offsetHeight ;
+                var treeBottom = $('div#qstnArea')[0].offsetTop +  $('div#qstnArea')[0].offsetHeight ;
                 
                 if (treeScrollTop>0 && leftElmPos > $('div#qstnArea')[0].offsetWidth  
                 		&& ((treeScrollTop> eventObj.pageY) || ($('div#qstnArea').offset().top  < eventObj.pageY )) ) {               
