@@ -33,8 +33,8 @@
 		         if ($scope.selectedfolder.isSelected) {
 		             $scope.getUserFolders(node);
 		         }
-		         else {
-		             $scope.selectedfolder = null;
+		         else {		             
+		             $scope.selectedfolder = CommonService.SearchItem($scope.node, node.parentId);
 		         }
 		     }
 		      
