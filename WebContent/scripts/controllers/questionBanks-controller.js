@@ -166,29 +166,15 @@ angular
                                 document.getElementById("txtFolderName").value = "";                                
                                 $scope.YourQuestionRoot = node;
                                 
-                                if(node.collapsed) {
-                                	if(node.node.nodes) {
-                                		node.expand();
-                                        $scope.showAddFolderPanel= !$scope.showAddFolderPanel;
-                                        
-                                	} else {
-                                        $scope.getBooks(node, function() {
-                                        	
-                                        	$timeout(function() {
-                                        	    angular.element('#addfolder').triggerHandler('click');
-                                        	}, 0);                                        	                                           
-                                        });                               
-                                	}     
-                                } else {
-                                    $scope.showAddFolderPanel= !$scope.showAddFolderPanel;
-                                }                                
+                                $scope.showAddFolderPanel= !$scope.showAddFolderPanel;                               
                             }
 							
 							$scope.folderNameTextBoxBlur = function() {
+								/*
                                 if(document.getElementById("txtFolderName").value.trim().length==0) {
                                     $scope.showAddFolderPanel = false;
                                     return; 
-                                }
+                                }*/
                             }
 							
 							$scope.addNewFolder = function () {
@@ -201,19 +187,28 @@ angular
                                     
                                     var duplicateTitle = false;
                                     $scope.YourQuestionRoot.node.nodes.forEach(function(rootFolder) {
-                                        if(rootFolder.title == document.getElementById("txtFolderName").value) {
+                                        if(rootFolder.title == document.getElementById("txtFolderName").value.trim()) {
                                             duplicateTitle = true;    
                                             
                                             $scope.isAddFolderClicked=true;
-                                            $scope.IsConfirmation = false;
-                                            $scope.message = "A folder already exists with this name. Please save with another name.";
-                                            $modal.open(confirmObject); 
+                                            $scope.IsConfirmation = true;
+                                            $scope.message = "A folder already exists with this name. Please save with another name."; 
+                                    		$modal.open(confirmObject).result.then(function(ok) {
+                                	    		if(ok) {
+                                	    			$("#txtFolderName").focus();
+                                	    		}
+                                    		});
                                         }
                                     });
                                     
                                     if(duplicateTitle) return;
                                     
-                                    sequence = (0 + $scope.YourQuestionRoot.node.nodes[0].sequence) / 2;
+                                    if($scope.YourQuestionRoot.node.nodes[0].sequence) {
+                                    	sequence = (0 + $scope.YourQuestionRoot.node.nodes[0].sequence) / 2;	
+                                    } else {
+                                    	sequence = 1;
+                                    }
+                                    
                                 }                                
                                 
                                 UserQuestionsService.userQuestionsFolderRoot(function(userQuestionsFolderRoot) {
@@ -227,6 +222,7 @@ angular
                                     UserQuestionsService.saveQuestionFolder(UserQuestionsFolder, function (userFolder) {
                                         
                                         $scope.YourQuestionRoot.node.nodes.unshift(UserQuestionsFolder);
+                                        $scope.YourQuestionRoot.node.nodes[0].isCollapsed = true;
                                                                                 
                                         document.getElementById("txtFolderName").value = "";
                                        
@@ -241,6 +237,7 @@ angular
 							$scope.getBooks = function(discipline, callback) {
 
 								if (!discipline.collapsed) {
+									$scope.showAddFolderLink = false;
 									discipline.collapse();
 								} else {
 									discipline.expand();
@@ -270,7 +267,8 @@ angular
 												yourQuestionFolder.guid = userQuestionsFolder.guid;												
 												yourQuestionFolder.title = userQuestionsFolder.title;
 												yourQuestionFolder.isCollapsed = true;
-												yourQuestionFolder.nodeType = "UserQuestionsFolder"
+												yourQuestionFolder.sequence = userQuestionsFolder.sequence;
+												yourQuestionFolder.nodeType = "UserQuestionsFolder";
 												yourQuestions.push(yourQuestionFolder);
 											});
 											UserQuestionsService.userQuestions(function(userQuestions) {
@@ -310,9 +308,9 @@ angular
 	
 												discipline.node.nodes = yourQuestions;
 												
-												discipline.node.isHttpReqCompleted = true;
+												discipline.node.isHttpReqCompleted = true;												
 												
-												if(callback) callback();
+												$scope.showAddFolderLink = true;
 											});
 										});
 										
