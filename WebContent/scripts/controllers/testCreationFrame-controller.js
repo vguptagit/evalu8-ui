@@ -2132,6 +2132,26 @@ angular
 											}
 										});
 							};
+							
+							$scope.print = function() {
+							    if (!SharedTabService.tests[SharedTabService.currentTabIndex].testId) {
+							        return false;
+							    }
+							    SharedTabService.tests[SharedTabService.currentTabIndex].isBtnClicked=true;
+								$modal.open({
+											templateUrl : 'views/partials/printPopup.html',
+											controller : 'PrintTestController',
+											size : 'lg',
+											backdrop : 'static',
+											keyboard : false,
+											windowClass : 'print-Modal',
+											resolve : {
+												parentScope : function() {
+                                                    return $scope;
+												}
+											}
+										});
+							};
 
 						    // save confirmation on close button clicked..
 						    //TODO: renamed 'Confirmation_Open' to 'open_CloseConfirmation'. need to remove this comment later, if there is no impact.
