@@ -657,3 +657,8 @@
 }
 
 /* FIB - question  End */
+
+body .cke_dialog_background_cover{
+	background-color: black !important;
+}
+

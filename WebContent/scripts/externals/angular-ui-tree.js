@@ -1061,21 +1061,21 @@
                 });
                 
                 
-                var treeScrollTop = $('#tree2-root').scrollTop();
+                var treeScrollTop = $('div#qstnArea').scrollTop();
                 
                 var dragBottom = dragElm[0].offsetTop  + dragElm[0].offsetHeight ;	
-                var treeBottom = $('#tree2-root')[0].offsetTop +  $('#tree2-root')[0].offsetHeight ;
+                var treeBottom = $('#tree2-root')[0].offsetTop +  $('div#qstnArea')[0].offsetHeight ;
                 
-                if (treeScrollTop>0 && leftElmPos > $('#tree2-root')[0].offsetWidth  
-                		&& ((treeScrollTop> eventObj.pageY) || ($('#tree2-root').offset().top  < eventObj.pageY )) ) {               
-                	if(topElmPos<($('#tree2-root').offset().top + 60)){
-					     $('#tree2-root').scrollTop(treeScrollTop-15);
+                if (treeScrollTop>0 && leftElmPos > $('div#qstnArea')[0].offsetWidth  
+                		&& ((treeScrollTop> eventObj.pageY) || ($('div#qstnArea').offset().top  < eventObj.pageY )) ) {               
+                	if(topElmPos<($('div#qstnArea').offset().top + 60)){
+					     $('div#qstnArea').scrollTop(treeScrollTop-15);
 					}
                 }
                 
-                if ( leftElmPos > $('#tree2-root')[0].offsetWidth  
+                if ( leftElmPos > $('div#qstnArea')[0].offsetWidth  
                   		&& 	treeBottom +120< dragBottom ){
-                	  $('#tree2-root').scrollTop( treeScrollTop + 15);                	
+                	  $('div#qstnArea').scrollTop( treeScrollTop + 15);                	
                 }
                 
                 
