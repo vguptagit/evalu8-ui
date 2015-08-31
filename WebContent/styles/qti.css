@@ -613,3 +613,47 @@
    margin-left: 5px;
    cursor: pointer;
 }
+
+/* FIB - question  Begin */
+
+.fbIndex{
+	float: left;
+}
+.fbMainContainer{
+	display: table;
+    width: 90%;
+    padding-left: 0px;	
+    margin-left: 20px;    
+}
+#fbCaption{		
+    float: left;
+    width: 93%;
+    min-height: 37px;
+    padding-top: 4px;
+    padding-left: 2px;
+    overflow: auto;
+    padding-right: 2px;
+}
+.fbCaptionContainer{
+	 border: 1px solid #D0D0D0;
+    border-radius: 3px;    
+    width: 90%;
+    background-color: #fff;   
+    float: left;
+}
+
+.fbMainContainer div[ckeditor='htmlEditorOptions']>p{
+	margin-bottom: 0px !important; 
+	font-size: 14px !important; 
+}
+
+#fbAnswerContainer div:empty:before {
+	content: attr(data-placeholder);
+	color: gray
+}
+
+.fbansw{
+	display: inline-block;
+}
+
+/* FIB - question  End */
