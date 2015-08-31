@@ -97,16 +97,16 @@
                     <div class="imagediv">
 						<i class="fa fa-spinner fa-pulse font-size-16" ng-show="!node.isHttpReqCompleted"></i>
                         <input ng-click="getBooks(this)" type="image" class="collapseImg" value="" ng-show="node.isHttpReqCompleted"
-                               ng-src="{{collapsed?'images/right_arrow2.png':'images/right_arrow.png'}}"></input>
+						id="{{node.type=='YourQuestionRoot' ? 'yourquestionsroot' : 'discipline'}}" ng-src="{{collapsed?'images/right_arrow2.png':'images/right_arrow.png'}}"></input>
                     </div>
                     <div class="captiondiv">
                         <label class="captionLabel" title="{{node.item}}">{{node.item}}</label>
                     </div>
-					<div class="iconsChapter" ng-if="node.type=='YourQuestionRoot'">
-                        <button id="addfolder" class="plusIconQT newTest-close glyphicon glyphicon-plus" 
+					<div class="iconsChapter" ng-if="node.type=='YourQuestionRoot' && showAddFolderLink"> 
+                        <button id="addfolderlink" class="plusIconQT glyphicon glyphicon-plus" style="float: right;" 
                         event-focus="click" event-focus-id="txtFolderName" 
                         ng-click='addFolderClick(this)' value="Add Folder" 
-                        tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Add new folder"></button>
+                        tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Add new folder" />
                     </div>
                 </div>
             </div>
