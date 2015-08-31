@@ -2897,6 +2897,7 @@ li[qstntemplate='true'] .qti-simpleChoice .radio, li[printmode='true'] .qti-simp
 	font-weight: normal;
 	outline: none;
 	background-color: #fff;
+	min-height: 21px;
 }
 
 .closeQuestion {

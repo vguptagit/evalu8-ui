@@ -55,18 +55,101 @@ angular.module('evalu8Demo')
 					break;
 
 				case 'FillInBlanks':		
-					qtiModel.Caption = getFBQuestionCaption(xml);						
-					qtiModel.FbCaption = getFbCaptionHTML(qtiModel.Caption);
+					qtiModel.FbCaption = getFBQuestionCaption(xml);		
+					qtiModel.Caption = getFbCaptionHTML(qtiModel.FbCaption);						
+					qtiModel.CorrectAnswerHtml = getFBCorrectAnswersHtml(xml);		
 					qtiModel.PrintOption = QuestionPrefilledModal[quizType].printOption;									
-					qtiModel.CorrectAnswer = getFBCorrectAnswers(xml);		
-
+					//qtiModel.CorrectAnswer = getFBCorrectAnswers(xml);	
+					qtiModel.BlankSize = getFBQuestionBlankSize(xml);		
 
 					break;
 				}			
 				return qtiModel;		
 
+			}			
+			
+			
+					
+			var getFBQuestionBlankSize = function(xml) {
+				return $(xml).find('itemBody').find("textEntryInteraction").attr("expectedLength");
+			}
+		
+			var getFBCorrectAnswers = function(qtiXML) {
+				var correctAnswerList = [];			
+				$(qtiXML).find('responseDeclaration').each(function(i, e) {
+					correctAnswerList.push($(this)[0].children[0].children[0].attributes['mapKey'].nodeValue);
+				});				
+				return correctAnswerList;
+			}
+			
+			var getFBQuestionCaption = function(xml) {
+				var caption=[];	
+				var txtContent;
+				var item;
+
+				if($(xml).find('itemBody').find('blockquote').find('p').eq(0)[0].childNodes.length>0){
+						$($(xml).find('itemBody').find('blockquote').find('p').eq(0)[0].childNodes).each(function(node) {
+					txtContent='';
+					item='';
+					if($(this)[0].nodeType==4){					
+						item ={type:1,content:$(this)[0].textContent};
+						caption.push(item);
+					}else if($(this)[0].nodeName == 'textEntryInteraction'){
+						item ={type:2,content:txtContent};
+						caption.push(item);
+					}
+				});			
+				}else{
+					item ={type:1,content:''};
+					caption.push(item);
+				}
+
+
+				return caption;
 			}
 
+			var getFBCorrectAnswersHtml = function(qtiXML) {
+				var correctAnswerList = [];		
+				var correctAnswers = '';
+			
+				$(qtiXML).find('responseDeclaration').each(function(i, e) {
+					if($(this)[0].children.length>0){
+						var correctAnswer = '<div class="editView editablediv crtAnsDiv" type="text" id="RESPONSE_' + (i+1) +'">'+ String.fromCharCode(65 + i )  +	
+						'.<div contenteditable="true" class="placeHolderForBlank" data-placeholder="Enter the correct answer for blank "'+ String.fromCharCode(65 + i  ) +'>$answerModel</div></div>';
+						correctAnswer = correctAnswer.replace("$answerModel",$(this)[0].children[0].children[0].attributes['mapKey'].nodeValue);
+						correctAnswers =correctAnswers + correctAnswer;				
+				
+					}
+				});				
+				
+				return correctAnswers;
+			}
+			
+			// to render Caption of Fill in the blank which contains html content
+			var getFbCaptionHTML = function(Caption) {
+				var FbCaption = "";
+
+				var textEntryInteraction = '<button data-ng-if="(caption.type==2)" id="RESPONSE_$index" onkeydown="return getSpanId(this,event)" class="blankFIBButton">'+
+				'<span contenteditable="false" class="blankWidth editView"><b contenteditable="false">$charIndex.</b>Fill Blank</span></button> &nbsp;';
+
+				var textEntryInteractionIndex=0;
+
+				$.each(Caption,function(index,captionElement) {
+					if(captionElement.type==1){							
+						FbCaption = FbCaption + jsonReplaceUL(captionElement.content);
+					}else{						
+						var textEntry = textEntryInteraction;
+						textEntry = textEntry.replace("$index",textEntryInteractionIndex+1)
+						textEntry=textEntry.replace("$charIndex",String.fromCharCode(65 + textEntryInteractionIndex));
+						FbCaption = FbCaption + textEntry;
+						textEntryInteractionIndex = textEntryInteractionIndex + 1;
+					}
+
+				});
+
+				return FbCaption;
+			}
+			
 			var getQuestionCaption = function(xml) {
 				return getSerializedXML($(xml).find('itemBody').find('p').eq(0));
 			}
@@ -105,61 +188,7 @@ angular.module('evalu8Demo')
 				return element[0].innerHTML;
 			}
 
-			// to render Caption of Fill in the blank which contains html content
-			var getFbCaptionHTML = function(Caption) {
-				var FbCaption = "";
-
-				var textEntryInteraction = '<button data-ng-if="(caption.type==2)" id="$index" onkeydown="return getSpanId(this,event)" class="blankFIBButton">'+
-				'<span contenteditable="false" class="blankWidth editView"><b contenteditable="false">$charIndex.</b>Fill Blank</span></button> &nbsp;';
-
-				var textEntryInteractionIndex=0;
-
-				$.each(Caption,function(index,captionElement) {
-					if(captionElement.type==1){							
-						FbCaption = FbCaption + jsonReplaceUL(captionElement.content);
-					}else{						
-						var textEntry = textEntryInteraction;
-						textEntry = textEntry.replace("$index",textEntryInteractionIndex)
-						textEntry=textEntry.replace("$charIndex",String.fromCharCode(65 + textEntryInteractionIndex));
-						FbCaption = FbCaption + textEntry;
-						textEntryInteractionIndex = textEntryInteractionIndex + 1;
-					}
-
-				});
-
-
-				return FbCaption;
-			}
-
-			var getFBQuestionCaption = function(xml) {
-				var caption=[];	
-				var txtContent;
-				var item;
-
-				$($(xml).find('itemBody').find('blockquote').find('p').eq(0)[0].childNodes).each(function(node) {
-
-					txtContent='';
-					item='';
-					if($(this)[0].nodeType==4){					
-						item ={type:1,content:$(this)[0].textContent};
-						caption.push(item);
-					}else if($(this)[0].nodeName == 'textEntryInteraction'){
-						item ={type:2,content:txtContent};
-						caption.push(item);
-					}
-				});					
-
-
-				return caption;
-			}
-
-			var getFBCorrectAnswers = function(qtiXML) {
-				var correctAnswerList = [];			
-				$(qtiXML).find('responseDeclaration').each(function(i, e) {
-					correctAnswerList.push($(this)[0].children[0].children[0].attributes['mapKey'].nodeValue);
-				});				
-				return correctAnswerList;
-			}
+			
 
 			var getQuestionOptions = function(xml, quizType) {
 				var optionList = [];
@@ -469,6 +498,27 @@ angular.module('evalu8Demo')
 				$(xml).find('setOutcomeValue[identifier="SCORE"] baseValue').text("0");
 				$(xml).find('setOutcomeValue[identifier="SCORE"] baseValue').eq(node.qtiModel.CorrectAnswer).text("1");
 			}
+			
+			var replaceFIBblank = function(elm,text,xml,qstnHTML){
+				var buttons = elm.find("button");
+				var textEntryBackUp;
+				var actualContent;
+				for(var i =0; i< buttons.length; i++)
+				{
+					if(actualContent == null)
+						actualContent = "<![CDATA[" + text.substring(0,text.indexOf(buttons.get(i).outerHTML)) + "]]>"
+						else{
+							var index = text.indexOf(buttons.get(i-1).outerHTML) + buttons.get(i-1).outerHTML.length;
+							actualContent = actualContent + "<![CDATA[" + text.substring(index,text.indexOf(buttons.get(i).outerHTML)) + "]]>"
+						}
+					textEntryBackUp = "<textEntryInteraction expectedLength='150' responseIdentifier='" + buttons.eq(i).attr("id") + "' />"
+					actualContent = actualContent + textEntryBackUp;
+				}
+				var index = text.indexOf(buttons.get(buttons.length - 1).outerHTML) + buttons.get(buttons.length - 1).outerHTML.length;
+				actualContent = actualContent + "<![CDATA[" + text.substring(index,text.length) + "]]>"
+
+				return actualContent;
+			}
 
 
 			this.getQtiXML = function(node) {
@@ -558,7 +608,7 @@ angular.module('evalu8Demo')
 							optionText = optionText.substring(3, optionText.length-4);
 						}		
 						optionText = optionText==""?QuestionPrefilledModal[node.quizType].printMatchingOption:optionText;
-
+						 
 						var optionTagAppend = inlineChoiceTag.replace('@RESP', 'RESP_' + (i + 1));						
 						optionTagAppend = optionTagAppend.replace('@RESP_Val', "<![CDATA[" + optionText + "]]>");
 
@@ -588,13 +638,61 @@ angular.module('evalu8Demo')
 
 					break;
 				case 'FillInBlanks':		
+					
+					if($(node.qtiModel.Caption).find("button").length > 0){
+						qstnCaption = replaceFIBblank($(node.qtiModel.Caption),qstnCaption);					
+						$(xml).find('itemBody').find('p').eq(0).empty();
+						QTI.appendHTMLNodes($(xml).find('itemBody').find('p').eq(0),qstnCaption);
+					}
+					else{
 
-					break;
+						QTI.appendNodes($(xml).find('itemBody').find('p').eq(0),"<![CDATA[" +qstnCaption + "]]>");
+					}
+
+					var htmlTextEntry = $(node.qtiModel.CorrectAnswerHtml).children();
+
+					var optionText = '';
+
+					var TextArray= htmlTextEntry.find('.placeHolderForBlank');
+
+					var responseDeclaration = $(xml).find('responseDeclaration');
+
+					responseDeclaration.remove();
+
+					var responseTagTemplate = ' <responseDeclaration identifier="@RESPONSE" cardinality="single" baseType="string">'
+						+'<mapping defaultValue="0"><mapEntry mapKey="@RESP" mappedValue="1" caseSensitive="false"/></mapping></responseDeclaration>';
+
+					for (var i = 0; i < htmlTextEntry.length; i++) {
+						optionText = $(htmlTextEntry[i]).html();
+						var responseTag = responseTagTemplate
+						responseTag = responseTag.replace(
+								'@RESPONSE', 'RESPONSE_'+(i+1));
+
+						responseTag = responseTag.replace(
+								'@RESP',  optionText );
+
+						var item = $.parseXML(responseTag); 
+
+
+						if(i==0)
+							$(xml).find( "assessmentItem" ).prepend($(item).children(0));
+						else
+							$(xml).find( "responseDeclaration").eq(i-1).after($(item).children(0));
+
+					}
+
+					if($(xml).find('itemBody').find("textEntryInteraction").length > 0)
+						$(xml).find('itemBody').find("textEntryInteraction").attr("expectedLength",node.qtiModel.BlankSize)
+
+
+						break;
 				}
+				
 
 				var serializer = new XMLSerializer();
 				var editedXML = serializer.serializeToString(xml);			
 				return editedXML;
+				
 			}
 
 

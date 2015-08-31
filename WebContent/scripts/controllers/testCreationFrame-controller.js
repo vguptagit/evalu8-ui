@@ -582,10 +582,7 @@ angular
 								selectedNode.node.qtiModel.EssayPageSize = pageSize;
 							}
 							
-							$scope.qstnBlankSize = function(selectedNode,
-									blankSize) {
-								selectedNode.node.BlankSize = blankSize;
-							}
+							
 
 							$scope.addOptions = function(selectedOption, event) {
 								var htmlOptionCnt = selectedOption.$element
@@ -1809,62 +1806,8 @@ angular
     								});
     								
     								var editedQstns = $.grep(test.questions, function(qstn) {
-    									
-    									if(qstn.IsEditView && !qstn.qstnTemplate){    										
-    										qstn.IsEdited =  $scope.IsQuestionModified(qstn);			
-    									}
-    									
-    									if(qstn.IsEdited){
-    										qstn.data = QtiService.getQtiXML(qstn);
-    									}    									
-    									
-    									qstn.qstnLinkText = qstn.IsEditView ? "Edit": "View";
-    									qstn.IsEditView = false;
-    									
-    									if(qstn.qstnTemplate){
-                                            qstn.qstnTemplate = false;
-                                        }    								
-										
-    									if (typeof (qstn.questionMetadata) == 'undefined') {
-
-    									    qstn.questionMetadata = userSettings.questionMetadata;
-
-    									    $.each(qstn.extendedMetadata, function (index, item) {
-
-    									        if (typeof (qstn['questionMetadata'][item['name']]) != 'undefined') {
-    									            qstn['questionMetadata'][item['name']] = item['value'].replace(/&ndash;/g, '-');
-    									        }
-
-    									    });
-    									    qstn.selectedLevel = qstn.questionMetadata['Difficulty'] == undefined ? { name: 'Select Level', value: '0' } : { name: qstn.questionMetadata['Difficulty'], value: qstn.questionMetadata['Difficulty'] };
-    									}
-    									var qstnExtMetadata=[];													
-    								
-    									$.each(qstn.questionMetadata, function(KeyName, KeyValue){		
-    										if(KeyName == "Difficulty"){
-    											KeyValue = qstn.selectedLevel.value;
-    										}
-    										qstnExtMetadata.push({name:KeyName,value:KeyValue}) ;
-    									});													
-    																					
-    									var QuestionEnvelop = {
-    										metadata : {
-    											guid : qstn.IsEdited ? null
-    													: qstn.guid,
-                                                title : qstn.title,
-    											description : qstn.description,
-    											quizType : qstn.quizType,
-    											subject : qstn.subject,
-    											timeRequired : qstn.timeRequired,
-    											crawlable : qstn.crawlable,
-    											keywords : qstn.keywords,
-    											versionOf : qstn.versionOf,
-    											version : qstn.version,
-    											extendedMetadata : qstnExtMetadata
-    										},
-    										body : qstn.IsEdited ? qstn.data : null
-    									};
-    									QuestionEnvelops.push(QuestionEnvelop);
+    									var QuestionEnvelop = buildQuestionEnvelop(qstn);
+    									QuestionEnvelops.push(QuestionEnvelop);    									
     								});
     								SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode=false;    
     								TestService.saveQuestions(QuestionEnvelops, function(questionsResult) {
@@ -2615,6 +2558,78 @@ angular
 								return !angular.equals(node.qstnMasterData,qstnModifiedData);
 							}
 							
+							var buildQuestionEnvelop = function(qstn){
+								
+								if(qstn.IsEditView){    	
+									
+									if(qstn.quizType=='FillInBlanks'){
+										updateFIBQuestionAnswers(qstn);		
+									}    										
+									
+									if(!qstn.qstnTemplate){    										
+										qstn.IsEdited =  $scope.IsQuestionModified(qstn);
+									}
+									
+								}								
+								
+								if(qstn.IsEdited){
+									qstn.data = QtiService.getQtiXML(qstn);
+								}    									
+								
+								qstn.qstnLinkText = qstn.IsEditView ? "Edit": "View";
+								qstn.IsEditView = false;
+								
+								if(qstn.qstnTemplate){
+                                    qstn.qstnTemplate = false;
+                                }    								
+								
+								if (typeof (qstn.questionMetadata) == 'undefined') {
+
+								    qstn.questionMetadata = userSettings.questionMetadata;
+
+								    $.each(qstn.extendedMetadata, function (index, item) {
+
+								        if (typeof (qstn['questionMetadata'][item['name']]) != 'undefined') {
+								            qstn['questionMetadata'][item['name']] = item['value'].replace(/&ndash;/g, '-');
+								        }
+
+								    });
+								    qstn.selectedLevel = qstn.questionMetadata['Difficulty'] == undefined ? { name: 'Select Level', value: '0' } : { name: qstn.questionMetadata['Difficulty'], value: qstn.questionMetadata['Difficulty'] };
+								}
+								var qstnExtMetadata=[];													
+							
+								$.each(qstn.questionMetadata, function(KeyName, KeyValue){		
+									if(KeyName == "Difficulty"){
+										KeyValue = qstn.selectedLevel.value;
+									}
+									qstnExtMetadata.push({name:KeyName,value:KeyValue}) ;
+								});													
+																				
+								var QuestionEnvelop = {
+									metadata : {
+										guid : qstn.IsEdited ? null
+												: qstn.guid,
+                                        title : qstn.title,
+										description : qstn.description,
+										quizType : qstn.quizType,
+										subject : qstn.subject,
+										timeRequired : qstn.timeRequired,
+										crawlable : qstn.crawlable,
+										keywords : qstn.keywords,
+										versionOf : qstn.versionOf,
+										version : qstn.version,
+										extendedMetadata : qstnExtMetadata
+									},
+									body : qstn.IsEdited ? qstn.data : null
+								};
+								
+								return QuestionEnvelop;
+							}
+							
+							var updateFIBQuestionAnswers = function(qstn){
+								qstn.qtiModel.CorrectAnswerHtml = $('#fbAnswerContainer').html();										
+							}
+							
 							$scope.IsAnswerSelected = function(node){				
 								if(node.IsEditView && node.quizType=='MultipleResponse'){
 									var answerSelected=false;
@@ -2629,8 +2644,7 @@ angular
 										$scope.message = "Atleast one correct Answer should be defined."
 										$modal.open(confirmObject);			
 										return false;
-									}
-									
+									}									
 									
 								}
 								return true;
