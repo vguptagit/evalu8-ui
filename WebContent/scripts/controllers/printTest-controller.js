@@ -3,6 +3,7 @@ angular.module('e8MyTests')
 		['$scope', '$rootScope', '$modalInstance', 'parentScope', 'UserService','TestService','$modal',
 		 function ($scope, $rootScope, $modalInstance, parentScope, UserService, TestService,$modal) {
 			
+			parentScope.tests[parentScope.currentIndex].isBtnClicked=false;
 		    $scope.answerAreas = [
 		                          { value: 'NONE', isDisabled: false, text: 'None' },	//includeAreaForStudentResponse
 		                          { value: 'BETWEENQUESTIONS', isDisabled: false, text: 'Between questions' },
