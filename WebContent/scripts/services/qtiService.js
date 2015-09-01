@@ -117,7 +117,7 @@ angular.module('evalu8Demo')
 					if($(this)[0].childNodes.length>0){
 						var correctAnswer = '<div class="editView editablediv crtAnsDiv" type="text" id="RESPONSE_' + (i+1) +'">'+ String.fromCharCode(65 + i )  +	
 						'.<div contenteditable="true" class="placeHolderForBlank" data-placeholder="Enter the correct answer for blank "'+ String.fromCharCode(65 + i  ) +'>$answerModel</div></div>';
-						correctAnswer = correctAnswer.replace("$answerModel",$(this)[0].children[0].children[0].attributes['mapKey'].nodeValue);
+						correctAnswer = correctAnswer.replace("$answerModel",$(this)[0].childNodes[0].childNodes[0].attributes['mapKey'].nodeValue);
 						correctAnswers =correctAnswers + correctAnswer;				
 				
 					}

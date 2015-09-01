@@ -196,13 +196,13 @@ angular.module('e8MyTests')
 			$scope.showUploadImagePanel = function(selectedNode,event,targetControlIdentifier,targetIndex,optionInColumn) {	
 				$scope.targetImageControl = 0;
 				$scope.targetControlInColumn = '';
+				$scope.targetImageControl = targetIndex + 1 ;
+				$scope.targetControlInColumn = optionInColumn ;
 				if ($(event.target).parents(targetControlIdentifier).next("#questionUploadImage").length == 1) {
 					$scope.imagePanelLoaded=!$scope.imagePanelLoaded;
 					return;
 				}
 				$scope.imagePanelLoaded = true;				
-				$scope.targetImageControl = targetIndex + 1 ;
-				$scope.targetControlInColumn = optionInColumn ;
 				var imagePanel = $(angular.element(document.querySelector("#questionUploadImage"))).detach();
 				imagePanel.show();
 				$(event.target).parents(targetControlIdentifier).after(imagePanel);		
@@ -304,7 +304,11 @@ angular.module('e8MyTests')
 					var focusIndex = parseInt(focuseditorindex);     			
 					for (var name in CKEDITOR.instances){		     				
 						if(i==focusIndex){
-							CKEDITOR.instances[name].focus();     							
+							var optionEditor = CKEDITOR.instances[name];		
+							var optionRange = new CKEDITOR.dom.range(optionEditor.document);   
+							optionRange.moveToElementEditablePosition( optionEditor.editable(), true ); 
+							optionEditor.getSelection().selectRanges( [ optionRange ] );		
+							optionEditor.focus();	
 							break;			
 						}
 						i++;

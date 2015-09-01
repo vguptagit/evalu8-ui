@@ -2577,7 +2577,7 @@ angular
 									qstn.data = QtiService.getQtiXML(qstn);
 								}    									
 								
-								qstn.qstnLinkText = qstn.IsEditView ? "Edit": "View";
+								qstn.qstnLinkText = qstn.IsEditView ? "View": "Edit";
 								qstn.IsEditView = false;
 								
 								if(qstn.qstnTemplate){
