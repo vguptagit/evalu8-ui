@@ -1807,7 +1807,7 @@ angular
     								});
     								
     								var editedQstns = $.grep(test.questions, function(qstn) {
-    									var QuestionEnvelop = buildQuestionEnvelop(qstn);
+    									 var QuestionEnvelop = buildQuestionEnvelop(qstn,userSettings);
     									QuestionEnvelops.push(QuestionEnvelop);    									
     								});
     								SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode=false;    
@@ -2559,7 +2559,7 @@ angular
 								return !angular.equals(node.qstnMasterData,qstnModifiedData);
 							}
 							
-							var buildQuestionEnvelop = function(qstn){
+							var buildQuestionEnvelop = function(qstn,userSettings){
 								
 								if(qstn.IsEditView){    	
 									
@@ -2641,6 +2641,7 @@ angular
 										}
 									});				
 									if(!answerSelected){
+										SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode = true;
 										$scope.IsConfirmation = false;
 										$scope.message = "Atleast one correct Answer should be defined."
 										$modal.open(confirmObject);			
@@ -2656,7 +2657,8 @@ angular
 									var qstnCaption = $(node.qtiModel.Caption);
 									var blankLen = $(qstnCaption).find('button').length;
 																		
-									if(blankLen<=0){												
+									if(blankLen<=0){			
+										SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode = true;
 										$scope.IsConfirmation = false;
 										$scope.message = "Atleast One Blank should be defined."
 										$modal.open(confirmObject);			

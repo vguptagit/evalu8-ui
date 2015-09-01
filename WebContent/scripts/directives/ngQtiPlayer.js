@@ -10,7 +10,7 @@ angular.module('e8MyTests')
 			$scope.imagePanelLoaded = false;
 
 			$scope.getQtiTemplate = function() {
-				if(typeof($scope.node.qtiModel)=='undefined'){
+				if((typeof($scope.node.qtiModel)=='undefined') && !(typeof($scope.node.data)=='undefined')){
 					$scope.node.qtiModel =  QtiService.getQtiModel($scope.node.data,$scope.node.quizType);
 				}  
 
