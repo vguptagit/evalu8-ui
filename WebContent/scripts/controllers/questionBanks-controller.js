@@ -191,7 +191,7 @@ angular
                                             duplicateTitle = true;    
                                             
                                             $scope.isAddFolderClicked=true;
-                                            $scope.IsConfirmation = true;
+                                            $scope.IsConfirmation = false;
                                             $scope.message = "A folder already exists with this name. Please save with another name."; 
                                     		$modal.open(confirmObject).result.then(function(ok) {
                                 	    		if(ok) {
@@ -238,6 +238,7 @@ angular
 
 								if (!discipline.collapsed) {
 									$scope.showAddFolderLink = false;
+									$scope.showAddFolderPanel = false;
 									discipline.collapse();
 								} else {
 									discipline.expand();
