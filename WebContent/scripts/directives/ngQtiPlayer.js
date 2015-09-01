@@ -69,7 +69,7 @@ angular.module('e8MyTests')
 				}
 
 				if($scope.updateQstnEditState(node.IsEditView)){
-					if($scope.IsAnswerSelected(node)){
+					if( ($scope.IsAnswerSelected(node)) && ($scope.IsFibBlankAdded(node)) ){
 						$scope.imagePanelLoaded = false;					
 
 						$scope.node.qstnLinkText = node.IsEditView ? "Edit"
@@ -376,12 +376,22 @@ angular.module('e8MyTests')
 			
 			/******************************************************************************FB-Question*********************************************/
 			
-			$scope.captionFocus = true;				
+			$scope.captionFocus = false;				
 
 			$scope.focusFIBcaption = function () {
 				$('#questionCaption').focus();
 				$('#questionCaption').on('focus', function(){
-					$('#questionCaption').trigger('click');						   
+					$scope.captionFocus = false;
+					$('#questionCaption').trigger('click');		
+				
+				});
+				
+				$('#questionCaption').on('blur', function(){
+					$scope.captionFocus = true;	
+				});
+				
+				$('#questionCaption').on('click', function(){
+					$scope.captionFocus = false;
 				});
 			}
 

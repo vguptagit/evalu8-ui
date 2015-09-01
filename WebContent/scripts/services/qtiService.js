@@ -71,7 +71,8 @@ angular.module('evalu8Demo')
 			
 					
 			var getFBQuestionBlankSize = function(xml) {
-				return $(xml).find('itemBody').find("textEntryInteraction").attr("expectedLength");
+				var blankSize = $(xml).find('itemBody').find("textEntryInteraction").attr("expectedLength");				
+				return typeof(blankSize)=='undefined'?"20":blankSize;
 			}
 		
 			var getFBCorrectAnswers = function(qtiXML) {
@@ -113,7 +114,7 @@ angular.module('evalu8Demo')
 				var correctAnswers = '';
 			
 				$(qtiXML).find('responseDeclaration').each(function(i, e) {
-					if($(this)[0].children.length>0){
+					if($(this)[0].childNodes.length>0){
 						var correctAnswer = '<div class="editView editablediv crtAnsDiv" type="text" id="RESPONSE_' + (i+1) +'">'+ String.fromCharCode(65 + i )  +	
 						'.<div contenteditable="true" class="placeHolderForBlank" data-placeholder="Enter the correct answer for blank "'+ String.fromCharCode(65 + i  ) +'>$answerModel</div></div>';
 						correctAnswer = correctAnswer.replace("$answerModel",$(this)[0].children[0].children[0].attributes['mapKey'].nodeValue);
@@ -136,7 +137,7 @@ angular.module('evalu8Demo')
 
 				$.each(Caption,function(index,captionElement) {
 					if(captionElement.type==1){							
-						FbCaption = FbCaption + jsonReplaceUL(captionElement.content);
+						FbCaption = FbCaption + captionElement.content;
 					}else{						
 						var textEntry = textEntryInteraction;
 						textEntry = textEntry.replace("$index",textEntryInteractionIndex+1)

@@ -656,6 +656,10 @@
 	display: inline-block;
 }
 
+.fbCaptionContainer ~ .questionUploadImage{	
+	width: 90%;
+}
+
 /* FIB - question  End */
 
 body .cke_dialog_background_cover{

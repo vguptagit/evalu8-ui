@@ -1722,15 +1722,16 @@ angular
 									return;
 								}
 								
-								var MultipleResponseAnswerNotSelected = false ;
-								$.each(test.questions, function (index, qstn) {
-									if(qstn.IsEditView && !$scope.IsAnswerSelected(qstn)){
-										MultipleResponseAnswerNotSelected = true;
-										return;
-									}
+								var exitSave = false ;								
+								
+								$.each(test.questions, function (index, qstn) {								
+										if (qstn.IsEditView && (!$scope.IsAnswerSelected(qstn) || !$scope.IsFibBlankAdded(qstn))){
+											exitSave = true;
+											return;
+										}												
 								});
 								
-								if(MultipleResponseAnswerNotSelected){
+								if(exitSave){
 									 $rootScope.blockPage.stop();
 									 return ;
 								}
@@ -2646,6 +2647,22 @@ angular
 										return false;
 									}									
 									
+								}
+								return true;
+							}
+							
+							$scope.IsFibBlankAdded = function(node){		
+								if(node.IsEditView && node.quizType=='FillInBlanks'){
+									var qstnCaption = $(node.qtiModel.Caption);
+									var blankLen = $(qstnCaption).find('button').length;
+																		
+									if(blankLen<=0){												
+										$scope.IsConfirmation = false;
+										$scope.message = "Atleast One Blank should be defined."
+										$modal.open(confirmObject);			
+										return false;
+										
+									}
 								}
 								return true;
 							}

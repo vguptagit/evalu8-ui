@@ -34,9 +34,7 @@
 			<div class="fbCaptionContainer">
 				<div ng-change="updateFIBanswer(node.qtiModel.CorrectAnswerHtml)"
 					id="questionCaption" contenteditable="true"
-					ready="focusFIBcaption()" placeholder={{node.qtiModel.EditCaption}}
-					data-ng-blur="captionFocus=true;"
-					data-ng-focus="captionFocus=false;"
+					ready="focusFIBcaption()" placeholder={{node.qtiModel.EditCaption}}			
 					data-ng-keydown="removeFIBblanks(this,$event)"
 					ckeditor="htmlEditorOptions" data-ng-model="node.qtiModel.Caption">
 				</div>
