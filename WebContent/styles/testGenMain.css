@@ -3210,16 +3210,25 @@ px
 	height: 100%
 }
 .print-Modal .modal-dialog > .modal-content {
-	background-color: #777777;
-	border-radius:0px;
+	background-color: rgba(0, 0, 0, .2);
+	border-radius:5px;
 	height: 100%;
 }
-.print-Modal .closeIcon{
-	right: -8px;
+.print-Modal .leftPrint{
+	border-right-color: #e5e5e5;
 }
-.print-Modal .modal-footer{
-    position: absolute;
-    width: 100%;
-    bottom: 0px;
-    padding:5px 15px;
+.print-Modal .leftPrint > div:first-child{
+	height: 80%;padding: 5px 0px;
+}
+.print-Modal .rightPrint{
+	border-left-style: none;
+}
+.print-Modal .rightPrint > div:first-child{
+	height: 100%;padding: 5px 0px
+}
+.print-Modal .leftPrint > div:last-child{
+	height: 20%;display: table;padding-bottom: 5px;
+}
+.print-Modal .printFooter{
+	display: table-cell;vertical-align: bottom;
 }
