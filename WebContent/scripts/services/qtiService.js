@@ -317,7 +317,7 @@ angular.module('evalu8Demo')
 				$(qtiXML).find('responseDeclaration mapEntry').each(
 						function(i, e) {							
 							responseAnswerList.push(false);
-							if ($(this).attr("mappedValue") == "1") {
+							if(parseFloat($(this).attr("mappedValue")) > 0){
 								correctAnswerList.push(true);
 							}else{
 								correctAnswerList.push(false);
@@ -443,7 +443,7 @@ angular.module('evalu8Demo')
 			}
 
 			var buildQuestionOptionTag = function(xml,node) {
-				var optionVew = node.optionsView == true ? 'Vertical': 'Horizontal';
+				var optionVew = node.qtiModel.Orientation == true ? 'Vertical': 'Horizontal';
 				$(xml).find('itemBody').find('choiceInteraction').attr('orientation', optionVew);
 
 				$(xml).find('itemBody').find('choiceInteraction').find("simpleChoice").remove();				
