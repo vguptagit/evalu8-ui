@@ -1,0 +1,84 @@
+<div class="modal-header botborder">
+    <div class="col-md-2 margin-top-10 margin-lft-5neg">
+    <h4 class="modal-default-header-title" id="myModalLabel">Settings</h4>
+	</div>
+	  <div class="col-md-10 text-right  margin-top-10">
+        <div class="margin-rt-10neg">
+		<button ng-click="cancel()" class="backButton">Cancel</button>
+		<button ng-click="savePref()" class="nextButton">Save</button>
+	</div>
+	</div>
+<div class="row col-md-12 margin-top-4">
+    <ul class="row nav nav-tabs resources-tabs ng-scope margin-lft-5neg">
+                <li ng-class="{'active': activeTab == 'questionBanks'}"><a class="ng-binding" 
+                ng-click="showQuestionBank(this)">Question Banks</a></li>
+                <li ng-class="{'active': activeTab == 'metadata'}"><a class="ng-binding" 
+                ng-click="showMetadata(this)">Metadata</a>
+                </li>
+            </ul>
+    </div>
+	
+</div>
+
+<div class="modal-body">
+
+	<div id="divSaveMessage"></div>
+	<div class="row">
+		<div class="col-md-12">
+			            <div  ng-show="activeTab == 'questionBanks'">
+
+				<div class="col-md-12">The Question Banks area provides
+					publisher test banks based on your selections.</div>
+
+				 <div class="col-md-12" style="margin-top: 25px; margin-bottom: 25px;">
+					<button ng-click="edit(1)" ng-disabled="isClicked" class="btn btn-default">
+						                        <i class="glyphicon glyphicon-pencil margin-rt-5"></i> Edit Disciplines
+					</button>
+					<button ng-click="edit(2)" ng-disabled="isClicked" class="btn btn-default">
+						<i class="glyphicon glyphicon-pencil"></i> Edit Question Banks
+					</button>
+				</div>
+				
+				  <div class="col-md-12">
+                    <div class="col-md-6 addFolderContainer">
+                        <div class="col-md-4 margin-top-15">Disciplines</div>
+                        <div class="col-md-8 margin-top-15">Test Banks</div>
+                                        </div>  
+                    <div class="col-md-6"></div>                              
+                    </div>                                
+                    <div style="clear:left;">&nbsp;</div>
+					 <div class="col-md-12 booksContainer">
+						<div ng-repeat="(key, value) in userBooks | groupBy: 'discipline'">					
+							<div ng-repeat = "book in value">
+						
+								 <div ng-class="{'bottomonlyborder': $last}" style="float:left;" class="col-md-12">
+									<div class="col-md-4"><span ng-show="$index == 0">{{book.discipline}}</span>&nbsp;</div>
+									<div class="col-md-8">{{book.title}} </div>
+								</div>        						
+								<div style="clear:left;">&nbsp;</div>											
+							</div>								
+						</div>
+					</div>
+				</div>
+			</div>
+
+			    <div class="container" ng-show="activeTab == 'metadata'">
+				<div class="col-md-12">Select the information you want
+				available when you create questions.</div>
+				
+				  <div class="col-md-6 margin-top-20 ">
+					<div style="float:left;" data-ng-repeat="filter in questionMetadata.all">
+						<div class="checkboxDiv">
+							<input id="{{filter}}" type="checkbox" checklist-model="questionMetadata.userSelected" data-checklist-value="filter">
+						</div>
+						<div ng-if="filter == 'PageReference'" style="padding: 5px;" class="checkboxLabelDiv">Page Reference</div>
+						<div ng-if="filter == 'QuestionId'" style="padding: 5px;" class="checkboxLabelDiv">Question Id (provided by Evalu8)</div>						
+						<div ng-if = "filter != 'PageReference' && filter != 'QuestionId'" style="padding: 5px;" class="checkboxLabelDiv">{{filter}}</div>
+						
+					</div>
+				</div>
+
+		</div>
+		</div>
+	</div>
+</div>

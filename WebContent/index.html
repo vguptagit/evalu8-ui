@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -17,8 +17,8 @@
 <!-- endbuild -->
 
 
-<link href="styles/icon-fonts/style.css" rel="stylesheet" />
 <!-- build:css(.tmp) styles/main.css -->
+<link href="styles/icon-fonts/style.css" rel="stylesheet" />
 <link href="styles/userSettings.css" rel="stylesheet" />
 <link href="styles/icons.css" rel="stylesheet" />
 
@@ -27,6 +27,7 @@
 <link href="styles/main.css" rel="stylesheet" />
 <link href="styles/angular-block-ui.css" rel="stylesheet" />
 <link href="styles/style.css" rel="stylesheet" />
+<link href="styles/qti.css" rel="stylesheet" />
 <!-- endbuild -->
 
 </head>
@@ -43,7 +44,9 @@
 			<div ui-view></div>
 		</div>
 	</div>
-
+<script>
+  window.CKEDITOR_BASEPATH = 'http://localhost.dev-prsn.com:8080/testbuilder/scripts/externals/ckeditor/';
+</script>
 	<!-- build:js({WebContent,.tmp}) scripts/vend-jq.js -->
 	<script src="../bower_components/jquery/dist/jquery.min.js"></script>
 	<script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -70,9 +73,11 @@
 	<!-- build:js({WebContent,.tmp}) scripts/uitree.js -->
 	<script src="scripts/externals/angular-ui-tree.js"></script>
 	<!-- endbuild -->
-
-
+	
 	<!-- build:js({WebContent,.tmp}) scripts/qtip.js -->
+	<script src="scripts/externals/ckeditor/ckeditor.js"></script>
+	<script src="../bower_components/angular-ckeditor/angular-ckeditor.js"></script>
+	<script src="../bower_components/angular-ckeditor-placeholder/angular-ckeditor-placeholder.js"></script>
 	<script src="scripts/externals/qti-player.js"></script>
 	<!-- endbuild -->
 	
@@ -110,6 +115,7 @@
 	<!-- build:js({WebContent,.tmp}) scripts/directive.js -->
     <script src="scripts/directives/ngEnter.js"></script>
     <script src="scripts/directives/ngFocus.js"></script>
+    <script src="scripts/directives/ngQtiPlayer.js"></script>    
 	<!-- endbuild -->
 
 	<!-- build:js({WebContent,.tmp}) scripts/services.js -->
@@ -130,6 +136,8 @@
     <script src="scripts/services/userBookService.js"></script>    
     <script src="scripts/ga.js"></script>
     <script src="scripts/messages.js"></script>
+    <script src="scripts/services/qtiService.js"></script>
+    
 	<!-- endbuild -->
 
 

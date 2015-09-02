@@ -1,0 +1,101 @@
+<div class="questionContainer">
+	<div data-ng-if="!node.IsEditView" class="qtiPrintView" ng-mousedown="selectQuestion(node);">
+		<div class="printEditLink" >
+			<button class="glyphicon glyphicon-remove printQuestionDeleteIcon"
+				 ng-show="showQstnEditIcon"
+				data-ng-click="closeQuestions(tests[currentIndex],$index)">
+			</button>
+			<a class="qstnViewLink" ng-show="showQstnEditIcon" data-ng-click="toggleEdit(node)">{{node.qstnLinkText}}</a>
+		</div>
+		<div class="questionPrintContainer">
+			<div class="printQuestionCaption"
+				data-ng-bind-html="getTrustedHTML(node.qtiModel.Caption==''?node.qtiModel.PrintCaption:node.qtiModel.Caption)"></div>
+			<div class="printQuestionOptionContainer">
+				<div
+					data-ng-class="node.qtiModel.Orientation?'printQuestionOption':'printQuestionOptionHorizonatlView'"
+					data-ng-repeat="Option in node.qtiModel.Options track by $index">
+					<div class='defaultPrintCorrectAnswer'>
+						&nbsp;
+						<div data-ng-if="$index==node.qtiModel.CorrectAnswer"
+							class='printCorrectAnswer'>
+							<span class="tick glyphicon glyphicon-ok"
+								tooltip="correct answer" tooltip-placement="bottom"></span>
+						</div>
+					</div>
+					<div data-ng-bind="getQuestionIndex($index)"
+						class="optionCharIndex"></div>
+					<div class="printQuestionOptionText"
+						data-ng-bind-html="getTrustedHTML(Option==''?node.qtiModel.PrintOption:Option)"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div data-ng-if="node.IsEditView">
+		<div class="divLink">
+			<a class="qstnViewLink" data-ng-click="toggleEdit(node)">{{node.qstnLinkText}}</a>
+			<div class="questionDeleteContainer">
+				<button type="button" class="close editQuestionDeleteIcon"
+					data-ng-show="node.IsEditView"
+					data-ng-click="closeQuestions(tests[currentIndex],$index)"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+		</div>
+		<div class='questionSectionTitle'>{{node.qtiModel.QstnSectionTitle}}</div>
+		<div class="questionEditContainer">
+			<div class="captionContainer">
+				<div class="qstnArea1" id="questionCaption" contenteditable="true"
+					placeholder={{node.qtiModel.EditCaption}}
+					ckeditor="htmlEditorOptions" data-ng-model="node.qtiModel.Caption"></div>
+				<div class="captionImageContainer">
+					<button class="captionImageIcon glyphicon glyphicon-picture"
+						title='Upload picture'
+						data-ng-click='showUploadImagePanel(this,$event,"div.captionContainer")'></button>
+				</div>
+			</div>
+			<div class="OptionContainer">
+				<div class='optionRow'
+					data-ng-repeat="(i, Option) in node.qtiModel.Options track by $index">
+					<div class='optionCorrectAnswer'>
+						<input type='radio' name='mc-qstn'
+							data-ng-model="node.qtiModel.CorrectAnswer" value="{{$index}}"
+							ng-checked="$index==node.qtiModel.CorrectAnswer"></input>
+					</div>
+
+					<div class="optionText" contenteditable="true"
+						focusEditorIndex="{{focusEditorIndex}}"
+						ckeditor="htmlEditorOptions"
+						placeholder={{node.qtiModel.EditOption}}
+						data-ng-model="node.qtiModel.Options[i]"
+						ready="onReady({{focusEditorIndex}})"></div>
+
+					<div class="optionIconsContainer">
+						<button title='Upload picture'
+							class="optionImageIcon glyphicon glyphicon-picture"
+							data-ng-click='showUploadImagePanel(this,$event,"div.optionRow",$index)'></button>
+						<button title='Add answer' id={{$index}} name="Add"
+							class="optionImageIcon glyphicon glyphicon-plus"
+							data-ng-click="addOption($index,node)"></button>
+						<button  id={{$index}} name="Delete"
+							class="optionImageIcon glyphicon glyphicon-remove"
+							 title='Delete this answer'						
+							data-ng-click="removeOption($index,$index==node.qtiModel.CorrectAnswer)"></button>					
+					</div>
+				</div>
+
+			</div>
+			<div id="questionUploadImage" class="questionUploadImage"
+				ng-show="imagePanelLoaded" ng-file-drop ng-accept="'image/*'"
+				data-ng-file-change="upload($files)"
+				drag-over-class="{accept:'dragover', reject:'dragover-err', delay:100}">
+				<div>Drag picture here or browse to upload</div>
+				<input class="questionUploadBtn" type="button" value="Browse"
+					data-ng-file-select data-ng-file-change="upload($files)"
+					ng-accept="'*.jpg,*.png,*.tif,*.tiff,*.gif,*.jpeg,*.bmp'" />
+			</div>
+		</div>
+	</div>
+</div>

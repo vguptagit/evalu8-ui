@@ -1,0 +1,55 @@
+<div class="questionContainer">
+	<div data-ng-if="!node.IsEditView" class="qtiPrintView" ng-mousedown="selectQuestion(node);">
+		<div class="printEditLink" >
+			<button class="glyphicon glyphicon-remove printQuestionDeleteIcon" ng-show="showQstnEditIcon"				
+				data-ng-click="closeQuestions(tests[currentIndex],$index)">
+			</button>
+			<a class="qstnViewLink" ng-show="showQstnEditIcon" data-ng-click="toggleEdit(node)">{{node.qstnLinkText}}</a>
+		</div>	
+		<div class="questionPrintContainer">
+			<div class="printQuestionCaption" data-ng-bind-html="getTrustedHTML(node.qtiModel.Caption==''?node.qtiModel.PrintCaption:node.qtiModel.Caption)"></div>
+		</div>
+	</div>
+
+	<div data-ng-if="node.IsEditView">
+		<div class="divLink">
+			<a class="qstnViewLink" data-ng-click="toggleEdit(node)">{{node.qstnLinkText}}</a>
+			<div class="questionDeleteContainer">
+				<button type="button" class="close editQuestionDeleteIcon"
+					data-ng-show="node.IsEditView"
+					data-ng-click="closeQuestions(tests[currentIndex],$index)"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+		</div>
+		<div class='questionSectionTitle'>{{node.qtiModel.QstnSectionTitle}}</div>
+		<div class="questionEditContainer">
+			<div class="captionContainer">
+				<div id="questionCaption" contenteditable="true"
+					placeholder={{node.qtiModel.EditCaption}} ready="onReady({{focusEditorIndex}})"
+					ckeditor="htmlEditorOptions" data-ng-model="node.qtiModel.Caption"></div>
+				<div class="captionImageContainer">
+					<button class="captionImageIcon glyphicon glyphicon-picture" title='Upload picture'
+						data-ng-click='showUploadImagePanel(this,$event,"div.captionContainer")'></button>
+				</div>
+			</div>
+			<div class="recommendedAnswerContainer">
+				Recommended Answer<textarea rows="4" cols="50" id="simpleChoice"
+					class="recommendedAnswer"
+					placeholder={{node.qtiModel.EditRecommendedAnswer}}
+					data-ng-bind-html="getTrustedHTML(node.qtiModel.RecommendedAnswer)"
+					data-ng-model="node.qtiModel.RecommendedAnswer"></textarea>
+			</div>
+			<div id="questionUploadImage" class="questionUploadImage"
+				ng-show="imagePanelLoaded" ng-file-drop ng-accept="'image/*'"
+				data-ng-file-change="upload($files)"
+				drag-over-class="{accept:'dragover', reject:'dragover-err', delay:100}">
+				<div>Drag picture here or browse to upload</div>
+				<input class="questionUploadBtn" type="button" value="Browse"
+					data-ng-file-select data-ng-file-change="upload($files)"
+					ng-accept="'*.jpg,*.png,*.tif,*.tiff,*.gif,*.jpeg,*.bmp'" />
+			</div>
+
+		</div>
+	</div>

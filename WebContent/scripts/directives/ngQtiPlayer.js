@@ -16,22 +16,22 @@ angular.module('e8MyTests')
 
 				switch ($scope.node.quizType) {
 				case 'MultipleChoice':
-					return "scripts/tmpl/mc.html";
+					return "views/editortmpl/mc.html";
 					break;
 				case 'MultipleResponse':
-					return "scripts/tmpl/mr.html";
+					return "views/editortmpl/mr.html";
 					break;
 				case 'TrueFalse':
-					return "scripts/tmpl/tf.html";
+					return "views/editortmpl/tf.html";
 					break;
 				case 'Matching':
-					return "scripts/tmpl/mf.html";
+					return "views/editortmpl/mf.html";
 					break;
 				case 'FillInBlanks':
-					return "scripts/tmpl/fb.html";
+					return "views/editortmpl/fb.html";
 					break;
 				case 'Essay':
-					return "scripts/tmpl/es.html";
+					return "views/editortmpl/es.html";
 					break;
 				default:
 				}
