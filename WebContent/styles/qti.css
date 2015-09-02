@@ -81,11 +81,13 @@
 	max-width: 450px;
 	min-width: 80px;
     word-wrap: break-word;	
-	display: table;
-	width: 83%;   
+	display: table;	  
    /*  margin-left: 20px; */
 }
 
+.printQuestionOption .printQuestionOptionText{
+	width: 83%;
+}
 
 /* MC-Edit */
 

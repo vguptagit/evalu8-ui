@@ -11,7 +11,8 @@
 			<div class="printQuestionCaption"
 				data-ng-bind-html="getTrustedHTML(node.qtiModel.Caption==''?node.qtiModel.PrintCaption:node.qtiModel.Caption)"></div>
 			<div class="printQuestionOptionContainer">
-				<div class="printQuestionOption"
+				<div 
+				    data-ng-class="node.qtiModel.Orientation?'printQuestionOption':'printQuestionOptionHorizonatlView'"
 					data-ng-repeat="Option in node.qtiModel.Options track by $index">
 					<div class='defaultPrintCorrectAnswer' ng-trim="true">
 						&nbsp;
