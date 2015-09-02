@@ -212,9 +212,24 @@ angular.module('evalu8Demo')
 
 			var getInlineChoice = function(qtiXML){
 				var rightColumnOptions=[];
-				$(qtiXML).find('itemBody').find('blockquote').eq(0).
-				find("inlineChoiceInteraction inlineChoice").each(function(i, e) {
-					rightColumnOptions.push(getSerializedXML($(this)));
+				$(qtiXML).find('itemBody').find('blockquote').each(function(i, e){
+					var leftOptionIdentifier=$(this).find("inlineChoiceInteraction").attr("responseIdentifier");
+					$(qtiXML).find('responseDeclaration').each(function(i, e){
+						var leftIdentifier=$(this).attr("identifier");
+						if(leftOptionIdentifier==leftIdentifier){
+							var rightOptionIdentifier= $(this).find("mapEntry").attr("mapKey")
+							$(qtiXML).find('itemBody').find('blockquote').eq(0).
+							find("inlineChoiceInteraction inlineChoice").each(function(i, e){
+								var rightIdentifier=$(this).attr("identifier")
+								if(rightOptionIdentifier==rightIdentifier){
+									rightColumnOptions.push($(this).text());
+								}
+								
+							});
+						}
+						
+					});
+					
 				});
 				return rightColumnOptions;
 			}
