@@ -97,11 +97,23 @@
                     <div class="imagediv">
 						<i class="fa fa-spinner fa-pulse font-size-16" ng-show="!node.isHttpReqCompleted"></i>
                         <input ng-click="getBooks(this)" type="image" class="collapseImg" value="" ng-show="node.isHttpReqCompleted"
-                               ng-src="{{collapsed?'images/right_arrow2.png':'images/right_arrow.png'}}"></input>
+						id="{{node.type=='YourQuestionRoot' ? 'yourquestionsroot' : 'discipline'}}" ng-src="{{collapsed?'images/right_arrow2.png':'images/right_arrow.png'}}"></input>
                     </div>
                     <div class="captiondiv">
                         <label class="captionLabel" title="{{node.item}}">{{node.item}}</label>
                     </div>
+					<div class="iconsChapter" ng-if="node.type=='YourQuestionRoot' && showAddFolderLink"> 
+                        <button id="addfolderlink" class="plusIconQT glyphicon glyphicon-plus" style="float: right;" 
+                        event-focus="click" event-focus-id="txtFolderName" 
+                        ng-click='addFolderClick(this)' value="Add Folder" 
+                        tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Add new folder" />
+                    </div>
+                </div>
+            </div>
+			<div class="treeDiv" ng-show="node.type=='YourQuestionRoot' && showAddFolderPanel">
+                <div class="createNewNode">
+                    <input type="text" ng-model="folderName" id="txtFolderName" ng-disabled="isAddFolderClicked" class="form-control"
+                       ng-blur="folderNameTextBoxBlur()" placeholder="Untitled Folder " ng-enter="addNewFolder()" />
                 </div>
             </div>
         </div>
@@ -206,6 +218,7 @@
     </script>
 
 	<script type="text/ng-template" id="qb_questions_renderer.html">
+	<div class="questionListIndex">{{$index + 1}})</div>
         <div id="QBQuestion" nodeSelected={{node.isNodeSelected}} ng-mousedown="selectNode(this.node);" ui-tree-handle class="printViewContainer tree-node tree-node-content questionList" ng-class="{questionTitleInTree: node.questionXML}">
             <button id="QBPencil" type="button" ng-show="node.showEditQuestionIcon" class="newTest-close questionIcon action-icon-bg glyphicon glyphicon-pencil" ng-mousedown="editQuestion()" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="bottom" tooltip="Move question to right for editing"></button>
             <div class="printViewContainer" ng-if="node.textHTML" ng-bind-html="getHTML(this)">

@@ -5,9 +5,9 @@
 				 ng-show="showQstnEditIcon"
 				data-ng-click="closeQuestions(tests[currentIndex],$index)">
 			</button>
-			<a class="qstnViewLink" ng-show="showQstnEditIcon" data-ng-click="toggleEdit(node)">{{node.qstnLinkText}}</a>
+			<a id="switchLink" class="qstnViewLink" ng-show="showQstnEditIcon" data-ng-click="toggleEdit(node)">{{node.qstnLinkText}}</a>
 		</div>
-		<div class="tf_questionPrintContainer">
+		<div class="tf_questionPrintContainer">{{$index + 1}})
 			<div class="tf_printQuestionCaption"
 				data-ng-bind-html="getTrustedHTML(node.qtiModel.Caption==''?node.qtiModel.PrintCaption:node.qtiModel.Caption)"></div>
 			<div class="tf_printQuestionOptionContainer">
@@ -36,7 +36,7 @@
 
 	<div data-ng-if="node.IsEditView">
 		<div class="divLink">
-			<a class="qstnViewLink" data-ng-click="toggleEdit(node)">{{node.qstnLinkText}}</a>
+			<a id="switchLink" class="qstnViewLink" data-ng-click="toggleEdit(node)">{{node.qstnLinkText}}</a>
 			<div class="questionDeleteContainer">
 				<button type="button" class="close editQuestionDeleteIcon"
 					data-ng-show="node.IsEditView"
@@ -47,12 +47,12 @@
 			</div>
 		</div>
 		<div class='questionSectionTitle'>{{node.qtiModel.QstnSectionTitle}}</div>
+		<div>{{$index + 1}})</div>
 		<div class="tf_questionEditContainer">
 			<div class="tf_captionContainer">
 				<div id="questionCaption" contenteditable='true'
 					ckeditor="htmlEditorOptions"
-					placeholder="{{node.qtiModel.EditCaption}}"
-					ready="onReady({{focusEditorIndex}})"
+					placeholder="{{node.qtiModel.EditCaption}}"					
 					data-ng-model="node.qtiModel.Caption"></div>
 				<div class="captionImageContainer">
 					<button class="captionImageIcon glyphicon glyphicon-picture" title='Upload picture'

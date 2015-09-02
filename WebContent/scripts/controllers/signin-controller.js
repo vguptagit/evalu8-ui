@@ -33,7 +33,7 @@ function($scope, $rootScope, $location, $http, AuthenticationService, CommonServ
 				if(status == 401) {
 					$scope.unauthorised = true;
 				} else {
-					CommonService.showErrorMessage(e8msg.error.CantLogin);
+					CommonService.showErrorMessage(e8msg.error.cantLogin);
 				}
 					
 				AuthenticationService.ClearCredentials();

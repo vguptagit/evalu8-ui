@@ -12,7 +12,7 @@
 	ns.welcomeUrl = ns.uiUrl + "/#/welcome";
 	
 	ns.loginGraceTimeSeconds = 2; 
-	ns.welcomeLoginCount = 1000;
+	ns.welcomeLoginCount = 1;
 	
 	ns.messageTipLoginCount = 2;
 	

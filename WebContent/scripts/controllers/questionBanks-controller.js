@@ -12,6 +12,7 @@ angular
 						'$rootScope',
 						'$location',
 						'$cookieStore',
+						'$timeout',
 						'$http',
 						'$sce',
 						'DisciplineService',
@@ -22,12 +23,11 @@ angular
 						'$modal',
 						'blockUI',
 						'ContainerService',
-						'questionService',
                         'CommonService',
-						function($scope, $rootScope, $location, $cookieStore,
+						function($scope, $rootScope, $location, $cookieStore, $timeout,
 								$http, $sce, DisciplineService, TestService,
 								SharedTabService, UserQuestionsService,
-								EnumService, $modal, blockUI, ContainerService, questionService, CommonService) {
+								EnumService, $modal, blockUI, ContainerService, CommonService) {
 						    SharedTabService.selectedMenu = SharedTabService.menu.questionBanks;
 						    $rootScope.blockPage = blockUI.instances.get('BlockPage');
 						    
@@ -129,6 +129,7 @@ angular
 										if (userQuestionsCount > 0) {
 											$scope.disciplines.unshift({
 														"item" : "Your Questions (user created)",
+														"type" : "YourQuestionRoot",
 														"isCollapsed" : true	
 											});	
 											$scope.disciplines[0].isHttpReqCompleted = true;
@@ -159,18 +160,85 @@ angular
 							})
 
 							$scope.testTitle = "New Test";
-							// Function is to save the Test details with the questions.
 
-							// To get books for the given discipline.
-							// This method will call the api
-							// mytest/books?discipline to get the books
-							// and append the collection to input discipline
-							// angularjs node
+							$scope.addFolderClick = function(node) {
+                                
+                                document.getElementById("txtFolderName").value = "";                                
+                                $scope.YourQuestionRoot = node;
+                                
+                                $scope.showAddFolderPanel= !$scope.showAddFolderPanel;                               
+                            }
 							
+							$scope.folderNameTextBoxBlur = function() {
+								/*
+                                if(document.getElementById("txtFolderName").value.trim().length==0) {
+                                    $scope.showAddFolderPanel = false;
+                                    return; 
+                                }*/
+                            }
 							
-							$scope.getBooks = function(discipline) {
+							$scope.addNewFolder = function () {
+                                
+                                if(document.getElementById("txtFolderName").value.trim().length==0) { return; }
+                                
+                                var sequence = 1;
+
+                                if($scope.YourQuestionRoot.node && $scope.YourQuestionRoot.node.nodes[0]) {
+                                    
+                                    var duplicateTitle = false;
+                                    $scope.YourQuestionRoot.node.nodes.forEach(function(rootFolder) {
+                                        if(rootFolder.title == document.getElementById("txtFolderName").value.trim()) {
+                                            duplicateTitle = true;    
+                                            
+                                            $scope.isAddFolderClicked=true;
+                                            $scope.IsConfirmation = false;
+                                            $scope.message = "A folder already exists with this name. Please save with another name."; 
+                                    		$modal.open(confirmObject).result.then(function(ok) {
+                                	    		if(ok) {
+                                	    			$("#txtFolderName").focus();
+                                	    		}
+                                    		});
+                                        }
+                                    });
+                                    
+                                    if(duplicateTitle) return;
+                                    
+                                    if($scope.YourQuestionRoot.node.nodes[0].sequence) {
+                                    	sequence = (0 + $scope.YourQuestionRoot.node.nodes[0].sequence) / 2;	
+                                    } else {
+                                    	sequence = 1;
+                                    }
+                                    
+                                }                                
+                                
+                                UserQuestionsService.userQuestionsFolderRoot(function(userQuestionsFolderRoot) {
+                                    
+                                    var UserQuestionsFolder = {
+                                        "parentId": userQuestionsFolderRoot.guid,                
+                                        "sequence": sequence,
+                                        "title": document.getElementById("txtFolderName").value
+                                    };
+                                        
+                                    UserQuestionsService.saveQuestionFolder(UserQuestionsFolder, function (userFolder) {
+                                        
+                                        $scope.YourQuestionRoot.node.nodes.unshift(UserQuestionsFolder);
+                                        $scope.YourQuestionRoot.node.nodes[0].isCollapsed = true;
+                                                                                
+                                        document.getElementById("txtFolderName").value = "";
+                                       
+                                        $scope.showAddFolderPanel = false;
+                                    });
+                                    
+                                    $("#tree-root")[0].scrollTop = 0;
+                                    $("#txtFolderName").blur(); 
+                                });
+                            }
+
+							$scope.getBooks = function(discipline, callback) {
 
 								if (!discipline.collapsed) {
+									$scope.showAddFolderLink = false;
+									$scope.showAddFolderPanel = false;
 									discipline.collapse();
 								} else {
 									discipline.expand();
@@ -200,7 +268,8 @@ angular
 												yourQuestionFolder.guid = userQuestionsFolder.guid;												
 												yourQuestionFolder.title = userQuestionsFolder.title;
 												yourQuestionFolder.isCollapsed = true;
-												yourQuestionFolder.nodeType = "UserQuestionsFolder"
+												yourQuestionFolder.sequence = userQuestionsFolder.sequence;
+												yourQuestionFolder.nodeType = "UserQuestionsFolder";
 												yourQuestions.push(yourQuestionFolder);
 											});
 											UserQuestionsService.userQuestions(function(userQuestions) {
@@ -240,7 +309,9 @@ angular
 	
 												discipline.node.nodes = yourQuestions;
 												
-												discipline.node.isHttpReqCompleted = true;
+												discipline.node.isHttpReqCompleted = true;												
+												
+												$scope.showAddFolderLink = true;
 											});
 										});
 										
@@ -1284,6 +1355,16 @@ angular
 							}
 							
 							$scope.showContainerOnEnter = function(event) {
+								$(".dropdown-menu")
+								.addClass("autocompleteList");								
+								
+				                if(event.which === 40){
+				                    $('ul.dropdown-menu').scrollTop ( ($('ul.dropdown-menu li.active').index() ) * 25);				                    										
+				                }
+				                if(event.which === 38){
+				                    $('ul.dropdown-menu').scrollTop ( ($('ul.dropdown-menu li.active').index() ) * 25);
+				                    										
+				                }
 								if (event.keyCode != 13 ){
 									var isContainersLoaded=false;
 									bookContainersArray.forEach(function(book){
@@ -1300,8 +1381,6 @@ angular
 									return;
 								}
 								
-								$(".dropdown-menu")
-								.addClass("autocompleteList");
 								if (event.keyCode === 13) {
 										$scope.showContainer();
 								}

@@ -181,6 +181,14 @@ angular
 							$scope.searchDiscipline = function(event) {
 								$(".dropdown-menu")
 								.addClass("autocompleteQuestionList");
+								
+								 if(event.which === 40){					                	
+					                   $('div.modal-content ul.dropdown-menu').scrollTop ( ($('div.modal-content ul.dropdown-menu li.active').index() ) * 25);																	
+					                }
+					                if(event.which === 38){
+					                    $('div.modal-content ul.dropdown-menu').scrollTop ( ($('div.modal-content ul.dropdown-menu li.active').index() ) * 25);
+					                    										
+					                }
 								$scope.searchedDiscipline = $(".searchDiscpline").val();
 								if ($scope.searchedDiscipline == undefined
 										|| $scope.searchedDiscipline == "") {
@@ -406,6 +414,14 @@ angular
 							$scope.searchBookOnEnter = function(event) {
 								$(".dropdown-menu")
 										.addClass("autocompleteQuestionList");
+								
+								 if(event.which === 40){					                	
+					                   $('div.modal-content ul.dropdown-menu').scrollTop ( ($('div.modal-content ul.dropdown-menu li.active').index() ) * 87);																	
+					                }
+					                if(event.which === 38){
+					                    $('div.modal-content ul.dropdown-menu').scrollTop ( ($('div.modal-content ul.dropdown-menu li.active').index() ) * 87);
+					                    										
+					                }
 
 								$scope.searchedBook = $(".searchBook").val();
 								if ($scope.searchedBook == undefined

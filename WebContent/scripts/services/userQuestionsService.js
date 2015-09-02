@@ -66,5 +66,36 @@ angular.module('evalu8Demo')
 					callback(userQuestionsCount);
 				})
 		};
+		
+        this.saveQuestionFolder = function(userQuestionsFolders, callback) {    
+
+            var folder = {
+                    parentId: userQuestionsFolders.parentId,
+                    sequence: userQuestionsFolders.sequence,
+                    title: userQuestionsFolders.title    
+            };            
+            
+            $http.post(evalu8config.apiUrl + '/my/questionfolders', folder, config)
+            .success(function(response) {                                    
+                if (callback) callback(response);
+            })
+            .error(function(error, status) {
+
+            })
+        };
+        
+        this.userQuestionsFolderRoot = function(callback) {    
+
+            var userQuestionsFolderRoot = {};
+            $http.get(evalu8config.apiUrl + "/my/questionfoldersroot", config)
+                .success(function(response) {
+                    userQuestionsFolderRoot= response;
+                    callback(userQuestionsFolderRoot)
+                })
+                .error(function(){
+                    callback(userQuestionsFolderRoot);
+                })
+        };
+
 	}
 ])		

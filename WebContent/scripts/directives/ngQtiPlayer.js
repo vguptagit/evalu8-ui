@@ -1,7 +1,7 @@
 ﻿'use strict';
 angular.module('e8MyTests')
-.directive("qtiPlayer",['$modal','QtiService','TestService','$sce','$rootScope',
-                        function($modal,QtiService,TestService,$sce,$rootScope) {	
+.directive("qtiPlayer",['$modal','QtiService','TestService','$sce','$rootScope','$timeout',
+                        function($modal,QtiService,TestService,$sce,$rootScope,$timeout) {	
 	return {
 		template : '<ng-include src="getQtiTemplate()"/>',
 		restrict : 'E',
@@ -10,7 +10,7 @@ angular.module('e8MyTests')
 			$scope.imagePanelLoaded = false;
 
 			$scope.getQtiTemplate = function() {
-				if(typeof($scope.node.qtiModel)=='undefined'){
+				if((typeof($scope.node.qtiModel)=='undefined') && !(typeof($scope.node.data)=='undefined')){
 					$scope.node.qtiModel =  QtiService.getQtiModel($scope.node.data,$scope.node.quizType);
 				}  
 
@@ -47,6 +47,7 @@ angular.module('e8MyTests')
 					fontSize_defaultLabel : '12',					
 					allowedContent : true,					
 					title : false,
+					enterMode:CKEDITOR.ENTER_P,
 					sharedSpaces : {  top : 'toolbarPlaceholder'  }					
 			};
 
@@ -68,7 +69,7 @@ angular.module('e8MyTests')
 				}
 
 				if($scope.updateQstnEditState(node.IsEditView)){
-					if($scope.IsAnswerSelected(node)){
+					if( ($scope.IsAnswerSelected(node)) && ($scope.IsFibBlankAdded(node)) ){
 						$scope.imagePanelLoaded = false;					
 
 						$scope.node.qstnLinkText = node.IsEditView ? "Edit"
@@ -110,6 +111,8 @@ angular.module('e8MyTests')
 						node.qtiModel.Options[index].option = jsonReplaceUL(Option.option);
 						node.qtiModel.Options[index].matchingOption = jsonReplaceUL(Option.matchingOption);
 					});							
+				}else if(node.quizType=='FillInBlanks'){				
+					//node.qtiModel.CorrectAnswerHtml = $('#fbAnswerContainer').html();
 				}else{
 					$.each(node.qtiModel.Options,
 							function(index,option) {
@@ -129,13 +132,15 @@ angular.module('e8MyTests')
 						node.qtiModel.Options[index].option = QtiService.replaceImage(Option.option);
 						node.qtiModel.Options[index].matchingOption = QtiService.replaceImage(Option.matchingOption);
 					});						
+				}else if(node.quizType=='FillInBlanks'){
+					node.qtiModel.Caption = QtiService.replaceImage($('#questionCaption').html());
+					node.qtiModel.CorrectAnswerHtml = $('#fbAnswerContainer').html();
 				}else{					
 					$.each(node.qtiModel.Options,
 							function(index,option) {
 						node.qtiModel.Options[index] = QtiService.replaceImage(option);
 					});
 				}	
-
 			}
 
 			var jsonReplaceUL = function(content) {
@@ -191,13 +196,13 @@ angular.module('e8MyTests')
 			$scope.showUploadImagePanel = function(selectedNode,event,targetControlIdentifier,targetIndex,optionInColumn) {	
 				$scope.targetImageControl = 0;
 				$scope.targetControlInColumn = '';
+				$scope.targetImageControl = targetIndex + 1 ;
+				$scope.targetControlInColumn = optionInColumn ;
 				if ($(event.target).parents(targetControlIdentifier).next("#questionUploadImage").length == 1) {
 					$scope.imagePanelLoaded=!$scope.imagePanelLoaded;
 					return;
 				}
 				$scope.imagePanelLoaded = true;				
-				$scope.targetImageControl = targetIndex + 1 ;
-				$scope.targetControlInColumn = optionInColumn ;
 				var imagePanel = $(angular.element(document.querySelector("#questionUploadImage"))).detach();
 				imagePanel.show();
 				$(event.target).parents(targetControlIdentifier).after(imagePanel);		
@@ -212,7 +217,6 @@ angular.module('e8MyTests')
 						.uploadImage(file,Option,'CursorPosition',
 								function(data,element,cursorPosition) {
 
-							//var html = "<a  href='"	+ data	+ "'>"	+ file.name	+ "</a>";
 							var html = "<u contenteditable='false' url='"	+ data	+ "'><i>"+ file.name+ "</i></u>&nbsp;";
 						
 							$scope.imagePanelLoaded = false;
@@ -294,13 +298,17 @@ angular.module('e8MyTests')
 					var range = new CKEDITOR.dom.range(editor.document);   
 					range.moveToElementEditablePosition( editor.editable(), true ); // bar.^</p>
 					editor.getSelection().selectRanges( [ range ] );		
-					editor.focus();
+					editor.focus();					
 				}else{
 					var i = 0;	
 					var focusIndex = parseInt(focuseditorindex);     			
 					for (var name in CKEDITOR.instances){		     				
 						if(i==focusIndex){
-							CKEDITOR.instances[name].focus();     							
+							var optionEditor = CKEDITOR.instances[name];		
+							var optionRange = new CKEDITOR.dom.range(optionEditor.document);   
+							optionRange.moveToElementEditablePosition( optionEditor.editable(), true ); 
+							optionEditor.getSelection().selectRanges( [ optionRange ] );		
+							optionEditor.focus();	
 							break;			
 						}
 						i++;
@@ -368,60 +376,183 @@ angular.module('e8MyTests')
 				}
 
 			}
+			
+			
+			/******************************************************************************FB-Question*********************************************/
+			
+			$scope.captionFocus = false;				
 
-			$scope.getFbCorrectAnswer = function(node) {
-				var textEntryInteraction = [];
-				var FbCaption = node.qtiModel.FbCaption;
-				var substrings = FbCaption.split("<button");
-				var ll = substrings.length - 1;
-				for (var i = 1; i < substrings.length; i++) {						
-					textEntryInteraction.push(i);
-				}
-				/*	var $FbCaption1 = FbCaption;
-					var FbCaption = $(FbCaption).find("button");
-
-					 (fbCaption).forEach(function (item) {
-						if(item.type==2)
-						textEntryInteraction.push(1);
-					});*/
-				return textEntryInteraction;
-			}
-			// to render Caption of Fill in the blank which contains html content
-			$scope.getFbCaptionHTML = function(node) {
-				var FbCaption = "";
-
-				var textEntryInteraction1 = '<button data-ng-if="(caption.type==2)" id="$index" onkeydown="return getSpanId(this,event)" class="blankFIBButton">'+
-				'<span contenteditable="false" class="blankWidth editView"><b contenteditable="false">$charIndex.</b>Fill Blank</span></button>';
-
-				var textEntryInteraction = '<button data-ng-if="(caption.type==2)" id="$index" onkeydown="return getSpanId(this,event)" class="blankFIBButton">'+
-				'<span contenteditable="false" class="blankWidth editView"><b contenteditable="false">$charIndex.</b>Fill Blank</span></button>';
-
-				var textEntryInteractionIndex=0;
-
-				$.each(node.qtiModel.Caption,function(index,captionElement) {
-					if(captionElement.type==1){							
-						FbCaption = FbCaption + jsonReplaceUL(captionElement.content);
-					}else{						
-						var textEntry = textEntryInteraction;
-						textEntry = textEntry.replace("$index",textEntryInteractionIndex)
-						textEntry=textEntry.replace("$charIndex",String.fromCharCode(65 + textEntryInteractionIndex));
-						FbCaption = FbCaption + textEntry;
-						textEntryInteractionIndex = textEntryInteractionIndex + 1;
-					}
-
+			$scope.focusFIBcaption = function () {
+				$('#questionCaption').focus();
+				$('#questionCaption').on('focus', function(){
+					$scope.captionFocus = false;
+					$('#questionCaption').trigger('click');		
+				
 				});
+				
+				$('#questionCaption').on('blur', function(){
+					$scope.captionFocus = true;	
+				});
+				
+				$('#questionCaption').on('click', function(){
+					$scope.captionFocus = false;
+				});
+			}
 
-				var editor = CKEDITOR.instances['fbCaption'];
-				node.qtiModel.FbCaption = FbCaption;
-				if (editor.mode == 'wysiwyg') {
-					//editor.insertHtml(FbCaption);
+			$scope.addBlank = function(scope, event){			
+
+				var textEntryInteraction = '<button  data-ng-if="(caption.type==2)" id="RESPONSE_$index" onkeydown="return getSpanId(this,event)" class="blankFIBButton">'+
+				'<span contenteditable="false" class="blankWidth editView"><b contenteditable="false">$charIndex.</b>Fill Blank</span></button> &nbsp;';
+
+				var blankCount = scope.$element.find("#questionCaption").eq(0).find("button").length;
+				blankCount = blankCount + 1;
+				var qtiCaption = scope.$element.find("#questionCaption").eq(0);
+
+				textEntryInteraction = textEntryInteraction.replace("$index",blankCount);
+				textEntryInteraction = textEntryInteraction.replace("$charIndex",String.fromCharCode(65 + blankCount -1));
+				var editor = CKEDITOR.instances['questionCaption'];	
+
+				if (editor.mode == 'wysiwyg') {				
+					$timeout(function() {
+						editor.insertHtml(textEntryInteraction)
+					}, 300);
+
+					var htmlEle =scope.$element.find('#crtAns').children().eq(0);
+					htmlEle.append($("<div class='editView editablediv crtAnsDiv fbansw' type='text' id='RESPONSE_"+blankCount+"' >"+String.fromCharCode(65 + blankCount-1)+".<div contenteditable='true' class='placeHolderForBlank' data-placeholder='Enter the correct answer for blank "+ String.fromCharCode(65 + blankCount-1 ) +"'></div></div>"));
+
 				}			
 
+			}
 
-				var fg = editor.getData();
-				return editor.getData();
+			$scope.getPrintModeFbCaption = function(fbCaption){
+				var htmlText = fbCaption.trim().replace(/&nbsp;/, " ");
+				var element = $('<p></p>');
+				$(element).append(htmlText);
+				element.find("button").each(	function(i, obj) {
+					$(obj).replaceWith("<span class='blank'> _____________________ </span>");
+				});			
+				return $sce.trustAsHtml( element[0].innerHTML);			
+			}
+
+			$scope.getFbAnswerOption = function(){				
+				return $sce.trustAsHtml($scope.node.qtiModel.CorrectAnswerHtml);			
+			}
+
+			$scope.updateFIBanswer = function(){				
+				var blankButtons = $('#questionCaption').find('.blankFIBButton');
+				var answers = $('#fbAnswerContainer').find('.crtAnsDiv');
+				var difference = [];
+
+				jQuery.grep(answers, function(answ) {		
+					var blankPresent = false;					
+					blankButtons.each(function(i,blankItem){
+						if(blankItem.id == answ.id){
+							blankPresent=true;			    			
+							return true;
+						}
+					});		
+
+					if(!blankPresent)
+						difference.push(answ.id);
+				});
+
+				difference.forEach(function(blankId){
+					$('#fbAnswerContainer').find('#'+blankId).remove();
+				});		
+			}
+
+			$scope.removeFIBblanks = function(spanElement, event){
+
+				var qtiCationElement;
+				var blankElement;	
+				var spanElement = event.target;
+				var elementType = event.target.nodeName;
+				var elementID = event.target.id;
+
+				if(event.keyCode == 46 || event.keyCode == 8){
+					if(elementType == "BUTTON"){
+						qtiCationElement = $(spanElement.parentElement.parentElement);
+						blankElement = $(spanElement);			
+
+						event.stopPropagation();	
+						$(spanElement).remove();					
+					}
+					else{
+						var cursor = QTI.getCaretPosition(spanElement);
+						var val =  $(spanElement).text();
+
+						if($(spanElement).attr("id") == "questionCaption")
+							qtiCationElement = $(spanElement)
+							else
+								qtiCationElement = $(spanElement).parents("#questionCaption").eq(0);
+						if(cursor == qtiCationElement.text().length)
+							if(spanElement.innerHTML.lastIndexOf("</button>") + "</button>&nbsp;<br></p>".length == spanElement.innerHTML.length)
+							{
+								blankElement = $(spanElement).find("button:last-child").eq(0);
+								$(spanElement).find("button:last-child").eq(0).remove();
+							}
+						
+						if(spanElement.innerHTML.lastIndexOf("</button>") + "</button>&nbsp;</p>".length == spanElement.innerHTML.length)
+						{
+							blankElement = $(spanElement).find("button:last-child").eq(0);
+							$(spanElement).find("button:last-child").eq(0).remove();
+						}
+					}
+					if(blankElement != null)
+						if(blankElement.length > 0){
+							var index = blankElement.attr("id").substring(9,blankElement.attr("id").length);
+							index = parseInt(index);						
+							qtiCationElement.parent().parent().find("#crtAns").children().children().eq(index-1).remove();
+							for(var i = index-1; i<qtiCationElement.find("button").length; i++)
+							{
+								var button = qtiCationElement.find("button").eq(i);
+								button.attr("id","RESPONSE_" + (i));
+								button.find("b").eq(0).text(String.fromCharCode(65 + i ) + ".");
+
+								var crtAnswer = qtiCationElement.parent().parent().find("#crtAns").children().children().eq(i);
+								crtAnswer.attr("id","RESPONSE_" + (i+1));
+								crtAnswer.children().eq(0).attr("data-placeholder","Enter the correct answer for blank "+String.fromCharCode(65 + i ));
+								crtAnswer.html(String.fromCharCode(65 + i ) + "." + crtAnswer.children().get(0).outerHTML);
+							}
+
+							if(spanElement.tagName == "BUTTON")
+								return false;
+							else
+								return true;
+						}
+
+
+					var range = window.getSelection().getRangeAt(0);
+
+					if(event.keyCode == 8 && (range.startOffset == 0 || range.startOffset == 1) && range.startContainer.previousSibling)
+
+						if(range.startContainer.previousSibling.tagName == "BUTTON"){
+							blankElement = $(range.startContainer.previousSibling);
+							var index = blankElement.attr("id").substring(9,blankElement.attr("id").length);
+							index = parseInt(index);
+							$(blankElement).remove();						
+							qtiCationElement.parent().parent().find("#crtAns").children().children().eq(index - 1).remove();
+							for(var i = index-1; i<qtiCationElement.find("button").length; i++)
+							{
+								qtiCationElement.find("button").eq(i).attr("id","RESPONSE_" + (i));
+								qtiCationElement.find("button").eq(i).find("b").eq(0).text(String.fromCharCode(65 + i ) + ".");
+
+								var crtAnswer = qtiCationElement.parent().parent().find("#crtAns").children().children().eq(i);
+								crtAnswer.attr("id","RESPONSE_" + (i+1));
+								crtAnswer.children().eq(0).attr("data-placeholder","Enter the correct answer for blank "+String.fromCharCode(65 + i ));
+								crtAnswer.html(String.fromCharCode(65 + i ) + "."+ crtAnswer.children().get(0).outerHTML);
+							}
+							return false;
+						}						
+
+					if(spanElement.tagName == "BUTTON"){
+						return false;
+					}
+				}
 
 			}
+			
+/****************************************************************************************FbQuestion End **********************************************************/
 		}
 
 	};
@@ -431,6 +562,12 @@ angular.module('e8MyTests')
 	return {
 		restrict: 'A',      
 		replace: true,
-		templateUrl: 'views/partials/question-metadata.html'
+		templateUrl: 'views/partials/question-metadata.html',
+		controller : function($scope) {			
+			$scope.qstnBlankSize = function(selectedNode,
+					blankSize) {
+				selectedNode.node.qtiModel.BlankSize = blankSize;
+			}
+		}
 	};
 });
