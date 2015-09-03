@@ -635,7 +635,9 @@ angular
 							}
 
 							$scope.save = function() {
-								
+								if($scope.isBookEmpty()){
+									return false;
+								}
 								UserService.saveUserDisciplines($scope.disciplines.userSelected, function() {
 									
 									UserService.saveUserBooks($scope.books.currentlySelected, function() {
