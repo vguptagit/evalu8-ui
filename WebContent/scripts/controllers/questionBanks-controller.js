@@ -272,9 +272,10 @@ angular
 												yourQuestionFolder.nodeType = "UserQuestionsFolder";
 												yourQuestions.push(yourQuestionFolder);
 											});
+											
 											UserQuestionsService.userQuestions(function(userQuestions) {
 												$scope.userQuestions = userQuestions;	
-												
+												var qustIndex=0;
 												$scope.userQuestions.forEach(function(userQuestion) {
 													var yourQuestion = {};
 													var displayNode = $("<div></div>");
@@ -290,10 +291,12 @@ angular
 													yourQuestion.questionXML = true;
 	
 													yourQuestion.nodeType = "question";
+													yourQuestion.questionType = "userCreatedQuestion";
 													yourQuestion.guid = userQuestion.guid;
 													yourQuestion.showEditQuestionIcon = false;
 													yourQuestion.isNodeSelected = false;
-	
+													qustIndex++;
+													yourQuestion.questnNumber=qustIndex;
 													addToQuestionsArray(yourQuestion);
 	
 													yourQuestion.data = userQuestion.qtixml;

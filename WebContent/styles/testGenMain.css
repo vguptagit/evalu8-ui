@@ -3241,3 +3241,16 @@ px
 .infoPrint span{
 	margin-left: 16px;font-style: italic;
 }
+.settingSave{
+	color: #FFFFFF;
+    background-color: #007FA9;
+    border-radius: 3px;
+    height: 30px;
+    font-family: Helvetica Neue Light;
+    font-size: 14px;
+    width: 100px;
+    border: 0px;
+}
+.settingSave:hover {
+	background-color: #006A8D
+}
