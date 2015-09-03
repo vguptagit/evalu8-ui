@@ -19,7 +19,7 @@ angular.module('evalu8Demo')
 			$scope.settings_open = function() {
 				$scope.isSettingsClicked=true;
 				$modal.open({
-					templateUrl : 'views/usersettings.htm',
+					templateUrl : 'views/usersettings.html',
 					controller : 'UserSettingsController',
 					size : 'lg',
 					backdrop : 'static',
