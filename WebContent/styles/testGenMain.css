@@ -3204,7 +3204,7 @@ px
 }
 .print-Modal .modal-dialog{
 	width: 90%;
-	height: 80%;
+	height: 90%;
 }
 .print-Modal .modal-dialog .modal-content{
 	height: 100%
@@ -3231,4 +3231,13 @@ px
 }
 .print-Modal .printFooter{
 	display: table-cell;vertical-align: bottom;
+}
+.infoPrint{
+	display: block;position: relative;float: left;margin-top: 67px;width: 90%;text-align: center;
+}
+.infoPrint label{
+	font-weight: bold;font-size: 20px;
+}
+.infoPrint span{
+	margin-left: 16px;font-style: italic;
 }
