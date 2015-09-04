@@ -4,7 +4,16 @@
 
 angular
 		.module('e8QuestionBanks')
-
+		.directive("typeaheadWatchChanges", function() {
+		  return {
+		    require: ["ngModel"],
+		    link: function(scope, element, attr, ctrls) {
+		      scope.$watch('selectedContainer', function(value) {		    	
+	    		  ctrls[0].$setViewValue(value);
+		      });
+		    }
+		  };
+		})
 		.controller(
 				'QuestionBanksController',
 				[
@@ -1323,6 +1332,11 @@ angular
 									});
 								});
 								$scope.showWaitingForAutoComplete=false;
+								$scope.selectedContainer=$scope.selectedContainer.capitalizeFirstLetter();
+							}
+							
+							String.prototype.capitalizeFirstLetter = function() {
+							    return this.charAt(0).toUpperCase() + this.slice(1);
 							}
 							
 							var removeBookContainers=function(bookid){
