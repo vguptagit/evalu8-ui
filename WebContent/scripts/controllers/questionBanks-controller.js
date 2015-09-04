@@ -1037,6 +1037,19 @@ angular
 								}
 								var test = SharedTabService.tests[SharedTabService.currentTabIndex];
 								isChildNodeUsed=false;
+																
+								for (var i=0; i < test.questions.length; i++) {
+							    	if(scope.guid == test.questions[i].guid) {
+							    		
+	                                    $scope.IsConfirmation = false;
+	                                    $scope.message = "Question(s) already added to the test, cannot be added again.";
+	                                    $modal.open(confirmObject);
+	                                    
+                                        $scope.dragStarted = false;
+                                        break;
+							    	}
+								}
+
 								for (var i = 0; i < $scope.selectedNodes.length; i++) {
 									var isNodeUsed=false
 									test.questionFolderNode.forEach(function(usedNode) {
