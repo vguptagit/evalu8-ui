@@ -927,7 +927,14 @@
               if(scope.$element.attr('draggable') == 'false') {
             	  e.stopPropagation();
               	return false;
-              }              
+              }  
+              
+              if(scope.$element.attr('printmode') == 'false') {
+            	  e.stopPropagation();
+              	return false;
+              }  
+              
+              
 
               // check if it or it's parents has a 'data-nodrag' attribute
               while (eventElm && eventElm[0] && eventElm[0] != element) {
