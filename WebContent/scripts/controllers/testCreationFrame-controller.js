@@ -1383,7 +1383,7 @@ angular
 	                                            SharedTabService.tests[currentIndex].questions.push(displayNode);
 	                                            for (var i = 0; i < SharedTabService.masterTests.length; i++) {
 	                                                if (SharedTabService.masterTests[i].id === SharedTabService.tests[currentIndex].id) {
-	                                                    SharedTabService.masterTests[i].masterQuestions.push(displayNode);// is to check for dirty.
+	                                                    SharedTabService.masterTests[i].masterQuestions.push(angular.copy(displayNode));// is to check for dirty.
 	                                                }
 	                                            }
 	                                    

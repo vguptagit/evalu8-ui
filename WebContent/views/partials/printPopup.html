@@ -47,18 +47,41 @@
 		</div>
 	</div>
 </div>
-<div class="modal-content pull-left col-sm-6 col-md-6 col-lg-6 rightPrint">
+<div class="modal-content pull-left col-sm-6 col-md-6 col-lg-6 rightPrint print-preview">
 	<div style="height: 100%;padding: 5px 0px">
 		<div class="modal-header">
 		    <button type="button" class="close closeIcon" data-ng-click="cancel()"
 		            aria-label="Close">
 		        <span aria-hidden="true">&times;</span>
 		    </button>
-		    <h4 class="modal-default-header-title margin-lft-5neg" id="myModalLabel">
-		        Print
-		        Preview
-		    </h4>
+		    <h4 class="modal-default-header-title margin-lft-5neg" id="myModalLabel">Print Preview</h4>
 		    <i class="fa fa-spinner fa-pulse font-size-16 showWaiting" ng-show="showWaiting"></i>
+            <div id="qstnArea" class="qstnAreaPrint">
+                <h5>{{test.title}}</h5>
+                <h5>Name:</h5>
+                <div id="tree2-root">                   
+
+                    <ul id="QuestArea" class="print-view-questions"
+                        ng-model="test.masterQuestions">
+                        <li quiztype={{node.quizType}}
+                            class="print-view-questions displayQuestionLI"
+                            templateqstn="{{node.templateQstn}}"
+                            optionsview="{{node.optionsView}}"
+                            ng-class="{twoDigitIndex: $index + 1 > 9 ,threedigitIndex: $index + 1 > 99, fourDigitIndex: $index + 1 > 999}"
+                            ng-repeat="node in test.masterQuestions"
+                            ng-include="'qti_player_question_renderer_1.html'"></li>
+                    </ul>
+                </div>
+
+                <script type="text/ng-template" id="qti_player_question_renderer_1.html">
+                    <div class="qtiQuestionContainer">
+                        <div mode="node.IsEditView">
+                            <print-qti-play></print-qti-play>
+                        </div>                       
+                    </div>
+                </script>
+
+            </div>
 		</div>
 	</div>
 </div>

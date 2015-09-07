@@ -177,11 +177,16 @@ angular.module('evalu8Demo')
 			    				 newCriteria.selectedQuestiontypes.push(criterias[0].selectedQuestiontypes[questionType])
 			    		 
 					}
+		         } else if (newCriteria.numberOfQuestionsSelected == DefaultNumberOfQuestions[3]) {
+		             newCriteria.numberOfQuestionsEntered = newCriteria.totalQuestions;
 		         }
 		         test.criterias.push(newCriteria);
 		     }
 		     sharedTabService.setDefault_numberOfQuestionsSelected = function (QuestionCount) {
-		         if (QuestionCount < 20) {
+		         if (QuestionCount < 10) {
+		             return DefaultNumberOfQuestions[3];
+		         }
+		         else if (QuestionCount < 20) {
 		             return DefaultNumberOfQuestions[0];
 		         } else {
 		             return DefaultNumberOfQuestions[1];

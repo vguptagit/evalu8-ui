@@ -544,6 +544,28 @@ html, body {
 	margin-top: 20px;
 	margin-right: 20px;
 }
+/*print preview starts ************************/
+.print-view-questions{
+    list-style-type:none;
+    padding-left: 0px;
+}
+.print-view-questions li.displayQuestionLI, .print-view-questions .qtiPrintView{
+    cursor:default;
+} 
+.print-preview .qstnAreaPrint{
+    padding-left: 5px;
+    top:55px;
+}
+.print-preview .qstnAreaPrint h5{
+    font-weight:bold;
+}
+.print-preview .tick{
+    display:none;
+}
+.print-preview .tf_printQuestionCaption, .print-preview .printQuestionCaption{
+    margin-top: -14px;
+}
+/*print preview ends ************************/
 
 .questIndex {
 	list-style: decimal;
