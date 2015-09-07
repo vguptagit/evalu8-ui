@@ -43,12 +43,14 @@ angular.module('e8MyTests')
 					 toolbar : [
 					           ['FontSize','Bold','Italic','Underline','TextColor','JustifyLeft', 'JustifyCenter', 'JustifyRight','Indent','Outdent','Table', 'Undo', 'Redo' ]
 					          ],
-					fontSize_sizes : '8/8px;9/9px;10/10px;11/11px;12/12px;14/14px;16/16px;18/18px;20/20px;22/22px;24/24px;26/26px;28/28px;30/30px;32/32px',
-					fontSize_defaultLabel : '12',					
-					allowedContent : true,					
-					title : false,
-					enterMode:CKEDITOR.ENTER_P,
-					sharedSpaces : {  top : 'toolbarPlaceholder'  }					
+					 fontSize_sizes : '8/11px;9/12px;10/13px;11/15px;12/16px;14/19px;16/22px;18/24px;20/26px;22/29px;24/32px;26/35px;28/37px;30/40px;32/42px',
+					 font_defaultLabel : 'Helvetica',					
+					 allowedContent : true,					
+					 title : false,
+					 enterMode:CKEDITOR.ENTER_P,
+					 language : 'en',
+					 sharedSpaces : {  top : 'toolbarPlaceholder'  },
+					 coreStyles_bold : { element : 'b', overrides : 'strong' }				
 			};
 
 
