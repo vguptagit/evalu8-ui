@@ -2662,6 +2662,7 @@ span.viewOptionDiv {
 	background: none;
 	color: #007FA9;
 	cursor: pointer;
+	padding-left: 6px;
 }
 
 .btnGotoDispBook:hover {

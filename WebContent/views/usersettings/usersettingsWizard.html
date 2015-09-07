@@ -23,24 +23,31 @@
 <div class="modal-body">
 	<div class="container-fluid paddingall20">
 		<div class="row">
-			<div class="col-md-12">
+			<div class="col-md-5">
 				<div>
 					<div ng-if="step == '2'" ng-click="setStep('1')"
 						id="changeDisciplineLinkId" class="btnGotoDispBook">
 						<i class="glyphicon glyphicon-arrow-left"></i> Change Discipline
 					</div>
-					<span style="float: right"><div ng-if="step == '1'" id="changeBooksLinkId" 
-							ng-click="setStep('2')" class="btnGotoDispBook">
-							<i class="glyphicon glyphicon-arrow-right"></i> Change Books
-						</div>
+					<div ng-if="step == '1'" id="changeDisciplineLinkId" 
+							ng-click="setStep('2')" class="btnGotoDispBook">  
+							 Change Books  <i class="glyphicon glyphicon-arrow-right"></i>
+					</div>
+					
 				</div>
 			</div>
+			<div class=" col-md-7 text-right margin-lft-10neg">
+				   <button ng-click="cancel()" class="backButton">Cancel</button>
+				   <button class="nextButton" ng-if="step == '2'"
+					ng-click="save()">Save</button>
+			</div>
+			
 		</div>
 
 		<div ng-if="step == '1'">
 
 			<div class="row"
-				style="vertical-align: middle; middle; margin-top: 20px;">
+				style="vertical-align: middle; middle; margin-top: 10px;">
 				<div class="col-lg-12">
 					<div class="row">
 						<div class="col-lg-12">
@@ -53,7 +60,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="row" style="margin-top: 20px;">
+					<div class="row" style="margin-top: 10px;">
 						<div class="col-lg-12">
 							<div class="disciplineContainerInLightBox">
 								<div data-ng-repeat="discipline in disciplines.all.sort()"
@@ -71,7 +78,7 @@
 		</div>
 		<div ng-if="step == '2'">
 			<div class="row"
-				style="vertical-align: middle; middle; margin-top: 20px;">
+				style="vertical-align: middle; middle; margin-top: 10px;">
 				<div class="col-lg-12">
 					<div class="row">
 						<div class="col-lg-12">
@@ -86,7 +93,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="row" style="margin-top: 20px;">
+					<div class="row" style="margin-top: 10px;">
 						<div class="col-lg-12">
 							<div class="bookContainerInLightBox">
 								<div data-ng-repeat="discipline in disciplineBooks">
@@ -104,7 +111,7 @@
 										<div class="discplineText"><i class="fa fa-circle font10" ng-show="book.parentBookID != undefined"></i>
 											<div class="margin-lft-5">{{book.title}}</div></div>
 									</div>
-									<div style="margin-top: 40px;"></div>
+									
 								</div>
 							</div>
 						</div>
@@ -112,17 +119,7 @@
 				</div>
 			</div>
 		</div>
-
-		<div class="row"
-			style="border-bottom: 1px solid #ddd; padding-top: 15px;">&nbsp;</div>
-		<div class="row" style="padding-top: 12px;">
-			<div class="col-md-5"></div>
-			<div class="col-md-7 text-right margin-lft-10neg">
-				<button ng-click="cancel()" class="backButton">Cancel</button>
-				<button class="nextButton" ng-if="step == '2'"
-					ng-click="save()">Save</button>
-			</div>
-		</div>
-
+<div class="row" style="height: 22px;></div>
 	</div>
+	<div class="row" ></div>
 </div>
