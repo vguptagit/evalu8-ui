@@ -39,7 +39,7 @@ angular.module('e8MyTests')
 			}
 
 			$scope.htmlEditorOptions = {			
-					 extraPlugins : 'sharedspace,font,justify,dialog,dialogui,colordialog,button,panelbutton,colorbutton,indent,indentblock,table',
+					 extraPlugins : 'sharedspace,font,justify,dialog,dialogui,colordialog,button,panelbutton,colorbutton,indent,indentblock,table,tableresize,tabletools,contextmenu,menu',
 					 toolbar : [
 					           ['FontSize','Bold','Italic','Underline','TextColor','JustifyLeft', 'JustifyCenter', 'JustifyRight','Indent','Outdent','Table', 'Undo', 'Redo' ]
 					          ],
