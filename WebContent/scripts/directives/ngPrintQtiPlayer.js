@@ -16,7 +16,8 @@ angular.module('e8MyTests')
 			
 			$scope.getPrintQtiTemplate = function() {
 				if((typeof($scope.node.qtiModel)=='undefined') && !(typeof($scope.node.data)=='undefined')){
-					$scope.node.qtiModel =  QtiService.getQtiModel($scope.node.data,$scope.node.quizType);
+				    $scope.node.qtiModel = QtiService.getQtiModel($scope.node.data, $scope.node.quizType);
+				    window.qtiModel = $scope.node.qtiModel;
 				}  
 
 				switch ($scope.node.quizType) {
@@ -29,7 +30,8 @@ angular.module('e8MyTests')
 				case 'TrueFalse':
 					return "views/editortmpl/tf.html";
 					break;
-				case 'Matching':
+				    case 'Matching':
+				        randomizeChoice($scope.node.qtiModel);
 					return "views/editortmpl/mf.html";
 					break;
 				case 'FillInBlanks':
@@ -42,7 +44,13 @@ angular.module('e8MyTests')
 				}
 
 			}
-
+			var randomizeChoice = function (qtiModel) {
+			    var options = angular.copy(qtiModel.Options);
+			    options.sort(function (a, b) { return Math.random() - 0.5; });
+			    for (var i = 0; i < qtiModel.Options.length; i++) {
+			        qtiModel.Options[i].matchingOption = options[i].matchingOption;
+			    }
+			}
 			$scope.getQuestionIndex = function ($index) {
 			    return QtiService.getQuestionIndex($index);
 			}

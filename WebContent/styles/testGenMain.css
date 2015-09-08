@@ -553,7 +553,7 @@ html, body {
     cursor:default;
 } 
 .print-preview .qstnAreaPrint{
-    padding-left: 5px;
+    padding-left: 35px;
     top:55px;
 }
 .print-preview .qstnAreaPrint h5{
