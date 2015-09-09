@@ -356,9 +356,12 @@ label {
 }
 
 .margin-lft-10neg {
-	margin-left: -15px;
+	margin-left: -10px;
 }
 
+.margin-lft-15neg {
+	margin-left: -15px;
+}
 .margin-top-5neg {
 	margin-top: -5px;
 }

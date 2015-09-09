@@ -280,7 +280,22 @@ angular.module('e8MyTests')
 
 				if (editor.mode == 'wysiwyg') {
 				
-					editor.insertHtml(html);
+					if((editor.getData() == "") || (editor.name == "questionCaption")){				
+						editor.insertHtml(html);
+					}else{						
+
+						var hasImage = (editor.getData().indexOf('<u'));
+						if(hasImage!= -1){
+							var prevImg = editor.getData().substring((editor.getData().indexOf('<u')),((editor.getData().indexOf('</u>'))+10));	
+						}
+
+						editor.insertHtml(html);
+
+						if(prevImg.length > 0){
+							var remContent = editor.getData().replace(prevImg,'');					
+							editor.setData(remContent);
+						}
+					}
 			
 					var range = new CKEDITOR.dom.range(editor.document);				
 					range.moveToElementEditablePosition(element, true);

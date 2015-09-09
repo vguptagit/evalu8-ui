@@ -29,14 +29,14 @@
 						id="changeDisciplineLinkId" class="btnGotoDispBook">
 						<i class="glyphicon glyphicon-arrow-left"></i> Change Discipline
 					</div>
-					<div ng-if="step == '1'" id="changeDisciplineLinkId" 
+					<div ng-if="step == '1'" id="changeBooksLinkId" 
 							ng-click="setStep('2')" class="btnGotoDispBook">  
 							 Change Books  <i class="glyphicon glyphicon-arrow-right"></i>
 					</div>
 					
 				</div>
 			</div>
-			<div class=" col-md-7 text-right margin-lft-10neg">
+			<div class=" col-md-7 text-right margin-lft-15neg ">
 				   <button ng-click="cancel()" class="backButton">Cancel</button>
 				   <button class="nextButton" ng-if="step == '2'"
 					ng-click="save()">Save</button>
