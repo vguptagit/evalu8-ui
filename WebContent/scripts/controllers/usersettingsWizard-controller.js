@@ -354,6 +354,7 @@ angular
 									if($scope.selectedDisciplineCounter==$scope.disciplines.userSelected.length){
 										$scope.isBookLoading=false;
 										$(".btnGotoDispBook").removeClass("btnDisbledGotoDispBook");
+										$scope.buttonEnableDisable($scope.isBookEmpty());
 									}
 								});
 							}
