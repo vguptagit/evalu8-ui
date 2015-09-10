@@ -31,7 +31,8 @@
 					placeholder={{node.qtiModel.EditCaption}} ready="onReady({{focusEditorIndex}})"
 					ckeditor="htmlEditorOptions" data-ng-model="node.qtiModel.Caption"></div>
 				<div class="captionImageContainer">
-					<button class="captionImageIcon glyphicon glyphicon-picture" title='Upload picture'
+					<button class="captionImageIcon glyphicon glyphicon-picture" 
+							tooltip="Upload picture" tooltip-placement="bottom"
 						data-ng-click='showUploadImagePanel(this,$event,"div.captionContainer")'></button>
 				</div>
 			</div>

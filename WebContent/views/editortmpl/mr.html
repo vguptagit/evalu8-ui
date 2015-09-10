@@ -19,7 +19,7 @@
 						<div data-ng-if="true==node.qtiModel.CorrectAnswer[$index]"
 							class='printCorrectAnswer'>
 							<span class="tick glyphicon glyphicon-ok"
-								tooltip="correct answer" tooltip-placement="bottom"></span>
+								tooltip="correct answer" tooltip-placement="right"></span>
 						</div>
 					</div>
 					<div data-ng-bind="getQuestionIndex($index)"
@@ -51,7 +51,8 @@
 					placeholder={{node.qtiModel.EditCaption}}
 					ckeditor="htmlEditorOptions" data-ng-model="node.qtiModel.Caption"></div>
 				<div class="captionImageContainer">
-					<button class="captionImageIcon glyphicon glyphicon-picture" title='Upload picture'
+					<button class="captionImageIcon glyphicon glyphicon-picture" 
+						tooltip="Upload picture" tooltip-placement="bottom"
 						data-ng-click='showUploadImagePanel(this,$event,"div.captionContainer")'></button>
 				</div>
 			</div>
@@ -72,12 +73,13 @@
 						ready="onReady({{focusEditorIndex}})"></div>
 
 					<div class="optionIconsContainer">
-						<button class="optionImageIcon glyphicon glyphicon-picture" title='Upload picture'
+						<button class="optionImageIcon glyphicon glyphicon-picture" 
+								tooltip="Upload picture" tooltip-placement="bottom"
 							data-ng-click='showUploadImagePanel(this,$event,"div.optionRow",$index)'></button>
-						<button title='Add answer' id={{$index}} name="Add"
+						<button tooltip="Add answer" tooltip-placement="bottom" id={{$index}} name="Add"
 							class="optionImageIcon glyphicon glyphicon-plus"
 							data-ng-click="addOption($index,node)"></button>
-						<button title='Delete this answer' id={{$index}} name="Delete"
+						<button tooltip="Delete this answer" tooltip-placement="bottom"	 id={{$index}} name="Delete"
 							class="optionImageIcon glyphicon glyphicon-remove"
 							data-ng-click="removeOption($index,$index==node.qtiModel.CorrectAnswer)"></button>					
 					</div>

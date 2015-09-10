@@ -23,7 +23,7 @@
 .defaultPrintCorrectAnswer{
 	  float: left;
   display: inline-block;
-  width: 16px;
+  width: 18px;
 }
 
 .printCorrectAnswer {
@@ -93,7 +93,7 @@
 
 
 .questionContainer{
-	font-size: 12px;
+	font-size: 14px;
 	font-weight: normal;	
 	font-family: Helvetica Neue Light;
 	margin-left: 10px;
