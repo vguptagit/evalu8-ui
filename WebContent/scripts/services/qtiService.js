@@ -516,6 +516,9 @@ angular.module('evalu8Demo')
 			}
 			
 			var replaceFIBblank = function(elm,text,xml,qstnHTML){
+				var element = $('<p></p>');
+				$(element).append(text);
+				text = $(element).html();
 				var buttons = elm.find("button");
 				var textEntryBackUp;
 				var actualContent;

@@ -1686,6 +1686,7 @@ angular
 												$scope.message = "No search results match your criteria, broaden your criteria, or select more question banks to search";
 												$modal.open(confirmObject);
 											}
+											$scope.selectedNodes=[];
 										});
 									});	
 								}
