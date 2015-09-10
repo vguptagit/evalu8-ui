@@ -19,7 +19,7 @@
 								<div data-ng-if="$index==node.qtiModel.CorrectAnswer"
 									class="tf_printCorrectAnswer">
 									<span class="tick glyphicon glyphicon-ok"
-										tooltip="correct answer" tooltip-placement="bottom"></span>
+										tooltip="correct answer" tooltip-placement="right"></span>
 								</div>
 							</div>
 							<div data-ng-bind="getQuestionIndex($index)"
@@ -54,7 +54,8 @@
 					ckeditor="htmlEditorOptions"
 					data-ng-model="node.qtiModel.Caption"></div>
 				<div class="captionImageContainer">
-					<button class="captionImageIcon glyphicon glyphicon-picture" title='Upload picture'
+					<button class="captionImageIcon glyphicon glyphicon-picture" 
+							 tooltip="Upload picture" tooltip-placement="bottom"
 						data-ng-click='showUploadImagePanel(this,$event,"div.tf_captionContainer")'></button>
 				</div>
 			</div>

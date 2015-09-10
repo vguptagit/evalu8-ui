@@ -49,7 +49,8 @@
 					placeholder={{node.qtiModel.EditCaption}}
 					ckeditor="htmlEditorOptions" data-ng-model="node.qtiModel.Caption"></div>
 				<div class="captionImageContainer">
-					<button class="captionImageIcon glyphicon glyphicon-picture" title='Upload picture'
+					<button class="captionImageIcon glyphicon glyphicon-picture" 
+							tooltip="Upload picture" tooltip-placement="bottom"
 						data-ng-click='showUploadImagePanel(this,$event,"div.captionContainer")'></button>
 				</div>
 			</div>
@@ -68,12 +69,13 @@
 							data-ng-model="Option.option"></div>
 
 						<div class="optionIconsContainer">
-						<button class="optionImageIcon glyphicon glyphicon-picture" title='Upload picture'
+						<button class="optionImageIcon glyphicon glyphicon-picture" 
+								tooltip="Upload picture" tooltip-placement="bottom"
 								data-ng-click='showUploadImagePanel(this,$event,"div.mf_optionRow",$index,"ColumnA")'></button>
-							<button title="Add answer" id="0" name="Add" 
+							<button tooltip="Add answer" tooltip-placement="bottom" id="0" name="Add" 
 								class="optionImageIcon glyphicon glyphicon-plus"
 								data-ng-click="addOption($index,node)"></button>
-							<button title="Delete this answer" id="0" name="Delete"
+							<button tooltip="Delete this answer" tooltip-placement="bottom"	 id="0" name="Delete"
 								class="optionImageIcon glyphicon glyphicon-remove"
 								data-ng-click="removeOption($index,$index==node.qtiModel.CorrectAnswer)"></button>
 							
@@ -89,7 +91,8 @@
 							placeholder="{{node.qtiModel.editOption_Column_B + ($index+1) }}"
 							data-ng-model="Option.matchingOption"></div>
 						<div class="optionIconsContainer">
-							<button class="optionImageIcon glyphicon glyphicon-picture" title='Upload picture'
+							<button class="optionImageIcon glyphicon glyphicon-picture" 
+								tooltip="Upload picture" tooltip-placement="bottom"
 								data-ng-click='showUploadImagePanel(this,$event,"div.mf_matchingOptionRow",$index,"ColumnB")'></button>
 						</div>
 					</div>
