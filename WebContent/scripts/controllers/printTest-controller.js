@@ -16,6 +16,11 @@ angular.module('e8MyTests')
 		         parentScope.tests[parentScope.currentIndex].isBtnClicked = false;
 		         $modalInstance.dismiss('cancel');
 		     };
+		     $scope.printTest = function () {
+		         parentScope.tests[parentScope.currentIndex].isBtnClicked = false;
+		         $('#testPreviewContainer').print();
+		         $modalInstance.dismiss('cancel');
+		     };
 		     $scope.selectedAnswerArea = $scope.answerAreas[0];
 		     UserService.userPrintSettings(function (printSettings) {
 

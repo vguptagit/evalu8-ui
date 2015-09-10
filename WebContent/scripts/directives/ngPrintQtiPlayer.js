@@ -1,7 +1,7 @@
 ﻿'use strict';
 angular.module('e8MyTests')
-.directive("printQtiPlay",['QtiService','$sce','$rootScope',
-                        function(QtiService,$sce,$rootScope) {	
+.directive("printQtiPlay",['QtiService','$sce',
+                        function(QtiService,$sce) {	
 	return {
 		template : '<ng-include src="getPrintQtiTemplate()"/>',
 		restrict : 'E',
@@ -17,7 +17,6 @@ angular.module('e8MyTests')
 			$scope.getPrintQtiTemplate = function() {
 				if((typeof($scope.node.qtiModel)=='undefined') && !(typeof($scope.node.data)=='undefined')){
 				    $scope.node.qtiModel = QtiService.getQtiModel($scope.node.data, $scope.node.quizType);
-				    window.qtiModel = $scope.node.qtiModel;
 				}  
 
 				switch ($scope.node.quizType) {
@@ -45,10 +44,13 @@ angular.module('e8MyTests')
 
 			}
 			var randomizeChoice = function (qtiModel) {
-			    var options = angular.copy(qtiModel.Options);
-			    options.sort(function (a, b) { return Math.random() - 0.5; });
-			    for (var i = 0; i < qtiModel.Options.length; i++) {
-			        qtiModel.Options[i].matchingOption = options[i].matchingOption;
+			    if (!qtiModel.isRandomize) {
+			        var options = angular.copy(qtiModel.Options);
+			        options.sort(function (a, b) { return Math.random() - 0.5; });
+			        for (var i = 0; i < qtiModel.Options.length; i++) {
+			            qtiModel.Options[i].matchingOption = options[i].matchingOption;
+			        }
+			        qtiModel.isRandomize = true;
 			    }
 			}
 			$scope.getQuestionIndex = function ($index) {
@@ -66,6 +68,10 @@ angular.module('e8MyTests')
 
 			$scope.getFbAnswerOption = function () {
 			    return $sce.trustAsHtml($scope.node.qtiModel.CorrectAnswerHtml);
+			}
+			$scope.setEssayPageSize = function (qtiModel) {
+			    var EssayPageSize = parseInt(qtiModel.EssayPageSize);
+			    return "padding-bottom: " + EssayPageSize * 20 + "px;";
 			}
 		}
 

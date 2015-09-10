@@ -7,8 +7,8 @@
 			<a class="qstnViewLink" ng-show="showQstnEditIcon" data-ng-click="toggleEdit(node)">{{node.qstnLinkText}}</a>
 		</div>	
 		<div class="questionPrintContainer">{{$index +1}})
-			<div class="printQuestionCaption" data-ng-bind-html="getTrustedHTML(node.qtiModel.Caption==''?node.qtiModel.PrintCaption:node.qtiModel.Caption)"></div>
-		</div>
+            <div class="printQuestionCaption" style="{{setEssayPageSize(node.qtiModel)}}" data-ng-bind-html="getTrustedHTML(node.qtiModel.Caption==''?node.qtiModel.PrintCaption:node.qtiModel.Caption)"></div>
+            </div>
 	</div>
 
 	<div data-ng-if="node.IsEditView">
