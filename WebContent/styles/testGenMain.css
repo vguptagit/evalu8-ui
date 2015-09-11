@@ -555,6 +555,7 @@ html, body {
 .print-preview .qstnAreaPrint{
     padding-left: 35px;
     top:55px;
+    margin-bottom: 25px;
 }
 .print-preview .qstnAreaPrint h5{
     font-weight:bold;
@@ -564,6 +565,9 @@ html, body {
 }
 .print-preview .tf_printQuestionCaption, .print-preview .printQuestionCaption{
     margin-top: -14px;
+}
+.blueColor{
+    color:#006EFF;
 }
 /*print preview ends ************************/
 
