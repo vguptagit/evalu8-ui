@@ -48,6 +48,33 @@ angular
 												})	
 							};
 
+							this.userDisciplineBooks = function(discipline,
+									callback) {
+								var disciplineBooks = [];
+
+								$http.get(evalu8config.apiUrl
+										+ "/books?discipline="
+										+ discipline.item
+										+ "&userBooks=true", config).success(
+										function(response) {
+
+											response.forEach(function(item) {
+												item.hasEdition = false;
+												item.showEdition = true;
+												item.isSelected = false;
+												item.isCollasped = false;
+												disciplineBooks.push(item);
+											});
+
+											callback(disciplineBooks);
+										})
+										.error(
+												function(error) {
+
+													callback (null);
+												});
+							}
+							
 							this.userBooks = function(callback) {
 
 								var url = evalu8config.apiUrl
