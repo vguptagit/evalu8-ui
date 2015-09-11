@@ -122,40 +122,39 @@ angular
 								DisciplineService.userDisciplines(function(userDisciplines) {
 									if(userDisciplines==null){
 										CommonService.showErrorMessage(e8msg.error.cantFetchDisciplines)
-					        			return;
+										return;
 									}
-									$scope.disciplines = userDisciplines;
-									
-									$scope.disciplines.forEach(function(discipline) {
+									var userDisciplineLength=0;
+									userDisciplines.forEach(function(discipline) {
 										discipline["isCollapsed"]=false;
 										discipline.isHttpReqCompleted = true;
-										$scope.disciplines.forEach(function(discipline) {
-											BookService.userDisciplineBooks(discipline,function(userbooks){
-												userbooks.forEach(function(books) {
-													books.isCollapsed=true;
-												});
-												discipline["nodes"] = userbooks;
+										BookService.userDisciplineBooks(discipline,function(userbooks){
+											userbooks.forEach(function(books) {
+												books.isCollapsed=true;
 											});
+											discipline["nodes"] = userbooks;
+											if(userDisciplineLength==userDisciplines.length){
+												$scope.disciplines = userDisciplines;
+												$scope.disciplines.sort(function(a, b) {
+													return a.item.localeCompare(b.item)
+												});	
+											}
 										});
+										userDisciplineLength=userDisciplineLength+1;
 									});
-
-									$scope.disciplines.sort(function(a, b) {
-										return a.item.localeCompare(b.item)
-									});
-
 									UserQuestionsService.userQuestionsCount(function(userQuestionsCount) {
 										if (userQuestionsCount > 0) {
 											$scope.disciplines.unshift({
-														"item" : "Your Questions (user created)",
-														"type" : "YourQuestionRoot",
-														"isCollapsed" : true	
+												"item" : "Your Questions (user created)",
+												"type" : "YourQuestionRoot",
+												"isCollapsed" : true	
 											});	
 											$scope.disciplines[0].isHttpReqCompleted = true;
 											$scope.yourQuestionsFolder = $scope.disciplines[0];
-										}										
+										}	
 									})
 
-								});								
+								});							
 							}
 							
 							$scope.loadTree();
