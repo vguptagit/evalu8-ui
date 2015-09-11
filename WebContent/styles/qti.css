@@ -397,7 +397,9 @@
   float: left;
   margin-left: 20px;
 }
-
+.testPreviewContainer .matchingOptionContainer {
+    margin-bottom:3px;
+}
 .columnA{	
     word-wrap: break-word;	
 	display: table;	
