@@ -203,7 +203,7 @@
     border-left: 1px solid #D0D0D0;
     float: left;
     padding: 4px 5px;    
-    width: 70%; 
+    width: 68%; 
     overflow: auto;
 }
 
@@ -401,10 +401,12 @@
 .columnA{	
     word-wrap: break-word;	
 	display: table;	
+	max-width: 48%;
 }
 .columnB{	
 	 word-wrap: break-word;	
 	display: table;	
+	max-width: 48%;
 }
 
 /* Matching - question - PRINT  END */
@@ -452,7 +454,7 @@
     padding: 4px 5px;  
 }
 .mf_optionText{
-	width: 68%;
+	width: 66%;
 	float: left;			
     border-left: 1px solid #D0D0D0;   
     padding: 4px 5px;  
@@ -667,3 +669,22 @@ body .cke_dialog_background_cover{
 	background-color: black !important;
 }
 
+.Indent1{
+	margin-left: 120px;
+}
+
+.Indent2{
+	margin-left: 160px;
+}
+
+.Indent3{
+	margin-left: 200px;
+}
+
+.Indent4{
+	margin-left: 240px;
+}
+
+.Indent5{
+	margin-left: 280px;
+}
