@@ -33,10 +33,11 @@ angular
 						'blockUI',
 						'ContainerService',
                         'CommonService',
+                        'BookService',
 						function($scope, $rootScope, $location, $cookieStore, $timeout,
 								$http, $sce, DisciplineService, TestService,
 								SharedTabService, UserQuestionsService,
-								EnumService, $modal, blockUI, ContainerService, CommonService) {
+								EnumService, $modal, blockUI, ContainerService, CommonService,BookService) {
 						    SharedTabService.selectedMenu = SharedTabService.menu.questionBanks;
 						    $rootScope.blockPage = blockUI.instances.get('BlockPage');
 						    
@@ -126,8 +127,16 @@ angular
 									$scope.disciplines = userDisciplines;
 									
 									$scope.disciplines.forEach(function(discipline) {
-										discipline["isCollapsed"]=true;
+										discipline["isCollapsed"]=false;
 										discipline.isHttpReqCompleted = true;
+										$scope.disciplines.forEach(function(discipline) {
+											BookService.userDisciplineBooks(discipline,function(userbooks){
+												userbooks.forEach(function(books) {
+													books.isCollapsed=true;
+												});
+												discipline["nodes"] = userbooks;
+											});
+										});
 									});
 
 									$scope.disciplines.sort(function(a, b) {

@@ -930,14 +930,22 @@ angular
 								}
 
 								if (test.testId && !test.questions.length && !SharedTabService.isDirtyTab(test) && !test.isTabClicked) {
-									test.isTabClicked=true;									
+									test.isTabClicked=true;
+									$rootScope.blockRightPanel.start();
 									TestService.getTestQuestions(test.testId,function(questions) {
-										if(questions==null){
-											CommonService.showErrorMessage(e8msg.error.cantFetchTestQuestions);
-				                    		return;
+										try{
+											if(questions==null){
+												$rootScope.blockRightPanel.stop();
+												CommonService.showErrorMessage(e8msg.error.cantFetchTestQuestions);
+												return;
+											}
+											$scope.bindTestQuestions(questions,$scope.currentIndex);
+										}catch (e) {
+											console.log(e);
+										}finally {
+											$rootScope.blockRightPanel.stop();
 										}
-												$scope.bindTestQuestions(questions,$scope.currentIndex);
-											})
+									})
 								}
 							}
 
