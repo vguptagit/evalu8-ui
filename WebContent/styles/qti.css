@@ -668,23 +668,3 @@
 body .cke_dialog_background_cover{
 	background-color: black !important;
 }
-
-.Indent1{
-	margin-left: 120px;
-}
-
-.Indent2{
-	margin-left: 160px;
-}
-
-.Indent3{
-	margin-left: 200px;
-}
-
-.Indent4{
-	margin-left: 240px;
-}
-
-.Indent5{
-	margin-left: 280px;
-}
