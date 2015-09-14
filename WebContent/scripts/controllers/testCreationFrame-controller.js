@@ -435,8 +435,7 @@ angular
 								 newNode.IsEdited = true;
 								 newNode.IsDefaultEditView = true;
 								 newNode.selectedLevel = { name: 'Select Level', value: '0' };
-								 newNode.EssayPageSize = '0';
-								 newNode.BlankSize = '20';
+								 $('div#qstnArea').scrollTop(0);
 
 							 } else {
 

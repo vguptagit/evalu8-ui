@@ -5,7 +5,7 @@
 				ng-show="showQstnEditIcon"
 				data-ng-click="closeQuestions(tests[currentIndex],$index)">
 			</button>
-			<a class="qstnViewLink" ng-show="showQstnEditIcon" data-ng-click="toggleEdit(node)">{{node.qstnLinkText}}</a>
+			<a id="switchLink" class="qstnViewLink" ng-show="showQstnEditIcon" data-ng-click="toggleEdit(node)">{{node.qstnLinkText}}</a>
 		</div>
 		 <div class="questionPrintContainer">{{$index + 1}})
 			<div class="printQuestionCaption"
@@ -33,7 +33,7 @@
 
 	<div data-ng-if="node.IsEditView">
 		<div class="divLink">
-			<a class="qstnViewLink" data-ng-click="toggleEdit(node)">{{node.qstnLinkText}}</a>
+			<a id="switchLink" class="qstnViewLink" data-ng-click="toggleEdit(node)">{{node.qstnLinkText}}</a>
 			<div class="questionDeleteContainer">
 				<button type="button" class="close editQuestionDeleteIcon"
 					data-ng-show="node.IsEditView"

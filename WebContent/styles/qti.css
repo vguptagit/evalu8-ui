@@ -403,12 +403,12 @@
 .columnA{	
     word-wrap: break-word;	
 	display: table;	
-	max-width: 48%;
+	width: 48%;
 }
-.columnB{	
-	 word-wrap: break-word;	
-	display: table;	
-	max-width: 48%;
+.columnB {
+	word-wrap: break-word;
+	display: table;
+	width: 48%;
 }
 
 /* Matching - question - PRINT  END */

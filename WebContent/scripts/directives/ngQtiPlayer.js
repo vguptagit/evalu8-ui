@@ -333,6 +333,11 @@ angular.module('e8MyTests')
 				}
 			};
 
+			  $scope.focusCaption = function () {
+	               $('#questionCaption').focus();	               	               
+	            }
+			  
+			  
 			// adding options
 			$scope.addOption = function($index, node) {
 				var optionss = node.qtiModel.Options.length;
