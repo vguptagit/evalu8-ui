@@ -549,6 +549,9 @@ html, body {
     list-style-type:none;
     padding-left: 0px;
 }
+.modal-content .testPreviewContainer{
+    line-height:20px;
+}
 .print-view-questions li.displayQuestionLI, .print-view-questions .qtiPrintView{
     cursor:default;
 } 

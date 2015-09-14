@@ -124,6 +124,7 @@ angular
 										CommonService.showErrorMessage(e8msg.error.cantFetchDisciplines)
 										return;
 									}
+
 									userDisciplines.sort(function(a, b) {
 										return a.item.localeCompare(b.item)
 									});
@@ -140,7 +141,8 @@ angular
 												$scope.disciplines = userDisciplines;
 											}
 										});
-										userDisciplineLength=userDisciplineLength+1;
+										userDisciplineLength = userDisciplineLength + 1;
+
 										$scope.disciplines = userDisciplines;
 									});
 									UserQuestionsService.userQuestionsCount(function(userQuestionsCount) {
