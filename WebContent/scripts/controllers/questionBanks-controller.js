@@ -124,6 +124,9 @@ angular
 										CommonService.showErrorMessage(e8msg.error.cantFetchDisciplines)
 										return;
 									}
+									userDisciplines.sort(function(a, b) {
+										return a.item.localeCompare(b.item)
+									});
 									var userDisciplineLength=0;
 									userDisciplines.forEach(function(discipline) {
 										discipline["isCollapsed"]=false;
@@ -135,12 +138,10 @@ angular
 											discipline["nodes"] = userbooks;
 											if(userDisciplineLength==userDisciplines.length){
 												$scope.disciplines = userDisciplines;
-												$scope.disciplines.sort(function(a, b) {
-													return a.item.localeCompare(b.item)
-												});	
 											}
 										});
 										userDisciplineLength=userDisciplineLength+1;
+										$scope.disciplines = userDisciplines;
 									});
 									UserQuestionsService.userQuestionsCount(function(userQuestionsCount) {
 										if (userQuestionsCount > 0) {
@@ -154,7 +155,7 @@ angular
 										}	
 									})
 
-								});							
+								});	
 							}
 							
 							$scope.loadTree();

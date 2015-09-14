@@ -133,7 +133,7 @@ angular.module('e8MyTests')
     //TODO : need to implement using $get
     $scope.onclick_exportTest = function () {
     	var isSeperateFileSelected = false;
-		if($scope.selectedAnswerKey.value == $scope.answerKeys[2].value && !$scope.isIncludeRandomizedTest){
+    	if($scope.selectedAnswerKey.value == $scope.answerKeys[2].value && ($scope.selectedFormat.value == FileFormats.MSWord || $scope.selectedFormat.value == FileFormats.PDF) && !$scope.isIncludeRandomizedTest){
 			downloadFile($scope.answerKeys[0].value, false, isSeperateFileSelected);
 			isSeperateFileSelected= true;
 		}
