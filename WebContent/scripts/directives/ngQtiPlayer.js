@@ -581,10 +581,17 @@ angular.module('e8MyTests')
 		replace: true,
 		templateUrl: 'views/partials/question-metadata.html',
 		controller : function($scope) {			
+			
 			$scope.qstnBlankSize = function(selectedNode,
 					blankSize) {
 				selectedNode.node.qtiModel.BlankSize = blankSize;
 			}
+			
+			$scope.qstnEssayPageSize = function(selectedNode,
+					pageSize) {
+				selectedNode.node.qtiModel.EssayPageSize = pageSize;
+			}							
+			
 		}
 	};
 });
