@@ -18,8 +18,8 @@
 							<div class="tf_defaultPrintCorrectAnswer">
 								<div data-ng-if="$index==node.qtiModel.CorrectAnswer"
 									class="tf_printCorrectAnswer">
-									<span class="tick glyphicon glyphicon-ok"
-										tooltip="correct answer" tooltip-placement="right"></span>
+									<span class="tick glyphicon glyphicon-ok" tooltip-append-to-body="true"
+										tooltip="correct answer" tooltip-placement="bottom"></span>
 								</div>
 							</div>
 							<div data-ng-bind="getQuestionIndex($index)"
