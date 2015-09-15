@@ -370,6 +370,14 @@ angular.module('evalu8Demo')
 		                 if (!sharedTabService.tests[i].treeNode && sharedTabService.tests[i].treeNode.nodeType === EnumService.NODE_TYPE.test) {
 		                     sharedTabService.tests[i].treeNode = treenode;
 		                 }
+
+
+		                 if (sharedTabService.currentTab.testId && !sharedTabService.currentTab.questions.length && !sharedTabService.isDirtyTab(sharedTabService.currentTab) && !sharedTabService.currentTab.isTabClicked) {
+		                     $rootScope.$broadcast("handleBroadcast_ClickTab", sharedTabService.currentTab);
+		                 }
+
+
+
 		                 found = true;
 		                 return false;
 		             }

@@ -22,6 +22,8 @@ angular.module('evalu8Demo')
 				delete testData.metadata.draggable;
 				delete testData.metadata.folderGuid;
 				delete testData.metadata.nodeType;
+				delete testData.metadata.selectTestNode;
+
 				$http.post(evalu8config.apiUrl + '/my/folders/'+folderId+'/tests', testData, config)
 				.success(function(response) {	
 					var testResult = response;
