@@ -3284,3 +3284,33 @@ px
 .settingSave:hover {
 	background-color: #006A8D
 }
+
+.wizardWhite {   
+     padding-left: 20px;
+     background: url("../images/wizard_grayall.png") 0px -26px no-repeat;
+}
+
+.wizardGray {   
+    padding-left: 20px;
+    background: url("../images/wizard_grayall.png") 10px -48px no-repeat;
+    background-color: white;
+    margin-top: 1px;
+    
+}
+
+.wizardGray:hover {
+	padding-left: 20px;   
+	background: url("../images/wizard_grayall.png")  10px -72px no-repeat;
+    background-color: white;
+    margin-top: 1px;
+    
+}
+
+.wizardBlack {   
+    padding-left: 20px;
+    width: 19px;
+    height: 20px;
+    background:url("../images/wizard_grayall.png") 0px 2px no-repeat;
+    top: 4px;
+    right: -2px;
+}
