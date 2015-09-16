@@ -200,14 +200,15 @@ angular
 							$scope.addNewFolder = function () {
                                 
                                 if(document.getElementById("txtFolderName").value.trim().length==0) { return; }
-                                
+                                var folderName = document.getElementById("txtFolderName").value.trim();
+                                document.getElementById("txtFolderName").value = "";
                                 var sequence = 1;
 
                                 if($scope.YourQuestionRoot.node && $scope.YourQuestionRoot.node.nodes[0]) {
                                     
                                     var duplicateTitle = false;
                                     $scope.YourQuestionRoot.node.nodes.forEach(function(rootFolder) {
-                                        if(rootFolder.title == document.getElementById("txtFolderName").value.trim()) {
+                                        if(rootFolder.title == folderName) {
                                             duplicateTitle = true;    
                                             
                                             $scope.isAddFolderClicked=true;
@@ -236,16 +237,13 @@ angular
                                     var UserQuestionsFolder = {
                                         "parentId": userQuestionsFolderRoot.guid,                
                                         "sequence": sequence,
-                                        "title": document.getElementById("txtFolderName").value
+                                        "title": folderName
                                     };
                                         
                                     UserQuestionsService.saveQuestionFolder(UserQuestionsFolder, function (userFolder) {
                                         
                                         $scope.YourQuestionRoot.node.nodes.unshift(UserQuestionsFolder);
                                         $scope.YourQuestionRoot.node.nodes[0].isCollapsed = true;
-                                                                                
-                                        document.getElementById("txtFolderName").value = "";
-                                       
                                         $scope.showAddFolderPanel = false;
                                     });
                                     
