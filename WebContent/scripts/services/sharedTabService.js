@@ -483,7 +483,7 @@ angular.module('evalu8Demo')
 		         var clonedTest = new sharedTabService.Test(test);
 		         clonedTest.id = test.id;
 		         $.each(test.questions, function (i) {
-		             clonedTest.masterQuestions.push(test.questions[i]);
+		             clonedTest.masterQuestions.push(angular.copy(test.questions[i]));
 		         });
 		         sharedTabService.masterTests[sharedTabService.currentTabIndex] = clonedTest;
 		     }
