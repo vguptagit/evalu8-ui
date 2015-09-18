@@ -2029,7 +2029,7 @@ angular
 								                    newTestTab.testId = treeNode.guid;
 								                    newTestTab.title = treeNode.title;
 								                    newTestTab.tabTitle = treeNode.title;
-								                    newTestTab.metadata = treeNode;
+								                    newTestTab.metadata = TestService.getTestMetadata(treeNode);
 								                    newTestTab.treeNode = treeNode;
 								                    newTestTab.folderGuid = (typeof (treeNode.folderId) == 'undefined') ? null : treeNode.folderId;
 								                    if (!newTestTab.folderGuid) {
