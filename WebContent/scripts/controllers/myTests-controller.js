@@ -1125,6 +1125,9 @@ angular.module('e8MyTests')
         }        
        
         var addVersionTest = function (testFolder, treeItems, test, newTest) {
+            if (!treeItems) {
+                return;
+            }
             $.each(treeItems, function (i, v) {
                 if (v.guid == test.id) {
                     treeItems.splice(i + 1, 0, newTest)
