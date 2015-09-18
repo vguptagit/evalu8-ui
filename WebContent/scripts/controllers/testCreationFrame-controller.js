@@ -1224,6 +1224,7 @@ angular
 
 											            newNode.IsEditView = false;
 											            newNode.editMainText = CustomQuestionTemplate[newNode.quizType].editMainText;
+											            $('div#qstnArea').scrollTop(0);
 
 											            $.each(newNode.extendedMetadata, function (index, item) {
 											                var name = item['name'].charAt(0).toUpperCase() + item['name'].slice(1);
@@ -2588,10 +2589,10 @@ angular
 								
 								if(qstn.IsEdited){
 									qstn.data = QtiService.getQtiXML(qstn);
-								}    									
+								}    
 								
+								qstn.IsEditView = false;								
 								qstn.qstnLinkText = qstn.IsEditView ? "View": "Edit";
-								qstn.IsEditView = false;
 								
 								if(qstn.qstnTemplate){
                                     qstn.qstnTemplate = false;
