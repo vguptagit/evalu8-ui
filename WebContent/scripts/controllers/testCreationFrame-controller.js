@@ -1213,8 +1213,7 @@ angular
 											            newNode.IsEdited = true;
 											            newNode.IsDefaultEditView = true;
 											            newNode.selectedLevel = { name: 'Select Level', value: '0' };
-											            $('div#qstnArea').scrollTop(0);
-
+											         
 											        } else {
 
 											            $.each(SharedTabService.userQuestionSettings, function (index, value) {
@@ -1224,6 +1223,7 @@ angular
 
 											            newNode.IsEditView = false;
 											            newNode.editMainText = CustomQuestionTemplate[newNode.quizType].editMainText;
+											           
 
 											            $.each(newNode.extendedMetadata, function (index, item) {
 											                var name = item['name'].charAt(0).toUpperCase() + item['name'].slice(1);
@@ -1263,8 +1263,8 @@ angular
 											            }
 
 											            if (!nodeAlreadyExist) {
-											                tests.splice(destIndex,
-                                                                    0, newNode);
+											                tests.splice(destIndex,0, newNode);
+											                $('div#qstnArea').scrollTop(0);
 											            }
 											        }
 											        $scope.tests[$scope.currentIndex].questions = tests;
@@ -2588,10 +2588,10 @@ angular
 								
 								if(qstn.IsEdited){
 									qstn.data = QtiService.getQtiXML(qstn);
-								}    									
+								}    
 								
+								qstn.IsEditView = false;								
 								qstn.qstnLinkText = qstn.IsEditView ? "View": "Edit";
-								qstn.IsEditView = false;
 								
 								if(qstn.qstnTemplate){
                                     qstn.qstnTemplate = false;

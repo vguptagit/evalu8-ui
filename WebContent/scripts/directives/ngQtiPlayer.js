@@ -279,14 +279,21 @@ angular.module('e8MyTests')
 
 
 				if (editor.mode == 'wysiwyg') {
-				
+
 					if((editor.getData() == "") || (editor.name == "questionCaption")){				
 						editor.insertHtml(html);
 					}else{						
 
 						var hasImage = (editor.getData().indexOf('<u'));
 						if(hasImage!= -1){
-							var prevImg = editor.getData().substring((editor.getData().indexOf('<u')),((editor.getData().indexOf('</u>'))+10));	
+							var endIndex = (editor.getData().indexOf('</u>&nbsp;'));
+							var prevImg = '';
+							if(endIndex!= -1){
+								prevImg = editor.getData().substring((editor.getData().indexOf('<u')),((editor.getData().indexOf('</u>'))+10));	
+							}
+							else{
+								prevImg = editor.getData().substring((editor.getData().indexOf('<u')),((editor.getData().indexOf('</u>'))+4));
+							}
 						}
 
 						editor.insertHtml(html);
