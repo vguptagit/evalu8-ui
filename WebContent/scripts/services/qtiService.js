@@ -342,7 +342,27 @@ angular.module('evalu8Demo')
 				for (var i = 0; i < xmlChildren.length; i++) {
 
 					if (xmlChildren[i].nodeType == 4) {
-						serializedQtiNode = xmlChildren[i].textContent;
+						//Purpose: Image getting resized on editing.
+						//Putting the ctext content inside the span element and findout
+						//the images.
+						//Looping through the images and find out the css class.
+						//If there is no css class apply css class and remove the height and width.
+						var textContent = $("<span>"+xmlChildren[i].textContent+"</span>");
+						var images = textContent.find("img");
+						if(images.length > 0){
+							for(var i = 0; i < images.length; i ++){
+								if(textContent.find("img").eq(i).attr("class") == null || textContent.find("img").eq(i).attr("class") != "qtiQuestionImage")
+								{
+									textContent.find("img").eq(i).attr("class","qtiQuestionImage");
+									textContent.find("img").eq(i).removeAttr("height");
+									textContent.find("img").eq(i).removeAttr("width");
+								}
+							}
+							serializedQtiNode = textContent.html();
+						}
+						else{	
+							serializedQtiNode = xmlChildren[i].textContent;
+						}
 					} else {
 						serializedQtiNode = (new XMLSerializer())
 						.serializeToString(xmlChildren[i]);
