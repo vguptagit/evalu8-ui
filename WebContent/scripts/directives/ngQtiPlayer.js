@@ -52,6 +52,16 @@ angular.module('e8MyTests')
 					 sharedSpaces : {  top : 'toolbarPlaceholder'  },
 					 coreStyles_bold : { element : 'b', overrides : 'strong' }				
 			};
+			
+			  CKEDITOR.on("instanceCreated", function(b) {
+		            $rootScope.blockPage.start();
+			  });
+			  
+			  CKEDITOR.on("instanceLoaded", function(b) {		           
+		            $timeout(function() {		            	
+		            	 $rootScope.blockPage.stop();
+		            	}, 200);
+			  });
 
 
 			function destroyEditorInstances() {

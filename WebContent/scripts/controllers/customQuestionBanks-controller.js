@@ -30,6 +30,7 @@ angular.module('e8CustomQuestionBanks')
 				$modal.open(confirmObject);
 				$scope.dragStarted = false;
 			}else{
+				 $rootScope.blockPage.start();
 				$rootScope.$broadcast("dropQuestion",
 						question.node, 0,"CustomQuestions");				
 			}	
@@ -83,6 +84,7 @@ angular.module('e8CustomQuestionBanks')
     		   return;
      	if($scope.dragStarted) {
     		$scope.dragStarted = false;
+    		$rootScope.blockPage.start();
     		$rootScope.$broadcast("dropQuestion", source.node,  destIndex, "CustomQuestions");
      	}
      });
