@@ -61,7 +61,18 @@ angular.module('e8MyTests')
 			    var element = $('<p></p>');
 			    $(element).append(htmlText);
 			    element.find("button").each(function (i, obj) {
-			        $(obj).replaceWith("<span class='blank'> _____________________ </span>");
+			    	var blankSpace;
+			    	switch($scope.node.qtiModel.BlankSize){
+			    	case "100":
+			    		blankSpace = "____________________________________________________________________________________________________";
+			    		break;
+			    	case "50":
+			    		blankSpace = "__________________________________________________";
+			    		break;
+			    	default:
+			    		blankSpace = "____________________";
+			    	}
+			        $(obj).replaceWith(blankSpace);
 			    });
 			    return $sce.trustAsHtml(element[0].innerHTML);
 			}
