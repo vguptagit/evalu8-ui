@@ -163,7 +163,7 @@ angular.module('evalu8Demo')
 		         newCriteria.defaultNumberOfQuestions = DefaultNumberOfQuestions;
 		         newCriteria.numberOfQuestionsSelected = sharedTabService.setDefault_numberOfQuestionsSelected(response.length);
 		         newCriteria.questiontypes = getQuestionTypesPresent(response);
-		         newCriteria.selectedQuestiontypes = [];
+		         newCriteria.selectedQuestiontypes = getQuestionTypesPresent(response);
 		         newCriteria.scope = scope;
 		         newCriteria.metadata = response;
 		         newCriteria.treeNode = currentNode;
