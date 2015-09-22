@@ -568,6 +568,9 @@ html, body {
 }
 .print-preview .tf_printQuestionCaption, .print-preview .printQuestionCaption{
     margin-top: -19px;
+    
+word-break: break-all;
+    word-break: break-word;
 }
 .blueColor{
     color:#006EFF;
