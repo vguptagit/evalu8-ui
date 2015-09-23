@@ -29,8 +29,7 @@ angular.module('e8CustomQuestionBanks')
 				$scope.message = "A Custom Question cannot be added to the TEST Wizard.";
 				$modal.open(confirmObject);
 				$scope.dragStarted = false;
-			}else{
-				 $rootScope.blockPage.start();
+			}else{				
 				$rootScope.$broadcast("dropQuestion",
 						question.node, 0,"CustomQuestions");				
 			}	
@@ -83,8 +82,7 @@ angular.module('e8CustomQuestionBanks')
     	 if(source.$treeScope.$element.attr("id")!="Custom-Qstn-tree-root")
     		   return;
      	if($scope.dragStarted) {
-    		$scope.dragStarted = false;
-    		$rootScope.blockPage.start();
+    		$scope.dragStarted = false;    		
     		$rootScope.$broadcast("dropQuestion", source.node,  destIndex, "CustomQuestions");
      	}
      });

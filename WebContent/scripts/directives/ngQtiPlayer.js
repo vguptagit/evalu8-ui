@@ -53,17 +53,6 @@ angular.module('e8MyTests')
 					 coreStyles_bold : { element : 'b', overrides : 'strong' }				
 			};
 			
-			  CKEDITOR.on("instanceCreated", function(b) {
-		            $rootScope.blockPage.start();
-			  });
-			  
-			  CKEDITOR.on("instanceLoaded", function(b) {		           
-		            $timeout(function() {		            	
-		            	 $rootScope.blockPage.stop();
-		            	}, 200);
-			  });
-
-
 			function destroyEditorInstances() {
 				for (var name in CKEDITOR.instances){
 					var instance = CKEDITOR.instances[name];
