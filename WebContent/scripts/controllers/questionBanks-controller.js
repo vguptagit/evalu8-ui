@@ -518,6 +518,7 @@ angular
 								}
 								if(SharedTabService.isErrorExist(
                                         currentNode.node, $scope.selectedNodes)) {
+									$scope.createTestWizardMode=false;
                                     SharedTabService
                                             .TestWizardErrorPopup_Open();
                                     return false;
@@ -1079,7 +1080,7 @@ angular
 								isChildNodeUsed=false;
 																
 								for (var i=0; i < test.questions.length; i++) {
-							    	if(scope.guid == test.questions[i].guid) {
+							    	if(scope.guid == test.questions[i].guid && test.questions[i].nodeType) {
 							    		
 	                                    $scope.IsConfirmation = false;
 	                                    $scope.message = "Question(s) already added to the test, cannot be added again.";
