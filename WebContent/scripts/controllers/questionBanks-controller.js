@@ -671,7 +671,9 @@ angular
 										false,
 										function(response) {
 										if(response == null){
-											currentNode.node.isHttpReqCompleted = true;
+											//currentNode.node.isHttpReqCompleted = true;
+											$scope.isTopicsLoaded=true;
+											stopIndicator(currentNode);
 											CommonService.showErrorMessage(e8msg.error.cantFetchNodes)
 					            			return;
 										}
@@ -679,6 +681,7 @@ angular
 											if(response.length>0){
 												currentNode.node.nodes = currentNode.node.nodes.concat(response);
 												$scope.expandedNodes=$scope.expandedNodes.concat(currentNode.node.nodes);
+												var topicCount=0;
 												angular.forEach(currentNode.node.nodes, function(item) {
 													item.template = 'nodes_renderer.html';
 													item.showTestWizardIcon = false;
@@ -688,16 +691,23 @@ angular
 	                                                item.isCollapsed = true;
 	                                                item.isHttpReqCompleted = true;
 													updateTreeNode(item);
+													topicCount = topicCount+1;
+													if(topicCount == currentNode.node.nodes.length){
+														$scope.isTopicsLoaded=true;
+														stopIndicator(currentNode);
+													}
 												})
+												
 											} else if (!response.length && !currentNode.node.nodes.length) {
 											    var emptyNode = CommonService.getEmptyFolder()
+											    $scope.isTopicsLoaded=true;
 											    emptyNode.isHttpReqCompleted = false;
 											    if (currentNode.node.IsContainerReqCompleted && currentNode.node.IsQuestionsReqCompleted) {
 											        emptyNode.isHttpReqCompleted = true;
 											    }
 											    currentNode.node.nodes.push(emptyNode);
 											}
-											
+										
 										})
 
 									$http.get(evalu8config.apiUrl
@@ -710,8 +720,13 @@ angular
 											.success(
 													function (response) {
 													    currentNode.node.IsQuestionsReqCompleted = true;
-													    currentNode.node.isHttpReqCompleted = true;
+													    //currentNode.node.isHttpReqCompleted = true;
 													    var responseQuestions = response;
+													    if(responseQuestions.length==0){
+													    	$scope.isQuestionsLoaded=true;
+															stopIndicator(currentNode);
+													    }
+													    
 													    if (responseQuestions.length && currentNode.node.nodes.length && currentNode.node.nodes[0].nodeType === EnumService.NODE_TYPE.emptyFolder) {
 													        currentNode.node.nodes = [];
 													    } else if (!responseQuestions.length && currentNode.node.nodes.length && currentNode.node.nodes[0].nodeType === EnumService.NODE_TYPE.emptyFolder
@@ -726,7 +741,7 @@ angular
 														var sortedNodes = sortNodes(response, currentNode,"questionBindings");
 
 														currentNode.node.nodes = currentNode.node.nodes.concat(sortedNodes);
-
+														var questionCount=0;
 														angular.forEach(responseQuestions, function(item) {
 															if($scope.isAdvancedSearchMode == false  || ($scope.isAdvancedSearchMode == true && $scope.selectedQuestionTypes.toString().indexOf(item.quizType)>-1))
 															{
@@ -737,17 +752,33 @@ angular
 																addToQuestionsArray(item);
 																$scope.renderQuestion(item);
 															}
+															questionCount=questionCount+1;
+															if(questionCount == responseQuestions.length){
+																$scope.isQuestionsLoaded=true;
+																stopIndicator(currentNode);
+															}
 														})
+														
 
 													}).error(function () {
-													    currentNode.node.isHttpReqCompleted = true;
+													    //currentNode.node.isHttpReqCompleted = true;
+														$scope.isQuestionsLoaded=true;
+														stopIndicator(currentNode);
 													    CommonService.showErrorMessage(e8msg.error.cantFetchQuestions)
 									        			return;
 											});
-										
+									
 									}
 								
+								
 							}
+							
+							var stopIndicator=function(selectedNode){
+								if($scope.isQuestionsLoaded & $scope.isTopicsLoaded){
+									selectedNode.node.isHttpReqCompleted=true;
+								}	
+							}
+							
 
 							var updateTreeNode = function (item) {
 							    if ($scope.selectedNodes.length > 0)
