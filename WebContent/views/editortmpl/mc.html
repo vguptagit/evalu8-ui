@@ -1,4 +1,5 @@
-<div class="questionContainer">
+<div ng-show="answerAreaOnLeftSide" class="margin-top-10 pull-left width12">__________</div>
+<div class="questionContainer pull-left" ng-class="answerAreaOnLeftSide?'questionContainerWithAnswerArea':'questionContainer'">
 	<div data-ng-if="!node.IsEditView" class="qtiPrintView" ng-mousedown="selectQuestion(node);">
 		<div class="printEditLink" >
 			<button class="glyphicon glyphicon-remove printQuestionDeleteIcon"

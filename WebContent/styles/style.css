@@ -327,6 +327,10 @@ label {
 	margin-top: 10px;
 }
 
+.margin-top-100{
+	margin-top: 100px;
+}
+
 .margin-top-15 {
 	margin-top: 15px;
 }
@@ -431,6 +435,10 @@ label {
 }
 
 /* Width height CSS */
+.width12 {
+	width: 12%;
+}
+
 .width100 {
 	width: 100%;
 }
@@ -473,6 +481,10 @@ label {
 
 .height40 {
 	height: 40px;
+}
+
+.height100 {
+	height: 100px;
 }
 
 /*save-as page starts */
@@ -1291,3 +1303,5 @@ h4, .h4, h5, .h5, h6, .h6 {
 	font-family: Helvetica Neue Light;
 	color: #4D4D4D;
 }
+
+.pagebreak { page-break-before: always; }

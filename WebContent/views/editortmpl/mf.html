@@ -1,4 +1,5 @@
-<div class="questionContainer">
+<div ng-show="answerAreaOnLeftSide" class="margin-top-10 pull-left width12"></div>
+<div class="pull-left" ng-class="answerAreaOnLeftSide?'questionContainerWithAnswerArea':'questionContainer'">
 	<div data-ng-if="!node.IsEditView" class="qtiPrintView" ng-mousedown="selectQuestion(node);">
 		<div class="printEditLink" ng-show="showQstnEditIcon">
 			<button class="glyphicon glyphicon-remove printQuestionDeleteIcon"
@@ -12,6 +13,7 @@
 				data-ng-bind-html="getTrustedHTML(node.qtiModel.Caption==''?node.qtiModel.PrintCaption:node.qtiModel.Caption)"></div>
 			<div class="matchingOptionContainer"
 				data-ng-repeat="Option in node.qtiModel.Options track by $index">
+				<div ng-show="answerAreaOnLeftSide" class="answerAreaForMF pull-left">__________</div>
 				<div class="columnA_container">
 					<div data-ng-bind="getQuestionIndex($index)"
 						class="optionCharIndex"></div>
