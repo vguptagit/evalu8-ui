@@ -102,11 +102,11 @@ angular
 						'WizardHandler',
 						'$modalInstance',
 						'blockUI',
-						'step','source','parentScope','CommonService',
+						'step','source','parentScope','CommonService','SharedTabService',
 						function($scope, $rootScope, $location, $routeParams,
 								$http, UserService, BookService,
 								DisciplineService, UserQuestionsService, WizardHandler,
-								$modalInstance, blockUI, step, source,parentScope,CommonService) {
+								$modalInstance, blockUI, step, source,parentScope,CommonService,SharedTabService) {
 							
 							parentScope.isAddQstBankClicked=false;
 							parentScope.isClicked=false;
@@ -652,6 +652,17 @@ angular
                                         	
                                         	if(source && source == "questionBankTab") {
                                         		$rootScope.$broadcast("SaveSettings");
+                                        	}else{
+                                        		UserService.saveUserQuestionMetadata($scope.questionMetadata.userSelected, function(success) {
+                                       			 if(success) {
+                                       				 SharedTabService.userQuestionSettings=$scope.questionMetadata.userSelected;
+                                       				 
+                                       				 $rootScope.$broadcast("SaveSettings");
+                                       				 
+                                       				 $modalInstance.close();				 
+                                       			 }
+                                       		 });
+                                        		
                                         	}
                                         	
                                         	$modalInstance.close();
