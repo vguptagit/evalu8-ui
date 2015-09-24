@@ -9,7 +9,7 @@
 				ng-show="showWaiting"></i>
 		</div>
 		<div class="modal-body row">
-			<div class="col-sm-6 col-md-6 col-lg-6">
+			<div class="col-sm-6 col-md-6 col-lg-6 margin-top-5">
 				<div class="bold">Student answers area</div>
 			</div>
 			<div class="col-sm-6 col-md-6 col-lg-6">
@@ -21,6 +21,15 @@
 						id="ContactMethod_0" value="radio" checked=""> <span>{{answerArea.text}}</span>
 					</label>
 				</div>
+			</div>
+			<div class="col-sm-6 col-md-6 col-lg-6 margin-top-22">
+				<div class="bold">Labels</div>
+			</div>
+			<div class="col-sm-6 col-md-6 col-lg-6 margin-top-20">
+				<label> <input type="checkbox"
+					data-ng-model="isIncludeStudentName"> Add student name
+					label &amp; space
+				</label>
 			</div>
 			<div class="infoPrint">
 				<label><i class="fa fa-info-circle blueColor"></i><span>For
@@ -59,7 +68,7 @@
 			<div id="testPreviewContainer">
 				<div id="qstnArea" class="qstnAreaPrint testPreviewContainer">
 					<h5>{{test.title}}</h5>
-					<h5>Name:</h5>
+					<h5 id="includeStudentName" ng-show="isIncludeStudentName">Name:</h5>
 					<div id="tree2-root">
 
 						<ul id="QuestArea" class="print-view-questions"
@@ -73,11 +82,14 @@
 								ng-include="'qti_player_question_renderer_1.html'"></li>
 						</ul>
 					</div>
-					<div id="answerSpaceLastPage" class="margin-top-100 margin-lft-20 pagebreak"
+					<div id="answerSpaceLastPage"
+						class="margin-top-100 margin-lft-20 pagebreak"
 						ng-show="answerAreaOnLastPage">
-						<div class="margin-top-15" ng-repeat="node in test.masterQuestions">
-							<div class="pull-left" >{{$index+1}}.</div>
-							<div ng-show="'{{node.quizType}}'!='Essay'" id="{{node.quizType}}" class="pull-left margin-lft-10">__________</div>
+						<div class="margin-top-15"
+							ng-repeat="node in test.masterQuestions">
+							<div class="pull-left">{{$index+1}}.</div>
+							<div ng-show="'{{node.quizType}}'!='Essay'"
+								id="{{node.quizType}}" class="pull-left margin-lft-10">__________</div>
 							<br>
 						</div>
 					</div>

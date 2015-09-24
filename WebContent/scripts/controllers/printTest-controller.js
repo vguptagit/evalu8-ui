@@ -15,6 +15,7 @@ angular.module('e8MyTests')
 		     $scope.answerAreaBetweenQuestions=false;
 		     $scope.answerAreaOnLeftSide=false;
 		     $scope.answerAreaOnLastPage=false;
+		     $scope.isIncludeStudentName=false;
 		     
 		     $scope.cancel = function () {
 		         parentScope.tests[parentScope.currentIndex].isBtnClicked = false;
@@ -41,6 +42,10 @@ angular.module('e8MyTests')
 		        	 $(elementToPrint).find("#answerSpace").remove();
 		             $(elementToPrint).find("[ng-show='answerAreaOnLeftSide']").remove();
 		         }
+		         
+		         if(!$scope.isIncludeStudentName)
+		        	 $(elementToPrint).find("#includeStudentName").remove();
+		        	 
 		         $(elementToPrint).print();
 		     };
 		     
@@ -54,6 +59,8 @@ angular.module('e8MyTests')
 		             $scope.selectedAnswerArea = $scope.answerAreas[2];
 		         if (printSettings.includeAreaForStudentResponse == $scope.answerAreas[3].value)
 		             $scope.selectedAnswerArea = $scope.answerAreas[3];
+		         $scope.isIncludeStudentName = printSettings.includeStudentName;
+		         
 		         $scope.answerAreaChange();
 		     });
 		     
