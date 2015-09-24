@@ -522,8 +522,9 @@ angular.module('e8MyTests')
 	        		$('.testMessagetip').hide();
 	        	}, 5000);
         	}
-
-            SharedTabService.showSelectedTestTab(test.node);
+            if(test.node.nodeType != EnumService.NODE_TYPE.archiveFolder && test.node.nodeType != EnumService.NODE_TYPE.archiveTest ){
+            	SharedTabService.showSelectedTestTab(test.node);
+            }
         }
 
         //to disable the edit icon once it clicked  
