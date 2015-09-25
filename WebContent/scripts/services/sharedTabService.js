@@ -164,6 +164,7 @@ angular.module('evalu8Demo')
 		         newCriteria.numberOfQuestionsSelected = sharedTabService.setDefault_numberOfQuestionsSelected(response.length);
 		         newCriteria.questiontypes = getQuestionTypesPresent(response);
 		         newCriteria.selectedQuestiontypes = getQuestionTypesPresent(response);
+		         newCriteria.defaultQuestiontypes = getQuestionTypesPresent(response);
 		         newCriteria.scope = scope;
 		         newCriteria.metadata = response;
 		         newCriteria.treeNode = currentNode;
@@ -629,7 +630,7 @@ angular.module('evalu8Demo')
 		    	 var criterias = sharedTabService.tests[scope.currentIndex].criterias;
 		    	 for (var i = 1; i < criterias.length; i++) {
 		    		 criterias[i].numberOfQuestionsSelected = criterias[0].numberOfQuestionsSelected;
-		    		 criterias[i].numberOfQuestionsEntered = criterias[0].numberOfQuestionsEntered;
+		    		 criterias[i].numberOfQuestionsEntered = criterias[0].numberOfQuestionsEntered;		    		
 		    		 criterias[i].selectedQuestiontypes.splice(0,criterias[i].selectedQuestiontypes.length);// = criterias[0].selectedQuestiontypes;
 		    		 for ( var questionType in criterias[0].selectedQuestiontypes) {
 		    			 if(criterias[i].questiontypes.indexOf(criterias[0].selectedQuestiontypes[questionType]) != -1)
@@ -661,7 +662,8 @@ angular.module('evalu8Demo')
 		    	 for (var i = 1; i < criterias.length; i++) {
 		    		 criterias[i].numberOfQuestionsEntered = null;
 		    		 criterias[i].numberOfQuestionsSelected = sharedTabService.setDefault_numberOfQuestionsSelected(criterias[i].totalQuestions);
-		    		 criterias[i].selectedQuestiontypes.splice(0,criterias[i].selectedQuestiontypes.length);// = criterias[0].selectedQuestiontypes;
+		    		 var defaultQuestiontypes = angular.copy(criterias[i].defaultQuestiontypes);
+		    		 criterias[i].selectedQuestiontypes = defaultQuestiontypes;// = criterias[0].selectedQuestiontypes;
 				}
 		     }
 		     
