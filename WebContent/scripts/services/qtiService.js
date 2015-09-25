@@ -169,8 +169,8 @@ angular.module('evalu8Demo')
 
 			var getEssayRecommendedAnswer = function(xml) {	
 				var recommendedAnswer;
-				recommendedAnswer =  getSerializedXML($(xml).find('responseDeclaration').find('correctResponse value'));
-				return recommendedAnswer;
+				recommendedAnswer =  getSerializedXML($(xml).find('responseDeclaration').find('correctResponse value'));				
+				return $(recommendedAnswer).html();
 			}
 
 			var jsonReplaceUL = function(content) {
