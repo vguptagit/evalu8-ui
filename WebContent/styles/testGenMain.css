@@ -1154,7 +1154,7 @@ ol {
 /*test wizard*/
 .test-wizard-container {
     position: absolute;
-    top: 240px;
+    top: 250px;
     bottom: 0px;
     right: 0px;
     left: 0px;
@@ -1163,6 +1163,7 @@ ol {
 	width: 99%;
 	min-height: 185px;
 	margin-left: 10px;
+    margin-bottom: 5px;
 	display: inline-block;
 	padding-left: 15px;
 	overflow-x: hidden;
