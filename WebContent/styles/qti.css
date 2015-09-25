@@ -22,8 +22,8 @@
 
 .defaultPrintCorrectAnswer{
 	  float: left;
-  display: inline-block;
-  width: 18px;
+      display: inline-block;
+      width: 22px;
 }
 
 .printCorrectAnswer {

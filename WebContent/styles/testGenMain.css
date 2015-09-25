@@ -567,10 +567,11 @@ html, body {
     display:none;
 }
 .print-preview .tf_printQuestionCaption, .print-preview .printQuestionCaption{
-    margin-top: -19px;
-    
-word-break: break-all;
+    margin-top: -19px;    
+	/* word-break: break-all; */
     word-break: break-word;
+    word-break: inherit;
+    word-wrap: break-word;
 }
 .blueColor{
     color:#006EFF;
