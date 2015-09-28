@@ -67,10 +67,9 @@
 				ng-show="showWaiting"></i>
 			<div id="testPreviewContainer">
 				<div id="qstnArea" class="qstnAreaPrint testPreviewContainer">
-					<h5>{{test.title}}</h5>
-					<h5 id="includeStudentName" ng-show="isIncludeStudentName">Name:</h5>
 					<div id="tree2-root">
-
+						<h5>{{test.title}}</h5>
+						<h5 id="includeStudentName" ng-show="isIncludeStudentName">Name:</h5>
 						<ul id="QuestArea" class="print-view-questions"
 							ng-model="test.masterQuestions">
 							<li quiztype={{node.quizType}}
@@ -85,7 +84,7 @@
 					<div id="answerSpaceLastPage"
 						class="margin-top-100 margin-lft-20 pagebreak"
 						ng-show="answerAreaOnLastPage">
-						<div class="margin-top-15"
+						<div class="margin-top-15 pull-left width100"
 							ng-repeat="node in test.masterQuestions">
 							<div class="pull-left">{{$index+1}}.</div>
 							<div ng-show="'{{node.quizType}}'!='Essay'"
