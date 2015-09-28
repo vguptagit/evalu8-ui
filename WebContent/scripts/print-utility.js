@@ -41,41 +41,33 @@ jQuery.fn.print = function () {
     // Create a temp document DIV to hold the style tags.
     // This is the only way I could find to get the style
     // tags into IE.
-    var jStyleDiv = $("<div>").append(
-        $("link").clone()
-        );
+    var jStyleDiv = $("<div>").append($("link").clone());
 
     // Write the HTML for the document. In this, we will
     // write out the HTML of the current element.
     objDoc.open();
     objDoc.write("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
     objDoc.write("<html>");
-    objDoc.write("<body onafterprint='myFunction()'>");
     objDoc.write("<head>");
     objDoc.write("<title>");
     objDoc.write(document.title);
     objDoc.write("</title>");
     objDoc.write(jStyleDiv.html());
     objDoc.write("</head>");
+    objDoc.write("<body>");
     objDoc.write(this.html());
     objDoc.write("</body>");
     objDoc.write("</html>");
     objDoc.close();
 
     // Print the document.
-    objFrame.focus();
-    objFrame.print();
+    $(objDoc).ready(function() {
+    	objFrame.focus();
+        objFrame.print();	
+    });
+    
 
     // Have the frame remove itself in about a minute so that
     // we don't build up too many of these frames.
-    setTimeout(
-        function () {
-            jFrame.remove();
-        },
-        (60 * 1000)
-        );
-
-    function myFunction() {
-        alert("This document is now being printed");
-    }
+    setTimeout(function () {jFrame.remove();},(60 * 1000));
 }
