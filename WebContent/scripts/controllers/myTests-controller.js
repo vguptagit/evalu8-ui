@@ -500,6 +500,9 @@ angular.module('e8MyTests')
 
 		$scope.folderNameTextBoxBlur = function() {
 			
+			if ( $event.keyCode != 13 )
+                return
+                
             if(document.getElementById("txtFolderName").value.trim().length==0) {
                 $scope.showAddFolderPanel = false;
                 return; 
@@ -995,7 +998,12 @@ angular.module('e8MyTests')
             			$scope.isAddFolderClicked=true;
                         $scope.IsConfirmation = false;
                         $scope.message = "A folder already exists with this name. Please save with another name.";
-                        $modal.open(confirmObject); 
+
+                        $modal.open(confirmObject).result.then(function(ok) {
+                            if(ok) {
+                                $("#txtFolderName").focus();
+                            }
+                        });
             		}
             	});
             	
