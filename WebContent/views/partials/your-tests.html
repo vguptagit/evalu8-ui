@@ -11,7 +11,7 @@
             <div class="createNewNode" ng-show="showAddFolderPanel">
                 <input type="text" data-ng-model="folderName" id="txtFolderName" 
                 	ng-blur="folderNameTextBoxBlur()" ng-disabled="isAddFolderClicked" class="form-control"
-                       placeholder="Untitled Folder " ng-enter="addNewFolder()" />
+                       placeholder="Untitled Folder " ng-enter="addNewFolder(true)" />
             </div>
 
         </div>
