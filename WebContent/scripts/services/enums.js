@@ -26,7 +26,8 @@ angular.module('evalu8Demo')
         chapter : 'chapter',
         topic   : 'topic',
         publisherTests : 'publisherTests',
-        userQuestionFolder:'UserQuestionsFolder'
+        userQuestionFolder:'UserQuestionsFolder',
+        yourQuestionRoot: 'YourQuestionRoot'
     };
 
     this.TEST_TYPE = {

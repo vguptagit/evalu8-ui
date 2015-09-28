@@ -109,7 +109,7 @@ angular
 						            	return false;
 						            	
 						            }else {
-						            	if(destParent.node && destParent.node.type == "YourQuestionRoot"){
+						            	if(destParent.node && destParent.node.type == EnumService.NODE_TYPE.yourQuestionRoot){
 							            	
 											$rootScope.blockLeftPanel.start();
 						            		source.remove(); 
@@ -216,7 +216,7 @@ angular
 												"item" : "Your Questions (user created)",
 												"type" : "YourQuestionRoot",
 												"isCollapsed" : true,
-												"nodeType" : "YourQuestionRoot"
+												"nodeType" : EnumService.NODE_TYPE.yourQuestionRoot
 											});	
 											$scope.disciplines[0].isHttpReqCompleted = true;
 											$scope.yourQuestionsFolder = $scope.disciplines[0];
@@ -321,7 +321,7 @@ angular
                                     UserQuestionsService.saveQuestionFolder(UserQuestionsFolder, function (userFolder) {
                                         
                                         $scope.YourQuestionRoot.node.nodes.unshift(UserQuestionsFolder);
-                                        $scope.YourQuestionRoot.node.nodes[0].nodeType = "UserQuestionsFolder";
+                                        $scope.YourQuestionRoot.node.nodes[0].nodeType = EnumService.NODE_TYPE.userQuestionFolder;
                                         $scope.YourQuestionRoot.node.nodes[0].isCollapsed = true;
                                         $scope.YourQuestionRoot.node.nodes[0].guid = userFolder.guid;
                                         $scope.YourQuestionRoot.node.nodes[0].droppable = true;

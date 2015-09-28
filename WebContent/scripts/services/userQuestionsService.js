@@ -70,11 +70,9 @@ angular.module('evalu8Demo')
         this.saveQuestionFolder = function(userQuestionsFolders, callback) {    
 
             var folder = {
-            		"guid": userQuestionsFolders.guid,
-                    "parentId": userQuestionsFolders.parentId,
-                    "sequence": userQuestionsFolders.sequence,
-                    "title": userQuestionsFolders.title,
-                    "questionBindings": userQuestionsFolders.questionBindings
+                    parentId: userQuestionsFolders.parentId,
+                    sequence: userQuestionsFolders.sequence,
+                    title: userQuestionsFolders.title    
             };            
             
             $http.post(evalu8config.apiUrl + '/my/questionfolders', folder, config)
