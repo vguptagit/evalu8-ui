@@ -33,7 +33,8 @@ angular.module('e8MyTests').controller('AlertMessageController',
     };
     
     $scope.cancel = function () {
-      $modalInstance.dismiss('cancel');      
+    	$modalInstance.close(false);
+      //$modalInstance.dismiss('cancel');      
     };
     
 });

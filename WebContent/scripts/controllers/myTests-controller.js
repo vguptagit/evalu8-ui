@@ -498,6 +498,26 @@ angular.module('e8MyTests')
             node.hover = false;
         }
 
+		$scope.folderNameTextBoxBlur = function() {
+			
+            if(document.getElementById("txtFolderName").value.trim().length==0) {
+                $scope.showAddFolderPanel = false;
+                return; 
+            } else {
+                $scope.IsConfirmation = true;
+                $scope.message = "Do you want to save this folder?"; 
+        		$modal.open(confirmObject).result.then(function(ok) {
+    	    		if(ok) {
+    	    			$scope.addNewFolder();
+    	    		} else {
+                        $scope.showAddFolderPanel = false;
+                        document.getElementById("txtFolderName").value = "";
+                        return; 
+    	    		}
+        		});
+            }
+        }
+		
         // To show the Edit icon,on click of test
         // node.
         $scope.closeTip=function(){
