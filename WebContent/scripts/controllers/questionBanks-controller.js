@@ -257,8 +257,10 @@ angular
 							
 							$scope.folderNameTextBoxBlur = function() {
 								
-								if ( $event.keyCode != 13 )
-					                return
+								if($scope.enterKey == true) {
+                                    $scope.enterKey = false;
+                                    return;
+                                }
 					                
 								if(document.getElementById("txtFolderName").value.trim().length==0) {
                                     $scope.showAddFolderPanel = false;
@@ -268,7 +270,7 @@ angular
                                     $scope.message = "Do you want to save this folder?"; 
                             		$modal.open(confirmObject).result.then(function(ok) {
                         	    		if(ok) {
-                        	    			$scope.addNewFolder();
+                        	    			$scope.addNewFolder(false);
                         	    		} else {
                                             $scope.showAddFolderPanel = false;
                                             document.getElementById("txtFolderName").value = "";
@@ -279,8 +281,10 @@ angular
                             }
                            
 							
-							$scope.addNewFolder = function () {
+							$scope.addNewFolder = function (enterKey) {
                                 
+								$scope.enterKey = enterKey;
+								
                                 if(document.getElementById("txtFolderName").value.trim().length==0) { return; }
                                 var folderName = document.getElementById("txtFolderName").value.trim();
                                 document.getElementById("txtFolderName").value = "";

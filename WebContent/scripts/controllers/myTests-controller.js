@@ -500,8 +500,10 @@ angular.module('e8MyTests')
 
 		$scope.folderNameTextBoxBlur = function() {
 			
-			if ( $event.keyCode != 13 )
-                return
+			if($scope.enterKey == true) {
+                $scope.enterKey = false;
+                return;
+            }
                 
             if(document.getElementById("txtFolderName").value.trim().length==0) {
                 $scope.showAddFolderPanel = false;
@@ -511,7 +513,7 @@ angular.module('e8MyTests')
                 $scope.message = "Do you want to save this folder?"; 
         		$modal.open(confirmObject).result.then(function(ok) {
     	    		if(ok) {
-    	    			$scope.addNewFolder();
+    	    			$scope.addNewFolder(false);
     	    		} else {
                         $scope.showAddFolderPanel = false;
                         document.getElementById("txtFolderName").value = "";
@@ -980,7 +982,9 @@ angular.module('e8MyTests')
             }
         }
 
-        $scope.addNewFolder = function () {
+        $scope.addNewFolder = function (enterKey) {
+        	
+        	$scope.enterKey = enterKey;
         	
         	if($scope.folderName == null || $scope.folderName.trim().length==0) { return; }
         	
