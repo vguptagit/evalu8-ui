@@ -75,9 +75,59 @@ angular
 							$scope.$on('dragEnd', function(event, destParent,
 									source, sourceParent, sourceIndex,
 									destIndex) {
+								
+										
 								if ($scope.dragStarted) {
 									$scope.dragStarted = false;
+																			
+									var mouseOverNode = null;		
 									
+						            if($rootScope.tree)
+						            	mouseOverNode = $rootScope.tree.mouseOverNode;
+
+						            if (mouseOverNode) {
+						                $rootScope.tree = { mouseOverNode: null };
+						                mouseOverNode.hover = false;
+						            }
+
+						            if (mouseOverNode && (mouseOverNode != source)) {
+						            	
+										$rootScope.blockLeftPanel.start();
+						            	source.remove(); 
+						            	
+						            	var questionFolder = {
+						            			"questionId" : source.node.guid,
+						            			"sourceFolderId" : source.node.parentId,
+						            			"destFolderId" : mouseOverNode.node.guid
+						            	}
+						            	
+						            	UserQuestionsService.moveQuestion(questionFolder, function() {
+						            		$rootScope.blockLeftPanel.stop();
+						            	});
+						            	
+						            	
+						            	return false;
+						            	
+						            }else {
+						            	if(destParent.node && destParent.node.type == "YourQuestionRoot"){
+							            	
+											$rootScope.blockLeftPanel.start();
+						            		source.remove(); 
+							            	
+							            	var questionFolder = {
+							            			"questionId" : source.node.guid,
+							            			"sourceFolderId" : source.node.parentId,
+							            			"destFolderId" : null
+							            	}
+							            	
+							            	UserQuestionsService.moveQuestion(questionFolder, function() {
+							            		$rootScope.blockLeftPanel.stop();
+							            	});
+							            	
+							            	return false;
+										}
+						            }
+						            
 						            if(source.node.nodeType==='test' && destParent.controller === EnumService.CONTROLLERS.testCreationFrame){        
 						                source.node.showEditIcon=false;
 						                source.node.showArchiveIcon=false;
@@ -96,6 +146,20 @@ angular
 
 								}
 							});
+							
+					        $scope.treeNodeMouseEnter = function (node) {
+					            if ($scope.dragStarted && node.collapsed 
+					            		&& node.node.nodeType != EnumService.NODE_TYPE.UserQuestionsFolder) {
+					                $rootScope.tree = { mouseOverNode: node };
+					                node.hover = true;
+					            }
+					        };
+
+					        $scope.treeNodeMouseLeave = function (node) {
+
+					            $rootScope.tree = { mouseOverNode: null };
+					            node.hover = false;
+					        }
 
 							$scope.$on('beforeDrop', function(event) {
 								 if (SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode) {                                 
@@ -132,6 +196,7 @@ angular
 									userDisciplines.forEach(function(discipline) {
 										discipline["isCollapsed"]=false;
 										discipline.isHttpReqCompleted = true;
+										discipline.nodeType = "discipline";
 										BookService.userDisciplineBooks(discipline,function(userbooks){
 											userbooks.forEach(function(books) {
 												books.isCollapsed=true;
@@ -150,7 +215,8 @@ angular
 											$scope.disciplines.unshift({
 												"item" : "Your Questions (user created)",
 												"type" : "YourQuestionRoot",
-												"isCollapsed" : true	
+												"isCollapsed" : true,
+												"nodeType" : "YourQuestionRoot"
 											});	
 											$scope.disciplines[0].isHttpReqCompleted = true;
 											$scope.yourQuestionsFolder = $scope.disciplines[0];
@@ -190,8 +256,7 @@ angular
                             }
 							
 							$scope.folderNameTextBoxBlur = function() {
-								
-                                if(document.getElementById("txtFolderName").value.trim().length==0) {
+								if(document.getElementById("txtFolderName").value.trim().length==0) {
                                     $scope.showAddFolderPanel = false;
                                     return; 
                                 } else {
@@ -208,6 +273,7 @@ angular
                             		});
                                 }
                             }
+                           
 							
 							$scope.addNewFolder = function () {
                                 
@@ -255,7 +321,10 @@ angular
                                     UserQuestionsService.saveQuestionFolder(UserQuestionsFolder, function (userFolder) {
                                         
                                         $scope.YourQuestionRoot.node.nodes.unshift(UserQuestionsFolder);
+                                        $scope.YourQuestionRoot.node.nodes[0].nodeType = "UserQuestionsFolder";
                                         $scope.YourQuestionRoot.node.nodes[0].isCollapsed = true;
+                                        $scope.YourQuestionRoot.node.nodes[0].guid = userFolder.guid;
+                                        $scope.YourQuestionRoot.node.nodes[0].droppable = true;
                                         $scope.showAddFolderPanel = false;
                                     });
                                     
@@ -289,6 +358,9 @@ angular
 
 										var yourQuestions = [];
 										
+										UserQuestionsService.userQuestionsFolderRoot(function(userQuestionsFolderRoot) {
+											$scope.userQuestionsFolderRoot = userQuestionsFolderRoot;
+										});
 										discipline.node.isHttpReqCompleted = false;
 										
 										UserQuestionsService.userQuestionsFolders(function(userQuestionsFolders) {
@@ -298,6 +370,7 @@ angular
 												yourQuestionFolder.guid = userQuestionsFolder.guid;												
 												yourQuestionFolder.title = userQuestionsFolder.title;
 												yourQuestionFolder.isCollapsed = true;
+												yourQuestionFolder.parentId = userQuestionsFolder.parentId;
 												yourQuestionFolder.sequence = userQuestionsFolder.sequence;
 												yourQuestionFolder.nodeType = "UserQuestionsFolder";
 												yourQuestions.push(yourQuestionFolder);
@@ -320,6 +393,7 @@ angular
 													yourQuestion.isQuestion = true;
 													yourQuestion.questionXML = true;
 	
+													yourQuestion.parentId = $scope.userQuestionsFolderRoot.guid;
 													yourQuestion.nodeType = "question";
 													yourQuestion.questionType = "userCreatedQuestion";
 													yourQuestion.guid = userQuestion.guid;
@@ -361,6 +435,7 @@ angular
 														function(response) {
 															response.forEach(function(book) {
 																book["isCollapsed"]=true;
+																book.nodeType = "book";
 															});
 															
 															discipline.node.nodes = response;
@@ -391,42 +466,63 @@ angular
 										QTI.initialize();
 										
 										var yourQuestions = [];
-
-										UserQuestionsService.userBookQuestions(book.node.guid, function(userQuestions) {	
+										book.node.nodes = [];
+										$rootScope.blockLeftPanel.start();
+										UserQuestionsService.userBookQuestions(book.node.guid, function(userQuestions) {
+											if(userQuestions.length == 0){
+												var emptyNode = CommonService.getEmptyFolder()
+												$scope.isTopicsLoaded=true;
+												emptyNode.isHttpReqCompleted = true;
+												book.node.nodes.push(emptyNode);
+												$rootScope.blockLeftPanel.stop();
+											}else{
 											
-											userQuestions.forEach(function(userQuestion) {
-												var yourQuestion = {};
-												var displayNode = $("<div></div>");
-												QTI.BLOCKQUOTE.id = 0;
-												QTI.play(
-													userQuestion.qtixml,
-													displayNode,
-													false,
-													false,
-													userQuestion.metadata.quizType);
-												yourQuestion.isQuestion = true;
-												yourQuestion.questionXML = true;
+											try {
+												userQuestions
+														.forEach(function(
+																userQuestion) {
+															var yourQuestion = {};
+															var displayNode = $("<div></div>");
+															QTI.BLOCKQUOTE.id = 0;
+															QTI
+																	.play(
+																			userQuestion.qtixml,
+																			displayNode,
+																			false,
+																			false,
+																			userQuestion.metadata.quizType);
+															yourQuestion.isQuestion = true;
+															yourQuestion.questionXML = true;
 
-												yourQuestion.nodeType = "question";
-												yourQuestion.guid = userQuestion.guid;
-												yourQuestion.showEditQuestionIcon = false;
-												yourQuestion.isNodeSelected = false;
-												
-												addToQuestionsArray(yourQuestion);
+															yourQuestion.nodeType = "question";
+															yourQuestion.parentId = book.node.guid;
+															yourQuestion.guid = userQuestion.guid;
+															yourQuestion.showEditQuestionIcon = false;
+															yourQuestion.isNodeSelected = false;
 
-												yourQuestion.data = userQuestion.qtixml;
-												yourQuestion.quizType = userQuestion.metadata.quizType;
-												yourQuestion.extendedMetadata = userQuestion.metadata.extendedMetadata;
-												yourQuestion.textHTML = displayNode.html();
+															addToQuestionsArray(yourQuestion);
 
-												yourQuestion.template = 'qb_questions_renderer.html';
+															yourQuestion.data = userQuestion.qtixml;
+															yourQuestion.quizType = userQuestion.metadata.quizType;
+															yourQuestion.extendedMetadata = userQuestion.metadata.extendedMetadata;
+															yourQuestion.textHTML = displayNode
+																	.html();
 
-												yourQuestion.isHttpReqCompleted = true;
-												
-												yourQuestions.push(yourQuestion);
-											})
+															yourQuestion.template = 'qb_questions_renderer.html';
 
-											book.node.nodes = yourQuestions;											
+															yourQuestion.isHttpReqCompleted = true;
+
+															yourQuestions
+																	.push(yourQuestion);
+														})
+
+												book.node.nodes = yourQuestions;
+											} catch (e) {
+												console.log(e);
+											}finally{
+												$rootScope.blockLeftPanel.stop();
+											}
+										}
 										})
 									} else {
 										if(book.node.nodes){
@@ -1255,7 +1351,7 @@ angular
 														$scope.selectedNodes[i].showTestWizardIcon = false;
 														$scope.selectedNodes[i].showEditQuestionIcon = false;
 													}
-													$scope.selectedNodes=[];
+													//$scope.selectedNodes=[];
 												}
 											});
 							$scope
@@ -1352,9 +1448,9 @@ angular
 							$scope.selectedBookid="";
 							
 							$scope.selectBook = function(node) {
-								if(node.nodeType==EnumService.NODE_TYPE.userQuestionFolder){
+								/*if(node.nodeType==EnumService.NODE_TYPE.userQuestionFolder){
                                     return false;
-                                }
+                                }*/
 								var isBookSelected=false;
 								var bookIndex=0
 								var existingBookIndex=-1;
@@ -1689,6 +1785,16 @@ angular
 								$scope.showAdvancedSearch = false;
 								selectedQuestionTypesToShow=[];
 								searchedQuestionTypes=[];
+								if($scope.selectedBooks.length == 0){
+									$scope.isSimpleSearchClicked=true;
+									$scope.showWaitingForAutoComplete=false;
+									$scope.selectedContainer="";
+									$scope.selectedQuestionTypes=[];
+									$scope.IsConfirmation = false;
+									$scope.message = "Please select a question bank to search";
+									$modal.open(confirmObject);
+									return false;
+								}
 								$scope.selectedQuestionTypes.forEach(function(questionType){
 									$scope.addQuestionTypesToShow(questionType);	
 									searchedQuestionTypes.push(questionType)
