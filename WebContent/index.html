@@ -44,9 +44,6 @@
 			<div ui-view></div>
 		</div>
 	</div>
-<script>
-  window.CKEDITOR_BASEPATH = window.location.protocol + "//" + window.location.host + '/testbuilder/scripts/externals/ckeditor/';
-</script>
 	<!-- build:js({WebContent,.tmp}) scripts/vend-jq.js -->
 	<script src="../bower_components/jquery/dist/jquery.min.js"></script>
 	<script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -74,6 +71,15 @@
 	<script src="scripts/externals/angular-ui-tree.js"></script>
 	<!-- endbuild -->
 	
+	<!-- build:js({WebContent,.tmp}) scripts/main.js -->
+	<script src="scripts/app.js"></script>
+	<script src="scripts/config.js"></script>
+	<!-- endbuild -->
+	
+	<script>
+ 		 window.CKEDITOR_BASEPATH = evalu8config.uiUrl + '/scripts/externals/ckeditor/';
+	</script>
+
 	<!-- build:js({WebContent,.tmp}) scripts/qtip.js -->
 	<script src="scripts/externals/ckeditor/ckeditor.js"></script>
 	<script src="../bower_components/angular-ckeditor/angular-ckeditor.js"></script>
@@ -81,38 +87,7 @@
 	<script src="scripts/externals/qti-player.js"></script>
 	
 	<!-- endbuild -->
-	
-	<script src="scripts/externals/ckeditor/lang/en.js"></script> 
-<script src="scripts/externals/ckeditor/styles.js"></script>
- 
-<script src="scripts/externals/ckeditor/plugins/sharedspace/plugin.js"></script>
-<script src="scripts/externals/ckeditor/plugins/font/plugin.js"></script>
-<script src="scripts/externals/ckeditor/plugins/justify/plugin.js"></script>
-<script src="scripts/externals/ckeditor/plugins/colordialog/plugin.js"></script>
-<script src="scripts/externals/ckeditor/plugins/panelbutton/plugin.js"></script>
-<script src="scripts/externals/ckeditor/plugins/colorbutton/plugin.js"></script>
-<script src="scripts/externals/ckeditor/plugins/indentblock/plugin.js"></script>
-<script src="scripts/externals/ckeditor/plugins/table/plugin.js"></script>
-<script src="scripts/externals/ckeditor/plugins/tableresize/plugin.js"></script>
-<script src="scripts/externals/ckeditor/plugins/tabletools/plugin.js"></script>
-<script src="scripts/externals/ckeditor/plugins/contextmenu/plugin.js"></script>
-<script src="scripts/externals/ckeditor/plugins/menu/plugin.js"></script>
-<script src="scripts/externals/ckeditor/plugins/floatpanel/plugin.js"></script>
-<script src="scripts/externals/ckeditor/plugins/richcombo/plugin.js"></script>
-<script src="scripts/externals/ckeditor/plugins/listblock/plugin.js"></script>
-<script src="scripts/externals/ckeditor/plugins/panel/plugin.js"></script>
-
-<script src="scripts/externals/ckeditor/plugins/font/lang/en.js"></script>
-<script src="scripts/externals/ckeditor/plugins/justify/lang/en.js"></script>
-<script src="scripts/externals/ckeditor/plugins/colordialog/lang/en.js"></script>
-<script src="scripts/externals/ckeditor/plugins/colorbutton/lang/en.js"></script>
-<script src="scripts/externals/ckeditor/plugins/table/lang/en.js"></script>
-<script src="scripts/externals/ckeditor/plugins/contextmenu/lang/en.js"></script>
-	
-	<!-- build:js({WebContent,.tmp}) scripts/main.js -->
-	<script src="scripts/app.js"></script>
-	<script src="scripts/config.js"></script>
-	<!-- endbuild -->
+		
 
 	<!-- build:js({WebContent,.tmp}) scripts/controllers.js -->
 	<script src="scripts/controllers/signin-controller.js"></script>
@@ -178,5 +153,34 @@
     	piSession.initialize(evalu8config.clientId);
         piSession.monitorUserActivity(true);
     </script>
+    
+    	
+	<script src="scripts/externals/ckeditor/lang/en.js" defer></script> 
+	<script src="scripts/externals/ckeditor/styles.js" defer></script>
+	 
+	<script src="scripts/externals/ckeditor/plugins/sharedspace/plugin.js" defer ></script>
+	<script src="scripts/externals/ckeditor/plugins/font/plugin.js" defer ></script>
+	<script src="scripts/externals/ckeditor/plugins/justify/plugin.js" defer ></script>
+	<script src="scripts/externals/ckeditor/plugins/colordialog/plugin.js" defer ></script>
+	<script src="scripts/externals/ckeditor/plugins/panelbutton/plugin.js" defer ></script>
+	<script src="scripts/externals/ckeditor/plugins/colorbutton/plugin.js" defer ></script>
+	<script src="scripts/externals/ckeditor/plugins/indentblock/plugin.js" defer ></script>
+	<script src="scripts/externals/ckeditor/plugins/table/plugin.js" defer ></script>
+	<script src="scripts/externals/ckeditor/plugins/tableresize/plugin.js" defer ></script>
+	<script src="scripts/externals/ckeditor/plugins/tabletools/plugin.js" defer ></script>
+	<script src="scripts/externals/ckeditor/plugins/contextmenu/plugin.js" defer ></script>
+	<script src="scripts/externals/ckeditor/plugins/menu/plugin.js" defer ></script>
+	<script src="scripts/externals/ckeditor/plugins/floatpanel/plugin.js" defer ></script>
+	<script src="scripts/externals/ckeditor/plugins/richcombo/plugin.js" defer ></script>
+	<script src="scripts/externals/ckeditor/plugins/listblock/plugin.js" defer ></script>
+	<script src="scripts/externals/ckeditor/plugins/panel/plugin.js" defer ></script>
+	
+	<script src="scripts/externals/ckeditor/plugins/font/lang/en.js" defer ></script>
+	<script src="scripts/externals/ckeditor/plugins/justify/lang/en.js" defer ></script>
+	<script src="scripts/externals/ckeditor/plugins/colordialog/lang/en.js" defer ></script>
+	<script src="scripts/externals/ckeditor/plugins/colorbutton/lang/en.js" defer ></script>
+	<script src="scripts/externals/ckeditor/plugins/table/lang/en.js" defer ></script>
+	<script src="scripts/externals/ckeditor/plugins/contextmenu/lang/en.js" defer ></script>
+
 </body>
 </html>
