@@ -157,9 +157,7 @@ angular
 								
 								var qstnHtml = selectedQstnNode.node.textHTML;
 								this.showQstnEditIcon = !this.showQstnEditIcon;
-								this.closeQstnBtn = !this.closeQstnBtn;
-								selectedQstnNode.node.qstnLinkText = selectedQstnNode.node.IsEditView ? "Edit"
-										: "View";
+								this.closeQstnBtn = !this.closeQstnBtn;								
 								selectedQstnNode.node.qstnLinkTitle = selectedQstnNode.node.IsEditView ? "View Question in edit mode"
 										: " View Question in print mode";
 								if (selectedQstnNode.node.IsEditView) {
@@ -967,14 +965,23 @@ angular
 					            $scope.isApplySameCriteriaToAll = false;
 					        }
 					        $scope.closeQuestions = function (tab,index) {
-					        	 var p = $(
-	                                        angular.element(document
-	                                                .querySelector("#uploadImage")))
-	                                        .detach();
-	                                
-	                                $('#qstnArea').after(p);
-	                                $scope.imageClicked = false;
-					            SharedTabService.closeQuestions(tab, $scope, index);					           
+					        	
+					        	$scope.IsConfirmation = true;
+								$scope.message = "Are you sure you want to delete this Question?";
+								$modal.open(confirmObject).result
+								.then(function(ok) {
+									if (ok) {
+										 var p = $(
+			                                        angular.element(document
+			                                                .querySelector("#uploadImage")))
+			                                        .detach();
+			                                
+			                                $('#qstnArea').after(p);
+			                                $scope.imageClicked = false;
+							            SharedTabService.closeQuestions(tab, $scope, index);	
+									}
+								});
+					        					           
 					        }
 					        $scope.closeTabWithConfirmation = function ($event,tab) {
 								SharedTabService.closeTabWithConfirmation(tab, $scope);
@@ -1186,7 +1193,7 @@ angular
 													sourceTabName) {
 											    try {
 											        var newNode = angular.copy(node);
-
+											        newNode.questionSelected = false;
 											        if (sourceTabName == "CustomQuestions") {
 											            SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode = true;
 											        }
@@ -1243,11 +1250,7 @@ angular
 											            newNode.EssayPageSize = newNode.qstnMasterData.EssayPageSize;
 											            newNode.BlankSize = newNode.qstnMasterData.BlankSize;
 											        }
-
-											        newNode.qstnLinkText = newNode.IsEditView ? "View"
-                                                            : "Edit";
-
-
+										       
 											        var nodeAlreadyExist = false;
 											        if (tests.length == 0) {
 											            tests.push(newNode);
@@ -1265,6 +1268,7 @@ angular
 											            if (!nodeAlreadyExist) {
 											                tests.splice(destIndex,0, newNode);
 											                $('div#qstnArea').scrollTop(0);
+											                
 											            }
 											        }
 											        $scope.tests[$scope.currentIndex].questions = tests;
@@ -1356,9 +1360,7 @@ angular
 	                                            
 	                                            displayNode.textHTML = qtiDisplayNode.html();
 	                                            
-	                                            displayNode.IsEditView = false;
-	                                            displayNode.qstnLinkText = displayNode.IsEditView ? "View"
-	                                                    : "Edit";
+	                                            displayNode.IsEditView = false;	                                         
 	                                            displayNode.extendedMetadata =  question.metadata.extendedMetadata;
 	                                            displayNode.questionMetadata = userSettings.questionMetadata;    
 	                                            
@@ -1441,8 +1443,7 @@ angular
 															displayNode.textHTML = qtiDisplayNode.html();
 															
 															displayNode.IsEditView = false;
-															displayNode.qstnLinkText = displayNode.IsEditView ? "View"
-																	: "Edit";
+															
 															displayNode.extendedMetadata =  questionMetadataResponse.extendedMetadata;
 															displayNode.questionMetadata = userSettings.questionMetadata;	
 															
@@ -2346,8 +2347,7 @@ angular
 													displayNode.textHTML = displayNodes.html();
 													
 													displayNode.IsEditView = false;
-													displayNode.qstnLinkText = displayNode.IsEditView ? "View"
-															: "Edit";
+													
 													displayNode.data = 	response;
 													displayNode.quizType = 	question.quizType;
 													
@@ -2591,7 +2591,6 @@ angular
 								}    
 								
 								qstn.IsEditView = false;								
-								qstn.qstnLinkText = qstn.IsEditView ? "View": "Edit";
 								
 								if(qstn.qstnTemplate){
                                     qstn.qstnTemplate = false;

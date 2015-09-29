@@ -1,12 +1,9 @@
 <div ng-show="answerAreaOnLeftSide" class="margin-top-10 pull-left width12"></div>
 <div class="pull-left" ng-class="answerAreaOnLeftSide?'questionContainerWithAnswerArea':'questionContainer'">
 	<div data-ng-if="!node.IsEditView" class="qtiPrintView" ng-mousedown="selectQuestion(node);">
-		<div class="printEditLink" ng-show="showQstnEditIcon">
-			<button class="glyphicon glyphicon-remove printQuestionDeleteIcon"
-				data-ng-show="!node.IsEditView"
-				data-ng-click="closeQuestions(tests[currentIndex],$index)">
-			</button>
-			<a id="switchLink" class="qstnViewLink" data-ng-click="toggleEdit(node)">{{node.qstnLinkText}}</a>
+		<div class="printViewLinks" ng-show="showQstnEditIcon" >		
+				<a id="switchLink" class="qstnLinks"  data-ng-click="toggleEdit(node)">Edit</a>
+				<a class="qstnLinks qstnDeleteLinks" data-ng-click="closeQuestions(tests[currentIndex],$index)">Delete</a>
 		</div>
 		 <div class="questionPrintContainer">{{$index +1}})
 			<div class="printQuestionCaption"
@@ -32,16 +29,9 @@
 
 
 	<div data-ng-if="node.IsEditView">
-		<div class="divLink">
-			<a id="switchLink" class="qstnViewLink" data-ng-click="toggleEdit(node)">{{node.qstnLinkText}}</a>
-			<div class="questionDeleteContainer">
-				<button type="button" class="close editQuestionDeleteIcon"
-					data-ng-show="node.IsEditView"
-					data-ng-click="closeQuestions(tests[currentIndex],$index)"
-					aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
+		<div class="editViewLinks" >	
+			<a id="switchLink" class="qstnLinks" data-ng-click="toggleEdit(node)">Save</a>
+			<a class="qstnLinks qstnDeleteLinks" data-ng-click="closeQuestions(tests[currentIndex],$index)">Delete</a>			
 		</div>
 		<div class='questionSectionTitle'>{{node.qtiModel.QstnSectionTitle}}</div>
 		<div>{{$index + 1}})</div>

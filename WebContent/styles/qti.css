@@ -684,3 +684,22 @@ body .cke_dialog_background_cover{
 	margin-left: -100px;	
 }
 
+
+.printViewLinks{
+	float: right;	
+}
+
+.qstnLinks{	
+	font-weight:bold ;	
+}
+
+.qstnDeleteLinks{	
+	margin-left: 6px;	
+}
+
+.editViewLinks{
+	cursor:pointer;
+    float: right;
+    margin-right: -14px;
+    margin-top: -10px;
+}

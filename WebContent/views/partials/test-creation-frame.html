@@ -328,8 +328,8 @@
 				<li draggable="{{!node.IsEditView}}" quiztype={{node.quizType}}
 					class="questIndex displayQuestionLI"
 					printmode="{{!node.IsEditView}}"
-					templateqstn="{{node.templateQstn}}" ng-mouseover="hoverIn(this)"
-					ng-mouseleave="hoverOut()" optionsview="{{node.optionsView}}"
+					ng-mouseover="hoverIn(this)"
+					ng-mouseleave="hoverOut()" 
 					ng-class="{testQuestionSelected:node.isNodeSelected , twoDigitIndex: $index + 1 > 9 ,threedigitIndex: $index + 1 > 99, fourDigitIndex: $index + 1 > 999}"
 					ng-repeat="node in tests[currentIndex].questions" ui-tree-node
 					ng-include="'qti_player_question_renderer.html'"></li>
@@ -338,7 +338,7 @@
 
 		<script type="text/ng-template" id="qti_player_question_renderer.html">			
 			<div class="qtiQuestionContainer">
-			<div mode="node.IsEditView">
+			<div>
 				<qti-Player></qti-Player>
 			</div>
 			<div ng-show="node.IsEditView" >
