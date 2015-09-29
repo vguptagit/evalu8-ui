@@ -79,7 +79,7 @@ angular
 										
 								if ($scope.dragStarted) {
 									$scope.dragStarted = false;
-																			
+									
 									var mouseOverNode = null;		
 									
 						            if($rootScope.tree)
@@ -109,15 +109,34 @@ angular
 						            	return false;
 						            	
 						            }else {
+						            	
+						            	if(sourceParent == destParent){
+											return false;
+										}
 						            	if(destParent.node && destParent.node.type == EnumService.NODE_TYPE.yourQuestionRoot){
 							            	
+											$rootScope.blockLeftPanel.start();
+						            		source.remove();
+						            		
+							            	var questionFolder = {
+							            			"questionId" : source.node.guid,
+							            			"sourceFolderId" : source.node.parentId,
+							            			"destFolderId" : null
+							            	}
+							            	
+							            	UserQuestionsService.moveQuestion(questionFolder, function() {
+							            		$rootScope.blockLeftPanel.stop();
+							            	});
+							            	
+							            	return false;
+										}else if(destParent.node && destParent.node.nodeType == EnumService.NODE_TYPE.userQuestionFolder){
 											$rootScope.blockLeftPanel.start();
 						            		source.remove(); 
 							            	
 							            	var questionFolder = {
 							            			"questionId" : source.node.guid,
 							            			"sourceFolderId" : source.node.parentId,
-							            			"destFolderId" : null
+							            			"destFolderId" : destParent.node.guid
 							            	}
 							            	
 							            	UserQuestionsService.moveQuestion(questionFolder, function() {
@@ -1920,6 +1939,7 @@ angular
 								$scope.selectedQuestionTypes=[];
 								$scope.isAdvancedSearchMode = false;
 								$scope.isSearchMode = false;
+								$scope.showAddFolderLink = false;
 								$scope.selectedQuestionTypesToShow=[];
 								$scope.selectedBooks=[];
 								selectedQuestionTypesToShow=[];
