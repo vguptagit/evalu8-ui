@@ -1099,12 +1099,12 @@ angular.module('e8MyTests')
                 if (containerFolder) {
                     test.parentId = containerFolder.guid;
                     test.selectTestNode = true;
-                    if (parentFolderNodes) {
+                    if (parentFolderNodes.length > 0) {
                     	if(parentFolderNodes[0].nodeType == EnumService.NODE_TYPE.emptyFolder) {
                     		parentFolderNodes.shift();
                     	}
-                        parentFolderNodes.push(test);
                     }
+                    parentFolderNodes.push(test);
                 }
                 else {
                     test.parentId = null;

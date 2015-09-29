@@ -1541,6 +1541,9 @@ angular
 							}
 
 							$scope.validateSearch = function(){
+								if($scope.showAddFolderPanel) {
+	                                   return;
+	                               }
 								if($scope.selectedBooks.length == 0){
 									$scope.isSimpleSearchClicked=true;
 									$scope.showWaitingForAutoComplete=false;
