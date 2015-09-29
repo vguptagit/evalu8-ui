@@ -24,7 +24,7 @@ angular.module('e8MyTests')
 		     $scope.printTest = function () {
 		         parentScope.tests[parentScope.currentIndex].isBtnClicked = false;
 		         var elementToPrint=$('.testPreviewContainer').clone();
-		         $(elementToPrint).find(".printEditLink").remove();
+		         $(elementToPrint).find(".printViewLinks").remove();
 		         $(elementToPrint).find("#Essay").remove();	
 		         $(elementToPrint).find("[class$='defaultPrintCorrectAnswer']" ).remove();
 		         
@@ -50,19 +50,6 @@ angular.module('e8MyTests')
 		     };
 		     
 		     $scope.selectedAnswerArea = $scope.answerAreas[0];
-		     UserService.userPrintSettings(function (printSettings) {
-		         if (printSettings.includeAreaForStudentResponse == $scope.answerAreas[0].value)
-		             $scope.selectedAnswerArea = $scope.answerAreas[0];
-		         if (printSettings.includeAreaForStudentResponse == $scope.answerAreas[1].value)
-		             $scope.selectedAnswerArea = $scope.answerAreas[1];
-		         if (printSettings.includeAreaForStudentResponse == $scope.answerAreas[2].value)
-		             $scope.selectedAnswerArea = $scope.answerAreas[2];
-		         if (printSettings.includeAreaForStudentResponse == $scope.answerAreas[3].value)
-		             $scope.selectedAnswerArea = $scope.answerAreas[3];
-		         $scope.isIncludeStudentName = printSettings.includeStudentName;
-		         
-		         $scope.answerAreaChange();
-		     });
 		     
 		     $scope.answerAreaChange = function () {
 		    	 if ($scope.selectedAnswerArea.value == $scope.answerAreas[0].value){
