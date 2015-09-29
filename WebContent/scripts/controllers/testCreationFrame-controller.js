@@ -1190,10 +1190,10 @@ angular
 									.$on(
 											'dropQuestion',
 											function(event, node, destIndex,
-													sourceTabName) {
+													sourceTabName, editType) {
 											    try {
 											        var newNode = angular.copy(node);
-											        newNode.questionSelected = false;
+											        newNode.isNodeSelected=false;
 											        if (sourceTabName == "CustomQuestions") {
 											            SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode = true;
 											        }
@@ -1267,7 +1267,9 @@ angular
 
 											            if (!nodeAlreadyExist) {
 											                tests.splice(destIndex,0, newNode);
+											                if(editType == "clickEdit"){
 											                $('div#qstnArea').scrollTop(0);
+											                }
 											                
 											            }
 											        }

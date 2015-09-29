@@ -160,7 +160,7 @@ angular
 									if (SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
 									    $scope.createTestWizardCriteria(source)
 									} else {
-									    $scope.editQuestion(source.node, destIndex);
+									    $scope.editQuestion(source.node, destIndex, "drag");
 									}
 
 								}
@@ -1207,8 +1207,12 @@ angular
 
 							var isChildNodeUsed=false;
 							
-							$scope.editQuestion = function (scope, destIndex) {		
+							$scope.editQuestion = function (scope, destIndex, editType) {		
 								$scope.editQuestionMode=true;
+								
+								if(editType ==null || editType =='' || editType == undefined){
+									editType = "clickEdit";
+								}
 								if (SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
 									$rootScope.$broadcast('handleBroadcast_AddNewTab');
 								}
@@ -1244,16 +1248,16 @@ angular
 									$scope.message = "This chapter includes the topic(s) that you have already added to the test. If you want to add the entire chapter, please click OK";
 									$modal.open(confirmObject).result.then(function(ok) {
 										if(ok) {
-											$scope.addQuestionsToTestTab(test, destIndex);
+											$scope.addQuestionsToTestTab(test, destIndex, editType);
 										}
 									});
 								}else{
 								    SharedTabService.errorMessages = [];
-								    $scope.addQuestionsToTestTab(test, destIndex);								     
+								    $scope.addQuestionsToTestTab(test, destIndex, editType);								     
 								}
 							}
 							
-							$scope.addQuestionsToTestTab = function (test, destIndex) {
+							$scope.addQuestionsToTestTab = function (test, destIndex, editType) {
 							    var httpReqCount = 0,
                                     httpReqCompletedCount = 0;
 								for (var i = 0; i < $scope.selectedNodes.length; i++) {
@@ -1273,7 +1277,7 @@ angular
                                             }else{               
                                                 $rootScope.blockPage.start();
                                             	$scope.selectedNodes[i].showEditQuestionIcon = false;
-                                                $rootScope.$broadcast("dropQuestion",$scope.selectedNodes[i], destIndex);
+                                                $rootScope.$broadcast("dropQuestion",$scope.selectedNodes[i], destIndex,"QuestionBank", editType);
                                             }    
 
 										} else if ($scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.chapter

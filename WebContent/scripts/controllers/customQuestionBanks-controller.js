@@ -31,7 +31,7 @@ angular.module('e8CustomQuestionBanks')
 				$scope.dragStarted = false;
 			}else{				
 				$rootScope.$broadcast("dropQuestion",
-						question.node, 0,"CustomQuestions");				
+						question.node, 0,"CustomQuestions","clickEdit");				
 			}	
 	  }
 
@@ -83,7 +83,7 @@ angular.module('e8CustomQuestionBanks')
     		   return;
      	if($scope.dragStarted) {
     		$scope.dragStarted = false;    		
-    		$rootScope.$broadcast("dropQuestion", source.node,  destIndex, "CustomQuestions");
+    		$rootScope.$broadcast("dropQuestion", source.node,  destIndex, "CustomQuestions","drag");
      	}
      });
 
