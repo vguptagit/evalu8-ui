@@ -1190,7 +1190,7 @@ angular
 									.$on(
 											'dropQuestion',
 											function(event, node, destIndex,
-													sourceTabName, editType) {
+													sourceTabName, eventType) {
 											    try {
 											        var newNode = angular.copy(node);
 											        newNode.isNodeSelected=false;
@@ -1267,7 +1267,7 @@ angular
 
 											            if (!nodeAlreadyExist) {
 											                tests.splice(destIndex,0, newNode);
-											                if(editType == "clickEdit"){
+											                if(eventType == "clickEvnt"){
 											                $('div#qstnArea').scrollTop(0);
 											                }
 											                
