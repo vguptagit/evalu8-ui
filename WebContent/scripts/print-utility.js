@@ -41,7 +41,10 @@ jQuery.fn.print = function () {
     // Create a temp document DIV to hold the style tags.
     // This is the only way I could find to get the style
     // tags into IE.
-    var jStyleDiv = $("<div>").append($("link").clone());
+    var jStyleDiv = $("<div>")
+    					.append($("link[href*='testGenMain.css']").clone())
+    					.append($("link[href*='styles/style.css']").clone())
+    					.append($("link[href*='qti.css']").clone());
 
     // Write the HTML for the document. In this, we will
     // write out the HTML of the current element.

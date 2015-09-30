@@ -84,11 +84,11 @@
 					<div id="answerSpaceLastPage"
 						class="margin-top-100 margin-lft-20 pagebreak"
 						ng-show="answerAreaOnLastPage">
-						<div class="margin-top-15 pull-left width100"
+						<div class="margin-top-15 floatLeftImp width100"
 							ng-repeat="node in test.masterQuestions">
-							<div class="pull-left">{{$index+1}}.</div>
+							<div class="floatLeftImp">{{$index+1}}.</div>
 							<div ng-show="'{{node.quizType}}'!='Essay'"
-								id="{{node.quizType}}" class="pull-left margin-lft-10">__________</div>
+								id="{{node.quizType}}" class="floatLeftImp margin-lft-10">__________</div>
 							<br>
 						</div>
 					</div>
