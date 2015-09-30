@@ -125,16 +125,13 @@
 			<span class="glyphicon wizardBlack" aria-hidden="true"></span> Welcome
 			to Pearson Test Builder Test Wizard
 		</p>
-		<p>Pearson Test Builder will create a test from the topics and
-			criteria you pick</p>
-		<p ng-show="tests[currentIndex].criterias.length == 0">1. Select
-			topic(s) or chapter(s) in the question bank on the left and drag here
-			or click the Wizard wand icon on the topic.</p>
+		<p>Pearson Test Builder will create a test from the topics/chapters and criteria you select. </p>
+		<p ng-show="tests[currentIndex].criterias.length == 0">1. Select chapters, topics or folders of questions NOT individual questions.</p>
 		<div ng-show="tests[currentIndex].criterias.length != 0">
 			<ol>
 				<li>1. Enter test title</li>
-				<li>2. Select criteria for each selected bank</li>
-				<li>3. Select Create Test button</li>
+				<li>2. Select criteria for each selected topic</li>
+				<li>3. Choose Create Test</li>
 			</ol>
 		</div>
 	</div>
