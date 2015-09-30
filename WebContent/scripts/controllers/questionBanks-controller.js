@@ -732,21 +732,30 @@ angular
 								}else{
 									node=currentNode.guid;
 								}
-									
-							    //TODO : need to move this is services.	
-								$http.get(evalu8config.apiUrl + "/books/" + currentNode.bookid + "/nodes/" + node + "/questions?flat=1", config)
-								.success(function (response) {
-								    callBack(response, currentNode)
-								})
-								.error(
-										function () {
-										    SharedTabService.addErrorMessage(currentNode.title, SharedTabService.errorMessageEnum.NoQuestionsAvailable);
-										    //callBack()
-										    currentNode.showTestWizardIcon = true;
-										    currentNode.showEditQuestionIcon = true;
-										    $scope.selectNode(currentNode);
-										    $rootScope.blockPage.stop();
-								});
+								if (currentNode.nodeType === EnumService.NODE_TYPE.userQuestionFolder) {
+								    UserQuestionsService.userBookQuestions(currentNode.guid, function (userQuestions) {
+								        var responceMetadatas = [];
+								        for (var i = 0; i < userQuestions.length; i++) {
+								            responceMetadatas.push(userQuestions[i].metadata);
+								        }
+								        callBack(responceMetadatas, currentNode)
+								    })
+								} else {
+								    //TODO : need to move this is services.	
+								    $http.get(evalu8config.apiUrl + "/books/" + currentNode.bookid + "/nodes/" + node + "/questions?flat=1", config)
+                                    .success(function (response) {
+                                        callBack(response, currentNode)
+                                    })
+                                    .error(
+                                            function () {
+                                                SharedTabService.addErrorMessage(currentNode.title, SharedTabService.errorMessageEnum.NoQuestionsAvailable);
+                                                //callBack()
+                                                currentNode.showTestWizardIcon = true;
+                                                currentNode.showEditQuestionIcon = true;
+                                                $scope.selectNode(currentNode);
+                                                $rootScope.blockPage.stop();
+                                            });
+								}
 							}
 
 

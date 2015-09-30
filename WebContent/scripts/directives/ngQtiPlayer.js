@@ -452,14 +452,18 @@ angular.module('e8MyTests')
 
 			}
 
-			$scope.getPrintModeFbCaption = function(fbCaption){
-				var htmlText = fbCaption.trim().replace(/&nbsp;/, " ");
-				var element = $('<p></p>');
-				$(element).append(htmlText);
-				element.find("button").each(	function(i, obj) {
-					$(obj).replaceWith("<span class='blank'> _____________________ </span>");
-				});			
-				return $sce.trustAsHtml( element[0].innerHTML);			
+			$scope.getPrintModeFbCaption = function (fbCaption) {
+			    try {
+				    var htmlText = fbCaption.trim().replace(/&nbsp;/, " ");
+				    var element = $('<p></p>');
+				    $(element).append(htmlText);
+				    element.find("button").each(	function(i, obj) {
+					    $(obj).replaceWith("<span class='blank'> _____________________ </span>");
+				    });			
+				    return $sce.trustAsHtml( element[0].innerHTML);			
+			    } catch (e) {
+
+			    }
 			}
 
 			$scope.getFbAnswerOption = function(){				
