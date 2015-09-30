@@ -372,7 +372,8 @@ angular.module('e8MyTests')
 							
 							if($scope.imagePanelLoaded){
 								var imagePanel = $(angular.element(document.querySelector("#questionUploadImage"))).detach();
-								$scope.$element.find('.questionEditContainer').append(imagePanel);		
+								$scope.$element.find('.questionEditContainer').append(imagePanel);	
+								$scope.imagePanelLoaded = false;
 							}
 							
 							$scope.node.qtiModel.Options

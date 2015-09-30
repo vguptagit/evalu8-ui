@@ -674,6 +674,10 @@
 	width: 90%;
 }
 
+li[printmode='false'] .fbMainContainer .addBlankDiv {
+	float: left;
+}
+
 /* FIB - question  End */
 
 body .cke_dialog_background_cover{
