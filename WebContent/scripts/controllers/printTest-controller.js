@@ -26,7 +26,7 @@ angular.module('e8MyTests')
 		         var elementToPrint=$('.testPreviewContainer').clone();
 		         $(elementToPrint).find(".printViewLinks").remove();
 		         $(elementToPrint).find("#Essay").remove();	
-		         $(elementToPrint).find("[class$='defaultPrintCorrectAnswer']" ).remove();
+		         $(elementToPrint).find("[class$='defaultPrintCorrectAnswer']" ).empty().html("&nbsp;");
 		         
 		         if ($scope.selectedAnswerArea.value == $scope.answerAreas[0].value){
 		        	 $(elementToPrint).find("#answerSpace").remove();

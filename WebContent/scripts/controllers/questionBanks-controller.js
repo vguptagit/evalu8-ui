@@ -1255,6 +1255,7 @@ angular
 								    SharedTabService.errorMessages = [];
 								    $scope.addQuestionsToTestTab(test, destIndex, eventType);								     
 								}
+								$scope.editQuestionMode=false;
 							}
 							
 							$scope.addQuestionsToTestTab = function (test, destIndex, eventType) {
