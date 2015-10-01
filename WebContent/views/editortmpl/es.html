@@ -20,7 +20,7 @@
 		<div class="questionEditContainer">
 			<div class="captionContainer">
 				<div id="questionCaption" contenteditable="true"
-					placeholder={{node.qtiModel.EditCaption}}
+					placeholder={{node.qtiModel.EditCaption}} ready="onReady({{focusEditorIndex}})"
 					ckeditor="htmlEditorOptions"  ready="focusCaption()" data-ng-model="node.qtiModel.Caption"></div>
 				<div class="captionImageContainer">
 					<button class="captionImageIcon glyphicon glyphicon-picture" 

@@ -368,13 +368,11 @@ angular.module('e8MyTests')
 					$scope.message = "Are you sure you want to delete this answer?";
 					$modal.open(confirmObject).result
 					.then(function(ok) {
-						if (ok) {
+						if (ok) {							
 							
-							if($scope.imagePanelLoaded){
-								var imagePanel = $(angular.element(document.querySelector("#questionUploadImage"))).detach();
-								$scope.$element.find('.questionEditContainer').append(imagePanel);	
-								$scope.imagePanelLoaded = false;
-							}
+							var imagePanel = $(angular.element(document.querySelector("#questionUploadImage"))).detach();
+							$scope.$element.find('.questionEditContainer').append(imagePanel);	
+							$scope.imagePanelLoaded = false;
 							
 							$scope.node.qtiModel.Options
 							.splice(
