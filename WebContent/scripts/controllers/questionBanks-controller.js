@@ -1078,6 +1078,11 @@ angular
 							
 							var isParentNodeUsed=false;
 							$scope.selectNode = function (node) {
+								
+								if($scope.showAddFolderPanel) {
+	                                   $scope.showAddFolderPanel = false; 
+	                               }
+								
 							    var test = SharedTabService.tests[SharedTabService.currentTabIndex];
 								if (node.isNodeSelected == false
 										&& $rootScope.globals.loginCount <= evalu8config.messageTipLoginCount 
