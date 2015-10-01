@@ -5,8 +5,8 @@
 				<a id="switchLink" class="qstnLinks"  data-ng-click="toggleEdit(node)">Edit</a>
 				<a class="qstnLinks qstnDeleteLinks" data-ng-click="closeQuestions(tests[currentIndex],$index)">Delete</a>
 		</div>
-		  <div class="tf_questionPrintContainer">{{$index + 1}})
-			<div class="tf_printQuestionCaption"
+		  <div class="questionPrintContainer">{{$index + 1}})
+			<div class="printQuestionCaption"
 				data-ng-bind-html="getTrustedHTML(node.qtiModel.Caption==''?node.qtiModel.PrintCaption:node.qtiModel.Caption)"></div>
 			<div class="tf_printQuestionOptionContainer">
 				<div class="tf_printQuestionOption"
