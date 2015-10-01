@@ -2268,7 +2268,7 @@ angular
 											}
                                             */
 											var noOfQuestionsSelected = criteria.numberOfQuestionsEntered > 0 ? criteria.numberOfQuestionsEntered : criteria.numberOfQuestionsSelected; 
-                                            if (!noOfQuestionsSelected || noOfQuestionsSelected > criteria.totalQuestions) {
+                                            if (!noOfQuestionsSelected || noOfQuestionsSelected > criteria.totalQuestions || noOfQuestionsSelected > arr.length) {
 												criteria.isError = true;
 												SharedTabService.addErrorMessage(criteria.treeNode.title, SharedTabService.errorMessageEnum.NotEnoughQuestionsAvailable);
 												isError = true;

@@ -664,6 +664,8 @@ angular.module('evalu8Demo')
 		    		 criterias[i].numberOfQuestionsSelected = sharedTabService.setDefault_numberOfQuestionsSelected(criterias[i].totalQuestions);
 		    		 var defaultQuestiontypes = angular.copy(criterias[i].defaultQuestiontypes);
 		    		 criterias[i].selectedQuestiontypes = defaultQuestiontypes;// = criterias[0].selectedQuestiontypes;
+		    		 if(criterias[i].numberOfQuestionsSelected == DefaultNumberOfQuestions[3])
+		    			 criterias[i].numberOfQuestionsEntered = criterias[i].totalQuestions
 				}
 		     }
 		     
