@@ -143,6 +143,18 @@ angular
 							            		$rootScope.blockLeftPanel.stop();
 							            	});
 							            	
+							            	if(destParent.node.nodes) {
+							                   	var nodeIndex = 0;
+							                   	var emptyNodeIndex;
+							                    destParent.node.nodes.forEach(function(node) {
+
+							                   	if(node.nodeType == "empty") {
+							                   	emptyNodeIndex = nodeIndex;
+							                   	}
+							                   	nodeIndex++;
+							                   	})
+							                    destParent.node.nodes.splice(emptyNodeIndex, 1);
+							        }
 							            	return false;
 										}
 						            }

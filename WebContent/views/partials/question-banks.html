@@ -134,7 +134,7 @@
                  ng-mouseleave="treeNodeMouseLeave(this)">
                 <div class="maindiv">
                     <div class="imagediv">
-                        <input ng-click="getNodes(this)" type="image" class="collapseImg" collapsed="{{collapsed}}" value="" ng-src="{{collapsed?'images/right_arrow2.png':'images/right_arrow.png'}}"></input>
+                        <input ng-mousedown="getNodes(this)" type="image" class="collapseImg" collapsed="{{collapsed}}" value="" ng-src="{{collapsed?'images/right_arrow2.png':'images/right_arrow.png'}}"></input>
                     </div>
                     <div class="captiondiv" ng-mousedown="selectNode(this.node)">
                         <label class="captionLabel" title="{{node.title}}">{{node.title}}</label>
