@@ -64,11 +64,13 @@ label {
 	font-size: 20px;
 }
 
+
 .searchdiv {
-	background-color: #f8f8f8;
-	height: 70px;
-	width: 98%;
-	padding: 20px;	
+background-color: #f8f8f8;
+   height: 70px;
+   width: 100%;
+   padding: 20px;
+   margin-left: -4px;	
 }
 
 .searchformat {
@@ -120,13 +122,15 @@ label {
 }
 
 .discplineheight, .bookContainer {
-	position: absolute;
-    top: 80px;
-    bottom: 0;
-	overflow: auto;
-	overflow-x: hidden;
-	width: 100%;
-	right: 0;
+position: absolute;
+   top: 80px;
+   bottom: 0;
+   overflow: auto;
+   overflow-x: hidden;
+   width: 100%;
+   right: -2px;
+   margin-right: 6px;
+   padding-right: 0;
 }
 
 .form-group {
