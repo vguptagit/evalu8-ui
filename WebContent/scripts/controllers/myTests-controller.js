@@ -1153,7 +1153,9 @@ angular.module('e8MyTests')
         $scope.openImportBooksViewModal = function () {
         	$modal.open({	            
         		templateUrl: 'views/partials/import-userbooks-popup.html',	   
-        		controller : 'ImportUserBooksPopUpController'	                   
+        		controller : 'ImportUserBooksPopUpController',
+        		backdrop : 'static',
+				keyboard : false
         	});
         }        
        

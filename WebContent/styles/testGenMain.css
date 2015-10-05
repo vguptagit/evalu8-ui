@@ -3293,14 +3293,20 @@ px
 	background-color: #006A8D
 }
 
+a#testwizard {
+    padding-left: 10px;
+}
+
 .wizardWhite {   
      padding-left: 20px;
-     background: url("../images/wizard_grayall.png") 0px -26px no-repeat;
+     background: url("../images/wizard_wand.png") 0px -26px no-repeat;
+     padding-top: 1px;
+     padding-right: 1px;
 }
 
 .wizardGray {   
     padding-left: 20px;
-    background: url("../images/wizard_grayall.png") 10px -48px no-repeat;
+    background: url("../images/wizard_wand.png") 10px -48px no-repeat;
     background-color: white;
     margin-top: 1px;
     
@@ -3308,7 +3314,7 @@ px
 
 .wizardGray:hover {
 	padding-left: 20px;   
-	background: url("../images/wizard_grayall.png")  10px -72px no-repeat;
+	background: url("../images/wizard_wand.png")  10px -72px no-repeat;
     background-color: white;
     margin-top: 1px;
     
@@ -3318,7 +3324,7 @@ px
     padding-left: 20px;
     width: 19px;
     height: 20px;
-    background:url("../images/wizard_grayall.png") 0px 2px no-repeat;
+    background:url("../images/wizard_wand.png") 0px 2px no-repeat;
     top: 4px;
     right: -2px;
 }
