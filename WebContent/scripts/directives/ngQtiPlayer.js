@@ -5,7 +5,21 @@ angular.module('e8MyTests')
 	return {
 		template : '<ng-include src="getQtiTemplate()"/>',
 		restrict : 'E',
-		controller : function($scope) {			
+		controller : function($scope) {		
+			
+			//CKEDITOR.tools.callFunction has been customized to add the
+			//code which checks whether any of ckeditor instance is in focus
+			if(!window.CKEDITOR.tools.isCustomisedCallFunctionRegistered){
+				var callFunction = window.CKEDITOR.tools.callFunction;
+				window.CKEDITOR.tools.callFunction = function(a,b){
+					var name;
+					for(name in window.CKEDITOR.instances){
+						if(window.CKEDITOR.instances[name].focusManager.hasFocus)
+							callFunction(a,b);
+					}
+				}
+				window.CKEDITOR.tools.isCustomisedCallFunctionRegistered = true;
+			}
 
 			$scope.imagePanelLoaded = false;
 
