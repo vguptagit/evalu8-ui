@@ -22,6 +22,8 @@ angular.module('evalu8Demo')
 				delete testData.metadata.draggable;
 				delete testData.metadata.folderGuid;
 				delete testData.metadata.nodeType;
+				delete testData.metadata.selectTestNode;
+
 				$http.post(evalu8config.apiUrl + '/my/folders/'+folderId+'/tests', testData, config)
 				.success(function(response) {	
 					var testResult = response;
@@ -44,34 +46,6 @@ angular.module('evalu8Demo')
                 })                
                 
             };
-			
-			this.updateTestMetaData = function(testData,folderId,callback) {				
-			
-				var testMetadata = {
-					crawlable: testData.crawlable,
-					description: testData.description,
-					extendedMetadata: testData.extendedMetadata,
-					guid: testData.guid,
-					keywords: testData.keywords,
-					quizType: testData.quizType,
-					subject: testData.subject,
-					timeRequired: testData.timeRequired,
-					title: testData.title,
-					version: testData.version,
-					versionOf: testData.versionOf
-				}
-								
-				$http.post(evalu8config.apiUrl + '/my/folders/'+folderId+'/tests/'+testMetadata.guid+'/metadata', testMetadata, config)
-				.success(function(response) {	
-					var testResult = response;
-					if(callback) callback(testResult);
-				})
-				.error(function(error, status) {
-
-					//if(status == 403)
-						//$location.path('/login');
-				})				
-			};
 			
 	        var confirmObject = {
 	                templateUrl: 'views/partials/alert.html',
@@ -107,7 +81,7 @@ angular.module('evalu8Demo')
 				})
 				.error(function(error, status) {
 
-					callback(tests);
+					callback(null);
 
 				})
 			};
@@ -125,65 +99,22 @@ angular.module('evalu8Demo')
 					callback(tests)
 				})
 				.error(function(error, status) {
+					callback(null);
 				})				
 			};
 			
-			this.getTestsMaxSeq = function(folderId, callback) {				
+            this.getTest = function(testId, callback) {                
 
-				var maxSeq = 0.0;
-				$http.get(evalu8config.apiUrl + '/my/folders/' + folderId + '/tests', config)
-				.success(function(response) {
-					var tests = response;
-					tests.forEach(function(item){
-	                	
-						item.extendedMetadata.forEach(function(data) {
-	                		if(data.name=='sequence') {
-	                			maxSeq = data.value;	                			
-	                		}
-	                	}) 
-	                	
-					})
-					callback(maxSeq)
-				})
-				.error(function(error, status) {
-					callback(0.0);
-				})				
-			};
-			
-			this.getTestsMinSeq = function(folderId, callback) {				
+                $http.get(evalu8config.apiUrl + '/tests/' + testId, config)
+                .success(function(response) {
+                    var test = response;
+                    callback(test)
+                })
+                .error(function(error, status) {
 
-				var maxSeq = 0.0;
-				$http.get(evalu8config.apiUrl + '/my/folders/' + folderId + '/tests', config)
-				.success(function(response) {
-					var tests = response;
-					tests.every(function(item){
-	                	
-						item.extendedMetadata.forEach(function(data) {
-	                		if(data.name=='sequence') {
-	                			maxSeq = data.value;	                			
-	                		}
-	                	})
-	                	return false;	                	
-					})
-					callback(maxSeq)
-				})
-				.error(function(error, status) {
-					callback(0.0);
-				})				
-			};
-			
-			this.getTest = function(testId, callback) {				
+                })                
+            };
 
-				$http.get(evalu8config.apiUrl + '/tests/' + testId, config)
-				.success(function(response) {
-					var test = response;
-					callback(test)
-				})
-				.error(function(error, status) {
-
-				})				
-			};
-			
 			this.getTestQuestions = function(testId, callback) {				
 				var questions=[];
 				$http.get(evalu8config.apiUrl + '/test/' + testId + '/questions', config)
@@ -192,6 +123,7 @@ angular.module('evalu8Demo')
 					callback(questions)
 				})
 				.error(function(error, status) {
+					callback(null);
 
 				})				
 			};
@@ -201,6 +133,10 @@ angular.module('evalu8Demo')
 				.success(function(response) {
 					if(response == null) response = [];
 					callback(response)
+				})
+				.error(function(error, status) {
+					callback(null);
+
 				})
 			}
 			
@@ -242,7 +178,7 @@ angular.module('evalu8Demo')
 
 				})
 				.error(function (error, status) {
-					callback();
+					callback(null);
 				}) 
 			};
 			
@@ -252,7 +188,7 @@ angular.module('evalu8Demo')
 				    callback(response);
 				})
 				.error(function (error, status) {
-
+					callback(null);
 				}) 
 			};
 			
