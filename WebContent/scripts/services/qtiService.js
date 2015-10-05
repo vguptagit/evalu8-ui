@@ -712,8 +712,9 @@ angular.module('evalu8Demo')
 						responseTag = responseTag.replace(
 								'@RESP',  optionText );
 
+                        responseTag = responseTag.replace(/""/g,'\"');
+                        
 						var item = $.parseXML(responseTag); 
-
 
 						if(i==0)
 							$(xml).find( "assessmentItem" ).prepend($(item).children(0));
