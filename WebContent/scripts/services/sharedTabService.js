@@ -659,7 +659,7 @@ angular.module('evalu8Demo')
 		     
 		     sharedTabService.resetCriteriaToDefault = function(scope){
 		    	 var criterias = sharedTabService.tests[scope.currentIndex].criterias;
-		    	 for (var i = 1; i < criterias.length; i++) {
+		    	 for (var i = 0; i < criterias.length; i++) {
 		    		 criterias[i].numberOfQuestionsEntered = null;
 		    		 criterias[i].numberOfQuestionsSelected = sharedTabService.setDefault_numberOfQuestionsSelected(criterias[i].totalQuestions);
 		    		 var defaultQuestiontypes = angular.copy(criterias[i].defaultQuestiontypes);

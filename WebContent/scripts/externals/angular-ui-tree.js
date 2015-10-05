@@ -1257,11 +1257,17 @@
 	            	  scope.$emit("dragCancel");
 	                	scope.$$apply = false;
 					}
+	              if(destination.node){
+	              if(destination.node.nodeType == "archiveRoot"){
+	            	  scope.$emit("dragCancel");
+	                	scope.$$apply = false;
+	              }
 	              if(destination.$parent.controller == "QuestionBanksController" 
 	            	  && (destination.node.nodeType=="topic" || destination.node.nodeType=="chapter" || destination.node.nodeType=="book" || destination.node.nodeType=="discipline")){
 	            	  scope.$emit("dragCancel");
 	                	scope.$$apply = false;
 					}
+	              }
               }               
               
           	

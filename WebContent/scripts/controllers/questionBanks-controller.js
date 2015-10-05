@@ -772,7 +772,7 @@ angular
 
 
 							$scope.getNodesWithQuestion = function(currentNode) {
-
+								
 								if (!currentNode.collapsed) {
 									currentNode.collapse();
 									$(currentNode.$element).find(".captiondiv").removeClass('iconsChapterVisible');
@@ -1410,7 +1410,7 @@ angular
 														$scope.selectedNodes[i].showTestWizardIcon = false;
 														$scope.selectedNodes[i].showEditQuestionIcon = false;
 													}
-													//$scope.selectedNodes=[];
+													 $scope.selectedNodes=[];
 												}
 											});
 							$scope
@@ -1431,6 +1431,14 @@ angular
 												break;
 											}									
 								}
+									if($scope.questions){
+										for (var i = 0; i < $scope.questions.length; i++) {
+											if ($scope.questions[i].guid == node.guid) {
+												$scope.questions[i].isNodeSelected=false;
+												break;
+											}
+										}
+									}
 							};			
 							
 							$scope.setDeselectedNodeState = function(deselectedNode){
