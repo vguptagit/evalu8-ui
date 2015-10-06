@@ -531,7 +531,9 @@ angular.module('e8MyTests')
         $('.testMessagetip').offset({'top':($(window).height()/2)-$('.testMessagetip').height()});
         $('.testMessagetip').hide();
         $scope.selectTestNode = function ($event,test) {
-        	
+        	if($scope.showAddFolderPanel){
+        		$scope.showAddFolderPanel = false;
+        	}
         	if(test.node.nodeType == EnumService.NODE_TYPE.emptyFolder) {
         		return;
         	}
@@ -561,6 +563,9 @@ angular.module('e8MyTests')
         }
 
         $scope.getFolders = function(defaultFolder) {
+        	if($scope.showAddFolderPanel){
+        		$scope.showAddFolderPanel = false;
+        	}
         	if(defaultFolder.node.nodeType == EnumService.NODE_TYPE.folder) {
         		$scope.getUserFolders(defaultFolder);
         	}
