@@ -87,8 +87,8 @@
 						<div class="margin-top-15 floatLeftImp width100"
 							ng-repeat="node in test.masterQuestions">
 							<div class="floatLeftImp">{{$index+1}}.</div>
-							<div ng-show="'{{node.quizType}}'!='Essay'"
-								id="{{node.quizType}}" class="floatLeftImp margin-lft-10">__________</div>
+							<div style="{{getAnswerBlankStyle(node)}}"
+								id="{{node.quizType}}" class="floatLeftImp margin-lft-10"><span ng-show="'{{node.quizType}}'!='Essay'">__________</span></div>
 							<br>
 						</div>
 					</div>

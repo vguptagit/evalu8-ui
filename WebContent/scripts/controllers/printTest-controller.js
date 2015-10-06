@@ -25,7 +25,7 @@ angular.module('e8MyTests')
 		         parentScope.tests[parentScope.currentIndex].isBtnClicked = false;
 		         var elementToPrint=$('.testPreviewContainer').clone();
 		         $(elementToPrint).find(".printViewLinks").remove();
-		         $(elementToPrint).find("#Essay").remove();	
+		         $(elementToPrint).find("#Essay").empty();	
 		         $(elementToPrint).find("[class$='defaultPrintCorrectAnswer']" ).empty().html("&nbsp;");
 		         
 		         if ($scope.selectedAnswerArea.value == $scope.answerAreas[0].value){
@@ -71,5 +71,14 @@ angular.module('e8MyTests')
 		    	 }
 		     }
 		     
+		     
+		     $scope.getAnswerBlankStyle = function (qtiModel) {
+		    	 if(qtiModel.quizType=='Essay' && qtiModel.qtiModel!=undefined){
+		    		 var EssayPageSize = parseInt(qtiModel.qtiModel.EssayPageSize);
+					 return "height: " + EssayPageSize * 20 + "px;";	 
+		    	 }else{
+		    		 return "height: auto;";
+		    	 }
+		     }
 		     
 		 }]);
