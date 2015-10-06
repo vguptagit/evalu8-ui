@@ -1164,34 +1164,10 @@ angular.module('e8MyTests')
                 return;
             }
             $.each(treeItems, function (i, v) {
-                if (v.guid == test.id) {
+            	if ((v.guid == test.id && (treeItems[i+1]==undefined || treeItems[i+1].versionOf == null)) || (v.versionOf == test.id && (treeItems[i+1]==undefined || test.id && treeItems[i+1].versionOf != test.id))) {
                     treeItems.splice(i + 1, 0, newTest)
                     return false;
                 }
             });
-            
-        	var testBindings = [];
-        	var sequence = 1.0;
-        	treeItems.forEach(function(test) {
-        		if(test.nodeType == 'test') {
-        			
-            		var testBinding = {
-                			testId: test.guid,
-                			sequence: sequence  
-            		}
-                	testBindings.push(testBinding);
-            		sequence = sequence + 1.0;
-        		}        		 
-        	})
-        	
-        	var destNode;
-        	if(testFolder == null) {
-        		var destNode = $scope.myTestRoot;    			
-    		} else {
-    			destNode = testFolder;
-    		}
-        	
-        	destNode.testBindings = testBindings;
-        	UserFolderService.saveUserFolder(destNode);
         }        
     }]);
