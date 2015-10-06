@@ -68,9 +68,13 @@ label {
 .searchdiv {
 background-color: #f8f8f8;
    height: 70px;
-   width: 100%;
-   padding: 20px;
-   margin-left: -4px;	
+   width: 98%;
+   padding: 20px;  
+}
+
+section[canenter="enterDiscipline"] div.searchdiv, section[canenter="enterBook"] div.searchdiv {
+    width: 100% ! important;
+     margin-left: -4px;	
 }
 
 .searchformat {
