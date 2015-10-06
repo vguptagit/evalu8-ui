@@ -44,13 +44,12 @@
 			<div ui-view></div>
 		</div>
 	</div>
-	<!-- build:js({WebContent,.tmp}) scripts/vend-jq.js -->
+
+	<!-- build:js({WebContent,.tmp}) scripts/vendor.js -->
 	<script src="../bower_components/jquery/dist/jquery.min.js"></script>
 	<script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 	<script src="../bower_components/lodash/dist/lodash.min.js"></script>
-	<!-- endbuild -->
-
-	<!-- build:js({WebContent,.tmp}) scripts/vend-ang.js -->
+	
 	<script src="../bower_components/angular/angular.min.js"></script>
 	<script src="../bower_components/angular-route/angular-route.min.js"></script>
 	<script src="../bower_components/angular-cookies/angular-cookies.js"></script>
@@ -85,7 +84,6 @@
 	<script src="../bower_components/angular-ckeditor/angular-ckeditor.js"></script>
 	<script src="../bower_components/angular-ckeditor-placeholder/angular-ckeditor-placeholder.js"></script>
 	<script src="scripts/externals/qti-player.js"></script>
-	
 	<!-- endbuild -->
 		
 
@@ -93,7 +91,6 @@
 	<script src="scripts/controllers/signin-controller.js"></script>
 	<script src="scripts/controllers/login-controller.js"></script>
 	<script src="scripts/controllers/selectPrintSettings-controller.js"></script>
-
 	<script src="scripts/controllers/myTests-controller.js"></script>
 	<script src="scripts/controllers/questionBanks-controller.js"></script>
 	<script src="scripts/controllers/customQuestionBanks-controller.js"></script>
@@ -114,17 +111,13 @@
     <script src="scripts/controllers/save-test-dialog-controller.js"></script>
     <script src="scripts/controllers/import-userbooks-controller.js"></script>
     <script src="scripts/controllers/import-userbooks-popup-controller.js"></script>
-	<!-- endbuild -->
-
-	<!-- build:js({WebContent,.tmp}) scripts/directive.js -->
+    
     <script src="scripts/directives/ngEnter.js"></script>
     <script src="scripts/directives/ngFocus.js"></script>
     <script src="scripts/directives/ngQtiPlayer.js"></script>    
-    <script src="scripts/directives/ngPrintQtiPlayer.js"></script>    
-	<!-- endbuild -->
-
-	<!-- build:js({WebContent,.tmp}) scripts/services.js -->
-	<script src="scripts/services/authservices.js"></script>
+    <script src="scripts/directives/ngPrintQtiPlayer.js"></script>
+    
+    <script src="scripts/services/authservices.js"></script>
 	<script src="scripts/services/disciplineService.js"></script>
 	<script src="scripts/services/bookService.js"></script>
 	<script src="scripts/services/containerService.js"></script>
@@ -138,14 +131,13 @@
 	<script src="scripts/services/enums.js"></script>
     <script src="scripts/services/common-service.js"></script>
     <script src="scripts/services/questionService.js"></script>
-    <script src="scripts/services/userBookService.js"></script>    
+    <script src="scripts/services/userBookService.js"></script>
+    
     <script src="scripts/ga.js"></script>
     <script src="scripts/messages.js"></script>
     <script src="scripts/services/qtiService.js"></script>
     <script src="scripts/print-utility.js"></script>
-    
 	<!-- endbuild -->
-
 
     <script src='https://int-piapi.stg-openclass.com/v1/piapi-int/login/js/session.js'></script>
 

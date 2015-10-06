@@ -76,7 +76,7 @@
 }
 
 .userBookRow {	
-	width: 97%;
+	width: 100%;
 	border: solid 0px #fff;
 	border-bottom: 1px solid #E0E0E0;
 	background-color: #fff;
@@ -100,6 +100,7 @@ section[canenter="enterUserBooks"] div.userBooksContainer{
 	top: 52px;
     bottom: 0;
     right: 0;
+    margin-right: 6px
     }
 
 .selectedUserBook {
