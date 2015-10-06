@@ -1959,6 +1959,7 @@ angular
 										searchedDiscipline["item"] = book.discipline;
 										searchedDiscipline["isCollapsed"]=false;
 										searchedDiscipline["nodes"] = [book];
+										searchedDiscipline["isHttpReqCompleted"] = true;
 										$scope.disciplines.push(searchedDiscipline);
 									}
 								}
