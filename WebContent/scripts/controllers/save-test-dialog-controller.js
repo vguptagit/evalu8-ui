@@ -141,6 +141,7 @@
 		         $scope.selectedfolder = newFolder;
 		         newFolder.nodes = [];
 		         newFolder.isSelected = true;
+		         newFolder.testBindings = [];
 		     }
 		     $scope.currentTest = parentScope.tests[parentScope.currentIndex];
 		     $scope.title = $scope.currentTest.title;
