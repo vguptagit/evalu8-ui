@@ -2690,7 +2690,11 @@ angular
 							}
 
 							
-							
+							if (navigator.userAgent.indexOf('Mac OS X') != -1) {
+							    $scope.wizardClass = "wizardWhiteMac"
+							} else {
+							    $scope.wizardClass = "wizardWhite";
+							}
 
 						} ]);
 

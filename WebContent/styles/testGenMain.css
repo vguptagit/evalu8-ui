@@ -3303,7 +3303,12 @@ a#testwizard {
      padding-top: 1px;
      padding-right: 1px;
 }
-
+wizardWhiteMac{
+	 padding-left: 20px;
+	 background: url("../images/wizard_wand.png") 0px -29px no-repeat;
+	 padding-top: 1px;
+     padding-right: 1px;	
+}
 .wizardGray {   
     padding-left: 20px;
     background: url("../images/wizard_wand.png") 10px -48px no-repeat;
