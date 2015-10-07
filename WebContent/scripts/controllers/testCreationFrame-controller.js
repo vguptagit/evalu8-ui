@@ -1841,7 +1841,7 @@ angular
     												$scope.editedMigratedQuestions.push(test.questions[questionIndex].guid);
     											}
     											test.questions[questionIndex].guid = guid;
-    											test.questions[questionIndex].extendedMetadata = QuestionEnvelops[questionIndex].metadata.extendedMetadata;   
+    											test.questions[questionIndex].extendedMetadata = QuestionEnvelops[questionIndex].metadata.extendedMetadata; 
     											var createdQstnCopy = angular.copy(test.questions[questionIndex]);
     											$scope.editedQuestions.push(createdQstnCopy);
     										}else{
@@ -1909,7 +1909,6 @@ angular
     									});
     									        								
     								});                                                                
-
     								
 								});
 
@@ -2198,8 +2197,6 @@ angular
 
 							$scope.previevTest = function() {
 								var isError = false;
-								// $scope.tests[currentIndex].criterias.metadata.sort(randomize);
-								// console.log($scope.tests[currentIndex].criterias.metadata.sort(randomize));
 							    var metadatas = [];
 								SharedTabService.errorMessages = [];
 								$scope.sharedTabService.tests[$scope.sharedTabService.currentTabIndex].criterias
@@ -2298,14 +2295,135 @@ angular
 								$scope.tests[$scope.sharedTabService.currentTabIndex].isTestWizard = false;
 								$scope.sharedTabService.isTestWizardTabPresent = false;
 								$scope.tests[$scope.sharedTabService.currentTabIndex].tabTitle = "Untitled test";
-								$scope.tests[$scope.sharedTabService.currentTabIndex].questions = metadatas;
 								QTI.initialize();
 								test.criterias=[];
-								$scope.saveTest(function () {
-								        $rootScope.blockPage.start();	
-								        $scope.tests[$scope.sharedTabService.currentTabIndex].questions = [];
-								        $scope.render(metadatas);
-								        $scope.isApplySameCriteriaToAll = false;
+								var duplicateTitle = false;
+								$rootScope.blockPage.start();
+                                TestService.getTests(test.folderGuid, function(tests){
+                                    tests.forEach(function (folderTest) {
+                                        if (test.saveMode === EnumService.SAVE_MODE.SaveAs && folderTest.title == test.title) {
+                                            duplicateTitle = true;
+                                        } else if (test.saveMode === EnumService.SAVE_MODE.Save && folderTest.guid !== test.testId && folderTest.title == test.title) {
+                                            duplicateTitle = true;
+                                        }
+                                    });
+                                    
+                                    if (duplicateTitle ) {
+                                        
+                                    	$scope.IsConfirmation = false;
+                                        $scope.message = "A test already exists with this name. Please save with another name.";
+                                        $modal.open(confirmObject);
+                                        if (test.saveMode === EnumService.SAVE_MODE.SaveAs) {
+                                            test.folderGuid = test.tempFolderGuid;
+                                            $scope.containerFolder = null;
+                                        }
+                                        $scope.render(metadatas);
+                                        test.saveMode = EnumService.SAVE_MODE.Save;
+                                        $scope.setTestType();
+                                    	return;
+                                    }
+
+                                    if (test.saveMode === EnumService.SAVE_MODE.SaveAs) {
+                                        test.testId = null;
+                                        $scope.testGuid = null;
+                                        test.saveMode = EnumService.SAVE_MODE.Save;
+                                    }
+                                                                        
+    								$scope.testTitle = test.title;
+
+    								// Building the json to create the test.
+    								var testcreationdata = {
+    									"metadata" : {
+    										"crawlable" : "true"
+    									},
+    									"body" : {
+    										"@context" : "http://purl.org/pearson/paf/v1/ctx/core/StructuredAssignment",
+    										"@type" : "StructuredAssignment",
+    										"assignmentContents" : {
+    											"@contentType" : "application/vnd.pearson.paf.v1.assignment+json",
+    											"binding" : []
+    										}
+    									}
+    								};
+    								testcreationdata.body.title = $scope.testTitle;
+    								testcreationdata.body.guid = $scope.testGuid;
+
+    								if (test.testId != null) {
+    									testcreationdata.metadata = test.metadata;
+    								}
+
+    								testcreationdata.metadata.title = $scope.testTitle;
+
+    								var index = 0;    								
+    								var QuestionEnvelops = [];
+    								var userSettings = {};
+    								userSettings.questionMetadata = {};
+
+    								$.each(SharedTabService.userQuestionSettings, function (index, value) {
+    								    userSettings['questionMetadata'][value] = '';
+    								});
+    								
+    								
+    								var questions = [];	
+    								metadatas.forEach(function(questionItem){
+    									questions.push(questionItem);
+    								}); 
+    								
+    									var questionIndex = 0;
+    									questions.forEach(function(individuaQuestionItem) {
+    										var guid = individuaQuestionItem.guid;
+
+    										testcreationdata.body.assignmentContents.binding
+    												.push({
+    													guid : guid,
+    													activityFormat : "application/vnd.pearson.qti.v2p1.asi+xml",
+    													bindingIndex : index
+    												});
+    										index = index + 1;
+    									})									
+
+    									TestService.saveTestData(testcreationdata, test.folderGuid, function(testResult) {
+    										
+    										if(testResult == null) {
+    											$rootScope.blockPage.stop();
+    											$scope.showSaveErrorMessage();
+    											return;
+    										}
+    										
+    									    var isEditMode = false,
+                                                oldGuid = null,
+                                                test = SharedTabService.tests[SharedTabService.currentTabIndex];
+
+    									    if (test.testId) {
+    									        isEditMode = true;
+    									    }
+    									    SharedTabService.currentTab = jQuery.extend(true, {}, test);
+    									    oldGuid = test.id;
+    									    test.testId = testResult.guid;
+    									    test.id = testResult.guid;
+    									    test.tabTitle = test.title;
+    									    test.metadata = testcreationdata.metadata;
+
+    									    if (test.treeNode && test.treeNode.testType === EnumService.TEST_TYPE.PublisherTest) {
+    									        test.treeNode.testType = EnumService.NODE_TYPE.test;
+    									        test.treeNode.showEditIcon = true;
+    									    }
+    										$scope.testGuid = testResult.guid;
+    										$scope.newVersionBtnCss = "";
+    										$scope.exportBtnCss = "";
+    										
+    										if (oldGuid !== test.id && test.treeNode) {
+    										    test.treeNode.showEditIcon = true;
+    										    test.treeNode.showArchiveIcon= true;
+    										    test.treeNode.draggable = true;
+    										}
+    										testResult.title = test.title;
+    										testResult.modified = (new Date()).toJSON();
+    										
+    										$scope.render(metadatas);
+    								        $scope.isApplySameCriteriaToAll = false;
+    									});
+    									
 								});
 							}
 							function randomize(a, b) {
@@ -2339,6 +2457,11 @@ angular
 										.getQuestionById(
 												question.guid,
 												function(response) {
+													if(response == null){
+														$scope.blockPage.stop();
+									        			CommonService.showErrorMessage(e8msg.error.cantFetchQuestions)
+									        			return;
+													}
 													var displayNodes = $("<div></div>");	
 													QTI.BLOCKQUOTE.id = 0;
 													QTI.play(response,
