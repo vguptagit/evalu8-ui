@@ -2297,6 +2297,11 @@ angular
 								$scope.tests[$scope.sharedTabService.currentTabIndex].tabTitle = "Untitled test";
 								QTI.initialize();
 								test.criterias=[];
+								$scope.saveWizardTest(test, metadatas);
+							}
+							
+							//validating and saving a test which is created using test wizard
+							$scope.saveWizardTest = function(test, metadatas){
 								var duplicateTitle = false;
 								$rootScope.blockPage.start();
                                 TestService.getTests(test.folderGuid, function(tests){
@@ -2355,7 +2360,6 @@ angular
     								testcreationdata.metadata.title = $scope.testTitle;
 
     								var index = 0;    								
-    								var QuestionEnvelops = [];
     								var userSettings = {};
     								userSettings.questionMetadata = {};
 
@@ -2426,6 +2430,7 @@ angular
     									
 								});
 							}
+							
 							function randomize(a, b) {
 								return Math.random() - 0.5;
 							}
