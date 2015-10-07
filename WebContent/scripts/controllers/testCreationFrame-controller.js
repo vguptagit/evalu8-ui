@@ -927,24 +927,7 @@ angular
                                     $scope.testType = 'Test';
 								}
 
-								if (test.testId && !test.questions.length && !SharedTabService.isDirtyTab(test) && !test.isTabClicked) {
-									test.isTabClicked=true;
-									$rootScope.blockRightPanel.start();
-									TestService.getTestQuestions(test.testId,function(questions) {
-										try{
-											if(questions==null){
-												$rootScope.blockRightPanel.stop();
-												CommonService.showErrorMessage(e8msg.error.cantFetchTestQuestions);
-												return;
-											}
-											$scope.bindTestQuestions(questions,$scope.currentIndex);
-										}catch (e) {
-											console.log(e);
-										}finally {
-											$rootScope.blockRightPanel.stop();
-										}
-									})
-								}
+								loadQuestionsToEmptyTab();
 							}
 
 							$scope.isActiveTab = function(tabUrl) {
@@ -986,9 +969,32 @@ angular
 					        $scope.closeTabWithConfirmation = function ($event,tab) {
 								SharedTabService.closeTabWithConfirmation(tab, $scope);
 								$scope.setTestType();
+								loadQuestionsToEmptyTab();
 								$event.stopPropagation();
-							}
-					        
+					        }
+
+					        var loadQuestionsToEmptyTab = function () {
+					            var test = SharedTabService.tests[SharedTabService.currentTabIndex];
+					            if (test.testId && !test.questions.length && !SharedTabService.isDirtyTab(test) && !test.isTabClicked) {
+					                test.isTabClicked = true;
+					                $rootScope.blockRightPanel.start();
+					                TestService.getTestQuestions(test.testId, function (questions) {
+					                    try {
+					                        if (questions == null) {
+					                            $rootScope.blockRightPanel.stop();
+					                            CommonService.showErrorMessage(e8msg.error.cantFetchTestQuestions);
+					                            return;
+					                        }
+					                        $scope.bindTestQuestions(questions, $scope.currentIndex);
+					                    } catch (e) {
+					                        console.log(e);
+					                    } finally {
+					                        $rootScope.blockRightPanel.stop();
+					                    }
+					                })
+					            }
+					        }
+
 							$scope.setTestType = function() {
 								if (SharedTabService.tests[SharedTabService.currentTabIndex].treeNode
 								        && SharedTabService.tests[SharedTabService.currentTabIndex].treeNode.testType === EnumService.TEST_TYPE.PublisherTest) {
@@ -2812,7 +2818,11 @@ angular
 							}
 
 							
-							
+							if (navigator.userAgent.indexOf('Mac OS X') != -1) {
+							    $scope.wizardClass = "wizardWhiteMac"
+							} else {
+							    $scope.wizardClass = "wizardWhite";
+							}
 
 						} ]);
 
