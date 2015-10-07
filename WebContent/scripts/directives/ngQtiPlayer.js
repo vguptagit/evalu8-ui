@@ -460,8 +460,10 @@ angular.module('e8MyTests')
 
 					var htmlEle =scope.$element.find('#crtAns').children().eq(0);
 					htmlEle.append($("<div class='editView editablediv crtAnsDiv fbansw' type='text' id='RESPONSE_"+blankCount+"' >"+String.fromCharCode(65 + blankCount-1)+".<div contenteditable='true' class='placeHolderForBlank' data-placeholder='Enter the correct answer for blank "+ String.fromCharCode(65 + blankCount-1 ) +"'></div></div>"));
-
-				}			
+					$scope.node.qtiModel.CorrectAnswerHtml = htmlEle.html();
+					
+				}
+			
 
 			}
 
@@ -479,7 +481,10 @@ angular.module('e8MyTests')
 			    }
 			}
 
-			$scope.getFbAnswerOption = function(){				
+			$scope.getFbAnswerOption = function(){	
+				if($('#fbAnswerContainer').html()!= ""){
+				$scope.node.qtiModel.CorrectAnswerHtml = $('#fbAnswerContainer').html();
+				}
 				return $sce.trustAsHtml($scope.node.qtiModel.CorrectAnswerHtml);			
 			}
 
