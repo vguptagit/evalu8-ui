@@ -779,6 +779,8 @@ angular
 
 							$scope.getNodesWithQuestion = function(currentNode) {
 								
+								$scope.bookID=currentNode.node.bookid;
+								
 								if (!currentNode.collapsed) {
 									currentNode.collapse();
 									$(currentNode.$element).find(".captiondiv").removeClass('iconsChapterVisible');
@@ -822,10 +824,6 @@ angular
                                         return;
                                     }
 						                                        
-									if ($scope.isAdvancedSearchMode){
-										$scope.bookID=currentNode.node.bookid;
-									}
-									
 									currentNode.node.nodes = [];
 									currentNode.node.IsContainerReqCompleted = false;
 									currentNode.node.IsQuestionsReqCompleted = false;
