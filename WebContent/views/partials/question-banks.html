@@ -119,8 +119,14 @@
         </div>
 
         <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}" droppable="true">
+	 		<li class="tree-node tree-node-content" ng-repeat="node in node.nodes"
+                ui-tree-node draggable="false" node="{{node}}" data-ng-if="node.nodeType=='empty'">
+                <div ui-tree-handle class="tree-node tree-node-content">
+                    <label title={{node.title}} class="captionEmptyNode">{{node.title}}</label>
+                </div>
+            </li>
 		<li ng-if="node.nodeType == 'UserQuestionsFolder'" draggable="false" ng-repeat="node in node.nodes" collapsed="{{node.isCollapsed?'true':'false'}}" ui-tree-node ng-include="'folder_renderer.html'"></li>
-            <li ng-if="!node.isQuestion && node.nodeType != 'UserQuestionsFolder'" draggable="false" ng-repeat="node in node.nodes" collapsed="{{node.isCollapsed?'true':'false'}}" ui-tree-node ng-include="'book_renderer.html'"></li>
+            <li ng-if="!node.isQuestion && node.nodeType != 'UserQuestionsFolder' && node.nodeType !='empty'" draggable="false" ng-repeat="node in node.nodes" collapsed="{{node.isCollapsed?'true':'false'}}" ui-tree-node ng-include="'book_renderer.html'"></li>
                          <li printmode="true" class="questIndex qbQuestions" ng-class="{questionSelected:node.isNodeSelected , twoDigitIndex:({{$index + 1}}>9),threedigitIndex:({{$index + 1}}>99), fourDigitIndex:({{$index + 1}}>999)}" ng-if="node.isQuestion" ng-repeat="node in node.nodes" collapsed="{{node.isCollapsed?'true':'false'}}" ui-tree-node ng-include="'qb_questions_renderer.html'"></li>
 
         </ol>
