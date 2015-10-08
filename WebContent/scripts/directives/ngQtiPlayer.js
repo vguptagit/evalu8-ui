@@ -378,18 +378,17 @@ angular.module('e8MyTests')
 			// removing options
 			$scope.removeOption = function($index,IsCorrectAnswer) {
 
-				if ($scope.node.qtiModel.Options.length > 3
-						&& !IsCorrectAnswer) {
+				if ($scope.node.qtiModel.Options.length > 3){						
 					$scope.IsConfirmation = true;
 					$scope.message = "Are you sure you want to delete this answer?";
 					$modal.open(confirmObject).result
 					.then(function(ok) {
 						if (ok) {							
-							
+
 							var imagePanel = $(angular.element(document.querySelector("#questionUploadImage"))).detach();
 							$scope.$element.find('.questionEditContainer').append(imagePanel);	
 							$scope.imagePanelLoaded = false;
-							
+
 							$scope.node.qtiModel.Options
 							.splice(
 									$index,
@@ -400,16 +399,16 @@ angular.module('e8MyTests')
 								.splice(
 										$index,
 										1);
-							} else {
-								var correctAnswer = parseInt($scope.node.qtiModel.CorrectAnswer);
-								if (correctAnswer > $index) {
+							} else {								
+								if(IsCorrectAnswer){
+									$scope.node.qtiModel.CorrectAnswer = 0;
+								}else if (parseInt($scope.node.qtiModel.CorrectAnswer) > $index){
 									$scope.node.qtiModel.CorrectAnswer = parseInt($scope.node.qtiModel.CorrectAnswer) - 1;
 								}
-
 							}
 
 							$scope.onReady(0); 
-						
+
 						};
 					});
 				} else {
