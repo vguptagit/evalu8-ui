@@ -80,28 +80,6 @@ angular
 								if ($scope.dragStarted) {
 									$scope.dragStarted = false;
 									
-									if(source.node && source.node.showEditQuestionIcon == false) {
-                                        
-                                        var nodesAlreadyAdded = 0;
-                                        $scope.selectedNodes.forEach(function(node) {
-                                            
-                                            if(node.nodeType != 'topic' && node.showEditQuestionIcon == false) {
-                                                nodesAlreadyAdded++;
-                                            }                                        
-                                        })
-                                                                                    
-                                        if(nodesAlreadyAdded == $scope.selectedNodes.length) {
-                                            $scope.IsConfirmation = false;
-                                            $scope.message = "Selected question(s) already exist in the test.";
-                                            $modal.open(confirmObject);                                        
-                                            return false;
-                                        } else if(nodesAlreadyAdded > 0) {
-                                            $scope.IsConfirmation = false;
-                                            $scope.message = "Some of the selected question(s) already exist in the test.";
-                                            $modal.open(confirmObject);                                        
-                                        }                                        
-                                    }
-
 									var mouseOverNode = null;		
 									
 						            if($rootScope.tree)
@@ -500,7 +478,13 @@ angular
 																book.nodeType = "book";
 															});
 															
-															discipline.node.nodes = response;
+                                                            if(response.length == 0) {
+
+                                                                var emptyNode = [{ "nodeType": "empty", "draggable": false, "title": "There are no books selected under this Discipline", "sequence": 0 }];
+                                                                discipline.node.nodes = emptyNode;
+                                                            } else {
+                                                                discipline.node.nodes = response;    
+                                                            }
 
 														});
 									}

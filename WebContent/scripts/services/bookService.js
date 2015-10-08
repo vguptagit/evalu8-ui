@@ -66,6 +66,11 @@ angular
 												disciplineBooks.push(item);
 											});
 
+											if(disciplineBooks.length == 0) {
+
+												var emptyNode = { "nodeType": "empty", "draggable": false, "title": "There are no books selected under this Discipline", "sequence": 0 }
+												disciplineBooks.push(emptyNode);
+											}
 											callback(disciplineBooks);
 										})
 										.error(
