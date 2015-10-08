@@ -353,7 +353,7 @@ a.newFolder:hover {
 }
 
 .treeNodeHover {
-	background-color: #D1EDF6;
+	background: linear-gradient(to bottom, #D1EDF6, #D1EDF6);
 }
 
 .disciplineFilterDiv {
