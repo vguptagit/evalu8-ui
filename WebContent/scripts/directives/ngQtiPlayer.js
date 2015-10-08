@@ -15,6 +15,8 @@ angular.module('e8MyTests')
 					var name;
 					for(name in window.CKEDITOR.instances){
 						if(window.CKEDITOR.instances[name].focusManager.hasFocus){
+							var text = $.trim(b.textContent).toLowerCase();
+							(text == "bold" || text == "italic") && $(window.CKEDITOR.instances[name].editable().$).find("b[style],i[style]").removeAttr("style");
 							callFunction(a,b,c);
 							break;
 						}
