@@ -678,6 +678,12 @@ li[printmode='false'] .fbMainContainer .addBlankDiv {
 	float: left;
 }
 
+.fbCaptionContainer #questionCaption >p{
+   margin-bottom: 0px !important;  
+   display: inline-block; 
+   padding-left: 1px;
+} 
+
 /* FIB - question  End */
 
 body .cke_dialog_background_cover{

@@ -21,9 +21,9 @@
         <div class="fbIndex">{{$index + 1}})</div>
         <div class="fbMainContainer">
             <div class="fbCaptionContainer">
-                <div ng-change="updateFIBanswer(node.qtiModel.CorrectAnswerHtml)"
-                    id="questionCaption" contenteditable="true"
-                    ready="focusFIBcaption()" placeholder={{node.qtiModel.EditCaption}}            
+                <div id="questionCaption" contenteditable="true"
+                    ready="onReady({{focusEditorIndex}})"
+                    placeholder={{node.qtiModel.EditCaption}}            
                     data-ng-keydown="removeFIBblanks(this,$event)"
                     ckeditor="htmlEditorOptions" data-ng-model="node.qtiModel.Caption">
                 </div>
