@@ -70,15 +70,4 @@ angular.module('e8MyTests')
 		    		 $scope.answerAreaOnLeftSide=false;
 		    	 }
 		     }
-		     
-		     
-		     $scope.getAnswerBlankStyle = function (qtiModel) {
-		    	 if(qtiModel.quizType=='Essay' && qtiModel.qtiModel!=undefined){
-		    		 var EssayPageSize = parseInt(qtiModel.qtiModel.EssayPageSize);
-					 return "height: " + EssayPageSize * 20 + "px;";	 
-		    	 }else{
-		    		 return "height: auto;";
-		    	 }
-		     }
-		     
 		 }]);

@@ -80,9 +80,10 @@ angular.module('e8MyTests')
 			$scope.getFbAnswerOption = function () {
 			    return $sce.trustAsHtml($scope.node.qtiModel.CorrectAnswerHtml);
 			}
+			
 			$scope.setEssayPageSize = function (qtiModel) {
-			    var EssayPageSize = parseInt(qtiModel.EssayPageSize);
-			    return "padding-bottom: " + EssayPageSize * 20 + "px;";
+			    var EssayPageSize = parseInt(qtiModel.EssayPageSize) * 20;
+			    return {"padding-bottom": EssayPageSize}
 			}
 		}
 

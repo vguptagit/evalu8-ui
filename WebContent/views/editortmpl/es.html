@@ -6,7 +6,7 @@
 				<a class="qstnLinks qstnDeleteLinks" data-ng-click="closeQuestions(tests[currentIndex],$index)">Delete</a>
 		</div>
 		<div class="questionPrintContainer">{{$index +1}})
-            <div class="printQuestionCaption" style="{{setEssayPageSize(node.qtiModel)}}" data-ng-bind-html="getTrustedHTML(node.qtiModel.Caption==''?node.qtiModel.PrintCaption:node.qtiModel.Caption)"></div>
+            <div class="printQuestionCaption" ng-style="{{setEssayPageSize(node.qtiModel)}}" data-ng-bind-html="getTrustedHTML(node.qtiModel.Caption==''?node.qtiModel.PrintCaption:node.qtiModel.Caption)"></div>
             </div>
 	</div>
 
