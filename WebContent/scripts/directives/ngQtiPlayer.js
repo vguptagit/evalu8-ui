@@ -11,11 +11,13 @@ angular.module('e8MyTests')
 			//code which checks whether any of ckeditor instance is in focus
 			if(!window.CKEDITOR.tools.isCustomisedCallFunctionRegistered){
 				var callFunction = window.CKEDITOR.tools.callFunction;
-				window.CKEDITOR.tools.callFunction = function(a,b){
+				window.CKEDITOR.tools.callFunction = function(a,b,c){
 					var name;
 					for(name in window.CKEDITOR.instances){
-						if(window.CKEDITOR.instances[name].focusManager.hasFocus)
-							callFunction(a,b);
+						if(window.CKEDITOR.instances[name].focusManager.hasFocus){
+							callFunction(a,b,c);
+							break;
+						}
 					}
 				}
 				window.CKEDITOR.tools.isCustomisedCallFunctionRegistered = true;
