@@ -59,7 +59,7 @@
 							data-ng-model="node.qtiModel.CorrectAnswer" value="{{$index}}"
 							ng-checked="$index==node.qtiModel.CorrectAnswer"></input>
 					</div>
-					<div id="simpleChoice" class="tf_optionText">{{node.qtiModel.Options[i]}}</div>
+					<div id="simpleChoice" class="tf_optionText" data-ng-bind-html="getTrustedHTML(node.qtiModel.Options[i])"></div>
 				</div>
 			</div>
 			<div id="questionUploadImage" class="questionUploadImage"
