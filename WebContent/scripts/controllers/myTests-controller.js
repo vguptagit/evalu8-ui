@@ -1077,6 +1077,7 @@ angular.module('e8MyTests')
         $scope.$on('handleBroadcast_AddNewTest', function (handler, newTest, containerFolder, isEditMode, oldGuid, editedQuestions, editedMigratedQuestions, createdTab, testCreationFrameScope) {
             if (isEditMode) {
                 var updatedTest = CommonService.SearchItem($scope.defaultFolders, newTest.guid);
+             if(updatedTest){
                 updatedTest.title = newTest.title;
                 updatedTest.modified = newTest.modified;
                 if (createdTab.isSaveAndClose) {
@@ -1086,8 +1087,13 @@ angular.module('e8MyTests')
                     SharedTabService.removeMasterTest(createdTab);
                     SharedTabService.addMasterTest(createdTab);
                 }
-                return false;
+               
+            }else{
+            	SharedTabService.removeMasterTest(createdTab);
+                SharedTabService.addMasterTest(createdTab);
             }
+             return false;
+          }
 
             var parentFolder = null, parentFolderNodes = null;
             //if containerFolder is null, it considered as root
