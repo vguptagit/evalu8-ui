@@ -680,7 +680,6 @@ li[printmode='false'] .fbMainContainer .addBlankDiv {
 
 .fbCaptionContainer #questionCaption >p{
    margin-bottom: 0px !important;  
-   display: inline-block; 
    padding-left: 1px;
 } 
 

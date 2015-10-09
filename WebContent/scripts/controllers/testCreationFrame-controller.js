@@ -967,11 +967,21 @@ angular
 					        					           
 					        }
 					        $scope.closeTabWithConfirmation = function ($event,tab) {
+					        	checkTestQuestionsInEditModeWithChanges(tab);
 								SharedTabService.closeTabWithConfirmation(tab, $scope);
 								$scope.setTestType();
 								loadQuestionsToEmptyTab();
 								$event.stopPropagation();
 					        }
+					        
+					        var checkTestQuestionsInEditModeWithChanges = function(tab){
+					        	angular.forEach(tab.questions,function(question,index){
+					        		if(question["IsEditView"] == true){
+					        			question.IsEdited =  $scope.IsQuestionModified(question);
+					        			return;
+					        		}
+					        	});
+					        } 
 
 					        var loadQuestionsToEmptyTab = function () {
 					            var test = SharedTabService.tests[SharedTabService.currentTabIndex];
