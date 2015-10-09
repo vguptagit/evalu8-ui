@@ -2298,11 +2298,7 @@ angular
 												criteria.treeNode.showEditQuestionIcon = false;
 											})
 								}
-								$scope.tests[$scope.sharedTabService.currentTabIndex].isTestWizard = false;
-								$scope.sharedTabService.isTestWizardTabPresent = false;
 								$scope.tests[$scope.sharedTabService.currentTabIndex].tabTitle = "Untitled test";
-								QTI.initialize();
-								test.criterias=[];
 								$scope.saveWizardTest(test, metadatas);
 							}
 							
@@ -2324,16 +2320,15 @@ angular
                                     	$scope.IsConfirmation = false;
                                         $scope.message = "A test already exists with this name. Please save with another name.";
                                         $modal.open(confirmObject);
-                                        if (test.saveMode === EnumService.SAVE_MODE.SaveAs) {
-                                            test.folderGuid = test.tempFolderGuid;
-                                            $scope.containerFolder = null;
-                                        }
-                                        $scope.render(metadatas);
                                         test.saveMode = EnumService.SAVE_MODE.Save;
                                         $scope.setTestType();
+                                        $rootScope.blockPage.stop();
                                     	return;
                                     }
-
+                                    QTI.initialize();
+                                    $scope.tests[$scope.sharedTabService.currentTabIndex].isTestWizard = false;
+                                    $scope.sharedTabService.isTestWizardTabPresent = false;
+                                    test.criterias=[];
                                     if (test.saveMode === EnumService.SAVE_MODE.SaveAs) {
                                         test.testId = null;
                                         $scope.testGuid = null;
