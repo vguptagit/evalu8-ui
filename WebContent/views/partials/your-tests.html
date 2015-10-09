@@ -3,14 +3,14 @@
         <div>
             <div class="newFolderDiv">
                 <!-- <label class=" treeDiv1"> -->
-                <button id="addfolder" class="addFolder fa fa-plus" event-focus="click" event-focus-id="txtFolderName" ng-click='showAddFolderPanel= !showAddFolderPanel' value="Add Folder" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Add new folder"><span class="text14 margin-lft-10">Add Folder</span></button>
+                <button id="addfolder" class="addFolder fa fa-plus" event-focus="click" event-focus-id="txtFolderName" ng-click='addFolderClick()' value="Add Folder" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Add new folder"><span class="text14 margin-lft-10">Add Folder</span></button>
                 <button id="import" data-ng-click="openImportBooksViewModal()"  class="import fa fa-download"><span class="text14 margin-lft-10" >Import</span></button>
                 <!-- </label> -->
             </div>
 
             <div class="createNewNode" ng-show="showAddFolderPanel">
                 <input type="text" data-ng-model="folderName" id="txtFolderName" 
-                	ng-blur="folderNameTextBoxBlur()" ng-disabled="isAddFolderClicked" class="form-control"
+                	ng-disabled="isAddFolderClicked" class="form-control"
                        placeholder="Untitled Folder " ng-enter="addNewFolder(true)" />
             </div>
 

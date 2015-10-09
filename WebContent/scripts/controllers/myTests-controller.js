@@ -498,6 +498,28 @@ angular.module('e8MyTests')
             node.hover = false;
         }
 
+        $scope.addFolderClick = function() {
+                        
+            document.getElementById("txtFolderName").value = "";
+                                           
+            $scope.showAddFolderPanel= !$scope.showAddFolderPanel;  
+            event.stopPropagation();
+        }
+        
+        $scope.folderNameSaveAlertOpen = false;
+        $(document).on ('click', function() {
+        	if(!$scope.folderNameSaveAlertOpen) {
+        		if(event.srcElement.id != "txtFolderName") {
+        			$scope.folderNameTextBoxBlur();
+        		}
+        	}
+        }).on('keydown', '#txtFolderName', function(e) {
+            if (e.which == 9) {
+                e.preventDefault();
+                $scope.folderNameTextBoxBlur();
+            }
+        });
+        
 		$scope.folderNameTextBoxBlur = function() {
 			
 			if($scope.enterKey == true) {
@@ -507,8 +529,10 @@ angular.module('e8MyTests')
                 
             if(document.getElementById("txtFolderName").value.trim().length==0) {
                 $scope.showAddFolderPanel = false;
+                $scope.$digest();
                 return; 
             } else {
+            	$scope.folderNameSaveAlertOpen = true;
                 $scope.IsConfirmation = true;
                 $scope.message = "Do you want to save this folder?"; 
         		$modal.open(confirmObject).result.then(function(ok) {
@@ -516,9 +540,9 @@ angular.module('e8MyTests')
     	    			$scope.addNewFolder(false);
     	    		} else {
                         $scope.showAddFolderPanel = false;
-                        document.getElementById("txtFolderName").value = "";
-                        return; 
+                        document.getElementById("txtFolderName").value = ""; 
     	    		}
+    	    		$scope.folderNameSaveAlertOpen = false;
         		});
             }
         }
