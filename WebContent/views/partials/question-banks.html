@@ -118,7 +118,7 @@
             </div>
         </div>
 
-        <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}" droppable="true">
+        <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}" droppable="false">
 	 		<li class="tree-node tree-node-content" ng-repeat="node in node.nodes"
                 ui-tree-node draggable="false" node="{{node}}" data-ng-if="node.nodeType=='empty'">
                 <div ui-tree-handle class="tree-node tree-node-content">
@@ -292,7 +292,7 @@
 				choose
 			</div>
 		</div>
-		<ol data-ui-tree-nodes data-ng-model="disciplines" droppable="true">
+		<ol data-ui-tree-nodes data-ng-model="disciplines" droppable="false">
 			<li data-ng-repeat="node in disciplines" data-ui-tree-node
 				collapsed="{{node.isCollapsed?'true':'false'}}" draggable="false"
 				data-ng-include="'discipline_renderer.html'" nodeType="discipline"></li>

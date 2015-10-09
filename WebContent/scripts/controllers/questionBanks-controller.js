@@ -80,7 +80,8 @@ angular
 								if ($scope.dragStarted) {
 									$scope.dragStarted = false;
 									
-									var mouseOverNode = null;		
+/*	Code commented to revert drag and drop of questions within your questions folder
+ * 								var mouseOverNode = null;		
 									
 						            if($rootScope.tree)
 						            	mouseOverNode = $rootScope.tree.mouseOverNode;
@@ -157,7 +158,7 @@ angular
 							        }
 							            	return false;
 										}
-						            }
+						            }*/
 						            
 						            if(source.node.nodeType==='test' && destParent.controller === EnumService.CONTROLLERS.testCreationFrame){        
 						                source.node.showEditIcon=false;
@@ -178,7 +179,8 @@ angular
 								}
 							});
 							
-					        $scope.treeNodeMouseEnter = function (node) {
+/*	Code commented to revert drag and drop of questions within your questions folder
+ * 				        $scope.treeNodeMouseEnter = function (node) {
 					            if ($scope.dragStarted && node.collapsed 
 					            		&& node.node.nodeType != EnumService.NODE_TYPE.UserQuestionsFolder) {
 					                $rootScope.tree = { mouseOverNode: node };
@@ -190,7 +192,7 @@ angular
 
 					            $rootScope.tree = { mouseOverNode: null };
 					            node.hover = false;
-					        }
+					        }*/
 
 							$scope.$on('beforeDrop', function(event) {
 								 if (SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode) {                                 
@@ -458,7 +460,7 @@ angular
 												
 												discipline.node.isHttpReqCompleted = true;												
 												
-												$scope.showAddFolderLink = true;
+												$scope.showAddFolderLink = false;
 											});
 										});
 										
