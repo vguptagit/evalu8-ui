@@ -2660,7 +2660,15 @@ angular
 
 								var qstnModifiedData = {};			
 
-								qstnModifiedData.caption = node.qtiModel.Caption;	
+								qstnModifiedData.caption = node.qtiModel.Caption;
+								
+								if (typeof String.prototype.startsWith != 'function') {
+									  // see below for better implementation!
+									  String.prototype.startsWith = function (str){
+									    return this.indexOf(str) === 0;
+									  };
+									}
+								
 								if(qstnModifiedData.caption.startsWith('<p>')){
 									qstnModifiedData.caption = qstnModifiedData.caption.substring(3, qstnModifiedData.caption.length-4);
 								}			
