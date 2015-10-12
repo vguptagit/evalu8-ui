@@ -527,7 +527,8 @@ angular.module('e8MyTests')
 						qtiCationElement = $(spanElement.parentElement.parentElement);
 						blankElement = $(spanElement);			
 
-						event.stopPropagation();	
+						event.stopPropagation();
+						event.originalEvent.preventDefault();
 						$(spanElement).remove();					
 					}
 					else{
@@ -559,7 +560,7 @@ angular.module('e8MyTests')
 							for(var i = index-1; i<qtiCationElement.find("button").length; i++)
 							{
 								var button = qtiCationElement.find("button").eq(i);
-								button.attr("id","RESPONSE_" + (i));
+								button.attr("id","RESPONSE_" + (i + 1));
 								button.find("b").eq(0).text(String.fromCharCode(65 + i ) + ".");
 
 								var crtAnswer = qtiCationElement.parent().parent().find("#crtAns").children().children().eq(i);
