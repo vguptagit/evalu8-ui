@@ -37,7 +37,7 @@
 
 	ns.validation = {
 		duplicateTestTitle : "A test already exists with this name.",
-		duplicateFolderTitle : "A folder already exists with this name."
+		duplicateFolderTitle : "Test(s) already exists with the same name in the folder."
 	};
 	
 	ns.warning = {	
