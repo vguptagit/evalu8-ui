@@ -406,7 +406,7 @@ angular
 										discipline.node.isHttpReqCompleted = false;
 										
 										UserQuestionsService.userQuestionsFolders(function(userQuestionsFolders) {
-											
+                                            var folderCount = 0;
 											userQuestionsFolders.forEach(function(userQuestionsFolder) {
 												var yourQuestionFolder = {};
 												yourQuestionFolder.guid = userQuestionsFolder.guid;												
@@ -416,11 +416,11 @@ angular
 												yourQuestionFolder.sequence = userQuestionsFolder.sequence;
 												yourQuestionFolder.nodeType = "UserQuestionsFolder";
 												yourQuestions.push(yourQuestionFolder);
+												folderCount = folderCount + 1;
 											});
 											
 											UserQuestionsService.userQuestions(function(userQuestions) {
-												$scope.userQuestions = userQuestions;	
-												var qustIndex=0;
+												$scope.userQuestions = userQuestions;													
 												$scope.userQuestions.forEach(function(userQuestion) {
 													var yourQuestion = {};
 													var displayNode = $("<div></div>");
@@ -441,8 +441,8 @@ angular
 													yourQuestion.guid = userQuestion.guid;
 													yourQuestion.showEditQuestionIcon = false;
 													yourQuestion.isNodeSelected = false;
-													qustIndex++;
-													yourQuestion.questnNumber=qustIndex;
+													
+													yourQuestion.questnNumber=folderCount;
 													addToQuestionsArray(yourQuestion);
 	
 													yourQuestion.data = userQuestion.qtixml;
@@ -455,7 +455,7 @@ angular
 	
 													yourQuestions.push(yourQuestion);
 												})
-	
+												yourQuestions.userFolderCount = folderCount;
 												discipline.node.nodes = yourQuestions;
 												
 												discipline.node.isHttpReqCompleted = true;												
@@ -2017,8 +2017,12 @@ angular
 										$scope.yourQuestionsFolder = $scope.disciplines[0];
 										$scope.yourQuestionsFolder.isHttpReqCompleted = true;
 									} else {					
-										if($scope.yourQuestionsFolder.node)
-											$scope.yourQuestionsFolder.node.nodes.push(editedQuestion);	
+										if($scope.yourQuestionsFolder.node){
+                                            var userCreatedFoldersCount = $scope.yourQuestionsFolder.node.nodes.userFolderCount;
+                                            editedQuestion.questnNumber = userCreatedFoldersCount;
+                                            editedQuestion.questionType = "userCreatedQuestion";                                            
+                                            $scope.yourQuestionsFolder.node.nodes.push(editedQuestion);    
+                                        }
 									}
 								})				
 								

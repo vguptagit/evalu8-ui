@@ -260,7 +260,7 @@
     </script>
 
 	<script type="text/ng-template" id="qb_questions_renderer.html">
-	<div ng-if="node.questionType == 'userCreatedQuestion'" class="questionListIndex">{{node.questnNumber}})</div>
+	<div ng-if="node.questionType == 'userCreatedQuestion'" class="questionListIndex">{{($index - node.questnNumber +1 ) }})</div>
 	<div ng-if="node.questionType != 'userCreatedQuestion'" class="questionListIndex">{{$index + 1}})</div>
         <div id="QBQuestion" nodeSelected={{node.isNodeSelected}} ng-mousedown="selectNode(this.node);" ui-tree-handle class="printViewContainer tree-node tree-node-content questionList" ng-class="{questionTitleInTree: node.questionXML}">
             <button id="QBPencil" type="button" ng-show="node.showEditQuestionIcon" class="newTest-close questionIcon action-icon-bg glyphicon glyphicon-pencil" ng-mousedown="editQuestion(this)" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="bottom" tooltip="Move question to right for editing"></button>
