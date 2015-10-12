@@ -542,14 +542,14 @@ angular.module('e8MyTests')
 						if(cursor == qtiCationElement.text().length)
 							if(spanElement.innerHTML.lastIndexOf("</button>") + "</button>&nbsp;<br></p>".length == spanElement.innerHTML.length)
 							{
-								blankElement = $(spanElement).find("button:last-child").eq(0);
-								$(spanElement).find("button:last-child").eq(0).remove();
+								blankElement = $(spanElement).find("button:last").eq(0);
+								$(spanElement).find("button:last").eq(0).remove();
 							}
 						
 						if(spanElement.innerHTML.lastIndexOf("</button>") + "</button>&nbsp;</p>".length == spanElement.innerHTML.length)
 						{
-							blankElement = $(spanElement).find("button:last-child").eq(0);
-							$(spanElement).find("button:last-child").eq(0).remove();
+							blankElement = $(spanElement).find("button:last").eq(0);
+							$(spanElement).find("button:last").eq(0).remove();
 						}
 					}
 					if(blankElement != null)
@@ -588,7 +588,7 @@ angular.module('e8MyTests')
 							qtiCationElement.parent().parent().find("#crtAns").children().children().eq(index - 1).remove();
 							for(var i = index-1; i<qtiCationElement.find("button").length; i++)
 							{
-								qtiCationElement.find("button").eq(i).attr("id","RESPONSE_" + (i));
+								qtiCationElement.find("button").eq(i).attr("id","RESPONSE_" + (i+1));
 								qtiCationElement.find("button").eq(i).find("b").eq(0).text(String.fromCharCode(65 + i ) + ".");
 
 								var crtAnswer = qtiCationElement.parent().parent().find("#crtAns").children().children().eq(i);
