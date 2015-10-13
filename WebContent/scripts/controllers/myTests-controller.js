@@ -737,7 +737,17 @@ angular.module('e8MyTests')
         					archivedFolderParent.node.nodes.splice(0,1);
         				}
         				archivedFolderParent.node.nodes.unshift(archivedFolder);
-        			}        			
+        			}else{
+       				 	ArchiveService.getArchiveFolders($scope.archiveRoot.node, function (archivedFolders) {
+	    					$scope.archiveRoot.node.nodes=archivedFolders;
+	    					TestService.getArchiveTests($scope.archiveRoot.node.guid, function (tests) {
+	    						 tests.forEach(function (test) {
+	    	                            test.selectTestNode = false;
+	    	                            $scope.archiveRoot.node.nodes.push(test);
+	    	                     });
+	    					 });
+	       				});
+        			 }       			
         		}        		        
 
         		$rootScope.blockLeftPanel.stop();
@@ -786,7 +796,17 @@ angular.module('e8MyTests')
         				}
         				
         				testParent.node.nodes.push(test.node);
-        			}
+        			}else{
+       				 	ArchiveService.getArchiveFolders($scope.archiveRoot.node, function (archivedFolders) {
+	    					$scope.archiveRoot.node.nodes=archivedFolders;
+	    					TestService.getArchiveTests($scope.archiveRoot.node.guid, function (tests) {
+	    						 tests.forEach(function (test) {
+	    	                            test.selectTestNode = false;
+	    	                            $scope.archiveRoot.node.nodes.push(test);
+	    	                     });
+	    					 });
+	       				});
+        			 } 
         		}
         		
         		$rootScope.blockLeftPanel.stop();
