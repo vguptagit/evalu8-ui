@@ -498,18 +498,18 @@ angular.module('e8MyTests')
             node.hover = false;
         }
 
-        $scope.addFolderClick = function() {
-                        
+        $scope.addFolderClick = function($event) {
+            
             document.getElementById("txtFolderName").value = "";
                                            
             $scope.showAddFolderPanel= !$scope.showAddFolderPanel;  
-            event.stopPropagation();
+            $event.stopPropagation();
         }
         
         $scope.folderNameSaveAlertOpen = false;
-        $(document).on ('click', function() {
+        $(document).on ('click', function(event) {
         	if(!$scope.folderNameSaveAlertOpen) {
-        		if(event.srcElement.id != "txtFolderName") {
+        		if(event.target.id != "txtFolderName") {
         			$scope.folderNameTextBoxBlur();
         		}
         	}
