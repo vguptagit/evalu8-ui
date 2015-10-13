@@ -3,8 +3,19 @@ angular.module('e8MyTests')
 		['$scope', '$rootScope', '$modalInstance', 'parentScope', 'UserService', 'TestService', '$modal',
 		 function ($scope, $rootScope, $modalInstance, parentScope, UserService, TestService, $modal) {
 
-		     $scope.test = angular.copy(parentScope.sharedTabService.masterTests[parentScope.currentIndex]);
-
+		     /**
+		      * In parentScope.sharedTabService.masterTests[parentScope.currentIndex].criterias, there is a property called scope which being set
+		      * to $scope. This makes angular.copy to throw exception. Hence, since criterias property is not needed for print functionality,
+		      * we are removing the criterias property before cloning. Once it is cloned, we are setting back teh criterias to 
+		      * parentScope.sharedTabService.masterTests[parentScope.currentIndex].criterias.
+		      */
+			(function(parentScope,scope){
+				var backUpCriterias = parentScope.sharedTabService.masterTests[parentScope.currentIndex].criterias;
+				parentScope.sharedTabService.masterTests[parentScope.currentIndex].criterias = null;
+				scope.test = angular.copy(parentScope.sharedTabService.masterTests[parentScope.currentIndex]);
+			    parentScope.sharedTabService.masterTests[parentScope.currentIndex].criterias = backUpCriterias;
+			})(parentScope,$scope)
+		     
 		     $scope.answerAreas = [
                                    { value: 'NONE', isDisabled: false, text: 'None' },	//includeAreaForStudentResponse
                                    { value: 'BETWEENQUESTIONS', isDisabled: false, text: 'Between questions' },
@@ -70,4 +81,5 @@ angular.module('e8MyTests')
 		    		 $scope.answerAreaOnLeftSide=false;
 		    	 }
 		     }
+
 		 }]);
