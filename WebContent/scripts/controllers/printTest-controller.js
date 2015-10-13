@@ -14,7 +14,7 @@ angular.module('e8MyTests')
 				parentScope.sharedTabService.masterTests[parentScope.currentIndex].criterias = null;
 				scope.test = angular.copy(parentScope.sharedTabService.masterTests[parentScope.currentIndex]);
 			    parentScope.sharedTabService.masterTests[parentScope.currentIndex].criterias = backUpCriterias;
-			    scope.test.title = parentScope.tests[parentScope.currentIndex].title;
+			    scope.test.title = parentScope.tests[parentScope.currentIndex].tabTitle;
 			})(parentScope,$scope)
 		     
 		     $scope.answerAreas = [
