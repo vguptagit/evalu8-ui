@@ -1131,63 +1131,90 @@ angular.module('e8MyTests')
                     SharedTabService.removeMasterTest(createdTab);
                     SharedTabService.addMasterTest(createdTab);
                 }
-               
             }else{
             	SharedTabService.removeMasterTest(createdTab);
                 SharedTabService.addMasterTest(createdTab);
             }
              return false;
           }
-
-            var parentFolder = null, parentFolderNodes = null;
+            var parentFolder = null, parentFolderNodes = null,parentTestBindings = null;
             //if containerFolder is null, it considered as root
             if (containerFolder == null) {
-                parentFolderNodes = $scope.defaultFolders;
+            	parentFolderNodes = $scope.defaultFolders;
             } else {
-                parentFolder = CommonService.SearchItem($scope.defaultFolders, containerFolder.guid);
-                parentFolderNodes = parentFolder.nodes;
+            	parentFolder = CommonService.SearchItem($scope.defaultFolders, containerFolder.guid);
+            	parentFolderNodes = parentFolder.nodes;
+            	parentTestBindings = parentFolder.testBindings;
             }
             TestService.getMetadata(newTest.guid, function (test) {               
-                test.nodeType = EnumService.NODE_TYPE.test;
-                test.draggable = false;
-                
-                if (containerFolder) {
-                    test.parentId = containerFolder.guid;
-                    test.selectTestNode = true;
-                    if(parentFolderNodes){
-                    	if (parentFolderNodes.length > 0) {
-                    		if(parentFolderNodes[0].nodeType == EnumService.NODE_TYPE.emptyFolder) {
-                    		parentFolderNodes.shift();
-                    	}
-                    }
-                   parentFolderNodes.push(test);
-                }
-                }
-                else {
-                    test.parentId = null;
-                    var position = 0;
-                    $.each(parentFolderNodes, function (i,item) {
-                        if (item.nodeType == EnumService.NODE_TYPE.archiveRoot){
-                            return false;
-                        }
-                        position++;
-                    });
-                    
-                    UserFolderService.testRootFolder(function(myTestRoot){
-                		$scope.myTestRoot = myTestRoot;
-                    });
-                    parentFolderNodes.splice(position, 0, test)
-                }
-                createdTab.metadata = TestService.getTestMetadata(test);
-                createdTab.treeNode = test;
-                if (createdTab.isSaveAndClose) {
-                    SharedTabService.closeTab(createdTab, testCreationFrameScope);
-                    SharedTabService.removeMasterTest(createdTab);
-                } else {
-                    SharedTabService.removeMasterTest(createdTab);
-                    SharedTabService.addMasterTest(createdTab);
-                }
-                
+            	test.nodeType = EnumService.NODE_TYPE.test;
+            	test.draggable = false;
+
+            	if (containerFolder) {
+            		test.parentId = containerFolder.guid;
+            		test.selectTestNode = true;
+            		if(parentFolderNodes){
+            			if (parentFolderNodes.length > 0) {
+            				if(parentFolderNodes[0].nodeType == EnumService.NODE_TYPE.emptyFolder) {
+            					parentFolderNodes.shift();
+            				}
+            				parentFolderNodes.push(test);
+            				if(containerFolder.testBindings.length > 0){
+            					var testBinding = {
+            							testId: newTest.guid,
+            							sequence: containerFolder.testBindings[containerFolder.testBindings.length-1].sequence + 1 
+            					}
+            							parentTestBindings.push(testBinding);
+            				}else{
+            					var testBinding = {
+            							testId: newTest.guid,
+            							sequence: 1 
+            					}
+            					parentTestBindings.push(testBinding);
+            				}
+            			}else{
+            				var testBinding = {
+                					testId: newTest.guid,
+                					sequence: 1 
+                			}
+                			parentTestBindings.push(testBinding);
+                			parentFolderNodes.push(test);
+            			}
+
+            		}else{
+            			var testBinding = {
+            					testId: newTest.guid,
+            					sequence: 1 
+            			}
+            			parentTestBindings.push(testBinding);
+            			parentFolderNodes.push(test);
+            		}
+            	}
+            	else {
+            		test.parentId = null;
+            		var position = 0;
+            		$.each(parentFolderNodes, function (i,item) {
+            			if (item.nodeType == EnumService.NODE_TYPE.archiveRoot){
+            				return false;
+            			}
+            			position++;
+            		});
+
+            		UserFolderService.testRootFolder(function(myTestRoot){
+            			$scope.myTestRoot = myTestRoot;
+            		});
+            		parentFolderNodes.splice(position, 0, test)
+            	}
+            	createdTab.metadata = TestService.getTestMetadata(test);
+            	createdTab.treeNode = test;
+            	if (createdTab.isSaveAndClose) {
+            		SharedTabService.closeTab(createdTab, testCreationFrameScope);
+            		SharedTabService.removeMasterTest(createdTab);
+            	} else {
+            		SharedTabService.removeMasterTest(createdTab);
+            		SharedTabService.addMasterTest(createdTab);
+            	}
+
             	if($scope.defaultFolders.length == 1) {
             		$scope.defaultFolders.push(CommonService.getArchiveRoot());
             	}
@@ -1203,9 +1230,16 @@ angular.module('e8MyTests')
             else {
                 treeItems = testFolder.nodes;
             }
+            
+            var testBinding = {
+                    testId: newTest.guid,
+                    sequence: testFolder.testBindings[testFolder.testBindings.length-1].sequence + 1 
+            }
+            testFolder.testBindings.push(testBinding);
+            
             addVersionTest(testFolder, treeItems, test, newTest);
             
-        })       
+        })     
                
         $scope.openImportBooksViewModal = function () {
         	$modal.open({	            
