@@ -1194,6 +1194,10 @@ angular.module('e8MyTests')
                 treeItems = $scope.defaultFolders;
             }
             else {
+            	if(!testFolder.nodes){
+                 	testFolder.nodes =[];
+                 	testFolder.nodes.push(newTest);
+                 }
                 treeItems = testFolder.nodes;
             }
           if(testFolder != null){  
