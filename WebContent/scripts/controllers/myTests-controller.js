@@ -507,7 +507,7 @@ angular.module('e8MyTests')
         }
         
         $scope.folderNameSaveAlertOpen = false;
-        $(document).on ('click', function(event) {
+        $(document).off('click').on('click', function(event) {
         	if(!$scope.folderNameSaveAlertOpen) {
         		if(event.target.id != "txtFolderName") {
         			$scope.folderNameTextBoxBlur();
