@@ -1150,12 +1150,11 @@ angular.module('e8MyTests')
             	test.nodeType = EnumService.NODE_TYPE.test;
             	test.draggable = false;
 
-            	if (containerFolder) {
+            	if (containerFolder) {// to check whether test belongs to root or any other folder
             		test.parentId = containerFolder.guid;
             		test.selectTestNode = true;
-            		if(parentFolderNodes){
-            			if (parentFolderNodes.length > 0) {
-            				if(parentFolderNodes[0].nodeType == EnumService.NODE_TYPE.emptyFolder) {
+            		if(parentFolderNodes && parentFolderNodes.length > 0){
+            				if(parentFolderNodes[0].nodeType == EnumService.NODE_TYPE.emptyFolder) { //checking whether first node is empty or not
             					parentFolderNodes.shift();
             				}
             				parentFolderNodes.push(test);
@@ -1172,22 +1171,14 @@ angular.module('e8MyTests')
             					}
             					parentTestBindings.push(testBinding);
             				}
-            			}else{
-            				var testBinding = {
-                					testId: newTest.guid,
-                					sequence: 1 
-                			}
-                			parentTestBindings.push(testBinding);
-                			parentFolderNodes.push(test);
-            			}
-
             		}else{
+            			 parentFolder.nodes=[];
             			var testBinding = {
             					testId: newTest.guid,
             					sequence: 1 
             			}
             			parentTestBindings.push(testBinding);
-            			parentFolderNodes.push(test);
+            			parentFolder.nodes.push(test);
             		}
             	}
             	else {
@@ -1230,10 +1221,22 @@ angular.module('e8MyTests')
             else {
                 treeItems = testFolder.nodes;
             }
+            var sequence;
+            testFolder.testBindings.forEach(function(binding){
+            	if(binding.testId==test.id){
+            		sequence=binding.sequence;
+            	}else{
+            		testFolder.nodes.forEach(function(node){
+            			if(node.guid==binding.testId && node.versionOf==test.id){
+            				sequence=binding.sequence;
+            			}
+            		});
+            	}
+            });
             
             var testBinding = {
                     testId: newTest.guid,
-                    sequence: testFolder.testBindings[testFolder.testBindings.length-1].sequence + 1 
+                    sequence:  sequence + 0.001 
             }
             testFolder.testBindings.push(testBinding);
             
