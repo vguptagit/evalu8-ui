@@ -496,29 +496,7 @@ angular.module('e8MyTests')
 
             $rootScope.tree = { mouseOverNode: null };
             node.hover = false;
-        }
-
-        $scope.addFolderClick = function($event) {
-            
-            document.getElementById("txtFolderName").value = "";
-                                           
-            $scope.showAddFolderPanel= !$scope.showAddFolderPanel;  
-            $event.stopPropagation();
-        }
-        
-        $scope.folderNameSaveAlertOpen = false;
-        $(document).off('click').on('click', function(event) {
-        	if(!$scope.folderNameSaveAlertOpen) {
-        		if(event.target.id != "txtFolderName") {
-        			$scope.folderNameTextBoxBlur();
-        		}
-        	}
-        }).on('keydown', '#txtFolderName', function(e) {
-            if (e.which == 9) {
-                e.preventDefault();
-                $scope.folderNameTextBoxBlur();
-            }
-        });
+        }     
         
 		$scope.folderNameTextBoxBlur = function() {
 			
@@ -542,7 +520,6 @@ angular.module('e8MyTests')
                         $scope.showAddFolderPanel = false;
                         document.getElementById("txtFolderName").value = ""; 
     	    		}
-    	    		$scope.folderNameSaveAlertOpen = false;
         		});
             }
         }
@@ -555,9 +532,7 @@ angular.module('e8MyTests')
         $('.testMessagetip').offset({'top':($(window).height()/2)-$('.testMessagetip').height()});
         $('.testMessagetip').hide();
         $scope.selectTestNode = function ($event,test) {
-        	if($scope.showAddFolderPanel){
-        		$scope.showAddFolderPanel = false;
-        	}
+
         	if(test.node.nodeType == EnumService.NODE_TYPE.emptyFolder) {
         		return;
         	}

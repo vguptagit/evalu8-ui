@@ -889,6 +889,11 @@
                 document_width;
 
             var dragStart = function(e) {
+            	
+              if(scope.showAddFolderPanel){
+            	return;
+              }
+            	
               if (!hasTouch && (e.button == 2 || e.which == 3)) {
                 // disable right click
                 return;
