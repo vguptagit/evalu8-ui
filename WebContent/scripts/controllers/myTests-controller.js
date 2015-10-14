@@ -1221,6 +1221,7 @@ angular.module('e8MyTests')
             else {
                 treeItems = testFolder.nodes;
             }
+          if(testFolder != null){  
             var sequence;
             testFolder.testBindings.forEach(function(binding){
             	if(binding.testId==test.id){
@@ -1239,7 +1240,7 @@ angular.module('e8MyTests')
                     sequence:  sequence + 0.001 
             }
             testFolder.testBindings.push(testBinding);
-            
+          }
             addVersionTest(testFolder, treeItems, test, newTest);
             
         })     
