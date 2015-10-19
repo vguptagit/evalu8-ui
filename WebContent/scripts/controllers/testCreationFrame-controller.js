@@ -2016,12 +2016,13 @@ angular
 								        $scope.versionedTests.forEach(function (node) {
 								            var testID = node.guid;
 								            TestService.getMetadata(testID, function (result) {
+								            	result.draggable = false;
+								            	result.showEditIcon = false;
+							                    result.showArchiveIcon = false;
+							                    
 								                $scope.maping[node.guid] = result;
 								                $scope.count = $scope.count + 1;
 								                if ($scope.count == $scope.versionedTests.length) {
-								                    result.showEditIcon = false;
-								                    result.showArchiveIcon = false;
-								                    result.draggable = false;
 								                    $scope.bindTabs();
 								                }
 								            });

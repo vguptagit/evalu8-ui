@@ -1192,6 +1192,9 @@ angular.module('e8MyTests')
             var treeItems = null;
             if (testFolder==null) {
                 treeItems = $scope.defaultFolders;
+                UserFolderService.testRootFolder(function(myTestRoot){
+        			$scope.myTestRoot = myTestRoot;
+        		});
             }
             else {
             	if(!testFolder.nodes){
@@ -1238,7 +1241,10 @@ angular.module('e8MyTests')
                 return;
             }
             $.each(treeItems, function (i, v) {
-            	if ((v.guid == test.id && (treeItems[i+1]==undefined || treeItems[i+1].versionOf == null)) || (v.versionOf == test.id && (treeItems[i+1]==undefined || test.id && treeItems[i+1].versionOf != test.id))) {
+            	if ((v.guid == test.id && (treeItems[i+1]==undefined || treeItems[i+1].versionOf != test.id)) || (v.versionOf == test.id && (treeItems[i+1]==undefined || test.id && treeItems[i+1].versionOf != test.id))) {
+            		if(treeItems[i+1] != undefined && treeItems[i+1].versionOf == test.id){
+            			i+=1;
+            		}
                     treeItems.splice(i + 1, 0, newTest)
                     return false;
                 }
