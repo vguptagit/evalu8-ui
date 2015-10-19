@@ -1722,7 +1722,7 @@ li[quiztype='TrueFalse'] .qti-simpleChoice .radio {
 
 .downArrowImage {
 	float: left;
-	outline: none;
+	/*outline: none;*/
 }
 
 .imagecaptionMetadata {

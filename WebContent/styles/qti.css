@@ -152,7 +152,7 @@
   display: inline-block; 
   border: none;
   background: none;  
-  outline:0 !important;
+  /*outline:0 !important;*/
   height: 26px;
   color: #808080;
  }
@@ -224,7 +224,7 @@
   display: inline-block; 
   border: none;
   background: none;  
-  outline:0 !important;
+  /*outline:0 !important;*/
   height: 26px;
   color: #808080;
 }
@@ -548,7 +548,7 @@
   background-color: #fff;  
   float: right;
   margin-right: 8px;
-  outline: none;
+  /*outline: none;*/
 }
 
 .captionContainer ~ .questionUploadImage{
