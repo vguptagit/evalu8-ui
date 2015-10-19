@@ -65,6 +65,8 @@
 .userBooksContainer {
 	display: inline-block;
 	width: 100%;
+    overflow: auto;
+    overflow-x: hidden;	
 }
 
 .userBooks {
@@ -74,7 +76,7 @@
 }
 
 .userBookRow {	
-	width: 97%;
+	width: 100%;
 	border: solid 0px #fff;
 	border-bottom: 1px solid #E0E0E0;
 	background-color: #fff;
@@ -88,6 +90,18 @@
 .importInPopUp .userBookRow {
 	width: 100%;
 }
+
+.importInPopUp .userBooksContainer {
+	height: 300px;
+}
+
+section[canenter="enterUserBooks"] div.userBooksContainer{
+	position:absolute !important;
+	top: 52px;
+    bottom: 0;
+    right: 0;
+    margin-right: 6px
+    }
 
 .selectedUserBook {
 	background-color: #007FA9;

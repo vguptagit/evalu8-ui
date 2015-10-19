@@ -1,0 +1,108 @@
+
+<div
+	class="modal-content pull-left col-sm-6 col-md-6 col-lg-6 leftPrint">
+	<div>
+		<div class="modal-header">
+			<h4 class="modal-default-header-title margin-lft-5neg"
+				id="myModalLabel">Print Options</h4>
+			<i class="fa fa-spinner fa-pulse font-size-16 showWaiting"
+				ng-show="showWaiting"></i>
+		</div>
+		<div class="modal-body row">
+			<div class="col-sm-6 col-md-6 col-lg-6 margin-top-5">
+				<div class="bold">Student answers area</div>
+			</div>
+			<div class="col-sm-6 col-md-6 col-lg-6">
+				<div data-ng-repeat="answerArea in answerAreas">
+					<label class="text-radio-label margin-top-5"> <input
+						data-ng-change="answerAreaChange()"
+						data-ng-model="$parent.selectedAnswerArea"
+						data-ng-value="answerArea" name="answerOptions" type="radio"
+						id="ContactMethod_0" value="radio" checked=""> <span>{{answerArea.text}}</span>
+					</label>
+				</div>
+			</div>
+			<div class="col-sm-6 col-md-6 col-lg-6 margin-top-22">
+				<div class="bold">Labels</div>
+			</div>
+			<div class="col-sm-6 col-md-6 col-lg-6 margin-top-20">
+				<label> <input type="checkbox"
+					data-ng-model="isIncludeStudentName"> Add student name
+					label &amp; space
+				</label>
+			</div>
+			<div class="infoPrint">
+				<label><i class="fa fa-info-circle blueColor"></i><span>For
+						more test format options, cancel print, and select the export
+						button.</span></label>
+			</div>
+		</div>
+	</div>
+	<div class="width100">
+		<div class="printFooter">
+			<div class="modal-footer">
+				<div class="col-sm-6 col-md-6 col-lg-6 row"></div>
+				<div class="col-sm-6 col-md-6 col-lg-6 row pull-right">
+					<button id="cancel" type="button" class="btn btn-default"
+						data-dismiss="modal" data-ng-click="cancel()">Cancel</button>
+					<button id="export" type="button" class="btn btn-primary"
+						data-ng-click="printTest()">Print</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+<div
+	class="modal-content pull-left col-sm-6 col-md-6 col-lg-6 rightPrint print-preview">
+	<div style="height: 100%; padding: 5px 0px">
+		<div class="modal-header">
+			<button type="button" class="close closeIcon"
+				data-ng-click="cancel()" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			<h4 class="modal-default-header-title margin-lft-5neg"
+				id="myModalLabel">Print Preview</h4>
+			<i class="fa fa-spinner fa-pulse font-size-16 showWaiting"
+				ng-show="showWaiting"></i>
+			<div id="testPreviewContainer">
+				<div id="qstnArea" class="qstnAreaPrint testPreviewContainer">
+					<div class="print-preview">
+						<h5>{{test.title}}</h5>
+						<h5 id="includeStudentName" ng-show="isIncludeStudentName">Name:</h5>
+						<ul id="QuestArea" class="print-view-questions"
+							ng-model="test.masterQuestions">
+							<li quiztype={{node.quizType}}
+								class="print-view-questions displayQuestionLI"
+								templateqstn="{{node.templateQstn}}"
+								optionsview="{{node.optionsView}}"
+								ng-class="{twoDigitIndex: $index + 1 > 9 ,threedigitIndex: $index + 1 > 99, fourDigitIndex: $index + 1 > 999}"
+								ng-repeat="node in test.masterQuestions"
+								ng-include="'qti_player_question_renderer_1.html'"></li>
+						</ul>
+					</div>
+					<div id="answerSpaceLastPage"
+						class="margin-top-100 margin-lft-20 pagebreak"
+						ng-show="answerAreaOnLastPage">
+						<div class="margin-top-15 floatLeftImp width100"
+							ng-repeat="node in test.masterQuestions">
+							<div class="floatLeftImp">{{$index+1}}.</div>
+							<div ng-attr-style="height:{{node.quizType=='Essay' && node.qtiModel!=undefined? node.qtiModel.EssayPageSize*20+'px' : 'auto'}}"
+								id="{{node.quizType}}" class="floatLeftImp margin-lft-10"><span ng-show="'{{node.quizType}}'!='Essay'">__________</span></div>
+							<br>
+						</div>
+					</div>
+					<script type="text/ng-template"
+						id="qti_player_question_renderer_1.html">
+                        <div class="qtiQuestionContainer">
+                            <div mode="false">
+                                <print-qti-play></print-qti-play>
+                            </div>
+                        </div>
+						<div id="answerSpace" class="height100" ng-show="answerAreaBetweenQuestions"></div>
+                    </script>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

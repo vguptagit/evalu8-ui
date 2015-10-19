@@ -3,14 +3,15 @@
         <div>
             <div class="newFolderDiv">
                 <!-- <label class=" treeDiv1"> -->
-                <button class="addFolder fa fa-plus" event-focus="click" event-focus-id="txtFolderName" ng-click='showAddFolderPanel= !showAddFolderPanel' value="Add Folder" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Add new folder"><span class="text14 margin-lft-10">Add Folder</span></button>
-                <button data-ng-click="openImportBooksViewModal()"  class="import fa fa-download"><span class="text14 margin-lft-10" >Import</span></button>
+                <button id="addfolder" class="addFolder fa fa-plus" event-focus="click" event-focus-id="txtFolderName" ng-click="showAddFolderPanel= !showAddFolderPanel" value="Add Folder" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Add new folder"><span class="text14 margin-lft-10">Add Folder</span></button>
+                <button id="import" data-ng-click="openImportBooksViewModal()"  class="import fa fa-download"><span class="text14 margin-lft-10" >Import</span></button>
                 <!-- </label> -->
             </div>
 
             <div class="createNewNode" ng-show="showAddFolderPanel">
-                <input type="text" data-ng-model="folderName" id="txtFolderName" ng-disabled="isAddFolderClicked" class="form-control"
-                       placeholder="Untitled Folder " ng-enter="addNewFolder()" />
+                <input type="text" data-ng-model="folderName" id="txtFolderName" 
+                	ng-disabled="isAddFolderClicked" class="form-control"
+                    ng-blur="folderNameTextBoxBlur()" placeholder="Untitled Folder " ng-enter="addNewFolder(true)" />
             </div>
 
         </div>
@@ -22,77 +23,78 @@
 				<div><span class="glyphicon glyphicon-info-sign"></span>&nbsp;<strong class="tips">Tips:</strong> Drag test to right to edit OR select pencil icon.
 				Select Archive box icon to move <br>test to Archive directory</div>
 				</div>
-                <li data-ng-repeat="node in defaultFolders" data-ui-tree-node x-collapsed="true" 
-                data-ng-include="'defaultfolder_renderer.html'" draggable="{{node.draggable}}" />
+                <li data-ng-repeat="node in defaultFolders" data-ui-tree-node x-collapsed="true" draggable="{node.draggable}"
+                    data-ng-include="'defaultfolder_renderer.html'" />
             </ol>
         </div>
     </div>
     <script type="text/ng-template" id="defaultfolder_renderer.html">
-        <div ui-tree-handle class="tree-node tree-node-content">
-            <div data-ng-if="node.nodeType == 'archiveRoot'" style="margin-bottom:2px">
-                <div class="sectionLineDiv"></div>
-            </div>
-            <div data-ng-if="node.nodeType == 'archiveRoot'" class="treeDiv">
-                <div class="newFolderDiv padding-lft-15">
-                    <div class="imagediv">
-                        <input type="image" ng-click="getFolders(this)" class="collapseImg" value=""
-                               ng-src="{{collapsed && 'images/right_arrow2.png' || 'images/right_arrow.png'}}" />
-                    </div>
-                    <div class="captiondiv">
-                        <label class="captionLabel" title="{{node.title}}">{{node.title}}</label>
-                    </div>
-                    <div class="iconsCourseNode">
-                        <span></span>
-                    </div>
+        <div draggable="{{node.draggable}}" data-ui-tree-node>
+            <div ui-tree-handle class="tree-node tree-node-content">
+                <div data-ng-if="node.nodeType == 'archiveRoot'" style="margin-bottom:2px">
+                    <div class="sectionLineDiv"></div>
                 </div>
-            </div>
-
-            <div data-ng-if="node.nodeType=='test'" class="treeDiv" ng-class="{testHighlightSelected: isActiveSelectedTest(node.guid)}">
-                <div class="maindivTest" ng-class="{testHighlight: node.selectTestNode}" id={{node.guid}}>
-                    <div class="imagediv"></div>
-                   <div class="testCaptionDiv">
-                        <div ng-mousedown="selectTestNode($event,this);" id="testButtonDiv"
-                           class=" testInputbuttonClass " >
-                          <span class="testCaptionLabel testInputbuttonClass"  title="{{node.title}}"> {{node.title}}</span>&nbsp;&nbsp;&nbsp;&nbsp; {{node.modified | date:'MM/dd/yy'}}
+                <div data-ng-if="node.nodeType == 'archiveRoot'" class="treeDiv">
+                    <div class="newFolderDiv padding-lft-15">
+                        <div class="imagediv">
+                            <input type="image" ng-click="getFolders(this)" class="collapseImg" value=""
+                                   ng-src="{{collapsed && 'images/right_arrow2.png' || 'images/right_arrow.png'}}" />
+                        </div>
+                        <div class="captiondiv">
+                            <label class="captionLabel" title="{{node.title}}">{{node.title}}</label>
+                        </div>
+                        <div class="iconsCourseNode">
+                            <span></span>
                         </div>
                     </div>
-                    <div class="testimagesdiv" ng-class="{testHighlight: node.selectTestNode}">
-                        <span ng-show="node.selectTestNode">
-                            <button ng-show="node.showEditIcon" id="editTestbtn"
-                                    ng-click="editTest(this)"
-                                    class="editiconButtons glyphicon glyphicon-pencil"  tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Open in right edit panel"/>
-                            <button ng-show="node.showArchiveIcon" ng-click="archiveTest(this)" class="archiveIconButtons fa fa-archive" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Move to Archive folder at bottom of screen"/>
-                        </span>
+                </div>
+
+                <div data-ng-if="node.nodeType=='test'" class="treeDiv" ng-class="{testHighlightSelected: isActiveSelectedTest(node.guid)}">
+                    <div class="maindivTest" ng-class="{testHighlight: node.selectTestNode}" id={{node.guid}}>
+                        <div class="imagediv"></div>
+                        <div class="testCaptionDiv">
+                            <div ng-mousedown="selectTestNode($event,this);" id="testButtonDiv"
+                                 class=" testInputbuttonClass ">
+                                <span class="testCaptionLabel testInputbuttonClass" title="{{node.title}}"> {{node.title}}</span>&nbsp;&nbsp;&nbsp;&nbsp; {{node.modified | date:'MM/dd/yy'}}
+                            </div>
+                        </div>
+                        <div class="testimagesdiv" ng-class="{testHighlight: node.selectTestNode}">
+                            <span ng-show="node.selectTestNode">
+                                <button ng-show="node.showEditIcon" id="editTestbtn"
+                                        ng-click="editTest(this)"
+                                        class="editiconButtons glyphicon glyphicon-pencil" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Open in right edit panel" />
+                                <button ng-show="node.showArchiveIcon" ng-click="archiveTest(this)" class="archiveIconButtons fa fa-archive" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Move to Archive folder at bottom of screen" />
+                            </span>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div data-ng-if="node.nodeType == 'folder'" class="treeDiv"
-                 ng-class="{treeNodeHover: hover}"
-                 ng-mouseenter="treeNodeMouseEnter(this)"
-                 ng-mouseleave="treeNodeMouseLeave(this)">
-                <div class="maindiv" ng-class="{folderHighlight: node.selectTestNode}" id={{node.guid}}>
-                    <div class="imagediv">
-                        <input type="image" ng-click="getFolders(this)" class="collapseImg" value=""
-                               ng-src="{{collapsed && 'images/right_arrow2.png' || 'images/right_arrow.png'}}" />
-                    </div>
-                    <div class="captiondiv" ng-mousedown="selectTestNode($event,this);">
-                        <label class="captionLabel"  title="{{node.title}}">{{node.title}}</label>
-                    </div>
-                    <div class="iconsCourseNode">
-                        <span ng-show="node.selectTestNode">
-                            <button data-ng-if="node.nodeType == 'folder'" ng-click="archiveFolder(this)" 
-                                    class="folderArchiveIcon fa fa-archive" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Move to Archive folder at bottom of screen"/>
-                        </span>
+                <div data-ng-if="node.nodeType == 'folder'" class="treeDiv"
+                     ng-class="{treeNodeHover: hover}"
+                     ng-mouseenter="treeNodeMouseEnter(this)"
+                     ng-mouseleave="treeNodeMouseLeave(this)">
+                    <div class="maindiv" ng-class="{folderHighlight: node.selectTestNode}" id={{node.guid}}>
+                        <div class="imagediv">
+                            <input type="image" ng-click="getFolders(this)" class="collapseImg" value=""
+                                   ng-src="{{collapsed && 'images/right_arrow2.png' || 'images/right_arrow.png'}}" />
+                        </div>
+                        <div class="captiondiv" ng-mousedown="selectTestNode($event,this);">
+                            <label class="captionLabel" title="{{node.title}}">{{node.title}}</label>
+                        </div>
+                        <div class="iconsCourseNode">
+                            <span ng-show="node.selectTestNode">
+                                <button data-ng-if="node.nodeType == 'folder'" ng-click="archiveFolder(this)"
+                                        class="folderArchiveIcon fa fa-archive" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Move to Archive folder at bottom of screen" />
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-
         <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}" droppable="{{node.droppable}}">
-            <li ng-repeat="node in node.nodes" collapsed="true" ui-tree-node 
-			ng-include="'tests_renderer.html'" draggable="{{node.draggable}}" />
+            <li ng-repeat="node in node.nodes" collapsed="true" ui-tree-node
+                ng-include="'tests_renderer.html'" draggable="{{node.draggable}}" />
         </ol>
     </script>
 

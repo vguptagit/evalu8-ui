@@ -33,8 +33,9 @@
 		         if ($scope.selectedfolder.isSelected) {
 		             $scope.getUserFolders(node);
 		         }
-		         else {
-		             $scope.selectedfolder = null;
+		         else {		             
+		             $scope.selectedfolder = CommonService.SearchItem($scope.node, node.parentId);
+		             $scope.selectedfolder.isSelected = true;
 		         }
 		     }
 		      
@@ -102,7 +103,7 @@
 	            
 		         var sequence = 1;
 		         if ($scope.selectedfolder && $scope.selectedfolder.nodes) {
-		             if ($scope.selectedfolder.nodes[0].nodeType === EnumService.NODE_TYPE.emptyFolder) {
+		             if ($scope.selectedfolder.nodes.length == 0 || $scope.selectedfolder.nodes[0].nodeType === EnumService.NODE_TYPE.emptyFolder) {
 		                 sequence = 1;
 		             } else {
 		                 sequence = ($scope.selectedfolder.nodes[0].sequence / 2);
@@ -121,16 +122,27 @@
 		             newFolder.guid = response.guid;
 		             newFolder.nodeType = EnumService.NODE_TYPE.folder;
 		             if ($scope.selectedfolder) {
-		                 $scope.selectedfolder.nodes.unshift(newFolder);
+		            	 if ($scope.selectedfolder.nodes.length == 0) {
+		            		 $scope.selectedfolder.nodes = [newFolder];
+		            	 } else {
+		            	     $scope.selectedfolder.nodes.unshift(newFolder);
+		            	 }
+		            	 setSelectedFolder(newFolder);
 		             }
 		             else {
 		                 $scope.node.unshift(newFolder);
+		                 setSelectedFolder(newFolder);
 		             }
 		             $rootScope.$broadcast('handleBroadcast_AddNewFolder', newFolder);
                      		             
 		         });
 		     }
-
+		     var setSelectedFolder = function (newFolder) {
+		         $scope.selectedfolder = newFolder;
+		         newFolder.nodes = [];
+		         newFolder.isSelected = true;
+		         newFolder.testBindings = [];
+		     }
 		     $scope.currentTest = parentScope.tests[parentScope.currentIndex];
 		     $scope.title = $scope.currentTest.title;
 		     $scope.isErrorMessage = false;

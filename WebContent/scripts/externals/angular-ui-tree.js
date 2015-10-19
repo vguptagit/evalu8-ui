@@ -895,6 +895,11 @@
                 document_width;
 
             var dragStart = function(e) {
+            	
+              if(scope.showAddFolderPanel){
+            	return;
+              }
+            	
               if (!hasTouch && (e.button == 2 || e.which == 3)) {
                 // disable right click
                 return;
@@ -1082,6 +1087,29 @@
                 if ( leftElmPos > $('#tree2-root')[0].offsetWidth  
                   		&& 	treeBottom +120< dragBottom ){
                 	  $('#tree2-root').scrollTop( treeScrollTop + 15);                	
+                }
+                
+                
+                if(scope.$treeScope.$element[0].id=="MyTest-tree-root"){
+
+                	var myTestTreeScrollTop = $('div#MyTest-tree-root').scrollTop();
+
+                	var dragElementBottom = dragElm[0].offsetTop  + dragElm[0].offsetHeight ;	
+                	var myTestTreeBottom = $('div#MyTest-tree-root')[0].offsetTop +  $('div#MyTest-tree-root')[0].offsetHeight ;
+
+                	//this block will move the scrol to top.
+                	if (myTestTreeScrollTop>0
+                			&& ((myTestTreeScrollTop> eventObj.pageY) || ($('div#MyTest-tree-root').offset().top  < eventObj.pageY )) ) {  
+
+                		if(topElmPos<($('div#MyTest-tree-root').offset().top + 60)){
+                			$('div#MyTest-tree-root').scrollTop(myTestTreeScrollTop-15);
+                		}
+                	}
+
+                	//this block will move the scrol to bottom.
+                	if ( myTestTreeBottom + 20< dragElementBottom ){
+                		$('div#MyTest-tree-root').scrollTop(myTestTreeScrollTop + 15);                	
+                	}
                 }
                 
                 

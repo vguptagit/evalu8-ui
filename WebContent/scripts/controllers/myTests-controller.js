@@ -19,6 +19,10 @@ angular.module('e8MyTests')
         $scope.loadTree = function() {        	
         	
         	UserFolderService.defaultFolders(function (defaultFolders) {
+        		if(defaultFolders==null){
+        			CommonService.showErrorMessage(e8msg.error.cantFetchFolders)
+        			return;
+        		}
         		
             	UserFolderService.testRootFolder(function(myTestRoot){
             		$scope.myTestRoot = myTestRoot;
@@ -27,6 +31,11 @@ angular.module('e8MyTests')
 	                
 	                $rootScope.blockLeftPanel.start();
 	                TestService.getTests($scope.myTestRoot.guid, function(tests){
+	                	if(tests==null){
+	                		$rootScope.blockLeftPanel.stop();
+	                		CommonService.showErrorMessage(e8msg.error.cantFetchTests)
+	            			return;
+	                	}
 	                	tests.forEach(function(test) {
 	                		
 	                    	if(SharedTabService.tests) {
@@ -148,6 +157,11 @@ angular.module('e8MyTests')
                 	}
                 	
                 	TestService.getTests(mouseOverNode.node.guid, function (tests) {
+                		if(tests==null){
+                			$rootScope.blockLeftPanel.stop();
+                			CommonService.showErrorMessage(e8msg.error.cantFetchTests)
+                			return;
+                		}
                     	if(item.nodeType == EnumService.NODE_TYPE.test) {
                     		tests.forEach(function(nodeItem) {                        
                         		if(nodeItem.nodeType == EnumService.NODE_TYPE.test && nodeItem.title == item.title) {
@@ -482,8 +496,34 @@ angular.module('e8MyTests')
 
             $rootScope.tree = { mouseOverNode: null };
             node.hover = false;
+        }     
+        
+		$scope.folderNameTextBoxBlur = function() {
+			
+			if($scope.enterKey == true) {
+                $scope.enterKey = false;
+                return;
+            }
+                
+            if(document.getElementById("txtFolderName").value.trim().length==0) {
+                $scope.showAddFolderPanel = false;
+                $scope.$digest();
+                return; 
+            } else {
+            	$scope.folderNameSaveAlertOpen = true;
+                $scope.IsConfirmation = true;
+                $scope.message = "Do you want to save this folder?"; 
+        		$modal.open(confirmObject).result.then(function(ok) {
+    	    		if(ok) {
+    	    			$scope.addNewFolder(false);
+    	    		} else {
+                        $scope.showAddFolderPanel = false;
+                        document.getElementById("txtFolderName").value = ""; 
+    	    		}
+        		});
+            }
         }
-
+		
         // To show the Edit icon,on click of test
         // node.
         $scope.closeTip=function(){
@@ -492,7 +532,7 @@ angular.module('e8MyTests')
         $('.testMessagetip').offset({'top':($(window).height()/2)-$('.testMessagetip').height()});
         $('.testMessagetip').hide();
         $scope.selectTestNode = function ($event,test) {
-        	
+
         	if(test.node.nodeType == EnumService.NODE_TYPE.emptyFolder) {
         		return;
         	}
@@ -508,8 +548,9 @@ angular.module('e8MyTests')
 	        		$('.testMessagetip').hide();
 	        	}, 5000);
         	}
-
-            SharedTabService.showSelectedTestTab(test.node);
+            if(test.node.nodeType != EnumService.NODE_TYPE.archiveFolder && test.node.nodeType != EnumService.NODE_TYPE.archiveTest ){
+            	SharedTabService.showSelectedTestTab(test.node);
+            }
         }
 
         //to disable the edit icon once it clicked  
@@ -521,6 +562,9 @@ angular.module('e8MyTests')
         }
 
         $scope.getFolders = function(defaultFolder) {
+        	if($scope.showAddFolderPanel){
+        		$scope.showAddFolderPanel = false;
+        	}
         	if(defaultFolder.node.nodeType == EnumService.NODE_TYPE.folder) {
         		$scope.getUserFolders(defaultFolder);
         	}
@@ -545,7 +589,15 @@ angular.module('e8MyTests')
 
                     $rootScope.blockLeftPanel.start();
                     TestService.getTests(defaultFolder.node.guid, function (tests) {
-						
+                    	if(userFolders.length == 0 && (tests == null || tests.length == 0)) {
+
+    						userFolders.push(CommonService.getEmptyFolder());
+    					}
+						if(tests==null){
+							$rootScope.blockLeftPanel.stop();
+							CommonService.showErrorMessage(e8msg.error.cantFetchTests)
+                			return;
+						}
                         tests.forEach(function (test) {
 
                         	if(SharedTabService.tests) {
@@ -578,14 +630,22 @@ angular.module('e8MyTests')
             defaultFolder.toggle();
 
             if (!defaultFolder.collapsed) {            	
-				
+            	   $rootScope.blockLeftPanel.start();
                 ArchiveService.getArchiveFolders(defaultFolder.node, function (userFolders) {
+                	if(userFolders==null){
+               		 $rootScope.blockLeftPanel.stop();
+               		 CommonService.showErrorMessage(e8msg.error.cantFetchArchiveFolders);
+               		 return;
+               	}
 
                     defaultFolder.node.nodes = userFolders;
 
-                    $rootScope.blockLeftPanel.start();
                     TestService.getArchiveTests(defaultFolder.node.guid, function (tests) {
-                    	
+                    	if(tests==null){
+                    		$rootScope.blockLeftPanel.stop();
+                    		 CommonService.showErrorMessage(e8msg.error.cantFetchArchiveTests);
+                    		return;
+                    	}
                     	if(userFolders.length == 0 && tests.length == 0) {
     						 
                     		defaultFolder.node.nodes.push(CommonService.getEmptyFolder());                    		
@@ -617,7 +677,7 @@ angular.module('e8MyTests')
         		if(archivedFolder == null) {
         			$rootScope.blockLeftPanel.stop();
         			
-        			CommonService.showErrorMessage(e8msg.error.archive)
+        			CommonService.showErrorMessage(e8msg.error.cantArchive)
         			return;
         		}
         		folder.remove();        		
@@ -652,7 +712,17 @@ angular.module('e8MyTests')
         					archivedFolderParent.node.nodes.splice(0,1);
         				}
         				archivedFolderParent.node.nodes.unshift(archivedFolder);
-        			}        			
+        			}else{
+       				 	ArchiveService.getArchiveFolders($scope.archiveRoot.node, function (archivedFolders) {
+	    					$scope.archiveRoot.node.nodes=archivedFolders;
+	    					TestService.getArchiveTests($scope.archiveRoot.node.guid, function (tests) {
+	    						 tests.forEach(function (test) {
+	    	                            test.selectTestNode = false;
+	    	                            $scope.archiveRoot.node.nodes.push(test);
+	    	                     });
+	    					 });
+	       				});
+        			 }       			
         		}        		        
 
         		$rootScope.blockLeftPanel.stop();
@@ -668,7 +738,7 @@ angular.module('e8MyTests')
         		if(archivedFolder == null) {
         			$rootScope.blockLeftPanel.stop();
         			
-        			CommonService.showErrorMessage(e8msg.error.archive)
+        			CommonService.showErrorMessage(e8msg.error.cantArchive)
         			return;
         		}
         		
@@ -701,7 +771,17 @@ angular.module('e8MyTests')
         				}
         				
         				testParent.node.nodes.push(test.node);
-        			}
+        			}else{
+       				 	ArchiveService.getArchiveFolders($scope.archiveRoot.node, function (archivedFolders) {
+	    					$scope.archiveRoot.node.nodes=archivedFolders;
+	    					TestService.getArchiveTests($scope.archiveRoot.node.guid, function (tests) {
+	    						 tests.forEach(function (test) {
+	    	                            test.selectTestNode = false;
+	    	                            $scope.archiveRoot.node.nodes.push(test);
+	    	                     });
+	    					 });
+	       				});
+        			 } 
         		}
         		
         		$rootScope.blockLeftPanel.stop();
@@ -716,9 +796,17 @@ angular.module('e8MyTests')
         		if(restoredFolder == null) {
         			$rootScope.blockLeftPanel.stop();
         			
-        			CommonService.showErrorMessage(e8msg.error.restore)
+        			CommonService.showErrorMessage(e8msg.error.cantRestore)
         			return;
+        		} else if(restoredFolder == EnumService.HttpStatus.CONFLICT) {
+        			$rootScope.blockLeftPanel.stop();
+        			
+    	            $scope.IsConfirmation = false;
+    	            $scope.message = e8msg.validation.duplicateFolderTitle;
+    	            $modal.open(confirmObject);        		
+            		return;
         		}
+        		
         		folder.remove();
         		
         		if(folder.$parentNodeScope && folder.$parentNodeScope.node && folder.$parentNodeScope.node.nodes.length == 0) {
@@ -762,14 +850,36 @@ angular.module('e8MyTests')
         
         $scope.restoreTest = function(test) {
         	
+        	var duplicateTitle = false;
+        	if(test.$parentNodeScope.node.guid == null) {
+        		$scope.defaultFolders.forEach(function(item) {
+        			if(item.title == test.node.title) {
+        				duplicateTitle = true;
+        			}
+        		});
+        	} 
+        	
+        	if(duplicateTitle) {
+	            $scope.IsConfirmation = false;
+	            $scope.message = e8msg.validation.duplicateTestTitle;
+	            $modal.open(confirmObject);        		
+        		return false;
+        	}
+        	
         	$rootScope.blockLeftPanel.start();
         	ArchiveService.restoreTest(test.node.guid, test.$parentNodeScope.node.guid, function(restoredFolder) {
         		
         		if(restoredFolder == null) {
         			$rootScope.blockLeftPanel.stop();
-        			
-        			CommonService.showErrorMessage(e8msg.error.restore)
+        			CommonService.showErrorMessage(e8msg.error.cantRestore)
         			return;
+        		} else if(restoredFolder == EnumService.HttpStatus.CONFLICT) {
+        			$rootScope.blockLeftPanel.stop();
+        			
+    	            $scope.IsConfirmation = false;
+    	            $scope.message = e8msg.validation.duplicateTestTitle;
+    	            $modal.open(confirmObject);        		
+            		return;
         		}
         		
         		test.remove();
@@ -815,6 +925,11 @@ angular.module('e8MyTests')
         			
                     if(testParent && testParent.node) {
                         TestService.getTests(restoredFolder.guid, function (tests) {
+                        	if(tests==null){
+    							$rootScope.blockLeftPanel.stop();
+    							CommonService.showErrorMessage(e8msg.error.cantFetchTests)
+                    			return;
+    						}
                             tests.forEach(function (test) {
                                 test.selectTestNode = false;//to show the edit icon
 
@@ -847,7 +962,11 @@ angular.module('e8MyTests')
     		
     		$modal.open(confirmObject).result.then(function(ok) {
 	    		if(ok) {
-        			ArchiveService.deleteFolder(folder.node.guid, function() {
+        			ArchiveService.deleteFolder(folder.node.guid, function(response) {
+        				if(response==null){
+        					CommonService.showErrorMessage(e8msg.error.cantDeleteFolder)
+                			return;
+        				}
         				folder.remove(); 
 	                    if($scope.archiveRoot && $scope.archiveRoot.node && $scope.archiveRoot.node.nodes && $scope.archiveRoot.node.nodes.length == 0 && $scope.defaultFolders.length == 1)
 	                    	$scope.loadTree();
@@ -864,7 +983,11 @@ angular.module('e8MyTests')
 
     		$modal.open(confirmObject).result.then(function(ok) {
 	    		if(ok) {
-	                ArchiveService.deleteTest(test.node.guid, test.$parentNodeScope.node.guid, function() {
+	                ArchiveService.deleteTest(test.node.guid, test.$parentNodeScope.node.guid, function(response) {
+	                	if(response==null){
+        					CommonService.showErrorMessage(e8msg.error.cantDeleteTest)
+                			return;
+        				}
 	                    test.remove();
 	                    
 	                    if($scope.archiveRoot && $scope.archiveRoot.node && $scope.archiveRoot.node.nodes && $scope.archiveRoot.node.nodes.length == 0 && $scope.defaultFolders.length == 1)
@@ -883,7 +1006,9 @@ angular.module('e8MyTests')
             }
         }
 
-        $scope.addNewFolder = function () {
+        $scope.addNewFolder = function (enterKey) {
+        	
+        	$scope.enterKey = enterKey;
         	
         	if($scope.folderName == null || $scope.folderName.trim().length==0) { return; }
         	
@@ -901,7 +1026,12 @@ angular.module('e8MyTests')
             			$scope.isAddFolderClicked=true;
                         $scope.IsConfirmation = false;
                         $scope.message = "A folder already exists with this name. Please save with another name.";
-                        $modal.open(confirmObject); 
+
+                        $modal.open(confirmObject).result.then(function(ok) {
+                            if(ok) {
+                                $("#txtFolderName").focus();
+                            }
+                        });
             		}
             	});
             	
@@ -933,6 +1063,7 @@ angular.module('e8MyTests')
             });
             
             $("#MyTest-tree-root")[0].scrollTop = 0;
+            $("#txtFolderName").blur(); 
 
         }
       //evalu8-ui : to set Active Resources Tab , handled in ResourcesTabsController
@@ -954,6 +1085,9 @@ angular.module('e8MyTests')
                     }
                 }
                 if (!found) {
+                	if(parentFolder.nodes.length && parentFolder.nodes[0].nodeType == EnumService.NODE_TYPE.emptyFolder) {
+                		parentFolder.nodes.shift();
+                	}
                     parentFolder.nodes.unshift(newFolder);
                 }
                 }
@@ -962,6 +1096,7 @@ angular.module('e8MyTests')
         $scope.$on('handleBroadcast_AddNewTest', function (handler, newTest, containerFolder, isEditMode, oldGuid, editedQuestions, editedMigratedQuestions, createdTab, testCreationFrameScope) {
             if (isEditMode) {
                 var updatedTest = CommonService.SearchItem($scope.defaultFolders, newTest.guid);
+             if(updatedTest){
                 updatedTest.title = newTest.title;
                 updatedTest.modified = newTest.modified;
                 if (createdTab.isSaveAndClose) {
@@ -971,56 +1106,81 @@ angular.module('e8MyTests')
                     SharedTabService.removeMasterTest(createdTab);
                     SharedTabService.addMasterTest(createdTab);
                 }
-                return false;
+            }else{
+            	SharedTabService.removeMasterTest(createdTab);
+                SharedTabService.addMasterTest(createdTab);
             }
-
-            var parentFolder = null, parentFolderNodes = null;
+             return false;
+          }
+            var parentFolder = null, parentFolderNodes = null,parentTestBindings = null;
             //if containerFolder is null, it considered as root
             if (containerFolder == null) {
-                parentFolderNodes = $scope.defaultFolders;
+            	parentFolderNodes = $scope.defaultFolders;
             } else {
-                parentFolder = CommonService.SearchItem($scope.defaultFolders, containerFolder.guid);
-                parentFolderNodes = parentFolder.nodes;
+            	parentFolder = CommonService.SearchItem($scope.defaultFolders, containerFolder.guid);
+            	parentFolderNodes = parentFolder.nodes;
+            	parentTestBindings = parentFolder.testBindings;
             }
             TestService.getMetadata(newTest.guid, function (test) {               
-                test.nodeType = EnumService.NODE_TYPE.test;
-                test.draggable = false;
-                
-                if (containerFolder) {
-                    test.parentId = containerFolder.guid;
-                    test.selectTestNode = true;
-                    if (parentFolderNodes) {
-                    	if(parentFolderNodes[0].nodeType == EnumService.NODE_TYPE.emptyFolder) {
-                    		parentFolderNodes.shift();
-                    	}
-                        parentFolderNodes.push(test);
-                    }
-                }
-                else {
-                    test.parentId = null;
-                    var position = 0;
-                    $.each(parentFolderNodes, function (i,item) {
-                        if (item.nodeType == EnumService.NODE_TYPE.archiveRoot){
-                            return false;
-                        }
-                        position++;
-                    });
-                    
-                    UserFolderService.testRootFolder(function(myTestRoot){
-                		$scope.myTestRoot = myTestRoot;
-                    });
-                    parentFolderNodes.splice(position, 0, test)
-                }
-                createdTab.metadata = TestService.getTestMetadata(test);
-                createdTab.treeNode = test;
-                if (createdTab.isSaveAndClose) {
-                    SharedTabService.closeTab(createdTab, testCreationFrameScope);
-                    SharedTabService.removeMasterTest(createdTab);
-                } else {
-                    SharedTabService.removeMasterTest(createdTab);
-                    SharedTabService.addMasterTest(createdTab);
-                }
-                
+            	test.nodeType = EnumService.NODE_TYPE.test;
+            	test.draggable = false;
+
+            	if (containerFolder) {// to check whether test belongs to root or any other folder
+            		test.parentId = containerFolder.guid;
+            		test.selectTestNode = true;
+            		if(parentFolderNodes && parentFolderNodes.length > 0){
+            				if(parentFolderNodes[0].nodeType == EnumService.NODE_TYPE.emptyFolder) { //checking whether first node is empty or not
+            					parentFolderNodes.shift();
+            				}
+            				parentFolderNodes.push(test);
+            				if(containerFolder.testBindings.length > 0){
+            					var testBinding = {
+            							testId: newTest.guid,
+            							sequence: containerFolder.testBindings[containerFolder.testBindings.length-1].sequence + 1 
+            					}
+            							parentTestBindings.push(testBinding);
+            				}else{
+            					var testBinding = {
+            							testId: newTest.guid,
+            							sequence: 1 
+            					}
+            					parentTestBindings.push(testBinding);
+            				}
+            		}else{
+            			 parentFolder.nodes=[];
+            			var testBinding = {
+            					testId: newTest.guid,
+            					sequence: 1 
+            			}
+            			parentTestBindings.push(testBinding);
+            			parentFolder.nodes.push(test);
+            		}
+            	}
+            	else {
+            		test.parentId = null;
+            		var position = 0;
+            		$.each(parentFolderNodes, function (i,item) {
+            			if (item.nodeType == EnumService.NODE_TYPE.archiveRoot){
+            				return false;
+            			}
+            			position++;
+            		});
+
+            		UserFolderService.testRootFolder(function(myTestRoot){
+            			$scope.myTestRoot = myTestRoot;
+            		});
+            		parentFolderNodes.splice(position, 0, test)
+            	}
+            	createdTab.metadata = TestService.getTestMetadata(test);
+            	createdTab.treeNode = test;
+            	if (createdTab.isSaveAndClose) {
+            		SharedTabService.closeTab(createdTab, testCreationFrameScope);
+            		SharedTabService.removeMasterTest(createdTab);
+            	} else {
+            		SharedTabService.removeMasterTest(createdTab);
+            		SharedTabService.addMasterTest(createdTab);
+            	}
+
             	if($scope.defaultFolders.length == 1) {
             		$scope.defaultFolders.push(CommonService.getArchiveRoot());
             	}
@@ -1034,49 +1194,54 @@ angular.module('e8MyTests')
                 treeItems = $scope.defaultFolders;
             }
             else {
+            	if(!testFolder.nodes){
+                 	testFolder.nodes =[];
+                 	testFolder.nodes.push(newTest);
+                 }
                 treeItems = testFolder.nodes;
             }
+          if(testFolder != null){  
+            var sequence;
+            testFolder.testBindings.forEach(function(binding){
+            	if(binding.testId==test.id){
+            		sequence=binding.sequence;
+            	}else{
+            		testFolder.nodes.forEach(function(node){
+            			if(node.guid==binding.testId && node.versionOf==test.id){
+            				sequence=binding.sequence;
+            			}
+            		});
+            	}
+            });
+            
+            var testBinding = {
+                    testId: newTest.guid,
+                    sequence:  sequence + 0.001 
+            }
+            testFolder.testBindings.push(testBinding);
+          }
             addVersionTest(testFolder, treeItems, test, newTest);
             
-        })       
+        })     
                
         $scope.openImportBooksViewModal = function () {
         	$modal.open({	            
         		templateUrl: 'views/partials/import-userbooks-popup.html',	   
-        		controller : 'ImportUserBooksPopUpController'	                   
+        		controller : 'ImportUserBooksPopUpController',
+        		backdrop : 'static',
+				keyboard : false
         	});
         }        
        
         var addVersionTest = function (testFolder, treeItems, test, newTest) {
+            if (!treeItems) {
+                return;
+            }
             $.each(treeItems, function (i, v) {
-                if (v.guid == test.id) {
+            	if ((v.guid == test.id && (treeItems[i+1]==undefined || treeItems[i+1].versionOf == null)) || (v.versionOf == test.id && (treeItems[i+1]==undefined || test.id && treeItems[i+1].versionOf != test.id))) {
                     treeItems.splice(i + 1, 0, newTest)
                     return false;
                 }
             });
-            
-        	var testBindings = [];
-        	var sequence = 1.0;
-        	treeItems.forEach(function(test) {
-        		if(test.nodeType == 'test') {
-        			
-            		var testBinding = {
-                			testId: test.guid,
-                			sequence: sequence  
-            		}
-                	testBindings.push(testBinding);
-            		sequence = sequence + 1.0;
-        		}        		 
-        	})
-        	
-        	var destNode;
-        	if(testFolder == null) {
-        		var destNode = $scope.myTestRoot;    			
-    		} else {
-    			destNode = testFolder;
-    		}
-        	
-        	destNode.testBindings = testBindings;
-        	UserFolderService.saveUserFolder(destNode);
         }        
     }]);

@@ -17,10 +17,10 @@ angular
 						'$modal',
 						'notify',
 						'$compile',
-						'directiveQtiService', 'EnumService', 'UserService', 'CommonService','blockUI',
+						'directiveQtiService', 'EnumService', 'UserService', 'CommonService','blockUI','QtiService',
 						function($scope, $rootScope, $location, $cookieStore,
 								$http, $sce, TestService, SharedTabService,
-								$modal, notify, $compile, directiveQtiService, EnumService, UserService, CommonService,blockUI) {
+								$modal, notify, $compile, directiveQtiService, EnumService, UserService, CommonService,blockUI,QtiService) {
 
 							// $scope.tree2 =
 							// SharedTabService.tests[SharedTabService.currentTabIndex].questions;
@@ -34,8 +34,11 @@ angular
 							$scope.captionFocus = true;
 							
 							if (SharedTabService.userQuestionSettings.length == 0){
-								
-								UserService.userQuestionMetadata(function(userQuestionMetadata){	
+								UserService.userQuestionMetadata(function(userQuestionMetadata){
+									if(userQuestionMetadata==null){
+										CommonService.showErrorMessage(e8msg.error.cantFetchMetadata)
+				            			return;
+									}
 										$.each(userQuestionMetadata, function(index, item){	
 												SharedTabService.userQuestionSettings.push(item);						
 
@@ -56,6 +59,32 @@ angular
 							 */
 							$scope.showQstnEditIcon = false;
 							$scope.closeQstnBtn = false;
+							
+							/**************************** Begin Html Editor Changes **********************************/
+							$scope.updateQstnEditState = function(qstnState) {								
+								if(!qstnState && SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode){
+									$scope.IsConfirmation = false;
+									$scope.message = "A question is already in Edit mode, save it before editing another question.";
+
+									$modal.open(confirmObject);
+
+									return false;
+									
+								}else if(qstnState) { //switching from View to Edit mode
+									SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode = false;
+									return true;
+								}else if(!qstnState) { //switching from Edit to View mode
+									SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode = true;
+									return true;
+								}								
+								
+							}
+							
+							$scope.getTrustedHTML = function(html_code) {
+							    return $sce.trustAsHtml(html_code);
+							}
+							
+							/**************************** End of Html Editor Changes **********************************/
 
 							$scope.hoverIn = function(selectedQstn) {
 								this.showQstnEditIcon = true;
@@ -128,9 +157,7 @@ angular
 								
 								var qstnHtml = selectedQstnNode.node.textHTML;
 								this.showQstnEditIcon = !this.showQstnEditIcon;
-								this.closeQstnBtn = !this.closeQstnBtn;
-								selectedQstnNode.node.qstnLinkText = selectedQstnNode.node.IsEditView ? "Edit"
-										: "View";
+								this.closeQstnBtn = !this.closeQstnBtn;								
 								selectedQstnNode.node.qstnLinkTitle = selectedQstnNode.node.IsEditView ? "View Question in edit mode"
 										: " View Question in print mode";
 								if (selectedQstnNode.node.IsEditView) {
@@ -550,13 +577,10 @@ angular
 							
 							$scope.qstnEssayPageSize = function(selectedNode,
 									pageSize) {
-								selectedNode.node.EssayPageSize = pageSize;
+								selectedNode.node.qtiModel.EssayPageSize = pageSize;
 							}
 							
-							$scope.qstnBlankSize = function(selectedNode,
-									blankSize) {
-								selectedNode.node.BlankSize = blankSize;
-							}
+							
 
 							$scope.addOptions = function(selectedOption, event) {
 								var htmlOptionCnt = selectedOption.$element
@@ -868,15 +892,7 @@ angular
 								$scope.exportBtnCss = "disabled";
 							}
 
-							$scope.addNewTest = function () {
-							    //TODO : need to chech below jquery code and look for any other alternative in AngularJS. 
-								var editedElement = document
-										.querySelector("div#qstnArea li[printmode=false]")
-								if (editedElement) {
-									var scopeElement = angular.element(
-											editedElement).scope()
-									convertHtmlToXmlNode(scopeElement);
-								}
+							$scope.addNewTest = function () {							   
 								
 								$scope.testType = 'Test';
 
@@ -897,14 +913,7 @@ angular
 												response, currentNode);
 							}
 
-							$scope.onClickTab = function(test) {
-								var editedElement = document
-										.querySelector("div#qstnArea li[printmode=false]")
-								if (editedElement) {
-									var scopeElement = angular.element(
-											editedElement).scope()
-									convertHtmlToXmlNode(scopeElement);
-								}
+							$scope.onClickTab = function(test) {							
 
 								SharedTabService.onClickTab(test, $scope);
 								if (SharedTabService.tests[SharedTabService.currentTabIndex].testId) {
@@ -918,12 +927,7 @@ angular
                                     $scope.testType = 'Test';
 								}
 
-								if (test.testId && !test.questions.length && !SharedTabService.isDirtyTab(test) && !test.isTabClicked) {
-									test.isTabClicked=true;									
-									TestService.getTestQuestions(test.testId,function(questions) {
-												$scope.bindTestQuestions(questions,$scope.currentIndex);
-											})
-								}
+								loadQuestionsToEmptyTab();
 							}
 
 							$scope.isActiveTab = function(tabUrl) {
@@ -944,21 +948,63 @@ angular
 					            $scope.isApplySameCriteriaToAll = false;
 					        }
 					        $scope.closeQuestions = function (tab,index) {
-					        	 var p = $(
-	                                        angular.element(document
-	                                                .querySelector("#uploadImage")))
-	                                        .detach();
-	                                
-	                                $('#qstnArea').after(p);
-	                                $scope.imageClicked = false;
-					            SharedTabService.closeQuestions(tab, $scope, index);					           
+					        	
+					        	$scope.IsConfirmation = true;
+								$scope.message = "Are you sure you want to delete this Question?";
+								$modal.open(confirmObject).result
+								.then(function(ok) {
+									if (ok) {
+										 var p = $(
+			                                        angular.element(document
+			                                                .querySelector("#uploadImage")))
+			                                        .detach();
+			                                
+			                                $('#qstnArea').after(p);
+			                                $scope.imageClicked = false;
+							            SharedTabService.closeQuestions(tab, $scope, index);	
+									}
+								});
+					        					           
 					        }
 					        $scope.closeTabWithConfirmation = function ($event,tab) {
+					        	checkTestQuestionsInEditModeWithChanges(tab);
 								SharedTabService.closeTabWithConfirmation(tab, $scope);
 								$scope.setTestType();
+								loadQuestionsToEmptyTab();
 								$event.stopPropagation();
-							}
+					        }
 					        
+					        var checkTestQuestionsInEditModeWithChanges = function(tab){
+					        	angular.forEach(tab.questions,function(question,index){
+					        		if(question["IsEditView"] == true){
+					        			question.IsEdited =  $scope.IsQuestionModified(question);
+					        			return;
+					        		}
+					        	});
+					        } 
+
+					        var loadQuestionsToEmptyTab = function () {
+					            var test = SharedTabService.tests[SharedTabService.currentTabIndex];
+					            if (test.testId && !test.questions.length && !SharedTabService.isDirtyTab(test) && !test.isTabClicked) {
+					                test.isTabClicked = true;
+					                $rootScope.blockRightPanel.start();
+					                TestService.getTestQuestions(test.testId, function (questions) {
+					                    try {
+					                        if (questions == null) {
+					                            $rootScope.blockRightPanel.stop();
+					                            CommonService.showErrorMessage(e8msg.error.cantFetchTestQuestions);
+					                            return;
+					                        }
+					                        $scope.bindTestQuestions(questions, $scope.currentIndex);
+					                    } catch (e) {
+					                        console.log(e);
+					                    } finally {
+					                        $rootScope.blockRightPanel.stop();
+					                    }
+					                })
+					            }
+					        }
+
 							$scope.setTestType = function() {
 								if (SharedTabService.tests[SharedTabService.currentTabIndex].treeNode
 								        && SharedTabService.tests[SharedTabService.currentTabIndex].treeNode.testType === EnumService.TEST_TYPE.PublisherTest) {
@@ -1042,7 +1088,7 @@ angular
 										.each(function(i, e) {
 
 											if ($(this).text() == "1") {
-												correctAnswerList.push(i);
+												correctAnswerList = i;
 											}
 										});
 								}
@@ -1061,14 +1107,8 @@ angular
 										|| (xmlOrientation == 'Vertical') ? true
 										: false;
 								
-								var nodeEssayPageSize = '0';
-								if($(qstnXML).find('itemBody').find("extendedTextInteraction").length > 0)
-									nodeEssayPageSize = $(qstnXML).find('itemBody').find("extendedTextInteraction").eq(0).attr("expectedLines")
 									
-									var nodeBlankSize = '20';
-								if($(qstnXML).find('itemBody').find("textEntryInteraction").length > 0)
-									nodeBlankSize = $(qstnXML).find('itemBody').find("textEntryInteraction").eq(0).attr("expectedLength")
-
+								
 								
 
 								var qstnMasterData = {
@@ -1078,9 +1118,23 @@ angular
 											'choiceInteraction').find(
 											"simpleChoice").length,
 									correctAnswer : correctAnswerList,
-									optionsView : nodeOptionsView,
-									EssayPageSize : nodeEssayPageSize,
-									BlankSize : nodeBlankSize
+									optionsView : nodeOptionsView
+								}
+								
+								if(quizType=='Essay'){
+									var nodeEssayPageSize = '0';
+									if($(qstnXML).find('itemBody').find("extendedTextInteraction").length > 0)
+										nodeEssayPageSize = $(qstnXML).find('itemBody').find("extendedTextInteraction").eq(0).attr("expectedLines")
+									
+									qstnMasterData.EssayPageSize = nodeEssayPageSize;
+								}
+								
+								if(quizType=='FillInBlanks'){
+									var nodeBlankSize = '20';
+									if($(qstnXML).find('itemBody').find("textEntryInteraction").length > 0)
+										nodeBlankSize = $(qstnXML).find('itemBody').find("textEntryInteraction").eq(0).attr("expectedLength")
+									
+									qstnMasterData.BlankSize = nodeBlankSize
 								}
 
 								return qstnMasterData;
@@ -1091,26 +1145,21 @@ angular
 								var rightOptionList = [];
 								
 								$(qstnXML).find('itemBody').find(
-								'blockquote').each(function(i, e) {
+								'blockquote').eq(0).find("inlineChoiceInteraction inlineChoice").each(function(i, e) {
 
-									leftOptionList.push($(this).find("p").eq(0).html());
+									rightOptionList.push(QTI.getSerializedXML($(this)));
 								});
 								
 								$(qstnXML).find('itemBody').find(
-								'blockquote').eq(0).find("inlineChoiceInteraction inlineChoice").each(function(i, e) {
-
-									rightOptionList.push($(this).html());
+								'blockquote').each(function(i, e) {		
+									$(this).find("p").find('inlineChoiceInteraction').remove();
+									leftOptionList.push(QTI.getSerializedXML($(this).find("p").eq(0)));
 								});
-																
-								
 
 								var qstnMasterData = {
 									caption : $(qstnXML).find('itemBody').find('p').eq(0).text(),
 									leftOptions: leftOptionList ,
-									rightOptions: rightOptionList,									
-									optionCount : $(qstnXML).find('itemBody').find(
-											'blockquote').length,
-									optionsView : true
+									rightOptions: rightOptionList		
 								}
 
 								return qstnMasterData;
@@ -1157,10 +1206,10 @@ angular
 									.$on(
 											'dropQuestion',
 											function(event, node, destIndex,
-													sourceTabName) {
+													sourceTabName, eventType) {
 											    try {
 											        var newNode = angular.copy(node);
-
+											        newNode.isNodeSelected=false;
 											        if (sourceTabName == "CustomQuestions") {
 											            SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode = true;
 											        }
@@ -1181,15 +1230,13 @@ angular
 											                    newNode['questionMetadata'][value] = '';
 											                }
 											            });
-
+											         
 											            newNode.IsEditView = true;
 											            newNode.editMainText = CustomQuestionTemplate[newNode.quizType].editMainText;
 											            newNode.IsEdited = true;
 											            newNode.IsDefaultEditView = true;
 											            newNode.selectedLevel = { name: 'Select Level', value: '0' };
-											            newNode.EssayPageSize = '0';
-											            newNode.BlankSize = '20';
-
+											         
 											        } else {
 
 											            $.each(SharedTabService.userQuestionSettings, function (index, value) {
@@ -1199,6 +1246,7 @@ angular
 
 											            newNode.IsEditView = false;
 											            newNode.editMainText = CustomQuestionTemplate[newNode.quizType].editMainText;
+											           
 
 											            $.each(newNode.extendedMetadata, function (index, item) {
 											                var name = item['name'].charAt(0).toUpperCase() + item['name'].slice(1);
@@ -1218,11 +1266,7 @@ angular
 											            newNode.EssayPageSize = newNode.qstnMasterData.EssayPageSize;
 											            newNode.BlankSize = newNode.qstnMasterData.BlankSize;
 											        }
-
-											        newNode.qstnLinkText = newNode.IsEditView ? "View"
-                                                            : "Edit";
-
-
+										       
 											        var nodeAlreadyExist = false;
 											        if (tests.length == 0) {
 											            tests.push(newNode);
@@ -1238,8 +1282,11 @@ angular
 											            }
 
 											            if (!nodeAlreadyExist) {
-											                tests.splice(destIndex,
-                                                                    0, newNode);
+											                tests.splice(destIndex,0, newNode);
+											                if(eventType == "clickEvnt"){
+											                $('div#qstnArea').scrollTop(0);
+											                }
+											                
 											            }
 											        }
 											        $scope.tests[$scope.currentIndex].questions = tests;
@@ -1331,9 +1378,7 @@ angular
 	                                            
 	                                            displayNode.textHTML = qtiDisplayNode.html();
 	                                            
-	                                            displayNode.IsEditView = false;
-	                                            displayNode.qstnLinkText = displayNode.IsEditView ? "View"
-	                                                    : "Edit";
+	                                            displayNode.IsEditView = false;	                                         
 	                                            displayNode.extendedMetadata =  question.metadata.extendedMetadata;
 	                                            displayNode.questionMetadata = userSettings.questionMetadata;    
 	                                            
@@ -1365,7 +1410,7 @@ angular
 	                                            SharedTabService.tests[currentIndex].questions.push(displayNode);
 	                                            for (var i = 0; i < SharedTabService.masterTests.length; i++) {
 	                                                if (SharedTabService.masterTests[i].id === SharedTabService.tests[currentIndex].id) {
-	                                                    SharedTabService.masterTests[i].masterQuestions.push(displayNode);// is to check for dirty.
+	                                                    SharedTabService.masterTests[i].masterQuestions.push(angular.copy(displayNode));// is to check for dirty.
 	                                                }
 	                                            }
 	                                    
@@ -1416,8 +1461,7 @@ angular
 															displayNode.textHTML = qtiDisplayNode.html();
 															
 															displayNode.IsEditView = false;
-															displayNode.qstnLinkText = displayNode.IsEditView ? "View"
-																	: "Edit";
+															
 															displayNode.extendedMetadata =  questionMetadataResponse.extendedMetadata;
 															displayNode.questionMetadata = userSettings.questionMetadata;	
 															
@@ -1449,7 +1493,7 @@ angular
 															SharedTabService.tests[currentIndex].questions.push(displayNode);
 															for (var i = 0; i < SharedTabService.masterTests.length; i++) {
 															    if (SharedTabService.masterTests[i].id === SharedTabService.tests[currentIndex].id) {
-															        SharedTabService.masterTests[i].masterQuestions.push(displayNode);// is to check for dirty.
+															        SharedTabService.masterTests[i].masterQuestions.push(angular.copy(displayNode));// is to check for dirty.
 															    }
 															}
 															if (qBindings.length > 0) {
@@ -1703,29 +1747,20 @@ angular
 									//$modal.open(confirmObject);
 									return;
 								}
-								var scopeElement;
-								var editedElement = document.querySelector("div#qstnArea li[printmode=false]")
-								if (editedElement) {
-									scopeElement = angular.element(
-											editedElement).scope();								
-									scopeElement.node.qstnLinkText = "Edit";
-									if (scopeElement.node.quizType == "MultipleResponse"){
-										if($scope.showChoiceSelectionAlert(scopeElement)){
-											$rootScope.blockPage.stop();
-											return;										
-										}	
-									}
-									else if(scopeElement.node.quizType == "FillInBlanks"){
-										if($scope.showBlankAdditionAlert(scopeElement)){
-											$rootScope.blockPage.stop();
-											return;										
-										}
-										
-									}
-									convertHtmlToXmlNode(scopeElement);
-									SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode=false;    									
+								
+								var exitSave = false ;								
+								
+								$.each(test.questions, function (index, qstn) {								
+										if (qstn.IsEditView && (!$scope.IsAnswerSelected(qstn) || !$scope.IsFibBlankAdded(qstn))){
+											exitSave = true;
+											return;
+										}												
+								});
+								
+								if(exitSave){
+									 $rootScope.blockPage.stop();
+									 return ;
 								}
-                                
 								
                             	var duplicateTitle = false;
                             	
@@ -1798,64 +1833,10 @@ angular
     								});
     								
     								var editedQstns = $.grep(test.questions, function(qstn) {
-
-    									if (qstn.qstnTemplate) {
-    										if(qstn.quizType=="Matching"){															
-    											qstn =  updateMatchingTemplatePrefilledtext(qstn);
-    										}else if(qstn.quizType=="FillInBlanks"){
-    											qstn =  updateFillInBlankTemplatePrefilledtext(qstn);
-    										}
-    										else{														
-    											qstn =  updateTemplatePrefilledtext(qstn);
-    										}    										 										
-    									}
-    									
-    									if(scopeElement){
-											scopeElement.node.IsEditView = false;
-										}   
-    									
-    									if (typeof (qstn.questionMetadata) == 'undefined') {
-
-    									    qstn.questionMetadata = userSettings.questionMetadata;
-
-    									    $.each(qstn.extendedMetadata, function (index, item) {
-
-    									        if (typeof (qstn['questionMetadata'][item['name']]) != 'undefined') {
-    									            qstn['questionMetadata'][item['name']] = item['value'].replace(/&ndash;/g, '-');
-    									        }
-
-    									    });
-    									    qstn.selectedLevel = qstn.questionMetadata['Difficulty'] == undefined ? { name: 'Select Level', value: '0' } : { name: qstn.questionMetadata['Difficulty'], value: qstn.questionMetadata['Difficulty'] };
-    									}
-    									var qstnExtMetadata=[];													
-    								
-    									$.each(qstn.questionMetadata, function(KeyName, KeyValue){		
-    										if(KeyName == "Difficulty"){
-    											KeyValue = qstn.selectedLevel.value;
-    										}
-    										qstnExtMetadata.push({name:KeyName,value:KeyValue}) ;
-    									});													
-    																					
-    									var QuestionEnvelop = {
-    										metadata : {
-    											guid : qstn.IsEdited ? null
-    													: qstn.guid,
-                                                title : qstn.title,
-    											description : qstn.description,
-    											quizType : qstn.quizType,
-    											subject : qstn.subject,
-    											timeRequired : qstn.timeRequired,
-    											crawlable : qstn.crawlable,
-    											keywords : qstn.keywords,
-    											versionOf : qstn.versionOf,
-    											version : qstn.version,
-    											extendedMetadata : qstnExtMetadata
-    										},
-    										body : qstn.IsEdited ? qstn.data : null
-    									};
-    									QuestionEnvelops.push(QuestionEnvelop);
+    									 var QuestionEnvelop = buildQuestionEnvelop(qstn,userSettings);
+    									QuestionEnvelops.push(QuestionEnvelop);    									
     								});
-
+    								SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode=false;    
     								TestService.saveQuestions(QuestionEnvelops, function(questionsResult) {
     									
 										if(questionsResult == null) {
@@ -1876,7 +1857,7 @@ angular
     												$scope.editedMigratedQuestions.push(test.questions[questionIndex].guid);
     											}
     											test.questions[questionIndex].guid = guid;
-    											test.questions[questionIndex].extendedMetadata = QuestionEnvelops[questionIndex].metadata.extendedMetadata;   
+    											test.questions[questionIndex].extendedMetadata = QuestionEnvelops[questionIndex].metadata.extendedMetadata; 
     											var createdQstnCopy = angular.copy(test.questions[questionIndex]);
     											$scope.editedQuestions.push(createdQstnCopy);
     										}else{
@@ -1944,7 +1925,6 @@ angular
     									});
     									        								
     								});                                                                
-
     								
 								});
 
@@ -2021,6 +2001,11 @@ angular
 								$rootScope.blockPage.start();
 
 								TestService.createVersions(this, function (scope, testResult) {
+									if(testResult==null){
+										$rootScope.blockPage.stop();
+										CommonService.showErrorMessage(e8msg.error.cantCreateVersions);
+			                    		return;
+									}
 								    try {
 								        $scope.versionedTests = testResult;
 								        $scope.currentTab = SharedTabService.tests[SharedTabService.currentTabIndex];
@@ -2062,9 +2047,12 @@ angular
 								                    newTestTab.testId = treeNode.guid;
 								                    newTestTab.title = treeNode.title;
 								                    newTestTab.tabTitle = treeNode.title;
-								                    newTestTab.metadata = treeNode;
+								                    newTestTab.metadata = TestService.getTestMetadata(treeNode);
 								                    newTestTab.treeNode = treeNode;
 								                    newTestTab.folderGuid = (typeof (treeNode.folderId) == 'undefined') ? null : treeNode.folderId;
+								                    if (!newTestTab.folderGuid) {
+								                        newTestTab.folderGuid = (typeof (treeNode.folderGuid) == 'undefined') ? null : treeNode.folderGuid;
+								                    }
 								                    SharedTabService.prepForBroadcastTest(newTestTab);
 								                }
 								            });
@@ -2109,6 +2097,26 @@ angular
 											size : 'md',
 											backdrop : 'static',
 											keyboard : false,
+											resolve : {
+												parentScope : function() {
+                                                    return $scope;
+												}
+											}
+										});
+							};
+							
+							$scope.print = function() {
+							    if (!SharedTabService.tests[SharedTabService.currentTabIndex].testId) {
+							        return false;
+							    }
+							    SharedTabService.tests[SharedTabService.currentTabIndex].isBtnClicked=true;
+								$modal.open({
+											templateUrl : 'views/partials/printPopup.html',
+											controller : 'PrintTestController',
+											size : 'lg',
+											backdrop : 'static',
+											keyboard : false,
+											windowClass : 'print-Modal',
 											resolve : {
 												parentScope : function() {
                                                     return $scope;
@@ -2205,8 +2213,6 @@ angular
 
 							$scope.previevTest = function() {
 								var isError = false;
-								// $scope.tests[currentIndex].criterias.metadata.sort(randomize);
-								// console.log($scope.tests[currentIndex].criterias.metadata.sort(randomize));
 							    var metadatas = [];
 								SharedTabService.errorMessages = [];
 								$scope.sharedTabService.tests[$scope.sharedTabService.currentTabIndex].criterias
@@ -2269,17 +2275,19 @@ angular
 											//assign the numberOfQuestionsEntered to numberOfQuestionsSelected only if there is 
 											//no error while creating the test. 
 											//ref : Bug 6582 - Radio button de-selected when alert message appears while creating Test using Test Wizard
+										    /*
 											if (criteria.numberOfQuestionsEntered > 0 && isError == false && !isTestTitleEmpty()) {
 												criteria.numberOfQuestionsSelected = criteria.numberOfQuestionsEntered;
 											}
+                                            */
 											var noOfQuestionsSelected = criteria.numberOfQuestionsEntered > 0 ? criteria.numberOfQuestionsEntered : criteria.numberOfQuestionsSelected; 
-                                            if (!noOfQuestionsSelected || noOfQuestionsSelected > criteria.totalQuestions) {
+                                            if (!noOfQuestionsSelected || noOfQuestionsSelected > criteria.totalQuestions || noOfQuestionsSelected > arr.length) {
 												criteria.isError = true;
 												SharedTabService.addErrorMessage(criteria.treeNode.title, SharedTabService.errorMessageEnum.NotEnoughQuestionsAvailable);
 												isError = true;
 												return false;
 											} else {
-												metadatas = metadatas.concat(arr.slice(0, criteria.numberOfQuestionsSelected));
+                                                metadatas = metadatas.concat(arr.slice(0, noOfQuestionsSelected));
 											}
 										});
 								if (isError) {
@@ -2300,19 +2308,140 @@ angular
 												criteria.treeNode.showEditQuestionIcon = false;
 											})
 								}
-								$scope.tests[$scope.sharedTabService.currentTabIndex].isTestWizard = false;
-								$scope.sharedTabService.isTestWizardTabPresent = false;
 								$scope.tests[$scope.sharedTabService.currentTabIndex].tabTitle = "Untitled test";
-								$scope.tests[$scope.sharedTabService.currentTabIndex].questions = metadatas;
-								QTI.initialize();
-								test.criterias=[];
-								$scope.saveTest(function () {
-								        $rootScope.blockPage.start();
-								        $scope.tests[$scope.sharedTabService.currentTabIndex].questions = [];
-								        $scope.render(metadatas);
-								        $scope.isApplySameCriteriaToAll = false;
+								$scope.saveWizardTest(test, metadatas);
+							}
+							
+							//validating and saving a test which is created using test wizard
+							$scope.saveWizardTest = function(test, metadatas){
+								var duplicateTitle = false;
+								$rootScope.blockPage.start();
+                                TestService.getTests(test.folderGuid, function(tests){
+                                    tests.forEach(function (folderTest) {
+                                        if (test.saveMode === EnumService.SAVE_MODE.SaveAs && folderTest.title == test.title) {
+                                            duplicateTitle = true;
+                                        } else if (test.saveMode === EnumService.SAVE_MODE.Save && folderTest.guid !== test.testId && folderTest.title == test.title) {
+                                            duplicateTitle = true;
+                                        }
+                                    });
+                                    
+                                    if (duplicateTitle ) {
+                                        
+                                    	$scope.IsConfirmation = false;
+                                        $scope.message = "A test already exists with this name. Please save with another name.";
+                                        $modal.open(confirmObject);
+                                        test.saveMode = EnumService.SAVE_MODE.Save;
+                                        $scope.setTestType();
+                                        $rootScope.blockPage.stop();
+                                    	return;
+                                    }
+                                    QTI.initialize();
+                                    $scope.tests[$scope.sharedTabService.currentTabIndex].isTestWizard = false;
+                                    $scope.sharedTabService.isTestWizardTabPresent = false;
+                                    test.criterias=[];
+                                    if (test.saveMode === EnumService.SAVE_MODE.SaveAs) {
+                                        test.testId = null;
+                                        $scope.testGuid = null;
+                                        test.saveMode = EnumService.SAVE_MODE.Save;
+                                    }
+                                                                        
+    								$scope.testTitle = test.title;
+
+    								// Building the json to create the test.
+    								var testcreationdata = {
+    									"metadata" : {
+    										"crawlable" : "true"
+    									},
+    									"body" : {
+    										"@context" : "http://purl.org/pearson/paf/v1/ctx/core/StructuredAssignment",
+    										"@type" : "StructuredAssignment",
+    										"assignmentContents" : {
+    											"@contentType" : "application/vnd.pearson.paf.v1.assignment+json",
+    											"binding" : []
+    										}
+    									}
+    								};
+    								testcreationdata.body.title = $scope.testTitle;
+    								testcreationdata.body.guid = $scope.testGuid;
+
+    								if (test.testId != null) {
+    									testcreationdata.metadata = test.metadata;
+    								}
+
+    								testcreationdata.metadata.title = $scope.testTitle;
+
+    								var index = 0;    								
+    								var userSettings = {};
+    								userSettings.questionMetadata = {};
+
+    								$.each(SharedTabService.userQuestionSettings, function (index, value) {
+    								    userSettings['questionMetadata'][value] = '';
+    								});
+    								
+    								
+    								var questions = [];	
+    								metadatas.forEach(function(questionItem){
+    									questions.push(questionItem);
+    								}); 
+    								
+    									var questionIndex = 0;
+    									questions.forEach(function(individuaQuestionItem) {
+    										var guid = individuaQuestionItem.guid;
+
+    										testcreationdata.body.assignmentContents.binding
+    												.push({
+    													guid : guid,
+    													activityFormat : "application/vnd.pearson.qti.v2p1.asi+xml",
+    													bindingIndex : index
+    												});
+    										index = index + 1;
+    									})									
+
+    									TestService.saveTestData(testcreationdata, test.folderGuid, function(testResult) {
+    										
+    										if(testResult == null) {
+    											$rootScope.blockPage.stop();
+    											$scope.showSaveErrorMessage();
+    											return;
+    										}
+    										
+    									    var isEditMode = false,
+                                                oldGuid = null,
+                                                test = SharedTabService.tests[SharedTabService.currentTabIndex];
+
+    									    if (test.testId) {
+    									        isEditMode = true;
+    									    }
+    									    SharedTabService.currentTab = jQuery.extend(true, {}, test);
+    									    oldGuid = test.id;
+    									    test.testId = testResult.guid;
+    									    test.id = testResult.guid;
+    									    test.tabTitle = test.title;
+    									    test.metadata = testcreationdata.metadata;
+
+    									    if (test.treeNode && test.treeNode.testType === EnumService.TEST_TYPE.PublisherTest) {
+    									        test.treeNode.testType = EnumService.NODE_TYPE.test;
+    									        test.treeNode.showEditIcon = true;
+    									    }
+    										$scope.testGuid = testResult.guid;
+    										$scope.newVersionBtnCss = "";
+    										$scope.exportBtnCss = "";
+    										
+    										if (oldGuid !== test.id && test.treeNode) {
+    										    test.treeNode.showEditIcon = true;
+    										    test.treeNode.showArchiveIcon= true;
+    										    test.treeNode.draggable = true;
+    										}
+    										testResult.title = test.title;
+    										testResult.modified = (new Date()).toJSON();
+    										
+    										$scope.render(metadatas);
+    								        $scope.isApplySameCriteriaToAll = false;
+    									});
+    									
 								});
 							}
+							
 							function randomize(a, b) {
 								return Math.random() - 0.5;
 							}
@@ -2344,6 +2473,11 @@ angular
 										.getQuestionById(
 												question.guid,
 												function(response) {
+													if(response == null){
+														$scope.blockPage.stop();
+									        			CommonService.showErrorMessage(e8msg.error.cantFetchQuestions)
+									        			return;
+													}
 													var displayNodes = $("<div></div>");	
 													QTI.BLOCKQUOTE.id = 0;
 													QTI.play(response,
@@ -2354,18 +2488,29 @@ angular
 													displayNode.textHTML = displayNodes.html();
 													
 													displayNode.IsEditView = false;
-													displayNode.qstnLinkText = displayNode.IsEditView ? "View"
-															: "Edit";
+													
 													displayNode.data = 	response;
 													displayNode.quizType = 	question.quizType;
 													
 													displayNode.questionMetadata = userSettings.questionMetadata;
 													displayNode.extendedMetadata = question.extendedMetadata;
+													
+													 displayNode.IsUserMetdataAvailable = false;
+													 if (SharedTabService.userQuestionSettings.length>0){
+														 displayNode.IsUserMetdataAvailable = true;
+													 }
 													$.each(displayNode.extendedMetadata, function(index, item){																							
-														if(typeof(displayNode['questionMetadata'][item['name']])!='undefined'){
-															displayNode['questionMetadata'][item['name']]=item['value'].replace(/&ndash;/g, '-');	
-														}
-													});	
+														var name = item['name'].charAt(0).toUpperCase() + item['name'].slice(1);
+										                if((typeof(displayNode['questionMetadata'][name])!='undefined')||((typeof(displayNode['questionMetadata']['Difficulty'])!='undefined') && (name=='QuestionLevelOfDifficulty'))) {
+										                	if (item['name'] == "questionLevelOfDifficulty")
+										                		displayNode['questionMetadata']['Difficulty'] = item['value'];
+										                	else{
+										                		
+										                		displayNode['questionMetadata'][name] = item['value'].replace(/&ndash;/g, '-');
+										                	}
+										                }
+													});
+													
 													
 													displayNode.selectedLevel = displayNode.questionMetadata['Difficulty']==undefined?{name:'Select Level',value:'0'}:{name:displayNode.questionMetadata['Difficulty'],value:displayNode.questionMetadata['Difficulty']};
 													
@@ -2377,7 +2522,7 @@ angular
 													SharedTabService.tests[SharedTabService.currentTabIndex].questions
 															.push(displayNode);
 													SharedTabService.masterTests[SharedTabService.currentTabIndex].masterQuestions
-															.push(displayNode);// is
+															.push(angular.copy(displayNode));// is
 																				// to
 																				// check
 																				// for
@@ -2411,6 +2556,9 @@ angular
 							}
 
 						    // #region Broadcast handles
+							$scope.$on('handleBroadcast_ClickTab', function (event, test) {
+							    $scope.onClickTab(test)
+							});
 							$scope.$on('handleBroadcastTests', function () {
 							    $scope.tests = SharedTabService.tests;
 							});
@@ -2470,8 +2618,228 @@ angular
                                         $scope.currentIndex);
 							})
 						    // #endregion Broadcast handles
+							
+							
+							
+							
+							function filterEditorDefaultPtag(ModifiedOptions){
+								var Options = [];
+								$.each(ModifiedOptions,
+										function(index,option) {
+									if(option.startsWith('<p>')){
+										option = option.substring(3, option.length-4);
+									}			
+									Options.push(option);
+								});
+								
+								return Options;
+								
+							}
+							
+							function matchingOptions(matchingOptions){
+								var Options = [];
+								$.each(matchingOptions,
+										function(index,option) {
+									if(option.matchingOption.startsWith('<p>')){
+										Options.push(option.matchingOption.substring(3, option.matchingOption.length-4));
+									}else{
+										Options.push(option.matchingOption);
+									}			
+								});
+								
+								return Options;
+								
+							}
+							
+							function leftOptions(matchingOptions){
+								var Options = [];
+								$.each(matchingOptions,
+										function(index,Option) {
+									if(Option.option.startsWith('<p>')){
+										Options.push(Option.option.substring(3, Option.option.length-4));
+									}else{
+										Options.push(Option.option);
+									}			
+								});
+								
+								return Options;
+								
+							}
+
+							function getQuestionModifiedModel(node) {								
+
+								var qstnModifiedData = {};			
+
+								qstnModifiedData.caption = node.qtiModel.Caption;
+								
+								if (typeof String.prototype.startsWith != 'function') {
+									  // see below for better implementation!
+									  String.prototype.startsWith = function (str){
+									    return this.indexOf(str) === 0;
+									  };
+									}
+								
+								if(qstnModifiedData.caption.startsWith('<p>')){
+									qstnModifiedData.caption = qstnModifiedData.caption.substring(3, qstnModifiedData.caption.length-4);
+								}			
+								qstnModifiedData.questionMetadata = node.questionMetadata;		
+
+									switch (node.quizType) {
+									case 'MultipleChoice':
+									case 'MultipleResponse':
+									case 'TrueFalse':					
+										qstnModifiedData.options = filterEditorDefaultPtag(node.qtiModel.Options);
+										qstnModifiedData.optionCount = node.qtiModel.Options.length;				
+										qstnModifiedData.correctAnswer =  node.qtiModel.CorrectAnswer;
+										qstnModifiedData.optionsView = node.qtiModel.Orientation;						
+										break;
+
+									case 'Essay':						
+										qstnModifiedData.EssayPageSize =node.EssayPageSize;			
+										qstnModifiedData.RecommendedAnswer = node.qtiModel.RecommendedAnswer;					
+										break;					
+
+									case 'Matching':	
+										qstnModifiedData.leftOptions = leftOptions(node.qtiModel.Options);	
+										qstnModifiedData.rightOptions = matchingOptions(node.qtiModel.Options);
+										break;
+
+									case 'FillInBlanks':										
+										/*qtiModel.FbCaption = node..FbCaption;
+										qtiModel.PrintOption = qtiModel.PrintOption;									
+										qtiModel.CorrectAnswer = qtiModel.CorrectAnswer;		*/
+
+										break;
+									}			
+								
+							return qstnModifiedData;
+
+							}
+
+							$scope.IsQuestionModified = function(node){
+								var qstnModifiedData = getQuestionModifiedModel(node);				
+								return !angular.equals(node.qstnMasterData,qstnModifiedData);
+							}
+							
+							var buildQuestionEnvelop = function(qstn,userSettings){
+								
+								if(qstn.IsEditView){    	
+									
+									if(qstn.quizType=='FillInBlanks'){
+										updateFIBQuestionAnswers(qstn);		
+									}    										
+									
+									if(!qstn.qstnTemplate){    										
+										qstn.IsEdited =  $scope.IsQuestionModified(qstn);
+									}
+									
+								}								
+								
+								if(qstn.IsEdited){
+									qstn.data = QtiService.getQtiXML(qstn);
+								}    
+								
+								qstn.IsEditView = false;								
+								
+								if(qstn.qstnTemplate){
+                                    qstn.qstnTemplate = false;
+                                }    								
+								
+								if (typeof (qstn.questionMetadata) == 'undefined') {
+
+								    qstn.questionMetadata = userSettings.questionMetadata;
+
+								    $.each(qstn.extendedMetadata, function (index, item) {
+
+								        if (typeof (qstn['questionMetadata'][item['name']]) != 'undefined') {
+								            qstn['questionMetadata'][item['name']] = item['value'].replace(/&ndash;/g, '-');
+								        }
+
+								    });
+								    qstn.selectedLevel = qstn.questionMetadata['Difficulty'] == undefined ? { name: 'Select Level', value: '0' } : { name: qstn.questionMetadata['Difficulty'], value: qstn.questionMetadata['Difficulty'] };
+								}
+								var qstnExtMetadata=[];													
+							
+								$.each(qstn.questionMetadata, function(KeyName, KeyValue){		
+									if(KeyName == "Difficulty"){
+										KeyValue = qstn.selectedLevel.value;
+									}
+									qstnExtMetadata.push({name:KeyName,value:KeyValue}) ;
+								});													
+																				
+								var QuestionEnvelop = {
+									metadata : {
+										guid : qstn.IsEdited ? null
+												: qstn.guid,
+                                        title : qstn.title,
+										description : qstn.description,
+										quizType : qstn.quizType,
+										subject : qstn.subject,
+										timeRequired : qstn.timeRequired,
+										crawlable : qstn.crawlable,
+										keywords : qstn.keywords,
+										versionOf : qstn.versionOf,
+										version : qstn.version,
+										extendedMetadata : qstnExtMetadata
+									},
+									body : qstn.IsEdited ? qstn.data : null
+								};
+								
+								return QuestionEnvelop;
+							}
+							
+							var updateFIBQuestionAnswers = function(qstn){
+								qstn.qtiModel.CorrectAnswerHtml = $('#fbAnswerContainer').html();										
+							}
+							
+							$scope.IsAnswerSelected = function(node){				
+								if(node.IsEditView && node.quizType=='MultipleResponse'){
+									var answerSelected=false;
+									$.each(node.qtiModel.CorrectAnswer,
+											function(index,answer) {
+										if(answer){
+											answerSelected=true;						
+										}
+									});				
+									if(!answerSelected){
+										SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode = true;
+										$scope.IsConfirmation = false;
+										$scope.message = "Atleast one correct Answer should be defined."
+										$modal.open(confirmObject);			
+										return false;
+									}									
+									
+								}
+								return true;
+							}
+							
+							$scope.IsFibBlankAdded = function(node){		
+								if(node.IsEditView && node.quizType=='FillInBlanks'){
+									var qstnCaption = $(node.qtiModel.Caption);
+									var blankLen = $(qstnCaption).find('button').length;
+																		
+									if(blankLen<=0){			
+										SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode = true;
+										$scope.IsConfirmation = false;
+										$scope.message = "Atleast One Blank should be defined."
+										$modal.open(confirmObject);			
+										return false;
+										
+									}
+								}
+								return true;
+							}
+
+							
+							if (navigator.userAgent.indexOf('Mac OS X') != -1) {
+							    $scope.wizardClass = "wizardWhiteMac"
+							} else {
+							    $scope.wizardClass = "wizardWhite";
+							}
 
 						} ]);
+
+
 
 angular.module('e8MyTests').directive('bindQti',
 		[ 'directiveQtiService', function(directiveQtiService) {
