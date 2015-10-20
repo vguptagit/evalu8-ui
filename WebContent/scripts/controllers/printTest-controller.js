@@ -33,8 +33,24 @@ angular.module('e8MyTests')
 		         parentScope.tests[parentScope.currentIndex].isBtnClicked = false;
 		         $modalInstance.dismiss('cancel');
 		     };
+		     
+		     
+		     
 		     $scope.printTest = function () {
-		         parentScope.tests[parentScope.currentIndex].isBtnClicked = false;
+		    	 var frm = document.getElementById("testPrint").contentWindow;
+		         frm.focus();
+		         frm.print();
+		     };
+		     
+		     $scope.selectedAnswerArea = $scope.answerAreas[0];
+		     
+		     
+		     $scope.loadTestIframe =  function(){
+		    	 if($("iframe#testPrint").length > 0){
+		        		$("iframe#testPrint").remove();
+		         }
+		    	 setTimeout(function(){
+		    	 parentScope.tests[parentScope.currentIndex].isBtnClicked = false;
 		         var elementToPrint=$('.testPreviewContainer').clone();
 		         $(elementToPrint).find(".printViewLinks").remove();
 		         $(elementToPrint).find("#Essay").empty();	
@@ -57,11 +73,13 @@ angular.module('e8MyTests')
 		         
 		         if(!$scope.isIncludeStudentName)
 		        	 $(elementToPrint).find("#includeStudentName").remove();
-		        	 
 		         $(elementToPrint).print();
-		     };
+		    	 }, 1000);
+		     }
 		     
-		     $scope.selectedAnswerArea = $scope.answerAreas[0];
+		     $scope.$watch('$viewContentLoaded', function(event) {
+		    	 $scope.loadTestIframe();
+		     });
 		     
 		     $scope.answerAreaChange = function () {
 		    	 if ($scope.selectedAnswerArea.value == $scope.answerAreas[0].value){
@@ -81,6 +99,11 @@ angular.module('e8MyTests')
 		    		 $scope.answerAreaBetweenQuestions=false;
 		    		 $scope.answerAreaOnLeftSide=false;
 		    	 }
+		    	 $scope.loadTestIframe();	 
+		     }
+		     
+		     $scope.includeStudentNameChange = function(){
+		    	 $scope.loadTestIframe();
 		     }
 
 		 }]);
