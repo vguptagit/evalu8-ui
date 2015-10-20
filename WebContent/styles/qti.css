@@ -165,7 +165,7 @@
 .captionImageIcon:hover{
   border: 1px solid #3C85C2;
   background: #FDFAFA;
-  outline: 0 !important;
+  /*outline: 0 !important;*/
   color: #2A86C8;
   border-radius:3px;
 }
@@ -237,7 +237,7 @@
 .optionImageIcon:hover{
   border: 1px solid #3C85C2;
   background: #FDFAFA;
-  outline: 0 !important;
+  /*outline: 0 !important;*/
   color: #2A86C8;
   border-radius:3px;
 }
@@ -249,6 +249,12 @@
   box-shadow: 0px -3px 0px #006A8D;  
 }
 
+@-moz-document url-prefix() { 
+    .optionImageIcon:focus, .captionImageIcon:focus, .metdataInput:focus, .questionUploadBtn:focus{
+        outline-width:1px;
+        outline-style:dotted;
+    }
+}
  
 /* MC-Edit End*/
 
