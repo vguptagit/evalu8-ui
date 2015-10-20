@@ -2,8 +2,8 @@
 <div class="questionContainer floatLeftImp" ng-class="answerAreaOnLeftSide?'questionContainerWithAnswerArea':'questionContainer'">
 	<div data-ng-if="!node.IsEditView" class="qtiPrintView" ng-mousedown="selectQuestion(node);">
 		<div class="printViewLinks" ng-show="showQstnEditIcon" >		
-				<a id="switchLink" class="qstnLinks"  data-ng-click="toggleEdit(node)">Edit</a>
-				<a class="qstnLinks qstnDeleteLinks" data-ng-click="closeQuestions(tests[currentIndex],$index)">Delete</a>
+            <a href="" id="switchLink" class="qstnLinks" data-ng-click="toggleEdit(node)">Edit</a>
+            <a href="" class="qstnLinks qstnDeleteLinks" data-ng-click="closeQuestions(tests[currentIndex],$index)">Delete</a>
 		</div>
 		 <div class="questionPrintContainer">{{$index + 1}})
 			<div class="printQuestionCaption"
@@ -32,8 +32,8 @@
 
 	<div data-ng-if="node.IsEditView">
 		<div class="editViewLinks" >	
-			<a id="switchLink" class="qstnLinks" data-ng-click="toggleEdit(node)">Save</a>
-			<a class="qstnLinks qstnDeleteLinks" data-ng-click="closeQuestions(tests[currentIndex],$index)">Delete</a>			
+            <a href="" id="switchLink" class="qstnLinks" data-ng-click="toggleEdit(node)" event-focus="blur" event-focus-id="tcfQuestionDelete">Save</a>
+            <a href="" id="tcfQuestionDelete" class="qstnLinks qstnDeleteLinks" data-ng-click="closeQuestions(tests[currentIndex],$index)">Delete</a>			
 		</div>
 		<div class='questionSectionTitle'>{{node.qtiModel.QstnSectionTitle}}</div>
 		<div>{{$index + 1}})</div>
@@ -43,9 +43,9 @@
 					placeholder={{node.qtiModel.EditCaption}}
 					ckeditor="htmlEditorOptions" data-ng-model="node.qtiModel.Caption"></div>
 				<div class="captionImageContainer">
-					<button class="captionImageIcon glyphicon glyphicon-picture"
-						tooltip="Upload picture" tooltip-placement="bottom"
-						data-ng-click='showUploadImagePanel(this,$event,"div.captionContainer")'></button>
+                    <button class="captionImageIcon glyphicon glyphicon-picture" event-focus="click" event-focus-id="questionUploadBtn"
+                            tooltip="Upload picture" tooltip-placement="bottom"
+                            data-ng-click='showUploadImagePanel(this,$event,"div.captionContainer")'></button>
 				</div>
 			</div>
 			<div class="OptionContainer">
@@ -65,9 +65,9 @@
 						ready="onReady({{focusEditorIndex}})"></div>
 
 					<div class="optionIconsContainer">
-						<button  tooltip="Upload picture" tooltip-placement="bottom"
-							class="optionImageIcon glyphicon glyphicon-picture"
-							data-ng-click='showUploadImagePanel(this,$event,"div.optionRow",$index)'></button>
+                        <button tooltip="Upload picture" tooltip-placement="bottom" event-focus="click" event-focus-id="questionUploadBtn"
+                                class="optionImageIcon glyphicon glyphicon-picture"
+                                data-ng-click='showUploadImagePanel(this,$event,"div.optionRow",$index)'></button>
 						<button tooltip="Add answer" tooltip-placement="bottom" id={{$index}} name="Add"
 							class="optionImageIcon glyphicon glyphicon-plus"
 							data-ng-click="addOption($index,node)"></button>
@@ -79,14 +79,14 @@
 				</div>
 
 			</div>
-			<div id="questionUploadImage" class="questionUploadImage"
+			<div id="questionUploadImage" class="questionUploadImage" 
 				ng-show="imagePanelLoaded" ng-file-drop ng-accept="'image/*'"
 				data-ng-file-change="upload($files)"
 				drag-over-class="{accept:'dragover', reject:'dragover-err', delay:100}">
 				<div>Drag picture here or browse to upload</div>
-				<input class="questionUploadBtn" type="button" value="Browse"
-					data-ng-file-select data-ng-file-change="upload($files)"
-					ng-accept="'*.jpg,*.png,*.tif,*.tiff,*.gif,*.jpeg,*.bmp'" />
+                <input class="questionUploadBtn" type="button" value="Browse" id="questionUploadBtn"
+                       data-ng-file-select data-ng-file-change="upload($files)"
+                       ng-accept="'*.jpg,*.png,*.tif,*.tiff,*.gif,*.jpeg,*.bmp'" />
 			</div>
 		</div>
 	</div>

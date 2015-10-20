@@ -3,7 +3,9 @@ angular.module('e8MyTests')
 .directive('eventFocus', function (focus) {
     return function (scope, element, attr) {
         element.on(attr.eventFocus, function () {
-            focus(attr.eventFocusId);
+            if (!attr.eventDoFocus || attr.eventDoFocus == "true") {
+                focus(attr.eventFocusId);
+            }
         });
 
         // Removes bound events in the element itself

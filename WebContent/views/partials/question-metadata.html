@@ -1,10 +1,11 @@
 <div id="TestCreationArea" class="metaDataContainer">
 	<div class="editMetdata editView">
 		<div class="imagecaptionMetadata">
-			<input
-				data-ng-src="{{node.isMetadataExpand && 'images/right_arrow.png' || 'images/right_arrow2.png' }}"
-				data-ng-click="node.isMetadataExpand = !node.isMetadataExpand"
-				class="downArrowImage allignimage" type="image" />
+            <input data-ng-src="{{node.isMetadataExpand && 'images/right_arrow.png' || 'images/right_arrow2.png' }}"
+                   data-ng-click="node.isMetadataExpand = !node.isMetadataExpand"
+                   class="downArrowImage allignimage" type="image"
+                   isexpanded={{node.isMetadataExpand}}
+                   event-focus="blur" event-focus-id="switchLink" event-do-focus={{!node.isMetadataExpand}} />
 			<!--  src="images/right_arrow.png" /> -->
 		</div>
 		<div class="mainClass">
@@ -114,8 +115,8 @@
 					<div data-ng-show={{node.questionMetadata.hasOwnProperty('Skill')}} class='metadatarow'>
 						<span class='metdatalabel'>Skill:</span>
 						<div class="metdataVal">
-							<input class='metdataInput'
-								data-ng-model="node.questionMetadata.Skill"  type="textbox" /></input>
+                            <input class='metdataInput'
+                                   data-ng-model="node.questionMetadata.Skill" type="textbox" event-focus="blur" event-focus-id="switchLink" /></input>
 						</div>
 					</div>
 					<div data-ng-show={{node.questionMetadata.hasOwnProperty('QuestionId')}} class='metadatarow'>
@@ -125,5 +126,7 @@
 				</div>
 			</div>
 		</div>
+        <!--This empty ancher tag is added to restrict focus (on tab index change) going to URL-->
+        <a href=""></a>
 	</div>
 </div>
