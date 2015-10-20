@@ -3340,3 +3340,6 @@ a#testwizard {
 	max-height: 200px;
 	vertical-align: text-bottom;
 }
+.signInBorder{
+	 border: solid 1px #999; border-radius: 15px; padding: 20px;
+}
