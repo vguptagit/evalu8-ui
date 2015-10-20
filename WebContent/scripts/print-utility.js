@@ -9,15 +9,8 @@ jQuery.fn.print = function () {
         return;
     }
 
-    // ASSERT: At this point, we know that the current jQuery
-    // collection (as defined by THIS), contains only one
-    // printable element.
-
-    // Create a random name for the print frame.
-    var strFrameName = ("printer-" + (new Date()).getTime());
-
     // Create an iFrame with the new name.
-    var jFrame = $("<iframe name='" + strFrameName + "'>");
+    var jFrame = $("<iframe id='testPrint' name='testPrint'>");
 
     // Hide the frame (sort of) and attach to the body.
     jFrame
@@ -29,7 +22,7 @@ jQuery.fn.print = function () {
     ;
 
     // Get a FRAMES reference to the new frame.
-    var objFrame = window.frames[strFrameName];
+    var objFrame = window.frames["testPrint"];
 
     // Get a reference to the DOM in the new frame.
     var objDoc = objFrame.document;
@@ -59,15 +52,5 @@ jQuery.fn.print = function () {
     objDoc.write("</body>");
     objDoc.write("</html>");
     objDoc.close();
-
-    // Print the document.
-    $(objDoc).ready(function() {
-    	objFrame.focus();
-        objFrame.print();	
-    });
-    
-
-    // Have the frame remove itself in about a minute so that
-    // we don't build up too many of these frames.
-    setTimeout(function () {jFrame.remove();},(60 * 1000));
+   
 }
