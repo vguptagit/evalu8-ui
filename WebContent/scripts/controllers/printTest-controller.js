@@ -37,10 +37,12 @@ angular.module('e8MyTests')
 		     
 		     
 		     $scope.printTest = function () {
-		    	 var frm = document.getElementById("testPrint").contentWindow;
-		         frm.focus();
-		         frm.print();
-		     };
+		    	 if($("iframe#testPrint").length > 0){
+		    		 var frm = document.getElementById("testPrint").contentWindow;
+			         frm.focus();
+			         frm.print();	 
+		    	 }
+		     }
 		     
 		     $scope.selectedAnswerArea = $scope.answerAreas[0];
 		     
@@ -74,7 +76,7 @@ angular.module('e8MyTests')
 		         if(!$scope.isIncludeStudentName)
 		        	 $(elementToPrint).find("#includeStudentName").remove();
 		         $(elementToPrint).print();
-		    	 }, 1000);
+		    	 }, 500);
 		     }
 		     
 		     $scope.$watch('$viewContentLoaded', function(event) {
