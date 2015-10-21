@@ -76,7 +76,7 @@ angular.module('e8MyTests')
 		         if(!$scope.isIncludeStudentName)
 		        	 $(elementToPrint).find("#includeStudentName").remove();
 		         $(elementToPrint).print();
-		    	 }, 500);
+		    	 }, 1000);
 		     }
 		     
 		     $scope.$watch('$viewContentLoaded', function(event) {
