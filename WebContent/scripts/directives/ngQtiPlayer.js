@@ -185,7 +185,7 @@ angular.module('e8MyTests')
 					controller : 'AlertMessageController',
 					windowClass: 'alert-Modal',
 					backdrop : 'static',
-					keyboard : false,
+					keyboard : true,
 					resolve : {
 						parentScope : function() {
 							return $scope;
@@ -333,8 +333,9 @@ angular.module('e8MyTests')
 			/** * ***************************************End Image Upload ****************************************************************/			
 
 			// Called when the editor is completely ready.
-			$scope.onReady = function (focuseditorindex) {				
-				if(focuseditorindex==undefined || focuseditorindex=="0"){					
+			$scope.onReady = function (focuseditorindex) {			
+				$scope.focusCaption();
+				if(focuseditorindex==undefined || focuseditorindex=="0"){	
 					var editor = CKEDITOR.instances['questionCaption'];					
 					var range = new CKEDITOR.dom.range(editor.document);   
 					range.moveToElementEditablePosition( editor.editable(), true ); // bar.^</p>
@@ -444,10 +445,9 @@ angular.module('e8MyTests')
 			}
 
 			$scope.addBlank = function(scope, event){			
-
-				var textEntryInteraction = '<button  data-ng-if="(caption.type==2)" id="RESPONSE_$index" onkeydown="return getSpanId(this,event)" class="blankFIBButton">'+
+				var textEntryInteraction = '<button data-ng-if="(caption.type==2)" id="RESPONSE_$index" onkeydown="return getSpanId(this,event)" class="blankFIBButton">'+
 				'<span contenteditable="false" class="blankWidth editView"><b contenteditable="false">$charIndex.</b>Fill Blank</span></button> &nbsp;';
-
+				
 				var blankCount = scope.$element.find("#questionCaption").eq(0).find("button").length;
 				blankCount = blankCount + 1;
 				var qtiCaption = scope.$element.find("#questionCaption").eq(0);
@@ -456,9 +456,13 @@ angular.module('e8MyTests')
 				textEntryInteraction = textEntryInteraction.replace("$charIndex",String.fromCharCode(65 + blankCount -1));
 				var editor = CKEDITOR.instances['questionCaption'];	
 
-				if (editor.mode == 'wysiwyg') {				
+				if (editor.mode == 'wysiwyg') {	
 					$timeout(function() {
 						editor.insertHtml(textEntryInteraction)
+						$(editor.container.$).find("#RESPONSE_"+blankCount).click(function(){
+							this.focus();
+						})
+
 					}, 300);
 
 					var htmlEle =scope.$element.find('#crtAns').children().eq(0);
@@ -515,7 +519,6 @@ angular.module('e8MyTests')
 			}
 
 			$scope.removeFIBblanks = function(spanElement, event){
-
 				var qtiCationElement;
 				var blankElement;	
 				var spanElement = event.target;

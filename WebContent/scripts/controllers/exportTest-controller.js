@@ -209,7 +209,7 @@ angular.module('e8MyTests')
             controller: 'AlertMessageController',
             size: size,
             backdrop: 'static',
-            keyboard: false,
+            keyboard: true,
             resolve: {
             	parentScope: function () {
                     return $scope;

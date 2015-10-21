@@ -23,7 +23,7 @@ angular.module('evalu8Demo')
 					controller : 'UserSettingsController',
 					size : 'lg',
 					backdrop : 'static',
-					keyboard : false,
+					keyboard : true,
 					resolve: {
 			            parentScope: function () {
 			                return $scope;

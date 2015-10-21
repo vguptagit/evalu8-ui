@@ -68,7 +68,7 @@ angular.module('evalu8Demo')
 				controller : 'usersettingsWizardController',
 				size : 'md',
 				backdrop : 'static',
-				keyboard : false,
+				keyboard : true,
 				scope: $scope,
 				resolve: {
 					step: function () {

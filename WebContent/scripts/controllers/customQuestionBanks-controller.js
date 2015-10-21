@@ -40,7 +40,7 @@ angular.module('e8CustomQuestionBanks')
 			templateUrl : 'views/partials/alert.html',
 			controller : 'AlertMessageController',
 			backdrop : 'static',
-			keyboard : false,
+			keyboard : true,
 			resolve : {
 				parentScope : function() {
 					return $scope;
