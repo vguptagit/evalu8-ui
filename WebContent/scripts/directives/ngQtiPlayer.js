@@ -11,13 +11,16 @@ angular.module('e8MyTests')
 			//code which checks whether any of ckeditor instance is in focus
 			if(!window.CKEDITOR.tools.isCustomisedCallFunctionRegistered){
 				var callFunction = window.CKEDITOR.tools.callFunction;
-				window.CKEDITOR.tools.callFunction = function(a,b,c){
+				//operationIndex : number which indicates the ckeditor operation type
+				//tool : dom object of the selected tool
+				//operationType : type of operation if operationIndex is same for 2 or more tools
+				window.CKEDITOR.tools.callFunction = function(operationIndex,tool,operationtype){
 					var name;
 					for(name in window.CKEDITOR.instances){
 						if(window.CKEDITOR.instances[name].focusManager.hasFocus){
 							var text = $.trim(b == null?"":b.textContent).toLowerCase();
 							(text == "bold" || text == "italic") && $(window.CKEDITOR.instances[name].editable().$).find("b[style],i[style]").removeAttr("style");
-							callFunction(a,b,c);
+							callFunction(operationIndex,tool,operationtype);
 							break;
 						}
 					}
