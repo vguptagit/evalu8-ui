@@ -447,7 +447,8 @@ angular.module('e8MyTests')
 				});
 			}
 
-			$scope.addBlank = function(scope, event){			
+			$scope.addBlank = function(scope, event){
+				$scope.captionFocus = true;
 				var textEntryInteraction = '<button data-ng-if="(caption.type==2)" id="RESPONSE_$index" onkeydown="return getSpanId(this,event)" class="blankFIBButton">'+
 				'<span contenteditable="false" class="blankWidth editView"><b contenteditable="false">$charIndex.</b>Fill Blank</span></button> &nbsp;';
 				
@@ -462,6 +463,7 @@ angular.module('e8MyTests')
 				if (editor.mode == 'wysiwyg') {	
 					$timeout(function() {
 						editor.insertHtml(textEntryInteraction)
+						 $scope.captionFocus = false;
 						$(editor.container.$).find("#RESPONSE_"+blankCount).click(function(){
 							this.focus();
 						})
