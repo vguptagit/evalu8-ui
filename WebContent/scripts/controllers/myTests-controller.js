@@ -670,13 +670,38 @@ angular.module('e8MyTests')
         };
         
         $scope.archiveFolder = function(folder) {
-        	
+        	if(SharedTabService.tests.length >= 1){
+        		for (var i = 0; i < SharedTabService.tests.length; i++) {
+		             if (SharedTabService.tests[i].folderGuid == folder.node.guid) {
+		            	 $scope.IsConfirmation = false;
+ 			            $scope.message = "Test(s) in this folder is in edit mode, please close the Test(s) from edit mode to archive this folder";
+ 			            $modal.open(confirmObject);
+ 			            return false;
+		             }
+        	}
+        	}
         	$rootScope.blockLeftPanel.start();
-        	ArchiveService.archiveFolder(folder.node.guid, function(archivedFolder) {
+        	TestService.getAllTestsOfFolder(folder.node.guid, function (tests) {
+        		if(tests == null) {
+        			$rootScope.blockLeftPanel.stop();
+        			CommonService.showErrorMessage(e8msg.error.cantFetchTests)
+        			return;
+        		}
+        		for(var i = 0; i < tests.length; i++){
+        			for(var j = 0; j < SharedTabService.tests.length; j++){
+        				if(tests[i].guid == SharedTabService.tests[j].testId){
+        					$scope.IsConfirmation = false;
+        					$rootScope.blockLeftPanel.stop();
+    			            $scope.message = "Test(s) in this folder is in edit mode, please close the Test(s) from edit mode to archive this folder";
+    			            $modal.open(confirmObject);
+    			            return false;
+        				}
+        			}
+        		}
         		
+        	ArchiveService.archiveFolder(folder.node.guid, function(archivedFolder) {
         		if(archivedFolder == null) {
         			$rootScope.blockLeftPanel.stop();
-        			
         			CommonService.showErrorMessage(e8msg.error.cantArchive)
         			return;
         		}
@@ -726,8 +751,10 @@ angular.module('e8MyTests')
         		}        		        
 
         		$rootScope.blockLeftPanel.stop();
-        	});        	
-        }
+        	});
+        });
+      }
+
 
         $scope.archiveTest = function(test) {
         	

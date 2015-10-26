@@ -84,6 +84,22 @@ angular.module('evalu8Demo')
 					callback(null);
 				})
 			};
+			this.getAllTestsOfFolder = function(folderId, callback) {
+				
+				var url = evalu8config.apiUrl + "/my/folders/"+ folderId + "/tests?flat=1";
+				var tests = [];
+				$http.get(url, config)
+				.success(function(response) {
+					response.forEach(function(test){
+						tests.push(test);
+					})
+					callback(tests);
+				}).error(function(error, status) {
+
+					callback(null);
+				})
+			};
+			
 			
 			this.getArchiveTests = function(folderId, callback) {				
 				$http.get(evalu8config.apiUrl + '/my/archive/folders/' + folderId + '/tests', config)
