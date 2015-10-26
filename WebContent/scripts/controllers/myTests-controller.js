@@ -669,17 +669,50 @@ angular.module('e8MyTests')
             }
         };
         
+        var isParentFolder = false;
+        function getChildNodes(folder) {
+        	isParentFolder = false;
+        	if(checkIsTestInEditMode(folder)){
+        		isParentFolder=true;
+        	}else if(folder.nodes) {
+        		 for (var i = 0; i < folder.nodes.length; i++){
+     	        	if(folder.nodes[i].nodeType=='folder'){
+     		   			 if(checkIsTestInEditMode(folder.nodes[i])){
+     		   				isParentFolder=true;
+     		   				break;
+     		   			 }
+     		   			 else{ 
+     		   				 if(folder.nodes[i].nodes){
+     		   					getChildNodes(folder.nodes[i]);	 
+     		   				 }
+     		   			 }	
+     	        	}
+     	        }
+        	}
+        	
+	        return isParentFolder;
+        }
+        
+        function checkIsTestInEditMode(node){
+        	var isTestInEdit = false;
+        	if(SharedTabService.tests.length >= 1 ){
+        		for (var j = 0; j < SharedTabService.tests.length; j++) {
+	   				 if (SharedTabService.tests[j].folderGuid == node.guid) {
+	   					 	isTestInEdit = true;
+	   					 	break;
+			         }
+	   			 }
+        	}
+        	return isTestInEdit;
+        }
+        
         $scope.archiveFolder = function(folder) {
-        	if(SharedTabService.tests.length >= 1){
-        		for (var i = 0; i < SharedTabService.tests.length; i++) {
-		             if (SharedTabService.tests[i].folderGuid == folder.node.guid) {
-		            	 $scope.IsConfirmation = false;
- 			            $scope.message = "Test(s) in this folder is in edit mode, please close the Test(s) from edit mode to archive this folder";
- 			            $modal.open(confirmObject);
- 			            return false;
-		             }
-        	}
-        	}
+        	if(getChildNodes(folder.node)){
+    			$scope.IsConfirmation = false;
+				$scope.message = "Test(s) in this folder is in edit mode, please close the Test(s) from edit mode to archive this folder";
+				$modal.open(confirmObject);
+				return false;
+    		}
         	$rootScope.blockLeftPanel.start();
         	TestService.getAllTestsOfFolder(folder.node.guid, function (tests) {
         		if(tests == null) {
