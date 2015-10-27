@@ -27,7 +27,8 @@
 		cantFetchTests: "Unable to fetch tests! Please try again.",
 		cantFetchBooks: "Unable to fetch books! Please try again.",
 		cantFetchSelectedQuestionType: "Unable to fetch selected question type for some/all books! Please try again.",
-		cantFetchQuestions: "Unable to fetch questions! Please try again."
+		cantFetchQuestions: "Unable to fetch questions! Please try again.",
+		testIsInEditMode: "Test(s) in this folder is in edit mode, please close the Test(s) from edit mode to archive this folder"
 		
 	};
 
