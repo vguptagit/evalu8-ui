@@ -1206,9 +1206,8 @@ angular
 									.$on(
 											'dropQuestion',
 											function(event, node, destIndex,
-													sourceTabName, eventType, isAnyNodeAlreadyAdded) {
+													sourceTabName, eventType) {
 											    try {
-											    	isAnyNodeAlreadyAdded = typeof isAnyNodeAlreadyAdded == "undefined" ? false : isAnyNodeAlreadyAdded;
 											        var newNode = angular.copy(node);
 											        newNode.isNodeSelected=false;
 											        if (sourceTabName == "CustomQuestions") {
@@ -1291,15 +1290,6 @@ angular
 											            }
 											        }
 											        $scope.tests[$scope.currentIndex].questions = tests;
-											        if(isAnyNodeAlreadyAdded){
-					                            		$scope.IsConfirmation = false;
-					                                    $scope.message = "Some of the questions are present in the test";
-					                                    $modal.open(confirmObject).result.then(function(ok) {
-															if(ok) {
-																$scope.isAnyNodeAlreadyAdded = false;
-															}
-														});
-											        }
 											        } catch (e) {
 											            console.log(e);
 											        }
