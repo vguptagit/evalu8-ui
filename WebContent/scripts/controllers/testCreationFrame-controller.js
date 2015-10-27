@@ -1206,8 +1206,9 @@ angular
 									.$on(
 											'dropQuestion',
 											function(event, node, destIndex,
-													sourceTabName, eventType) {
+													sourceTabName, eventType, isAnyNodeAlreadyAdded) {
 											    try {
+											    	isAnyNodeAlreadyAdded = typeof isAnyNodeAlreadyAdded == "undefined" ? false : isAnyNodeAlreadyAdded;
 											        var newNode = angular.copy(node);
 											        newNode.isNodeSelected=false;
 											        if (sourceTabName == "CustomQuestions") {
@@ -1290,6 +1291,15 @@ angular
 											            }
 											        }
 											        $scope.tests[$scope.currentIndex].questions = tests;
+											        if(isAnyNodeAlreadyAdded){
+					                            		$scope.IsConfirmation = false;
+					                                    $scope.message = "Some of the questions are present in the test";
+					                                    $modal.open(confirmObject).result.then(function(ok) {
+															if(ok) {
+																$scope.isAnyNodeAlreadyAdded = false;
+															}
+														});
+											        }
 											        } catch (e) {
 											            console.log(e);
 											        }
@@ -1418,14 +1428,16 @@ angular
 	                                     $rootScope.blockPage.stop(); 
 	                                
 	                            };
+	                            
+	                        var renderCounter = 0;
 							$scope.renderQuestions = function(qBindings,
-									currentIndex) {
+									currentIndex,isAnyNodeAlreadyAdded) {
+								isAnyNodeAlreadyAdded = typeof isAnyNodeAlreadyAdded == "undefined" ? false : isAnyNodeAlreadyAdded;
 								if (qBindings.length == 0) {
 									$rootScope.blockPage.stop();
 									return false;
 								}
 									var question = qBindings.shift();
-									 
 									 var userSettings= {};	
 									 userSettings.questionMetadata = {};
 									 
@@ -1499,9 +1511,20 @@ angular
 															if (qBindings.length > 0) {
 																$scope.renderQuestions(
 																		qBindings,
-																		currentIndex);
+																		currentIndex,
+																		isAnyNodeAlreadyAdded);
 															} else {
-															    $rootScope.blockPage.stop();
+																$rootScope.blockPage.stop();
+																renderCounter--;
+																if(renderCounter == 0 && isAnyNodeAlreadyAdded){
+								                            		$scope.IsConfirmation = false;
+							                                    	$scope.message = "Question(s) already added to the test, cannot be added again.";
+							                                    	$modal.open(confirmObject).result.then(function(ok) {
+							                                    		if(ok) {
+							                                    			renderCounter = 0;
+							                                    		}
+							                                    	});
+																}
 															}
 														});
 											});
@@ -1517,7 +1540,7 @@ angular
 								// $scope.tree2 = [];
 
 								QTI.initialize();
-
+								renderCounter++;
 								$scope.renderQuestions(questionBindings,
 										$scope.currentIndex);
 								/*$scope.BlockRightPanel.stop();*/
@@ -2592,9 +2615,9 @@ angular
 											    $scope.addTestWizardCriteria(
 											    		filteredQuestions, currentNode);
 											});
-							$scope.$on('handleBroadcast_AddQuestionsToTest', function (event, response, quizTypes, currentNode) {
+							$scope.$on('handleBroadcast_AddQuestionsToTest', function (event, response, quizTypes, currentNode, isAnyNodeAlreadyAdded) {
 							    QTI.initialize();
-							    
+							    renderCounter++;
 							    response = $.grep(response,function(obj, index){
 							    	var find = false;
 							    	SharedTabService.tests[SharedTabService.currentTabIndex].questions.forEach(function(item){
@@ -2616,7 +2639,8 @@ angular
 							    }
 							    
 							    $scope.renderQuestions(filteredQuestions,
-                                        $scope.currentIndex);
+                                        $scope.currentIndex,
+                                        isAnyNodeAlreadyAdded);
 							})
 						    // #endregion Broadcast handles
 							

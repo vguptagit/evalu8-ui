@@ -1269,25 +1269,55 @@ angular
 									$scope.message = "This chapter includes the topic(s) that you have already added to the test. If you want to add the entire chapter, please click OK";
 									$modal.open(confirmObject).result.then(function(ok) {
 										if(ok) {
-											$scope.addQuestionsToTestTab(test, destIndex, eventType);
+											$scope.addSelectedQuestionsToTestTab(test, destIndex, eventType,scope);
 										}
 									});
 								}else{
 								    SharedTabService.errorMessages = [];
-								    $scope.addQuestionsToTestTab(test, destIndex, eventType);								     
+								    $scope.addSelectedQuestionsToTestTab(test, destIndex, eventType,scope);								     
 								}
 								$scope.editQuestionMode=false;
 							}
 							
-							$scope.addQuestionsToTestTab = function (test, destIndex, eventType) {
+							$scope.isAnyNodeAlreadyAdded = false;
+							
+							$scope.addSelectedQuestionsToTestTab = function(test, destIndex, eventType,scope) {
+                            	var selectedScopeNode = typeof scope.node == "undefined" ? scope : scope.node;
+                            	if(!selectedScopeNode.showEditQuestionIcon)
+                        		{
+                            		$scope.isAnyNodeAlreadyAdded = true
+
+                        		}
+                            	
+                            	$scope.addQuestionsToTestTab(test, destIndex, eventType,$scope.isAnyNodeAlreadyAdded);
+                            	$scope.isAnyNodeAlreadyAdded = false;
+
+							}
+							
+							$scope.showDuplicateQuestionsAlert = function(){
+	                            	if($scope.isAnyNodeAlreadyAdded){
+	                            		$scope.IsConfirmation = false;
+	                                    $scope.message = "Question(s) already added to the test, cannot be added again.";
+	                                    $modal.open(confirmObject).result.then(function(ok) {
+											if(ok) {
+												$scope.isAnyNodeAlreadyAdded = false;
+											}
+										});
+	                            	}
+							}
+							
+							$scope.addQuestionsToTestTab = function (test, destIndex, eventType, isAnyNodeAlreadyAdded) {
 							    var httpReqCount = 0,
-                                    httpReqCompletedCount = 0;
+                                    httpReqCompletedCount = 0,
+                                    uniqueNodeCount = 0;
+//							    if(scope.showEditQuestionIcon)
 								for (var i = 0; i < $scope.selectedNodes.length; i++) {
 									if($scope.selectedNodes[i].nodeType != EnumService.NODE_TYPE.question){
 									test.questionFolderNode.push($scope.selectedNodes[i]);
 									}
 									$scope.getRemoveChildNodesFromQuestionFolderNodes($scope.selectedNodes[i], test);
 									if ($scope.selectedNodes[i].showEditQuestionIcon) {
+										uniqueNodeCount++;
 										if ($scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.question) {
                                             if (SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode) {
                                             	$scope.selectedNodes[i].showEditQuestionIcon = true;
@@ -1296,10 +1326,11 @@ angular
                                                 $modal.open(confirmObject);
                                                 $scope.dragStarted = false;
                                                 break;
-                                            }else{               
-                                                $rootScope.blockPage.start();
-                                            	$scope.selectedNodes[i].showEditQuestionIcon = false;
-                                                $rootScope.$broadcast("dropQuestion",$scope.selectedNodes[i], destIndex,"QuestionBank", eventType);
+                                            }else{      
+
+                                                    $rootScope.blockPage.start();
+                                                	$scope.selectedNodes[i].showEditQuestionIcon = false;
+                                                    $rootScope.$broadcast("dropQuestion",$scope.selectedNodes[i], destIndex,"QuestionBank", eventType);
                                             }    
 
 										} else if ($scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.chapter
@@ -1314,12 +1345,29 @@ angular
 													questionFolder,
 													function(response,
 															questionFolder) {
+														if(!isAnyNodeAlreadyAdded)
+														{
+															test.questions.forEach(function(testQuestion){
+																response.forEach(function(selectedQuestion){
+																	if(testQuestion.guid == selectedQuestion.guid)
+																	{
+																		isAnyNodeAlreadyAdded = true;
+																		return;
+																	}
+																})
+																if(isAnyNodeAlreadyAdded == true)
+																{
+																	return;
+																}
+															})
+														}
 														$rootScope
 																.$broadcast(
 																		"handleBroadcast_AddQuestionsToTest",
 																		response,
 																		$scope.selectedQuestionTypes.toString(),
-																		questionFolder);
+																		questionFolder,
+																		isAnyNodeAlreadyAdded);
 														$scope.editQuestionMode = false;
 														httpReqCompletedCount++;
 														if (!response.length) {
@@ -1332,13 +1380,18 @@ angular
 														    }
 														}
 
-														if (httpReqCount == httpReqCompletedCount && SharedTabService.errorMessages.length > 0) {
-														    SharedTabService.TestWizardErrorPopup_Open();
+														if (httpReqCount == httpReqCompletedCount) {
+															if(SharedTabService.errorMessages.length > 0)
+																SharedTabService.TestWizardErrorPopup_Open();
+															//$scope.showDuplicateQuestionsAlert();
 														}
 													});
 										}
 
 									}
+								}
+								if((uniqueNodeCount == 0 && $scope.selectedNodes.length !=0) || httpReqCount == 0){
+									$scope.showDuplicateQuestionsAlert();
 								}
 							}
 							
