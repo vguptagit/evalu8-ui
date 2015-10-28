@@ -102,7 +102,10 @@ angular
 						            			"destFolderId" : mouseOverNode.node.guid
 						            	}
 						            	
-						            	UserQuestionsService.moveQuestion(questionFolder, function() {
+						            	UserQuestionsService.moveQuestion(questionFolder, function(response) {
+						            		if(!response){
+						            			CommonService.showErrorMessage(e8msg.error.cantMoveQuestion);
+						            		}
 						            		$rootScope.blockLeftPanel.stop();
 						            	});
 						            	
@@ -125,7 +128,10 @@ angular
 							            			"destFolderId" : null
 							            	}
 							            	
-							            	UserQuestionsService.moveQuestion(questionFolder, function() {
+							            	UserQuestionsService.moveQuestion(questionFolder, function(response) {
+								            	if(!response){
+							            			CommonService.showErrorMessage(e8msg.error.cantMoveQuestion);
+							            		}
 							            		$rootScope.blockLeftPanel.stop();
 							            	});
 							            	
@@ -140,7 +146,10 @@ angular
 							            			"destFolderId" : destParent.node.guid
 							            	}
 							            	
-							            	UserQuestionsService.moveQuestion(questionFolder, function() {
+							            	UserQuestionsService.moveQuestion(questionFolder, function(response) {
+								            	if(!response){
+							            			CommonService.showErrorMessage(e8msg.error.cantMoveQuestion);
+							            		}
 							            		$rootScope.blockLeftPanel.stop();
 							            	});
 							            	
@@ -231,6 +240,10 @@ angular
 										discipline.isHttpReqCompleted = true;
 										discipline.nodeType = "discipline";
 										BookService.userDisciplineBooks(discipline,function(userbooks){
+											if(userbooks==null){
+												CommonService.showErrorMessage(e8msg.error.cantFetchBooks)
+						            			return;
+											}
 											userbooks.forEach(function(books) {
 												books.isCollapsed=true;
 											});
@@ -353,7 +366,10 @@ angular
                                 }                                
                                 
                                 UserQuestionsService.userQuestionsFolderRoot(function(userQuestionsFolderRoot) {
-                                    
+                                	if(userQuestionsFolderRoot==null){
+                                		CommonService.showErrorMessage(e8msg.error.cantFetchRootFolder);
+                                		return;
+                                	}                                    
                                     var UserQuestionsFolder = {
                                         "parentId": userQuestionsFolderRoot.guid,                
                                         "sequence": sequence,
@@ -361,7 +377,10 @@ angular
                                     };
                                         
                                     UserQuestionsService.saveQuestionFolder(UserQuestionsFolder, function (userFolder) {
-                                        
+                                    	if(userFolder==null){
+                                    		CommonService.showErrorMessage(e8msg.error.cantSaveQuestionFolder);
+    						         		return;
+                                    	}
                                         $scope.YourQuestionRoot.node.nodes.unshift(UserQuestionsFolder);
                                         $scope.YourQuestionRoot.node.nodes[0].nodeType = EnumService.NODE_TYPE.userQuestionFolder;
                                         $scope.YourQuestionRoot.node.nodes[0].isCollapsed = true;
@@ -401,6 +420,10 @@ angular
 										var yourQuestions = [];
 										
 										UserQuestionsService.userQuestionsFolderRoot(function(userQuestionsFolderRoot) {
+											if(userQuestionsFolderRoot==null){
+		                                		CommonService.showErrorMessage(e8msg.error.cantFetchRootFolder);
+		                                		return;
+		                                	}
 											$scope.userQuestionsFolderRoot = userQuestionsFolderRoot;
 										});
 										discipline.node.isHttpReqCompleted = false;
@@ -2108,6 +2131,10 @@ angular
 							        }
 							    }
 							    TestService.getMetadata(newTest.guid, function (test) {
+							    	if(test==null){
+						        		 CommonService.showErrorMessage(e8msg.error.cantFetchMetadata);
+						         		return;
+						        	 }
 							        test.nodeType = "test";
 							        createdTab.metadata = TestService.getTestMetadata(test);
 							        createdTab.treeNode = null;

@@ -80,7 +80,7 @@ angular.module('evalu8Demo')
                 if (callback) callback(response);
             })
             .error(function(error, status) {
-
+            	if (callback) callback(null);
             })
         };
         
@@ -95,15 +95,12 @@ angular.module('evalu8Demo')
         }
         
         this.userQuestionsFolderRoot = function(callback) {    
-
-            var userQuestionsFolderRoot = {};
             $http.get(evalu8config.apiUrl + "/my/questionfoldersroot", config)
                 .success(function(response) {
-                    userQuestionsFolderRoot= response;
-                    callback(userQuestionsFolderRoot)
+                    callback(response)
                 })
                 .error(function(){
-                    callback(userQuestionsFolderRoot);
+                    callback(null);
                 })
         };
 

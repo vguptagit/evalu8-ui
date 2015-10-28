@@ -126,7 +126,7 @@ angular.module('evalu8Demo')
                     callback(test)
                 })
                 .error(function(error, status) {
-
+                	callback(null);
                 })                
             };
 
@@ -221,6 +221,9 @@ angular.module('evalu8Demo')
                 }).success(function (data, status, headers, config) {
 
                     callback(data,element,cursorPosition);
+                })
+                .error(function(){
+                	callback(null);
                 });
 			}
 		}

@@ -25,6 +25,10 @@ angular.module('e8MyTests')
         		}
         		
             	UserFolderService.testRootFolder(function(myTestRoot){
+            		if(myTestRoot==null){
+            			CommonService.showErrorMessage(e8msg.error.cantFetchRootFolder)
+            			return;
+            		}
             		$scope.myTestRoot = myTestRoot;
             	            	
 	                $scope.defaultFolders = defaultFolders;
@@ -55,12 +59,21 @@ angular.module('e8MyTests')
 	                		$scope.defaultFolders.push(CommonService.getArchiveRoot());
 	                	} else {
 	                    	ArchiveService.getArchiveFolders(null, function (userFolders) {
+	                    		if(userFolders==null){
+			                  		 $rootScope.blockLeftPanel.stop();
+			                  		 CommonService.showErrorMessage(e8msg.error.cantFetchArchiveFolders);
+			                  		 return;
+			                  	}
 	                    		if(userFolders.length && !(userFolders.length==1 && userFolders[0].nodeType=='empty')) {
 	                				$scope.defaultFolders.push(CommonService.getArchiveRoot());	                    			                			
 	                    		} else {
 	                    			
 	                                TestService.getArchiveTests(null, function (tests) {
-	
+	                                	if(tests==null){
+	                                		$rootScope.blockLeftPanel.stop();
+	                                		 CommonService.showErrorMessage(e8msg.error.cantFetchArchiveTests);
+	                                		return;
+	                                	}
 	                                	if(tests.length) {
 	                            			
 	                                		$scope.defaultFolders.push(CommonService.getArchiveRoot());	                            			                    			
@@ -138,7 +151,11 @@ angular.module('e8MyTests')
                 var duplicateTitle = false;
                 
                 UserFolderService.getUserFoldersByParentFolderId(mouseOverNode.node.guid, function (userFolders) {
-                    	
+                	if(userFolders==null){
+                		$rootScope.blockLeftPanel.stop();
+                 		CommonService.showErrorMessage(e8msg.error.cantFetchFolders);
+                 		return;
+                 	}		
                 	if(item.nodeType == EnumService.NODE_TYPE.folder) {
                 		userFolders.forEach(function(nodeItem) {                            
                     		if(nodeItem.nodeType == EnumService.NODE_TYPE.folder && nodeItem.title == item.title) {
@@ -185,8 +202,12 @@ angular.module('e8MyTests')
                             item.parentId = mouseOverNode.node.guid;
                             UserFolderService.getFoldersMinSeq(mouseOverNode.node, function(minSeq) {
                             	item.sequence = minSeq==0.0 ? 1.0 : (0.0 + minSeq)/2;
-                            	UserFolderService.saveUserFolder(item, function() {
-                            		
+                            	UserFolderService.saveUserFolder(item, function(userFolder) {
+                            		if(userFolder==null){
+                                		$rootScope.blockLeftPanel.stop();
+                                 		CommonService.showErrorMessage(e8msg.error.cantSave);
+                                 		return;
+                                 	}
                         			if(sourceParent && sourceParent.node && sourceParent.node.nodes.length==0) {
                         				sourceParent.node.nodes.push(CommonService.getEmptyFolder());
                         			}
@@ -196,7 +217,12 @@ angular.module('e8MyTests')
                             })                	
                         } else {
                         	var sourceFolder = $scope.removeTestBindingFromSource(sourceParent, item.guid);
-                        	UserFolderService.saveUserFolder(sourceFolder, function() {
+                        	UserFolderService.saveUserFolder(sourceFolder, function(userFolder) {
+                        		if(userFolder==null){
+                            		$rootScope.blockLeftPanel.stop();
+                             		CommonService.showErrorMessage(e8msg.error.cantSave);
+                             		return;
+                             	}
                         		$scope.insertTestBindingToDest(mouseOverNode, item.guid, function() {
                         			
                         			if(sourceParent && sourceParent.node && sourceParent.node.nodes.length==0) {
@@ -332,7 +358,12 @@ angular.module('e8MyTests')
             	if(item.nodeType == EnumService.NODE_TYPE.test) {
             		                    
             		var sourceFolder = $scope.removeTestBindingFromSource(sourceParent, item.guid);   
-            		UserFolderService.saveUserFolder(sourceFolder, function() {
+            		UserFolderService.saveUserFolder(sourceFolder, function(userFolder) {
+            			if(userFolder==null){
+                    		$rootScope.blockLeftPanel.stop();
+                     		CommonService.showErrorMessage(e8msg.error.cantSave);
+                     		return;
+                     	}
             			$scope.addTestToDest(destParent, function() {
             				
                 			if(sourceParent && sourceParent.node && sourceParent.node.nodes.length==0) {
@@ -366,8 +397,12 @@ angular.module('e8MyTests')
             		} else {
             			item.sequence = (parseFloat(prevSeq) + parseFloat(nextSeq)) / 2;	
             		}
-            		UserFolderService.saveUserFolder(item, function() {
-            			
+            		UserFolderService.saveUserFolder(item, function(userFolder) {
+            			if(userFolder==null){
+                    		$rootScope.blockLeftPanel.stop();
+                     		CommonService.showErrorMessage(e8msg.error.cantSave);
+                     		return;
+                     	}
             			if(sourceParent && sourceParent.node && sourceParent.node.nodes.length==0) {
             				sourceParent.node.nodes.push(CommonService.getEmptyFolder());
             			}
@@ -394,7 +429,11 @@ angular.module('e8MyTests')
         	
         	destNode.testBindings.unshift(testBinding);
         	
-        	UserFolderService.saveUserFolder(destNode, function() {
+        	UserFolderService.saveUserFolder(destNode, function(userFolder) {
+        		if(userFolder==null){
+             		CommonService.showErrorMessage(e8msg.error.cantSave);
+             		return;
+             	}
         		callback();
         	})
         }
@@ -429,7 +468,11 @@ angular.module('e8MyTests')
     		}
         	
         	destNode.testBindings = testBindings;
-        	UserFolderService.saveUserFolder(destNode, function() {
+        	UserFolderService.saveUserFolder(destNode, function(userFolder) {
+        		if(userFolder==null){
+             		CommonService.showErrorMessage(e8msg.error.cantSave);
+             		return;
+             	}
         		callback();
         	});
         }
@@ -584,7 +627,11 @@ angular.module('e8MyTests')
             if (!defaultFolder.collapsed) {            	
 				
 				UserFolderService.getUserFoldersByParentFolderId(defaultFolder.node.guid, function (userFolders) {
-
+					if(userFolders==null){
+                		$rootScope.blockLeftPanel.stop();
+                 		CommonService.showErrorMessage(e8msg.error.cantFetchFolders);
+                 		return;
+                 	}
                     defaultFolder.node.nodes = userFolders;
 
                     $rootScope.blockLeftPanel.start();
@@ -766,7 +813,7 @@ angular.module('e8MyTests')
         	function doArchive(folder){
         		$rootScope.blockLeftPanel.start();
         		ArchiveService.archiveFolder(folder.node.guid, function(archivedFolder) {
-            		if(archivedFolder == null) {
+        			if(archivedFolder == null) {
             			$rootScope.blockLeftPanel.stop();
             			CommonService.showErrorMessage(e8msg.error.cantArchive)
             			return;
@@ -808,6 +855,11 @@ angular.module('e8MyTests')
            				 	ArchiveService.getArchiveFolders($scope.archiveRoot.node, function (archivedFolders) {
     	    					$scope.archiveRoot.node.nodes=archivedFolders;
     	    					TestService.getArchiveTests($scope.archiveRoot.node.guid, function (tests) {
+    	    						if(tests==null){
+    	                        		$rootScope.blockLeftPanel.stop();
+    	                        		 CommonService.showErrorMessage(e8msg.error.cantFetchArchiveTests);
+    	                        		return;
+    	                        	}
     	    						 tests.forEach(function (test) {
     	    	                            test.selectTestNode = false;
     	    	                            $scope.archiveRoot.node.nodes.push(test);
@@ -871,8 +923,18 @@ angular.module('e8MyTests')
         				testParent.node.nodes.push(test.node);
         			}else{
        				 	ArchiveService.getArchiveFolders($scope.archiveRoot.node, function (archivedFolders) {
+	       				 	if(archivedFolders==null){
+		                  		 $rootScope.blockLeftPanel.stop();
+		                  		 CommonService.showErrorMessage(e8msg.error.cantFetchArchiveFolders);
+		                  		 return;
+		                  	}
 	    					$scope.archiveRoot.node.nodes=archivedFolders;
 	    					TestService.getArchiveTests($scope.archiveRoot.node.guid, function (tests) {
+	    						if(tests==null){
+	                        		$rootScope.blockLeftPanel.stop();
+	                        		 CommonService.showErrorMessage(e8msg.error.cantFetchArchiveTests);
+	                        		return;
+	                        	}
 	    						 tests.forEach(function (test) {
 	    	                            test.selectTestNode = false;
 	    	                            $scope.archiveRoot.node.nodes.push(test);
@@ -1147,7 +1209,10 @@ angular.module('e8MyTests')
             };
             $scope.folderName=null;
             UserFolderService.saveUserFolder(userFolder, function (userFolder) {
-
+				if(userFolder==null){
+             		CommonService.showErrorMessage(e8msg.error.cantSave);
+             		return;
+             	}
             	// $scope.loadTree();
             	
             	userFolder.nodeType = "folder";
@@ -1222,7 +1287,11 @@ angular.module('e8MyTests')
             	parentFolderNodes = parentFolder.nodes;
             	parentTestBindings = parentFolder.testBindings;
             }
-            TestService.getMetadata(newTest.guid, function (test) {               
+            TestService.getMetadata(newTest.guid, function (test) {  
+            	if(test==null){
+            		CommonService.showErrorMessage(e8msg.error.cantFetchMetadata);
+            		return;
+           	 	}
             	test.nodeType = EnumService.NODE_TYPE.test;
             	test.draggable = false;
 
@@ -1276,6 +1345,10 @@ angular.module('e8MyTests')
             		});
 
             		UserFolderService.testRootFolder(function(myTestRoot){
+            			if(myTestRoot==null){
+                			CommonService.showErrorMessage(e8msg.error.cantFetchRootFolder)
+                			return;
+                		}
             			$scope.myTestRoot = myTestRoot;
             		});
             		parentFolderNodes.splice(position, 0, test)
@@ -1302,6 +1375,10 @@ angular.module('e8MyTests')
             if (testFolder==null) {
                 treeItems = $scope.defaultFolders;
                 UserFolderService.testRootFolder(function(myTestRoot){
+                	if(myTestRoot==null){
+            			CommonService.showErrorMessage(e8msg.error.cantFetchRootFolder)
+            			return;
+            		}
         			$scope.myTestRoot = myTestRoot;
         		});
             }

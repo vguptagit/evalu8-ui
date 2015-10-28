@@ -1,7 +1,7 @@
 ﻿'use strict';
 angular.module('e8MyTests')
-.directive("qtiPlayer",['$modal','QtiService','TestService','$sce','$rootScope','$timeout',
-                        function($modal,QtiService,TestService,$sce,$rootScope,$timeout) {	
+.directive("qtiPlayer",['$modal','QtiService','TestService','$sce','$rootScope','$timeout','CommonService',
+                        function($modal,QtiService,TestService,$sce,$rootScope,$timeout,CommonService) {	
 	return {
 		template : '<ng-include src="getQtiTemplate()"/>',
 		restrict : 'E',
@@ -238,7 +238,11 @@ angular.module('e8MyTests')
 						TestService
 						.uploadImage(file,Option,'CursorPosition',
 								function(data,element,cursorPosition) {
-
+							 if(data==null){
+									$rootScope.blockPage.stop();
+									CommonService.showErrorMessage(e8msg.error.cantUploadImage)
+									return;
+							}
 							var html = "<u contenteditable='false' url='"	+ data	+ "'><i>"+ file.name+ "</i></u>&nbsp;";
 						
 							$scope.imagePanelLoaded = false;

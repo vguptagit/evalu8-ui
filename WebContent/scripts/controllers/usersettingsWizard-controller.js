@@ -289,11 +289,15 @@ angular
 
 									// Getting User selected books
 									UserService.userBookIDs(function(userBookIDs) {
+											if(userBookIDs==null){
+												CommonService.showErrorMessage(e8msg.error.cantFetchBooks)
+					                			return;
+											}
 											$scope.books.userSelected = userBookIDs;
 											$scope.selectedDisciplineCounter=0;
 											$scope.disciplines.userSelected.forEach(function(discipline) {
 														$scope.getBooks(discipline,$scope.books.userSelected);
-													});
+											});
 										});
 
 									return true;
@@ -660,7 +664,9 @@ angular
                                        				 $rootScope.$broadcast("SaveSettings");
                                        				 
                                        				 $modalInstance.close();				 
-                                       			 }
+                                       			 }else{
+                                 					CommonService.showErrorMessage(e8msg.error.cantSaveMetadata)
+                                    			 }
                                        		 });
                                         		
                                         	}

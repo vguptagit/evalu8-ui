@@ -1,7 +1,7 @@
 angular.module('e8MyTests')
 .controller('ExportTestController', 
-		['$scope', '$rootScope', '$modalInstance', 'parentScope', 'UserService','TestService','$modal',
-		 function ($scope, $rootScope, $modalInstance, parentScope, UserService, TestService,$modal) {
+		['$scope', '$rootScope', '$modalInstance', 'parentScope', 'UserService','TestService','$modal','CommonService',
+		 function ($scope, $rootScope, $modalInstance, parentScope, UserService, TestService,$modal,CommonService) {
 			
 	parentScope.tests[parentScope.currentIndex].isBtnClicked=false;
     var FileFormats = {
@@ -55,6 +55,10 @@ angular.module('e8MyTests')
 
     $scope.showWaiting=true;
     UserService.userPrintSettings(function(printSettings) {
+    	if(printSettings=null){
+			CommonService.showErrorMessage(e8msg.error.cantFetchPrintSettings);
+			return;
+    	}
     	$scope.isIncludeRandomizedTest = printSettings.includeRandomizedTests;
     	$scope.isIncludeStudentName = printSettings.includeStudentName;
     	

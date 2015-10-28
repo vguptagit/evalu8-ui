@@ -20,11 +20,12 @@ angular
 				};
 
 				this.userPrintSettings = function(callback) {
-					$http.get(
-							evalu8config.apiUrl
-									+ '/settings/printsettings',
-							config).success(function(response) {
+					$http.get(evalu8config.apiUrl+ '/settings/printsettings',config)
+					.success(function(response) {
 						callback(response)
+					})
+					.error(function (error, status) {
+						callback(null)
 					});
 				};
 

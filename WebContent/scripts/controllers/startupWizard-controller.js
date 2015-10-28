@@ -128,6 +128,10 @@ angular
 								$scope.disciplines.all = allDisciplines;
 								
 								UserService.userDisciplines(function(userDisciplines) {
+									if(userDisciplines==null){
+										CommonService.showErrorMessage(e8msg.error.cantFetchDisciplines)
+										return;
+									}
 									try{
 										if (userDisciplines.length == 0) {
 											$scope.enableDisableNextButton($scope.isDesciplineEmpty());

@@ -1337,6 +1337,10 @@ angular
 								$("#testCaption").val(selectedTest.node.title);
 							
 								TestService.getTestQuestions(selectedTest.node.guid,function(questions) {
+												if (questions == null) {
+						                            CommonService.showErrorMessage(e8msg.error.cantFetchTestQuestions);
+						                            return;
+						                        }
                                                 $scope.bindTestQuestions(questions,$scope.currentIndex);
                                             })												
 												
@@ -1441,11 +1445,20 @@ angular
 										.getMetadata(
 												question.guid,
 												function(questionMetadataResponse) {		
-											
+													if(questionMetadataResponse==null){
+														$scope.blockPage.stop();
+										        		 CommonService.showErrorMessage(e8msg.error.cantFetchMetadata);
+										         		return;
+										        	 }
 										TestService
 												.getQuestionById(
 														question.guid,
 														function(response) {
+															if(response == null){
+																$scope.blockPage.stop();
+											        			CommonService.showErrorMessage(e8msg.error.cantFetchQuestions)
+											        			return;
+															}
 															var qtiDisplayNode = $("<div></div>");
 															 QTI.BLOCKQUOTE.id = 0;
 															QTI.play(response,
@@ -1778,7 +1791,11 @@ angular
                             	var duplicateTitle = false;
                             	
                                 TestService.getTests(test.folderGuid, function(tests){
-
+                                	if(tests==null){
+            							$rootScope.blockPage.stop();
+            							CommonService.showErrorMessage(e8msg.error.cantFetchTests)
+                            			return;
+            						}
                                     tests.forEach(function (folderTest) {
                                         if (test.saveMode === EnumService.SAVE_MODE.SaveAs && folderTest.title == test.title) {
                                             duplicateTitle = true;
@@ -2029,6 +2046,11 @@ angular
 								        $scope.versionedTests.forEach(function (node) {
 								            var testID = node.guid;
 								            TestService.getMetadata(testID, function (result) {
+								            	if(result==null){
+								            		$rootScope.blockPage.stop();
+									        		 CommonService.showErrorMessage(e8msg.error.cantFetchMetadata);
+									         		return;
+									        	 }
 								            	result.draggable = false;
 								            	result.showEditIcon = false;
 							                    result.showArchiveIcon = false;
@@ -2331,6 +2353,11 @@ angular
 								var duplicateTitle = false;
 								$rootScope.blockPage.start();
                                 TestService.getTests(test.folderGuid, function(tests){
+                                	if(tests==null){
+            							$rootScope.blockLeftPanel.stop();
+            							CommonService.showErrorMessage(e8msg.error.cantFetchTests)
+                            			return;
+            						}
                                     tests.forEach(function (folderTest) {
                                         if (test.saveMode === EnumService.SAVE_MODE.SaveAs && folderTest.title == test.title) {
                                             duplicateTitle = true;

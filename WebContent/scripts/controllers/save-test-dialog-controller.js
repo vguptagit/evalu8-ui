@@ -60,6 +60,10 @@
 		     
 		     $scope.getUserFolders = function (folder, callback) {
 		         UserFolderService.getUserFoldersByParentFolderId(folder.guid, function (userFolders) {
+		        	 if(userFolders==null){
+                 		CommonService.showErrorMessage(e8msg.error.cantFetchFolders);
+                 		return;
+	                 }
 		             folder.nodes = userFolders;
 		             if (callback) callback();
 		         });
@@ -119,6 +123,11 @@
 		         };
 
 		         UserFolderService.saveUserFolder(newFolder, function (response) {
+		        	 if(response==null){
+		             		CommonService.showErrorMessage(e8msg.error.cantSave);
+		             		return;
+		             }
+		        	 
 		             newFolder.guid = response.guid;
 		             newFolder.nodeType = EnumService.NODE_TYPE.folder;
 		             if ($scope.selectedfolder) {

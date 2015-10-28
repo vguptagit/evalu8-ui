@@ -49,6 +49,9 @@ angular.module('evalu8Demo')
 									myTestRoot = response
 									callback (myTestRoot);
 								})
+						.error(function(error, status) {
+									callback(null)
+						});
 			}
 			
 			this.userFoldersCount = function(folder, callback) {				
@@ -100,7 +103,10 @@ angular.module('evalu8Demo')
 						userFolders.push(item);    							    							
 					});
 					callback (userFolders);
-				})					
+				})
+				.error(function(error, status) {
+					callback(null)
+				});					
 				
 			};			
 			
@@ -122,7 +128,7 @@ angular.module('evalu8Demo')
 				    if (callback) callback(response);
 				})
 				.error(function(error, status) {
-
+					callback(null);
 				})				
 			};			
 						

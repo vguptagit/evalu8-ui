@@ -45,6 +45,10 @@ angular.module('evalu8Demo')
 	 };		
 	 
 	 UserService.userQuestionMetadata(function(userQuestionMetadata){
+		 if(userQuestionMetadata==null){
+			CommonService.showErrorMessage(e8msg.error.cantFetchMetadata)
+ 			return;
+		}
 		 $scope.questionMetadata.userSelected = userQuestionMetadata;
 	 });
 	 
@@ -57,6 +61,8 @@ angular.module('evalu8Demo')
 				 $rootScope.$broadcast("SaveSettings");
 				 
 				 $modalInstance.close();				 
+			 }else{
+					CommonService.showErrorMessage(e8msg.error.cantSaveMetadata)
 			 }
 		 });
 	 };
