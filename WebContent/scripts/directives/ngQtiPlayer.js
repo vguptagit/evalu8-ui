@@ -417,14 +417,21 @@ angular.module('e8MyTests')
 								}
 							}
 
-							$scope.onReady(0); 
+							$scope.onReady($index); 
 
-						};
+						}else{
+							$scope.onReady($index+1);
+						}
 					});
 				} else {
 					$scope.IsConfirmation = false;
 					$scope.message = "Minimum answer required is 3."
-						$modal.open(confirmObject);
+					$modal.open(confirmObject).result
+					.then(function(ok) {
+						if (ok) {	
+							$scope.onReady($index+1); 
+						}
+					});
 				}
 
 			}
