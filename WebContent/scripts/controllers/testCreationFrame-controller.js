@@ -1423,14 +1423,24 @@ angular
 	                                
 	                            };
 	                            
-	                        var renderCounter = 0;
-							$scope.renderQuestions = function(qBindings,
-									currentIndex,isAnyNodeAlreadyAdded) {
-								isAnyNodeAlreadyAdded = typeof isAnyNodeAlreadyAdded == "undefined" ? false : isAnyNodeAlreadyAdded;
-								if (qBindings.length == 0) {
-									$rootScope.blockPage.stop();
-									return false;
-								}
+		                        var renderCounter = 0;
+								$scope.renderQuestions = function(qBindings,
+										currentIndex,isAnyNodeAlreadyAdded) {
+									isAnyNodeAlreadyAdded = typeof isAnyNodeAlreadyAdded == "undefined" ? false : isAnyNodeAlreadyAdded;
+									if (qBindings.length == 0) {
+										$rootScope.blockPage.stop();
+										renderCounter--;
+										if(renderCounter == 0 && isAnyNodeAlreadyAdded){
+		                            		$scope.IsConfirmation = false;
+	                                    	$scope.message = "Question(s) already added to the test, cannot be added again.";
+	                                    	$modal.open(confirmObject).result.then(function(ok) {
+	                                    		if(ok) {
+	                                    			renderCounter = 0;
+	                                    		}
+	                                    	});
+										}
+										return false;
+									}
 									var question = qBindings.shift();
 									 var userSettings= {};	
 									 userSettings.questionMetadata = {};
