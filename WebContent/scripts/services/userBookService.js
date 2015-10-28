@@ -3,23 +3,14 @@
 angular
 .module('evalu8Demo')
 
-.service('UserBookService', ['$http','$rootScope','$cookieStore', function(
-	$http, $rootScope, $cookieStore) {
-	
-		$rootScope.globals = JSON.parse(sessionStorage.getItem('globals'));
-	
-		 var config = {
-				 headers : {
-					 'x-authorization' : $rootScope.globals.authToken,
-					 'Accept' : 'application/json;odata=verbose'
-				 }
-		 };
+.service('UserBookService', ['$http','$rootScope','$cookieStore','HttpService', function(
+	$http, $rootScope, $cookieStore, HttpService) {
 	
 		 this.getUserBooks = function(callback) {
 	
 			 var userBooks = [];
 	
-			 $http.get(evalu8config.apiUrl + "/my/importbooks", config)
+			 $http.get(evalu8config.apiUrl + "/my/importbooks", HttpService.getConfig())
 			 .success(function(response) {
 	
 				 userBooks = response;
@@ -32,7 +23,7 @@ angular
 		 
 		 this.importUserBooks = function(userBooks,callback) {				
 
-			 $http.post(evalu8config.apiUrl + "/my/importbooks", userBooks,config)
+			 $http.post(evalu8config.apiUrl + "/my/importbooks", userBooks, HttpService.getConfig())
 			 .success(function() {					
 				 callback(true);
 			 })

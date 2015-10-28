@@ -132,6 +132,7 @@
     <script src="scripts/services/common-service.js"></script>
     <script src="scripts/services/questionService.js"></script>
     <script src="scripts/services/userBookService.js"></script>
+    <script src="scripts/services/httpService.js"></script>
     
     <script src="scripts/ga.js"></script>
     <script src="scripts/messages.js"></script>
@@ -141,8 +142,8 @@
 
     <script src='https://int-piapi.stg-openclass.com/v1/piapi-int/login/js/session.js'></script>
 
-    <script>
-    	piSession.initialize(evalu8config.clientId);
+    <script>    
+    	piSession.initialize(evalu8config.clientId, {autoRefresh: true});
         piSession.monitorUserActivity(true);
     </script>
     

@@ -3,20 +3,13 @@
 angular.module('evalu8Demo')
 
 .service('DisciplineService', 
-		['$http', '$rootScope', '$cookieStore', 
-	 function($http, $rootScope, $cookieStore) {
+		['$http', '$rootScope', '$cookieStore', 'HttpService',
+	 function($http, $rootScope, $cookieStore, HttpService) {
 		
-		$rootScope.globals = JSON.parse(sessionStorage.getItem('globals'));
-		var config = {
-				headers : {
-					'x-authorization' : $rootScope.globals.authToken,
-					'Accept' : 'application/json;odata=verbose'
-				}
-		};
 		
 		this.allDisciplines = function(callback) {
 			
-			$http.get(evalu8config.apiUrl + "/disciplines/", config)
+			$http.get(evalu8config.apiUrl + "/disciplines/", HttpService.getConfig())
 			.success(function(response) {				
 						
 				if(response == null) {
@@ -31,7 +24,7 @@ angular.module('evalu8Demo')
 		
 		this.userDisciplines = function(callback) {				
 			var userDisciplines = [];
-			$http.get(evalu8config.apiUrl + "/settings/disciplines/", config)
+			$http.get(evalu8config.apiUrl + "/settings/disciplines/", HttpService.getConfig())
 			.success(function(response) {
 						
 				response.forEach (function(item) {    							

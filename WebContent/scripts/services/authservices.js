@@ -53,5 +53,12 @@ angular.module('e8Login')
 				piSession.login(evalu8config.signinUrl, evalu8config.loginGraceTimeSeconds);
 			};						
 
+			service.onRefresh = function(event) {
+				if($rootScope.globals) {
+                    $rootScope.globals.authToken = event.data;
+                    sessionStorage.setItem('globals', JSON.stringify($rootScope.globals));
+                }
+			};	
+			
 			return service;
 		}])
