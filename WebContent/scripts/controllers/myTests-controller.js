@@ -510,7 +510,6 @@ angular.module('e8MyTests')
                 $scope.$digest();
                 return; 
             } else {
-            	$scope.folderNameSaveAlertOpen = true;
                 $scope.IsConfirmation = true;
                 $scope.message = "Do you want to save this folder?"; 
         		$modal.open(confirmObject).result.then(function(ok) {
@@ -721,7 +720,6 @@ angular.module('e8MyTests')
         				$modal.open(confirmObject);
         				return false;
             		}else if (isAnyNodeCollapsed){
-            			var isTestInEditMode=false;
             			$rootScope.blockLeftPanel.start();
             			TestService.getAllTestsOfFolder(folder.node.guid, function (tests) {
                             

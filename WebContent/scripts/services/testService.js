@@ -79,7 +79,7 @@ angular.module('evalu8Demo')
 				
 				var url = evalu8config.apiUrl + "/my/folders/"+ folderId + "/tests?flat=1";
 				var tests = [];
-				$http.get(url, config)
+				$http.get(url, HttpService.getConfig())
 				.success(function(response) {
 					response.forEach(function(test){
 						tests.push(test);
