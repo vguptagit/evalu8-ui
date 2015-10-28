@@ -33,11 +33,11 @@ angular
 						'blockUI',
 						'ContainerService',
                         'CommonService',
-                        'BookService',
+                        'BookService','HttpService',
 						function($scope, $rootScope, $location, $cookieStore, $timeout,
 								$http, $sce, DisciplineService, TestService,
 								SharedTabService, UserQuestionsService,
-								EnumService, $modal, blockUI, ContainerService, CommonService,BookService) {
+								EnumService, $modal, blockUI, ContainerService, CommonService,BookService,HttpService) {
 						    SharedTabService.selectedMenu = SharedTabService.menu.questionBanks;
 						    $rootScope.blockPage = blockUI.instances.get('BlockPage');
 						    
@@ -895,7 +895,7 @@ angular
 															+ "/nodes/"
 															+ currentNode.node.guid
 															+ "/questions",
-													config)
+															HttpService.getConfig())
 											.success(
 													function (response) {
 													    currentNode.node.IsQuestionsReqCompleted = true;
@@ -987,7 +987,7 @@ angular
 															+ "/nodes/"
 															+ currentNode.node.guid
 															+ "/questions",
-													config)
+															HttpService.getConfig())
 										.success(function(response) {
 
 											var responseQuestions = response;
