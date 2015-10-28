@@ -41,14 +41,6 @@ angular
 						    SharedTabService.selectedMenu = SharedTabService.menu.questionBanks;
 						    $rootScope.blockPage = blockUI.instances.get('BlockPage');
 						    
-						    $rootScope.globals = JSON.parse(sessionStorage.getItem('globals'));
-						    
-							var config = {
-								headers : {
-									'x-authorization' : $rootScope.globals.authToken,
-									'Accept' : 'application/json;odata=verbose'
-								}
-							};
 							$scope.controller = EnumService.CONTROLLERS.questionBanks;
 							$scope.selectedNodes = [];
 							
@@ -495,7 +487,7 @@ angular
 												+ "&userBooks=true";
 
 										$http
-												.get(ep, config)
+												.get(ep, HttpService.getConfig())
 												.success(
 														function(response) {
 															response.forEach(function(book) {
@@ -785,7 +777,7 @@ angular
 								    })
 								} else {
 								    //TODO : need to move this is services.	
-								    $http.get(evalu8config.apiUrl + "/books/" + currentNode.bookid + "/nodes/" + node + "/questions?flat=1", config)
+								    $http.get(evalu8config.apiUrl + "/books/" + currentNode.bookid + "/nodes/" + node + "/questions?flat=1", HttpService.getConfig())
                                     .success(function (response) {
                                         callBack(response, currentNode)
                                     })
@@ -1039,7 +1031,7 @@ angular
 										.get(
 												evalu8config.apiUrl
 														+ "/questions/"
-														+ item.guid, config)
+														+ item.guid, HttpService.getConfig())
 										.success(
 												function(response) {
 													item.data = response;
@@ -2040,7 +2032,7 @@ angular
 									templateUrl : 'views/partials/alert.html',
 									controller : 'AlertMessageController',
 									backdrop : 'static',
-									keyboard : true,
+									keyboard : false,
 									resolve : {
 										parentScope : function() {
 											return $scope;

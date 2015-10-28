@@ -8,16 +8,8 @@ angular
 				[
 						'$http',
 						'$rootScope',
-						'$cookieStore',
-						function($http, $rootScope, $cookieStore) {
-
-							$rootScope.globals = JSON.parse(sessionStorage.getItem('globals'));
-							var config = {
-								headers : {
-									'x-authorization' : $rootScope.globals.authToken,
-									'Accept' : 'application/json;odata=verbose'
-								}
-							};
+						'$cookieStore','HttpService',
+						function($http, $rootScope, $cookieStore, HttpService) {
 
 							this.getAllQuestionsOfContainer = function(bookid,
 									containerid, callback) {
@@ -27,7 +19,7 @@ angular
 										+ bookid + "/nodes/" + containerid
 										+ "/questions?flat=1";
 
-								$http.get(url, config).success(
+								$http.get(url, HttpService.getConfig()).success(
 										function(response) {
 											response.forEach(function(item) {
 												questions.push(item);

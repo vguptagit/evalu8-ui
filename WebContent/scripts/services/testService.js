@@ -3,17 +3,8 @@
 angular.module('evalu8Demo')
 
 .service('TestService', 
-		['$http', '$rootScope', '$location', '$cookieStore', '$upload','blockUI',
-		 function($http, $rootScope, $location, $cookieStore,$upload,blockUI) {
-			
-			$rootScope.globals = JSON.parse(sessionStorage.getItem('globals'));
-			 
-			var config = {
-					headers : {
-						'x-authorization' : $rootScope.globals.authToken,
-						'Accept' : 'application/json;odata=verbose'
-					}
-			};						
+		['$http', '$rootScope', '$location', '$cookieStore', '$upload','blockUI','HttpService',
+		 function($http, $rootScope, $location, $cookieStore,$upload,blockUI,HttpService) {									
 			
 			this.saveTestData = function(testData,folderId,callback) {				
 				var testResult = null;
@@ -24,7 +15,7 @@ angular.module('evalu8Demo')
 				delete testData.metadata.nodeType;
 				delete testData.metadata.selectTestNode;
 
-				$http.post(evalu8config.apiUrl + '/my/folders/'+folderId+'/tests', testData, config)
+				$http.post(evalu8config.apiUrl + '/my/folders/'+folderId+'/tests', testData, HttpService.getConfig())
 				.success(function(response) {	
 					var testResult = response;
 					callback(testResult);
@@ -36,7 +27,7 @@ angular.module('evalu8Demo')
 			
             this.saveQuestions = function(editedQstns, callback) {
             	var questionsResult = null;
-                $http.post(evalu8config.apiUrl + '/my/questions', editedQstns, config)
+                $http.post(evalu8config.apiUrl + '/my/questions', editedQstns, HttpService.getConfig())
                 .success(function(response) {    
                     questionsResult = response;
                     callback(questionsResult);                     
@@ -64,7 +55,7 @@ angular.module('evalu8Demo')
 				
 				var tests = [];
 				
-				$http.get(url, config)
+				$http.get(url, HttpService.getConfig())
 				.success(function(response) {
 
 					response.forEach(function(test){
@@ -88,7 +79,7 @@ angular.module('evalu8Demo')
 				
 				var url = evalu8config.apiUrl + "/my/folders/"+ folderId + "/tests?flat=1";
 				var tests = [];
-				$http.get(url, config)
+				$http.get(url, HttpService.getConfig())
 				.success(function(response) {
 					response.forEach(function(test){
 						tests.push(test);
@@ -102,7 +93,7 @@ angular.module('evalu8Demo')
 			
 			
 			this.getArchiveTests = function(folderId, callback) {				
-				$http.get(evalu8config.apiUrl + '/my/archive/folders/' + folderId + '/tests', config)
+				$http.get(evalu8config.apiUrl + '/my/archive/folders/' + folderId + '/tests', HttpService.getConfig())
 				.success(function(response) {
 					var tests = response;
 					tests.forEach(function(test){
@@ -120,7 +111,7 @@ angular.module('evalu8Demo')
 			
             this.getTest = function(testId, callback) {                
 
-                $http.get(evalu8config.apiUrl + '/tests/' + testId, config)
+                $http.get(evalu8config.apiUrl + '/tests/' + testId, HttpService.getConfig())
                 .success(function(response) {
                     var test = response;
                     callback(test)
@@ -132,7 +123,7 @@ angular.module('evalu8Demo')
 
 			this.getTestQuestions = function(testId, callback) {				
 				var questions=[];
-				$http.get(evalu8config.apiUrl + '/test/' + testId + '/questions', config)
+				$http.get(evalu8config.apiUrl + '/test/' + testId + '/questions', HttpService.getConfig())
 				.success(function(response) {
 					questions = response;
 					callback(questions)
@@ -144,7 +135,7 @@ angular.module('evalu8Demo')
 			};
 			
 			this.getPublisherTestsByBookId = function(bookId, callback) {
-				$http.get(evalu8config.apiUrl + '/books/' + bookId + '/tests', config)
+				$http.get(evalu8config.apiUrl + '/books/' + bookId + '/tests', HttpService.getConfig())
 				.success(function(response) {
 					if(response == null) response = [];
 					callback(response)
@@ -161,7 +152,7 @@ angular.module('evalu8Demo')
 			};
 			
 			this.getQuestion = function(questionUrl, callback) {				
-				$http.get(questionUrl, config)
+				$http.get(questionUrl, HttpService.getConfig())
 				.success(function(response) {
 					var question = response;
 					callback(question)
@@ -187,7 +178,7 @@ angular.module('evalu8Demo')
 			}
 						
 			this.createVersions = function (scope, callback) {	
-			    $http.post(evalu8config.apiUrl + '/my/tests/' + scope.currentTab.testId + '/versions', scope.versioningOptions, config)
+			    $http.post(evalu8config.apiUrl + '/my/tests/' + scope.currentTab.testId + '/versions', scope.versioningOptions, HttpService.getConfig())
 				.success(function (response) {				     
 				    callback(scope,response);
 
@@ -198,7 +189,7 @@ angular.module('evalu8Demo')
 			};
 			
 			this.getMetadata = function (testid ,callback) {			 
-			    $http.get(evalu8config.apiUrl + '/test/' + testid + '/metadata', config)
+			    $http.get(evalu8config.apiUrl + '/test/' + testid + '/metadata', HttpService.getConfig())
 				.success(function (response) {				     
 				    callback(response);
 				})

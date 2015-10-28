@@ -553,7 +553,6 @@ angular.module('e8MyTests')
                 $scope.$digest();
                 return; 
             } else {
-            	$scope.folderNameSaveAlertOpen = true;
                 $scope.IsConfirmation = true;
                 $scope.message = "Do you want to save this folder?"; 
         		$modal.open(confirmObject).result.then(function(ok) {
@@ -768,7 +767,6 @@ angular.module('e8MyTests')
         				$modal.open(confirmObject);
         				return false;
             		}else if (isAnyNodeCollapsed){
-            			var isTestInEditMode=false;
             			$rootScope.blockLeftPanel.start();
             			TestService.getAllTestsOfFolder(folder.node.guid, function (tests) {
                             
@@ -1109,7 +1107,7 @@ angular.module('e8MyTests')
                 templateUrl: 'views/partials/alert.html',
                 controller: 'AlertMessageController',
                 backdrop: 'static',
-                keyboard: true,
+                keyboard: false,
                 resolve: {
                     parentScope: function () {
                         return $scope;
@@ -1418,7 +1416,7 @@ angular.module('e8MyTests')
         		templateUrl: 'views/partials/import-userbooks-popup.html',	   
         		controller : 'ImportUserBooksPopUpController',
         		backdrop : 'static',
-				keyboard : true
+				keyboard : false
         	});
         }        
        

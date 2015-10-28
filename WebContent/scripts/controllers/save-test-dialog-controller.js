@@ -73,7 +73,7 @@
 		                templateUrl: 'views/partials/alert.html',
 		                controller: 'AlertMessageController',
 		                backdrop: 'static',
-		                keyboard: true,
+		                keyboard: false,
 		                resolve: {
 		                    parentScope: function () {
 		                        return $scope;

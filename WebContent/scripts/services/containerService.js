@@ -5,17 +5,8 @@ angular
 .service('ContainerService',[
 	'$http',
 	'$rootScope',
-	'$cookieStore',
-	function($http, $rootScope, $cookieStore) {
-
-		$rootScope.globals = JSON.parse(sessionStorage.getItem('globals'));
-
-		var config = {
-			headers : {
-				'x-authorization' : $rootScope.globals.authToken,
-				'Accept' : 'application/json;odata=verbose'
-			}
-		};
+	'$cookieStore','HttpService',
+	function($http, $rootScope, $cookieStore, HttpService) {
 
 		this.bookNodes = function(bookId, quizTypes,  callback) {
 
@@ -27,7 +18,7 @@ angular
 				url= evalu8config.apiUrl + "/books/" + bookId + "/nodes?quizTypes="+quizTypes;
 			}
 			
-			$http.get(url, config)
+			$http.get(url, HttpService.getConfig())
 			.success(function(response) {
 				bookNodes = response;
 				callback(bookNodes);
@@ -56,7 +47,7 @@ angular
 				url=evalu8config.apiUrl+ "/books/"+ bookId+ "/nodes/"+ containerId+ "/nodes?"+queryStrings;
 			}
 
-			$http.get(url, config)
+			$http.get(url, HttpService.getConfig())
 				.success(function(response) {
 					if(response == null) {
 						response = []
@@ -71,7 +62,7 @@ angular
 		this.getQuestionTypeContainers = function(bookid,quizTypes, callback) {
 			var nodes=[];
 			var url = evalu8config.apiUrl + "/books/"+bookid+"/nodes?quizTypes="+quizTypes;
-			$http.get(url, config).success(
+			$http.get(url, HttpService.getConfig()).success(
 					function(response) {
 						callback(response);
 					}).error(function() {
@@ -87,7 +78,7 @@ angular
 					+ "/books/"+ bookid +"/nodes?flat=1";
 
 			$http
-					.get(url, config)
+					.get(url, HttpService.getConfig())
 					.success(
 							function(response) {
 

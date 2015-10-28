@@ -3,23 +3,14 @@
 angular.module('evalu8Demo')
 
 .service('UserFolderService', 
-		['$http', '$rootScope', '$location', '$cookieStore', '$cacheFactory', 'CommonService',
-		 function($http, $rootScope, $location, $cookieStore, $cacheFactory, CommonService) {
-			
-			$rootScope.globals = JSON.parse(sessionStorage.getItem('globals'));			
-			 
-			var config = {
-					headers : {
-						'x-authorization' : $rootScope.globals.authToken,
-						'Accept' : 'application/json;odata=verbose'
-					}
-			};
+		['$http', '$rootScope', '$location', '$cookieStore', '$cacheFactory', 'CommonService', 'HttpService',
+		 function($http, $rootScope, $location, $cookieStore, $cacheFactory, CommonService, HttpService) {			
 					
 			this.defaultFolders = function(callback) {				
 
 				var defaultFolders = [];
 				$http.get(
-						evalu8config.apiUrl + "/my/folders", config)
+						evalu8config.apiUrl + "/my/folders", HttpService.getConfig())
 						.success(
 								function(response) {
 									
@@ -43,7 +34,7 @@ angular.module('evalu8Demo')
 			this.testRootFolder = function(callback) {
 				var myTestRoot = null;
 				$http.get(
-						evalu8config.apiUrl + "/my/testroot", config)
+						evalu8config.apiUrl + "/my/testroot", HttpService.getConfig())
 						.success(
 								function(response) {									    							    							
 									myTestRoot = response
@@ -57,7 +48,7 @@ angular.module('evalu8Demo')
 			this.userFoldersCount = function(folder, callback) {				
 
 				$http.get(
-						evalu8config.apiUrl + "/my/folders/"+ folder.guid + "/folders", config)
+						evalu8config.apiUrl + "/my/folders/"+ folder.guid + "/folders", HttpService.getConfig())
 						.success(
 								function(userFolders) {
 
@@ -74,7 +65,7 @@ angular.module('evalu8Demo')
 			this.getFoldersMinSeq = function(folder, callback) {				
 
 				$http.get(
-						evalu8config.apiUrl + "/my/folders/"+ folder.guid + "/folders", config)
+						evalu8config.apiUrl + "/my/folders/"+ folder.guid + "/folders", HttpService.getConfig())
 						.success(
 								function(userFolders) {
 									if(userFolders.length)
@@ -94,7 +85,7 @@ angular.module('evalu8Demo')
 
 				var userFolders = [];
 
-				$http.get(evalu8config.apiUrl + "/my/folders/"+ parentFolderId + "/folders", config)
+				$http.get(evalu8config.apiUrl + "/my/folders/"+ parentFolderId + "/folders", HttpService.getConfig())
 				.success(function(response) {
 
 					response.forEach (function(item) {  
@@ -123,7 +114,7 @@ angular.module('evalu8Demo')
 				};
 				
 				
-				$http.post(evalu8config.apiUrl + '/my/folders', folder, config)
+				$http.post(evalu8config.apiUrl + '/my/folders', folder, HttpService.getConfig())
 				.success(function(response) {									
 				    if (callback) callback(response);
 				})
