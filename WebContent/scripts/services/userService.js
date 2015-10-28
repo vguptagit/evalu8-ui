@@ -11,7 +11,7 @@ angular
 			function($http, $rootScope, $location, $cookieStore, HttpService) {
 
 				this.userPrintSettings = function(callback) {
-					$http.get(evalu8config.apiUrl+ '/settings/printsettings',config)
+					$http.get(evalu8config.apiUrl+ '/settings/printsettings', HttpService.getConfig())
 					.success(function(response) {
 						callback(response)
 					})

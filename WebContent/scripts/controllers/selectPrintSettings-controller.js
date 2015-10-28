@@ -8,19 +8,10 @@ angular
 		'SelectPrintSettingsController',
 		[
 		 '$scope',
-		 '$rootScope',
 		 '$location',
 		 '$routeParams',
 		 '$http',
-		 function($scope, $rootScope, $location, $routeParams, $http) {
-
-			 var config = {
-					 headers : {
-						 'x-authorization' : $rootScope.globals.authToken,
-						 'content-type' : 'application/json'
-					 }
-			 };				 									  					
-
+		 function($scope, $location, $routeParams, $http) {
 			 
 			 var selectDropdownItem = function(dropdown, selectedVal) {
 				 for(var i=0;i<dropdown.options.length;i++){
@@ -31,7 +22,7 @@ angular
 				 }
 			 }
 			 
-			 $http.get(evalu8config.apiUrl + '/settings/printsettings', config)
+			 $http.get(evalu8config.apiUrl + '/settings/printsettings', HttpService.getConfig())
 			 .success(function(response) {
 				 $scope.userpref = response;
 
@@ -168,17 +159,9 @@ angular
 						 "font" : lstFontStyle.item(lstFontStyle.selectedIndex).text,
 						 "fontSize" : lstPointSize.item(lstPointSize.selectedIndex).text,
 						 "includeWorkSpace" : $scope.userpref.includeWorkSpace
-				 };
+				 }; 
 
-				 var config = {
-							headers : {
-								'x-authorization' : $rootScope.globals.authToken,
-								'content-type' : 'application/json'
-							}
-						};				 
-
-
-				 $http.post(evalu8config.apiUrl + '/settings/printsettings', preference, config)
+				 $http.post(evalu8config.apiUrl + '/settings/printsettings', preference, HttpService.getConfig())
 				 .success(function(response) {
 					 document.getElementById("divSaveMessage").innerHTML = "<span style='color:green'>Settings saved successfully</span>";
 				 })
