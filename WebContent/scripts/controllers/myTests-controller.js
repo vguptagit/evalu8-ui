@@ -1047,7 +1047,7 @@ angular.module('e8MyTests')
                 templateUrl: 'views/partials/alert.html',
                 controller: 'AlertMessageController',
                 backdrop: 'static',
-                keyboard: true,
+                keyboard: false,
                 resolve: {
                     parentScope: function () {
                         return $scope;
@@ -1341,7 +1341,7 @@ angular.module('e8MyTests')
         		templateUrl: 'views/partials/import-userbooks-popup.html',	   
         		controller : 'ImportUserBooksPopUpController',
         		backdrop : 'static',
-				keyboard : true
+				keyboard : false
         	});
         }        
        
