@@ -2,7 +2,7 @@
 
 angular.module('evalu8Demo')
 
-.service('HttpService', function () {
+.service('HttpService',['UuidService', function (UuidService) {
 	
 	this.getConfig = function(){
 
@@ -11,10 +11,11 @@ angular.module('evalu8Demo')
 		var config = {
 			headers : {
 				'x-authorization' : globals.authToken,
-				'Accept' : 'application/json;odata=verbose'
+				'Accept' : 'application/json;odata=verbose',
+				'Correlation-Id' : UuidService.newuuid()
 			}
 		};
 		
 		return config;
 	};
-});
+}]);
