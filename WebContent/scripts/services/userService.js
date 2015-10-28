@@ -7,17 +7,8 @@ angular
 			'$http',
 			'$rootScope',
 			'$location',
-			'$cookieStore',
-			function($http, $rootScope, $location, $cookieStore) {
-
-				$rootScope.globals = JSON.parse(sessionStorage.getItem('globals'));
-
-				var config = {
-					headers : {
-						'x-authorization' : $rootScope.globals.authToken,
-						'Accept' : 'application/json;odata=verbose'
-					}
-				};
+			'$cookieStore', 'HttpService',
+			function($http, $rootScope, $location, $cookieStore, HttpService) {
 
 				this.userPrintSettings = function(callback) {
 					$http.get(
@@ -30,7 +21,7 @@ angular
 
 				this.userDisciplines = function(callback) {
 
-					$http.get(evalu8config.apiUrl + "/settings/disciplines/", this.getConfig())
+					$http.get(evalu8config.apiUrl + "/settings/disciplines/", HttpService.getConfig())
 					.success(function(response) {
 
 						callback(response);
@@ -44,9 +35,8 @@ angular
 
 					var userBookIDs = [];
 
-					$http.get(
-							evalu8config.apiUrl + '/settings/books',
-							config).success(function(response) {
+					$http.get(evalu8config.apiUrl + '/settings/books', HttpService.getConfig())
+					.success(function(response) {
 
 						if (response != "") {
 							response.forEach(function(item) {
@@ -64,28 +54,24 @@ angular
 				this.userQuestionMetadata = function(callback) {
 
 					var userQuestionMetadata = [];
-					$http
-							.get(
-									evalu8config.apiUrl
-											+ "/settings/questionmetadata/",
-									config)
-							.success(
-									function(response) {
+					$http.get(evalu8config.apiUrl+ "/settings/questionmetadata/", HttpService.getConfig())
+					.success(
+							function(response) {
 
-										if (response != "") {
-											response
-													.forEach(function(
-															item) {
-														userQuestionMetadata
-																.push(item);
-													});
-										}
+								if (response != "") {
+									response
+											.forEach(function(
+													item) {
+												userQuestionMetadata
+														.push(item);
+											});
+								}
 
-										callback(userQuestionMetadata);
-									})
-									.error(function (error, status) {
-										callback(null);
-									}) 
+								callback(userQuestionMetadata);
+							})
+							.error(function (error, status) {
+								callback(null);
+							}) 
 
 				};
 
@@ -93,7 +79,7 @@ angular
 
 					$http.post(
 							evalu8config.apiUrl + '/settings/books',
-							userBookIDs, config).success(
+							userBookIDs, HttpService.getConfig()).success(
 							function(response) {
 								if (callback)
 									callback();
@@ -108,7 +94,7 @@ angular
 					$http.post(
 							evalu8config.apiUrl
 									+ '/settings/disciplines',
-							userDisciplines, config).success(
+							userDisciplines, HttpService.getConfig()).success(
 							function(response) {
 								if (callback)
 									callback();
@@ -123,7 +109,7 @@ angular
 							.post(
 									evalu8config.apiUrl
 											+ '/settings/questionmetadata',
-									userQuestionMetadata, config)
+									userQuestionMetadata, HttpService.getConfig())
 							.success(
 									function(response) {
 										callback(true);

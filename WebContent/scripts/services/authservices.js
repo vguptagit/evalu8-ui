@@ -54,8 +54,10 @@ angular.module('e8Login')
 			};						
 
 			service.onRefresh = function(event) {
-				$rootScope.globals.authToken = event.data;
-				sessionStorage.setItem('globals', JSON.stringify($rootScope.globals));
+				if($rootScope.globals) {
+                    $rootScope.globals.authToken = event.data;
+                    sessionStorage.setItem('globals', JSON.stringify($rootScope.globals));
+                }
 			};	
 			
 			return service;

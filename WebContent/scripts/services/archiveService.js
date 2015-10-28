@@ -3,18 +3,8 @@
 angular.module('evalu8Demo')
 
 .service('ArchiveService', 
-		['$http', '$rootScope', '$location', '$cookieStore', 'blockUI', 'EnumService',
-		 function($http, $rootScope, $location, $cookieStore, blockUI, EnumService) {
-			
-			$rootScope.globals = JSON.parse(sessionStorage.getItem('globals'));			
-			 
-			var config = {
-					headers : {
-						'x-authorization' : $rootScope.globals.authToken,
-						'Accept' : 'application/json;odata=verbose'
-					}
-			};
-							
+		['$http', '$rootScope', '$location', '$cookieStore', 'blockUI', 'EnumService', 'HttpService',
+		 function($http, $rootScope, $location, $cookieStore, blockUI, EnumService, HttpService) {							
 			
 			this.getArchiveFolders = function(folder, callback) {				
 				var url;
@@ -26,7 +16,7 @@ angular.module('evalu8Demo')
 
 				var userFolders = [];
 				$http.get(
-						evalu8config.apiUrl + url, config)
+						evalu8config.apiUrl + url, HttpService.getConfig())
 						.success(
 								function(response) {
 
@@ -47,7 +37,7 @@ angular.module('evalu8Demo')
 			
 			this.archiveFolder = function(folderId, callback) {								
 				var archiveItem = {"id": folderId};
-				$http.post(evalu8config.apiUrl + '/my/archive/folders', archiveItem, config)
+				$http.post(evalu8config.apiUrl + '/my/archive/folders', archiveItem, HttpService.getConfig())
 				.success(function(archivedFolder) {									
 					if(callback) callback(archivedFolder);
 				})
@@ -58,7 +48,7 @@ angular.module('evalu8Demo')
 			
 			this.archiveTest = function(testId,folderId, callback) {								
 				var archiveItem = {"id": testId, "folderId": folderId};
-				$http.post(evalu8config.apiUrl + '/my/archive/tests', archiveItem, config)
+				$http.post(evalu8config.apiUrl + '/my/archive/tests', archiveItem, HttpService.getConfig())
 				.success(function(archivedFolder) {									
 					callback(archivedFolder);
 				})
@@ -69,7 +59,7 @@ angular.module('evalu8Demo')
 			
 			this.restoreFolder = function(folderId, callback) {								
 				var archiveItem = {"id": folderId};
-				$http.post(evalu8config.apiUrl + '/my/restore/folders', archiveItem, config)
+				$http.post(evalu8config.apiUrl + '/my/restore/folders', archiveItem, HttpService.getConfig())
 				.success(function(restoredFolder) {									
 					callback(restoredFolder);
 				})
@@ -84,7 +74,7 @@ angular.module('evalu8Demo')
 			
 			this.restoreTest = function(testId,folderId, callback) {								
 				var archiveItem = {"id": testId, "folderId": folderId};
-				$http.post(evalu8config.apiUrl + '/my/restore/tests', archiveItem, config)
+				$http.post(evalu8config.apiUrl + '/my/restore/tests', archiveItem, HttpService.getConfig())
 				.success(function(restoredFolder) {									
 					callback(restoredFolder);
 				})
@@ -99,7 +89,7 @@ angular.module('evalu8Demo')
 			
 			this.deleteFolder = function(folderId, callback) {								
 
-				$http.delete(evalu8config.apiUrl + '/my/delete/folders/' + folderId, config)
+				$http.delete(evalu8config.apiUrl + '/my/delete/folders/' + folderId, HttpService.getConfig())
 				.success(function(response) {									
 					if(callback) callback(1);
 				})
@@ -117,7 +107,7 @@ angular.module('evalu8Demo')
                     url = '/my/delete/tests/' + testId;
                 }
                 
-                $http.delete(evalu8config.apiUrl + url, config)
+                $http.delete(evalu8config.apiUrl + url, HttpService.getConfig())
                 .success(function(response) {                                    
                     if(callback) callback(1);
                 })

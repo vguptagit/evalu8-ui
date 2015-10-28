@@ -8,17 +8,8 @@ angular
 				[
 						'$http',
 						'$rootScope',
-						'$cookieStore',
-						function($http, $rootScope, $cookieStore) {
-
-							$rootScope.globals = JSON.parse(sessionStorage.getItem('globals'));
-
-							var config = {
-								headers : {
-									'x-authorization' : $rootScope.globals.authToken,
-									'Accept' : 'application/json;odata=verbose'
-								}
-							};
+						'$cookieStore','HttpService',
+						function($http, $rootScope, $cookieStore, HttpService) {
 
 							this.disciplineBooks = function(discipline,
 									callback) {
@@ -28,7 +19,7 @@ angular
 								$http.get(
 										evalu8config.apiUrl
 												+ "/books?discipline="
-												+ discipline, config).success(
+												+ discipline, HttpService.getConfig()).success(
 										function(response) {
 
 											response.forEach(function(item) {
@@ -55,7 +46,7 @@ angular
 								$http.get(evalu8config.apiUrl
 										+ "/books?discipline="
 										+ discipline.item
-										+ "&userBooks=true", config).success(
+										+ "&userBooks=true", HttpService.getConfig()).success(
 										function(response) {
 
 											response.forEach(function(item) {
@@ -85,7 +76,7 @@ angular
 								var url = evalu8config.apiUrl
 										+ "/books?userBooks=true";
 
-								$http.get(url, config).success(
+								$http.get(url, HttpService.getConfig()).success(
 										function(response) {
 
 											callback(response);
