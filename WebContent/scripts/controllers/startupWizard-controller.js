@@ -682,7 +682,7 @@ angular
 									controller : 'AlertMessageController',
 									windowClass: 'alert-Modal',
 									backdrop : 'static',
-									keyboard : true,
+									keyboard : false,
 									resolve : {
 										parentScope : function() {
 											return $scope;

@@ -301,7 +301,7 @@ angular.module('evalu8Demo')
 		             templateUrl: 'views/partials/testWizardErrorPopup.html',
 		             controller: 'TestWizardErrorPopupController',
 		             backdrop: 'static',
-		             keyboard: true,
+		             keyboard: false,
 		             resolve: {
 		            	 sharedTabService: function () {
 		                     return sharedTabService;
