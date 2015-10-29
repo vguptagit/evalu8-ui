@@ -1364,7 +1364,7 @@ ol {
 .criteriaAlign input[type='text'] {
 	height: 23px;
 	padding-right: 0px;
-	padding-top: 0px;
+	padding-top: 2px;
     padding-bottom: 0;
 }
 
@@ -2933,7 +2933,7 @@ li[qstntemplate='true'] .qti-simpleChoice .radio, li[printmode='true'] .qti-simp
 }
 
 .placeHolderForBlank {
-	width: 96%;
+	width: 95%;
 	float: right;
 	font-weight: normal;
 	outline: none;

@@ -8,12 +8,19 @@ body {
 	Line-Height: 20px !important;
 }
 
+.captiondiv label {
+	font-family: Helvetica Neue Light;
+	font-size: 14px;
+	font-weight: normal;
+	color: #4D4D4D;
+}
+
 label {
 	font-family: Helvetica Neue Light;
 	font-size: 14px;
 	font-weight: normal;
 	color: #4D4D4D;
-	Line-Height: 1em;
+	line-height: 1em;
 }
 
 .container {

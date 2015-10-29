@@ -498,6 +498,7 @@ span.glyphicon.glyphicon-info-sign {
   overflow: hidden;
   text-overflow: ellipsis;
   height:15px;
+  margin-top: -1px;
 }
 .testCaptionLabel {
   white-space: nowrap;
