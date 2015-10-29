@@ -1143,9 +1143,9 @@ angular.module('e8MyTests')
 
     		$modal.open(confirmObject).result.then(function(ok) {
 	    		if(ok) {
-	                ArchiveService.deleteTest(test.node.guid, test.$parentNodeScope.node.guid, function(response) {
-	                	if(response==null){
-        					CommonService.showErrorMessage(e8msg.error.cantDeleteTest)
+	                ArchiveService.deleteTest(test.node.guid, test.$parentNodeScope.node.guid, function(response,status) {
+	                	if(status!=200){
+        					CommonService.showErrorMessage(response)
                 			return;
         				}
 	                    test.remove();

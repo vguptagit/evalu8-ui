@@ -55,7 +55,7 @@ angular.module('e8MyTests')
 
     $scope.showWaiting=true;
     UserService.userPrintSettings(function(printSettings) {
-    	if(printSettings=null){
+    	if(printSettings == null){
 			CommonService.showErrorMessage(e8msg.error.cantFetchPrintSettings);
 			return;
     	}

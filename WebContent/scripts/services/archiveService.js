@@ -108,11 +108,11 @@ angular.module('evalu8Demo')
                 }
                 
                 $http.delete(evalu8config.apiUrl + url, HttpService.getConfig())
-                .success(function(response) {                                    
-                    if(callback) callback(1);
+                .success(function(response,status) {                                    
+                    if(callback) callback(response,status);
                 })
                 .error(function(error, status) {
-                	if(callback) callback(null);
+                	if(callback) callback(error.message,status);
                 })                
             };
 						
