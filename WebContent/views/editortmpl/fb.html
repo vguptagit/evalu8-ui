@@ -29,14 +29,14 @@
                 </div>
                 <div class="captionImageContainer">
                     <button class="captionImageIcon glyphicon glyphicon-picture"
-                         	tooltip="Upload picture" tooltip-placement="bottom"
-                        data-ng-click='showUploadImagePanel(this,$event,"div.fbCaptionContainer")'></button>
+                            tooltip="Upload picture" tooltip-placement="bottom"
+                            data-ng-click='showUploadImagePanel(this,$event,"div.fbCaptionContainer")' event-focus="click" event-focus-id="questionUploadBtn"></button>
                 </div>
             </div>
 
             <div class="blankBtnDiv addBlankDiv">
                 <button class="editView blankButton"
-                    ng-mousedown="addBlank(this,$event);" ng-disabled="captionFocus">Add Blank</button>
+                    ng-click="addBlank(this,$event);" ng-disabled="captionFocus">Add Blank</button>
                 <div id="crtAnsSpace"></div>
                 <div class="editView EssayHeader" id="crtAns">
                     Correct Answer
@@ -50,9 +50,9 @@
                 data-ng-file-change="upload($files)"
                 drag-over-class="{accept:'dragover', reject:'dragover-err', delay:100}">
                 <div>Drag picture here or browse to upload</div>
-                <input class="questionUploadBtn" type="button" value="Browse"
-                    data-ng-file-select data-ng-file-change="upload($files)"
-                    ng-accept="'*.jpg,*.png,*.tif,*.tiff,*.gif,*.jpeg,*.bmp'" />
+                <input id="questionUploadBtn" class="questionUploadBtn" type="button" value="Browse"
+                       data-ng-file-select data-ng-file-change="upload($files)"
+                       ng-accept="'*.jpg,*.png,*.tif,*.tiff,*.gif,*.jpeg,*.bmp'" />
             </div>
         </div>
     </div>

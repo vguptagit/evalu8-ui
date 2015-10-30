@@ -41,9 +41,10 @@
 					placeholder={{node.qtiModel.EditCaption}}
 					ckeditor="htmlEditorOptions" data-ng-model="node.qtiModel.Caption"></div>
 				<div class="captionImageContainer">
-					<button class="captionImageIcon glyphicon glyphicon-picture" 
-							tooltip="Upload picture" tooltip-placement="bottom"
-						data-ng-click='showUploadImagePanel(this,$event,"div.captionContainer")'></button>
+                    <button class="captionImageIcon glyphicon glyphicon-picture"
+                            tooltip="Upload picture" tooltip-placement="bottom"
+                            data-ng-click='showUploadImagePanel(this,$event,"div.captionContainer")'
+                            event-focus="click" event-focus-id="questionUploadBtn"></button>
 				</div>
 			</div>
 
@@ -61,9 +62,10 @@
 							data-ng-model="Option.option"></div>
 
 						<div class="optionIconsContainer">
-						<button class="optionImageIcon glyphicon glyphicon-picture" 
-								tooltip="Upload picture" tooltip-placement="bottom"
-								data-ng-click='showUploadImagePanel(this,$event,"div.mf_optionRow",$index,"ColumnA")'></button>
+                            <button class="optionImageIcon glyphicon glyphicon-picture"
+                                    tooltip="Upload picture" tooltip-placement="bottom"
+                                    data-ng-click='showUploadImagePanel(this,$event,"div.mf_optionRow",$index,"ColumnA")'
+                                    event-focus="click" event-focus-id="questionUploadBtn"></button>
 							<button tooltip="Add answer" tooltip-placement="bottom" id="0" name="Add" 
 								class="optionImageIcon glyphicon glyphicon-plus"
 								data-ng-click="addOption($index,node)"></button>
@@ -82,10 +84,11 @@
 							ready="onReady({{focusEditorIndex}})"
 							placeholder="{{node.qtiModel.editOption_Column_B + ($index+1) }}"
 							data-ng-model="Option.matchingOption"></div>
-						<div class="optionIconsContainer">
-							<button class="optionImageIcon glyphicon glyphicon-picture" 
-								tooltip="Upload picture" tooltip-placement="bottom"
-								data-ng-click='showUploadImagePanel(this,$event,"div.mf_matchingOptionRow",$index,"ColumnB")'></button>
+						<div class="optionIconsContainer"> 
+                            <button class="optionImageIcon glyphicon glyphicon-picture"
+                                    tooltip="Upload picture" tooltip-placement="bottom"
+                                    data-ng-click='showUploadImagePanel(this,$event,"div.mf_matchingOptionRow",$index,"ColumnB")' 
+                                    event-focus="click" event-focus-id="questionUploadBtn"></button>
 						</div>
 					</div>
 
@@ -96,9 +99,9 @@
 				data-ng-file-change="upload($files)"
 				drag-over-class="{accept:'dragover', reject:'dragover-err', delay:100}">
 				<div>Drag picture here or browse to upload</div>
-				<input class="questionUploadBtn" type="button" value="Browse"
-					data-ng-file-select data-ng-file-change="upload($files)"
-					ng-accept="'*.jpg,*.png,*.tif,*.tiff,*.gif,*.jpeg,*.bmp'" />
+                <input id="questionUploadBtn" class="questionUploadBtn" type="button" value="Browse"
+                       data-ng-file-select data-ng-file-change="upload($files)"
+                       ng-accept="'*.jpg,*.png,*.tif,*.tiff,*.gif,*.jpeg,*.bmp'" />
 			</div>
 		</div>
 	</div>
