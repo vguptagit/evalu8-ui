@@ -5,6 +5,7 @@ angular.module('evalu8Demo')
 
       $scope.resourcesTabs = [
 		                      { active: false, text: 'Your Tests', path: '.yourtests' },
+		                      { active: false, text: 'Your Questions', path: '.yourquestions' },
                               { active: false, text: 'Question Banks', path: '.questionbanks' },
                               { active: false, text: 'Custom Questions', path: '.customquestions' }
       ];

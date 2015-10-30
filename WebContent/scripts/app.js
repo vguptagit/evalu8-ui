@@ -81,6 +81,14 @@
 					requireLogin: true
 				  }
 			})
+			.state('home.yourquestions', {
+				url: '/yourquestions',
+				templateUrl: 'views/partials/your-questions.html',
+				controller: 'MyQuestionsController',
+				data: {
+					requireLogin: true
+				  }
+			})			
 			.state('home.questionbanks', {
 				url: '/questionbanks',
 				templateUrl: 'views/partials/question-banks.html',

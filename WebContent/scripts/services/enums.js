@@ -5,6 +5,7 @@ angular.module('evalu8Demo')
 .service('EnumService', function () {
     this.RESOURCES_TABS = {
         yourtests: '.yourtests',
+        yourquestions: '.yourquestions',
         questionbanks: '.questionbanks',
         customquestions: '.customquestions'
     };
