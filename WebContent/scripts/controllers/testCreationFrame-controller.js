@@ -588,11 +588,7 @@ angular
 	                                }	                                     
 	                                          
 	                                     QTI.initialize();
-	                                     $.each(questions,function(index,question){
-	                                            var qtiDisplayNode = $("<div></div>");
-	                                            QTI.BLOCKQUOTE.id = 0;
-	                                            QTI.play(question.qtixml,
-	                                                    qtiDisplayNode, false,false,question.metadata.quizType);
+	                                     $.each(questions,function(index,question){	                                        
 	                                            
 	                                            var displayNode = {};
 	                                            
@@ -608,10 +604,8 @@ angular
 	                                            displayNode.IsUserMetdataAvailable = false;
 	                                             if (SharedTabService.userQuestionSettings.length>0){
 	                                                 displayNode.IsUserMetdataAvailable = true;
-	                                             }
-	                                            
-	                                            
-	                                            displayNode.textHTML = qtiDisplayNode.html();
+	                                             }                                            
+	                                         
 	                                            
 	                                            displayNode.IsEditView = false;	                                         
 	                                            displayNode.extendedMetadata =  question.metadata.extendedMetadata;
@@ -632,15 +626,13 @@ angular
 	                            
 	                                
 	                                            displayNode.selectedLevel = displayNode.questionMetadata['Difficulty']==undefined?{name:'Select Level',value:'0'}:{name:displayNode.questionMetadata['Difficulty']==""?'Select Level':displayNode.questionMetadata['Difficulty'],value:displayNode.questionMetadata['Difficulty']==""?'0':displayNode.questionMetadata['Difficulty']};
-	                                
-	                                
-	                                            displayNode.data=question.qtixml;
-	                                            
-	                                            displayNode.qstnMasterData = buildQstnMasterDetails(displayNode);
-	                                            displayNode.optionsView = displayNode.qstnMasterData.optionsView;
-	                                            displayNode.EssayPageSize = displayNode.qstnMasterData.EssayPageSize;    
-	                                            displayNode.BlankSize = displayNode.qstnMasterData.BlankSize;
-	                                    
+	                                	                                
+	                                            displayNode.data=question.qtixml;	                                            
+	       									 
+	       									 	displayNode.qtiModel =  QtiService.getQtiModel(displayNode.data, displayNode.quizType);
+	       									
+	       									 	displayNode.qstnModelMasterData = getQuestionMasterDataModel(displayNode);
+	       									 
 	                                            // $scope.tree2.push(displayNode);
 	                                            SharedTabService.tests[currentIndex].questions.push(displayNode);
 	                                            for (var i = 0; i < SharedTabService.masterTests.length; i++) {
@@ -699,12 +691,7 @@ angular
 																$scope.blockPage.stop();
 											        			CommonService.showErrorMessage(e8msg.error.cantFetchQuestions)
 											        			return;
-															}
-															var qtiDisplayNode = $("<div></div>");
-															 QTI.BLOCKQUOTE.id = 0;
-															QTI.play(response,
-																	qtiDisplayNode, false,false,questionMetadataResponse.quizType);
-															
+															}														
 															var displayNode = {};
 															displayNode.guid = question.guid;	
 															displayNode.quizType = questionMetadataResponse.quizType;
@@ -712,9 +699,6 @@ angular
 															 if (SharedTabService.userQuestionSettings.length>0){
 																 displayNode.IsUserMetdataAvailable = true;
 															 }
-															
-															
-															displayNode.textHTML = qtiDisplayNode.html();
 															
 															displayNode.IsEditView = false;
 															
@@ -1773,62 +1757,109 @@ angular
 								return Options;
 								
 							}
+							
+							function getQuestionMasterDataModel(node) {								
+
+								var qstnMasterDataModel = {};            
+								qstnMasterDataModel.Caption = node.qtiModel.Caption;
+
+								if (typeof String.prototype.startsWith != 'function') {
+									// see below for better implementation!
+									String.prototype.startsWith = function (str){
+										return this.indexOf(str) === 0;
+									};
+								}
+
+								if(qstnMasterDataModel.Caption.startsWith('<p>')){
+									qstnMasterDataModel.Caption = qstnMasterDataModel.Caption.substring(3, qstnMasterDataModel.Caption.length-4);
+								}			
+
+								var questionMetadata = angular.copy(node.questionMetadata);
+								qstnMasterDataModel.questionMetadata = questionMetadata;										
+
+								switch (node.quizType) {
+								case 'MultipleChoice':
+								case 'MultipleResponse':
+								case 'TrueFalse':					
+									qstnMasterDataModel.Options = filterEditorDefaultPtag(node.qtiModel.Options);											
+									qstnMasterDataModel.CorrectAnswer =  node.qtiModel.CorrectAnswer;
+									qstnMasterDataModel.Orientation = node.qtiModel.Orientation;						
+									break;
+
+								case 'Essay':						
+									qstnMasterDataModel.EssayPageSize =node.qtiModel.EssayPageSize;			
+									qstnMasterDataModel.RecommendedAnswer = node.qtiModel.RecommendedAnswer;						
+									break;					
+
+								case 'Matching':	
+									qstnMasterDataModel.leftOptions = leftOptions(node.qtiModel.Options);	
+									qstnMasterDataModel.rightOptions = matchingOptions(node.qtiModel.Options);
+									break;
+
+								case 'FillInBlanks':		
+									qstnMasterDataModel.CorrectAnswerHtml = node.CorrectAnswerHtml;		
+									break;
+								}			
+
+								return qstnMasterDataModel;
+
+							}
 
 							function getQuestionModifiedModel(node) {								
 
-								var qstnModifiedData = {};			
+								var qstnModifiedData = {};            
+								qstnModifiedData.Caption = node.qtiModel.Caption;
 
-								qstnModifiedData.caption = node.qtiModel.Caption;
-								
 								if (typeof String.prototype.startsWith != 'function') {
-									  // see below for better implementation!
-									  String.prototype.startsWith = function (str){
-									    return this.indexOf(str) === 0;
-									  };
-									}
-								
-								if(qstnModifiedData.caption.startsWith('<p>')){
-									qstnModifiedData.caption = qstnModifiedData.caption.substring(3, qstnModifiedData.caption.length-4);
+									// see below for better implementation!
+									String.prototype.startsWith = function (str){
+										return this.indexOf(str) === 0;
+									};
+								}
+
+								if(qstnModifiedData.Caption.startsWith('<p>')){
+									qstnModifiedData.Caption = qstnModifiedData.Caption.substring(3, qstnModifiedData.Caption.length-4);
 								}			
 								qstnModifiedData.questionMetadata = node.questionMetadata;		
 
-									switch (node.quizType) {
-									case 'MultipleChoice':
-									case 'MultipleResponse':
-									case 'TrueFalse':					
-										qstnModifiedData.options = filterEditorDefaultPtag(node.qtiModel.Options);
-										qstnModifiedData.optionCount = node.qtiModel.Options.length;				
-										qstnModifiedData.correctAnswer =  node.qtiModel.CorrectAnswer;
-										qstnModifiedData.optionsView = node.qtiModel.Orientation;						
-										break;
+								switch (node.quizType) {
+								case 'MultipleChoice':
+								case 'MultipleResponse':
+								case 'TrueFalse':		
+									qstnModifiedData.Options = filterEditorDefaultPtag(node.qtiModel.Options);											
+									qstnModifiedData.CorrectAnswer =  node.qtiModel.CorrectAnswer;
+									qstnModifiedData.Orientation = node.qtiModel.Orientation;						
+									break;
 
-									case 'Essay':						
-										qstnModifiedData.EssayPageSize =node.EssayPageSize;			
-										qstnModifiedData.RecommendedAnswer = node.qtiModel.RecommendedAnswer;					
-										break;					
+								case 'Essay':						
+									qstnModifiedData.EssayPageSize =node.qtiModel.EssayPageSize;			
+									qstnModifiedData.RecommendedAnswer = node.qtiModel.RecommendedAnswer;					
+									break;					
 
-									case 'Matching':	
-										qstnModifiedData.leftOptions = leftOptions(node.qtiModel.Options);	
-										qstnModifiedData.rightOptions = matchingOptions(node.qtiModel.Options);
-										break;
+								case 'Matching':	
+									qstnModifiedData.leftOptions = leftOptions(node.qtiModel.Options);	
+									qstnModifiedData.rightOptions = matchingOptions(node.qtiModel.Options);
+									break;
 
-									case 'FillInBlanks':										
-										/*qtiModel.FbCaption = node..FbCaption;
-										qtiModel.PrintOption = qtiModel.PrintOption;									
-										qtiModel.CorrectAnswer = qtiModel.CorrectAnswer;		*/
+								case 'FillInBlanks':										
+									qstnModifiedData.CorrectAnswerHtml = node.CorrectAnswerHtml;	
+									break;
+								}			
 
-										break;
-									}			
-								
-							return qstnModifiedData;
+								return qstnModifiedData;
 
 							}
+
 
 							$scope.IsQuestionModified = function(node){
-								var qstnModifiedData = getQuestionModifiedModel(node);				
-								return !angular.equals(node.qstnMasterData,qstnModifiedData);
+								var qstnModifiedData = getQuestionModifiedModel(node);		
+								if (typeof (node.qstnModelMasterData) == 'undefined'){
+									node.qstnModelMasterData = getQuestionMasterDataModel(node)
+								}
+
+								return !angular.equals(node.qstnModelMasterData,qstnModifiedData);
 							}
-							
+
 							var buildQuestionEnvelop = function(qstn,userSettings){
 								
 								if(qstn.IsEditView){    	
