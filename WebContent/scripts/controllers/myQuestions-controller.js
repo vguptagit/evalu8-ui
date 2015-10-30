@@ -36,14 +36,14 @@ angular.module('e8MyTests')
 	                QTI.initialize();
 	                
 	                $rootScope.blockLeftPanel.start();
-	                UserQuestionsService.userQuestions(function(tests){
-	                	if(tests==null){
+	                UserQuestionsService.userQuestions(function(questions){
+	                	if(questions==null){
 	                		$rootScope.blockLeftPanel.stop();
 	                		CommonService.showErrorMessage(e8msg.error.cantFetchTests)
 	            			return;
 	                	}
 	                	var questionNumber = 0;
-	                	tests.forEach(function(userQuestion) {
+	                	questions.forEach(function(userQuestion) {
 	                		
 							var yourQuestion = {};
 							var displayNode = $("<div></div>");
@@ -383,7 +383,7 @@ angular.module('e8MyTests')
             		if(destParent.node) {
                         item.parentId = destParent.node.guid;            			
             		} else {
-                        item.parentId = null;
+                        item.parentId = $scope.myTestRoot.guid;
             		}
 
             		if(prevSeq == 0.0 && nextSeq == 0.0) {
@@ -393,7 +393,7 @@ angular.module('e8MyTests')
             		} else {
             			item.sequence = (parseFloat(prevSeq) + parseFloat(nextSeq)) / 2;	
             		}
-            		UserFolderService.saveUserFolder(item, function(userFolder) {
+            		QuestionFolderService.saveQuestionFolder(item, function(userFolder) {
             			if(userFolder==null){
                     		$rootScope.blockLeftPanel.stop();
                      		CommonService.showErrorMessage(e8msg.error.cantSave);
@@ -621,7 +621,7 @@ angular.module('e8MyTests')
 
             if (!defaultFolder.collapsed) {            	
 				
-				UserFolderService.getUserFoldersByParentFolderId(defaultFolder.node.guid, function (userFolders) {
+				QuestionFolderService.getFoldersByParentFolderId(defaultFolder.node.guid, function (userFolders) {
 					if(userFolders==null){
                 		$rootScope.blockLeftPanel.stop();
                  		CommonService.showErrorMessage(e8msg.error.cantFetchFolders);
@@ -629,38 +629,64 @@ angular.module('e8MyTests')
                  	}
                     defaultFolder.node.nodes = userFolders;
 
-                    $rootScope.blockLeftPanel.start();
-                    TestService.getTests(defaultFolder.node.guid, function (tests) {
-                    	if(userFolders.length == 0 && (tests == null || tests.length == 0)) {
+	                QTI.initialize();
+	                
+	                $rootScope.blockLeftPanel.start();
+	                UserQuestionsService.userBookQuestions(defaultFolder.node.guid, function(questions){
+	                	
+                    	if(userFolders.length == 0 && (questions == null || questions.length == 0)) {
 
     						userFolders.push(CommonService.getEmptyFolder());
     					}
-						if(tests==null){
-							$rootScope.blockLeftPanel.stop();
-							CommonService.showErrorMessage(e8msg.error.cantFetchTests)
-                			return;
-						}
-                        tests.forEach(function (test) {
+                    	
+	                	if(questions==null){
+	                		$rootScope.blockLeftPanel.stop();
+	                		CommonService.showErrorMessage(e8msg.error.cantFetchTests)
+	            			return;
+	                	}
+	                	var questionNumber = 0;
+	                	questions.forEach(function(userQuestion) {
+	                		
+							var yourQuestion = {};
+							var displayNode = $("<div></div>");
+							QTI.BLOCKQUOTE.id = 0;
+							QTI
+									.play(
+											userQuestion.qtixml,
+											displayNode,
+											false,
+											false,
+											userQuestion.metadata.quizType);
+							yourQuestion.isQuestion = true;
+							yourQuestion.questionXML = true;
 
-                        	if(SharedTabService.tests) {
-	                        	SharedTabService.tests.forEach(function(testTab) {
-	                        		if(testTab.testId == test.guid) {
-	                        			test.showEditIcon = false;
-	                        			test.draggable=false;
-	                        			test.showArchiveIcon = false;
-	                        			testTab.treeNode = test;
-	                        		}
-	                        	});
-                        	}
-                            defaultFolder.node.nodes.push(test);
-                        })
+							//yourQuestion.parentId = $scope.userQuestionsFolderRoot.guid;
+							yourQuestion.nodeType = "question";
+							yourQuestion.questionType = "userCreatedQuestion";
+							yourQuestion.guid = userQuestion.guid;
+							yourQuestion.showEditQuestionIcon = false;
+							yourQuestion.isNodeSelected = false;
+							
+							questionNumber++;
+							yourQuestion.questnNumber = questionNumber;
+							//addToQuestionsArray(yourQuestion);
 
+							yourQuestion.data = userQuestion.qtixml;
+							yourQuestion.quizType = userQuestion.metadata.quizType;
+							yourQuestion.extendedMetadata = userQuestion.metadata.extendedMetadata;
+							yourQuestion.textHTML = displayNode
+									.html();
+
+							//yourQuestion.template = 'qb_questions_renderer.html';
+							defaultFolder.node.nodes.push(yourQuestion);	
+	                	});
+	                	
                         if (defaultFolder.node.nodes.length > 1 && defaultFolder.node.nodes[0].sequence == 0) {
                             defaultFolder.node.nodes.shift();
                         }
-
-                        $rootScope.blockLeftPanel.stop();
-                    });	
+                        
+	                	$rootScope.blockLeftPanel.stop();
+	                });
                     
                     if(callback) callback();
                 });                
@@ -1362,50 +1388,7 @@ angular.module('e8MyTests')
             	}
             });
         });
-        // #endregion
-        $scope.$on('handleBroadcast_CreateVersion', function (handler, test, newTest) {
-            var testFolder = CommonService.SearchFolder($scope.defaultFolders, test.folderGuid);
-            var treeItems = null;
-            if (testFolder==null) {
-                treeItems = $scope.defaultFolders;
-                QuestionFolderService.questionRootFolder(function(myTestRoot){
-                	if(myTestRoot==null){
-            			CommonService.showErrorMessage(e8msg.error.cantFetchRootFolder)
-            			return;
-            		}
-        			$scope.myTestRoot = myTestRoot;
-        		});
-            }
-            else {
-            	if(!testFolder.nodes){
-                 	testFolder.nodes =[];
-                 	testFolder.nodes.push(newTest);
-                 }
-                treeItems = testFolder.nodes;
-            }
-          if(testFolder != null){  
-            var sequence;
-            testFolder.testBindings.forEach(function(binding){
-            	if(binding.testId==test.id){
-            		sequence=binding.sequence;
-            	}else{
-            		testFolder.nodes.forEach(function(node){
-            			if(node.guid==binding.testId && node.versionOf==test.id){
-            				sequence=binding.sequence;
-            			}
-            		});
-            	}
-            });
-            
-            var testBinding = {
-                    testId: newTest.guid,
-                    sequence:  sequence + 0.001 
-            }
-            testFolder.testBindings.push(testBinding);
-          }
-            addVersionTest(testFolder, treeItems, test, newTest);
-            
-        })     
+        // #endregion    
                
         $scope.openImportBooksViewModal = function () {
         	$modal.open({	            
@@ -1415,19 +1398,5 @@ angular.module('e8MyTests')
 				keyboard : false
         	});
         }        
-       
-        var addVersionTest = function (testFolder, treeItems, test, newTest) {
-            if (!treeItems) {
-                return;
-            }
-            $.each(treeItems, function (i, v) {
-            	if ((v.guid == test.id && (treeItems[i+1]==undefined || treeItems[i+1].versionOf != test.id)) || (v.versionOf == test.id && (treeItems[i+1]==undefined || test.id && treeItems[i+1].versionOf != test.id))) {
-            		if(treeItems[i+1] != undefined && treeItems[i+1].versionOf == test.id){
-            			i+=1;
-            		}
-                    treeItems.splice(i + 1, 0, newTest)
-                    return false;
-                }
-            });
-        }        
+               
     }]);

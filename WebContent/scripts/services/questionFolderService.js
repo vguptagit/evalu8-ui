@@ -80,11 +80,11 @@ angular.module('evalu8Demo')
 				
 			};
 			
-			this.getUserFoldersByParentFolderId = function(parentFolderId, callback) {				
+			this.getFoldersByParentFolderId = function(parentFolderId, callback) {				
 
 				var userFolders = [];
 
-				$http.get(evalu8config.apiUrl + "/my/folders/"+ parentFolderId + "/folders", HttpService.getConfig())
+				$http.get(evalu8config.apiUrl + "/my/questions?folderId=" + parentFolderId, HttpService.getConfig())
 				.success(function(response) {
 
 					response.forEach (function(item) {  
