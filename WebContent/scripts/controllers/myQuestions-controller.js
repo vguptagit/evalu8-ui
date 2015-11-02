@@ -622,13 +622,9 @@ angular.module('e8MyTests')
             if (!defaultFolder.collapsed) {            	
 				
 				QuestionFolderService.getFoldersByParentFolderId(defaultFolder.node.guid, function (userFolders) {
-					if(userFolders==null){
-                		$rootScope.blockLeftPanel.stop();
-                 		CommonService.showErrorMessage(e8msg.error.cantFetchFolders);
-                 		return;
-                 	}
-                    defaultFolder.node.nodes = userFolders;
 
+					defaultFolder.node.nodes = userFolders;
+					
 	                QTI.initialize();
 	                
 	                $rootScope.blockLeftPanel.start();
@@ -674,10 +670,8 @@ angular.module('e8MyTests')
 							yourQuestion.data = userQuestion.qtixml;
 							yourQuestion.quizType = userQuestion.metadata.quizType;
 							yourQuestion.extendedMetadata = userQuestion.metadata.extendedMetadata;
-							yourQuestion.textHTML = displayNode
-									.html();
+							yourQuestion.textHTML = displayNode.html();
 
-							//yourQuestion.template = 'qb_questions_renderer.html';
 							defaultFolder.node.nodes.push(yourQuestion);	
 	                	});
 	                	
