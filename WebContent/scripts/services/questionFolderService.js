@@ -104,6 +104,7 @@ angular.module('evalu8Demo')
 				
 	            var folder = {
 	            	guid: userQuestionsFolder.guid,
+                    questionBindings: userQuestionsFolder.questionBindings,
                     parentId: userQuestionsFolder.parentId,
                     sequence: userQuestionsFolder.sequence,
                     title: userQuestionsFolder.title    

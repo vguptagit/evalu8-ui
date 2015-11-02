@@ -42,7 +42,7 @@ angular.module('e8MyTests')
 	                		CommonService.showErrorMessage(e8msg.error.cantFetchTests)
 	            			return;
 	                	}
-	                	var questionNumber = 0;
+	                	$scope.questionNumber = 0;
 	                	questions.forEach(function(userQuestion) {
 	                		
 							var yourQuestion = {};
@@ -65,8 +65,8 @@ angular.module('e8MyTests')
 							yourQuestion.showEditQuestionIcon = false;
 							yourQuestion.isNodeSelected = false;
 							
-							questionNumber++;
-							yourQuestion.questnNumber = questionNumber;
+							$scope.questionNumber++;
+							yourQuestion.questnNumber = $scope.questionNumber;
 							//addToQuestionsArray(yourQuestion);
 
 							yourQuestion.data = userQuestion.qtixml;
@@ -1279,115 +1279,7 @@ angular.module('e8MyTests')
                 }
             }             
         });
-        $scope.$on('handleBroadcast_AddNewTest', function (handler, newTest, containerFolder, isEditMode, oldGuid, editedQuestions, editedMigratedQuestions, createdTab, testCreationFrameScope) {
-            if (isEditMode) {
-                var updatedTest = CommonService.SearchItem($scope.defaultFolders, newTest.guid);
-             if(updatedTest){
-                updatedTest.title = newTest.title;
-                updatedTest.modified = newTest.modified;
-                if (createdTab.isSaveAndClose) {
-                    SharedTabService.closeTab(createdTab, testCreationFrameScope);
-                    SharedTabService.removeMasterTest(createdTab);
-                } else {
-                    SharedTabService.removeMasterTest(createdTab);
-                    SharedTabService.addMasterTest(createdTab);
-                }
-            }else{
-            	SharedTabService.removeMasterTest(createdTab);
-                SharedTabService.addMasterTest(createdTab);
-            }
-             return false;
-          }
-            var parentFolder = null, parentFolderNodes = null,parentTestBindings = null;
-            // if containerFolder is null, it considered as root
-            if (containerFolder == null) {
-            	parentFolderNodes = $scope.defaultFolders;
-            } else {
-            	parentFolder = CommonService.SearchItem($scope.defaultFolders, containerFolder.guid);
-            	parentFolderNodes = parentFolder.nodes;
-            	parentTestBindings = parentFolder.testBindings;
-            }
-            TestService.getMetadata(newTest.guid, function (test) {  
-            	if(test==null){
-            		CommonService.showErrorMessage(e8msg.error.cantFetchMetadata);
-            		return;
-           	 	}
-            	test.nodeType = EnumService.NODE_TYPE.test;
-            	test.draggable = false;
 
-            	if (containerFolder) {// to check whether test belongs to root
-										// or any other folder
-            		test.parentId = containerFolder.guid;
-            		test.selectTestNode = true;
-            		if(parentFolderNodes && parentFolderNodes.length > 0){
-            				if(parentFolderNodes[0].nodeType == EnumService.NODE_TYPE.emptyFolder) { // checking
-																										// whether
-																										// first
-																										// node
-																										// is
-																										// empty
-																										// or
-																										// not
-            					parentFolderNodes.shift();
-            				}
-            				parentFolderNodes.push(test);
-            				if(containerFolder.testBindings.length > 0){
-            					var testBinding = {
-            							testId: newTest.guid,
-            							sequence: containerFolder.testBindings[containerFolder.testBindings.length-1].sequence + 1 
-            					}
-            							parentTestBindings.push(testBinding);
-            				}else{
-            					var testBinding = {
-            							testId: newTest.guid,
-            							sequence: 1 
-            					}
-            					parentTestBindings.push(testBinding);
-            				}
-            		}else{
-            			 parentFolder.nodes=[];
-            			var testBinding = {
-            					testId: newTest.guid,
-            					sequence: 1 
-            			}
-            			parentTestBindings.push(testBinding);
-            			parentFolder.nodes.push(test);
-            		}
-            	}
-            	else {
-            		test.parentId = null;
-            		var position = 0;
-            		$.each(parentFolderNodes, function (i,item) {
-            			if (item.nodeType == EnumService.NODE_TYPE.archiveRoot){
-            				return false;
-            			}
-            			position++;
-            		});
-
-            		QuestionFolderService.questionRootFolder(function(myTestRoot){
-            			if(myTestRoot==null){
-                			CommonService.showErrorMessage(e8msg.error.cantFetchRootFolder)
-                			return;
-                		}
-            			$scope.myTestRoot = myTestRoot;
-            		});
-            		parentFolderNodes.splice(position, 0, test)
-            	}
-            	createdTab.metadata = TestService.getTestMetadata(test);
-            	createdTab.treeNode = test;
-            	if (createdTab.isSaveAndClose) {
-            		SharedTabService.closeTab(createdTab, testCreationFrameScope);
-            		SharedTabService.removeMasterTest(createdTab);
-            	} else {
-            		SharedTabService.removeMasterTest(createdTab);
-            		SharedTabService.addMasterTest(createdTab);
-            	}
-
-            	if($scope.defaultFolders.length == 1) {
-            		$scope.defaultFolders.push(CommonService.getArchiveRoot());
-            	}
-            });
-        });
         // #endregion    
                
         $scope.openImportBooksViewModal = function () {
@@ -1398,5 +1290,34 @@ angular.module('e8MyTests')
 				keyboard : false
         	});
         }        
-               
+        
+		$scope.$on('handleBroadcast_AddNewTest', function (handler, newTest, containerFolder, isEditMode, oldGuid, editedQuestions, editedMigratedQuestions, createdTab, testCreationFrameScope) {
+			
+			editedQuestions.forEach(function(editedQuestion) {
+				editedQuestion.isQuestion = true;
+				editedQuestion.questionXML = true;
+
+				editedQuestion.nodeType = "question";
+
+				editedQuestion.extendedMetadata = editedQuestion.extendedMetadata;
+				
+				var displayNodes = $("<div></div>");    
+                QTI.BLOCKQUOTE.id = 0;
+                QTI.play(editedQuestion.data,displayNodes, false,false,editedQuestion.quizType);                                
+                editedQuestion.textHTML = displayNodes.html();
+                
+				editedQuestion.showEditQuestionIcon = false;
+				editedQuestion.isNodeSelected = false;
+				//addToQuestionsArray(editedQuestion);
+				//editedQuestion.template = 'qb_questions_renderer.html';
+					
+				$scope.questionNumber++;
+                editedQuestion.questnNumber = $scope.questionNumber;
+                editedQuestion.questionType = "userCreatedQuestion";                                            
+                $scope.defaultFolders.push(editedQuestion);    
+                
+			})															
+			
+		});
+		
     }]);
