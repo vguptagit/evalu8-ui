@@ -351,10 +351,10 @@ angular.module('e8MyTests')
             	// delete empty previous and next node if any
             	$scope.deleteEmptyNode(prev, next, destParent);
             	
-            	if(item.nodeType == EnumService.NODE_TYPE.test) {
+            	if(item.nodeType == EnumService.NODE_TYPE.question) {
             		                    
             		var sourceFolder = $scope.removeTestBindingFromSource(sourceParent, item.guid);   
-            		UserFolderService.saveUserFolder(sourceFolder, function(userFolder) {
+            		QuestionFolderService.saveQuestionFolder(sourceFolder, function(userFolder) {
             			if(userFolder==null){
                     		$rootScope.blockLeftPanel.stop();
                      		CommonService.showErrorMessage(e8msg.error.cantSave);
@@ -409,23 +409,23 @@ angular.module('e8MyTests')
             }
         });
         
-        $scope.insertTestBindingToDest = function(destFolder, testId, callback) {
+        $scope.insertTestBindingToDest = function(destFolder, questionId, callback) {
         	var destNode = destFolder.node;
-        	var testBindings = destNode.testBindings;
+        	var questionBindings = destNode.questionBindings;
         	        	
         	var firstNodeSequence = 0.0, newSequence = 1.0;
-        	if(testBindings.length) {
-        		firstNodeSequence = testBindings[0].sequence;
+        	if(questionBindings.length) {
+        		firstNodeSequence = questionBindings[0].sequence;
         		newSequence = (0.0 + firstNodeSequence) / 2;
         	}
         	
-        	var testBinding = {
-    			testId: testId, sequence: newSequence
+        	var questionBinding = {
+    			questionId: questionId, sequence: newSequence
         	}
         	
-        	destNode.testBindings.unshift(testBinding);
+        	destNode.questionBindings.unshift(questionBinding);
         	
-        	UserFolderService.saveUserFolder(destNode, function(userFolder) {
+        	QuestionFolderService.saveQuestionFolder(destNode, function(userFolder) {
         		if(userFolder==null){
              		CommonService.showErrorMessage(e8msg.error.cantSave);
              		return;
@@ -442,16 +442,16 @@ angular.module('e8MyTests')
     			destNodes = destFolder.node.nodes;
     		}
     		
-        	var testBindings = [];
+        	var questionBindings = [];
         	var sequence = 1.0;
-        	destNodes.forEach(function(test) {
-        		if(test.nodeType == EnumService.NODE_TYPE.test) {
+        	destNodes.forEach(function(question) {
+        		if(question.nodeType == EnumService.NODE_TYPE.question) {
         			
-            		var testBinding = {
-                			testId: test.guid,
+            		var questionBinding = {
+                			questionId: question.guid,
                 			sequence: sequence  
             		}
-                	testBindings.push(testBinding);
+            		questionBindings.push(questionBinding);
             		sequence = sequence + 1.0;
         		}        		 
         	})
@@ -463,8 +463,8 @@ angular.module('e8MyTests')
     			destNode = destFolder.node;
     		}
         	
-        	destNode.testBindings = testBindings;
-        	UserFolderService.saveUserFolder(destNode, function(userFolder) {
+        	destNode.questionBindings = questionBindings;
+        	QuestionFolderService.saveQuestionFolder(destNode, function(userFolder) {
         		if(userFolder==null){
              		CommonService.showErrorMessage(e8msg.error.cantSave);
              		return;
@@ -473,7 +473,7 @@ angular.module('e8MyTests')
         	});
         }
         
-        $scope.removeTestBindingFromSource = function (sourceFolder, testId) {
+        $scope.removeTestBindingFromSource = function (sourceFolder, questionId) {
         	var sourceNode;
     		if(sourceFolder == null || sourceFolder.node == null) {
     			sourceNode = $scope.myTestRoot;
@@ -481,18 +481,18 @@ angular.module('e8MyTests')
     			sourceNode = sourceFolder.node;
     		}    		
     		
-    		var testBindings = sourceNode.testBindings;
+    		var questionBindings = sourceNode.questionBindings;
         	var index=0, indexToRemove=0;
         	
-        	testBindings.forEach(function(testBinding) {
-        		if(testBinding.testId == testId) {
+        	questionBindings.forEach(function(questionBinding) {
+        		if(questionBinding.questionId == questionId) {
         			indexToRemove = index;
         		}
         		index = index + 1;        		
         	})
         	
-        	testBindings.splice(indexToRemove, 1);
-        	sourceNode.testBindings = testBindings;
+        	questionBindings.splice(indexToRemove, 1);
+        	sourceNode.questionBindings = questionBindings;
         	
         	return sourceNode;
     	}
