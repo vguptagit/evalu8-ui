@@ -84,7 +84,7 @@ angular.module('evalu8Demo')
 
 				var userFolders = [];
 
-				$http.get(evalu8config.apiUrl + "/my/questions?folderId=" + parentFolderId, HttpService.getConfig())
+				$http.get(evalu8config.apiUrl + "/my/folders/"+ parentFolderId + "/folders", HttpService.getConfig())
 				.success(function(response) {
 
 					response.forEach (function(item) {  
