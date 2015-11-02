@@ -103,6 +103,7 @@ angular.module('evalu8Demo')
 			this.saveQuestionFolder = function(userQuestionsFolder, callback) {								
 				
 	            var folder = {
+	            	guid: userQuestionsFolder.guid,
                     parentId: userQuestionsFolder.parentId,
                     sequence: userQuestionsFolder.sequence,
                     title: userQuestionsFolder.title    
