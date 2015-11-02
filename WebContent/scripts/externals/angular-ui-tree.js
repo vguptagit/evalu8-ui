@@ -1303,7 +1303,7 @@
                 scope.$treeScope.$apply(function() {
                 	 if (dragStarted && scope.$$apply) {
 					                  scope.$callbacks.beforeDrop(dragInfo.eventArgs(elements, pos));	
-                                      if(editModeQuestions.length>0){
+                                      if(editModeQuestions.length>0 && dragInfo.parent.controller !="TestCreationFrameController"){
                                           scope.$emit("dragCancel");
                                             scope.$$apply = false;
                                     }
