@@ -15,7 +15,7 @@ angular
 			if(quizTypes==""){
 				url= evalu8config.apiUrl + "/books/" + bookId + "/nodes";
 			}else{
-				url= evalu8config.apiUrl + "/books/" + bookId + "/nodes?quizTypes="+quizTypes;
+				url= evalu8config.apiUrl + "/books/" + bookId + "/nodes?"+quizTypes;
 			}
 			
 			$http.get(url, HttpService.getConfig())

@@ -9,8 +9,8 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-md-1 text-left margin-top-10">
-				<h5>Type:</h5>
+			<div class="col-md-1 text-left">
+				<h5 class="bold">Type</h5>
 			</div>
 			<div class="col-md-11 margin-bot-10">
 				<div>
@@ -44,13 +44,15 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-md-12 text-left margin-top-10">
-				<h5>Metadata:</h5>
+			<div class="col-md-1 text-left">
+				<h5 class="bold">Metadata</h5>
+			</div>
+			<div class="col-md-11 text-left margin-top-10">
 			</div>
 		</div>
 		<div class="row">
 			<div class='col-md-12 metadatarow' ng-repeat="node in userMetadata">
-				<div class='col-md-1 metdatalabel floatLeftImp'>{{node}}</div>
+				<div class='col-md-1 metdatalabel floatLeftImp'>{{node}}:</div>
 				<div class="col-md-11 metdataVal floatLeftImp" ng-if="node=='Difficulty'">
 					<div class="floatLeftImp" ng-repeat="level in difficultyLevels">
 						<div class="width70Imp"  ng-class="isGivenLevelSelected(level.value)?'ck-buttonSelected':'ck-button'"

@@ -1939,8 +1939,20 @@ angular
 									var count = 0;
 									var emptyBooks=0;
 									var isErrorExists=false;
+									var searchCriteria="";
+									if($scope.selectedQuestionTypes.toString()!=""){
+										if($scope.getMetadataSearchCriteria().length>0){
+											searchCriteria="quizTypes="+$scope.selectedQuestionTypes.toString()+"&";	
+										}else{
+											searchCriteria="quizTypes="+$scope.selectedQuestionTypes.toString();
+										}
+									}
+									$scope.getMetadataSearchCriteria().forEach(function(metadata){
+											searchCriteria=searchCriteria+metadata;
+									});
+									
 									$scope.selectedBooks.forEach(function(book){
-										ContainerService.getQuestionTypeContainers(book.guid,$scope.selectedQuestionTypes.toString(),function(containers){
+										ContainerService.getQuestionTypeContainers(book.guid,searchCriteria,function(containers){
 											if(containers==null){
 												isErrorExists=true;
 											}
@@ -2152,23 +2164,37 @@ angular
 							
 							$scope.selectedLevel = [];
 							
-							$scope.isMetadataValuePresent=function(){
+							$scope.getMetadataSearchCriteria=function(){
+								var metadataSearchCriteria=[];
 								if($scope.selectedLevel.length>0){
-									return true;
-								}else if($scope.metadataValues.Topic!=undefined && $scope.metadataValues.Topic!=""){
-									return true;
-								}else if($scope.metadataValues.Objective!=undefined && $scope.metadataValues.Objective!=""){
-									return true;
-								}else if($scope.metadataValues.PageReference!=undefined && $scope.metadataValues.PageReference!=""){
-									return true;
-								}else if($scope.metadataValues.Skill!=undefined && $scope.metadataValues.Skill!=""){
-									return true;
-								}else if($scope.metadataValues.QuestionId!=undefined && $scope.metadataValues.QuestionId!=""){
-									return true;
+									appendMetadataSearchCriteria(metadataSearchCriteria,'Difficulty',$scope.selectedLevel.toString());
 								}
-								return false;
+								if($scope.metadataValues.Topic!=undefined && $scope.metadataValues.Topic!=""){
+									appendMetadataSearchCriteria(metadataSearchCriteria,'Topic',$scope.metadataValues.Topic);
+								}
+								if($scope.metadataValues.Objective!=undefined && $scope.metadataValues.Objective!=""){
+									appendMetadataSearchCriteria(metadataSearchCriteria,'Objective',$scope.metadataValues.Objective);
+								}
+								if($scope.metadataValues.PageReference!=undefined && $scope.metadataValues.PageReference!=""){
+									appendMetadataSearchCriteria(metadataSearchCriteria,'PageReference',$scope.metadataValues.PageReference);
+								}
+								if($scope.metadataValues.Skill!=undefined && $scope.metadataValues.Skill!=""){
+									appendMetadataSearchCriteria(metadataSearchCriteria,'Skill',$scope.metadataValues.Skill);
+								}
+								if($scope.metadataValues.QuestionId!=undefined && $scope.metadataValues.QuestionId!=""){
+									appendMetadataSearchCriteria(metadataSearchCriteria,'QuestionId',$scope.metadataValues.QuestionId);
+								}
+								
+								return metadataSearchCriteria;
 							}
 							
+							var appendMetadataSearchCriteria = function(metadataSearchCriteria,key,Value){
+								if(metadataSearchCriteria.length==0){
+									metadataSearchCriteria.push(key+"="+Value);								
+								}else{
+									metadataSearchCriteria.push("&"+key+"="+Value);
+								}
+							}
 							$scope.isGivenLevelSelected = function(level){
 								if($scope.selectedLevel.indexOf(level)>-1){
 									return true;
@@ -2188,7 +2214,7 @@ angular
 							}
 							
 							$scope.enableDisableSearch = function(obj){
-								if(searchedQuestionTypes.length>0 || $scope.selectedQuestionTypes.length > 0 || $scope.isMetadataValuePresent()){
+								if(searchedQuestionTypes.length>0 || $scope.selectedQuestionTypes.length > 0 || $scope.getMetadataSearchCriteria().length > 0){
 									$scope.isSaveDisabled=false;
 								}else{
 									$scope.isSaveDisabled=true;
