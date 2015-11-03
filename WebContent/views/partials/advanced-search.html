@@ -52,7 +52,7 @@
 		</div>
 		<div class="row">
 			<div class='col-md-12 metadatarow' ng-repeat="node in userMetadata">
-				<div class='col-md-1 metdatalabel floatLeftImp'>{{node}}:</div>
+				<div class='col-md-1 metdatalabelSearch floatLeftImp'>{{node}}:</div>
 				<div class="col-md-11 metdataVal floatLeftImp" ng-if="node=='Difficulty'">
 					<div class="floatLeftImp" ng-repeat="level in difficultyLevels">
 						<div class="width70Imp"  ng-class="isGivenLevelSelected(level.value)?'ck-buttonSelected':'ck-button'"

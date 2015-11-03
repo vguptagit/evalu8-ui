@@ -282,10 +282,22 @@ angular
 								$scope.selectedNodes=[];
 								$scope.loadTree();	
 								$scope.closeAdvancedSearch();
+								$scope.userMetadata=[];
 								UserService.userQuestionMetadata(function(userQuestionMetadata){
-									$scope.userMetadata=userQuestionMetadata;
-									$scope.userMetadata.sort(function(a, b) {
-										return a.localeCompare(b)
+									userQuestionMetadata.forEach(function(metadata){
+										if(metadata=='Difficulty'){
+											$scope.userMetadata.splice(0, 0, metadata);
+										}else if(metadata=='Topic'){
+											$scope.userMetadata.splice(1, 0, metadata);
+										}else if(metadata=='Objective'){
+											$scope.userMetadata.splice(2, 0, metadata);
+										}else if(metadata=='PageReference'){
+											$scope.userMetadata.splice(3, 0, "Page Reference");
+										}else if(metadata=='Skill'){
+											$scope.userMetadata.splice(4, 0, metadata);
+										}else if(metadata=='QuestionId'){
+											$scope.userMetadata.splice(5, 0, "Question ID");
+										}
 									});
 								});
 							})
@@ -2150,10 +2162,22 @@ angular
 							});
 							
 							$scope.metadataValues = {};
+							$scope.userMetadata=[];
 							UserService.userQuestionMetadata(function(userQuestionMetadata){
-								$scope.userMetadata=userQuestionMetadata;
-								$scope.userMetadata.sort(function(a, b) {
-									return a.localeCompare(b)
+								userQuestionMetadata.forEach(function(metadata){
+									if(metadata=='Difficulty'){
+										$scope.userMetadata.splice(0, 0, metadata);
+									}else if(metadata=='Topic'){
+										$scope.userMetadata.splice(1, 0, metadata);
+									}else if(metadata=='Objective'){
+										$scope.userMetadata.splice(2, 0, metadata);
+									}else if(metadata=='PageReference'){
+										$scope.userMetadata.splice(3, 0, "Page Reference");
+									}else if(metadata=='Skill'){
+										$scope.userMetadata.splice(4, 0, metadata);
+									}else if(metadata=='QuestionId'){
+										$scope.userMetadata.splice(5, 0, "Question ID");
+									}
 								});
 							});
 							
