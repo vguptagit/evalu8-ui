@@ -1324,3 +1324,10 @@ h4, .h4, h5, .h5, h6, .h6 {
 .floatLeftImp{
 	float:left !important; 
 }
+.margin-lft-2 {
+	margin-left: 2px;
+}
+
+.width70Imp{
+	width: 70px !important;
+}
