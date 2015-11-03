@@ -33,11 +33,11 @@ angular
 						'blockUI',
 						'ContainerService',
                         'CommonService',
-                        'BookService','HttpService',
+                        'BookService','HttpService','UserService',
 						function($scope, $rootScope, $location, $cookieStore, $timeout,
 								$http, $sce, DisciplineService, TestService,
 								SharedTabService, UserQuestionsService,
-								EnumService, $modal, blockUI, ContainerService, CommonService,BookService,HttpService) {
+								EnumService, $modal, blockUI, ContainerService, CommonService,BookService,HttpService,UserService) {
 						    SharedTabService.selectedMenu = SharedTabService.menu.questionBanks;
 						    $rootScope.blockPage = blockUI.instances.get('BlockPage');
 						    
@@ -280,7 +280,14 @@ angular
 								$scope.selectedBookid="";
 								$scope.expandedNodes=[];
 								$scope.selectedNodes=[];
-								$scope.loadTree();								
+								$scope.loadTree();	
+								$scope.closeAdvancedSearch();
+								UserService.userQuestionMetadata(function(userQuestionMetadata){
+									$scope.userMetadata=userQuestionMetadata;
+									$scope.userMetadata.sort(function(a, b) {
+										return a.localeCompare(b)
+									});
+								});
 							})
 
 							$scope.testTitle = "New Test";
@@ -1850,12 +1857,7 @@ angular
 										$scope.isAdvancedSearchClicked=false;
 										$scope.showAdvancedSearch = false;
 									}
-									
-									if(searchedQuestionTypes.length>0){
-										$scope.isSaveDisabled=false;
-									}else{
-										$scope.isSaveDisabled=true;
-									}
+									$scope.enableDisableSearch();
 								}
 							}
 							
@@ -1865,9 +1867,7 @@ angular
 								searchedQuestionTypes.forEach(function(qt){
 									$scope.selectedQuestionTypes.push(qt);
 								});
-								if($scope.selectedQuestionTypes == 0){
-									$scope.isSaveDisabled=true;
-								}
+								$scope.enableDisableSearch();
 							}
 							
 							$scope.isThisQuizTypeSelected = function(questionType){
@@ -1889,11 +1889,7 @@ angular
 								} else {
 									$scope.selectedQuestionTypes.push(questionType);
 								}
-								if($scope.selectedQuestionTypes.length == 0){
-									$scope.isSaveDisabled=true;
-								}else{
-									$scope.isSaveDisabled=false;
-								}
+								$scope.enableDisableSearch();
 							}
 							
 							$scope.getSearchCriteriaSelections = function(){
@@ -2140,4 +2136,63 @@ angular
 							        }
 							    });
 							});
+							
+							$scope.metadataValues = {};
+							UserService.userQuestionMetadata(function(userQuestionMetadata){
+								$scope.userMetadata=userQuestionMetadata;
+								$scope.userMetadata.sort(function(a, b) {
+									return a.localeCompare(b)
+								});
+							});
+							
+							$scope.difficultyLevels = [{name:'Easy',value:'Easy'},
+							                       {name:'Moderate',value:'Moderate'},
+							                       {name:'Difficult',value:'Difficult'}
+							                      ];
+							
+							$scope.selectedLevel = [];
+							
+							$scope.isMetadataValuePresent=function(){
+								if($scope.selectedLevel.length>0){
+									return true;
+								}else if($scope.metadataValues.Topic!=undefined && $scope.metadataValues.Topic!=""){
+									return true;
+								}else if($scope.metadataValues.Objective!=undefined && $scope.metadataValues.Objective!=""){
+									return true;
+								}else if($scope.metadataValues.PageReference!=undefined && $scope.metadataValues.PageReference!=""){
+									return true;
+								}else if($scope.metadataValues.Skill!=undefined && $scope.metadataValues.Skill!=""){
+									return true;
+								}else if($scope.metadataValues.QuestionId!=undefined && $scope.metadataValues.QuestionId!=""){
+									return true;
+								}
+								return false;
+							}
+							
+							$scope.isGivenLevelSelected = function(level){
+								if($scope.selectedLevel.indexOf(level)>-1){
+									return true;
+								}else{
+									return false;
+								}
+							}
+							
+							$scope.selectLevel = function(level){
+								var itemIndex=$scope.selectedLevel.indexOf(level);
+								if(itemIndex>-1){
+									$scope.selectedLevel.splice(itemIndex,1);
+								}else{
+									$scope.selectedLevel.push(level);	
+								}
+								$scope.enableDisableSearch();
+							}
+							
+							$scope.enableDisableSearch = function(obj){
+								if(searchedQuestionTypes.length>0 || $scope.selectedQuestionTypes.length > 0 || $scope.isMetadataValuePresent()){
+									$scope.isSaveDisabled=false;
+								}else{
+									$scope.isSaveDisabled=true;
+								}
+							}
+							
 						} ]);
