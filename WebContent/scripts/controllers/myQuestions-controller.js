@@ -9,13 +9,27 @@ angular.module('e8MyTests')
     		UserFolderService, TestService, SharedTabService, ArchiveService, EnumService, CommonService) {
     	
         $scope.controller = EnumService.CONTROLLERS.myTest;
-    	SharedTabService.selectedMenu = SharedTabService.menu.myTest;
-        $scope.testTitle = "New Test";
+
         $scope.isAddFolderClicked=false;
         $scope.isTestDeleteClicked=false;
         $scope.isFolderDeleteClicked=false;
         $scope.dragStarted = false;
         
+		$scope.selectedNodes = [];
+		
+		if (SharedTabService.tests[SharedTabService.currentTabIndex].questions.length) {
+		    var test = SharedTabService.tests[SharedTabService.currentTabIndex];
+		    for (var i = 0; i < test.questions.length; i++) {
+		        $scope.selectedNodes.push(test.questions[i]);
+		    }
+		}
+	    //no teb switch, restore selectedNodes items
+		for (var i = 0; i < SharedTabService.tests.length; i++) {
+		    if (SharedTabService.tests[i].treeNode) {
+		        $scope.selectedNodes.push(SharedTabService.tests[i].treeNode);
+		    }
+		}
+		
         $scope.loadTree = function() {        	
         	
         	QuestionFolderService.defaultFolders(function (defaultFolders) {
@@ -112,17 +126,14 @@ angular.module('e8MyTests')
   			
   			$scope.dragStarted = false;
   			
-            if(source.node.nodeType === EnumService.NODE_TYPE.test && destParent.controller === EnumService.CONTROLLERS.testCreationFrame){        
-                source.node.showEditIcon=false;
-                source.node.showArchiveIcon=false;
-                $rootScope.$broadcast("dropTest", source, destIndex);
-                return false;
-            }
-            
-            if($rootScope.dropTest && $rootScope.dropTest == "cancel") {
-            	$rootScope.dropTest = null;
-            	return false;
-            }
+			if (!source.node.isNodeSelected) {
+				$scope.selectNode(source.node);
+			}
+			if (SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
+			    $scope.createTestWizardCriteria(source)
+			} else {
+			    $scope.editQuestion(source.node, destIndex, "dragEvnt");
+			}
             
             $rootScope.blockLeftPanel.start();                        
 
@@ -562,43 +573,324 @@ angular.module('e8MyTests')
             }
         }
 		
-        // To show the Edit icon,on click of test
-        // node.
-        $scope.closeTip=function(){
-        	$('.testMessagetip').hide();
-        }
-        $('.testMessagetip').offset({'top':($(window).height()/2)-$('.testMessagetip').height()});
-        $('.testMessagetip').hide();
-        $scope.selectTestNode = function ($event,test) {
+		var isParentNodeUsed=false;
+		$scope.selectNode = function (node) {
+			
+			if($scope.showAddFolderPanel) {
+                   $scope.showAddFolderPanel = false; 
+               }
+			
+		    var test = SharedTabService.tests[SharedTabService.currentTabIndex];
 
-        	if(test.node.nodeType == EnumService.NODE_TYPE.emptyFolder) {
-        		return;
+			if (!node.isNodeSelected) {
+				isParentNodeUsed=false;
+				$scope.isParentNodeUsed(node,test);
+				if(isParentNodeUsed){
+					$scope.IsConfirmation = false;
+					$scope.message = "Parent chapter is already selected for test creation.Please open new tab to perform any other operation on it.";
+					$modal.open(confirmObject)
+				}else{
+					$scope.selectedNodes.push(node);
+					node.isNodeSelected = true;
+					if($scope.isNodeUsedForEdit(node,test)){
+						node.showEditQuestionIcon = false;
+					}else{
+						node.showEditQuestionIcon = true;	
+					}
+					
+					if($scope.isNodeUsedForWizard(node,test)){
+						node.showTestWizardIcon = false;
+					}else{
+						node.showTestWizardIcon = true;	
+					}
+					for (var j = 0; j < test.questions.length; j++) {
+					    if (node.guid === test.questions[j].guid) {
+					        node.showEditQuestionIcon = false;
+					    }
+					}
+					if($scope.selectedNodes.length > 0){
+						$scope.deselectParentNode(node);
+						$scope.deselectChildNode(node);	
+					}
+				}
+			} else {
+				for (var i = 0; i < $scope.selectedNodes.length; i++) {
+					if ($scope.selectedNodes[i].guid == node.guid
+							&& (node.showTestWizardIcon && node.showEditQuestionIcon)) {
+						$scope.selectedNodes.splice(i, 1);
+						node.isNodeSelected = false;
+						node.showEditQuestionIcon = false;
+						node.showTestWizardIcon = false; 
+						break;
+					}
+				}
+			    //hide EditQuestionIcon on selecting the folder, if folder is already edited for that test.
+				for (var j = 0; j < test.questionFolderNode.length; j++) {
+				    if (node.guid === test.questionFolderNode[j].guid) {
+				        node.showEditQuestionIcon = false;
+				    }
+				}
+			}
+		};
+		
+		$scope.expandedNodes=[];
+		
+		//#To check whether the any parent/child node of selected node is used for test creation(edit question/wizard)  
+		$scope.isParentNodeUsed = function(selectedNode, test){
+			for (var i = 0; i < $scope.expandedNodes.length; i++) {
+				if ($scope.expandedNodes[i].guid == selectedNode.parentId) {
+					isParentNodeUsed = $scope.isNodeUsed($scope.expandedNodes[i],test);
+					if(isParentNodeUsed){
+						break;
+					}else if ($scope.expandedNodes[i].parentId != null && $scope.expandedNodes[i].parentId != "") {
+						$scope.isParentNodeUsed($scope.expandedNodes[i], test)
+					}
+				}
+			}
+		}
+		
+		var childNodesUsedForTestCreation="";
+		$scope.isChildNodeUsed = function(selectedNode, test) {
+			for (var i = 0; i < $scope.expandedNodes.length; i++) {
+				if ($scope.expandedNodes[i].parentId==selectedNode.guid) {
+					isChildNodeUsed=$scope.isNodeUsed($scope.expandedNodes[i],test);
+					if(isChildNodeUsed){
+						 childNodesUsedForTestCreation = selectedNode.title;
+						 break;
+					}
+					else
+						$scope.isChildNodeUsed($scope.expandedNodes[i], test);	
+				}
+			}
+		}
+		
+		$scope.isNodeUsed = function(node, test){
+			return ($scope.isNodeUsedForEdit(node, test) || $scope.isNodeUsedForWizard(node, test));
+		}
+		
+		$scope.isNodeUsedForEdit = function(node, test){
+			var isNodeUsed=false;
+			test.questionFolderNode.forEach(function(usedNode) {
+				if(usedNode.guid === node.guid){
+					isNodeUsed=true;
+				}
+			});
+			return isNodeUsed;
+		}
+		
+		$scope.isNodeUsedForWizard = function(node, test){
+			var isNodeUsed=false;
+			test.criterias.forEach(function(usedNode) {
+				if(usedNode.folderId === node.guid){
+					isNodeUsed=true;
+				}
+			});
+			return isNodeUsed;
+		}
+		//#Ends
+		
+		$scope.deselectParentNode = function(selectedNode) {
+			$scope.expandedNodes.forEach(function(container) {
+				if (container.guid == selectedNode.parentId) {
+					$scope.deselectNode(container);
+					if (container.parentId != null&& container.parentId != "") {
+						$scope.deselectParentNode(container)
+					}
+				}
+			});
+		}
+		
+		$scope.deselectChildNode = function(selectedNode) {
+			$scope.expandedNodes.forEach(function(container) {
+				if (container.parentId==selectedNode.guid) {
+					$scope.deselectNode(container);
+					$scope.deselectChildNode(container)
+				}
+			});
+		}
+		
+		$scope.deselectNode = function(node){
+			var i=0;
+			$scope.selectedNodes.forEach(function(selectedContainer){
+				if(selectedContainer.guid==node.guid){
+					$scope.selectedNodes.splice(i, 1);
+					node.isNodeSelected = false;
+					node.showEditQuestionIcon = false;
+					node.showTestWizardIcon = false;
+				}
+				i++;
+			});
+		}
+
+		var isChildNodeUsed=false;
+		
+		$scope.editQuestion = function (scope, destIndex, eventType) {		
+			$scope.editQuestionMode=true;
+			
+			if(eventType ==null || eventType =='' || eventType == undefined){
+				eventType = "clickEvnt";
+			}
+			if (SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
+				$rootScope.$broadcast('handleBroadcast_AddNewTab');
+			}
+			var test = SharedTabService.tests[SharedTabService.currentTabIndex];
+			isChildNodeUsed=false;
+											
+
+			for (var i = 0; i < $scope.selectedNodes.length; i++) {
+				var isNodeUsed=false
+				test.questionFolderNode.forEach(function(usedNode) {
+					if(usedNode.guid === $scope.selectedNodes[i].guid){
+						isNodeUsed=true;
+					}
+				});
+				if(!isNodeUsed){
+					$scope.isChildNodeUsed($scope.selectedNodes[i],test)	
+				}
+			}
+			
+			if(isChildNodeUsed){
+				$scope.IsConfirmation = true;
+				$scope.message = "This chapter includes the topic(s) that you have already added to the test. If you want to add the entire chapter, please click OK";
+				$modal.open(confirmObject).result.then(function(ok) {
+					if(ok) {
+						$scope.addSelectedQuestionsToTestTab(test, destIndex, eventType,scope);
+					}
+				});
+			}else{
+			    SharedTabService.errorMessages = [];
+			    $scope.addSelectedQuestionsToTestTab(test, destIndex, eventType,scope);								     
+			}
+			$scope.editQuestionMode=false;
+		}
+		
+		$scope.addSelectedQuestionsToTestTab = function(test, destIndex, eventType,scope) {
+        	var selectedScopeNode = typeof scope.node == "undefined" ? scope : scope.node;
+        	if(!selectedScopeNode.showEditQuestionIcon)
+    		{
+        		$scope.isAnyNodeAlreadyAdded = true
+
+    		}
+        	
+        	$scope.addQuestionsToTestTab(test, destIndex, eventType,$scope.isAnyNodeAlreadyAdded);
+        	$scope.isAnyNodeAlreadyAdded = false;
+
+		}
+		
+		$scope.addQuestionsToTestTab = function (test, destIndex, eventType, isAnyNodeAlreadyAdded) {
+		    var httpReqCount = 0,
+                httpReqCompletedCount = 0,
+                uniqueNodeCount = 0;
+//		    if(scope.showEditQuestionIcon)
+			for (var i = 0; i < $scope.selectedNodes.length; i++) {
+				if($scope.selectedNodes[i].nodeType != EnumService.NODE_TYPE.question){
+				test.questionFolderNode.push($scope.selectedNodes[i]);
+				}
+				$scope.getRemoveChildNodesFromQuestionFolderNodes($scope.selectedNodes[i], test);
+				if ($scope.selectedNodes[i].showEditQuestionIcon) {
+					uniqueNodeCount++;
+					if ($scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.question) {
+                        if (SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode) {
+                        	$scope.selectedNodes[i].showEditQuestionIcon = true;
+                            $scope.IsConfirmation = false;
+                            $scope.message = "A question is already in Edit mode, save it before adding or reordering questions.";
+                            $modal.open(confirmObject);
+                            $scope.dragStarted = false;
+                            break;
+                        }else{      
+
+                                $rootScope.blockPage.start();
+                            	$scope.selectedNodes[i].showEditQuestionIcon = false;
+                                $rootScope.$broadcast("dropQuestion",$scope.selectedNodes[i], destIndex,"QuestionBank", eventType);
+                        }    
+
+					} else if ($scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.chapter
+							|| $scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.topic) {
+						
+				        httpReqCount++;
+						$rootScope.blockPage.start();
+						
+						$scope.selectedNodes[i].showEditQuestionIcon = false;
+						var questionFolder = $scope.selectedNodes[i];
+						getQuestions(
+								questionFolder,
+								function(response,
+										questionFolder) {
+									if(!isAnyNodeAlreadyAdded)
+									{
+										test.questions.forEach(function(testQuestion){
+											response.forEach(function(selectedQuestion){
+												if(testQuestion.guid == selectedQuestion.guid)
+												{
+													isAnyNodeAlreadyAdded = true;
+													return;
+												}
+											})
+											if(isAnyNodeAlreadyAdded == true)
+											{
+												return;
+											}
+										})
+									}
+									$rootScope
+											.$broadcast(
+													"handleBroadcast_AddQuestionsToTest",
+													response,
+													$scope.selectedQuestionTypes.toString(),
+													questionFolder,
+													isAnyNodeAlreadyAdded);
+									$scope.editQuestionMode = false;
+									httpReqCompletedCount++;
+									if (!response.length) {
+									    SharedTabService.addErrorMessage(questionFolder.title, e8msg.warning.emptyFolder);
+									    questionFolder.showEditQuestionIcon = true;
+									    for (var j = 0; j < test.questionFolderNode.length; j++) {
+									        if (test.questionFolderNode[j].guid == questionFolder.guid) {
+									            test.questionFolderNode.splice(j, 1);
+									        }
+									    }
+									}
+
+									if (httpReqCount == httpReqCompletedCount) {
+										if(SharedTabService.errorMessages.length > 0)
+											SharedTabService.TestWizardErrorPopup_Open();
+										//$scope.showDuplicateQuestionsAlert();
+									}
+								});
+					}
+
+				}
+			}
+			if((uniqueNodeCount == 0 && $scope.selectedNodes.length !=0) || httpReqCount == 0){
+				$scope.showDuplicateQuestionsAlert();
+			}
+		}
+		
+		$scope.showDuplicateQuestionsAlert = function(){
+        	if($scope.isAnyNodeAlreadyAdded){
+        		$scope.IsConfirmation = false;
+                $scope.message = "Question(s) already added to the test, cannot be added again.";
+                $modal.open(confirmObject).result.then(function(ok) {
+					if(ok) {
+						$scope.isAnyNodeAlreadyAdded = false;
+					}
+				});
         	}
-            test.node.selectTestNode = !test.node.selectTestNode;
-            if(test.node.selectTestNode 
-            		&& $rootScope.globals.loginCount <= evalu8config.messageTipLoginCount 
-            		&& test.node.nodeType != EnumService.NODE_TYPE.archiveTest 
-            		&& test.node.nodeType != EnumService.NODE_TYPE.folder
-            		&& test.node.nodeType != EnumService.NODE_TYPE.archiveFolder)
-            {
-	        	$('.testMessagetip').show()
-	        	setTimeout(function(){ 
-	        		$('.testMessagetip').hide();
-	        	}, 5000);
-        	}
-            if(test.node.nodeType != EnumService.NODE_TYPE.archiveFolder && test.node.nodeType != EnumService.NODE_TYPE.archiveTest ){
-            	SharedTabService.showSelectedTestTab(test.node);
-            }
-        }
-
-        // to disable the edit icon once it clicked
-        $scope.editTest = function (selectedTest) {
-        	selectedTest.node.draggable = false;
-        	selectedTest.node.showEditIcon=false;
-        	selectedTest.node.showArchiveIcon=false;
-        	$rootScope.$broadcast("editTest", selectedTest);
-        }
-
+	}
+		
+		$scope.getRemoveChildNodesFromQuestionFolderNodes = function(Node, test) {
+			for (var i = 0; i < $scope.expandedNodes.length; i++) {
+				if ($scope.expandedNodes[i].parentId==Node.guid) {
+					for (var j = 0; j < test.questionFolderNode.length; j++) {
+						if(test.questionFolderNode[j].guid == $scope.expandedNodes[i].guid){
+							test.questionFolderNode.splice(j, 1);
+						}
+					}
+					$scope.getRemoveChildNodesFromQuestionFolderNodes($scope.expandedNodes[i], test);
+				}
+			}
+		}
+		
         $scope.getFolders = function(defaultFolder) {
         	if($scope.showAddFolderPanel){
         		$scope.showAddFolderPanel = false;
@@ -1244,7 +1536,8 @@ angular.module('e8MyTests')
             $("#MyTest-tree-root")[0].scrollTop = 0;
             $("#txtFolderName").blur(); 
 
-        }
+        }                
+		
       // evalu8-ui : to set Active Resources Tab , handled in
 		// ResourcesTabsController
         $rootScope.$broadcast('handleBroadcast_setActiveResourcesTab', EnumService.RESOURCES_TABS.yourquestions);

@@ -17,12 +17,7 @@
         </div>
         <div data-ui-tree id="MyTest-tree-root" class="myTest_scrollbar">
             <ol data-ui-tree-nodes data-ng-model="defaultFolders" droppable="{{node.droppable}}">
-				<div class="testMessagetip"  style="position: absolute;top:0px">
-				<div class="newTest-close glyphicon glyphicon-remove"
-                     ng-click="closeTip()"></div>
-				<div><span class="glyphicon glyphicon-info-sign"></span>&nbsp;<strong class="tips">Tips:</strong> Drag test to right to edit OR select pencil icon.
-				Select Archive box icon to move <br>test to Archive directory</div>
-				</div>
+
                 <li data-ng-repeat="node in defaultFolders" data-ui-tree-node x-collapsed="true" draggable="{node.draggable}"
                     data-ng-include="'defaultfolder_renderer.html'" data-ng-class="{'questIndex' : node.nodeType=='question'}" />
             </ol>
@@ -32,7 +27,7 @@
         <div draggable="{{node.draggable}}" data-ui-tree-node>
             <div ui-tree-handle class="tree-node tree-node-content">
 
-                <div data-ng-if="node.nodeType=='question'" ng-class="{testHighlightSelected: isActiveSelectedTest(node.guid)}">
+                <div data-ng-if="node.nodeType=='question'" ng-class="{questionSelected: node.isNodeSelected}">
                     <div class="questIndex qbQuestions" style="border-bottom: solid #F8f8f8;">
 						<div ng-if="node.questionType == 'userCreatedQuestion'" class="questionListIndex">{{(node.questnNumber) }})</div>
 						<div ng-if="node.questionType != 'userCreatedQuestion'" class="questionListIndex">{{$index + 1}})</div>
@@ -97,7 +92,7 @@
                 </div>
             </div>
 
-			<div data-ng-if="node.nodeType=='question'" ng-class="{testHighlightSelected: isActiveSelectedTest(node.guid)}">
+			<div data-ng-if="node.nodeType=='question'" ng-class="{questionSelected: node.isNodeSelected}">
             	<div class="questIndex qbQuestions" style="border-bottom: solid #F8f8f8;">
 					<div ng-if="node.questionType == 'userCreatedQuestion'" class="questionListIndex">{{(node.questnNumber) }})</div>
 					<div ng-if="node.questionType != 'userCreatedQuestion'" class="questionListIndex">{{$index + 1}})</div>
