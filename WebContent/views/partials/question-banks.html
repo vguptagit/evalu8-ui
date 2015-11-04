@@ -10,18 +10,18 @@
 			tooltip-trigger="mouseenter" tooltip-placement="bottom"
 			tooltip="Search"></span>
 	</div>
-	<div class="col-lg-6">
+	<div class="col-lg-3">
 		<button href="" class="advancedSearchText" ng-disabled="isAdvancedSearchClicked" ng-click="openAdvancedSearch()">Advanced
 			Search</button>
 	</div>
+	<div class="col-lg-3 clearAdvancedSearch" ng-show="showHideSearchCriteria()" tooltip="Clear Search" tooltip-placement="bottom" ng-click="clearAdvancedSearch()">Clear Search
+		</div>
 </div>
 <div ng-include="'views/partials/advanced-search.html'"></div>
 <div class="row" ng-show="showHideSearchCriteria()">
 	<div class="col-md-12">
 		<div class="selectedQuestionTypes"
 			ng-bind="getSearchCriteriaSelections()"></div>
-		<div class="clearAdvancedSearch" tooltip="Clear Search" tooltip-placement="bottom" ng-click="clearAdvancedSearch()">Clear
-		</div>
 	</div>
 </div>
 <div class="row margin-top-15">

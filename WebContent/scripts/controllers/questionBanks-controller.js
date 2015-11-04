@@ -1933,13 +1933,12 @@ angular
 							
 							$scope.getSearchCriteriaSelections = function(){
 								if(selectedQuestionTypesToShow.length!=0 && selectedMetadataTypesToShow.length==0){
-									return selectedQuestionTypesToShow.toString() + " :";	
+									return selectedQuestionTypesToShow.toString();	
 								}else if(selectedQuestionTypesToShow.length==0 && selectedMetadataTypesToShow.length!=0){
-									return selectedMetadataTypesToShow.toString() + " :";	
+									return selectedMetadataTypesToShow.toString();	
 								}else if(selectedQuestionTypesToShow.length!=0 && selectedMetadataTypesToShow.length!=0){
-									return selectedQuestionTypesToShow.toString()+","+selectedMetadataTypesToShow.toString() + " :";
-								} 
-								else{
+									return selectedQuestionTypesToShow.toString()+","+selectedMetadataTypesToShow.toString();
+								}else{
 									return "";
 								}
 							}
@@ -2061,17 +2060,17 @@ angular
 							$scope.addMetadataTypesToShow = function(metadata)
 							{
 								if(metadata.indexOf(MetadataEnum.DIFFICULTY)>-1){
-									selectedMetadataTypesToShow.push('Difficulty');
+									selectedMetadataTypesToShow.push(' Difficulty');
 								}else if(metadata.indexOf(MetadataEnum.TOPIC)>-1){
-									selectedMetadataTypesToShow.push('Topic');
+									selectedMetadataTypesToShow.push(' Topic');
 								}else if(metadata.indexOf(MetadataEnum.OBJECTIVE)>-1){
-									selectedMetadataTypesToShow.push('Objective');
+									selectedMetadataTypesToShow.push(' Objective');
 								}else if(metadata.indexOf(MetadataEnum.PAGEREFERENCE)>-1){
-									selectedMetadataTypesToShow.push('Page Reference');
+									selectedMetadataTypesToShow.push(' Page Reference');
 								}else if(metadata.indexOf(MetadataEnum.SKILL)>-1){
-									selectedMetadataTypesToShow.push('Skill');
+									selectedMetadataTypesToShow.push(' Skill');
 								}else if(metadata.indexOf(MetadataEnum.QUESTIONID)>-1){
-									selectedMetadataTypesToShow.push('Question ID');
+									selectedMetadataTypesToShow.push(' Question ID');
 								}
 							}
 							
@@ -2256,6 +2255,14 @@ angular
 									}
 								});
 							});
+							
+							$scope.isAnyMetadataSelected=function(){
+								if($scope.userMetadata.length>0){
+									return true;
+								}else{
+									return false;
+								}
+							}
 							
 							$scope.difficultyLevels = [{name:'Easy',value:'Easy'},
 							                       {name:'Moderate',value:'Moderate'},
