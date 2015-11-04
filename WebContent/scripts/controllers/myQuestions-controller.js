@@ -179,69 +179,46 @@ angular.module('e8MyTests')
                     		return false;
                     	}                		
                 	}
-                	
-                	TestService.getTests(mouseOverNode.node.guid, function (tests) {
-                		if(tests==null){
-                			$rootScope.blockLeftPanel.stop();
-                			CommonService.showErrorMessage(e8msg.error.cantFetchTests)
-                			return;
-                		}
-                    	if(item.nodeType == EnumService.NODE_TYPE.test) {
-                    		tests.forEach(function(nodeItem) {                        
-                        		if(nodeItem.nodeType == EnumService.NODE_TYPE.test && nodeItem.title == item.title) {
-                        			duplicateTitle = true;                			 
-                            	}                        	                        
-                        	})
-                        	
-                        	if(duplicateTitle) {
-        			            $scope.IsConfirmation = false;
-        			            $scope.message = "A test already exists with this name.";
-        			            $modal.open(confirmObject);
-        			            
-        			            $rootScope.blockLeftPanel.stop();
-                        		return false;
-                        	}                		
-                    	}
-                    	
-                        source.remove();                                        
-                        
-                        if(item.nodeType == EnumService.NODE_TYPE.folder) {
-                            item.parentId = mouseOverNode.node.guid;
-                            UserFolderService.getFoldersMinSeq(mouseOverNode.node, function(minSeq) {
-                            	item.sequence = minSeq==0.0 ? 1.0 : (0.0 + minSeq)/2;
-                            	UserFolderService.saveUserFolder(item, function(userFolder) {
-                            		if(userFolder==null){
-                                		$rootScope.blockLeftPanel.stop();
-                                 		CommonService.showErrorMessage(e8msg.error.cantSave);
-                                 		return;
-                                 	}
-                        			if(sourceParent && sourceParent.node && sourceParent.node.nodes.length==0) {
-                        				sourceParent.node.nodes.push(CommonService.getEmptyFolder());
-                        			}
-                        			
-                            		$rootScope.blockLeftPanel.stop();
-                            	});                	
-                            })                	
-                        } else {
-                        	var sourceFolder = $scope.removeTestBindingFromSource(sourceParent, item.guid);
-                        	UserFolderService.saveUserFolder(sourceFolder, function(userFolder) {
+                	                    	
+                    source.remove();                                        
+                    
+                    if(item.nodeType == EnumService.NODE_TYPE.folder) {
+                        item.parentId = mouseOverNode.node.guid;
+                        UserFolderService.getFoldersMinSeq(mouseOverNode.node, function(minSeq) {
+                        	item.sequence = minSeq==0.0 ? 1.0 : (0.0 + minSeq)/2;
+                        	QuestionFolderService.saveQuestionFolder(item, function(userFolder) {
                         		if(userFolder==null){
                             		$rootScope.blockLeftPanel.stop();
                              		CommonService.showErrorMessage(e8msg.error.cantSave);
                              		return;
                              	}
-                        		$scope.insertTestBindingToDest(mouseOverNode, item.guid, function() {
-                        			
-                        			if(sourceParent && sourceParent.node && sourceParent.node.nodes.length==0) {
-                        				sourceParent.node.nodes.push(CommonService.getEmptyFolder());
-                        			}
-                        			
-                            		$rootScope.blockLeftPanel.stop();                        			
-                        		});
+                    			if(sourceParent && sourceParent.node && sourceParent.node.nodes.length==0) {
+                    				sourceParent.node.nodes.push(CommonService.getEmptyFolder());
+                    			}
+                    			
+                        		$rootScope.blockLeftPanel.stop();
+                        	});                	
+                        })                	
+                    } else {
+                    	var sourceFolder = $scope.removeTestBindingFromSource(sourceParent, item.guid);
+                    	QuestionFolderService.saveQuestionFolder(sourceFolder, function(userFolder) {
+                    		if(userFolder==null){
+                        		$rootScope.blockLeftPanel.stop();
+                         		CommonService.showErrorMessage(e8msg.error.cantSave);
+                         		return;
+                         	}
+                    		$scope.insertTestBindingToDest(mouseOverNode, item.guid, function() {
+                    			
+                    			if(sourceParent && sourceParent.node && sourceParent.node.nodes.length==0) {
+                    				sourceParent.node.nodes.push(CommonService.getEmptyFolder());
+                    			}
+                    			
+                        		$rootScope.blockLeftPanel.stop();                        			
+                    		});
 
-                        	});            		              	               	
-                        }
-                	})                                        
+                    	});            		              	               	
+                    }
+                	                                        
                   
                 })
                 
