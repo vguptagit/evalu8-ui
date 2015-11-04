@@ -271,9 +271,9 @@ angular
 								$scope.selectedQuestionTypes=[];
 								$scope.isAdvancedSearchMode = false;
 								$scope.isSearchMode = false;
-								$scope.selectedQuestionTypesToShow=[];
 								$scope.selectedBooks=[];
 								selectedQuestionTypesToShow=[];
+								selectedMetadataTypesToShow=[];
 								searchedQuestionTypes=[];
 								bookContainersArray=[];
 								$scope.allContainers=[];
@@ -283,20 +283,39 @@ angular
 								$scope.loadTree();	
 								$scope.closeAdvancedSearch();
 								$scope.userMetadata=[];
+								searchedMetadataValues={
+										"Difficulty":[]
+									};
+								$scope.metadataValues={
+										"Difficulty":[]
+									};
 								UserService.userQuestionMetadata(function(userQuestionMetadata){
 									userQuestionMetadata.forEach(function(metadata){
-										if(metadata=='Difficulty'){
-											$scope.userMetadata.splice(0, 0, metadata);
-										}else if(metadata=='Topic'){
-											$scope.userMetadata.splice(1, 0, metadata);
-										}else if(metadata=='Objective'){
-											$scope.userMetadata.splice(2, 0, metadata);
-										}else if(metadata=='PageReference'){
-											$scope.userMetadata.splice(3, 0, "Page Reference");
-										}else if(metadata=='Skill'){
-											$scope.userMetadata.splice(4, 0, metadata);
-										}else if(metadata=='QuestionId'){
-											$scope.userMetadata.splice(5, 0, "Question ID");
+										var userMetadataKeyValue={};
+										if(metadata==MetadataEnum.DIFFICULTY){
+											userMetadataKeyValue.key=metadata;
+											userMetadataKeyValue.name='Difficulty';
+											$scope.userMetadata.splice(0, 0, userMetadataKeyValue);
+										}else if(metadata==MetadataEnum.TOPIC){
+											userMetadataKeyValue.key=metadata;
+											userMetadataKeyValue.name='Topic';
+											$scope.userMetadata.splice(1, 0, userMetadataKeyValue);
+										}else if(metadata==MetadataEnum.OBJECTIVE){
+											userMetadataKeyValue.key=metadata;
+											userMetadataKeyValue.name='Objective';
+											$scope.userMetadata.splice(2, 0, userMetadataKeyValue);
+										}else if(metadata==MetadataEnum.PAGEREFERENCE){
+											userMetadataKeyValue.key=metadata;
+											userMetadataKeyValue.name='Page Reference';
+											$scope.userMetadata.splice(3, 0, userMetadataKeyValue);
+										}else if(metadata==MetadataEnum.SKILL){
+											userMetadataKeyValue.key=metadata;
+											userMetadataKeyValue.name='Skill';
+											$scope.userMetadata.splice(4, 0, userMetadataKeyValue);
+										}else if(metadata==MetadataEnum.QUESTIONID){
+											userMetadataKeyValue.key=metadata;
+											userMetadataKeyValue.name='Question ID';
+											$scope.userMetadata.splice(5, 0, userMetadataKeyValue);
 										}
 									});
 								});
@@ -1879,6 +1898,14 @@ angular
 								searchedQuestionTypes.forEach(function(qt){
 									$scope.selectedQuestionTypes.push(qt);
 								});
+								
+								if($scope.isAdvancedSearchMode){
+									angular.copy(searchedMetadataValues,$scope.metadataValues)
+								}else{
+									$scope.metadataValues = {
+											"Difficulty":[]
+									};
+								}
 								$scope.enableDisableSearch();
 							}
 							
@@ -1905,9 +1932,14 @@ angular
 							}
 							
 							$scope.getSearchCriteriaSelections = function(){
-								if(selectedQuestionTypesToShow.length!=0){
+								if(selectedQuestionTypesToShow.length!=0 && selectedMetadataTypesToShow.length==0){
 									return selectedQuestionTypesToShow.toString() + " :";	
-								}else{
+								}else if(selectedQuestionTypesToShow.length==0 && selectedMetadataTypesToShow.length!=0){
+									return selectedMetadataTypesToShow.toString() + " :";	
+								}else if(selectedQuestionTypesToShow.length!=0 && selectedMetadataTypesToShow.length!=0){
+									return selectedQuestionTypesToShow.toString()+","+selectedMetadataTypesToShow.toString() + " :";
+								} 
+								else{
 									return "";
 								}
 							}
@@ -1921,10 +1953,14 @@ angular
 							}
 							
 							var selectedQuestionTypesToShow=[];
-							
+							var selectedMetadataTypesToShow=[];
+							var searchedMetadataValues={
+									"Difficulty":[]
+							};
 							$scope.searchBooksForQuestionTypes = function(node) {
 								$scope.showAdvancedSearch = false;
 								selectedQuestionTypesToShow=[];
+								selectedMetadataTypesToShow=[];
 								searchedQuestionTypes=[];
 								if($scope.selectedBooks.length == 0){
 									$scope.isSimpleSearchClicked=true;
@@ -1961,6 +1997,7 @@ angular
 									}
 									$scope.getMetadataSearchCriteria().forEach(function(metadata){
 											searchCriteria=searchCriteria+metadata;
+											$scope.addMetadataTypesToShow(metadata)
 									});
 									
 									$scope.selectedBooks.forEach(function(book){
@@ -2021,8 +2058,26 @@ angular
 								}
 							}
 							
+							$scope.addMetadataTypesToShow = function(metadata)
+							{
+								if(metadata.indexOf(MetadataEnum.DIFFICULTY)>-1){
+									selectedMetadataTypesToShow.push('Difficulty');
+								}else if(metadata.indexOf(MetadataEnum.TOPIC)>-1){
+									selectedMetadataTypesToShow.push('Topic');
+								}else if(metadata.indexOf(MetadataEnum.OBJECTIVE)>-1){
+									selectedMetadataTypesToShow.push('Objective');
+								}else if(metadata.indexOf(MetadataEnum.PAGEREFERENCE)>-1){
+									selectedMetadataTypesToShow.push('Page Reference');
+								}else if(metadata.indexOf(MetadataEnum.SKILL)>-1){
+									selectedMetadataTypesToShow.push('Skill');
+								}else if(metadata.indexOf(MetadataEnum.QUESTIONID)>-1){
+									selectedMetadataTypesToShow.push('Question ID');
+								}
+							}
+							
 							$scope.bookAddToDiscipline=function(book){
 								$scope.isAdvancedSearchMode = true;
+								angular.copy($scope.metadataValues,searchedMetadataValues);
 								var isDesciplineExists=false;  
 								var searchedDiscipline={};
 								if($scope.disciplines.length==0){
@@ -2066,9 +2121,9 @@ angular
 								$scope.isAdvancedSearchMode = false;
 								$scope.isSearchMode = false;
 								$scope.showAddFolderLink = false;
-								$scope.selectedQuestionTypesToShow=[];
 								$scope.selectedBooks=[];
 								selectedQuestionTypesToShow=[];
+								selectedMetadataTypesToShow=[];
 								searchedQuestionTypes=[];
 								bookContainersArray=[];
 								$scope.allContainers=[];
@@ -2076,6 +2131,12 @@ angular
 								$scope.expandedNodes=[];
 								$scope.selectedNodes=[];
 								$scope.loadTree();
+								searchedMetadataValues={
+									"Difficulty":[]
+								};
+								$scope.metadataValues={
+									"Difficulty":[]
+								};
 							}							
 							
 							$scope.$on('handleBroadcast_AddNewTest', function (handler, newTest, containerFolder, isEditMode, oldGuid, editedQuestions, editedMigratedQuestions, createdTab, testCreationFrameScope) {
@@ -2162,33 +2223,33 @@ angular
 							});
 							
 							$scope.metadataValues = {
-									"selectedLevel":[]
+									"Difficulty":[]
 							};
 							$scope.userMetadata=[];
 							UserService.userQuestionMetadata(function(userQuestionMetadata){
 								userQuestionMetadata.forEach(function(metadata){
 									var userMetadataKeyValue={};
-									if(metadata=='Difficulty'){
+									if(metadata==MetadataEnum.DIFFICULTY){
 										userMetadataKeyValue.key=metadata;
 										userMetadataKeyValue.name='Difficulty';
 										$scope.userMetadata.splice(0, 0, userMetadataKeyValue);
-									}else if(metadata=='Topic'){
+									}else if(metadata==MetadataEnum.TOPIC){
 										userMetadataKeyValue.key=metadata;
 										userMetadataKeyValue.name='Topic';
 										$scope.userMetadata.splice(1, 0, userMetadataKeyValue);
-									}else if(metadata=='Objective'){
+									}else if(metadata==MetadataEnum.OBJECTIVE){
 										userMetadataKeyValue.key=metadata;
 										userMetadataKeyValue.name='Objective';
 										$scope.userMetadata.splice(2, 0, userMetadataKeyValue);
-									}else if(metadata=='PageReference'){
+									}else if(metadata==MetadataEnum.PAGEREFERENCE){
 										userMetadataKeyValue.key=metadata;
 										userMetadataKeyValue.name='Page Reference';
 										$scope.userMetadata.splice(3, 0, userMetadataKeyValue);
-									}else if(metadata=='Skill'){
+									}else if(metadata==MetadataEnum.SKILL){
 										userMetadataKeyValue.key=metadata;
 										userMetadataKeyValue.name='Skill';
 										$scope.userMetadata.splice(4, 0, userMetadataKeyValue);
-									}else if(metadata=='QuestionId'){
+									}else if(metadata==MetadataEnum.QUESTIONID){
 										userMetadataKeyValue.key=metadata;
 										userMetadataKeyValue.name='Question ID';
 										$scope.userMetadata.splice(5, 0, userMetadataKeyValue);
@@ -2205,23 +2266,23 @@ angular
 							
 							$scope.getMetadataSearchCriteria=function(){
 								var metadataSearchCriteria=[];
-								if($scope.metadataValues.selectedLevel.length>0){
-									appendMetadataSearchCriteria(metadataSearchCriteria,'Difficulty',$scope.metadataValues.selectedLevel.toString());
+								if($scope.metadataValues.Difficulty.length>0){
+									appendMetadataSearchCriteria(metadataSearchCriteria,MetadataEnum.DIFFICULTY,$scope.metadataValues.Difficulty.toString());
 								}
 								if($scope.metadataValues.Topic!=undefined && $scope.metadataValues.Topic!=""){
-									appendMetadataSearchCriteria(metadataSearchCriteria,'Topic',$scope.metadataValues.Topic);
+									appendMetadataSearchCriteria(metadataSearchCriteria,MetadataEnum.TOPIC,$scope.metadataValues.Topic);
 								}
 								if($scope.metadataValues.Objective!=undefined && $scope.metadataValues.Objective!=""){
-									appendMetadataSearchCriteria(metadataSearchCriteria,'Objective',$scope.metadataValues.Objective);
+									appendMetadataSearchCriteria(metadataSearchCriteria,MetadataEnum.OBJECTIVE,$scope.metadataValues.Objective);
 								}
 								if($scope.metadataValues.PageReference!=undefined && $scope.metadataValues.PageReference!=""){
-									appendMetadataSearchCriteria(metadataSearchCriteria,'PageReference',$scope.metadataValues.PageReference);
+									appendMetadataSearchCriteria(metadataSearchCriteria,MetadataEnum.PAGEREFERENCE,$scope.metadataValues.PageReference);
 								}
 								if($scope.metadataValues.Skill!=undefined && $scope.metadataValues.Skill!=""){
-									appendMetadataSearchCriteria(metadataSearchCriteria,'Skill',$scope.metadataValues.Skill);
+									appendMetadataSearchCriteria(metadataSearchCriteria,MetadataEnum.SKILL,$scope.metadataValues.Skill);
 								}
 								if($scope.metadataValues.QuestionId!=undefined && $scope.metadataValues.QuestionId!=""){
-									appendMetadataSearchCriteria(metadataSearchCriteria,'QuestionId',$scope.metadataValues.QuestionId);
+									appendMetadataSearchCriteria(metadataSearchCriteria,MetadataEnum.QUESTIONID,$scope.metadataValues.QuestionId);
 								}
 								
 								return metadataSearchCriteria;
@@ -2235,7 +2296,7 @@ angular
 								}
 							}
 							$scope.isGivenLevelSelected = function(level){
-								if($scope.metadataValues.selectedLevel.indexOf(level)>-1){
+								if($scope.metadataValues.Difficulty.indexOf(level)>-1){
 									return true;
 								}else{
 									return false;
@@ -2243,11 +2304,11 @@ angular
 							}
 							
 							$scope.selectLevel = function(level){
-								var itemIndex=$scope.metadataValues.selectedLevel.indexOf(level);
+								var itemIndex=$scope.metadataValues.Difficulty.indexOf(level);
 								if(itemIndex>-1){
-									$scope.metadataValues.selectedLevel.splice(itemIndex,1);
+									$scope.metadataValues.Difficulty.splice(itemIndex,1);
 								}else{
-									$scope.metadataValues.selectedLevel.push(level);	
+									$scope.metadataValues.Difficulty.push(level);	
 								}
 								$scope.enableDisableSearch();
 							}
@@ -2258,6 +2319,15 @@ angular
 								}else{
 									$scope.isSaveDisabled=true;
 								}
+							}
+							
+							var MetadataEnum={
+									'DIFFICULTY':'Difficulty',
+									'TOPIC':'Topic',
+									'OBJECTIVE':'Objective',
+									'PAGEREFERENCE':'PageReference',
+									'SKILL':'Skill',
+									'QUESTIONID':'QuestionId'
 							}
 							
 						} ]);
