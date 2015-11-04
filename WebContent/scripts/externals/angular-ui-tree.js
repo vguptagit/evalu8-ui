@@ -175,7 +175,7 @@
                 		|| this.source.node.nodeType=="archive") {                	
                 	return;
                 }
-                if(this.source.node.nodeType=="test") {
+                if(this.source.node.nodeType=="test" || this.source.node.nodeType=="question") {
                 	if(this.next() && this.next().node.nodeType == "folder") {
                 		$rootScope.dropTest = "cancel"; 
                 		return;
@@ -194,7 +194,7 @@
                 }
  
                 if(this.source.node.nodeType=="folder") {
-                	if(this.prev() && (this.prev().node.nodeType == "test" || this.prev().node.nodeType == "archiveRoot")) {
+                	if(this.prev() && (this.prev().node.nodeType == "test" || this.prev().node.nodeType == "question" || this.prev().node.nodeType == "archiveRoot")) {
                 		return;
                 	}               	
                 }
