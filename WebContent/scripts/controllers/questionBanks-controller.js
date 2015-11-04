@@ -2161,22 +2161,37 @@ angular
 							    });
 							});
 							
-							$scope.metadataValues = {};
+							$scope.metadataValues = {
+									"selectedLevel":[]
+							};
 							$scope.userMetadata=[];
 							UserService.userQuestionMetadata(function(userQuestionMetadata){
 								userQuestionMetadata.forEach(function(metadata){
+									var userMetadataKeyValue={};
 									if(metadata=='Difficulty'){
-										$scope.userMetadata.splice(0, 0, metadata);
+										userMetadataKeyValue.key=metadata;
+										userMetadataKeyValue.name='Difficulty';
+										$scope.userMetadata.splice(0, 0, userMetadataKeyValue);
 									}else if(metadata=='Topic'){
-										$scope.userMetadata.splice(1, 0, metadata);
+										userMetadataKeyValue.key=metadata;
+										userMetadataKeyValue.name='Topic';
+										$scope.userMetadata.splice(1, 0, userMetadataKeyValue);
 									}else if(metadata=='Objective'){
-										$scope.userMetadata.splice(2, 0, metadata);
+										userMetadataKeyValue.key=metadata;
+										userMetadataKeyValue.name='Objective';
+										$scope.userMetadata.splice(2, 0, userMetadataKeyValue);
 									}else if(metadata=='PageReference'){
-										$scope.userMetadata.splice(3, 0, "Page Reference");
+										userMetadataKeyValue.key=metadata;
+										userMetadataKeyValue.name='Page Reference';
+										$scope.userMetadata.splice(3, 0, userMetadataKeyValue);
 									}else if(metadata=='Skill'){
-										$scope.userMetadata.splice(4, 0, metadata);
+										userMetadataKeyValue.key=metadata;
+										userMetadataKeyValue.name='Skill';
+										$scope.userMetadata.splice(4, 0, userMetadataKeyValue);
 									}else if(metadata=='QuestionId'){
-										$scope.userMetadata.splice(5, 0, "Question ID");
+										userMetadataKeyValue.key=metadata;
+										userMetadataKeyValue.name='Question ID';
+										$scope.userMetadata.splice(5, 0, userMetadataKeyValue);
 									}
 								});
 							});
@@ -2186,12 +2201,12 @@ angular
 							                       {name:'Difficult',value:'Difficult'}
 							                      ];
 							
-							$scope.selectedLevel = [];
+							//$scope.selectedLevel = [];
 							
 							$scope.getMetadataSearchCriteria=function(){
 								var metadataSearchCriteria=[];
-								if($scope.selectedLevel.length>0){
-									appendMetadataSearchCriteria(metadataSearchCriteria,'Difficulty',$scope.selectedLevel.toString());
+								if($scope.metadataValues.selectedLevel.length>0){
+									appendMetadataSearchCriteria(metadataSearchCriteria,'Difficulty',$scope.metadataValues.selectedLevel.toString());
 								}
 								if($scope.metadataValues.Topic!=undefined && $scope.metadataValues.Topic!=""){
 									appendMetadataSearchCriteria(metadataSearchCriteria,'Topic',$scope.metadataValues.Topic);
@@ -2220,7 +2235,7 @@ angular
 								}
 							}
 							$scope.isGivenLevelSelected = function(level){
-								if($scope.selectedLevel.indexOf(level)>-1){
+								if($scope.metadataValues.selectedLevel.indexOf(level)>-1){
 									return true;
 								}else{
 									return false;
@@ -2228,11 +2243,11 @@ angular
 							}
 							
 							$scope.selectLevel = function(level){
-								var itemIndex=$scope.selectedLevel.indexOf(level);
+								var itemIndex=$scope.metadataValues.selectedLevel.indexOf(level);
 								if(itemIndex>-1){
-									$scope.selectedLevel.splice(itemIndex,1);
+									$scope.metadataValues.selectedLevel.splice(itemIndex,1);
 								}else{
-									$scope.selectedLevel.push(level);	
+									$scope.metadataValues.selectedLevel.push(level);	
 								}
 								$scope.enableDisableSearch();
 							}

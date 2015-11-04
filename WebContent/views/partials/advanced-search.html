@@ -52,16 +52,16 @@
 		</div>
 		<div class="row">
 			<div class='col-md-12 metadatarow' ng-repeat="node in userMetadata">
-				<div class='col-md-1 metdatalabelSearch floatLeftImp'>{{node}}:</div>
-				<div class="col-md-11 metdataVal floatLeftImp" ng-if="node=='Difficulty'">
+				<div class='col-md-1 metdatalabelSearch floatLeftImp'>{{node.name}}:</div>
+				<div class="col-md-11 metdataVal floatLeftImp" ng-if="node.key=='Difficulty'">
 					<div class="floatLeftImp" ng-repeat="level in difficultyLevels">
 						<div class="width70Imp"  ng-class="isGivenLevelSelected(level.value)?'ck-buttonSelected':'ck-button'"
 							ng-click='selectLevel(level.value)'>{{level.name}}</div>
 					</div>
 				</div>
-				<div class="col-md-11 metdataVal" ng-if="node!='Difficulty'">
-					<input type="textbox" id="{{node}}" ng-model="metadataValues[node]"
-						ng-change="enableDisableSearch()" class='metdataInput'></input>
+				<div class="col-md-11 metdataVal" ng-if="node.key!='Difficulty'">
+					<input type="textbox" id="{{node}}" ng-model="metadataValues[node.key]"
+						ng-change="enableDisableSearch()" class='metdataInput' maxlength="100"></input>
 				</div>
 			</div>
 		</div>

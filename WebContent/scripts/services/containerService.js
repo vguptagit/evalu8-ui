@@ -15,7 +15,7 @@ angular
 			if(quizTypes==""){
 				url= evalu8config.apiUrl + "/books/" + bookId + "/nodes";
 			}else{
-				url= evalu8config.apiUrl + "/books/" + bookId + "/nodes?"+quizTypes;
+				url= evalu8config.apiUrl + "/books/" + bookId + "/nodes?quizTypes="+quizTypes;
 			}
 			
 			$http.get(url, HttpService.getConfig())
@@ -61,7 +61,7 @@ angular
 		
 		this.getQuestionTypeContainers = function(bookid,quizTypes, callback) {
 			var nodes=[];
-			var url = evalu8config.apiUrl + "/books/"+bookid+"/nodes?quizTypes="+quizTypes;
+			var url = evalu8config.apiUrl + "/books/"+bookid+"/nodes?"+quizTypes;
 			$http.get(url, HttpService.getConfig()).success(
 					function(response) {
 						callback(response);
