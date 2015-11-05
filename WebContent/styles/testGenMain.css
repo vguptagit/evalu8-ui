@@ -418,7 +418,12 @@ a.newFolder:hover {
 	margin-left: 5px;
 	cursor: pointer;
 }
-
+#MyTest-tree-root .captiondiv{
+    width: 80%;
+}
+#MyTest-tree-root #txtFolderNameEdit{
+    margin-top: -12px;
+}
 .captionTestNode {
 	font-weight: normal;
 }
@@ -943,7 +948,7 @@ ol {
 	height: 30px;
 	width: 40px;
 	right: 20px;
-	position: absolute;
+	/*position: absolute;*/
 	top: 1px;
 }
 
@@ -2936,7 +2941,7 @@ li[qstntemplate='true'] .qti-simpleChoice .radio, li[printmode='true'] .qti-simp
 	width: 96%;
 	float: right;
 	font-weight: normal;
-	outline: none;
+	/*outline: none;*/
 	background-color: #fff;
 	min-height: 21px;
 }

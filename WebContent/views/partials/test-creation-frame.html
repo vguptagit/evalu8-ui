@@ -341,6 +341,16 @@
 			<div ng-show="node.IsEditView" >
 				<div question-Metadata></div>
 			</div>
+                <div class="editViewLinks" data-ng-if="node.IsEditView">                     
+                    <a href="" id="switchLink" class="qstnLinks" data-ng-click="toggleEdit(node)">Save</a>
+                    <a href="" class="qstnLinks qstnDeleteLinks" data-ng-click="closeQuestions(tests[currentIndex],$index)">Delete</a>
+                </div>
+                <div class="printViewLinks" data-ng-if="!node.IsEditView" ng-show="showQstnEditIcon">
+                    <a href="" id="switchLink" class="qstnLinks" data-ng-click="toggleEdit(node)">Edit</a>
+                    <a href="" class="qstnLinks qstnDeleteLinks" data-ng-click="closeQuestions(tests[currentIndex],$index)">Delete</a>
+                </div>
+                 
+
 		</div>
         </script>
         
