@@ -1172,6 +1172,53 @@ angular.module('e8MyTests')
             }
         }
 
+        $scope.editFolder = function (userFolder) {
+            if (userFolder.title == null || userFolder.title.trim().length == 0) { return; }
+
+            if ($scope.defaultFolders
+            		&& $scope.defaultFolders[0]
+            		&& $scope.defaultFolders[0].nodeType == EnumService.NODE_TYPE.folder) {
+
+                var duplicateTitle = false;
+                $scope.defaultFolders.forEach(function (rootFolder) {
+                    if (rootFolder.title == userFolder.title && rootFolder.nodeType == EnumService.NODE_TYPE.folder) {
+                        duplicateTitle = true;
+
+                        $scope.isAddFolderClicked = true;
+                        $scope.IsConfirmation = false;
+                        $scope.message = "A folder already exists with this name. Please save with another name.";
+
+                        $modal.open(confirmObject).result.then(function (ok) {
+                            if (ok) {
+                                $("#txtFolderName").focus();
+                            }
+                        });
+                    }
+                });
+
+                if (duplicateTitle) return;
+
+            }
+
+            UserFolderService.saveUserFolder(userFolder, function (userFolder) {
+                if (userFolder == null) {
+                    CommonService.showErrorMessage(e8msg.error.cantSave);
+                    return;
+                }
+                // $scope.loadTree();
+
+                userFolder.nodeType = "folder";
+                //$scope.defaultFolders.unshift(userFolder);
+
+                if ($scope.defaultFolders.length == 1) {
+                    $scope.defaultFolders.push(CommonService.getArchiveRoot());
+                }
+
+                $scope.folderName = "";
+
+                $scope.showEditFolderPanel = false;
+            });
+        }
         $scope.addNewFolder = function (enterKey) {
         	
         	$scope.enterKey = enterKey;
