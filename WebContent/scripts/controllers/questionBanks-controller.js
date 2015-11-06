@@ -524,8 +524,7 @@ angular
 												+ discipline.node.item
 												+ "&userBooks=true";
 
-										$http
-												.get(ep, HttpService.getConfig())
+										HttpService.get(ep)
 												.success(
 														function(response) {
 															response.forEach(function(book) {
@@ -815,7 +814,7 @@ angular
 								    })
 								} else {
 								    //TODO : need to move this is services.	
-								    $http.get(evalu8config.apiUrl + "/books/" + currentNode.bookid + "/nodes/" + node + "/questions?flat=1", HttpService.getConfig())
+								    HttpService.get(evalu8config.apiUrl + "/books/" + currentNode.bookid + "/nodes/" + node + "/questions?flat=1")
                                     .success(function (response) {
                                         callBack(response, currentNode)
                                     })
@@ -927,13 +926,12 @@ angular
 										
 										})
 
-									$http.get(evalu8config.apiUrl
+									HttpService.get(evalu8config.apiUrl
 															+ "/books/"
 															+ $scope.bookID
 															+ "/nodes/"
 															+ currentNode.node.guid
-															+ "/questions",
-															HttpService.getConfig())
+															+ "/questions")
 											.success(
 													function (response) {
 													    currentNode.node.IsQuestionsReqCompleted = true;
@@ -1019,13 +1017,12 @@ angular
 									currentNode.expand();
 									currentNode.node.nodes = [];
 
-									$http.get(evalu8config.apiUrl
+									HttpService.get(evalu8config.apiUrl
 															+ "/books/"
 															+ $scope.bookID
 															+ "/nodes/"
 															+ currentNode.node.guid
-															+ "/questions",
-															HttpService.getConfig())
+															+ "/questions")
 										.success(function(response) {
 
 											var responseQuestions = response;
@@ -1069,7 +1066,7 @@ angular
 										.get(
 												evalu8config.apiUrl
 														+ "/questions/"
-														+ item.guid, HttpService.getConfig())
+														+ item.guid)
 										.success(
 												function(response) {
 													item.data = response;

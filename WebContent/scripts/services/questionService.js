@@ -19,7 +19,7 @@ angular
 										+ bookid + "/nodes/" + containerid
 										+ "/questions?flat=1";
 
-								$http.get(url, HttpService.getConfig()).success(
+								HttpService.get(url).success(
 										function(response) {
 											response.forEach(function(item) {
 												questions.push(item);

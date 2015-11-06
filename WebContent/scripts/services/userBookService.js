@@ -10,7 +10,7 @@ angular
 	
 			 var userBooks = [];
 	
-			 $http.get(evalu8config.apiUrl + "/my/importbooks", HttpService.getConfig())
+			 HttpService.get(evalu8config.apiUrl + "/my/importbooks")
 			 .success(function(response) {
 	
 				 userBooks = response;
@@ -23,7 +23,7 @@ angular
 		 
 		 this.importUserBooks = function(userBooks,callback) {				
 
-			 $http.post(evalu8config.apiUrl + "/my/importbooks", userBooks, HttpService.getConfig())
+			 HttpService.post(evalu8config.apiUrl + "/my/importbooks", userBooks)
 			 .success(function() {					
 				 callback(true);
 			 })

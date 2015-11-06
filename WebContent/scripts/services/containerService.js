@@ -18,7 +18,7 @@ angular
 				url= evalu8config.apiUrl + "/books/" + bookId + "/nodes?quizTypes="+quizTypes;
 			}
 			
-			$http.get(url, HttpService.getConfig())
+			HttpService.get(url)
 			.success(function(response) {
 				bookNodes = response;
 				callback(bookNodes);
@@ -47,7 +47,7 @@ angular
 				url=evalu8config.apiUrl+ "/books/"+ bookId+ "/nodes/"+ containerId+ "/nodes?"+queryStrings;
 			}
 
-			$http.get(url, HttpService.getConfig())
+			HttpService.get(url)
 				.success(function(response) {
 					if(response == null) {
 						response = []
@@ -62,7 +62,7 @@ angular
 		this.getQuestionTypeContainers = function(bookid,quizTypes, callback) {
 			var nodes=[];
 			var url = evalu8config.apiUrl + "/books/"+bookid+"/nodes?"+quizTypes;
-			$http.get(url, HttpService.getConfig()).success(
+			HttpService.get(url).success(
 					function(response) {
 						callback(response);
 					}).error(function() {
@@ -77,8 +77,8 @@ angular
 			var url = evalu8config.apiUrl
 					+ "/books/"+ bookid +"/nodes?flat=1";
 
-			$http
-					.get(url, HttpService.getConfig())
+			HttpService
+					.get(url)
 					.success(
 							function(response) {
 

@@ -9,8 +9,8 @@ angular.module('evalu8Demo')
 			this.defaultFolders = function(callback) {				
 
 				var defaultFolders = [];
-				$http.get(
-						evalu8config.apiUrl + "/my/folders", HttpService.getConfig())
+				HttpService.get(
+						evalu8config.apiUrl + "/my/folders")
 						.success(
 								function(response) {
 									
@@ -33,8 +33,8 @@ angular.module('evalu8Demo')
 			
 			this.testRootFolder = function(callback) {
 				var myTestRoot = null;
-				$http.get(
-						evalu8config.apiUrl + "/my/testroot", HttpService.getConfig())
+				HttpService.get(
+						evalu8config.apiUrl + "/my/testroot")
 						.success(
 								function(response) {									    							    							
 									myTestRoot = response
@@ -47,8 +47,8 @@ angular.module('evalu8Demo')
 			
 			this.userFoldersCount = function(folder, callback) {				
 
-				$http.get(
-						evalu8config.apiUrl + "/my/folders/"+ folder.guid + "/folders", HttpService.getConfig())
+				HttpService.get(
+						evalu8config.apiUrl + "/my/folders/"+ folder.guid + "/folders")
 						.success(
 								function(userFolders) {
 
@@ -64,8 +64,8 @@ angular.module('evalu8Demo')
 			
 			this.getFoldersMinSeq = function(folder, callback) {				
 
-				$http.get(
-						evalu8config.apiUrl + "/my/folders/"+ folder.guid + "/folders", HttpService.getConfig())
+				HttpService.get(
+						evalu8config.apiUrl + "/my/folders/"+ folder.guid + "/folders")
 						.success(
 								function(userFolders) {
 									if(userFolders.length)
@@ -85,7 +85,7 @@ angular.module('evalu8Demo')
 
 				var userFolders = [];
 
-				$http.get(evalu8config.apiUrl + "/my/folders/"+ parentFolderId + "/folders", HttpService.getConfig())
+				HttpService.get(evalu8config.apiUrl + "/my/folders/"+ parentFolderId + "/folders")
 				.success(function(response) {
 
 					response.forEach (function(item) {  
@@ -114,7 +114,7 @@ angular.module('evalu8Demo')
 				};
 				
 				
-				$http.post(evalu8config.apiUrl + '/my/folders', folder, HttpService.getConfig())
+				HttpService.post(evalu8config.apiUrl + '/my/folders', folder)
 				.success(function(response) {									
 				    if (callback) callback(response);
 				})

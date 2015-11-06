@@ -15,8 +15,8 @@ angular.module('evalu8Demo')
 				}
 
 				var userFolders = [];
-				$http.get(
-						evalu8config.apiUrl + url, HttpService.getConfig())
+				HttpService.get(
+						evalu8config.apiUrl + url)
 						.success(
 								function(response) {
 
@@ -37,7 +37,7 @@ angular.module('evalu8Demo')
 			
 			this.archiveFolder = function(folderId, callback) {								
 				var archiveItem = {"id": folderId};
-				$http.post(evalu8config.apiUrl + '/my/archive/folders', archiveItem, HttpService.getConfig())
+				HttpService.post(evalu8config.apiUrl + '/my/archive/folders', archiveItem)
 				.success(function(archivedFolder) {									
 					if(callback) callback(archivedFolder);
 				})
@@ -48,7 +48,7 @@ angular.module('evalu8Demo')
 			
 			this.archiveTest = function(testId,folderId, callback) {								
 				var archiveItem = {"id": testId, "folderId": folderId};
-				$http.post(evalu8config.apiUrl + '/my/archive/tests', archiveItem, HttpService.getConfig())
+				HttpService.post(evalu8config.apiUrl + '/my/archive/tests', archiveItem)
 				.success(function(archivedFolder) {									
 					callback(archivedFolder);
 				})
@@ -59,7 +59,7 @@ angular.module('evalu8Demo')
 			
 			this.restoreFolder = function(folderId, callback) {								
 				var archiveItem = {"id": folderId};
-				$http.post(evalu8config.apiUrl + '/my/restore/folders', archiveItem, HttpService.getConfig())
+				HttpService.post(evalu8config.apiUrl + '/my/restore/folders', archiveItem)
 				.success(function(restoredFolder) {									
 					callback(restoredFolder);
 				})
@@ -74,7 +74,7 @@ angular.module('evalu8Demo')
 			
 			this.restoreTest = function(testId,folderId, callback) {								
 				var archiveItem = {"id": testId, "folderId": folderId};
-				$http.post(evalu8config.apiUrl + '/my/restore/tests', archiveItem, HttpService.getConfig())
+				HttpService.post(evalu8config.apiUrl + '/my/restore/tests', archiveItem)
 				.success(function(restoredFolder) {									
 					callback(restoredFolder);
 				})
@@ -89,7 +89,7 @@ angular.module('evalu8Demo')
 			
 			this.deleteFolder = function(folderId, callback) {								
 
-				$http.delete(evalu8config.apiUrl + '/my/delete/folders/' + folderId, HttpService.getConfig())
+				HttpService.delete(evalu8config.apiUrl + '/my/delete/folders/' + folderId)
 				.success(function(response) {									
 					if(callback) callback(1);
 				})
@@ -107,7 +107,7 @@ angular.module('evalu8Demo')
                     url = '/my/delete/tests/' + testId;
                 }
                 
-                $http.delete(evalu8config.apiUrl + url, HttpService.getConfig())
+                HttpService.delete(evalu8config.apiUrl + url)
                 .success(function(response,status) {                                    
                     if(callback) callback(response,status);
                 })

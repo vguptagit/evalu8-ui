@@ -22,7 +22,7 @@ angular
 				 }
 			 }
 			 
-			 $http.get(evalu8config.apiUrl + '/settings/printsettings', HttpService.getConfig())
+			 HttpService.get(evalu8config.apiUrl + '/settings/printsettings')
 			 .success(function(response) {
 				 $scope.userpref = response;
 
@@ -161,7 +161,7 @@ angular
 						 "includeWorkSpace" : $scope.userpref.includeWorkSpace
 				 }; 
 
-				 $http.post(evalu8config.apiUrl + '/settings/printsettings', preference, HttpService.getConfig())
+				 HttpService.post(evalu8config.apiUrl + '/settings/printsettings', preference)
 				 .success(function(response) {
 					 document.getElementById("divSaveMessage").innerHTML = "<span style='color:green'>Settings saved successfully</span>";
 				 })

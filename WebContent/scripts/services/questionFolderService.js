@@ -9,8 +9,8 @@ angular.module('evalu8Demo')
 			this.defaultFolders = function(callback) {				
 
 				var defaultFolders = [];
-				$http.get(
-						evalu8config.apiUrl + "/my/questionfolders", HttpService.getConfig())
+				HttpService.get(
+						evalu8config.apiUrl + "/my/questionfolders")
 						.success(
 								function(response) {
 									
@@ -32,8 +32,8 @@ angular.module('evalu8Demo')
 			
 			this.questionRootFolder = function(callback) {
 				var myTestRoot = null;
-				$http.get(
-						evalu8config.apiUrl + "/my/questionfoldersroot", HttpService.getConfig())
+				HttpService.get(
+						evalu8config.apiUrl + "/my/questionfoldersroot")
 						.success(
 								function(response) {									    							    							
 									myTestRoot = response
@@ -46,8 +46,8 @@ angular.module('evalu8Demo')
 			
 			this.userFoldersCount = function(folder, callback) {				
 
-				$http.get(
-						evalu8config.apiUrl + "/my/folders/"+ folder.guid + "/folders", HttpService.getConfig())
+				HttpService.get(
+						evalu8config.apiUrl + "/my/folders/"+ folder.guid + "/folders")
 						.success(
 								function(userFolders) {
 
@@ -63,8 +63,8 @@ angular.module('evalu8Demo')
 			
 			this.getFoldersMinSeq = function(folder, callback) {				
 
-				$http.get(
-						evalu8config.apiUrl + "/my/folders/"+ folder.guid + "/folders", HttpService.getConfig())
+				HttpService.get(
+						evalu8config.apiUrl + "/my/folders/"+ folder.guid + "/folders")
 						.success(
 								function(userFolders) {
 									if(userFolders.length)
@@ -84,7 +84,7 @@ angular.module('evalu8Demo')
 
 				var userFolders = [];
 
-				$http.get(evalu8config.apiUrl + "/my/questionfolders/"+ parentFolderId + "/folders", HttpService.getConfig())
+				HttpService.get(evalu8config.apiUrl + "/my/questionfolders/"+ parentFolderId + "/folders")
 				.success(function(response) {
 
 					response.forEach (function(item) {  
@@ -110,7 +110,7 @@ angular.module('evalu8Demo')
                     title: userQuestionsFolder.title    
 	            };            
             
-	            $http.post(evalu8config.apiUrl + '/my/questionfolders', folder, HttpService.getConfig())
+	            HttpService.post(evalu8config.apiUrl + '/my/questionfolders', folder)
 	            .success(function(response) {                                    
 	            	if (callback) callback(response);
 	            })
