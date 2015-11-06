@@ -2,7 +2,7 @@
 
 angular.module('evalu8Demo')
 
-.service('HttpService',['UuidService', function (UuidService) {
+.service('HttpService',['$http', 'UuidService', function ($http, UuidService) {
 	
 	this.getConfig = function(){
 
@@ -18,4 +18,29 @@ angular.module('evalu8Demo')
 		
 		return config;
 	};
+	
+	this.get = function(url, methodConfig){
+		var config = $.extend({}, this.getConfig(), methodConfig);
+		return $http.get(url, config);
+	}
+	
+	this.head = function(url, methodConfig){
+		var config = $.extend({}, this.getConfig(), methodConfig);
+		return $http.head(url, config);
+	}
+	
+	this.post = function(url, data, methodConfig){
+		var config = $.extend({}, this.getConfig(), methodConfig);
+		return $http.post(url, data, config);
+	}
+	
+	this.put = function(url, data, methodConfig){
+		var config = $.extend({}, this.getConfig(), methodConfig);
+		return $http.put(url, data, config);
+	}
+	
+	this.delete = function(url, methodConfig){
+		var config = $.extend({}, this.getConfig(), methodConfig);
+		return $http.delete(url, config);
+	}
 }]);

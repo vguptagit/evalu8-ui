@@ -11,7 +11,7 @@ angular
 			function($http, $rootScope, $location, $cookieStore, HttpService) {
 
 				this.userPrintSettings = function(callback) {
-					$http.get(evalu8config.apiUrl+ '/settings/printsettings', HttpService.getConfig())
+					HttpService.get(evalu8config.apiUrl+ '/settings/printsettings')
 					.success(function(response) {
 						callback(response)
 					})
@@ -22,7 +22,7 @@ angular
 
 				this.userDisciplines = function(callback) {
 
-					$http.get(evalu8config.apiUrl + "/settings/disciplines/", HttpService.getConfig())
+					HttpService.get(evalu8config.apiUrl + "/settings/disciplines/")
 					.success(function(response) {
 
 						callback(response);
@@ -36,7 +36,7 @@ angular
 
 					var userBookIDs = [];
 
-					$http.get(evalu8config.apiUrl + '/settings/books', HttpService.getConfig())
+					HttpService.get(evalu8config.apiUrl + '/settings/books')
 					.success(function(response) {
 
 						if (response != "") {
@@ -55,7 +55,7 @@ angular
 				this.userQuestionMetadata = function(callback) {
 
 					var userQuestionMetadata = [];
-					$http.get(evalu8config.apiUrl+ "/settings/questionmetadata/", HttpService.getConfig())
+					HttpService.get(evalu8config.apiUrl+ "/settings/questionmetadata/")
 					.success(
 							function(response) {
 
@@ -78,9 +78,9 @@ angular
 
 				this.saveUserBooks = function(userBookIDs, callback) {
 
-					$http.post(
+					HttpService.post(
 							evalu8config.apiUrl + '/settings/books',
-							userBookIDs, HttpService.getConfig()).success(
+							userBookIDs).success(
 							function(response) {
 								if (callback)
 									callback();
@@ -92,10 +92,10 @@ angular
 				this.saveUserDisciplines = function(
 						userDisciplines, callback) {
 
-					$http.post(
+					HttpService.post(
 							evalu8config.apiUrl
 									+ '/settings/disciplines',
-							userDisciplines, HttpService.getConfig()).success(
+							userDisciplines).success(
 							function(response) {
 								if (callback)
 									callback();
@@ -106,11 +106,11 @@ angular
 
 				this.saveUserQuestionMetadata = function(userQuestionMetadata, callback) {
 
-					$http
+					HttpService
 							.post(
 									evalu8config.apiUrl
 											+ '/settings/questionmetadata',
-									userQuestionMetadata, HttpService.getConfig())
+									userQuestionMetadata)
 							.success(
 									function(response) {
 										callback(true);

@@ -9,7 +9,7 @@ angular.module('evalu8Demo')
 		
 		this.allDisciplines = function(callback) {
 			
-			$http.get(evalu8config.apiUrl + "/disciplines/", HttpService.getConfig())
+			HttpService.get(evalu8config.apiUrl + "/disciplines/")
 			.success(function(response) {				
 						
 				if(response == null) {
@@ -24,7 +24,7 @@ angular.module('evalu8Demo')
 		
 		this.userDisciplines = function(callback) {				
 			var userDisciplines = [];
-			$http.get(evalu8config.apiUrl + "/settings/disciplines/", HttpService.getConfig())
+			HttpService.get(evalu8config.apiUrl + "/settings/disciplines/")
 			.success(function(response) {
 						
 				response.forEach (function(item) {    							

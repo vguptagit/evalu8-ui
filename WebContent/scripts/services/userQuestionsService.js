@@ -9,7 +9,7 @@ angular.module('evalu8Demo')
 		this.userQuestions = function(callback) {	
 
 			var userQuestions = [];
-			$http.get(evalu8config.apiUrl + "/my/questions", HttpService.getConfig())
+			HttpService.get(evalu8config.apiUrl + "/my/questions")
 				.success(function(response) {
 					userQuestions= response;
 					callback(userQuestions);
@@ -22,7 +22,7 @@ angular.module('evalu8Demo')
 		this.userBookQuestions = function(questionFolderId, callback) {	
 
 			var userQuestions = [];
-			$http.get(evalu8config.apiUrl + "/my/questions?folderId=" + questionFolderId, HttpService.getConfig())
+			HttpService.get(evalu8config.apiUrl + "/my/questions?folderId=" + questionFolderId)
 				.success(function(response) {
 					userQuestions= response;
 					callback(userQuestions)
@@ -35,7 +35,7 @@ angular.module('evalu8Demo')
 		this.userQuestionsFolders = function(callback) {	
 
 			var userQuestionsFolders = [];
-			$http.get(evalu8config.apiUrl + "/my/questionfolders", HttpService.getConfig())
+			HttpService.get(evalu8config.apiUrl + "/my/questionfolders")
 				.success(function(response) {
 					userQuestionsFolders= response;
 					callback(userQuestionsFolders)
@@ -48,7 +48,7 @@ angular.module('evalu8Demo')
 		this.userQuestionsCount = function(callback) {	
 
 			var userQuestionsCount = 0;
-			$http.head(evalu8config.apiUrl + "/my/questions", HttpService.getConfig())
+			HttpService.head(evalu8config.apiUrl + "/my/questions")
 				.success(function(data, status, headers) {
 					userQuestionsCount = parseInt(headers("x-return-count"));
 					callback(userQuestionsCount)
@@ -66,7 +66,7 @@ angular.module('evalu8Demo')
                     title: userQuestionsFolders.title    
             };            
             
-            $http.post(evalu8config.apiUrl + '/my/questionfolders', folder, HttpService.getConfig())
+            HttpService.post(evalu8config.apiUrl + '/my/questionfolders', folder)
             .success(function(response) {                                    
                 if (callback) callback(response);
             })
@@ -76,7 +76,7 @@ angular.module('evalu8Demo')
         };
         
         this.moveQuestion = function(questionFolder, callback) {
-            $http.post(evalu8config.apiUrl + '/my/movequestion', questionFolder, HttpService.getConfig())
+            HttpService.post(evalu8config.apiUrl + '/my/movequestion', questionFolder)
             .success(function(response) {                                    
                 if (callback) callback(true);
             })
@@ -87,7 +87,7 @@ angular.module('evalu8Demo')
         
         this.userQuestionsFolderRoot = function(callback) {    
 
-            $http.get(evalu8config.apiUrl + "/my/questionfoldersroot", HttpService.getConfig())
+            HttpService.get(evalu8config.apiUrl + "/my/questionfoldersroot")
                 .success(function(response) {
                     callback(response)
                 })

@@ -16,10 +16,10 @@ angular
 
 								var disciplineBooks = [];
 
-								$http.get(
+								HttpService.get(
 										evalu8config.apiUrl
 												+ "/books?discipline="
-												+ discipline, HttpService.getConfig()).success(
+												+ discipline).success(
 										function(response) {
 
 											response.forEach(function(item) {
@@ -43,10 +43,10 @@ angular
 									callback) {
 								var disciplineBooks = [];
 
-								$http.get(evalu8config.apiUrl
+								HttpService.get(evalu8config.apiUrl
 										+ "/books?discipline="
 										+ discipline.item
-										+ "&userBooks=true", HttpService.getConfig()).success(
+										+ "&userBooks=true").success(
 										function(response) {
 
 											response.forEach(function(item) {
@@ -76,7 +76,7 @@ angular
 								var url = evalu8config.apiUrl
 										+ "/books?userBooks=true";
 
-								$http.get(url, HttpService.getConfig()).success(
+								HttpService.get(url).success(
 										function(response) {
 
 											callback(response);
