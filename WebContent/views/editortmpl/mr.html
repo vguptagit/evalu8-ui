@@ -1,10 +1,6 @@
 <div ng-show="answerAreaOnLeftSide" class="floatLeftImp margin-top-10 width12">__________</div>
 <div class="floatLeftImp" ng-class="answerAreaOnLeftSide?'questionContainerWithAnswerArea':'questionContainer'">
 	<div data-ng-if="!node.IsEditView" class="qtiPrintView" ng-mousedown="selectQuestion(node);">
-		<!--<div class="printViewLinks" ng-show="showQstnEditIcon" >		
-				<a id="switchLink" class="qstnLinks"  data-ng-click="toggleEdit(node)">Edit</a>
-				<a class="qstnLinks qstnDeleteLinks" data-ng-click="closeQuestions(tests[currentIndex],$index)">Delete</a>
-		</div>-->
 		 <div class="questionPrintContainer">{{$index + 1}})
 			<div class="printQuestionCaption"
 				data-ng-bind-html="getTrustedHTML(node.qtiModel.Caption==''?node.qtiModel.PrintCaption:node.qtiModel.Caption)"></div>
@@ -30,10 +26,6 @@
 	</div>
 
 	<div data-ng-if="node.IsEditView">
-		<!--<div class="editViewLinks" >	
-			<a id="switchLink" class="qstnLinks" data-ng-click="toggleEdit(node)">Save</a>
-			<a class="qstnLinks qstnDeleteLinks" data-ng-click="closeQuestions(tests[currentIndex],$index)">Delete</a>			
-		</div>-->
 		<div class='questionSectionTitle'>{{node.qtiModel.QstnSectionTitle}}</div>
         <div>{{$index + 1}})</div>
 		<div class="questionEditContainer">
