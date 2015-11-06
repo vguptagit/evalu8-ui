@@ -1665,24 +1665,12 @@ angular
 							    SharedTabService.addTestWizard($scope);
 							});
 							$scope.$on('handleBroadcast_createTestWizardCriteria',
-											function (event, response,quizTypes,
-													currentNode) {
+											function (event, response,currentNode) {
 								
-												var filteredQuestions=[];
-											    if(quizTypes!=""){
-											    	response.forEach(function(question){
-												    	if(quizTypes.indexOf(question.quizType)>-1){
-												    		filteredQuestions.push(question);
-												    	}
-												    });	
-											    }else{
-											    	filteredQuestions=response;
-											    }
-							    
 											    $scope.addTestWizardCriteria(
-											    		filteredQuestions, currentNode);
+											    		response, currentNode);
 											});
-							$scope.$on('handleBroadcast_AddQuestionsToTest', function (event, response, quizTypes, currentNode, isAnyNodeAlreadyAdded) {
+							$scope.$on('handleBroadcast_AddQuestionsToTest', function (event, response, currentNode, isAnyNodeAlreadyAdded) {
 							    QTI.initialize();
 							    renderCounter++;
 							    response = $.grep(response,function(obj, index){
@@ -1694,18 +1682,7 @@ angular
 							    	return !find;
 							    })
 							    
-							    var filteredQuestions=[];
-							    if(quizTypes!=""){
-							    	response.forEach(function(question){
-								    	if(quizTypes.indexOf(question.quizType)>-1){
-								    		filteredQuestions.push(question);
-								    	}
-								    });	
-							    }else{
-							    	filteredQuestions=response;
-							    }
-							    
-							    $scope.renderQuestions(filteredQuestions,
+							    $scope.renderQuestions(response,
                                         $scope.currentIndex,
                                         isAnyNodeAlreadyAdded);
 							})

@@ -8,14 +8,14 @@ angular
 	'$cookieStore','HttpService',
 	function($http, $rootScope, $cookieStore, HttpService) {
 
-		this.bookNodes = function(bookId, quizTypes,  callback) {
+		this.bookNodes = function(bookId, searchCriteria,  callback) {
 
 			var bookNodes = [];				
 			var url="";
-			if(quizTypes==""){
+			if(searchCriteria==""){
 				url= evalu8config.apiUrl + "/books/" + bookId + "/nodes";
 			}else{
-				url= evalu8config.apiUrl + "/books/" + bookId + "/nodes?quizTypes="+quizTypes;
+				url= evalu8config.apiUrl + "/books/" + bookId + "/nodes?"+searchCriteria;
 			}
 			
 			HttpService.get(url)
@@ -28,11 +28,11 @@ angular
 			});
 		};
 		
-		this.containerNodes = function(bookId,containerId, quizTypes , includeSelf ,callback) {
+		this.containerNodes = function(bookId,containerId, searchCriteria , includeSelf ,callback) {
 			var url="";
 			var queryStrings = "";
-			if(quizTypes!=""){
-				queryStrings=queryStrings+"quizTypes="+quizTypes;
+			if(searchCriteria!=""){
+				queryStrings=queryStrings+searchCriteria;
 			}
 			if(includeSelf!=""){
 				if(queryStrings!=""){
@@ -44,7 +44,7 @@ angular
 			if(queryStrings==""){
 				url=evalu8config.apiUrl+ "/books/"+ bookId+ "/nodes/"+ containerId+ "/nodes"
 			}else{
-				url=evalu8config.apiUrl+ "/books/"+ bookId+ "/nodes/"+ containerId+ "/nodes?"+queryStrings;
+				url=evalu8config.apiUrl+ "/books/"+ bookId+ "/nodes/"+ containerId+ "/nodes?"+searchCriteria;
 			}
 
 			HttpService.get(url)
@@ -59,9 +59,9 @@ angular
 				});
 		};
 		
-		this.getQuestionTypeContainers = function(bookid,quizTypes, callback) {
+		this.getQuestionTypeContainers = function(bookid,searchCriteria, callback) {
 			var nodes=[];
-			var url = evalu8config.apiUrl + "/books/"+bookid+"/nodes?"+quizTypes;
+			var url = evalu8config.apiUrl + "/books/"+bookid+"/nodes?"+searchCriteria;
 			HttpService.get(url).success(
 					function(response) {
 						callback(response);

@@ -33,11 +33,11 @@ angular
 						'blockUI',
 						'ContainerService',
                         'CommonService',
-                        'BookService','HttpService','UserService',
+                        'BookService','HttpService','UserService','questionService',
 						function($scope, $rootScope, $location, $cookieStore, $timeout,
 								$http, $sce, DisciplineService, TestService,
 								SharedTabService, UserQuestionsService,
-								EnumService, $modal, blockUI, ContainerService, CommonService,BookService,HttpService,UserService) {
+								EnumService, $modal, blockUI, ContainerService, CommonService,BookService,HttpService,UserService,questionService) {
 						    SharedTabService.selectedMenu = SharedTabService.menu.questionBanks;
 						    $rootScope.blockPage = blockUI.instances.get('BlockPage');
 						    
@@ -633,7 +633,7 @@ angular
 											return;
 										}
 										
-	                                    ContainerService.bookNodes(book.node.guid, $scope.selectedQuestionTypes.toString(),
+										 ContainerService.bookNodes(book.node.guid, getSearchCriteria(false),
 	                                    		function(bookNodes) {
 	                                    	if(bookNodes==null){
 	                                    		CommonService.showErrorMessage(e8msg.error.cantFetchNodes)
@@ -813,20 +813,18 @@ angular
 								        callBack(responceMetadatas, currentNode)
 								    })
 								} else {
-								    //TODO : need to move this is services.	
-								    HttpService.get(evalu8config.apiUrl + "/books/" + currentNode.bookid + "/nodes/" + node + "/questions?flat=1")
-                                    .success(function (response) {
-                                        callBack(response, currentNode)
-                                    })
-                                    .error(
-                                            function () {
-                                                SharedTabService.addErrorMessage(currentNode.title, SharedTabService.errorMessageEnum.NoQuestionsAvailable);
-                                                //callBack()
-                                                currentNode.showTestWizardIcon = true;
-                                                currentNode.showEditQuestionIcon = true;
-                                                $scope.selectNode(currentNode);
-                                                $rootScope.blockPage.stop();
-                                            });
+									questionService.getAllQuestionsOfContainer(currentNode.bookid,node,getSearchCriteria(false), function(response){
+										if(response==null){
+											SharedTabService.addErrorMessage(currentNode.title, SharedTabService.errorMessageEnum.NoQuestionsAvailable);
+                                            currentNode.showTestWizardIcon = true;
+                                            currentNode.showEditQuestionIcon = true;
+                                            $scope.selectNode(currentNode);
+                                            $rootScope.blockPage.stop();
+                                            return;
+										}
+										
+										callBack(response, currentNode)
+									});
 								}
 							}
 
@@ -883,7 +881,7 @@ angular
 									currentNode.node.IsQuestionsReqCompleted = false;
 									ContainerService.containerNodes($scope.bookID, 
 										currentNode.node.guid,
-										$scope.selectedQuestionTypes.toString(),
+										getSearchCriteria(false),
 										false,
 										function(response) {
 										if(response == null){
@@ -926,62 +924,50 @@ angular
 										
 										})
 
-									HttpService.get(evalu8config.apiUrl
-															+ "/books/"
-															+ $scope.bookID
-															+ "/nodes/"
-															+ currentNode.node.guid
-															+ "/questions")
-											.success(
-													function (response) {
-													    currentNode.node.IsQuestionsReqCompleted = true;
-													    //currentNode.node.isHttpReqCompleted = true;
-													    var responseQuestions = response;
-													    if(responseQuestions.length==0){
-													    	$scope.isQuestionsLoaded=true;
-															stopIndicator(currentNode);
-													    }
-													    
-													    if (responseQuestions.length && currentNode.node.nodes.length && currentNode.node.nodes[0].nodeType === EnumService.NODE_TYPE.emptyFolder) {
-													        currentNode.node.nodes = [];
-													    } else if (!responseQuestions.length && currentNode.node.nodes.length && currentNode.node.nodes[0].nodeType === EnumService.NODE_TYPE.emptyFolder
-                                                            && currentNode.node.IsContainerReqCompleted && currentNode.node.IsQuestionsReqCompleted) {
-													        currentNode.node.nodes[0].isHttpReqCompleted = true;
-													    }
-														$(currentNode.$element).find(".captiondiv").addClass('iconsChapterVisible');
-														
-														// Dont delete the below commented line, will delete after few days.
-														/*currentNode.$element.children(0).addClass('expandChapter');*/
-
-														var sortedNodes = sortNodes(response, currentNode,"questionBindings");
-
-														currentNode.node.nodes = currentNode.node.nodes.concat(sortedNodes);
-														var questionCount=0;
-														angular.forEach(responseQuestions, function(item) {
-															if($scope.isAdvancedSearchMode == false  || ($scope.isAdvancedSearchMode == true && $scope.selectedQuestionTypes.toString().indexOf(item.quizType)>-1))
-															{
-																item.nodeType = "question";
-																item.showEditQuestionIcon = false;
-																item.isNodeSelected = false;
-																updateTreeNode(item);
-																addToQuestionsArray(item);
-																$scope.renderQuestion(item);
-															}
-															questionCount=questionCount+1;
-															if(questionCount == responseQuestions.length){
-																$scope.isQuestionsLoaded=true;
-																stopIndicator(currentNode);
-															}
-														})
-														
-
-													}).error(function () {
-													    //currentNode.node.isHttpReqCompleted = true;
-														$scope.isQuestionsLoaded=true;
-														stopIndicator(currentNode);
-													    CommonService.showErrorMessage(e8msg.error.cantFetchQuestions)
-									        			return;
+										questionService.getQuestionsOfContainer($scope.bookID,currentNode.node.guid, getSearchCriteria(false), function(response){
+											if(response==null){
+												$scope.isQuestionsLoaded=true;
+												stopIndicator(currentNode);
+												CommonService.showErrorMessage(e8msg.error.cantFetchQuestions)
+												return;
+											}
+											
+										   currentNode.node.IsQuestionsReqCompleted = true;
+											var responseQuestions = response;
+											if(responseQuestions.length==0){
+												$scope.isQuestionsLoaded=true;
+												stopIndicator(currentNode);
+											}
+											
+											if (responseQuestions.length && currentNode.node.nodes.length && currentNode.node.nodes[0].nodeType === EnumService.NODE_TYPE.emptyFolder) {
+												currentNode.node.nodes = [];
+											} else if (!responseQuestions.length && currentNode.node.nodes.length && currentNode.node.nodes[0].nodeType === EnumService.NODE_TYPE.emptyFolder
+											   && currentNode.node.IsContainerReqCompleted && currentNode.node.IsQuestionsReqCompleted) {
+												currentNode.node.nodes[0].isHttpReqCompleted = true;
+											}
+											$(currentNode.$element).find(".captiondiv").addClass('iconsChapterVisible');
+											
+											// Dont delete the below commented line, will delete after few days.
+											//currentNode.$element.children(0).addClass('expandChapter');
+	
+											var sortedNodes = sortNodes(response, currentNode,"questionBindings");
+	
+											currentNode.node.nodes = currentNode.node.nodes.concat(sortedNodes);
+											var questionCount=0;
+											angular.forEach(responseQuestions, function(item) {
+												item.nodeType = "question";
+												item.showEditQuestionIcon = false;
+												item.isNodeSelected = false;
+												updateTreeNode(item);
+												addToQuestionsArray(item);
+												$scope.renderQuestion(item);
+												questionCount=questionCount+1;
+												if(questionCount == responseQuestions.length){
+													$scope.isQuestionsLoaded=true;
+													stopIndicator(currentNode);
+												}
 											});
+										});
 									
 									}
 								
@@ -1062,9 +1048,7 @@ angular
 								// qti player initialisation
 								QTI.initialize();
 
-								$http
-										.get(
-												evalu8config.apiUrl
+								HttpService.get(evalu8config.apiUrl
 														+ "/questions/"
 														+ item.guid)
 										.success(
@@ -1108,13 +1092,14 @@ angular
 							// property of the container
 							var sortNodes = function (response, currentNode, binding) {
 								var sequenceBindings = currentNode.node[binding];
-								var sortedNodes = new Array(
-										sequenceBindings.length);
+								var sortedNodes = [];
 								for (var i = 0; i < sequenceBindings.length; i++) {
-									sortedNodes[i] = $.grep(response, function(
-											item) {
+									 var node= $.grep(response, function(item) {
 										return item.guid == sequenceBindings[i]
 									})[0]
+									if(node!=undefined){
+										 sortedNodes.push(node);	 
+									}
 								}
 								return sortedNodes;
 							}
@@ -1415,7 +1400,6 @@ angular
 																.$broadcast(
 																		"handleBroadcast_AddQuestionsToTest",
 																		response,
-																		$scope.selectedQuestionTypes.toString(),
 																		questionFolder,
 																		isAnyNodeAlreadyAdded);
 														$scope.editQuestionMode = false;
@@ -1810,7 +1794,7 @@ angular
 							$scope.addSearchedContainer = function(searchedContainer) {
 								if($scope.isAdvancedSearchMode){
 									$rootScope.blockPage.start();
-									ContainerService.containerNodes($scope.bookID,searchedContainer.guid,$scope.selectedQuestionTypes.toString(), true, function(response){
+									ContainerService.containerNodes($scope.bookID,searchedContainer.guid,getSearchCriteria(false), true, function(response){
 										if(response == null){
 											CommonService.showErrorMessage(e8msg.error.cantFetchNodes)
 					            			return;
@@ -1983,21 +1967,9 @@ angular
 									var count = 0;
 									var emptyBooks=0;
 									var isErrorExists=false;
-									var searchCriteria="";
-									if($scope.selectedQuestionTypes.toString()!=""){
-										if($scope.getMetadataSearchCriteria().length>0){
-											searchCriteria="quizTypes="+$scope.selectedQuestionTypes.toString()+"&";	
-										}else{
-											searchCriteria="quizTypes="+$scope.selectedQuestionTypes.toString();
-										}
-									}
-									$scope.getMetadataSearchCriteria().forEach(function(metadata){
-											searchCriteria=searchCriteria+metadata;
-											$scope.addMetadataTypesToShow(metadata)
-									});
 									
 									$scope.selectedBooks.forEach(function(book){
-										ContainerService.getQuestionTypeContainers(book.guid,searchCriteria,function(containers){
+										ContainerService.getQuestionTypeContainers(book.guid,getSearchCriteria(true),function(containers){
 											if(containers==null){
 												isErrorExists=true;
 											}
@@ -2037,36 +2009,55 @@ angular
 								}
 							}
 							
+							var getSearchCriteria=function(isFromAdvancedSearch){
+								
+								var searchCriteria="";
+								if($scope.selectedQuestionTypes.toString()!=""){
+									if($scope.getMetadataSearchCriteria().length>0){
+										searchCriteria="QTyp="+$scope.selectedQuestionTypes.toString()+"&";	
+									}else{
+										searchCriteria="QTyp="+$scope.selectedQuestionTypes.toString();
+									}
+								}
+								$scope.getMetadataSearchCriteria().forEach(function(metadata){
+										searchCriteria=searchCriteria+metadata;
+										if(isFromAdvancedSearch){
+											$scope.addMetadataTypesToShow(metadata)	
+										}
+								});
+								return searchCriteria;
+							}
+
 							$scope.addQuestionTypesToShow = function(quizTypes)
 							{
-								if(quizTypes=='Essay'){
+								if(quizTypes=='ES'){
 									selectedQuestionTypesToShow.push(" Essay") 
-								}else if(quizTypes=='MultipleResponse'){
+								}else if(quizTypes=='MR'){
 									selectedQuestionTypesToShow.push(" Multiple Response")
-								}else if(quizTypes=='Matching'){
+								}else if(quizTypes=='MT'){
 									selectedQuestionTypesToShow.push(" Matching")
-								}else if(quizTypes=='MultipleChoice'){
+								}else if(quizTypes=='MC'){
 									selectedQuestionTypesToShow.push(" Multiple Choice")
-								}else if(quizTypes=='TrueFalse'){
+								}else if(quizTypes=='TF'){
 									selectedQuestionTypesToShow.push(" True False")
-								}else if(quizTypes=='FillInBlanks'){
+								}else if(quizTypes=='FIB'){
 									selectedQuestionTypesToShow.push(" Fill in the Blanks")
 								}
 							}
 							
 							$scope.addMetadataTypesToShow = function(metadata)
 							{
-								if(metadata.indexOf(MetadataEnum.DIFFICULTY)>-1){
+								if(metadata.indexOf(ShortMetadataEnum.DIFFICULTY)>-1){
 									selectedMetadataTypesToShow.push(' Difficulty');
-								}else if(metadata.indexOf(MetadataEnum.TOPIC)>-1){
+								}else if(metadata.indexOf(ShortMetadataEnum.TOPIC)>-1){
 									selectedMetadataTypesToShow.push(' Topic');
-								}else if(metadata.indexOf(MetadataEnum.OBJECTIVE)>-1){
+								}else if(metadata.indexOf(ShortMetadataEnum.OBJECTIVE)>-1){
 									selectedMetadataTypesToShow.push(' Objective');
-								}else if(metadata.indexOf(MetadataEnum.PAGEREFERENCE)>-1){
+								}else if(metadata.indexOf(ShortMetadataEnum.PAGEREFERENCE)>-1){
 									selectedMetadataTypesToShow.push(' Page Reference');
-								}else if(metadata.indexOf(MetadataEnum.SKILL)>-1){
+								}else if(metadata.indexOf(ShortMetadataEnum.SKILL)>-1){
 									selectedMetadataTypesToShow.push(' Skill');
-								}else if(metadata.indexOf(MetadataEnum.QUESTIONID)>-1){
+								}else if(metadata.indexOf(ShortMetadataEnum.QUESTIONID)>-1){
 									selectedMetadataTypesToShow.push(' Question ID');
 								}
 							}
@@ -2226,27 +2217,27 @@ angular
 								userQuestionMetadata.forEach(function(metadata){
 									var userMetadataKeyValue={};
 									if(metadata==MetadataEnum.DIFFICULTY){
-										userMetadataKeyValue.key=metadata;
+										userMetadataKeyValue.key=ShortMetadataEnum.DIFFICULTY;
 										userMetadataKeyValue.name='Difficulty';
 										$scope.userMetadata.splice(0, 0, userMetadataKeyValue);
 									}else if(metadata==MetadataEnum.TOPIC){
-										userMetadataKeyValue.key=metadata;
+										userMetadataKeyValue.key=ShortMetadataEnum.TOPIC;
 										userMetadataKeyValue.name='Topic';
 										$scope.userMetadata.splice(1, 0, userMetadataKeyValue);
 									}else if(metadata==MetadataEnum.OBJECTIVE){
-										userMetadataKeyValue.key=metadata;
+										userMetadataKeyValue.key=ShortMetadataEnum.OBJECTIVE;
 										userMetadataKeyValue.name='Objective';
 										$scope.userMetadata.splice(2, 0, userMetadataKeyValue);
 									}else if(metadata==MetadataEnum.PAGEREFERENCE){
-										userMetadataKeyValue.key=metadata;
+										userMetadataKeyValue.key=ShortMetadataEnum.PAGEREFERENCE;
 										userMetadataKeyValue.name='Page Reference';
 										$scope.userMetadata.splice(3, 0, userMetadataKeyValue);
 									}else if(metadata==MetadataEnum.SKILL){
-										userMetadataKeyValue.key=metadata;
+										userMetadataKeyValue.key=ShortMetadataEnum.SKILL;
 										userMetadataKeyValue.name='Skill';
 										$scope.userMetadata.splice(4, 0, userMetadataKeyValue);
 									}else if(metadata==MetadataEnum.QUESTIONID){
-										userMetadataKeyValue.key=metadata;
+										userMetadataKeyValue.key=ShortMetadataEnum.QUESTIONID;
 										userMetadataKeyValue.name='Question ID';
 										$scope.userMetadata.splice(5, 0, userMetadataKeyValue);
 									}
@@ -2261,32 +2252,32 @@ angular
 								}
 							}
 							
-							$scope.difficultyLevels = [{name:'Easy',value:'Easy'},
-							                       {name:'Moderate',value:'Moderate'},
-							                       {name:'Difficult',value:'Difficult'}
-							                      ];
+							$scope.difficultyLevels = [{name:'Easy',value:'Esy'},
+								                       {name:'Moderate',value:'Mod'},
+								                       {name:'Difficult',value:'Dif'}
+								                      ];
 							
 							//$scope.selectedLevel = [];
 							
 							$scope.getMetadataSearchCriteria=function(){
 								var metadataSearchCriteria=[];
 								if($scope.metadataValues.Difficulty.length>0){
-									appendMetadataSearchCriteria(metadataSearchCriteria,MetadataEnum.DIFFICULTY,$scope.metadataValues.Difficulty.toString());
+									appendMetadataSearchCriteria(metadataSearchCriteria,ShortMetadataEnum.DIFFICULTY,$scope.metadataValues.Difficulty.toString());
 								}
-								if($scope.metadataValues.Topic!=undefined && $scope.metadataValues.Topic!=""){
-									appendMetadataSearchCriteria(metadataSearchCriteria,MetadataEnum.TOPIC,$scope.metadataValues.Topic);
+								if($scope.metadataValues.Topk!=undefined && $scope.metadataValues.Topk!=""){
+									appendMetadataSearchCriteria(metadataSearchCriteria,ShortMetadataEnum.TOPIC,btoa($scope.metadataValues.Topk));
 								}
-								if($scope.metadataValues.Objective!=undefined && $scope.metadataValues.Objective!=""){
-									appendMetadataSearchCriteria(metadataSearchCriteria,MetadataEnum.OBJECTIVE,$scope.metadataValues.Objective);
+								if($scope.metadataValues.Objt!=undefined && $scope.metadataValues.Objt!=""){
+									appendMetadataSearchCriteria(metadataSearchCriteria,ShortMetadataEnum.OBJECTIVE,btoa($scope.metadataValues.Objt));
 								}
-								if($scope.metadataValues.PageReference!=undefined && $scope.metadataValues.PageReference!=""){
-									appendMetadataSearchCriteria(metadataSearchCriteria,MetadataEnum.PAGEREFERENCE,$scope.metadataValues.PageReference);
+								if($scope.metadataValues.PRef!=undefined && $scope.metadataValues.PRef!=""){
+									appendMetadataSearchCriteria(metadataSearchCriteria,ShortMetadataEnum.PAGEREFERENCE,btoa($scope.metadataValues.PRef));
 								}
-								if($scope.metadataValues.Skill!=undefined && $scope.metadataValues.Skill!=""){
-									appendMetadataSearchCriteria(metadataSearchCriteria,MetadataEnum.SKILL,$scope.metadataValues.Skill);
+								if($scope.metadataValues.Skil!=undefined && $scope.metadataValues.Skil!=""){
+									appendMetadataSearchCriteria(metadataSearchCriteria,ShortMetadataEnum.SKILL,btoa($scope.metadataValues.Skil));
 								}
-								if($scope.metadataValues.QuestionId!=undefined && $scope.metadataValues.QuestionId!=""){
-									appendMetadataSearchCriteria(metadataSearchCriteria,MetadataEnum.QUESTIONID,$scope.metadataValues.QuestionId);
+								if($scope.metadataValues.QnId!=undefined && $scope.metadataValues.QnId!=""){
+									appendMetadataSearchCriteria(metadataSearchCriteria,ShortMetadataEnum.QUESTIONID,btoa($scope.metadataValues.QnId));
 								}
 								
 								return metadataSearchCriteria;
@@ -2332,6 +2323,15 @@ angular
 									'PAGEREFERENCE':'PageReference',
 									'SKILL':'Skill',
 									'QUESTIONID':'QuestionId'
+							}
+							
+							var ShortMetadataEnum={
+									'DIFFICULTY':'Diff',
+									'TOPIC':'Topk',
+									'OBJECTIVE':'Objt',
+									'PAGEREFERENCE':'PRef',
+									'SKILL':'Skil',
+									'QUESTIONID':'QnId'
 							}
 							
 						} ]);

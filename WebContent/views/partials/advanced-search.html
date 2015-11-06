@@ -15,30 +15,29 @@
 			<div class="col-md-11 margin-bot-10">
 				<div>
 					<div class="col-md-4"
-						ng-class="isThisQuizTypeSelected('Essay')?'ck-buttonSelected':'ck-button'"
-						ng-click='toggleQuestiontypeSelection("Essay")'>Essay</div>
+						 ng-class="isThisQuizTypeSelected('ES')?'ck-buttonSelected':'ck-button'"
+                        ng-click='toggleQuestiontypeSelection("ES")'>Essay</div>
 					<div class="col-md-4"
-						ng-class="isThisQuizTypeSelected('MultipleResponse')?'ck-buttonSelected':'ck-button'"
-						ng-click='toggleQuestiontypeSelection("MultipleResponse")'>
+						ng-class="isThisQuizTypeSelected('MR')?'ck-buttonSelected':'ck-button'"
+                        ng-click='toggleQuestiontypeSelection("MR")'>
 						Multiple Response</div>
 					<div class="col-md-4"
-						ng-class="isThisQuizTypeSelected('Matching')?'ck-buttonSelected':'ck-button'"
-						ng-click='toggleQuestiontypeSelection("Matching")'>Matching
+						ng-class="isThisQuizTypeSelected('MT')?'ck-buttonSelected':'ck-button'"
+                        ng-click='toggleQuestiontypeSelection("MT")'>Matching
 					</div>
 				</div>
 				<div>
 					<div class="col-md-4"
-						ng-class="isThisQuizTypeSelected('MultipleChoice')?'ck-buttonSelected':'ck-button'"
-						ng-click='toggleQuestiontypeSelection("MultipleChoice")'>
+						ng-class="isThisQuizTypeSelected('MC')?'ck-buttonSelected':'ck-button'"
+                        ng-click='toggleQuestiontypeSelection("MC")'>
 						Multiple Choice</div>
 					<div class="col-md-4"
-						ng-class="isThisQuizTypeSelected('TrueFalse')?'ck-buttonSelected':'ck-button'"
-						ng-click='toggleQuestiontypeSelection("TrueFalse")'>True
+						 ng-class="isThisQuizTypeSelected('TF')?'ck-buttonSelected':'ck-button'"
+                        ng-click='toggleQuestiontypeSelection("TF")'>True
 						False</div>
-
 					<div class="col-md-4"
-						ng-class="isThisQuizTypeSelected('FillInBlanks')?'ck-buttonSelected':'ck-button'"
-						ng-click='toggleQuestiontypeSelection("FillInBlanks")'>Fill
+						ng-class="isThisQuizTypeSelected('FIB')?'ck-buttonSelected':'ck-button'"
+                        ng-click='toggleQuestiontypeSelection("FIB")'>Fill
 						in the Blanks</div>
 				</div>
 			</div>
@@ -53,13 +52,13 @@
 		<div class="row">
 			<div class='col-md-12 metadatarow' ng-repeat="node in userMetadata">
 				<div class='col-md-1 metdatalabelSearch floatLeftImp'>{{node.name}}:</div>
-				<div class="col-md-11 metdataVal floatLeftImp" ng-if="node.key=='Difficulty'">
+				<div class="col-md-11 metdataVal floatLeftImp" ng-if="node.key=='Diff'">
 					<div class="floatLeftImp" ng-repeat="level in difficultyLevels">
 						<div class="width70Imp"  ng-class="isGivenLevelSelected(level.value)?'ck-buttonSelected':'ck-button'"
 							ng-click='selectLevel(level.value)'>{{level.name}}</div>
 					</div>
 				</div>
-				<div class="col-md-11 metdataVal" ng-if="node.key!='Difficulty'">
+				<div class="col-md-11 metdataVal" ng-if="node.key!='Diff'">
 					<input type="textbox" id="{{node}}" ng-model="metadataValues[node.key]"
 						ng-change="enableDisableSearch()" class='metdataInput' maxlength="100"></input>
 				</div>

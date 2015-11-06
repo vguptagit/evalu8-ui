@@ -11,26 +11,39 @@ angular
 						'$cookieStore','HttpService',
 						function($http, $rootScope, $cookieStore, HttpService) {
 
-							this.getAllQuestionsOfContainer = function(bookid,
-									containerid, callback) {
+							this.getQuestionsOfContainer = function(bookid, containerid, filterCriteria, callback) {
 
-								var questions = [];
-								var url = evalu8config.apiUrl + "/books/"
-										+ bookid + "/nodes/" + containerid
-										+ "/questions?flat=1";
+                                var url;
+                                if(filterCriteria==""){
+                                    url = evalu8config.apiUrl + "/books/"+ bookid + "/nodes/" + containerid+ "/questions";    
+                                }else{
+                                    url = evalu8config.apiUrl + "/books/"+ bookid + "/nodes/" + containerid+ "/questions?"+filterCriteria;
+                                }
 
-								HttpService.get(url).success(
-										function(response) {
-											response.forEach(function(item) {
-												questions.push(item);
-											});
+                                HttpService.get(url)
+                                .success(function(response) {
+                                    callback(response);
+                                 }).error(function(){
+                                    callback(null);
+                                 });
+                            };
 
-											callback(questions);
+                            
+                            this.getAllQuestionsOfContainer = function(bookid, containerid, filterCriteria, callback) {
 
-										}).error(function() {
-									callback(questions);
-								});
+                                var url;
+                                if(filterCriteria==""){
+                                    url = evalu8config.apiUrl + "/books/"+ bookid + "/nodes/" + containerid+ "/questions?flat=1";
+                                }else{
+                                    url = evalu8config.apiUrl + "/books/"+ bookid + "/nodes/" + containerid+ "/questions?flat=1&"+filterCriteria;    
+                                }
+                                    
+                                HttpService.get(url)
+                                .success(function(response) {
+                                    callback(response);
+                                 }).error(function() {
+                                    callback(null);
+                                 });
+                            };
 
-							};
-
-						} ]);
+						}]);
