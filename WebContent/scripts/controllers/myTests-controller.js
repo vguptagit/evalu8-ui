@@ -1172,34 +1172,38 @@ angular.module('e8MyTests')
             }
         }
 
-        $scope.editFolder = function (userFolder) {
+        $scope.editFolder = function (element,node) {
+            var rootFolders= $scope.defaultFolders;
+            if (element.node.parentId) {
+                rootFolders = element.$parentNodeScope.$parent.node.nodes;
+            }
+            var userFolder = node;
+            $scope.editingFolder = node;
             if (userFolder.title == null || userFolder.title.trim().length == 0) { return; }
 
-            if ($scope.defaultFolders
-            		&& $scope.defaultFolders[0]
-            		&& $scope.defaultFolders[0].nodeType == EnumService.NODE_TYPE.folder) {
+            if (rootFolders
+            		&& rootFolders[0]
+            		&& rootFolders[0].nodeType == EnumService.NODE_TYPE.folder) {
 
-                var duplicateTitle = false;
-                $scope.defaultFolders.forEach(function (rootFolder) {
-                    if (rootFolder.title == userFolder.title && rootFolder.nodeType == EnumService.NODE_TYPE.folder) {
-                        duplicateTitle = true;
+                    var duplicateTitle = false;
+                    rootFolders.forEach(function (rootFolder) {
+                        if (rootFolder.guid != userFolder.guid && rootFolder.title == userFolder.title && rootFolder.nodeType == EnumService.NODE_TYPE.folder) {
+                            duplicateTitle = true;
+                        
+                            $scope.message = "A folder already exists with this name. Please save with another name.";
+                            $scope.editingFolder.isEditMode = true;
 
-                        $scope.isAddFolderClicked = true;
-                        $scope.IsConfirmation = false;
-                        $scope.message = "A folder already exists with this name. Please save with another name.";
+                            $modal.open(confirmObject).result.then(function (ok) {
+                                if (ok) {
+                                    $("#txtFolderNameEdit").focus();
+                                }
+                            });
+                        }
+                    });
 
-                        $modal.open(confirmObject).result.then(function (ok) {
-                            if (ok) {
-                                $("#txtFolderName").focus();
-                            }
-                        });
-                    }
-                });
+                    if (duplicateTitle) return;
 
-                if (duplicateTitle) return;
-
-            }
-
+                }
             UserFolderService.saveUserFolder(userFolder, function (userFolder) {
                 if (userFolder == null) {
                     CommonService.showErrorMessage(e8msg.error.cantSave);
@@ -1208,15 +1212,17 @@ angular.module('e8MyTests')
                 // $scope.loadTree();
 
                 userFolder.nodeType = "folder";
-                //$scope.defaultFolders.unshift(userFolder);
+                //rootFolders.unshift(userFolder);
+                $scope.editingFolder.isEditMode = false;
+                $scope.editingFolder.titleTemp = angular.copy(userFolder.title);
 
-                if ($scope.defaultFolders.length == 1) {
-                    $scope.defaultFolders.push(CommonService.getArchiveRoot());
+                if (rootFolders.length == 1) {
+                    rootFolders.push(CommonService.getArchiveRoot());
                 }
 
                 $scope.folderName = "";
 
-                $scope.showEditFolderPanel = false;
+                userFolder.isEditMode = false;
             });
         }
         $scope.addNewFolder = function (enterKey) {
