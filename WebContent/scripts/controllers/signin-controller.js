@@ -1,7 +1,7 @@
 angular
 .module('e8MyTests')
-.controller('SigninController', ['$scope', '$rootScope', '$location', '$http', 'AuthenticationService', 'CommonService',
-function($scope, $rootScope, $location, $http, AuthenticationService, CommonService) {
+.controller('SigninController', ['$scope', '$rootScope', '$location', '$http', 'AuthenticationService', 'CommonService', 'HttpService',
+function($scope, $rootScope, $location, $http, AuthenticationService, CommonService, HttpService) {
 	
 	$scope.unauthorised = false;
 	
@@ -16,7 +16,7 @@ function($scope, $rootScope, $location, $http, AuthenticationService, CommonServ
 					}
 				};
 			
-			$http.post(evalu8config.apiUrl + '/login', '', piconfig)
+			HttpService.post(evalu8config.apiUrl + '/login', '', piconfig, true)
 			.success(function (response) {						
 				
 				AuthenticationService.SetCredentials(response.token, response.loginCount, response.givenName, response.familyName, response.emailAddress);
