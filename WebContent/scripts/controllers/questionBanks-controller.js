@@ -1094,57 +1094,24 @@ angular
 							$('.questionMessagetip').hide();
 							
 							
-							var showDuplicateAlertOnDragQuestion = function(){                            
-								$scope.IsConfirmation = false;
-								$scope.message = "Question already added to the test, cannot be added again.";
-								$modal.open(confirmObject).result.then(function(ok) {
-									if(ok) {
-										$scope.isAnyNodeAlreadyAdded = false;
-									}
-								});                            	
-							}
-							
 							//To change the selection status of the parent node of a node.
-							$scope.checkSiblingSelection = function(scope,test){    
-								var nodeIndex=0;
-								var parentExistInSelectNodes;
-								$scope.selectedNodes.forEach(function(node) {	
-									if (node.guid == scope.node.parentId) {
-										parentExistInSelectNodes = true;
-										return;
+							$scope.checkSiblingSelection = function(scope,test){
+								if(scope.node.isNodeSelected){									
+									if($scope.isAllSiblingsSelected(scope.$parentNodeScope.node.nodes)) {
+										scope.$parentNodeScope.node.isNodeSelected = true;
+										scope.$parentNodeScope.node.showEditQuestionIcon = true;
+										scope.$parentNodeScope.node.showTestWizardIcon = true; 
+										$scope.addingNodeInSelectedNodesArray(scope.$parentNodeScope.node);
 									}
-									nodeIndex++;
-								});
-								
-								var allSiblingsNotSelected = false;
-
-								scope.$parentNodeScope.node.nodes.forEach(function(node) {				
-									if (!node.isNodeSelected) {
-										allSiblingsNotSelected = true;	
-										return;
-									}
-								});
-
-								scope.$parentNodeScope.node.showEditQuestionIcon = false;
-								scope.$parentNodeScope.node.showTestWizardIcon = false; 
-								scope.$parentNodeScope.node.isNodeSelected = false;
-								if(!allSiblingsNotSelected){
-									scope.$parentNodeScope.node.isNodeSelected = true;
-									scope.$parentNodeScope.node.showEditQuestionIcon = true;
-									scope.$parentNodeScope.node.showTestWizardIcon = true; 
-
-								}				
-								
-								if(scope.node.isNodeSelected == true && !parentExistInSelectNodes && !allSiblingsNotSelected){
-									$scope.selectedNodes.push(scope.$parentNodeScope.node);	
-								}
-								
-								if(scope.node.isNodeSelected == false && parentExistInSelectNodes){
-									$scope.selectedNodes.splice(nodeIndex, 1);
+								}else{
+									scope.$parentNodeScope.node.showEditQuestionIcon = false;
+									scope.$parentNodeScope.node.showTestWizardIcon = false; 
+									scope.$parentNodeScope.node.isNodeSelected = false;
+									$scope.removeNodeFromSelectedNodes(scope.$parentNodeScope.node);
 								}
 
 							};
-							
+
 							//To check the question node is present in current test frame.
 							$scope.isNodeInTestFrame = function(node, test) {
 								var isNodeUsed=false;
@@ -1156,11 +1123,11 @@ angular
 								});
 								return isNodeUsed;									
 							}
-							
+
 							//To check the question node is present in selectedNodes array.
 							$scope.isNodeInSelectedNodesArray = function(node) {
 								var isNodeUsed=false;
-								 $scope.selectedNodes.forEach(function(usedNode) {
+								$scope.selectedNodes.forEach(function(usedNode) {
 									if(usedNode.guid === node.guid){
 										isNodeUsed=true;
 										return;
@@ -1168,24 +1135,24 @@ angular
 								});
 								return isNodeUsed;								
 							}
-							
+
 							//To add a node to selectedNodes array.
 							$scope.addingNodeInSelectedNodesArray = function(node) {								
 								if(!$scope.isNodeInSelectedNodesArray(node)){
 									$scope.selectedNodes.push(node);
 								}			
 							}
-							
+
 							//To remove a node from selectedNodes array.
 							$scope.removeNodeFromSelectedNodes = function(node) {
 								for (var j = 0; j < $scope.selectedNodes.length; j++) {
-								    if (node.guid === $scope.selectedNodes[j].guid) {
-								    	$scope.selectedNodes.splice(j, 1);
-								        break;
-								    }
+									if (node.guid === $scope.selectedNodes[j].guid) {
+										$scope.selectedNodes.splice(j, 1);
+										break;
+									}
 								}						
 							}
-							
+
 							//To change the selection status of the children nodes when parent node has been selected/deselcted.
 							$scope.checkChildSelection = function(scope,test){    
 
@@ -1198,7 +1165,7 @@ angular
 											node.existInTestframe = false;
 											$scope.addingNodeInSelectedNodesArray(node);											
 										}
-										
+
 									});									
 
 								}else{									
@@ -1211,14 +1178,13 @@ angular
 											node.isNodeSelected = true;		
 											node.existInTestframe = true;		
 										}else{										
-												$scope.removeNodeFromSelectedNodes(node);											
+											$scope.removeNodeFromSelectedNodes(node);											
 										} 
 
 									});									
 								}								
 							};
-							
-							
+
 
 							var isParentNodeUsed=false;
 							$scope.selectNode = function (scope) {
@@ -1476,61 +1442,62 @@ angular
 								}
 							};
 							
-							$scope.checkAllSibblingNodeInTestFrame = function(scope, test) {								
-								scope.node.existInTestframe = true;
-								var allSiblingsNotSelected;
-								scope.$parentNodeScope.node.nodes.forEach(function(node) {				
+							//To check all child nodes of the parent node are selected.
+							$scope.isAllSiblingsSelected = function(siblingNodes) {								
+								var allSiblingsNotSelected = false;
+								siblingNodes.forEach(function(node) {				
 									if (!node.isNodeSelected) {
 										allSiblingsNotSelected = true;	
 										return;
 									}
 								});
-								
-										
-								
-								if(!allSiblingsNotSelected){
-									var allSiblingsNotExistInTestFrame;
-									scope.$parentNodeScope.node.nodes.forEach(function(node) {										
-										if(!$scope.isNodeInTestFrame(node,test)){
-											allSiblingsNotExistInTestFrame = true;
-											return;
-										} 																	
-									});	
-									
+
+								return !allSiblingsNotSelected;																
+							}
+
+							//To check all child nodes of the parent node are selected.
+							$scope.isAllSiblingsInTestFrame = function(scope,test) {
+								var allSiblingsNotExistInTestFrame=false;
+								scope.$parentNodeScope.node.nodes.forEach(function(node) {										
+									if(!$scope.isNodeInTestFrame(node,test)){
+										allSiblingsNotExistInTestFrame = true;
+										return;
+									} 																	
+								});	
+
+								return !allSiblingsNotExistInTestFrame;																
+							}							
+
+
+							//To add a node to questionFolderNode array.
+							$scope.addingNodeInQuestionFolderNodeArray = function(node,test) {		
+								var existInquestionFolderNode;
+								for (var i = 0; i < test.questionFolderNode.length; i++) {
+									if (test.questionFolderNode[i].guid == node.guid) {
+										existInquestionFolderNode =true;
+										break;
+									}
+								}
+								if(!existInquestionFolderNode){
+									test.questionFolderNode.push(node);	
+								}		
+							}
+
+
+
+							$scope.checkAllSibblingNodeInTestFrame = function(scope, test) {								
+								scope.node.existInTestframe = true;								
+								if($scope.isAllSiblingsSelected(scope.$parentNodeScope.node.nodes)){
 									scope.$parentNodeScope.node.showEditQuestionIcon = true;
 									scope.$parentNodeScope.node.showTestWizardIcon = true; 
-									scope.$parentNodeScope.node.isNodeSelected = true;
-									
-									if(!allSiblingsNotExistInTestFrame){
+									scope.$parentNodeScope.node.isNodeSelected = true;	
+									if($scope.isAllSiblingsInTestFrame(scope,test)){
 										var existInquestionFolderNode;
 										scope.$parentNodeScope.node.showEditQuestionIcon = false;
-										for (var i = 0; i < test.questionFolderNode.length; i++) {
-											if (test.questionFolderNode[i].guid == scope.$parentNodeScope.node.guid) {
-												existInquestionFolderNode =true;
-												break;
-											}
-										}
-										if(!existInquestionFolderNode){
-											test.questionFolderNode.push(scope.$parentNodeScope.node);	
-										}
+										$scope.addingNodeInQuestionFolderNodeArray(scope.$parentNodeScope.node,test);
 									}
-									
-									
-									
-									
-									var existInSelectedNodes;
-									for (var j = 0; j < $scope.selectedNodes.length; j++) {
-										if ($scope.selectedNodes[j].guid == scope.$parentNodeScope.node.guid) {
-											existInSelectedNodes =true;
-											break;
-										}
-									}
-									if(!existInSelectedNodes){
-										$scope.selectedNodes.push(scope.$parentNodeScope.node);	
-									}
-									
+									$scope.addingNodeInSelectedNodesArray(scope.$parentNodeScope.node,test);
 								}
-								
 							}
 							
 							$scope.addTopicQuestionsToTestFrameTab = function (test,destIndex,eventType,selectedScopeNode,isAnyNodeAlreadyAdded) {	
@@ -1544,6 +1511,9 @@ angular
 										questionFolder,
 										function(response,
 												questionFolder) {
+											response.forEach(function(selectedQuestion){							
+												selectedQuestion.parentId = questionFolder.guid;
+											});
 											if(!isAnyNodeAlreadyAdded){
 												test.questions.forEach(function(testQuestion){												
 													response.forEach(function(selectedQuestion){														

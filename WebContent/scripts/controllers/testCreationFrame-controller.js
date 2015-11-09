@@ -1674,8 +1674,7 @@ angular
 							$scope.$on('handleBroadcast_AddQuestionsToTest', function (event, response, currentNode, isAnyNodeAlreadyAdded) {
 							    QTI.initialize();
 							    renderCounter++;
-							    response = $.grep(response,function(obj, index){
-							    	obj.parentId = currentNode.guid;
+							    response = $.grep(response,function(obj, index){							    	
 							    	var find = false;
 							    	SharedTabService.tests[SharedTabService.currentTabIndex].questions.forEach(function(item){
 							    		if(item.guid == obj.guid)

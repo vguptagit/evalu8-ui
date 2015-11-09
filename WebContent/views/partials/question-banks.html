@@ -150,7 +150,7 @@
                         <label class="captionLabel" title="{{node.title}}">{{node.title}}</label>
                     </div>
                     <div class="iconsChapter">
-                        <button type="button" class="action-icon-bg glyphicon glyphicon-pencil" 
+                        <button type="button" class="action-icon-bg glyphicon glyphicon-plus" 
 							ng-show="node.showEditQuestionIcon && node.nodeType != 'publisherTests'"
 							ng-mousedown="editQuestion(this);$event.stopPropagation();" data-container="body" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="bottom" tooltip="Move question to right for editing"></button>
                         <button type="button" class="wizardGray action-icon-bg pull-right" 
@@ -209,7 +209,7 @@
 	<div ng-if="node.questionType == 'userCreatedQuestion'" class="questionListIndex">{{($index - node.questnNumber +1 ) }})</div>
 	<div ng-if="node.questionType != 'userCreatedQuestion'" class="questionListIndex">{{$index + 1}})</div>
         <div id="QBQuestion"  nodeSelected={{node.isNodeSelected}} ng-mousedown="selectNode(this);" ui-tree-handle class="printViewContainer tree-node tree-node-content questionList" ng-class="{questionTitleInTree: node.questionXML}">
-            <button id="QBPencil" type="button" ng-show="node.showEditQuestionIcon" class="newTest-close questionIcon action-icon-bg glyphicon glyphicon-pencil" ng-mousedown="editQuestion(this);$event.stopPropagation();" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="bottom" tooltip="Move question to right for editing"></button>
+            <button id="QBPencil" type="button" ng-show="node.showEditQuestionIcon" class="newTest-close questionIcon action-icon-bg glyphicon glyphicon-plus" ng-mousedown="editQuestion(this);$event.stopPropagation();" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="bottom" tooltip="Move question to right for editing"></button>
             <div class="printViewContainer" ng-if="node.textHTML" ng-bind-html="getHTML(this)">
             </div>
         </div>
