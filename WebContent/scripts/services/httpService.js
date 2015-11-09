@@ -29,8 +29,14 @@ angular.module('evalu8Demo')
 		return $http.head(url, config);
 	}
 	
-	this.post = function(url, data, methodConfig){
-		var config = $.extend({}, this.getConfig(), methodConfig);
+	this.post = function(url, data, methodConfig, skipAuth){
+		var config;
+		if(skipAuth) {
+			config = $.extend({}, methodConfig);	
+		} else {
+			config = $.extend({}, this.getConfig(), methodConfig);
+		}
+		
 		return $http.post(url, data, config);
 	}
 	

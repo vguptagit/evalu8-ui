@@ -253,30 +253,6 @@ angular.module('e8MyTests')
                     		return false;
                     	}
                 	}
-            		if(item.nodeType == EnumService.NODE_TYPE.test) {
-            			$scope.defaultFolders.forEach(function(nodeItem) {
-                    		if(nodeItem.nodeType == EnumService.NODE_TYPE.test && nodeItem.title == item.title && nodeItem.$$hashKey != item.$$hashKey) {
-                    			duplicateTitle = true;                			 
-                    		}                        	
-                    	})            			
-                    	
-                    	if(duplicateTitle) {
-    			            $scope.IsConfirmation = false;
-    			            $scope.message = "A test already exists with this name.";
-    			            $modal.open(confirmObject);
-    			            
-    			            if(sourceParent) {
-    			            	sourceParent.node.nodes.splice(sourceIndex, 0, source.node);	
-    			            } else {
-    			            	$scope.defaultFolders.splice(sourceIndex, 0, source.node);
-    			            }
-    			            
-    			            $scope.defaultFolders.splice(destIndex, 1);
-
-    			            $rootScope.blockLeftPanel.stop();
-                    		return false;
-                    	}
-            		}
             	}
             	if(destParent && destParent.node && destParent.node.nodes) {                	
                 	
@@ -304,32 +280,7 @@ angular.module('e8MyTests')
     			            $rootScope.blockLeftPanel.stop();
                     		return false;
                     	}
-                	}
-                	
-            		if(item.nodeType == EnumService.NODE_TYPE.test) {
-                		destParent.node.nodes.forEach(function(nodeItem) {
-                    		if(nodeItem.nodeType == EnumService.NODE_TYPE.test && nodeItem.title == item.title && nodeItem.$$hashKey != item.$$hashKey) {
-                    			duplicateTitle = true;                			 
-                    		}                        	
-                    	})            			
-                    	
-                    	if(duplicateTitle) {
-    			            $scope.IsConfirmation = false;
-    			            $scope.message = "A test already exists with this name.";
-    			            $modal.open(confirmObject);
-    			            
-    			            if(sourceParent) {
-    			            	sourceParent.node.nodes.splice(sourceIndex, 0, source.node);	
-    			            } else {
-    			            	$scope.defaultFolders.splice(sourceIndex, 0, source.node);
-    			            }
-    			                			            
-    			            destParent.node.nodes.splice(destIndex, 1);
-    			            
-    			            $rootScope.blockLeftPanel.stop();
-                    		return false;
-                    	}
-            		}
+                	}                	
             	}
             	
             	var prevSeq = 0.0;
