@@ -44,7 +44,7 @@ angular
 			if(queryStrings==""){
 				url=evalu8config.apiUrl+ "/books/"+ bookId+ "/nodes/"+ containerId+ "/nodes"
 			}else{
-				url=evalu8config.apiUrl+ "/books/"+ bookId+ "/nodes/"+ containerId+ "/nodes?"+searchCriteria;
+				url=evalu8config.apiUrl+ "/books/"+ bookId+ "/nodes/"+ containerId+ "/nodes?"+queryStrings;
 			}
 
 			HttpService.get(url)
