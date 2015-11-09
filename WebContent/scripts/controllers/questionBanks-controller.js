@@ -1179,14 +1179,44 @@ angular
 							
 							//To check the question node is present in current test frame.
 							$scope.isNodeInTestFrame = function(node, test) {
-								for (var j = 0; j < test.questions.length; j++) {
-									if (node.guid === test.questions[j].guid) {
-										return true;
-										break;
+								var isNodeUsed=false;
+								test.questions.forEach(function(usedNode) {
+									if(usedNode.guid === node.guid){
+										isNodeUsed=true;
+										return;
 									}
-								}
+								});
+								return isNodeUsed;									
 							}
 							
+							//To check the question node is present in selectedNodes array.
+							$scope.isNodeInSelectedNodesArray = function(node) {
+								var isNodeUsed=false;
+								 $scope.selectedNodes.forEach(function(usedNode) {
+									if(usedNode.guid === node.guid){
+										isNodeUsed=true;
+										return;
+									}
+								});
+								return isNodeUsed;								
+							}
+							
+							//To add a node to selectedNodes array.
+							$scope.addingNodeInSelectedNodesArray = function(node) {								
+								if(!$scope.isNodeInSelectedNodesArray(node)){
+									$scope.selectedNodes.push(node);
+								}			
+							}
+							
+							//To remove a node from selectedNodes array.
+							$scope.removeNodeFromSelectedNodes = function(node) {
+								for (var j = 0; j < $scope.selectedNodes.length; j++) {
+								    if (node.guid === $scope.selectedNodes[j].guid) {
+								    	$scope.selectedNodes.splice(j, 1);
+								        break;
+								    }
+								}						
+							}
 							
 							//To change the selection status of the children nodes when parent node has been selected/deselcted.
 							$scope.checkChildSelection = function(scope,test){    
@@ -1196,8 +1226,11 @@ angular
 										node.isNodeSelected = true;
 										if(!$scope.isNodeInTestFrame(node,test)){
 											node.showEditQuestionIcon = true;
-											node.showTestWizardIcon = true; 			
-										} 																	
+											node.showTestWizardIcon = true; 	
+											node.existInTestframe = false;
+											$scope.addingNodeInSelectedNodesArray(node);											
+										}
+										
 									});									
 
 								}else{									
@@ -1205,13 +1238,19 @@ angular
 										node.isNodeSelected = false;
 										node.showEditQuestionIcon = false;
 										node.showTestWizardIcon = false; 	
+										node.existInTestframe = false; 											
 										if($scope.isNodeInTestFrame(node,test)){
-											node.isNodeSelected = true;													
+											node.isNodeSelected = true;		
+											node.existInTestframe = true;		
+										}else{										
+												$scope.removeNodeFromSelectedNodes(node);											
 										} 
 
 									});									
 								}								
 							};
+							
+							
 
 							var isParentNodeUsed=false;
 							$scope.selectNode = function (scope) {
@@ -1590,7 +1629,7 @@ angular
 											}
 											node.showEditQuestionIcon = false;
 											node.showTestWizardIcon = false;		
-
+											node.existInTestframe = true;
 											if(!existInSelectNodes){
 												$scope.selectedNodes.push(node);																							
 											}											
@@ -1765,6 +1804,7 @@ angular
 													for (var j = 0; j < tab.questions.length; j++) {
 														if ($scope.questions[i].guid === tab.questions[j].guid) {
 															$scope.questions[i].isNodeSelected = true;
+															$scope.questions[i].existInTestframe = true;
 															break;
 														}
 													}
