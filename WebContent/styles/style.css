@@ -1331,3 +1331,7 @@ h4, .h4, h5, .h5, h6, .h6 {
 .width70Imp{
 	width: 70px !important;
 }
+
+.question_bank_scrollbar .activeFolder .captiondiv label{
+    color: #fff;
+}

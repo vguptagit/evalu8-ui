@@ -3354,3 +3354,11 @@ a#testwizard {
 	width: 25%;
 	padding-top: 3px;
 }
+
+.questionInTestframe {
+	-webkit-box-shadow: 0px 0px 4px 2px #fff;
+	-moz-box-shadow: 0px 0px 4px 2px #fff;
+	box-shadow: 0px 0px 6px 2px #fff;
+    border-radius: 5px;
+    background-color: #F2F2F2;
+}

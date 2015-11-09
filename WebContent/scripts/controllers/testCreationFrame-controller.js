@@ -694,6 +694,7 @@ angular
 															}														
 															var displayNode = {};
 															displayNode.guid = question.guid;	
+															displayNode.parentId = question.parentId;
 															displayNode.quizType = questionMetadataResponse.quizType;
 															displayNode.IsUserMetdataAvailable = false;
 															 if (SharedTabService.userQuestionSettings.length>0){
@@ -1674,6 +1675,7 @@ angular
 							    QTI.initialize();
 							    renderCounter++;
 							    response = $.grep(response,function(obj, index){
+							    	obj.parentId = currentNode.guid;
 							    	var find = false;
 							    	SharedTabService.tests[SharedTabService.currentTabIndex].questions.forEach(function(item){
 							    		if(item.guid == obj.guid)

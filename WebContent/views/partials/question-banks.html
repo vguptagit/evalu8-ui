@@ -88,7 +88,7 @@
                     <div class="imagediv">
                         <input ng-mousedown="getNodes(this)" type="image" class="collapseImg" collapsed="{{collapsed}}" value="" ng-src="{{collapsed?'images/right_arrow2.png':'images/right_arrow.png'}}"></input>
                     </div>
-                    <div class="captiondiv" ng-mousedown="selectNode(this.node)">
+                    <div class="captiondiv" ng-mousedown="selectNode(this)">
                         <label class="captionLabel" title="{{node.title}}">{{node.title}}</label>
                     </div>
                     <div class="iconsChapter">
@@ -146,13 +146,13 @@
                         <input ng-mousedown="getNodesWithQuestion(this)" type="image" value="" class="collapseImg" ng-show="node.isHttpReqCompleted" ng-src="{{collapsed?'images/right_arrow2.png':'images/right_arrow.png'}}"></input>
                         <!--<input ng-mousedown="getNodesWithQuestion(this)" type="image" class="collapseImg" ng-src="{{collapsed?'images/right_arrow2.png':'images/right_arrow.png'}}"></input>-->
                     </div>
-                    <div class="captiondiv" ng-mousedown="selectNode(this.node)">
+                    <div class="captiondiv" ng-mousedown="selectNode(this)">
                         <label class="captionLabel" title="{{node.title}}">{{node.title}}</label>
                     </div>
                     <div class="iconsChapter">
                         <button type="button" class="action-icon-bg glyphicon glyphicon-pencil" 
-							ng-show="node.showEditQuestionIcon && node.nodeType != 'publisherTests'" 
-							ng-mousedown="editQuestion(this)" data-container="body" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="bottom" tooltip="Move question to right for editing"></button>
+							ng-show="node.showEditQuestionIcon && node.nodeType != 'publisherTests'"
+							ng-mousedown="editQuestion(this);$event.stopPropagation();" data-container="body" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="bottom" tooltip="Move question to right for editing"></button>
                         <button type="button" class="wizardGray action-icon-bg pull-right" 
 							ng-show="node.showTestWizardIcon && node.nodeType != 'publisherTests'" 
 							ng-mousedown="createTestWizardCriteria(this)" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="bottom" tooltip="Auto create test with wizard"></button>
@@ -168,8 +168,8 @@
         </div>
         <ol ui-tree-nodes="" type="1" ng-model="node.nodes" ng-class="{hidden: collapsed}" droppable="false">
            <li class="questIndex" printmode="true" ng-repeat="node in node.nodes" 
-               ng-class="{questionSelected:node.isNodeSelected,qbQuestions:node.nodeType=='question', twoDigitIndex:({{$index + 1}}>9),threedigitIndex:({{$index + 1}}>99), fourDigitIndex:({{$index + 1}}>999)}" 
-               collapsed="{{node.isCollapsed?'true':'false'}}" ui-tree-node draggable="true" ng-include="node.template"></li>
+               ng-class="{questionInTestframe:node.isNodeSelected && node.nodeType=='question' && node.existInTestframe===true,questionSelected:node.isNodeSelected && node.nodeType=='question',qbQuestions:node.nodeType=='question', twoDigitIndex:({{$index + 1}}>9),threedigitIndex:({{$index + 1}}>99), fourDigitIndex:({{$index + 1}}>999)}" 
+               collapsed="{{node.isCollapsed?'true':'false'}}" ui-tree-node draggable="{{(node.nodeType!='question') || (node.nodeType=='question' && !node.existInTestframe)}}" ng-include="node.template"></li>
             <li class="tree-node tree-node-content" ng-repeat="node in node.nodes"
                 ui-tree-node draggable="false" node="{{node}}" data-ng-if="node.nodeType=='empty'" ng-show="node.isHttpReqCompleted">
                 <div ui-tree-handle class="tree-node tree-node-content">
@@ -208,8 +208,8 @@
 	<script type="text/ng-template" id="qb_questions_renderer.html">
 	<div ng-if="node.questionType == 'userCreatedQuestion'" class="questionListIndex">{{($index - node.questnNumber +1 ) }})</div>
 	<div ng-if="node.questionType != 'userCreatedQuestion'" class="questionListIndex">{{$index + 1}})</div>
-        <div id="QBQuestion" nodeSelected={{node.isNodeSelected}} ng-mousedown="selectNode(this.node);" ui-tree-handle class="printViewContainer tree-node tree-node-content questionList" ng-class="{questionTitleInTree: node.questionXML}">
-            <button id="QBPencil" type="button" ng-show="node.showEditQuestionIcon" class="newTest-close questionIcon action-icon-bg glyphicon glyphicon-pencil" ng-mousedown="editQuestion(this)" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="bottom" tooltip="Move question to right for editing"></button>
+        <div id="QBQuestion"  nodeSelected={{node.isNodeSelected}} ng-mousedown="selectNode(this);" ui-tree-handle class="printViewContainer tree-node tree-node-content questionList" ng-class="{questionTitleInTree: node.questionXML}">
+            <button id="QBPencil" type="button" ng-show="node.showEditQuestionIcon" class="newTest-close questionIcon action-icon-bg glyphicon glyphicon-pencil" ng-mousedown="editQuestion(this);$event.stopPropagation();" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="bottom" tooltip="Move question to right for editing"></button>
             <div class="printViewContainer" ng-if="node.textHTML" ng-bind-html="getHTML(this)">
             </div>
         </div>
