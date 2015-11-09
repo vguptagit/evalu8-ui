@@ -8,7 +8,7 @@ angular.module('e8MyTests')
      function ($scope, $rootScope, $location, $cookieStore, $http, $sce, $modal, QuestionFolderService, UserQuestionsService,
     		UserFolderService, TestService, SharedTabService, ArchiveService, EnumService, CommonService) {
     	
-        $scope.controller = EnumService.CONTROLLERS.myTest;
+        $scope.controller = EnumService.CONTROLLERS.myQuestion;
 
         $scope.isAddFolderClicked=false;
         $scope.isTestDeleteClicked=false;
@@ -129,11 +129,15 @@ angular.module('e8MyTests')
 			if (!source.node.isNodeSelected) {
 				$scope.selectNode(source.node);
 			}
-			if (SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
-			    $scope.createTestWizardCriteria(source)
-			} else {
-			    $scope.editQuestion(source.node, destIndex, "dragEvnt");
-			}
+
+            if(!(source.node.nodeType === EnumService.NODE_TYPE.question && destParent.controller === EnumService.CONTROLLERS.myQuestion)){        
+
+                if (SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
+                    $scope.createTestWizardCriteria(source)
+                } else {
+                    $scope.editQuestion(source.node, destIndex, "dragEvnt");
+                }             
+            }
             
             $rootScope.blockLeftPanel.start();                        
 
@@ -502,14 +506,33 @@ angular.module('e8MyTests')
         }
 		
 		var isParentNodeUsed=false;
-		$scope.selectNode = function (node) {
+		$scope.selectNode = function (scope) {
+			
+			var node = scope.node;
 			
 			if($scope.showAddFolderPanel) {
                    $scope.showAddFolderPanel = false; 
                }
 			
 		    var test = SharedTabService.tests[SharedTabService.currentTabIndex];
-
+			if (node.isNodeSelected == false
+					&& $rootScope.globals.loginCount <= evalu8config.messageTipLoginCount 
+					&& node.nodeType != EnumService.NODE_TYPE.question
+					&& node.nodeType != EnumService.NODE_TYPE.publisherTests) {
+				$('.questionMessagetip').show()
+				setTimeout(function() {
+					$('.questionMessagetip').hide();
+				}, 5000);
+			}
+			
+			if(node.isNodeSelected && node.showEditQuestionIcon == false ){
+				if (node.nodeType === EnumService.NODE_TYPE.question) {
+					return;
+				}
+				//return;
+			}	
+			
+			
 			if (!node.isNodeSelected) {
 				isParentNodeUsed=false;
 				$scope.isParentNodeUsed(node,test);
@@ -558,7 +581,7 @@ angular.module('e8MyTests')
 				        node.showEditQuestionIcon = false;
 				    }
 				}
-			}
+			}														
 		};
 		
 		$scope.expandedNodes=[];

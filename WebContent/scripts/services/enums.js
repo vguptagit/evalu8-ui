@@ -12,6 +12,7 @@ angular.module('evalu8Demo')
     
     this.CONTROLLERS={
     		myTest: 'MyTestsController',
+    		myQuestion: 'MyQuestionsController',
             questionBanks: 'QuestionBanksController',
             testCreationFrame: 'TestCreationFrameController'
     };

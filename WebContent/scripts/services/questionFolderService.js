@@ -17,6 +17,7 @@ angular.module('evalu8Demo')
 									response.forEach (function(item) {
 										item.nodeType = "folder";
 										item.draggable = true;
+										item.isNodeSelected = false;
 										defaultFolders.push(item);																								    							    							
 									});
 									
