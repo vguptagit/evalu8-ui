@@ -387,6 +387,8 @@ angular.module('evalu8Demo')
 		             treenode.draggable = true;
 		             treenode.showEditIcon = true;
 		             treenode.showArchiveIcon = true;
+		             treenode.isEditMode = false;
+		             treenode.titleTemp =angular.copy(treenode.title);
 		         }
 		     }
 
