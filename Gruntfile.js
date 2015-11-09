@@ -268,17 +268,17 @@ module.exports = function (grunt) {
     // concat: {
     //   dist: {}
     // },
-
-    imagemin: {
-      dist: {
-        files: [{
-          expand: true,
-          cwd: '<%= yeoman.app %>/images',
-          src: '{,*/}*.{png,jpg,jpeg,gif,cur}',
-          dest: '<%= yeoman.dist %>/images'
-        }]
-      }
-    },
+// need to revert it back.
+    //imagemin: {
+      //dist: {
+       // files: [{
+         // expand: true,
+          //cwd: '<%= yeoman.app %>/images',
+          //src: '{,*/}*.{png,jpg,jpeg,gif,cur}',
+          //dest: '<%= yeoman.dist %>/images'
+       // }]
+      //}
+    //},
 
     svgmin: {
       dist: {
@@ -362,7 +362,13 @@ module.exports = function (grunt) {
          cwd: '<%= yeoman.app %>/scripts',
          src: ['externals/ckeditor/**'],
          dest: '<%= yeoman.dist %>/scripts'
-            }, {
+         },{
+          expand: true,
+          dot: true,
+          cwd: '<%= yeoman.app %>',
+          src: ['images/*.*'],
+          dest: '<%= yeoman.dist %>'
+         },{
           expand: true,
           cwd: 'bower_components/bootstrap/dist',
           src: 'fonts/*',
@@ -387,7 +393,6 @@ module.exports = function (grunt) {
       ],
       dist: [
         'copy:styles',
-        'imagemin',
         'svgmin'
       ]
     },
