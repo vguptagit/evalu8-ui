@@ -127,7 +127,7 @@ angular.module('e8MyTests')
   			$scope.dragStarted = false;
   			
 			if (!source.node.isNodeSelected) {
-				$scope.selectNode(source.node);
+				$scope.selectNode(source);
 			}
 
             if(!(source.node.nodeType === EnumService.NODE_TYPE.question && destParent.controller === EnumService.CONTROLLERS.myQuestion)){        
@@ -308,6 +308,40 @@ angular.module('e8MyTests')
                 			if(sourceParent && sourceParent.node && sourceParent.node.nodes.length==0) {
                 				sourceParent.node.nodes.push(CommonService.getEmptyFolder());
                 			}
+                			
+                			if(sourceParent == null) {
+                				var questionIndex = 0;
+                				$scope.defaultFolders.forEach(function(node){
+                					if(node.nodeType == EnumService.NODE_TYPE.question) {
+                						node.questnNumber = ++questionIndex;
+                					}
+                				})
+                			}
+                			if(destParent.node) {
+                				var questionIndex = 0;
+                				destParent.node.nodes.forEach(function(node){
+                					if(node.nodeType == EnumService.NODE_TYPE.question) {
+                						node.questnNumber = ++questionIndex;
+                					}
+                				})
+                			}
+                			if(destParent == null || destParent.node == null) {
+                				var questionIndex = 0;
+                				$scope.defaultFolders.forEach(function(node){
+                					if(node.nodeType == EnumService.NODE_TYPE.question) {
+                						node.questnNumber = ++questionIndex;
+                					}
+                				})
+                			}
+                			if(sourceParent.node) {
+                				var questionIndex = 0;
+                				sourceParent.node.nodes.forEach(function(node){
+                					if(node.nodeType == EnumService.NODE_TYPE.question) {
+                						node.questnNumber = ++questionIndex;
+                					}
+                				})
+                			}
+                			
             				$rootScope.blockLeftPanel.stop();
             			});                        
             		});            		            		
