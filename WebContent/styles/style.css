@@ -23,6 +23,15 @@ label {
 	line-height: 1em;
 }
 
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+	label {
+	font-family: Helvetica Neue Light;
+	font-size: 14px;
+	font-weight: normal;
+	color: #4D4D4D;
+	}
+}
+
 .container {
 	margin: 0 20px;
 }
