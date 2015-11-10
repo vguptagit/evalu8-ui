@@ -2,10 +2,7 @@
     <div>
         <div>
             <div class="newFolderDiv">
-                <!-- <label class=" treeDiv1"> -->
                 <button id="addfolder" class="addFolder fa fa-plus" event-focus="click" event-focus-id="txtFolderName" ng-click="showAddFolderPanel= !showAddFolderPanel" value="Add Folder" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Add new folder"><span class="text14 margin-lft-10">Add Folder</span></button>
-                <button id="import" data-ng-click="openImportBooksViewModal()"  class="import fa fa-download"><span class="text14 margin-lft-10" >Import</span></button>
-                <!-- </label> -->
             </div>
 
             <div class="createNewNode" ng-show="showAddFolderPanel">
@@ -29,8 +26,7 @@
 
                 <div data-ng-if="node.nodeType=='question'" ng-class="{questionSelected: node.isNodeSelected}">
                     <div class="questIndex qbQuestions" style="border-bottom: solid #F8f8f8;">
-						<div ng-if="node.questionType == 'userCreatedQuestion'" class="questionListIndex">{{(node.questnNumber) }})</div>
-						<div ng-if="node.questionType != 'userCreatedQuestion'" class="questionListIndex">{{$index + 1}})</div>
+						<div class="questionListIndex">{{(node.questnNumber) }})</div>
         				<div id="QBQuestion" nodeSelected={{node.isNodeSelected}} ng-mousedown="selectNode(this);" ui-tree-handle class="printViewContainer tree-node tree-node-content questionList" ng-class="{questionTitleInTree: node.questionXML}">
 							<button id="QBPencil" type="button" ng-show="node.showEditQuestionIcon" class="newTest-close questionIcon action-icon-bg glyphicon glyphicon-pencil" ng-mousedown="editQuestion(this)" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="bottom" tooltip="Move question to right for editing"></button>
             				<div class="printViewContainer" ng-if="node.textHTML" ng-bind-html="getHTML(this)"></div>
@@ -62,7 +58,7 @@
         </div>
 
         <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}" droppable="{{node.droppable}}">
-            <li ng-repeat="node in node.nodes" collapsed="true" ui-tree-node
+            <li ng-repeat="node in node.nodes" collapsed="true" ui-tree-node data-ng-class="{'questIndex' : node.nodeType=='question'}"
                 ng-include="'tests_renderer.html'" draggable="{{node.draggable}}" />
         </ol>
     </script>
@@ -94,8 +90,7 @@
 
 			<div data-ng-if="node.nodeType=='question'" ng-class="{questionSelected: node.isNodeSelected}">
             	<div class="questIndex qbQuestions" style="border-bottom: solid #F8f8f8;">
-					<div ng-if="node.questionType == 'userCreatedQuestion'" class="questionListIndex">{{(node.questnNumber) }})</div>
-					<div ng-if="node.questionType != 'userCreatedQuestion'" class="questionListIndex">{{$index + 1}})</div>
+					<div class="questionListIndex">{{(node.questnNumber) }})</div>
         			<div id="QBQuestion" nodeSelected={{node.isNodeSelected}} ng-mousedown="selectNode(this);" ui-tree-handle class="printViewContainer tree-node tree-node-content questionList" ng-class="{questionTitleInTree: node.questionXML}">
             			<button id="QBPencil" type="button" ng-show="node.showEditQuestionIcon" class="newTest-close questionIcon action-icon-bg glyphicon glyphicon-pencil" ng-mousedown="editQuestion(this)" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="bottom" tooltip="Move question to right for editing"></button>
             			<div class="printViewContainer" ng-if="node.textHTML" ng-bind-html="getHTML(this)"></div>
@@ -106,7 +101,7 @@
         </div>
         <ol ui-tree-nodes="" type="1" ng-model="node.nodes" class="questIndex" ng-class="{hidden: collapsed}" droppable="{{node.droppable}}">
 
-            <li ng-repeat="node in node.nodes" collapsed="true" ui-tree-node 
+            <li ng-repeat="node in node.nodes" collapsed="true" ui-tree-node data-ng-class="{'questIndex' : node.nodeType=='question'}"
 			ng-include="'tests_renderer.html'" draggable="{{node.draggable}}" />
         </ol>
     </script>
