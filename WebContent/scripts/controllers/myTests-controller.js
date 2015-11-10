@@ -588,7 +588,7 @@ angular.module('e8MyTests')
 	        	$('.testMessagetip').show()
 	        	setTimeout(function(){ 
 	        		$('.testMessagetip').hide();
-	        	}, 5000);
+	        	}, evalu8config.messageTipTimeMilliSeconds);
         	}
             if(test.node.nodeType != EnumService.NODE_TYPE.archiveFolder && test.node.nodeType != EnumService.NODE_TYPE.archiveTest ){
             	SharedTabService.showSelectedTestTab(test.node);
