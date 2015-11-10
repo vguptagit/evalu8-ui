@@ -728,7 +728,6 @@ angular
 												            $rootScope.$broadcast(
 																	        "handleBroadcast_createTestWizardCriteria",
 																	        response,
-																	        $scope.selectedQuestionTypes.toString(),
 																	        currentNode);
 												        } else {
 												            SharedTabService.addErrorMessage(currentNode.title, e8msg.warning.emptyFolder);
@@ -1530,8 +1529,7 @@ angular
 												})
 											}
 
-											$rootScope.$broadcast("handleBroadcast_AddQuestionsToTest",response,$scope.selectedQuestionTypes.toString(),
-													questionFolder,isAnyNodeAlreadyAdded);
+											$rootScope.$broadcast("handleBroadcast_AddQuestionsToTest",response,questionFolder,isAnyNodeAlreadyAdded);
 
 											$scope.editQuestionMode = false;
 
@@ -1923,6 +1921,10 @@ angular
 								}
 							}
 							
+							String.prototype.capitalizeFirstLetter = function() {
+							    return this.charAt(0).toUpperCase() + this.slice(1);
+							}
+							
 							var fillBookContainers=function(){
 								$scope.allContainers=[];
 								bookContainersArray.forEach(function(book){
@@ -1931,11 +1933,9 @@ angular
 									});
 								});
 								$scope.showWaitingForAutoComplete=false;
-								$scope.selectedContainer=$scope.selectedContainer.capitalizeFirstLetter();
-							}
-							
-							String.prototype.capitalizeFirstLetter = function() {
-							    return this.charAt(0).toUpperCase() + this.slice(1);
+								if($scope.selectedContainer!=undefined){
+									$scope.selectedContainer=$scope.selectedContainer.capitalizeFirstLetter();	
+								}
 							}
 							
 							var removeBookContainers=function(bookid){
@@ -2498,10 +2498,11 @@ angular
 							        }
 							    });
 							});
+
+							$scope.userMetadata=[];
 							
 							$scope.getUserMetadata=function(){
                                 UserService.userQuestionMetadata(function(userQuestionMetadata){
-                                    $scope.userMetadata=[];
                                     $scope.metadataValues = {
                                             "Difficulty":[]
                                     };
