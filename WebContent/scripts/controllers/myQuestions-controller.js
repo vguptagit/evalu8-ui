@@ -876,6 +876,117 @@ angular.module('e8MyTests')
 			}
 		}
 		
+        $scope.createTestWizardMode=false;
+        
+		// TODO : need to move this to service.
+		$scope.createTestWizardCriteria = function(
+				currentNode) {
+			$scope.createTestWizardMode=true;
+			
+			if (!SharedTabService.isTestWizardTabPresent) {
+				$rootScope
+						.$broadcast('handleBroadcast_AddTestWizard');
+			}
+			var tab = SharedTabService.tests[SharedTabService.currentTabIndex];
+			if (!tab.isTestWizard) {
+				$scope.createTestWizardMode=false;
+				return false;
+			}
+
+			if (!currentNode.node.isNodeSelected) {
+				$scope.selectedNodes.push(currentNode.node);
+				currentNode.node.isNodeSelected = !currentNode.node.isNodeSelected;
+			}
+			if(SharedTabService.isErrorExist(
+                    currentNode.node, $scope.selectedNodes)) {
+				$scope.createTestWizardMode=false;
+                SharedTabService
+                        .TestWizardErrorPopup_Open();
+                return false;
+            }
+			isChildNodeUsed=false;
+            $scope.selectedNodes.forEach(function(selectedNode){
+            	if(!isChildNodeUsed){
+                    $scope.isChildNodeUsed(selectedNode, tab)
+                }
+            });
+            
+            if(isChildNodeUsed){
+                SharedTabService.addErrorMessage(childNodesUsedForTestCreation,SharedTabService.errorMessageEnum.TopicInChapterIsAlreadyAdded);
+                SharedTabService.TestWizardErrorPopup_Open();
+                return false;    
+            }
+			var httpReqCount = 0,
+                httpReqCompletedCount = 0;
+			for (var i = 0; i < $scope.selectedNodes.length; i++) {
+				currentNode = $scope.selectedNodes[i];
+				if (currentNode.showTestWizardIcon) {
+				    httpReqCount++;
+				    currentNode.showTestWizardIcon = false;
+				    $rootScope.blockPage.start();
+					getQuestions(
+							currentNode,
+							function (response, currentNode) {
+							    try {
+							    	
+							        if (response.length) {
+							            $rootScope.$broadcast(
+												        "handleBroadcast_createTestWizardCriteria",
+												        response,
+												        currentNode);
+							        } else {
+							            SharedTabService.addErrorMessage(currentNode.title, e8msg.warning.emptyFolder);
+							            currentNode.showTestWizardIcon = true;
+							            for (var j = 0; j < tab.questionFolderNode.length; j++) {
+							                if (tab.questionFolderNode[j].guid == currentNode.guid) {
+							                    tab.questionFolderNode.splice(j, 1);
+							                }
+							            }                                                        
+							        }
+
+							        httpReqCompletedCount++;
+							        if (httpReqCount == httpReqCompletedCount && SharedTabService.errorMessages.length > 0) {
+							            SharedTabService.TestWizardErrorPopup_Open();
+							        }
+                                } catch (e) {
+                                    console.log(e);
+                                } finally {
+                                	$scope.createTestWizardMode=false;
+                                    $rootScope.blockPage.stop();
+                                }
+							});
+				}
+			}
+		}
+		
+		function getQuestions(currentNode, callBack) {
+			var node;
+			var questions=[];
+			if($scope.isSearchMode){
+				var isParentContainer=false; 
+				parentContainers.forEach(function(parentContainer){
+					if(parentContainer.guid==currentNode.guid){
+						isParentContainer=true;
+					}
+				});
+				if(currentNode.guid==$scope.searchedContainerId || isParentContainer){
+					node=$scope.searchedContainerId; 
+				}else{
+					node=currentNode.guid;
+				}
+			}else{
+				node=currentNode.guid;
+			}
+			
+		    UserQuestionsService.userBookQuestions(currentNode.guid, function (userQuestions) {
+		        var responceMetadatas = [];
+		        for (var i = 0; i < userQuestions.length; i++) {
+		            responceMetadatas.push(userQuestions[i].metadata);
+		        }
+		        callBack(responceMetadatas, currentNode)
+		    })			
+		}
+		
         $scope.getFolders = function(defaultFolder) {
         	if($scope.showAddFolderPanel){
         		$scope.showAddFolderPanel = false;
