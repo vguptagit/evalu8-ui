@@ -492,10 +492,10 @@ angular
 											            });
 
 											            newNode.selectedLevel = newNode.questionMetadata['Difficulty'] == undefined ? { name: 'Select Level', value:'0'}:{name:newNode.questionMetadata['Difficulty']==""?'Select Level':newNode.questionMetadata['Difficulty'],value:newNode.questionMetadata['Difficulty']==""?'0':newNode.questionMetadata['Difficulty']};
-											            newNode.qstnMasterData = buildQstnMasterDetails(newNode);
-											            newNode.optionsView = newNode.qstnMasterData.optionsView;
-											            newNode.EssayPageSize = newNode.qstnMasterData.EssayPageSize;
-											            newNode.BlankSize = newNode.qstnMasterData.BlankSize;
+											           
+											            newNode.qtiModel =  QtiService.getQtiModel(newNode.data, newNode.quizType);
+											            newNode.qstnModelMasterData = getQuestionMasterDataModel(newNode)
+											           
 											        }
 										       
 											        var nodeAlreadyExist = false;
