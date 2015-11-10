@@ -745,7 +745,7 @@ angular
 															} else {
 																$rootScope.blockPage.stop();
 																renderCounter--;
-																if(renderCounter == 0 && isAnyNodeAlreadyAdded){
+																if(renderCounter == 0 && isAnyNodeAlreadyAdded===true){
 								                            		$scope.IsConfirmation = false;
 							                                    	$scope.message = "Question(s) already added to the test, cannot be added again.";
 							                                    	$modal.open(confirmObject).result.then(function(ok) {
@@ -1671,7 +1671,7 @@ angular
 											    $scope.addTestWizardCriteria(
 											    		response, currentNode);
 											});
-							$scope.$on('handleBroadcast_AddQuestionsToTest', function (event, response, currentNode, isAnyNodeAlreadyAdded) {
+							$scope.$on('handleBroadcast_AddQuestionsToTest', function (event, response, currentNode,questionFolder, isAnyNodeAlreadyAdded) {
 							    QTI.initialize();
 							    renderCounter++;
 							    response = $.grep(response,function(obj, index){							    	

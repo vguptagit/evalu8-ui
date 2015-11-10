@@ -1551,32 +1551,17 @@ angular
 								$scope.updateTopicChildNodesStatus(selectedScopeNode);
 							};
 							
-							$scope.updateTopicChildNodesStatus = function(selectedNode){
-								var selectParent = false;
-								var existInSelectNodes = false;
-								var eachNisNodeSelected = false;
+							$scope.updateTopicChildNodesStatus = function(selectedNode){								
 								if(selectedNode.nodes){
-									selectedNode.nodes.forEach(function(node) {										
-										if(selectedNode.isNodeSelected){
-											for (var i = 0; i < $scope.selectedNodes.length; i++) {
-												existInSelectNodes = false;
-												if ($scope.selectedNodes[i].guid == node.guid) {
-													existInSelectNodes = true;
-													break;
-												}
-											}
+									selectedNode.nodes.forEach(function(node) {		
 											node.showEditQuestionIcon = false;
 											node.showTestWizardIcon = false;		
 											node.existInTestframe = true;
-											if(!existInSelectNodes){
-												$scope.selectedNodes.push(node);																							
-											}											
-											node.isNodeSelected = selectedNode.isNodeSelected;											
-										}						
+											node.isNodeSelected = true;	
+											$scope.addingNodeInSelectedNodesArray(node);
+										});						
 
-									});		
-
-								}			
+									};	
 
 							};				
 							
@@ -1739,6 +1724,7 @@ angular
 												for (var i = 0; i < $scope.questions.length; i++) {
 													$scope.questions[i].isNodeSelected = false;
 													$scope.questions[i].showEditQuestionIcon = false;
+													$scope.questions[i].existInTestframe = false;
 													for (var j = 0; j < tab.questions.length; j++) {
 														if ($scope.questions[i].guid === tab.questions[j].guid) {
 															$scope.questions[i].isNodeSelected = true;
