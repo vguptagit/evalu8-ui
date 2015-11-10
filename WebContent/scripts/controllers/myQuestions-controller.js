@@ -198,7 +198,7 @@ angular.module('e8MyTests')
                              	}
                     			if(sourceParent && sourceParent.node && sourceParent.node.nodes.length==0) {
                     				sourceParent.node.nodes.push(CommonService.getEmptyFolder());
-                    			}
+                    			}                    			
                     			
                         		$rootScope.blockLeftPanel.stop();
                         	});                	
@@ -217,6 +217,22 @@ angular.module('e8MyTests')
                     				sourceParent.node.nodes.push(CommonService.getEmptyFolder());
                     			}
                     			
+                    			if(sourceParent == null) {
+                    				var questionIndex = 0;
+                    				$scope.defaultFolders.forEach(function(node){
+                    					if(node.nodeType == EnumService.NODE_TYPE.question) {
+                    						node.questnNumber = ++questionIndex;
+                    					}
+                    				})
+                    			}
+                    			if(sourceParent && sourceParent.node) {
+                    				var questionIndex = 0;
+                    				sourceParent.node.nodes.forEach(function(node){
+                    					if(node.nodeType == EnumService.NODE_TYPE.question) {
+                    						node.questnNumber = ++questionIndex;
+                    					}
+                    				})
+                    			}
                         		$rootScope.blockLeftPanel.stop();                        			
                     		});
 
@@ -333,7 +349,7 @@ angular.module('e8MyTests')
                 					}
                 				})
                 			}
-                			if(sourceParent.node) {
+                			if(sourceParent && sourceParent.node) {
                 				var questionIndex = 0;
                 				sourceParent.node.nodes.forEach(function(node){
                 					if(node.nodeType == EnumService.NODE_TYPE.question) {
