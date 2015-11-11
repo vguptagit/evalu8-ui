@@ -168,9 +168,13 @@ angular
 						                return false;
 						            }
 						            
+						            /*on mousedown of plus icon or node we are calling selectNode() function and even in dragEnd event also we are calling this method,
+						            we need to cross check this use case,because of this call multi queston node drag and drop is working.
+						            */
 									if (!source.node.isNodeSelected) {
-										$scope.selectNode(source.node);
+										$scope.selectNode(source);
 									}
+									
 									if (SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
 									    $scope.createTestWizardCriteria(source)
 									} else {
@@ -933,6 +937,14 @@ angular
 													item.showTestWizardIcon = false;
 												}
 												item.parentId = currentNode.node.guid;
+												if($scope.isNodeInTestFrame(item)){
+													item.existInTestframe=true;
+													item.showEditQuestionIcon = false;
+													item.showTestWizardIcon = false;
+												}
+												if(currentNode.node.isNodeSelected){													
+													$scope.addingNodeInSelectedNodesArray(item);	
+												}
 												updateTreeNode(item);
 												addToQuestionsArray(item);
 												$scope.renderQuestion(item);
@@ -1112,9 +1124,10 @@ angular
 							};
 
 							//To check the question node is present in current test frame.
-							$scope.isNodeInTestFrame = function(node, test) {
+							$scope.isNodeInTestFrame = function(node) {
 								var isNodeUsed=false;
-								test.questions.forEach(function(usedNode) {
+								var activeTest = SharedTabService.tests[SharedTabService.currentTabIndex];
+								activeTest.questions.forEach(function(usedNode) {
 									if(usedNode.guid === node.guid){
 										isNodeUsed=true;
 										return;
@@ -1158,7 +1171,7 @@ angular
 								if(scope.node.isNodeSelected){								
 									scope.node.nodes.forEach(function(node) {	
 										node.isNodeSelected = true;
-										if(!$scope.isNodeInTestFrame(node,test)){
+										if(!$scope.isNodeInTestFrame(node)){
 											node.showEditQuestionIcon = true;
 											node.showTestWizardIcon = true; 	
 											node.existInTestframe = false;
@@ -1173,7 +1186,7 @@ angular
 										node.showEditQuestionIcon = false;
 										node.showTestWizardIcon = false; 	
 										node.existInTestframe = false; 											
-										if($scope.isNodeInTestFrame(node,test)){
+										if($scope.isNodeInTestFrame(node)){
 											node.isNodeSelected = true;		
 											node.existInTestframe = true;		
 										}else{										
@@ -1458,7 +1471,7 @@ angular
 							$scope.isAllSiblingsInTestFrame = function(scope,test) {
 								var allSiblingsNotExistInTestFrame=false;
 								scope.$parentNodeScope.node.nodes.forEach(function(node) {										
-									if(!$scope.isNodeInTestFrame(node,test)){
+									if(!$scope.isNodeInTestFrame(node)){
 										allSiblingsNotExistInTestFrame = true;
 										return;
 									} 																	
@@ -1600,6 +1613,7 @@ angular
                                                     $rootScope.blockPage.start();
                                                 	$scope.selectedNodes[i].showEditQuestionIcon = false;
                                                     $rootScope.$broadcast("dropQuestion",$scope.selectedNodes[i], destIndex,"QuestionBank", eventType);
+                                                    $scope.selectedNodes[i].existInTestframe = true;
                                             }    
 
 										} else if ($scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.chapter
@@ -1727,6 +1741,7 @@ angular
 														if ($scope.questions[i].guid === tab.questions[j].guid) {
 															$scope.questions[i].isNodeSelected = true;
 															$scope.questions[i].existInTestframe = true;
+															$scope.selectedNodes.push($scope.questions[i]);
 															break;
 														}
 													}
