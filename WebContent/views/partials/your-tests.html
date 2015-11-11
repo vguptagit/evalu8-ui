@@ -94,7 +94,7 @@
                                     <button data-ng-if="node.nodeType == 'folder'" data-ng-click="archiveFolder(this)" class="folderArchiveIcon fa fa-archive" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Move to Archive folder at bottom of screen" />
                                 </div>
                                 <div ng-show="node.isEditMode">
-                                    <button class="folderArchiveIcon fa fa-check" data-ng-click="editFolder(this,node);  " data-ng-disabled="node.title.length == 0" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Save changes" />
+                                    <button class="folderArchiveIcon fa fa-check" data-ng-click="editFolder(this,node);  " ng-class="{disabledColor:node.title.length == 0}" data-ng-disabled="node.title.length == 0" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Save changes" />
                                     <button class="folderArchiveIcon fa fa-times" data-ng-click="node.isEditMode= !node.isEditMode; node.title=node.titleTemp;" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Cancel" />
 
                                 </div>
@@ -139,7 +139,7 @@
                                 <button data-ng-if="node.nodeType == 'folder'" ng-click="archiveFolder(this)" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Move to Archive folder at bottom of screen" class="folderArchiveIcon fa fa-archive" />
                             </div>
                             <div ng-show="node.isEditMode">
-                                <button class="folderArchiveIcon fa fa-check" ng-click="editFolder(this,node); " data-ng-disabled="node.title.length == 0" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Save changes" />
+                                <button class="folderArchiveIcon fa fa-check" ng-click="editFolder(this,node); " ng-class="{disabledColor:node.title.length == 0}" data-ng-disabled="node.title.length == 0" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Save changes" />
                                 <button class="folderArchiveIcon fa fa-times" ng-click="node.isEditMode= !node.isEditMode; node.title=node.titleTemp;" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Cancel" />
                             </div>
                         </div>
