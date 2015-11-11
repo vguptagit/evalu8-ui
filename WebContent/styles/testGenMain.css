@@ -421,7 +421,8 @@ a.newFolder:hover {
 }
  
 #MyTest-tree-root #txtFolderNameEdit{
-    margin-top: -12px;
+    margin-top: -10px;
+    height: 30px;
 }
 .captionTestNode {
 	font-weight: normal;
@@ -433,10 +434,14 @@ a.newFolder:hover {
 }
 
 .iconsCourseNode {
-	float: right;
-	position: relative;
-	display: inline-block;
+	position: absolute;
 	margin-top: 5px;
+    right: 20px;
+    padding-left: 5px;
+    background-color: #007FA9;
+}
+.disabledColor{
+    color:#C3BDBD !important;
 }
 
 .iconsTestNode {
