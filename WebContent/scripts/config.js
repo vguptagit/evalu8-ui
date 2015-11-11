@@ -13,6 +13,7 @@
 	
 	ns.loginGraceTimeSeconds = 2; 
 	ns.welcomeLoginCount = 1;
+	ns.messageTipTimeMilliSeconds = 5000;
 	
 	ns.messageTipLoginCount = 2;
 	

@@ -661,7 +661,7 @@ angular
                                         $('.testMessagetip').show()
                                         setTimeout(function(){ 
                                             $('.testMessagetip').hide();
-                                        }, 5000);
+                                        }, evalu8config.messageTipTimeMilliSeconds);
                                     }
 
                                     SharedTabService.showSelectedTestTab(test.node);
@@ -1215,7 +1215,7 @@ angular
 									$('.questionMessagetip').show()
 									setTimeout(function() {
 										$('.questionMessagetip').hide();
-									}, 5000);
+									}, evalu8config.messageTipTimeMilliSeconds);
 								}
 								
 								if(node.isNodeSelected && node.showEditQuestionIcon == false ){
