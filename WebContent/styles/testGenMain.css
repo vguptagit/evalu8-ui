@@ -415,15 +415,16 @@ a.newFolder:hover {
 .captiondiv {
 	width: 80%;
 	float: left;
-	margin-top: 15px;
+	margin-top: 2px;
 	margin-left: 5px;
 	cursor: pointer;
 }
  
 #MyTest-tree-root #txtFolderNameEdit{
-    margin-top: -10px;
+    margin-top: 4px;
     height: 30px;
 }
+
 .captionTestNode {
 	font-weight: normal;
 }
@@ -435,7 +436,7 @@ a.newFolder:hover {
 
 .iconsCourseNode {
 	position: absolute;
-	margin-top: 5px;
+	margin-top: 6px;
     right: 20px;
     padding-left: 5px;
     background-color: #007FA9;
