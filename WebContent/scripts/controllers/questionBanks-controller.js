@@ -2559,19 +2559,19 @@ angular
 									appendMetadataSearchCriteria(metadataSearchCriteria,ShortMetadataEnum.DIFFICULTY,$scope.metadataValues.Difficulty.toString());
 								}
 								if($scope.metadataValues.Topk!=undefined && $scope.metadataValues.Topk!=""){
-									appendMetadataSearchCriteria(metadataSearchCriteria,ShortMetadataEnum.TOPIC,btoa($scope.metadataValues.Topk));
+									appendMetadataSearchCriteria(metadataSearchCriteria,ShortMetadataEnum.TOPIC,encodeURIComponent($scope.metadataValues.Topk));
 								}
 								if($scope.metadataValues.Objt!=undefined && $scope.metadataValues.Objt!=""){
-									appendMetadataSearchCriteria(metadataSearchCriteria,ShortMetadataEnum.OBJECTIVE,btoa($scope.metadataValues.Objt));
+									appendMetadataSearchCriteria(metadataSearchCriteria,ShortMetadataEnum.OBJECTIVE,encodeURIComponent($scope.metadataValues.Objt));
 								}
 								if($scope.metadataValues.PRef!=undefined && $scope.metadataValues.PRef!=""){
-									appendMetadataSearchCriteria(metadataSearchCriteria,ShortMetadataEnum.PAGEREFERENCE,btoa($scope.metadataValues.PRef));
+									appendMetadataSearchCriteria(metadataSearchCriteria,ShortMetadataEnum.PAGEREFERENCE,encodeURIComponent($scope.metadataValues.PRef));
 								}
 								if($scope.metadataValues.Skil!=undefined && $scope.metadataValues.Skil!=""){
-									appendMetadataSearchCriteria(metadataSearchCriteria,ShortMetadataEnum.SKILL,btoa($scope.metadataValues.Skil));
+									appendMetadataSearchCriteria(metadataSearchCriteria,ShortMetadataEnum.SKILL,encodeURIComponent($scope.metadataValues.Skil));
 								}
 								if($scope.metadataValues.QnId!=undefined && $scope.metadataValues.QnId!=""){
-									appendMetadataSearchCriteria(metadataSearchCriteria,ShortMetadataEnum.QUESTIONID,btoa($scope.metadataValues.QnId));
+									appendMetadataSearchCriteria(metadataSearchCriteria,ShortMetadataEnum.QUESTIONID,encodeURIComponent($scope.metadataValues.QnId));
 								}
 								
 								return metadataSearchCriteria;
