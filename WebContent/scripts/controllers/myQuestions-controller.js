@@ -1586,6 +1586,61 @@ angular.module('e8MyTests')
             }
         }
 
+        $scope.editFolder = function (element, node) {
+            var rootFolders = $scope.defaultFolders;
+            if (element.$parentNodeScope) {
+                rootFolders = element.$parentNodeScope.$parent.node.nodes;
+            }
+            var userFolder = node;
+            $scope.editingFolder = node;
+            if (userFolder.title == null || userFolder.title.trim().length == 0) { return; }
+
+            if (rootFolders
+            		&& rootFolders[0]
+            		&& rootFolders[0].nodeType == EnumService.NODE_TYPE.folder) {
+
+                var duplicateTitle = false;
+                rootFolders.forEach(function (rootFolder) {
+                    if (rootFolder.guid != userFolder.guid && rootFolder.title == userFolder.title && rootFolder.nodeType == EnumService.NODE_TYPE.folder) {
+                        duplicateTitle = true;
+
+                        $scope.message = "A folder already exists with this name. Please save with another name.";
+                        $scope.editingFolder.isEditMode = true;
+
+                        $modal.open(confirmObject).result.then(function (ok) {
+                            if (ok) {
+                                $("#txtFolderNameEdit").focus();
+                            }
+                        });
+                    }
+                });
+
+                if (duplicateTitle) return;
+
+            }
+             
+            QuestionFolderService.saveQuestionFolder(userFolder, function (userFolder) {
+                if (userFolder == null) {
+                    CommonService.showErrorMessage(e8msg.error.cantSave);
+                    return;
+                }
+                // $scope.loadTree();
+
+                userFolder.nodeType = "folder";
+                //rootFolders.unshift(userFolder);
+                $scope.editingFolder.isEditMode = false;
+                $scope.editingFolder.titleTemp = angular.copy(userFolder.title);
+
+                if (rootFolders.length == 1) {
+                    rootFolders.push(CommonService.getArchiveRoot());
+                }
+
+                $scope.folderName = "";
+
+                userFolder.isEditMode = false;
+            });
+        }
+
         $scope.addNewFolder = function (enterKey) {
         	
         	$scope.enterKey = enterKey;

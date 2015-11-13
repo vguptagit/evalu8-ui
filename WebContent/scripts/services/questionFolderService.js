@@ -18,6 +18,7 @@ angular.module('evalu8Demo')
 										item.nodeType = "folder";
 										item.draggable = true;
 										item.isNodeSelected = false;
+										item.titleTemp = angular.copy(item.title);
 										defaultFolders.push(item);																								    							    							
 									});
 									
@@ -91,6 +92,7 @@ angular.module('evalu8Demo')
 					response.forEach (function(item) {  
 						item.nodeType = "folder";
 						item.draggable = true;
+						item.titleTemp = angular.copy(item.title);
 						userFolders.push(item);    							    							
 					});
 					callback (userFolders);
