@@ -1745,6 +1745,13 @@ angular.module('e8MyTests')
         	});
         }        
         
+        //Handling the Broadcast event when selected question is removed from the Test creation frame.
+        // here need to remove the question node from selected list and need to chnage his state. 
+        $scope.$on('handleBroadcast_deselectQuestionNode',
+                function(handler, node) {
+                    $scope.deselectQuestionNode(node);
+                });
+        
 		$scope.$on('handleBroadcast_AddNewTest', function (handler, newTest, containerFolder, isEditMode, oldGuid, editedQuestions, editedMigratedQuestions, createdTab, testCreationFrameScope) {
 			
 			editedQuestions.forEach(function(editedQuestion) {

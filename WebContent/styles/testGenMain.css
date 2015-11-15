@@ -1529,7 +1529,7 @@ li[printmode='false'] #crtAns{
 }
 
 .printViewContainer .optionLabelView {
-	padding-left: 5px;
+
 	max-width: 91%;
 	margin-top: 1px;
 	line-height: 1.3em;
@@ -2224,8 +2224,15 @@ ul.a {
     border-radius: 5px;
 }
 
+.questionNotSelected {
+	-webkit-box-shadow: 0px 0px 4px 2px #f8f8f8;
+	-moz-box-shadow: 0px 0px 4px 2px #f8f8f8;
+	box-shadow: 0px 0px 6px 2px #f8f8f8;
+	border-radius: 5px;
+}
+
 .qbQuestions {
-	margin: 1px;
+	margin: 1px 1px 4px 1px;
 	padding-left: 1px;
 	padding-bottom: 8px;
 	padding-right: 7px;
