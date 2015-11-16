@@ -46,8 +46,11 @@ angular
 							
 							if (SharedTabService.tests[SharedTabService.currentTabIndex].questions.length) {
 							    var test = SharedTabService.tests[SharedTabService.currentTabIndex];
-							    for (var i = 0; i < test.questions.length; i++) {
-							        $scope.selectedNodes.push(test.questions[i]);
+							    for (var i = 0; i < test.questions.length; i++) {							    
+							    	var questionNode = angular.copy(test.questions[i]);
+							    	questionNode.isNodeSelected = true;
+							    	questionNode.existInTestframe = true;
+							        $scope.selectedNodes.push(questionNode);
 							    }
 							}
 						    //no teb switch, restore selectedNodes items
@@ -926,25 +929,7 @@ angular
 											currentNode.node.nodes = currentNode.node.nodes.concat(sortedNodes);
 											var questionCount=0;
 											angular.forEach(responseQuestions, function(item) {
-												item.nodeType = "question";												
-												if(currentNode.node.isNodeSelected){
-													item.isNodeSelected = currentNode.node.isNodeSelected;
-													item.showEditQuestionIcon = true;
-													item.showTestWizardIcon = true;
-												}else{
-													item.isNodeSelected = currentNode.node.isNodeSelected;
-													item.showEditQuestionIcon = false;
-													item.showTestWizardIcon = false;
-												}
-												item.parentId = currentNode.node.guid;
-												if($scope.isNodeInTestFrame(item)){
-													item.existInTestframe=true;
-													item.showEditQuestionIcon = false;
-													item.showTestWizardIcon = false;
-												}
-												if(currentNode.node.isNodeSelected){													
-													$scope.addingNodeInSelectedNodesArray(item);	
-												}
+												setQuestionNodeStatus(item,currentNode);												
 												updateTreeNode(item);
 												addToQuestionsArray(item);
 												$scope.renderQuestion(item);
@@ -959,6 +944,33 @@ angular
 									}
 								
 								
+							}
+							
+							//to change the status of the topic's node, when we expand a topic.
+							var setQuestionNodeStatus=function(item,currentNode){
+								item.nodeType = "question";			
+								
+								//change the status of node, if parent node is selected.
+								if(currentNode.node.isNodeSelected){
+									item.isNodeSelected = currentNode.node.isNodeSelected;
+									item.showEditQuestionIcon = true;
+									item.showTestWizardIcon = true;
+								}
+								
+								item.parentId = currentNode.node.guid;
+								
+								//change the status of node, if node is present in test frame.
+								if($scope.isNodeInTestFrame(item)){
+									item.existInTestframe=true;
+									item.isNodeSelected = true;
+									item.showEditQuestionIcon = false;
+									item.showTestWizardIcon = false;													
+								}
+								
+								//add the node to $scope.selectedNodes array, if node is in selected status.
+								if(item.isNodeSelected){													
+									$scope.addingNodeInSelectedNodesArray(item);	
+								}
 							}
 							
 							var stopIndicator=function(selectedNode){
