@@ -494,7 +494,7 @@ span.glyphicon.glyphicon-info-sign {
 }
 .captionLabel {
   white-space: nowrap;
-  width: 18em;
+  width: 20em;
   overflow: hidden;
   text-overflow: ellipsis;
   height:15px;

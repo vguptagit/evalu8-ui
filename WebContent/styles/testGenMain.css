@@ -419,6 +419,8 @@ a.newFolder:hover {
 	margin-left: 5px;
 	cursor: pointer;
 	padding-bottom: 3px;
+	height: 25px;
+	margin-bottom: 13px;
 }
  
 #MyTest-tree-root #txtFolderNameEdit{
