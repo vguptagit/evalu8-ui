@@ -379,7 +379,7 @@ a.newFolder:hover {
 }
 
 .maindiv {
-	min-height: 40px;
+	min-height: 30px;
 	width: 100%;
 	display: table;
 	padding-left: 10px;
@@ -418,6 +418,7 @@ a.newFolder:hover {
 	margin-top: 2px;
 	margin-left: 5px;
 	cursor: pointer;
+	padding-bottom: 3px;
 }
  
 #MyTest-tree-root #txtFolderNameEdit{

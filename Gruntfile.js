@@ -268,17 +268,17 @@ module.exports = function (grunt) {
     // concat: {
     //   dist: {}
     // },
-// need to revert it back.
-    //imagemin: {
-      //dist: {
-       // files: [{
-         // expand: true,
-          //cwd: '<%= yeoman.app %>/images',
-          //src: '{,*/}*.{png,jpg,jpeg,gif,cur}',
-          //dest: '<%= yeoman.dist %>/images'
-       // }]
-      //}
-    //},
+
+    imagemin: {
+      dist: {
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.app %>/images',
+          src: '{,*/}*.{png,jpg,jpeg,gif,cur}',
+          dest: '<%= yeoman.dist %>/images'
+        }]
+      }
+    },
 
     svgmin: {
       dist: {
@@ -364,12 +364,6 @@ module.exports = function (grunt) {
          dest: '<%= yeoman.dist %>/scripts'
          },{
           expand: true,
-          dot: true,
-          cwd: '<%= yeoman.app %>',
-          src: ['images/*.*'],
-          dest: '<%= yeoman.dist %>'
-         },{
-          expand: true,
           cwd: 'bower_components/bootstrap/dist',
           src: 'fonts/*',
           dest: '<%= yeoman.dist %>'
@@ -393,6 +387,7 @@ module.exports = function (grunt) {
       ],
       dist: [
         'copy:styles',
+        'imagemin',
         'svgmin'
       ]
     },
