@@ -3,8 +3,8 @@
 angular.module('evalu8Demo')
 
 .service('UserFolderService', 
-		['$http', '$rootScope', '$location', '$cookieStore', '$cacheFactory', 'CommonService', 'HttpService',
-		 function($http, $rootScope, $location, $cookieStore, $cacheFactory, CommonService, HttpService) {			
+		['$http', '$rootScope', '$location', '$cookieStore', '$cacheFactory', 'CommonService', 'HttpService','EnumService',
+		 function($http, $rootScope, $location, $cookieStore, $cacheFactory, CommonService, HttpService,EnumService) {			
 					
 			this.defaultFolders = function(callback) {				
 
@@ -119,7 +119,11 @@ angular.module('evalu8Demo')
 				    if (callback) callback(response);
 				})
 				.error(function(error, status) {
-					callback(null);
+					if(status == EnumService.HttpStatus.CONFLICT) {
+						callback(EnumService.HttpStatus.CONFLICT);
+					} else {
+						callback(null);
+					}
 				})				
 			};			
 						

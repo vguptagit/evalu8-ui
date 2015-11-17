@@ -36,7 +36,7 @@
     </script>
     
     <script type="text/ng-template" id="defaultfolder_renderer.html">
-        <div draggable="{{node.draggable}}" data-ui-tree-node>
+        <div draggable="{{node.draggable && !node.isEditMode}}" data-ui-tree-node>
             <div ui-tree-handle class="tree-node tree-node-content">
 
                 <div class="treeDiv"

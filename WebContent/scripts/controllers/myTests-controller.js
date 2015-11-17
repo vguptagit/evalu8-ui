@@ -1178,6 +1178,10 @@ angular.module('e8MyTests')
                 rootFolders = element.$parentNodeScope.$parent.node.nodes;
             }
             var userFolder = node;
+            if(userFolder.title == userFolder.titleTemp){
+            	userFolder.isEditMode = false;
+            	return;
+            }
             $scope.editingFolder = node;
             if (userFolder.title == null || userFolder.title.trim().length == 0) { return; }
 
@@ -1187,10 +1191,10 @@ angular.module('e8MyTests')
 
                     var duplicateTitle = false;
                     rootFolders.forEach(function (rootFolder) {
-                        if (rootFolder.guid != userFolder.guid && rootFolder.title == userFolder.title && rootFolder.nodeType == EnumService.NODE_TYPE.folder) {
+                        if (rootFolder.guid != userFolder.guid && rootFolder.titleTemp == userFolder.title && rootFolder.nodeType == EnumService.NODE_TYPE.folder) {
                             duplicateTitle = true;
                         
-                            $scope.message = "A folder already exists with this name. Please save with another name.";
+                            $scope.message = e8msg.validation.duplicateFolderTitle;
                             $scope.editingFolder.isEditMode = true;
 
                             $modal.open(confirmObject).result.then(function (ok) {
@@ -1204,11 +1208,18 @@ angular.module('e8MyTests')
                     if (duplicateTitle) return;
 
                 }
+           
             UserFolderService.saveUserFolder(userFolder, function (userFolder) {
                 if (userFolder == null) {
                     CommonService.showErrorMessage(e8msg.error.cantSave);
                     return;
-                }
+                }else if(userFolder == EnumService.HttpStatus.CONFLICT) {
+        			$rootScope.blockLeftPanel.stop();
+    	            $scope.IsConfirmation = false;
+    	            $scope.message = e8msg.validation.duplicateFolderTitle;
+    	            $modal.open(confirmObject);        		
+            		return;
+        		}
                 // $scope.loadTree();
 
                 userFolder.nodeType = "folder";
@@ -1224,7 +1235,8 @@ angular.module('e8MyTests')
 
                 userFolder.isEditMode = false;
             });
-        }
+          }
+        
         $scope.addNewFolder = function (enterKey) {
         	
         	$scope.enterKey = enterKey;
@@ -1244,7 +1256,7 @@ angular.module('e8MyTests')
             			
             			$scope.isAddFolderClicked=true;
                         $scope.IsConfirmation = false;
-                        $scope.message = "A folder already exists with this name. Please save with another name.";
+                        $scope.message = e8msg.validation.duplicateFolderTitle;
 
                         $modal.open(confirmObject).result.then(function(ok) {
                             if(ok) {
@@ -1269,7 +1281,13 @@ angular.module('e8MyTests')
 				if(userFolder==null){
              		CommonService.showErrorMessage(e8msg.error.cantSave);
              		return;
-             	}
+             	}else if(userFolder == EnumService.HttpStatus.CONFLICT) {
+        			$rootScope.blockLeftPanel.stop();
+    	            $scope.IsConfirmation = false;
+    	            $scope.message = e8msg.validation.duplicateFolderTitle;
+    	            $modal.open(confirmObject);        		
+            		return;
+        		}
             	// $scope.loadTree();
             	
             	userFolder.nodeType = "folder";
