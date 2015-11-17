@@ -32,6 +32,19 @@ angular.module('evalu8Demo')
 				})
 		};
 		
+		this.allFolderQuestions = function(questionFolderId, callback) {	
+
+			var userQuestions = [];
+			HttpService.get(evalu8config.apiUrl + "/my/questions?flat=1&folderId=" + questionFolderId)
+				.success(function(response) {
+					userQuestions= response;
+					callback(userQuestions)
+				})
+				.error(function(){
+					callback(userQuestions);
+				})
+		};
+		
 		this.userQuestionsFolders = function(callback) {	
 
 			var userQuestionsFolders = [];
