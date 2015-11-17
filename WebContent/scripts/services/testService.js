@@ -217,6 +217,21 @@ angular.module('evalu8Demo')
                 	callback(null);
                 });
 			}
+			
+			this.uploadTestPackage=function(file,folderID,callback){
+				$upload.upload({
+                    url: evalu8config.apiUrl + 'my/folders/'+folderID+'/tests/import',
+                    headers: {
+						'x-authorization' : $rootScope.globals.authToken,
+						'Accept' : 'application/json;odata=verbose'
+					},
+                    file: file
+                }).success(function (data, status) {
+                    callback(data, status);
+                }).error(function(data, status){
+                	callback(data, status);
+                });
+			} 
 		}
 			
 			

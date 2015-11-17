@@ -1,18 +1,38 @@
-<div class="importInPopUp">
-	<div class="modal-header">
+<div class="modal-header botborder">
+	<div class="col-md-2 margin-top-10 margin-lft-5neg">
+		<h4 class="modal-default-header-title" id="myModalLabel">Import</h4>
+	</div>
+	<div class="col-md-10">
+		<button type="button" class="close close-import"
+			data-ng-click="cancel()" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+	<div class="row col-md-12 margin-top-4">
+		<ul class="row nav nav-tabs resources-tabs ng-scope margin-lft-5neg">
+			<li ng-class="{'active': activeTab == 'questionBankImport'}"><a
+				class="ng-binding" ng-click="showQuestionBankImport(this)">Question
+					Bank Import</a></li>
+			<li ng-class="{'active': activeTab == 'testImport'}"><a
+				class="ng-binding" ng-click="showTestImport(this)">Test Import</a></li>
+		</ul>
+	</div>
+</div>
+<div class="importInPopUp" ng-show="activeTab == 'questionBankImport'">
+	<!-- <div class="modal-header">
 		<button type="button" class="close" data-ng-click="cancel()"
 			aria-label="Close">
 			<span aria-hidden="true">&times;</span>
 		</button>
 		<h4 class="modal-default-header-title" id="myModalLabel">Import</h4>
-	</div>
+	</div> -->
 
 	<div class="modal-body">
 		<div class="container-fluid paddingall20">
 			<div class="row" style="vertical-align: middle;">
 				<div class="col-md-12">
 					<div x-ng-controller="ImportUserBooksController"
-			x-ng-include="'views/partials/import-books.html'"></div>
+						x-ng-include="'views/partials/import-books.html'"></div>
 				</div>
 			</div>
 
@@ -22,7 +42,61 @@
 				<div class="col-md-5"></div>
 				<div class="col-md-7 text-right">
 					<button data-ng-click="cancel()" class="backButton">Cancel</button>
-					<button class="nextButton btnDisbled" data-ng-class="{btnDisbled:!isUserSelectedItem}"  data-ng-disabled="!isUserSelectedItem"  data-ng-click="importUserBooks()">Import</button>
+					<button class="nextButton btnDisbled"
+						data-ng-class="{btnDisbled:!isUserSelectedItem}"
+						data-ng-disabled="!isUserSelectedItem"
+						data-ng-click="importUserBooks()">Import</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="importInPopUp" ng-show="activeTab == 'testImport'">
+	<div class="modal-body">
+		<div class="container-fluid paddingall20">
+			<div class="row">
+				<div class="col-md-12 importTestTitle">Browse for file on your
+					computer</div>
+				<div class="col-md-12 margin-top-5">Kind of files you can
+					import:</div>
+				<div class="col-md-12 margin-top-5">
+					<ul>
+						<li css="margin-top-5">QTI 2.1 zip file from Pegasus</li>
+					</ul>
+				</div>
+			</div>
+			<div class="row">
+				<div id="uploadTestPackage"
+					class="col-md-12 uploadTestPackage margin-lft-20" ng-file-drop
+					ng-accept="'*.zip'" data-ng-file-change="upload($files)"
+					drag-over-class="{accept:'dragover', reject:'dragover-err', delay:100}">
+					<div>Drag package here or browse to upload 
+						<input id="browseTestPackage" class="browseTestPackage" type="button"
+							value="Browse" data-ng-file-select
+							data-ng-file-change="upload($files)" ng-accept="'*.zip'" />
+					</div>
+				</div>
+			</div>
+			<div class="row" ng-show="selectedFileName != ''">
+				<div class="col-md-12 margin-top-10">{{selectedFileName}}</div>
+			</div>
+			<div class="row" ng-show="warningMsg != ''">
+				<div class="col-md-12 margin-top-10" style="color: red;">{{warningMsg}}</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12"
+					style="border-bottom: 1px solid #ddd; padding-top: 45px;">&nbsp;
+				</div>
+			</div>
+			<div class="row" style="padding-top: 12px;">
+				<div class="col-md-5"></div>
+				<div class="col-md-7 text-right">
+					<button data-ng-click="cancel()" class="backButton">Cancel</button>
+					<button class="nextButton btnDisbled"
+						data-ng-class="{btnDisbled:!isFileSelected}"
+						data-ng-disabled="!isFileSelected"
+						data-ng-click="importTestPacakge()">Import</button>
 				</div>
 			</div>
 		</div>

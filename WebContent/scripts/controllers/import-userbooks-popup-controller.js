@@ -1,10 +1,20 @@
 ﻿angular.module('e8MyTests')
 .controller('ImportUserBooksPopUpController',
 		['$scope', '$rootScope','$location', '$modal',  'UserBookService',
-		 'notify',
-		 function ($scope, $rootScope,$location, $modal,UserBookService,
-				 notify) {
+		 'notify','TestService','UserFolderService','EnumService','$modalInstance',
+		 function ($scope, $rootScope,$location, $modal,UserBookService,notify,TestService,UserFolderService,EnumService,$modalInstance) {
 
+			$scope.activeTab = "questionBankImport";
+			
+			
+			 $scope.showQuestionBankImport = function() {
+				  $scope.activeTab = "questionBankImport";
+			  }
+
+			  $scope.showTestImport = function() {
+				  $scope.activeTab = "testImport";
+			  }
+			
 			$scope.userBook = {	books:[] };
 
 			$scope.isUserSelectedBook = false;
@@ -43,7 +53,41 @@
 					position: $scope.position,
 					duration: '1500'
 				});
-			};				
-
-
+			};	
+			
+			$scope.testPackage;
+			
+			$scope.upload = function(file) {
+				$scope.isFileSelected=false;
+				$scope.selectedFileName="";
+				$scope.warningMsg="";
+				if(file.length>0){
+					if(file[0].size> evalu8config.maxSizeForTestPackage){
+						$scope.selectedFileName=file[0].name;
+						$scope.warningMsg="File is too big to upload.Maximum file size supported is 4MB";
+						return;
+					}
+					$scope.isFileSelected=true;
+					$scope.selectedFileName=file[0].name;	
+					$scope.testPackage=file[0];
+				}
+			}
+			
+			$scope.importTestPacakge=function(){
+				$rootScope.blockPage.start();
+				UserFolderService.testRootFolder(function(myTestRoot){
+					TestService.uploadTestPackage($scope.testPackage,myTestRoot,function(response,status){
+						$rootScope.blockPage.stop();
+						if(status==EnumService.HttpStatus.BADREQUEST){
+							$scope.warningMsg=response;		
+						}else if(status==EnumService.HttpStatus.SUCCESS){
+							$modalInstance.dismiss('cancel');
+						}else if(status==EnumService.HttpStatus.NOTFOUND){
+							$scope.warningMsg="Bad request";
+						}
+					});
+				});
+				
+			}
+			
 		}]);

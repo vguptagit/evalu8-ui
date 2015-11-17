@@ -46,6 +46,9 @@ angular.module('evalu8Demo')
     };
     
     this.HttpStatus = {
-    	CONFLICT: 409
+    	CONFLICT: 409,
+    	BADREQUEST: 400,
+    	SUCCESS: 200,
+    	NOTFOUND: 404,
     };
 });

@@ -1345,3 +1345,44 @@ h4, .h4, h5, .h5, h6, .h6 {
 .question_bank_scrollbar .activeFolder .captiondiv label{
     color: #fff;
 }
+
+.close-import{
+    margin-top: 3px !important;
+    margin-right: -26px;
+}
+
+.uploadTestPackage{
+    float: left;
+    background-color: #d9edf7;
+    border-bottom: 1px solid #bce8f1 !important;
+    margin-top: 1px;
+    width: 93%;
+    height: 60px;
+}
+
+.uploadTestPackage div:before {
+  font-family: Glyphicons Halflings;
+  content: "\e086 ";
+  position: relative;
+  top: 3px;
+  padding-right: 5px;
+  color: #31708f;
+}
+
+.uploadTestPackage div {
+  font-size: large;
+  font-weight: 500;
+  padding-top: 20px;
+  padding-bottom: 10px;
+}
+
+.browseTestPackage {  
+  border-radius: 5px;
+  border: solid 1px #DEDEDE;
+  background-color: #fff;  
+  float: right;
+  margin-right: -8px;
+  height: 25px;
+  font-family: Helvetica Neue Light;
+  font-size: 14px;
+}
