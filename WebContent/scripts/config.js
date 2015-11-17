@@ -17,6 +17,9 @@
 	
 	ns.messageTipLoginCount = 2;
 	
+	ns.maxSizeForTestPackage="4194304";
+	
+	
 	/// Google Analytics related configuration
 	ns.gaEnabled = false;
 	ns.gaTracking = 'UA-63894857-1';
