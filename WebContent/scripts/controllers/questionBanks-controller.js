@@ -42,7 +42,33 @@ angular
 						    $rootScope.blockPage = blockUI.instances.get('BlockPage');
 						    
 							$scope.controller = EnumService.CONTROLLERS.questionBanks;
-							$scope.selectedNodes = [];
+							$scope.selectedNodes = [];			
+							
+							//To check the question node is present in selectedNodes array.
+							$scope.isNodeInSelectedNodesArray = function(node) {
+								var isNodeUsed=false;
+								$scope.selectedNodes.forEach(function(usedNode) {
+									if(usedNode.guid === node.guid){
+										isNodeUsed=true;
+										return;
+									}
+								});
+								return isNodeUsed;								
+							}
+
+							//To add a node to selectedNodes array.
+							$scope.addingNodeInSelectedNodesArray = function(node) {								
+								if(!$scope.isNodeInSelectedNodesArray(node)){
+									$scope.selectedNodes.push(node);
+								}			
+							}
+							
+						    //no teb switch, restore selectedNodes items
+							for (var i = 0; i < SharedTabService.tests.length; i++) {
+							    if (SharedTabService.tests[i].treeNode) {
+							        $scope.selectedNodes.push(SharedTabService.tests[i].treeNode);
+							    }
+							}
 							
 							if (SharedTabService.tests[SharedTabService.currentTabIndex].questions.length) {
 							    var test = SharedTabService.tests[SharedTabService.currentTabIndex];
@@ -52,13 +78,14 @@ angular
 							    	questionNode.existInTestframe = true;
 							        $scope.selectedNodes.push(questionNode);
 							    }
-							}
-						    //no teb switch, restore selectedNodes items
-							for (var i = 0; i < SharedTabService.tests.length; i++) {
-							    if (SharedTabService.tests[i].treeNode) {
-							        $scope.selectedNodes.push(SharedTabService.tests[i].treeNode);
+							    
+							    for (var j = 0; j < test.questionFolderNode.length; j++) {
+							    	var questionFolderNode = angular.copy(test.questionFolderNode[j]);							    	
+							    	$scope.addingNodeInSelectedNodesArray(questionFolderNode);
 							    }
+							    
 							}
+							
 							$scope.isSearchMode = false;
 							$scope.dragStarted = false;
 							$scope.isAdvancedSearchMode = false;
@@ -1146,26 +1173,7 @@ angular
 									}
 								});
 								return isNodeUsed;									
-							}
-
-							//To check the question node is present in selectedNodes array.
-							$scope.isNodeInSelectedNodesArray = function(node) {
-								var isNodeUsed=false;
-								$scope.selectedNodes.forEach(function(usedNode) {
-									if(usedNode.guid === node.guid){
-										isNodeUsed=true;
-										return;
-									}
-								});
-								return isNodeUsed;								
-							}
-
-							//To add a node to selectedNodes array.
-							$scope.addingNodeInSelectedNodesArray = function(node) {								
-								if(!$scope.isNodeInSelectedNodesArray(node)){
-									$scope.selectedNodes.push(node);
-								}			
-							}
+							}							
 
 							//To remove a node from selectedNodes array.
 							$scope.removeNodeFromSelectedNodes = function(node) {
@@ -1208,12 +1216,23 @@ angular
 									});									
 								}								
 							};
+							
+							//to skip the selection of a node if node is present in test frame.
+							var skipNodeSelection=function(node){
+								if(node.isNodeSelected && node.showEditQuestionIcon == false ){
+									return true;
+								}								
+							}
 
 
 							var isParentNodeUsed=false;
 							$scope.selectNode = function (scope) {
 								
 								var node = scope.node;
+								
+								if(skipNodeSelection(node)){
+									return;
+								}
 								
 								if($scope.showAddFolderPanel) {
 	                                   $scope.showAddFolderPanel = false; 
@@ -1230,12 +1249,7 @@ angular
 									}, evalu8config.messageTipTimeMilliSeconds);
 								}
 								
-								if(node.isNodeSelected && node.showEditQuestionIcon == false ){
-									if (node.nodeType === EnumService.NODE_TYPE.question) {
-										return;
-									}
-									//return;
-								}	
+								
 								
 								
 								if (!node.isNodeSelected) {
@@ -1778,17 +1792,8 @@ angular
 												break;
 											}									
 								}
-									if($scope.questions){
-										for (var i = 0; i < $scope.questions.length; i++) {
-											if ($scope.questions[i].guid == node.guid) {
-												$scope.questions[i].existInTestframe = false;
-												$scope.questions[i].isNodeSelected=false;
-												break;
-											}
-										}
-									}
 									
-									$scope.updateParentNodeStatus(node);
+								$scope.updateParentNodeStatus(node);
 							};			
 							
 							//#To check whether the any parent node of selected node is used for test creation(edit question/wizard)  
@@ -1828,6 +1833,7 @@ angular
 		                                        $scope.questions[i].isNodeSelected = false;
 		                                        $scope.questions[i].showEditQuestionIcon = false;
 		                                        $scope.questions[i].showTestWizardIcon = false; 
+		                                        $scope.questions[i].existInTestframe = false;
 		                                        break;
 	                                    	}
                                 }

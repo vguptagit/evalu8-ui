@@ -515,8 +515,7 @@ angular.module('evalu8Demo')
 
 		         if (sharedTabService.tests.length == 0) {
 		             sharedTabService.addNewTest(scope);
-		         }
-		         $rootScope.$broadcast("handleBroadcast_closeTab", test);
+		         }		         
 		     }
 
 		     var removeMasterTestByIndex = function (index) {
