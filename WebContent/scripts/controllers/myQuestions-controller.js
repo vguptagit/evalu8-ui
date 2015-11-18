@@ -1358,6 +1358,9 @@ angular.module('e8MyTests')
             	var duplicateTitle = false;
             	$scope.defaultFolders.forEach(function(rootFolder) {
             		if(rootFolder.title == $scope.folderName && rootFolder.nodeType == EnumService.NODE_TYPE.folder) {
+            			if(rootFolder.titleTemp != $scope.folderName){
+                            return;
+                        }
             			duplicateTitle = true;	
             			
             			$scope.isAddFolderClicked=true;
