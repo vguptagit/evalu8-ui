@@ -130,7 +130,7 @@ angular.module('e8MyTests')
 				$scope.selectNode(source);
 			}
 
-            if(!(source.node.nodeType === EnumService.NODE_TYPE.question && destParent.controller === EnumService.CONTROLLERS.myQuestion)){        
+            if(!(destParent.controller === EnumService.CONTROLLERS.myQuestion)){        
 
                 if (SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
                     $scope.createTestWizardCriteria(source)
