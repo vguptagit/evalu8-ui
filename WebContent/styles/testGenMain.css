@@ -456,18 +456,27 @@ a.newFolder:hover {
 
 .iconsChapter {
 	float: right;
-	position: absolute;
-	right: 25px;
-	margin-top: 5px;
-	width: 90px;
+    position: absolute;
+    right: 25px;
+    margin-top: 5px;
+    width: 90px;
 }
 
 .iconsQuestionFolder {
     float: right;
     position: absolute;
-    right: 20px;
+    right: 4px;
     margin-top: 5px;
-    width: 130px;
+    width: 131px;
+    padding-left: 2px;
+}
+
+.iconsQuestionFolder .glyphicon-plus{
+    margin-left: -4px;
+} 
+
+.iconsQuestionFolder .fa-pencil{
+	margin-left: 2px;
 }
 
 .iconsChapter span:first-child {

@@ -545,6 +545,8 @@ angular.module('e8MyTests')
 			
 			if($scope.enterKey == true) {
                 $scope.enterKey = false;
+                $scope.showAddFolderPanel = false;
+                $scope.$digest();
                 return;
             }
                 

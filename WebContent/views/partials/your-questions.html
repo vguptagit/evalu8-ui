@@ -48,13 +48,13 @@
                             <input type="image" ng-click="getFolders(this)" class="collapseImg" value=""
                                    ng-src="{{collapsed && 'images/right_arrow2.png' || 'images/right_arrow.png'}}" ng-show="!node.isEditMode" />
                         </div>
-                        <div class="captiondiv" ng-mousedown="selectNode(this);">
+                        <div class="captiondiv" >
                             <input type="text" data-ng-model="node.title" id="txtFolderNameEdit" ng-show="node.isEditMode"
                                    class="form-control"
                                    placeholder="{{node.title}}" ng-enter="editFolder(this,node)" />
-                            <label class="captionLabel" title="{{node.title}}" ng-show="!node.isEditMode">{{node.title}}</label>
+                            <label ng-mousedown="selectNode(this);" class="captionLabel" title="{{node.title}}" ng-show="!node.isEditMode">{{node.title}}</label>
                         </div>
-                        <div class="iconsQuestionFolder">
+                         <div class="iconsQuestionFolder">
                             <div ng-show="node.isNodeSelected">
                                 <div ng-show="!node.isEditMode">
                                     <button class="action-icon-bg fa fa-pencil" event-focus="click" event-focus-id="txtFolderNameEdit" 
