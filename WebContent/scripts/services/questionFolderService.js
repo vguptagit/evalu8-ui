@@ -66,7 +66,7 @@ angular.module('evalu8Demo')
 			this.getFoldersMinSeq = function(folder, callback) {				
 
 				HttpService.get(
-						evalu8config.apiUrl + "/my/folders/"+ folder.guid + "/folders")
+						evalu8config.apiUrl + "/my/questionfolders/"+ folder.guid + "/folders")
 						.success(
 								function(userFolders) {
 									if(userFolders.length)

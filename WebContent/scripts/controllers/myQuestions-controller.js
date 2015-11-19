@@ -157,90 +157,74 @@ angular.module('e8MyTests')
 
             if (mouseOverNode && (mouseOverNode != source)) {
 
-                var item = source.node;
-                
-                var duplicateTitle = false;
-                
-                UserFolderService.getUserFoldersByParentFolderId(mouseOverNode.node.guid, function (userFolders) {
-                	if(userFolders==null){
-                		$rootScope.blockLeftPanel.stop();
-                 		CommonService.showErrorMessage(e8msg.error.cantFetchFolders);
-                 		return;
-                 	}		
-                	if(item.nodeType == EnumService.NODE_TYPE.folder) {
-                		userFolders.forEach(function(nodeItem) {                            
-                    		if(nodeItem.nodeType == EnumService.NODE_TYPE.folder && nodeItem.title == item.title) {
-                    			duplicateTitle = true;                			 
-                    		}                        
-                    	})
-                    	
-                    	if(duplicateTitle) {
-    			            $scope.IsConfirmation = false;
-    			            $scope.message = "A folder already exists with this name.";
-    			            $modal.open(confirmObject);
-    			            
-    			            $rootScope.blockLeftPanel.stop();
-                    		return false;
-                    	}                		
-                	}
-                	                    	
-                    source.remove();                                        
+                var item = source.node;                                                                                            
                     
-                    if(item.nodeType == EnumService.NODE_TYPE.folder) {
-                        item.parentId = mouseOverNode.node.guid;
-                        UserFolderService.getFoldersMinSeq(mouseOverNode.node, function(minSeq) {
-                        	item.sequence = minSeq==0.0 ? 1.0 : (0.0 + minSeq)/2;
-                        	QuestionFolderService.saveQuestionFolder(item, function(userFolder) {
-                        		if(userFolder==null){
-                            		$rootScope.blockLeftPanel.stop();
-                             		CommonService.showErrorMessage(e8msg.error.cantSave);
-                             		return;
-                             	}
-                    			if(sourceParent && sourceParent.node && sourceParent.node.nodes.length==0) {
-                    				sourceParent.node.nodes.push(CommonService.getEmptyFolder());
-                    			}                    			
-                    			
-                        		$rootScope.blockLeftPanel.stop();
-                        	});                	
-                        })                	
-                    } else {
-                    	var sourceFolder = $scope.removeTestBindingFromSource(sourceParent, item.guid);
-                    	QuestionFolderService.saveQuestionFolder(sourceFolder, function(userFolder) {
-                    		if(userFolder==null){
-                        		$rootScope.blockLeftPanel.stop();
-                         		CommonService.showErrorMessage(e8msg.error.cantSave);
-                         		return;
-                         	}
-                    		$scope.insertTestBindingToDest(mouseOverNode, item.guid, function() {
-                    			
-                    			if(sourceParent && sourceParent.node && sourceParent.node.nodes.length==0) {
-                    				sourceParent.node.nodes.push(CommonService.getEmptyFolder());
-                    			}
-                    			
-                    			if(sourceParent == null) {
-                    				var questionIndex = 0;
-                    				$scope.defaultFolders.forEach(function(node){
-                    					if(node.nodeType == EnumService.NODE_TYPE.question) {
-                    						node.questnNumber = ++questionIndex;
-                    					}
-                    				})
-                    			}
-                    			if(sourceParent && sourceParent.node) {
-                    				var questionIndex = 0;
-                    				sourceParent.node.nodes.forEach(function(node){
-                    					if(node.nodeType == EnumService.NODE_TYPE.question) {
-                    						node.questnNumber = ++questionIndex;
-                    					}
-                    				})
-                    			}
-                        		$rootScope.blockLeftPanel.stop();                        			
-                    		});
+                if(item.nodeType == EnumService.NODE_TYPE.folder) {
+                    item.parentId = mouseOverNode.node.guid;
+                    QuestionFolderService.getFoldersMinSeq(mouseOverNode.node, function(minSeq) {
+                    	item.sequence = minSeq==0.0 ? 1.0 : (0.0 + minSeq)/2;
+                    	QuestionFolderService.saveQuestionFolder(item, function(userFolder) {
+                    		
+                            if (userFolder == null) {
+                            	$rootScope.blockLeftPanel.stop();
+                                CommonService.showErrorMessage(e8msg.error.cantSave);
+                                return;
+                            }else if(userFolder == EnumService.HttpStatus.CONFLICT) {
+                    			$rootScope.blockLeftPanel.stop();
+                	            $scope.IsConfirmation = false;
+                	            $scope.message = e8msg.validation.duplicateFolderTitle;
+                	            $modal.open(confirmObject);        		
+                        		return;
+                    		}
+                            
+                            source.remove();
+                            
+                			if(sourceParent && sourceParent.node && sourceParent.node.nodes.length==0) {
+                				sourceParent.node.nodes.push(CommonService.getEmptyFolder());
+                			}                    			
+                			
+                    		$rootScope.blockLeftPanel.stop();
+                    	});                	
+                    })                	
+                } else {
+                	
+                	source.remove();
+                	
+                	var sourceFolder = $scope.removeTestBindingFromSource(sourceParent, item.guid);
+                	QuestionFolderService.saveQuestionFolder(sourceFolder, function(userFolder) {
+                		if(userFolder==null){
+                    		$rootScope.blockLeftPanel.stop();
+                     		CommonService.showErrorMessage(e8msg.error.cantSave);
+                     		return;
+                     	}
+                		$scope.insertTestBindingToDest(mouseOverNode, item.guid, function() {
+                			
+                			if(sourceParent && sourceParent.node && sourceParent.node.nodes.length==0) {
+                				sourceParent.node.nodes.push(CommonService.getEmptyFolder());
+                			}
+                			
+                			if(sourceParent == null) {
+                				var questionIndex = 0;
+                				$scope.defaultFolders.forEach(function(node){
+                					if(node.nodeType == EnumService.NODE_TYPE.question) {
+                						node.questnNumber = ++questionIndex;
+                					}
+                				})
+                			}
+                			if(sourceParent && sourceParent.node) {
+                				var questionIndex = 0;
+                				sourceParent.node.nodes.forEach(function(node){
+                					if(node.nodeType == EnumService.NODE_TYPE.question) {
+                						node.questnNumber = ++questionIndex;
+                					}
+                				})
+                			}
+                    		$rootScope.blockLeftPanel.stop();                        			
+                		});
 
-                    	});            		              	               	
-                    }
-                	                                        
-                  
-                })
+                	});            		              	               	
+                }
+            	                                        
                 
             } else {
 
