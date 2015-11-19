@@ -16,10 +16,10 @@
             <ol data-ui-tree-nodes data-ng-model="defaultFolders" droppable="{{node.droppable}}">
 
                 <li data-ng-repeat="node in defaultFolders" data-ui-tree-node x-collapsed="true" draggable="{node.draggable}"
-                    data-ng-include="'defaultfolder_renderer.html'" ng-show="{{node.nodeType!='question'}}" />
+                    data-ng-include="'defaultfolder_renderer.html'" ng-if="node.nodeType!='question'" />
 
                 <li printmode="true" class="questIndex qbQuestions" ng-class="{questionSelected:node.isNodeSelected, questionNotSelected:!node.isNodeSelected}" 
-                    ng-show="{{node.nodeType=='question'}}" ng-repeat="node in defaultFolders" collapsed="{{node.isCollapsed?'true':'false'}}" 
+                    ng-if="node.nodeType=='question'" ng-repeat="node in defaultFolders" collapsed="{{node.isCollapsed?'true':'false'}}" 
                     ui-tree-node  
                     ng-include="'qb_questions_renderer.html'" />
             </ol>
