@@ -1456,6 +1456,69 @@ angular.module('e8MyTests')
         	});
         }        
         
+		$scope.deselectQuestionNode = function (node) {							 
+			for (var i = 0; i < $scope.selectedNodes.length; i++) {
+				if ($scope.selectedNodes[i].guid == node.guid) {											
+						$scope.selectedNodes.splice(i, 1);																			
+						$scope.setDeselectedNodeState(node);
+						node.isNodeSelected=false;
+						break;
+					}									
+		}
+			if($scope.questions){
+				for (var i = 0; i < $scope.questions.length; i++) {
+					if ($scope.questions[i].guid == node.guid) {
+						$scope.questions[i].existInTestframe = false;
+						$scope.questions[i].isNodeSelected=false;
+						break;
+					}
+				}
+			}
+			
+			$scope.updateParentNodeStatus(node);
+	};			
+	
+	//#To check whether the any parent node of selected node is used for test creation(edit question/wizard)  
+	$scope.updateParentNodeStatus = function(deselectedNode){	
+		var parentExistInSelectNodes;
+		var nodeIndex=0;
+		$scope.selectedNodes.forEach(function(node) {
+			if(deselectedNode.parentId === node.guid){
+				node.isNodeSelected = false ;
+				node.showEditQuestionIcon = false;
+				node.showTestWizardIcon = false;		
+				parentExistInSelectNodes = true;
+				return;
+			}
+			nodeIndex++;
+		});			
+
+		if(parentExistInSelectNodes){
+			$scope.selectedNodes.splice(nodeIndex, 1);
+			var test = SharedTabService.tests[SharedTabService.currentTabIndex];
+			for (var j = 0; j < test.questionFolderNode.length; j++) {
+				if (test.questionFolderNode[j].guid == deselectedNode.parentId) {
+					test.questionFolderNode.splice(j, 1);
+					break;
+				}
+			}
+
+
+		}								
+
+	};
+
+	
+	$scope.setDeselectedNodeState = function(deselectedNode){
+		for (var i = 0; i < $scope.questions.length; i++) {
+				if ($scope.questions[i].guid === deselectedNode.guid) {
+                        $scope.questions[i].isNodeSelected = false;
+                        $scope.questions[i].showEditQuestionIcon = false;
+                        $scope.questions[i].showTestWizardIcon = false; 
+                        break;
+                	}
+        }
+	}
         //Handling the Broadcast event when selected question is removed from the Test creation frame.
         // here need to remove the question node from selected list and need to chnage his state. 
         $scope.$on('handleBroadcast_deselectQuestionNode',
@@ -1463,6 +1526,44 @@ angular.module('e8MyTests')
                     $scope.deselectQuestionNode(node);
                 });
         
+		$scope.$on(
+				'handleBroadcast_onClickTab',
+				function(handler, tab) {												
+					if(tab.questionFolderNode.length > 0 || tab.criterias.length > 0){
+						for (var i = 0; i < $scope.selectedNodes.length; i++) {
+							$scope.selectedNodes[i].isNodeSelected = false;
+							$scope.selectedNodes[i].showTestWizardIcon = false;
+							$scope.selectedNodes[i].showEditQuestionIcon = false;
+						}
+						$scope.selectedNodes=[];
+						for (var i = 0; i < $scope.expandedNodes.length; i++) {
+							for (var j = 0; j < tab.questionFolderNode.length; j++) {
+								if($scope.expandedNodes[i].guid == tab.questionFolderNode[j].guid){
+									$scope.expandedNodes[i].isNodeSelected=true;
+									$scope.expandedNodes[i].showTestWizardIcon=true;
+									$scope.expandedNodes[i].showEditQuestionIcon=false;
+									$scope.selectedNodes.push($scope.expandedNodes[i]);
+								}
+							}
+							for (var k = 0; k < tab.criterias.length; k++) {
+								if($scope.expandedNodes[i].guid == tab.criterias[k].folderId){
+									$scope.expandedNodes[i].isNodeSelected=true;
+									$scope.expandedNodes[i].showTestWizardIcon=false;
+									$scope.expandedNodes[i].showEditQuestionIcon=true;
+									$scope.selectedNodes.push($scope.expandedNodes[i]);
+								}
+							}
+						}
+					}else if (!$scope.createTestWizardMode && !$scope.editQuestionMode){
+						for (var i = 0; i < $scope.selectedNodes.length; i++) {
+							$scope.selectedNodes[i].isNodeSelected = false;
+							$scope.selectedNodes[i].showTestWizardIcon = false;
+							$scope.selectedNodes[i].showEditQuestionIcon = false;
+						}
+						 $scope.selectedNodes=[];
+					}					
+					
+				});
 		$scope.$on('handleBroadcast_AddNewTest', function (handler, newTest, containerFolder, isEditMode, oldGuid, editedQuestions, editedMigratedQuestions, createdTab, testCreationFrameScope) {
 			
 			editedQuestions.forEach(function(editedQuestion) {
