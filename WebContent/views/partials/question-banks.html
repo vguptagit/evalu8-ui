@@ -155,7 +155,7 @@
 							ng-mousedown="editQuestion(this);$event.stopPropagation();" data-container="body" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="bottom" tooltip="Move question to right for editing"></button>
                         <button type="button" class="wizardGray action-icon-bg pull-right" 
 							ng-show="node.showTestWizardIcon && node.nodeType != 'publisherTests'" 
-							ng-mousedown="createTestWizardCriteria(this)" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="bottom" tooltip="Auto create test with wizard"></button>
+							ng-mousedown="createTestWizardCriteria(this);$event.stopPropagation();" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="bottom" tooltip="Auto create test with wizard"></button>
                         <!--
                         <span class="settingsChapter"></span>
                         <span class="printChapter"></span>

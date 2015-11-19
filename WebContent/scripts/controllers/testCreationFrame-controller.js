@@ -1297,7 +1297,7 @@ angular
 											.resetCriteriaToDefault($scope)
 								}
 							};
-
+							var selectedQuestions= [];
 							$scope.previevTest = function() {
 								var isError = false;
 							    var metadatas = [];
@@ -1367,7 +1367,13 @@ angular
 												criteria.numberOfQuestionsSelected = criteria.numberOfQuestionsEntered;
 											}
                                             */
-											var noOfQuestionsSelected = criteria.numberOfQuestionsEntered > 0 ? criteria.numberOfQuestionsEntered : criteria.numberOfQuestionsSelected; 
+											var noOfQuestionsSelected = criteria.numberOfQuestionsEntered > 0 ? criteria.numberOfQuestionsEntered : criteria.numberOfQuestionsSelected;
+											if(noOfQuestionsSelected < criteria.metadata){
+												criteria.treeNode.showEditQuestionIcon = true;
+											}else{
+												criteria.treeNode.showEditQuestionIcon = false;
+											}
+											criteria.treeNode.showTestWizardIcon = true;
                                             if (!noOfQuestionsSelected || noOfQuestionsSelected > criteria.totalQuestions || noOfQuestionsSelected > arr.length) {
 												criteria.isError = true;
 												SharedTabService.addErrorMessage(criteria.treeNode.title, SharedTabService.errorMessageEnum.NotEnoughQuestionsAvailable);
@@ -1375,6 +1381,16 @@ angular
 												return false;
 											} else {
                                                 metadatas = metadatas.concat(arr.slice(0, noOfQuestionsSelected));
+                                                if(criteria.treeNode.nodes){
+                                                criteria.treeNode.nodes.forEach(function(item) {
+                                                	metadatas.forEach(function(metadata) {
+                                                		if(item.guid == metadata.guid){
+                                                			selectedQuestions.push(item);
+                                                		}
+                                                	})
+                                                })
+											}
+                                                
 											}
 										});
 								if (isError) {
@@ -1389,11 +1405,16 @@ angular
 										$modal.open(confirmObject);
 										return false;
 									}
-									test.criterias
+									// need to delete commented code
+									/*test.criterias
 											.forEach(function(criteria) {
-												criteria.treeNode.isNodeSelected=false;
-												criteria.treeNode.showEditQuestionIcon = false;
-											})
+												if(metadatas < criteria.metadata){
+													criteria.treeNode.showEditQuestionIcon = true;
+												}else{
+													criteria.treeNode.showEditQuestionIcon = false;
+												}
+												criteria.treeNode.showTestWizardIcon = true;
+											})*/
 								}
 								$scope.tests[$scope.sharedTabService.currentTabIndex].tabTitle = "Untitled test";
 								$scope.saveWizardTest(test, metadatas);
@@ -1531,6 +1552,7 @@ angular
     								        $scope.isApplySameCriteriaToAll = false;
     									});
     									
+    									
 								});
 							}
 							
@@ -1627,7 +1649,10 @@ angular
 													} else {
 													     $scope.blockPage.stop();
 													}
+													$rootScope.$broadcast(
+															'handleBroadcast_questionDeselect');
 												});
+								
 							};
 						    // #endregion Test wizard *************************
 

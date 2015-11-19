@@ -207,7 +207,7 @@ angular
 									}
 									
 									if (SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
-									    $scope.createTestWizardCriteria(source)
+										 $scope.createTestWizardCriteria(source, "dragEvnt");
 									} else {
 									    $scope.editQuestion(source.node, destIndex, "dragEvnt");
 									}
@@ -711,9 +711,12 @@ angular
                             
 							// TODO : need to move this to service.
 							$scope.createTestWizardCriteria = function(
-									currentNode) {
+									currentNode, eventType) {
 								$scope.createTestWizardMode=true;
 								
+								if(eventType ==null || eventType =='' || eventType == undefined){
+									eventType = "clickEvnt";
+								}
 								if (!SharedTabService.isTestWizardTabPresent) {
 									$rootScope
 											.$broadcast('handleBroadcast_AddTestWizard');
@@ -747,6 +750,9 @@ angular
                                     SharedTabService.TestWizardErrorPopup_Open();
                                     return false;    
                                 }
+                                if( eventType == "clickEvnt"){
+									$scope.addWizardToTestFrameTab(currentNode.node);
+								}else{
 								var httpReqCount = 0,
                                     httpReqCompletedCount = 0;
 								for (var i = 0; i < $scope.selectedNodes.length; i++) {
@@ -789,6 +795,7 @@ angular
 									}
 								}
 							}
+						}
 							function getQuestions(currentNode, callBack) {
 								var node;
 								var questions=[];
@@ -831,6 +838,49 @@ angular
 								}
 							}
 
+							$scope.addWizardToTestFrameTab = function(currentNode){
+								var httpReqCount = 0,
+                                httpReqCompletedCount = 0;
+								currentNode.showTestWizardIcon = false;
+								if(currentNode.nodes){
+									currentNode.nodes.forEach(function(node) {	
+									node.showTestWizardIcon = false;
+								})
+							}
+							    $rootScope.blockPage.start();
+								getQuestions(
+										currentNode,
+										function (response, currentNode) {
+										    try {
+										    	
+										        if (response.length) {
+										            $rootScope.$broadcast(
+															        "handleBroadcast_createTestWizardCriteria",
+															        response,
+															        currentNode);
+										        } else {
+										            SharedTabService.addErrorMessage(currentNode.title, e8msg.warning.emptyFolder);
+										            currentNode.showTestWizardIcon = true;
+										            for (var j = 0; j < tab.questionFolderNode.length; j++) {
+										                if (tab.questionFolderNode[j].guid == currentNode.guid) {
+										                    tab.questionFolderNode.splice(j, 1);
+										                }
+										            }                                                        
+										        }
+
+										        httpReqCompletedCount++;
+										        if (httpReqCount == httpReqCompletedCount && SharedTabService.errorMessages.length > 0) {
+										            SharedTabService.TestWizardErrorPopup_Open();
+										        }
+                                            } catch (e) {
+                                                console.log(e);
+                                            } finally {
+                                            	$scope.createTestWizardMode=false;
+                                                $rootScope.blockPage.stop();
+                                            }
+										});
+								
+							}
 
 							$scope.getNodesWithQuestion = function(currentNode) {
 								
@@ -1839,6 +1889,24 @@ angular
 	                                    	}
                                 }
 							}
+						
+							//Handling the Broadcast event when questions are selected to wizard to create a test
+							// here deselect the question nodes which are present in test creation frame.
+							$scope.$on('handleBroadcast_questionDeselect', function() {
+								$scope.selectedNodes.forEach(function(node) {
+									if(node.nodes){
+										node.nodes.forEach(function(question) {
+											if($scope.isNodeInTestFrame(question)){
+												question.existInTestframe = true;
+												question.isNodeSelected = true;
+												question.showEditQuestionIcon = false;
+												question.showTestWizardIcon = false;
+											}
+										})
+									}
+								})
+
+							});
 						
 							//Handling the Broadcast event when selected question is removed from the Test creation frame.
 							// here need to remove the question node from selected list and need to chnage his state. 
