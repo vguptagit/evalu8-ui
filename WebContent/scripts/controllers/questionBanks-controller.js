@@ -1891,13 +1891,17 @@ angular
 						
 							//Handling the Broadcast event when questions are selected to wizard to create a test
 							// here deselect the question nodes which are present in test creation frame.
-							$scope.$on('handleBroadcast_questionDeselect', function(scope, selectedQuestions) {
-								selectedQuestions.forEach(function(node) {
-									if($scope.isNodeInTestFrame(node)){
-										node.existInTestframe = true;
-										node.isNodeSelected = true;
-										node.showEditQuestionIcon = false;
-										node.showTestWizardIcon = false;
+							$scope.$on('handleBroadcast_questionDeselect', function() {
+								$scope.selectedNodes.forEach(function(node) {
+									if(node.nodes){
+										node.nodes.forEach(function(question) {
+											if($scope.isNodeInTestFrame(question)){
+												question.existInTestframe = true;
+												question.isNodeSelected = true;
+												question.showEditQuestionIcon = false;
+												question.showTestWizardIcon = false;
+											}
+										})
 									}
 								})
 

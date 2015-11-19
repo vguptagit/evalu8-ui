@@ -1650,8 +1650,7 @@ angular
 													     $scope.blockPage.stop();
 													}
 													$rootScope.$broadcast(
-															'handleBroadcast_questionDeselect',
-															selectedQuestions);
+															'handleBroadcast_questionDeselect');
 												});
 								
 							};
