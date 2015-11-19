@@ -42,8 +42,17 @@ angular
 						    $rootScope.blockPage = blockUI.instances.get('BlockPage');
 						    
 							$scope.controller = EnumService.CONTROLLERS.questionBanks;
-							$scope.selectedNodes = [];			
+							$scope.selectedNodes = [];		
 							
+							//to set the status of the question node,if the question node present in test frame.
+							var setTestQuestionNodeStatus=function(item){
+								item.nodeType = "question";			
+								item.existInTestframe=true;
+								item.isNodeSelected = true;
+								item.showEditQuestionIcon = false;
+								item.showTestWizardIcon = false;													
+							}
+															
 							//To check the question node is present in selectedNodes array.
 							$scope.isNodeInSelectedNodesArray = function(node) {
 								var isNodeUsed=false;
@@ -72,18 +81,10 @@ angular
 							
 							if (SharedTabService.tests[SharedTabService.currentTabIndex].questions.length) {
 							    var test = SharedTabService.tests[SharedTabService.currentTabIndex];
-							    for (var i = 0; i < test.questions.length; i++) {							    
-							    	var questionNode = angular.copy(test.questions[i]);
-							    	questionNode.isNodeSelected = true;
-							    	questionNode.existInTestframe = true;
-							        $scope.selectedNodes.push(questionNode);
-							    }
-							    
 							    for (var j = 0; j < test.questionFolderNode.length; j++) {
 							    	var questionFolderNode = angular.copy(test.questionFolderNode[j]);							    	
 							    	$scope.addingNodeInSelectedNodesArray(questionFolderNode);
-							    }
-							    
+							    }							    
 							}
 							
 							$scope.isSearchMode = false;
@@ -272,6 +273,7 @@ angular
 											}
 											userbooks.forEach(function(books) {
 												books.isCollapsed=true;
+												books.nodeType = "book";
 											});
 											discipline["nodes"] = userbooks;
 											if(userDisciplineLength==userDisciplines.length){
@@ -988,10 +990,7 @@ angular
 								
 								//change the status of node, if node is present in test frame.
 								if($scope.isNodeInTestFrame(item)){
-									item.existInTestframe=true;
-									item.isNodeSelected = true;
-									item.showEditQuestionIcon = false;
-									item.showTestWizardIcon = false;													
+									setTestQuestionNodeStatus(item);												
 								}
 								
 								//add the node to $scope.selectedNodes array, if node is in selected status.
@@ -1144,24 +1143,6 @@ angular
 							$('.questionMessagetip').hide();
 							
 							
-							//To change the selection status of the parent node of a node.
-							$scope.checkSiblingSelection = function(scope,test){
-								if(scope.node.isNodeSelected){									
-									if($scope.isAllSiblingsSelected(scope.$parentNodeScope.node.nodes)) {
-										scope.$parentNodeScope.node.isNodeSelected = true;
-										scope.$parentNodeScope.node.showEditQuestionIcon = true;
-										scope.$parentNodeScope.node.showTestWizardIcon = true; 
-										$scope.addingNodeInSelectedNodesArray(scope.$parentNodeScope.node);
-									}
-								}else{
-									scope.$parentNodeScope.node.showEditQuestionIcon = false;
-									scope.$parentNodeScope.node.showTestWizardIcon = false; 
-									scope.$parentNodeScope.node.isNodeSelected = false;
-									$scope.removeNodeFromSelectedNodes(scope.$parentNodeScope.node);
-								}
-
-							};
-
 							//To check the question node is present in current test frame.
 							$scope.isNodeInTestFrame = function(node) {
 								var isNodeUsed=false;
@@ -1184,24 +1165,48 @@ angular
 									}
 								}						
 							}
-
+							//To change the selection status of the parent node of a node.
+							$scope.checkSiblingSelection = function(scope){
+								if(scope.node.isNodeSelected){									
+									if($scope.isAllSiblingsSelected(scope.$parentNodeScope.node.nodes)) {
+										scope.$parentNodeScope.node.isNodeSelected = true;
+										scope.$parentNodeScope.node.showEditQuestionIcon = true;
+										scope.$parentNodeScope.node.showTestWizardIcon = true; 
+										$scope.addingNodeInSelectedNodesArray(scope.$parentNodeScope.node);
+										if(scope.$parentNodeScope.node.nodeType!='book'){
+											$scope.checkSiblingSelection(scope.$parentNodeScope);
+										}
+									}
+								}else{
+									scope.$parentNodeScope.node.showEditQuestionIcon = false;
+									scope.$parentNodeScope.node.showTestWizardIcon = false; 
+									scope.$parentNodeScope.node.isNodeSelected = false;
+									$scope.removeNodeFromSelectedNodes(scope.$parentNodeScope.node);
+									if(scope.$parentNodeScope.node.nodeType!='book'){
+										$scope.checkSiblingSelection(scope.$parentNodeScope);
+									}									
+								}
+							};							
 							//To change the selection status of the children nodes when parent node has been selected/deselcted.
-							$scope.checkChildSelection = function(scope,test){    
-
-								if(scope.node.isNodeSelected){								
-									scope.node.nodes.forEach(function(node) {	
+							$scope.checkChildSelection = function(node){   
+								if(typeof(node.nodes) == 'undefined'){
+									return;
+								}
+								if(node.isNodeSelected){								
+									node.nodes.forEach(function(node) {	
 										node.isNodeSelected = true;
 										if(!$scope.isNodeInTestFrame(node)){
 											node.showEditQuestionIcon = true;
 											node.showTestWizardIcon = true; 	
 											node.existInTestframe = false;
-											$scope.addingNodeInSelectedNodesArray(node);											
+											$scope.addingNodeInSelectedNodesArray(node);	
+											if(node.nodes){
+												$scope.checkChildSelection(node);
+											}					
 										}
-
-									});									
-
+									});								
 								}else{									
-									scope.node.nodes.forEach(function(node) {	
+									node.nodes.forEach(function(node) {	
 										node.isNodeSelected = false;
 										node.showEditQuestionIcon = false;
 										node.showTestWizardIcon = false; 	
@@ -1212,6 +1217,10 @@ angular
 										}else{										
 											$scope.removeNodeFromSelectedNodes(node);											
 										} 
+										
+										if(node.nodes){
+											$scope.checkChildSelection(node);
+										}										
 
 									});									
 								}								
@@ -1227,18 +1236,18 @@ angular
 
 							var isParentNodeUsed=false;
 							$scope.selectNode = function (scope) {
-								
+
 								var node = scope.node;
-								
+
 								if(skipNodeSelection(node)){
 									return;
 								}
-								
+
 								if($scope.showAddFolderPanel) {
-	                                   $scope.showAddFolderPanel = false; 
-	                               }
-								
-							    var test = SharedTabService.tests[SharedTabService.currentTabIndex];
+									$scope.showAddFolderPanel = false; 
+								}
+
+								var test = SharedTabService.tests[SharedTabService.currentTabIndex];
 								if (node.isNodeSelected == false
 										&& $rootScope.globals.loginCount <= evalu8config.messageTipLoginCount 
 										&& node.nodeType != EnumService.NODE_TYPE.question
@@ -1248,10 +1257,7 @@ angular
 										$('.questionMessagetip').hide();
 									}, evalu8config.messageTipTimeMilliSeconds);
 								}
-								
-								
-								
-								
+
 								if (!node.isNodeSelected) {
 									isParentNodeUsed=false;
 									$scope.isParentNodeUsed(node,test);
@@ -1267,16 +1273,16 @@ angular
 										}else{
 											node.showEditQuestionIcon = true;	
 										}
-										
+
 										if($scope.isNodeUsedForWizard(node,test)){
 											node.showTestWizardIcon = false;
 										}else{
 											node.showTestWizardIcon = true;	
 										}
 										for (var j = 0; j < test.questions.length; j++) {
-										    if (node.guid === test.questions[j].guid) {
-										        node.showEditQuestionIcon = false;
-										    }
+											if (node.guid === test.questions[j].guid) {
+												node.showEditQuestionIcon = false;
+											}
 										}
 										if($scope.selectedNodes.length > 0){
 											$scope.deselectParentNode(node);
@@ -1294,20 +1300,18 @@ angular
 											break;
 										}
 									}
-								    //hide EditQuestionIcon on selecting the folder, if folder is already edited for that test.
+									//hide EditQuestionIcon on selecting the folder, if folder is already edited for that test.
 									for (var j = 0; j < test.questionFolderNode.length; j++) {
-									    if (node.guid === test.questionFolderNode[j].guid) {
-									        node.showEditQuestionIcon = false;
-									    }
+										if (node.guid === test.questionFolderNode[j].guid) {
+											node.showEditQuestionIcon = false;
+										}
 									}
 								}
-								
-								if(scope.node.nodes){
-									$scope.checkChildSelection(scope,test);
-								}else{
-									$scope.checkSiblingSelection(scope,test);
-								}								
-								
+
+
+								$scope.checkChildSelection(scope.node);
+								$scope.checkSiblingSelection(scope);
+
 							};		
 							
 							//#To check whether the any parent/child node of selected node is used for test creation(edit question/wizard)  
@@ -1591,10 +1595,7 @@ angular
 							$scope.updateTopicChildNodesStatus = function(selectedNode){								
 								if(selectedNode.nodes){
 									selectedNode.nodes.forEach(function(node) {		
-											node.showEditQuestionIcon = false;
-											node.showTestWizardIcon = false;		
-											node.existInTestframe = true;
-											node.isNodeSelected = true;	
+											setTestQuestionNodeStatus(node);
 											$scope.addingNodeInSelectedNodesArray(node);
 										});						
 
