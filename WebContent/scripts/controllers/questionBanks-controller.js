@@ -903,10 +903,24 @@ angular
 													item.template = 'nodes_renderer.html';
 													item.showTestWizardIcon = false;
 													item.showEditQuestionIcon = false;
-													item.isNodeSelected = false;
+													item.isNodeSelected = currentNode.node.isNodeSelected;
+													
+													//change the status of node, if parent node is selected.
+													if(currentNode.node.isNodeSelected){														
+														item.showEditQuestionIcon = true;
+														item.showTestWizardIcon = true;
+													}	
+																										
+													//add the node to $scope.selectedNodes array, if node is in selected status.
+													if(item.isNodeSelected){													
+														$scope.addingNodeInSelectedNodesArray(item);	
+													}
+													
+													
 	                                                item.nodeType = "topic";
 	                                                item.isCollapsed = true;
 	                                                item.isHttpReqCompleted = true;
+	                                                item.parentId = currentNode.node.guid;
 													updateTreeNode(item);
 													topicCount = topicCount+1;
 													if(topicCount == currentNode.node.nodes.length){
@@ -1228,7 +1242,7 @@ angular
 							
 							//to skip the selection of a node if node is present in test frame.
 							var skipNodeSelection=function(node){
-								if(node.isNodeSelected && node.showEditQuestionIcon == false ){
+								if(node.isNodeSelected && node.showEditQuestionIcon == false && node.existInTestframe == true ){
 									return true;
 								}								
 							}
@@ -1786,10 +1800,10 @@ angular
 							
 							$scope.deselectQuestionNode = function (node) {							 
 									for (var i = 0; i < $scope.selectedNodes.length; i++) {
-										if ($scope.selectedNodes[i].guid == node.guid) {											
-												$scope.selectedNodes.splice(i, 1);																			
-												$scope.setDeselectedNodeState(node);
-												node.isNodeSelected=false;
+										if ($scope.selectedNodes[i].guid == node.guid) {	
+											setDeletedTestQuestionNodeStatus(node);
+												$scope.selectedNodes.splice(i, 1);													
+												$scope.setDeselectedNodeState(node);												
 												break;
 											}									
 								}
@@ -1797,33 +1811,48 @@ angular
 								$scope.updateParentNodeStatus(node);
 							};			
 							
-							//#To check whether the any parent node of selected node is used for test creation(edit question/wizard)  
-							$scope.updateParentNodeStatus = function(deselectedNode){	
-								var parentExistInSelectNodes;
+							//to set the status of the question node in question bank tab,if the question node deleted in test frame.
+							var setDeletedTestQuestionNodeStatus=function(node){										
+								node.existInTestframe=false;
+								node.isNodeSelected = false;
+								node.showEditQuestionIcon = false;
+								node.showTestWizardIcon = false;													
+							}
+							
+							
+							//to set the status of the hierarchical parent node in question bank tab,if the question node deleted in test frame.
+							var updateHigherParentNodesStatus=function(parentId){		
+								var parentExistInSelectNodes=false;
 								var nodeIndex=0;
-								$scope.selectedNodes.forEach(function(node) {
-									if(deselectedNode.parentId === node.guid){
-										node.isNodeSelected = false ;
-										node.showEditQuestionIcon = false;
-										node.showTestWizardIcon = false;		
+								for (var j = 0; j < $scope.selectedNodes.length; j++) {
+									if ($scope.selectedNodes[j].guid == parentId) {
+										$scope.selectedNodes[j].isNodeSelected = false ;
+										$scope.selectedNodes[j].showEditQuestionIcon = false;
+										$scope.selectedNodes[j].showTestWizardIcon = false;		
 										parentExistInSelectNodes = true;
-										return;
+										break;
 									}
 									nodeIndex++;
-								});			
-
+								}								
+								
 								if(parentExistInSelectNodes){
+									var parentNode = $scope.selectedNodes[nodeIndex];
 									$scope.selectedNodes.splice(nodeIndex, 1);
-									var test = SharedTabService.tests[SharedTabService.currentTabIndex];
-									for (var j = 0; j < test.questionFolderNode.length; j++) {
+									updateHigherParentNodesStatus(parentNode.parentId);	
+								}
+											
+							}
+							
+							//#To check whether the any parent node of selected node is used for test creation(edit question/wizard)  
+							$scope.updateParentNodeStatus = function(deselectedNode){	
+								updateHigherParentNodesStatus(deselectedNode.parentId);
+								var test = SharedTabService.tests[SharedTabService.currentTabIndex];
+								for (var j = 0; j < test.questionFolderNode.length; j++) {
 										if (test.questionFolderNode[j].guid == deselectedNode.parentId) {
 											test.questionFolderNode.splice(j, 1);
 											break;
 										}
-									}
-
-
-								}								
+								}
 
 							};
 
