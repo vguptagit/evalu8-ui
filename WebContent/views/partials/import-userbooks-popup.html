@@ -78,15 +78,14 @@
 					</div>
 				</div>
 			</div>
-			<div class="row" ng-show="selectedFileName != ''">
-				<div class="col-md-12 margin-top-10">{{selectedFileName}}</div>
-			</div>
-			<div class="row" ng-show="warningMsg != ''">
-				<div class="col-md-12 margin-top-10" style="color: red;">{{warningMsg}}</div>
+			<div class="row">
+				<div class="col-md-12 margin-top-10 testImport_SelectedFile"><u>{{selectedFileName}}</u></div>
 			</div>
 			<div class="row">
-				<div class="col-md-12"
-					style="border-bottom: 1px solid #ddd; padding-top: 45px;">&nbsp;
+				<div class="col-md-12 margin-top-10 testImport_WarningMsg">{{warningMsg}}</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12 testImport_Footer" >&nbsp;
 				</div>
 			</div>
 			<div class="row" style="padding-top: 12px;">
