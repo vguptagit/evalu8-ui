@@ -440,7 +440,7 @@ a.newFolder:hover {
 .iconsCourseNode {
 	position: absolute;
 	margin-top: 6px;
-    right: 20px;
+    right: 2px;
     padding-left: 5px;
     background-color: #007FA9;
 }
@@ -974,6 +974,10 @@ ol {
 	right: 20px;
 	/*position: absolute;*/
 	top: 1px;
+}
+
+button.folderArchiveIcon.fa.fa-check {
+    margin-left: 10px;
 }
 
 .testHighlight:hover {
