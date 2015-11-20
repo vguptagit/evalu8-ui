@@ -518,6 +518,8 @@ angular.module('e8MyTests')
 			
 			if($scope.enterKey == true) {
                 $scope.enterKey = false;
+                $scope.showAddFolderPanel = false;
+                $scope.$digest();
                 return;
             }
                 
@@ -1540,11 +1542,17 @@ angular.module('e8MyTests')
 						}
 					}else if (!$scope.createTestWizardMode && !$scope.editQuestionMode){
 						for (var i = 0; i < $scope.selectedNodes.length; i++) {
-							$scope.selectedNodes[i].isNodeSelected = false;
-							$scope.selectedNodes[i].showTestWizardIcon = false;
-							$scope.selectedNodes[i].showEditQuestionIcon = false;
+							if($scope.selectedNodes[i].isEditMode){
+								$scope.selectedNodes[i].isNodeSelected= true;
+								$scope.selectedNodes[i].showTestWizardIcon = true;
+								$scope.selectedNodes[i].showEditQuestionIcon = true;
+							}else{
+								$scope.selectedNodes[i].isNodeSelected = false;
+								$scope.selectedNodes[i].showTestWizardIcon = false;
+								$scope.selectedNodes[i].showEditQuestionIcon = false;
+							}
 						}
-						 $scope.selectedNodes=[];
+						//$scope.selectedNodes=[];
 					}					
 					
 				});
