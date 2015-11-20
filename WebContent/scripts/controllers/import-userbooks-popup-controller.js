@@ -6,13 +6,20 @@
 
 			$scope.activeTab = "questionBankImport";
 			
-			
-			 $scope.showQuestionBankImport = function() {
+		     $scope.showQuestionBankImport = function() {
 				  $scope.activeTab = "questionBankImport";
+				  $scope.isFileSelected=false;
+				  $scope.selectedFileName="";
+				  $scope.warningMsg="";
 			  }
 
 			  $scope.showTestImport = function() {
 				  $scope.activeTab = "testImport";
+				  $scope.userBook.books.forEach(function(book) {
+					  if (book.isSelected && !book.isImported) {
+						 book.isSelected = false;
+					 }
+				  });
 			  }
 			
 			$scope.userBook = {	books:[] };
@@ -64,7 +71,7 @@
 				if(file.length>0){
 					if(file[0].size> evalu8config.maxSizeForTestPackage){
 						$scope.selectedFileName=file[0].name;
-						$scope.warningMsg="File is too big to upload.Maximum file size supported is 4MB";
+						$scope.warningMsg="File is too big to upload. Maximum file size supported is 4MB.";
 						return;
 					}
 					$scope.isFileSelected=true;

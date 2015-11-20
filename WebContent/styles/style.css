@@ -1382,8 +1382,20 @@ h4, .h4, h5, .h5, h6, .h6 {
   border: solid 1px #DEDEDE;
   background-color: #fff;  
   float: right;
-  margin-right: -8px;
   height: 25px;
   font-family: Helvetica Neue Light;
   font-size: 14px;
 }
+
+.testImport_SelectedFile{
+	font-style:italic;
+}
+
+.testImport_WarningMsg{
+	color: red;
+}
+
+.testImport_Footer{
+	border-bottom: 1px solid #ddd; padding-top: 40px;
+}
+
