@@ -124,7 +124,30 @@ angular.module('evalu8Demo')
 						callback(null);
 					}
 	            })
-			};			
+			};	
+			
+			this.updateQuestionFolder = function(userQuestionsFolder, callback) {								
+				
+	            var folder = {
+	            	guid: userQuestionsFolder.guid,
+                    questionBindings: userQuestionsFolder.questionBindings,
+                    parentId: userQuestionsFolder.parentId,
+                    sequence: userQuestionsFolder.sequence,
+                    title: userQuestionsFolder.title    
+	            };            
+            
+	            HttpService.put(evalu8config.apiUrl + '/my/questionfolders', folder)
+	            .success(function(response) {                                    
+	            	if (callback) callback(response);
+	            })
+	            .error(function(error, status) {
+	            	if(status == EnumService.HttpStatus.CONFLICT) {
+						callback(EnumService.HttpStatus.CONFLICT);
+					} else {
+						callback(null);
+					}
+	            })
+			};
 						
 		}
 ])			
