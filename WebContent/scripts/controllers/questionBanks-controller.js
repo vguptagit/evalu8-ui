@@ -1211,12 +1211,24 @@ angular
 							$scope.isNodeInTestFrame = function(node) {
 								var isNodeUsed=false;
 								var activeTest = SharedTabService.tests[SharedTabService.currentTabIndex];
-								activeTest.questions.forEach(function(usedNode) {
-									if(usedNode.guid === node.guid){
-										isNodeUsed=true;
-										return;
-									}
-								});
+								if(node.nodeType == EnumService.NODE_TYPE.question){
+									activeTest.questions.forEach(function(usedNode) {
+										if(usedNode.guid === node.guid){
+											isNodeUsed=true;
+											return;
+										}
+									});
+								}else{
+									activeTest.questionFolderNode.forEach(function(usedNode) {
+										if(usedNode.guid === node.guid){
+											isNodeUsed=true;
+											return;
+										}
+									});
+								}
+								
+								
+								
 								return isNodeUsed;									
 							}							
 
@@ -1259,6 +1271,7 @@ angular
 								if(node.isNodeSelected){								
 									node.nodes.forEach(function(node) {	
 										node.isNodeSelected = true;
+										node.showTestWizardIcon = true; 	
 										if(!$scope.isNodeInTestFrame(node)){
 											node.showEditQuestionIcon = true;
 											node.showTestWizardIcon = true; 	
@@ -1278,6 +1291,7 @@ angular
 										if($scope.isNodeInTestFrame(node)){
 											node.isNodeSelected = true;		
 											node.existInTestframe = true;		
+											node.showTestWizardIcon = true; 
 										}else{										
 											$scope.removeNodeFromSelectedNodes(node);											
 										} 
@@ -1481,18 +1495,20 @@ angular
 								var test = SharedTabService.tests[SharedTabService.currentTabIndex];
 								isChildNodeUsed=false;
 																
-
-								for (var i = 0; i < $scope.selectedNodes.length; i++) {
-									var isNodeUsed=false
-									test.questionFolderNode.forEach(function(usedNode) {
-										if(usedNode.guid === $scope.selectedNodes[i].guid){
-											isNodeUsed=true;
+								if(eventType !=  "clickEvnt"){
+									for (var i = 0; i < $scope.selectedNodes.length; i++) {
+										var isNodeUsed=false
+										test.questionFolderNode.forEach(function(usedNode) {
+											if(usedNode.guid === $scope.selectedNodes[i].guid){
+												isNodeUsed=true;
+											}
+										});
+										if(!isNodeUsed){
+											$scope.isChildNodeUsed($scope.selectedNodes[i],test)	
 										}
-									});
-									if(!isNodeUsed){
-										$scope.isChildNodeUsed($scope.selectedNodes[i],test)	
 									}
 								}
+								
 								
 								if(isChildNodeUsed){
 									$scope.IsConfirmation = true;
@@ -1649,7 +1665,11 @@ angular
 													}
 												}
 											}		
-
+											
+											if(SharedTabService.errorMessages.length > 0)
+													SharedTabService.TestWizardErrorPopup_Open();
+												//$scope.showDuplicateQuestionsAlert();
+											
 
 										});
 
@@ -1719,6 +1739,9 @@ angular
 													questionFolder,
 													function(response,
 															questionFolder) {
+														response.forEach(function(selectedQuestion){							
+															selectedQuestion.parentId = questionFolder.guid;
+														});
 														if(!isAnyNodeAlreadyAdded)
 														{
 															test.questions.forEach(function(testQuestion){
@@ -2550,6 +2573,7 @@ angular
                                     
 									editedQuestion.showEditQuestionIcon = false;
 									editedQuestion.isNodeSelected = false;
+									editedQuestion.existInTestframe = false;
 									addToQuestionsArray(editedQuestion);
 									editedQuestion.template = 'qb_questions_renderer.html';
 									if($scope.yourQuestionsFolder == null) {
@@ -2574,7 +2598,8 @@ angular
 											 for (var i = 0; i < $scope.selectedNodes.length; i++) {												 
 											        if (value === $scope.selectedNodes[i].guid) {											        	
 											            $scope.selectedNodes[i].showEditQuestionIcon = false;
-											            $scope.selectedNodes[i].isNodeSelected = false;			
+											            $scope.selectedNodes[i].isNodeSelected = false;													          
+											            $scope.selectedNodes[i].existInTestframe = false;     
 											            return true;
 											        }
 											    }											
