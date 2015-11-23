@@ -126,8 +126,8 @@ angular.module('e8MyTests')
   			
   			$scope.dragStarted = false;
   			
-            if($rootScope.dropTest && $rootScope.dropTest == "cancel") {
-                $rootScope.dropTest = null;
+            if($rootScope.dropTestOrQuestion && $rootScope.dropTestOrQuestion == "cancel") {
+                $rootScope.dropTestOrQuestion = null;
                 return false;
             }
   			

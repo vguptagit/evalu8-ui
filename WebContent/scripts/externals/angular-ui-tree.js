@@ -177,7 +177,7 @@
                 }
                 if(this.source.node.nodeType=="test" || this.source.node.nodeType=="question") {
                 	if(this.next() && this.next().node.nodeType == "folder") {
-                		$rootScope.dropTest = "cancel"; 
+                		$rootScope.dropTestOrQuestion = "cancel"; 
                 		return;
                 	}                	
                 }
