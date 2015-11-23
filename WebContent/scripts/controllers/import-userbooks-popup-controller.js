@@ -83,12 +83,14 @@
 			$scope.importTestPacakge=function(){
 				$rootScope.blockPage.start();
 				UserFolderService.testRootFolder(function(myTestRoot){
-					TestService.uploadTestPackage($scope.testPackage,myTestRoot,function(response,status){
+					TestService.uploadTestPackage($scope.testPackage,myTestRoot.guid,function(response,status){
 						$rootScope.blockPage.stop();
 						if(status==EnumService.HttpStatus.BADREQUEST){
 							$scope.warningMsg=response;		
 						}else if(status==EnumService.HttpStatus.SUCCESS){
 							$modalInstance.dismiss('cancel');
+							$rootScope.$broadcast("ImportUserBooks");  
+							$scope.$close();
 						}else if(status==EnumService.HttpStatus.NOTFOUND){
 							$scope.warningMsg="Bad request";
 						}
