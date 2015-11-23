@@ -20,6 +20,7 @@
 						 book.isSelected = false;
 					 }
 				  });
+                  $scope.isUserSelectedItem=false;
 			  }
 			
 			$scope.userBook = {	books:[] };
