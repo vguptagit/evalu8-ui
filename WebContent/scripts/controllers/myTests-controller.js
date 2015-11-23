@@ -358,7 +358,7 @@ angular.module('e8MyTests')
             	if(item.nodeType == EnumService.NODE_TYPE.test) {
             		                    
             		var sourceFolder = $scope.removeTestBindingFromSource(sourceParent, item.guid);   
-            		UserFolderService.saveUserFolder(sourceFolder, function(userFolder) {
+            		UserFolderService.updateUserFolder(sourceFolder, function(userFolder) {
             			if(userFolder==null){
                     		$rootScope.blockLeftPanel.stop();
                      		CommonService.showErrorMessage(e8msg.error.cantSave);
@@ -429,7 +429,7 @@ angular.module('e8MyTests')
         	
         	destNode.testBindings.unshift(testBinding);
         	
-        	UserFolderService.saveUserFolder(destNode, function(userFolder) {
+        	UserFolderService.updateUserFolder(destNode, function(userFolder) {
         		if(userFolder==null){
              		CommonService.showErrorMessage(e8msg.error.cantSave);
              		return;
@@ -468,7 +468,7 @@ angular.module('e8MyTests')
     		}
         	
         	destNode.testBindings = testBindings;
-        	UserFolderService.saveUserFolder(destNode, function(userFolder) {
+        	UserFolderService.updateUserFolder(destNode, function(userFolder) {
         		if(userFolder==null){
              		CommonService.showErrorMessage(e8msg.error.cantSave);
              		return;
