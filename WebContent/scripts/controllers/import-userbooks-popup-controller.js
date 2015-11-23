@@ -94,6 +94,8 @@
 							$scope.$close();
 						}else if(status==EnumService.HttpStatus.NOTFOUND){
 							$scope.warningMsg="Bad request";
+						}else if(status==EnumService.HttpStatus.CONFLICT){
+							$scope.warningMsg=window.e8msg.ns.validation.duplicateTestPackage;
 						}
 					});
 				});

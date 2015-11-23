@@ -168,8 +168,9 @@ angular.module('evalu8Demo')
 			}
 
 			var getEssayRecommendedAnswer = function(xml) {	
-				var recommendedAnswer;
-				recommendedAnswer =  getSerializedXML($(xml).find('responseDeclaration').find('correctResponse value'));
+				var recommendedAnswer = "";
+				if($(xml).find('responseDeclaration').find('correctResponse value').length > 0)
+					recommendedAnswer =  getSerializedXML($(xml).find('responseDeclaration').find('correctResponse value'));
 				var element = $('<div></div>');
 				$(element).append(recommendedAnswer);			
 				return $(element)[0].textContent;
