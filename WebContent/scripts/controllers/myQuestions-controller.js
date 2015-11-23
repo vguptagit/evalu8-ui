@@ -370,7 +370,7 @@ angular.module('e8MyTests')
             		} else {
             			item.sequence = (parseFloat(prevSeq) + parseFloat(nextSeq)) / 2;	
             		}
-            		QuestionFolderService.saveQuestionFolder(item, function(userFolder) {
+            		QuestionFolderService.updateQuestionFolder(item, function(userFolder) {
             			if(userFolder==null){
                     		$rootScope.blockLeftPanel.stop();
                      		CommonService.showErrorMessage(e8msg.error.cantSave);
