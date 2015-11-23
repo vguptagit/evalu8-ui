@@ -738,7 +738,8 @@ angular
                                             .TestWizardErrorPopup_Open();
                                     return false;
                                 }
-								isChildNodeUsed=false;
+								// commented code would be deleted or used while implementing tab switch use case for wizard.
+								/*isChildNodeUsed=false;
                                 $scope.selectedNodes.forEach(function(selectedNode){
                                 	if(!isChildNodeUsed){
                                         $scope.isChildNodeUsed(selectedNode, tab)
@@ -749,7 +750,7 @@ angular
                                     SharedTabService.addErrorMessage(childNodesUsedForTestCreation,SharedTabService.errorMessageEnum.TopicInChapterIsAlreadyAdded);
                                     SharedTabService.TestWizardErrorPopup_Open();
                                     return false;    
-                                }
+                                }*/
                                 if( eventType == "clickEvnt"){
 									$scope.addWizardToTestFrameTab(currentNode.node);
 								}else{
@@ -842,9 +843,16 @@ angular
 								var httpReqCount = 0,
                                 httpReqCompletedCount = 0;
 								currentNode.showTestWizardIcon = false;
+							//to enable the question edit icon in the next tab on clicking wizard icon if all the questions of the current node is already added to the test creation frame.	
+								if(!currentNode.showEditQuestionIcon){
+									currentNode.showEditQuestionIcon = true;
+								}
 								if(currentNode.nodes){
 									currentNode.nodes.forEach(function(node) {	
 									node.showTestWizardIcon = false;
+									if(!node.showEditQuestionIcon){
+										node.showEditQuestionIcon = true;
+									}
 								})
 							}
 							    $rootScope.blockPage.start();
@@ -1627,6 +1635,10 @@ angular
 								test.questionFolderNode.push(selectedScopeNode);								
 								$rootScope.blockPage.start();											
 								selectedScopeNode.showEditQuestionIcon = false;
+								//to enable the testwizard icon in the next tab if the current node is already added to wizard frame.
+								if(!selectedScopeNode.showTestWizardIcon){
+									selectedScopeNode.showTestWizardIcon = true;
+								}
 								var questionFolder = selectedScopeNode;
 
 								getQuestions(
@@ -1734,6 +1746,10 @@ angular
 											$rootScope.blockPage.start();
 											
 											$scope.selectedNodes[i].showEditQuestionIcon = false;
+											//to enable the testwizard icon in the next tab if the current node is already added to wizard frame.
+											if(!$scope.selectedNodes[i].showTestWizardIcon){
+												$scope.selectedNodes[i].showTestWizardIcon = true;
+											}
 											var questionFolder = $scope.selectedNodes[i];
 											getQuestions(
 													questionFolder,
