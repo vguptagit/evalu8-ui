@@ -725,10 +725,8 @@ angular
 												
 															displayNode.data=response;
 															
-															displayNode.qstnMasterData = buildQstnMasterDetails(displayNode);
-															displayNode.optionsView = displayNode.qstnMasterData.optionsView;
-															displayNode.EssayPageSize = displayNode.qstnMasterData.EssayPageSize;	
-															displayNode.BlankSize = displayNode.qstnMasterData.BlankSize;
+															displayNode.qtiModel =  QtiService.getQtiModel(displayNode.data, displayNode.quizType);					       									
+				       									 	displayNode.qstnModelMasterData = getQuestionMasterDataModel(displayNode);
 													
 															// $scope.tree2.push(displayNode);
 															SharedTabService.tests[currentIndex].questions.push(displayNode);
