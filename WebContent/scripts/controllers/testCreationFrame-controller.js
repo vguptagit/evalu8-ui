@@ -478,6 +478,9 @@ angular
 											            newNode.IsEditView = false;
 											            newNode.editMainText = CustomQuestionTemplate[newNode.quizType].editMainText;
 											           
+											            if(newNode.extendedMetadata == null){
+											            	newNode.extendedMetadata = [];
+											            }
 
 											            $.each(newNode.extendedMetadata, function (index, item) {
 											                var name = item['name'].charAt(0).toUpperCase() + item['name'].slice(1);
