@@ -608,7 +608,7 @@ angular
 	                                         
 	                                            
 	                                            displayNode.IsEditView = false;	                                         
-	                                            displayNode.extendedMetadata =  question.metadata.extendedMetadata;
+	                                            displayNode.extendedMetadata =  question.metadata.extendedMetadata == null ? [] : question.metadata.extendedMetadata;
 	                                            displayNode.questionMetadata = userSettings.questionMetadata;    
 	                                            
 
