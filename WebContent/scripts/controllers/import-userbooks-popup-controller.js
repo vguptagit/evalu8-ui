@@ -95,7 +95,9 @@
 						}else if(status==EnumService.HttpStatus.NOTFOUND){
 							$scope.warningMsg="Bad request";
 						}else if(status==EnumService.HttpStatus.CONFLICT){
-							$scope.warningMsg=window.e8msg.ns.validation.duplicateTestPackage;
+							$scope.warningMsg=window.e8msg.validation.duplicateTestPackage;
+						}else if(status==EnumService.HttpStatus.INTERNALEXCEPTION){
+							$scope.warningMsg="Error in importing test";
 						}
 					});
 				});

@@ -50,5 +50,6 @@ angular.module('evalu8Demo')
     	BADREQUEST: 400,
     	SUCCESS: 200,
     	NOTFOUND: 404,
+    	INTERNALEXCEPTION: 500
     };
 });
