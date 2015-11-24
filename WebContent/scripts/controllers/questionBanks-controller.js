@@ -72,6 +72,48 @@ angular
 								}			
 							}
 							
+							//To remove a node from questionFolderNode array.
+							var removeNodeInquestionFolderNodeArray = function(questionFolder) {		
+								var activeTest = SharedTabService.tests[SharedTabService.currentTabIndex];
+								for (var j = 0; j < activeTest.questionFolderNode.length; j++) {
+									if (activeTest.questionFolderNode[j].guid == questionFolder.parentId) {										
+										$scope.removeNodeFromSelectedNodes(activeTest.questionFolderNode[j]);											
+										removeNodeByIndex(activeTest.questionFolderNode,j);
+										break;
+									}
+								}
+							}
+							
+							//remove a node from array by index.
+							var removeNodeByIndex = function(nodes,index) {
+								nodes.splice(index, 1);
+							}
+							
+							//remove a node from array by ID.
+							var removeNodeByID = function(nodes,nodeID) {
+								for (var j = 0; j < nodes.length; j++) {
+									if (nodes[j].guid == nodeID) {		
+										removeNodeByIndex(nodes,j);
+									}
+								}
+							}
+							
+							//To remove a node from selectedNodes array.
+							var removeNodeFromSelectedNodesByID = function(nodeID) {
+								for (var j = 0; j < $scope.selectedNodes.length; j++) {
+									if (nodeID === $scope.selectedNodes[j].guid) {
+										$scope.selectedNodes[j].showEditQuestionIcon = false;
+										$scope.selectedNodes[j].showTestWizardIcon = false; 
+							            $scope.selectedNodes[j].isNodeSelected = false;													          
+							            $scope.selectedNodes[j].existInTestframe = false;
+							            removeNodeByIndex($scope.selectedNodes,j);										
+										break;
+									}
+								}						
+							}
+							
+							
+							
 						    //no teb switch, restore selectedNodes items
 							for (var i = 0; i < SharedTabService.tests.length; i++) {
 							    if (SharedTabService.tests[i].treeNode) {
@@ -1244,7 +1286,11 @@ angular
 							$scope.removeNodeFromSelectedNodes = function(node) {
 								for (var j = 0; j < $scope.selectedNodes.length; j++) {
 									if (node.guid === $scope.selectedNodes[j].guid) {
-										$scope.selectedNodes.splice(j, 1);
+										$scope.selectedNodes[j].showEditQuestionIcon = false;
+										$scope.selectedNodes[j].showTestWizardIcon = false; 
+							            $scope.selectedNodes[j].isNodeSelected = false;													          
+							            $scope.selectedNodes[j].existInTestframe = false;
+							            removeNodeByIndex($scope.selectedNodes,j);										
 										break;
 									}
 								}						
@@ -1927,6 +1973,7 @@ angular
 								if(parentExistInSelectNodes){
 									var parentNode = $scope.selectedNodes[nodeIndex];
 									$scope.selectedNodes.splice(nodeIndex, 1);
+									removeNodeByID(SharedTabService.tests[SharedTabService.currentTabIndex].questionFolderNode,parentId);
 									updateHigherParentNodesStatus(parentNode.parentId);	
 								}
 											
@@ -2572,6 +2619,26 @@ angular
 								};
 							}							
 							
+							
+							var updateTestquestionFolderNode = function(qstnGuid,activeTest){
+								var isExist = false;
+								 for (var i = 0; i < activeTest.questionFolderNode.length; i++) {
+									 isExist = false;
+								    	for (var j = 0; j < activeTest.questionFolderNode[i].questionBindings.length; j++) {
+								    		if(activeTest.questionFolderNode[i].questionBindings[j] == qstnGuid){									    			
+								    			 updateHigherParentNodesStatus(activeTest.questionFolderNode[i].guid);									    			
+								    			 activeTest.questionFolderNode.splice(i, 1);
+								    			isExist = true;
+												break;
+								    		}									    	
+									    }	
+								    	
+								    	if(isExist)
+								    		break;
+								    	
+								    }	
+							}
+							
 							$scope.$on('handleBroadcast_AddNewTest', function (handler, newTest, containerFolder, isEditMode, oldGuid, editedQuestions, editedMigratedQuestions, createdTab, testCreationFrameScope) {
 								
 								editedQuestions.forEach(function(editedQuestion) {
@@ -2585,13 +2652,11 @@ angular
 									var displayNodes = $("<div></div>");    
                                     QTI.BLOCKQUOTE.id = 0;
                                     QTI.play(editedQuestion.data,displayNodes, false,false,editedQuestion.quizType);                                
-                                    editedQuestion.textHTML = displayNodes.html();
-                                    
-									editedQuestion.showEditQuestionIcon = false;
-									editedQuestion.isNodeSelected = false;
-									editedQuestion.existInTestframe = false;
+                                    editedQuestion.textHTML = displayNodes.html();                                    		
+                                    editedQuestion.parentId = "";
 									addToQuestionsArray(editedQuestion);
 									editedQuestion.template = 'qb_questions_renderer.html';
+									
 									if($scope.yourQuestionsFolder == null) {
 										$scope.disciplines.unshift({
 											"item" : "Your Questions (user created)",
@@ -2610,15 +2675,23 @@ angular
 								})				
 								
 								//this loop is to deselect the edited existing question.
-								$.each( editedMigratedQuestions, function( key, value ) {											
+								var existInQB;
+								var activeTest = SharedTabService.tests[SharedTabService.currentTabIndex];
+								$.each( editedMigratedQuestions, function( key, value ) {	
+									existInQB=false;
 											 for (var i = 0; i < $scope.selectedNodes.length; i++) {												 
-											        if (value === $scope.selectedNodes[i].guid) {											        	
-											            $scope.selectedNodes[i].showEditQuestionIcon = false;
-											            $scope.selectedNodes[i].isNodeSelected = false;													          
-											            $scope.selectedNodes[i].existInTestframe = false;     
+											        if (value === $scope.selectedNodes[i].guid) {	                                                   
+                                                        var qstnCopy = angular.copy($scope.selectedNodes[i]);
+											        	removeNodeInquestionFolderNodeArray(qstnCopy);
+											        	$scope.removeNodeFromSelectedNodes(qstnCopy);	
+											        	existInQB = true;
 											            return true;
 											        }
-											    }											
+											    }	
+											 
+											 if(!existInQB){												
+												 updateTestquestionFolderNode(value,activeTest);
+											 }
 											
 								});						
 								
