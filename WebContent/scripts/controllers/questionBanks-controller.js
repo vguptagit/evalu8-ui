@@ -98,6 +98,27 @@ angular
 								}
 							}
 							
+							//To add a node to an array.
+							var addingNodeToArray = function(nodes,node) {								
+								if(!isNodeInArray(nodes,node.guid)){
+									nodes.push(node);
+								}			
+							}
+							
+							//To check the question node is present in  array.
+							var isNodeInArray = function(nodes,nodeID) {
+								var isNodeUsed=false;
+								for (var j = 0; j < nodes.length; j++) {
+									if (nodes[j].guid == nodeID) {		
+										isNodeUsed=true;
+										break;
+									}
+								}
+								return isNodeUsed;								
+							}
+							
+							
+							
 							//To remove a node from selectedNodes array.
 							var removeNodeFromSelectedNodesByID = function(nodeID) {
 								for (var j = 0; j < $scope.selectedNodes.length; j++) {
@@ -1468,9 +1489,8 @@ angular
 										if(isChildNodeUsed){
 											 childNodesUsedForTestCreation = selectedNode.title;
 											 break;
-										}
-										else
-											$scope.isChildNodeUsed($scope.expandedNodes[i], test);	
+										}else
+											$scope.isChildNodeUsed($scope.expandedNodes[i], test);
 									}
 								}
 							}
@@ -1549,20 +1569,15 @@ angular
 								var test = SharedTabService.tests[SharedTabService.currentTabIndex];
 								isChildNodeUsed=false;
 																
-								if(eventType !=  "clickEvnt"){
-									for (var i = 0; i < $scope.selectedNodes.length; i++) {
-										var isNodeUsed=false
-										test.questionFolderNode.forEach(function(usedNode) {
-											if(usedNode.guid === $scope.selectedNodes[i].guid){
-												isNodeUsed=true;
-											}
-										});
-										if(!isNodeUsed){
-											$scope.isChildNodeUsed($scope.selectedNodes[i],test)	
+							
+								if(scope.nodeType == EnumService.NODE_TYPE.chapter && eventType != "clickEvnt"){
+									for (var i = 0; i < test.questionFolderNode.length; i++) {																	
+										if(test.questionFolderNode[i].guid === scope.guid){
+											isChildNodeUsed=true;
+											break;
 										}
 									}
-								}
-								
+								}								
 								
 								if(isChildNodeUsed){
 									$scope.IsConfirmation = true;
@@ -1592,9 +1607,9 @@ angular
                             	if(selectedScopeNode.nodeType == EnumService.NODE_TYPE.question && eventType == "clickEvnt"){
 									$scope.addQuestionToTestFrameTab(test,destIndex,eventType,scope);
 								}else if(selectedScopeNode.nodeType == EnumService.NODE_TYPE.topic && eventType == "clickEvnt"){
-									$scope.addTopicQuestionsToTestFrameTab(test,destIndex,eventType,selectedScopeNode,$scope.isAnyNodeAlreadyAdded);
+									$scope.addTopicQuestionsToTestFrameTab(test,destIndex,eventType,scope,$scope.isAnyNodeAlreadyAdded);
 								}else{
-									$scope.addQuestionsToTestTab(test, destIndex, eventType,$scope.isAnyNodeAlreadyAdded);
+									$scope.addQuestionsToTestTab(test, destIndex, eventType,selectedScopeNode,$scope.isAnyNodeAlreadyAdded);
 									$scope.isAnyNodeAlreadyAdded = false;
 								}      
 
@@ -1676,11 +1691,13 @@ angular
 								}
 							}
 							
-							$scope.addTopicQuestionsToTestFrameTab = function (test,destIndex,eventType,selectedScopeNode,isAnyNodeAlreadyAdded) {	
-
+							$scope.addTopicQuestionsToTestFrameTab = function (test,destIndex,eventType,scope,isAnyNodeAlreadyAdded) {	
+								var selectedScopeNode = typeof scope.node == "undefined" ? scope : scope.node;
 								test.questionFolderNode.push(selectedScopeNode);								
 								$rootScope.blockPage.start();											
 								selectedScopeNode.showEditQuestionIcon = false;
+								selectedScopeNode.existInTestframe = true;
+								
 								//to enable the testwizard icon in the next tab if the current node is already added to wizard frame.
 								if(!selectedScopeNode.showTestWizardIcon){
 									selectedScopeNode.showTestWizardIcon = true;
@@ -1732,7 +1749,23 @@ angular
 										});
 
 								$scope.updateTopicChildNodesStatus(selectedScopeNode);
+								$scope.checkSiblingTopicSelection(scope,test);
 							};
+							
+							//To change the selection status of the parent node of a node.
+							$scope.checkSiblingTopicSelection = function(scope,activeTest){														
+									if($scope.isAllSiblingsInTestFrame(scope,activeTest)) {
+										scope.$parentNodeScope.node.isNodeSelected = true;
+										scope.$parentNodeScope.node.showEditQuestionIcon = false;
+										scope.$parentNodeScope.node.showTestWizardIcon = true; 	
+										updateDraggedNodeStatus(scope.$parentNodeScope.node);
+										addingNodeToArray(activeTest.questionFolderNode,scope.$parentNodeScope.node);
+										if(scope.$parentNodeScope.node.nodeType!='book'){
+											$scope.checkSiblingTopicSelection(scope.$parentNodeScope,activeTest);
+										}
+									}								
+							};				
+							
 							
 							$scope.updateTopicChildNodesStatus = function(selectedNode){								
 								if(selectedNode.nodes){
@@ -1755,23 +1788,97 @@ angular
 											}
 										});
 	                            	}
+							}							
+							
+							var getDragNodes = function(selectedNodesArray,activeTest){								
+								var dragNodes = [];
+								var selectedNodes = [];
+								if(selectedNodesArray.length==undefined){
+									selectedNodes.push(selectedNodesArray);
+								}else{
+									for (var i = 0; i < selectedNodesArray.length; i++) {		
+										selectedNodes.push(selectedNodesArray[i]);
+									}
+								}
+
+
+								var dragNodeIndex=0;
+								var parentExist=false;
+								for (var i = 0; i < selectedNodes.length; i++) {																	
+
+									if (selectedNodes[i].nodeType === EnumService.NODE_TYPE.chapter){	
+										if (selectedNodes[i].nodes){
+											for (var j = 0; j < selectedNodes[i].nodes.length; j++) {
+												if (selectedNodes[i].nodes[j].nodeType === EnumService.NODE_TYPE.chapter){	
+													getDragNodes(selectedNodes[i].nodes[j]);
+												}else{
+													updateDraggedNodeStatus(selectedNodes[i]);
+													addingNodeToArray(dragNodes,selectedNodes[i].nodes[j]);	
+													addingNodeToArray(activeTest.questionFolderNode,selectedNodes[i]);
+												}								
+											}
+										}else{
+											updateDraggedNodeStatus(selectedNodes[i]);
+											addingNodeToArray(dragNodes,selectedNodes[i]);
+										}
+
+									}else if (selectedNodes[i].nodeType === EnumService.NODE_TYPE.topic){	
+										if (selectedNodes[i].nodes){
+											for (var j = 0; j < selectedNodes[i].nodes.length; j++) {
+												updateDraggedNodeStatus(selectedNodes[i]);														
+												addingNodeToArray(dragNodes,selectedNodes[i].nodes[j]);
+												addingNodeToArray(activeTest.questionFolderNode,selectedNodes[i]);														
+											}	
+										}else{											
+											addingNodeToArray(dragNodes,selectedNodes[i]);												
+										}
+
+									}else{										
+										addingNodeToArray(dragNodes,selectedNodes[i]);	
+									}
+
+								}
+
+								return dragNodes;
+							}
+
+							var updateDraggedNodeStatus = function(dragNode){		
+								for (var i = 0; i < $scope.selectedNodes.length; i++) {
+									if($scope.selectedNodes[i].guid==  dragNode.guid){
+										$scope.selectedNodes[i].showEditQuestionIcon = false;
+										$scope.selectedNodes[i].showTestWizardIcon = true ;
+										$scope.selectedNodes[i].existInTestframe = true;
+									}
+								}
 							}
 							
-							$scope.addQuestionsToTestTab = function (test, destIndex, eventType, isAnyNodeAlreadyAdded) {
+							$scope.addQuestionsToTestTab = function (test, destIndex, eventType,nodeScope, isAnyNodeAlreadyAdded) {
 							    var httpReqCount = 0,
                                     httpReqCompletedCount = 0,
                                     uniqueNodeCount = 0;
+							    var dragNodes;
+							    if(eventType == "clickEvnt"){
+							    	for (var i = 0; i < $scope.selectedNodes.length; i++) {
+							    		if($scope.selectedNodes[i].guid ==  nodeScope.guid){
+							    			dragNodes = getDragNodes($scope.selectedNodes[i],test);
+							    			break;
+							    		}
+							    	}							    	
+							    }else{
+							    	 dragNodes = getDragNodes($scope.selectedNodes,test);
+							    }
+							    
 //							    if(scope.showEditQuestionIcon)
-								for (var i = 0; i < $scope.selectedNodes.length; i++) {
-									if($scope.selectedNodes[i].nodeType != EnumService.NODE_TYPE.question){
-									test.questionFolderNode.push($scope.selectedNodes[i]);
+								for (var i = 0; i < dragNodes.length; i++) {
+									if(dragNodes[i].nodeType != EnumService.NODE_TYPE.question){
+										addingNodeToArray(test.questionFolderNode,dragNodes[i]);	
 									}
-									$scope.getRemoveChildNodesFromQuestionFolderNodes($scope.selectedNodes[i], test);
-									if ($scope.selectedNodes[i].showEditQuestionIcon) {
+									$scope.getRemoveChildNodesFromQuestionFolderNodes(dragNodes[i], test);
+									if (dragNodes[i].showEditQuestionIcon) {
 										uniqueNodeCount++;
-										if ($scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.question) {
+										if (dragNodes[i].nodeType === EnumService.NODE_TYPE.question) {
                                             if (SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode) {
-                                            	$scope.selectedNodes[i].showEditQuestionIcon = true;
+                                            	dragNodes[i].showEditQuestionIcon = true;
                                                 $scope.IsConfirmation = false;
                                                 $scope.message = "A question is already in Edit mode, save it before adding or reordering questions.";
                                                 $modal.open(confirmObject);
@@ -1780,29 +1887,31 @@ angular
                                             }else{      
 
                                                     $rootScope.blockPage.start();
-                                                	$scope.selectedNodes[i].showEditQuestionIcon = false;
-                                                    $rootScope.$broadcast("dropQuestion",$scope.selectedNodes[i], destIndex,"QuestionBank", eventType);
-                                                    $scope.selectedNodes[i].existInTestframe = true;
+                                                    dragNodes[i].showEditQuestionIcon = false;
+                                                    $rootScope.$broadcast("dropQuestion",dragNodes[i], destIndex,"QuestionBank", eventType);
+                                                    dragNodes[i].existInTestframe = true;
                                             }    
 
-										} else if ($scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.chapter
-												|| $scope.selectedNodes[i].nodeType === EnumService.NODE_TYPE.topic) {
+										} else if (dragNodes[i].nodeType === EnumService.NODE_TYPE.chapter
+												|| dragNodes[i].nodeType === EnumService.NODE_TYPE.topic) {
 											
 									        httpReqCount++;
 											$rootScope.blockPage.start();
 											
-											$scope.selectedNodes[i].showEditQuestionIcon = false;
+											dragNodes[i].showEditQuestionIcon = false;
 											//to enable the testwizard icon in the next tab if the current node is already added to wizard frame.
-											if(!$scope.selectedNodes[i].showTestWizardIcon){
-												$scope.selectedNodes[i].showTestWizardIcon = true;
-											}
-											var questionFolder = $scope.selectedNodes[i];
+											if(!dragNodes[i].showTestWizardIcon){
+												dragNodes[i].showTestWizardIcon = true;
+											}											
+											updateDraggedNodeStatus(dragNodes[i]);
+											var questionFolder = dragNodes[i];
 											getQuestions(
 													questionFolder,
 													function(response,
 															questionFolder) {
 														response.forEach(function(selectedQuestion){							
 															selectedQuestion.parentId = questionFolder.guid;
+															selectedQuestion.existInTestframe = true;
 														});
 														if(!isAnyNodeAlreadyAdded)
 														{
@@ -1848,7 +1957,7 @@ angular
 
 									}
 								}
-								if((uniqueNodeCount == 0 && $scope.selectedNodes.length !=0) || httpReqCount == 0){
+								if((uniqueNodeCount == 0 && dragNodes.length !=0) || httpReqCount == 0){
 									$scope.showDuplicateQuestionsAlert();
 								}
 							}
