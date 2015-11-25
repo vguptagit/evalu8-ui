@@ -1322,11 +1322,7 @@ angular.module('e8MyTests')
                 userFolder.nodeType = "folder";
                 //rootFolders.unshift(userFolder);
                 $scope.editingFolder.isEditMode = false;
-                $scope.editingFolder.titleTemp = angular.copy(userFolder.title);
-
-                if (rootFolders.length == 1) {
-                    rootFolders.push(CommonService.getArchiveRoot());
-                }
+                $scope.editingFolder.titleTemp = angular.copy(userFolder.title);                           
 
                 $scope.folderName = "";
 

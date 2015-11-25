@@ -1374,10 +1374,10 @@ angular
 											}else{
 												criteria.treeNode.showEditQuestionIcon = false;
 											}
-											criteria.treeNode.showTestWizardIcon = true;
                                             if (!noOfQuestionsSelected || noOfQuestionsSelected > criteria.totalQuestions || noOfQuestionsSelected > arr.length) {
 												criteria.isError = true;
 												SharedTabService.addErrorMessage(criteria.treeNode.title, SharedTabService.errorMessageEnum.NotEnoughQuestionsAvailable);
+												criteria.treeNode.showTestWizardIcon = false;
 												isError = true;
 												return false;
 											} else {
@@ -1419,6 +1419,10 @@ angular
 								}
 								$scope.tests[$scope.sharedTabService.currentTabIndex].tabTitle = "Untitled test";
 								$scope.saveWizardTest(test, metadatas);
+								$scope.sharedTabService.tests[$scope.sharedTabService.currentTabIndex].criterias
+										.forEach(function (criteria) {
+										    criteria.treeNode.showTestWizardIcon = false;
+										});
 							}
 							
 							//validating and saving a test which is created using test wizard
