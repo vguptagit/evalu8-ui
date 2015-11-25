@@ -523,7 +523,16 @@ angular
 								});
 								
 							}
-
+							
+							function ShowIconsForChildren(currentNode){
+								currentNode.nodes.forEach(function(node) {	
+									node.showTestWizardIcon = false;
+									if(node.nodes){
+										ShowIconsForChildren(node);
+									}
+								})
+							}
+							
 							$scope.addWizardToTestFrameTab = function(currentNode){
 								var httpReqCount = 0,
                                 httpReqCompletedCount = 0;
@@ -533,12 +542,7 @@ angular
 									currentNode.showEditQuestionIcon = true;
 								}
 								if(currentNode.nodes){
-									currentNode.nodes.forEach(function(node) {	
-									node.showTestWizardIcon = false;
-									if(!node.showEditQuestionIcon){
-										node.showEditQuestionIcon = true;
-									}
-								})
+									ShowIconsForChildren(currentNode);
 							}
 							    $rootScope.blockPage.start();
 								getQuestions(

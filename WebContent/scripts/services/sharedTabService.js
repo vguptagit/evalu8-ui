@@ -596,6 +596,18 @@ angular.module('evalu8Demo')
 		     }
 
 		     //Test wizard
+		     
+		   		     
+		     var ShowWizardIconsForChildren = function (currentNode) {					
+					currentNode.nodes.forEach(function(node) {	
+						if(node.isNodeSelected){
+							node.showTestWizardIcon = true;
+						}
+						if(node.nodes){
+							ShowIconsForChildren(node);
+						}
+					})
+			}
 		     sharedTabService.closeCriteria = function (criteria, scope) {
 		         $.each(sharedTabService.tests[scope.currentIndex].criterias, function (i) {
 		             if (sharedTabService.tests[scope.currentIndex].criterias[i].id === criteria.id) {
@@ -605,6 +617,13 @@ angular.module('evalu8Demo')
 		            	 if(sharedTabService.tests[scope.currentIndex].criterias[i].treeNode.isNodeSelected){
                              sharedTabService.tests[scope.currentIndex].criterias[i].treeNode.showTestWizardIcon=true;
                            }
+		            	 
+                         var currentNode = sharedTabService.tests[scope.currentIndex].criterias[i].treeNode;
+                         if(currentNode.nodes){
+                        	 ShowWizardIconsForChildren(currentNode);
+                                
+                        }
+
 		            	 //sharedTabService.tests[scope.currentIndex].criterias[i].treeNode.isNodeSelected=false;
 		            	//Dont delete below commented line, it may re-use in feature
 		            	 //$rootScope.$broadcast("handleBroadcast_deselectedNode", sharedTabService.tests[scope.currentIndex].criterias[i].treeNode);
@@ -614,15 +633,25 @@ angular.module('evalu8Demo')
 		         });
 		     }
 		     
+		  
+		     
 		     sharedTabService.closeAllCriteria = function (criteria, scope) {
 		    	 sharedTabService.tests[sharedTabService.currentTabIndex].title="";
 		    	 var criterias = sharedTabService.tests[scope.currentIndex].criterias;
+		    	 var currentNode;
 		    	 while(criterias.length > 0){
 		    		 $.each(criterias, function(selectedNode){
 				    	 if(sharedTabService.tests[scope.currentIndex].criterias[selectedNode].treeNode.isNodeSelected){
 				    		 sharedTabService.tests[scope.currentIndex].criterias[selectedNode].treeNode.showTestWizardIcon = true;
 				    	 }
+				    	 
+				    	currentNode =sharedTabService.tests[scope.currentIndex].criterias[selectedNode].treeNode;
+	                     if(currentNode.nodes){
+	                    	 ShowWizardIconsForChildren(currentNode);	                            
+	                    }
 				    });
+		    		 
+		    		
 	                 //sharedTabService.tests[scope.currentIndex].criterias[i].treeNode.isNodeSelected=false;
 		    		 
 		    		//Dont delete below commented line, it may re-use in feature
