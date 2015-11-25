@@ -1492,6 +1492,7 @@ angular
 										addingNodeToArray(test.questionFolderNode,dragNodes[i]);	
 									}
 									$scope.getRemoveChildNodesFromQuestionFolderNodes(dragNodes[i], test);
+									dragNodes[i].showEditQuestionIcon = true;
 									if (dragNodes[i].showEditQuestionIcon) {
 										uniqueNodeCount++;
 										if (dragNodes[i].nodeType === EnumService.NODE_TYPE.question) {
