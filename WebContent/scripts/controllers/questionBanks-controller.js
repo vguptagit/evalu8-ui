@@ -952,6 +952,39 @@ angular
 										});
 								
 							}
+							
+							//to set the status of the chapter/topic node,if the chapter/topic node present in test frame.
+							var setTestNodeStatus=function(item){								
+								item.existInTestframe=true;
+								item.isNodeSelected = true;
+								item.showEditQuestionIcon = false;
+								item.showTestWizardIcon = true;													
+							}
+							
+							//to change the status of the topic/chapter node, when we expand a chapter.
+							var setNodeStatus=function(item,currentNode){								
+								
+								//change the status of node, if parent node is selected.
+								if(currentNode.node.isNodeSelected){
+									item.isNodeSelected = currentNode.node.isNodeSelected;
+									item.showEditQuestionIcon = currentNode.node.showEditQuestionIcon;
+									item.showTestWizardIcon = currentNode.node.showTestWizardIcon;
+									item.existInTestframe = currentNode.node.existInTestframe;
+								}
+								
+								item.parentId = currentNode.node.guid;
+								
+								//change the status of node, if node is present in test frame.
+								if($scope.isNodeInTestFrame(item)){
+									setTestNodeStatus(item);												
+								}
+								
+								//add the node to $scope.selectedNodes array, if node is in selected status.
+								if(item.isNodeSelected){													
+									$scope.addingNodeInSelectedNodesArray(item);	
+								}
+							}
+							
 
 							$scope.getNodesWithQuestion = function(currentNode) {
 								
@@ -1025,19 +1058,7 @@ angular
 													item.showTestWizardIcon = false;
 													item.showEditQuestionIcon = false;
 													item.isNodeSelected = currentNode.node.isNodeSelected;
-													
-													//change the status of node, if parent node is selected.
-													if(currentNode.node.isNodeSelected){														
-														item.showEditQuestionIcon = true;
-														item.showTestWizardIcon = true;
-													}	
-																										
-													//add the node to $scope.selectedNodes array, if node is in selected status.
-													if(item.isNodeSelected){													
-														$scope.addingNodeInSelectedNodesArray(item);	
-													}
-													
-													
+													setNodeStatus(item,currentNode);													
 	                                                item.nodeType = "topic";
 	                                                item.isCollapsed = true;
 	                                                item.isHttpReqCompleted = true;
@@ -1570,28 +1591,47 @@ angular
 								isChildNodeUsed=false;
 																
 							
-								if(scope.nodeType == EnumService.NODE_TYPE.chapter && eventType != "clickEvnt"){
+								if(scope.nodeType == EnumService.NODE_TYPE.chapter && eventType != "clickEvnt"){								
 									for (var i = 0; i < test.questionFolderNode.length; i++) {																	
 										if(test.questionFolderNode[i].guid === scope.guid){
 											isChildNodeUsed=true;
 											break;
 										}
 									}
-								}								
+								}			
 								
-								if(isChildNodeUsed){
-									$scope.IsConfirmation = true;
-									$scope.message = "This chapter includes the topic(s) that you have already added to the test. If you want to add the entire chapter, please click OK";
-									$modal.open(confirmObject).result.then(function(ok) {
-										if(ok) {
-											$scope.addSelectedQuestionsToTestTab(test, destIndex, eventType,scope);
+								var isNodeUsed=false;
+								if(scope.nodeType == EnumService.NODE_TYPE.topic && eventType != "clickEvnt"){								
+									for (var i = 0; i < test.questionFolderNode.length; i++) {																	
+										if(test.questionFolderNode[i].guid === scope.guid){
+											isNodeUsed=true;											
+											break;
 										}
-									});
+									}
+								}			
+								
+								
+								if(isNodeUsed || isChildNodeUsed){
+									if(isChildNodeUsed){
+										  $scope.message = "This chapter includes the topic(s) that you have already added to the test. If you want to add the entire chapter, please click OK";
+										  $scope.IsConfirmation = true;
+										$modal.open(confirmObject).result.then(function(ok) {
+											if(ok) {
+												$scope.addSelectedQuestionsToTestTab(test, destIndex, eventType,scope);
+											}
+										});		
+									}else{									
+										$scope.IsConfirmation = false;
+										$scope.message = "Topic(s)  already added to the test, cannot be added again.";
+										$modal.open(confirmObject);
+									}									
+															
 								}else{
 								    SharedTabService.errorMessages = [];
 								    $scope.addSelectedQuestionsToTestTab(test, destIndex, eventType,scope);								     
 								}
 								$scope.editQuestionMode=false;
+								
 							}
 							
 							$scope.isAnyNodeAlreadyAdded = false;
