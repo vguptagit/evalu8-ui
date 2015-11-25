@@ -34,7 +34,11 @@
 		cantSaveQuestionFolder: "Unable to save question folder! Please try again.",
 		cantMoveQuestion: "Unable to move question! Please try again.",
 		cantFetchPrintSettings: "Unable to fetch print settings! Please try again.",
-		cantSaveMetadata: "Unable to save metadata! Please try again."
+		cantSaveMetadata: "Unable to save metadata! Please try again.",
+		
+		invalidPackage: "Import unsuccessfull. Please check your Test package format and try again",
+		cantImportTest: "Unable to import test! Please try again."
+		
 	};
 
 	ns.success = {

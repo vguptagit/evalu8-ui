@@ -87,17 +87,15 @@
 					TestService.uploadTestPackage($scope.testPackage,myTestRoot.guid,function(response,status){
 						$rootScope.blockPage.stop();
 						if(status==EnumService.HttpStatus.BADREQUEST){
-							$scope.warningMsg="Import unsuccessfull. Please check your Test package format and try again";		
+							$scope.warningMsg=window.e8msg.validation.invalidPackage;	
 						}else if(status==EnumService.HttpStatus.SUCCESS){
 							$modalInstance.dismiss('cancel');
 							$rootScope.$broadcast("ImportUserBooks");  
 							$scope.$close();
-						}else if(status==EnumService.HttpStatus.NOTFOUND){
-							$scope.warningMsg="Bad request";
 						}else if(status==EnumService.HttpStatus.CONFLICT){
 							$scope.warningMsg=window.e8msg.validation.duplicateTestPackage;
 						}else if(status==EnumService.HttpStatus.INTERNALEXCEPTION){
-							$scope.warningMsg="Error in importing test";
+							$scope.warningMsg=window.e8msg.validation.cantImportTest;
 						}
 					});
 				});
