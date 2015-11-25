@@ -87,7 +87,7 @@
 					TestService.uploadTestPackage($scope.testPackage,myTestRoot.guid,function(response,status){
 						$rootScope.blockPage.stop();
 						if(status==EnumService.HttpStatus.BADREQUEST){
-							$scope.warningMsg=response;		
+							$scope.warningMsg="Import unsuccessfull. Please check your Test package format and try again";		
 						}else if(status==EnumService.HttpStatus.SUCCESS){
 							$modalInstance.dismiss('cancel');
 							$rootScope.$broadcast("ImportUserBooks");  
