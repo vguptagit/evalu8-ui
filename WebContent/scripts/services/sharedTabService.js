@@ -604,7 +604,7 @@ angular.module('evalu8Demo')
 							node.showTestWizardIcon = true;
 						}
 						if(node.nodes){
-							ShowIconsForChildren(node);
+							ShowWizardIconsForChildren(node);
 						}
 					})
 			}
