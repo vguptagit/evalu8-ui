@@ -445,7 +445,7 @@ angular
                                     return false;    
                                 }*/
                                 if( eventType == "clickEvnt"){
-									$scope.addWizardToTestFrameTab(currentNode.node);
+									$scope.addWizardToTestFrameTab(currentNode, currentNode.node, tab);
 								}else{
 								var httpReqCount = 0,
                                     httpReqCompletedCount = 0;
@@ -537,16 +537,18 @@ angular
 							function ShowIconsForChildren(currentNode){
 								currentNode.nodes.forEach(function(node) {	
 									node.showTestWizardIcon = false;
+									node.existInTestframe = true;
 									if(node.nodes){
 										ShowIconsForChildren(node);
 									}
 								})
 							}
 							
-							$scope.addWizardToTestFrameTab = function(currentNode){
+							$scope.addWizardToTestFrameTab = function(scope, currentNode, test){
 								var httpReqCount = 0,
                                 httpReqCompletedCount = 0;
 								currentNode.showTestWizardIcon = false;
+								currentNode.existInTestframe = true;
 							//to enable the question edit icon in the next tab on clicking wizard icon if all the questions of the current node is already added to the test creation frame.	
 								if(!currentNode.showEditQuestionIcon){
 									currentNode.showEditQuestionIcon = true;
@@ -565,6 +567,7 @@ angular
 															        "handleBroadcast_createTestWizardCriteria",
 															        response,
 															        currentNode);
+										            $scope.checkSiblingTopicSelectionForWizard(scope,test);
 										        } else {
 										            SharedTabService.addErrorMessage(currentNode.title, e8msg.warning.emptyFolder);
 										            currentNode.showTestWizardIcon = true;
@@ -1042,7 +1045,7 @@ angular
 							
 							//to skip the selection of a node if node is present in test frame.
 							var skipNodeSelection=function(node){
-								if(node.isNodeSelected && node.showEditQuestionIcon == false && node.existInTestframe == true ){
+								if(node.isNodeSelected && (node.showEditQuestionIcon == false || node.showTestWizardIcon == false) && node.existInTestframe == true ){
 									return true;
 								}								
 							}
@@ -1333,7 +1336,19 @@ angular
 								});	
 
 								return !allSiblingsNotExistInTestFrame;																
-							}							
+							}	
+							
+							$scope.isAllSiblingsInWizardFrame = function(scope,test) {
+								var allSiblingsNotExistInWizardFrame=false;
+								scope.$parentNodeScope.node.nodes.forEach(function(node) {										
+									if(!$scope.isNodeUsedForWizard(node, test)){
+										allSiblingsNotExistInWizardFrame = true;
+										return;
+									} 																	
+								});	
+
+								return !allSiblingsNotExistInWizardFrame;																
+							}
 
 
 							//To add a node to questionFolderNode array.
@@ -1440,7 +1455,13 @@ angular
 											$scope.checkSiblingTopicSelection(scope.$parentNodeScope,activeTest);
 										}
 									}								
-							};				
+							};
+							
+							$scope.checkSiblingTopicSelectionForWizard = function(scope,activeTest){
+								if($scope.isAllSiblingsInWizardFrame(scope,activeTest)){
+									scope.$parentNodeScope.node.showTestWizardIcon = false;
+								}
+							};
 							
 							
 							$scope.updateTopicChildNodesStatus = function(selectedNode){								
