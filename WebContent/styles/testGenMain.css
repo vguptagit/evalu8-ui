@@ -932,6 +932,10 @@ ol {
 	border: none;
 	font-weight: bold;
 }
+#MyTest-tree-root .captionLabel{
+    width: 100%;
+    height: 38px;
+}
 /*My Test tab test display*/
 .testInputbuttonClass {
 	border: 0px;
