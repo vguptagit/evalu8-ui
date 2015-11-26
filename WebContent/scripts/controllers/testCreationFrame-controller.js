@@ -1304,7 +1304,10 @@ angular
 							    var metadatas = [];
 								SharedTabService.errorMessages = [];
 								$scope.sharedTabService.tests[$scope.sharedTabService.currentTabIndex].criterias
-										.forEach(function(criteria) {
+										.forEach(function (criteria) {
+										    if (!criteria.totalQuestions) {
+										        return;
+										    }
 											if (criteria.selectedQuestiontypes.length) {
 												var arr = [];
 												criteria.metadata
