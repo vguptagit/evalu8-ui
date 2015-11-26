@@ -92,15 +92,19 @@ angular.module('evalu8Demo')
 			};
 			
 			
-			this.getArchiveTests = function(folderId, callback) {				
+			this.getArchiveTests = function(folderId, callback) {	
+				var tests = [];
+				
 				HttpService.get(evalu8config.apiUrl + '/my/archive/folders/' + folderId + '/tests')
 				.success(function(response) {
-					var tests = response;
-					tests.forEach(function(test){
+
+					response.forEach(function(test){
 						test.nodeType = "archiveTest";
 						test.draggable = false;
 						test.droppable = false;
 						test.parentId = folderId;
+						
+						tests.push(test);
 					})
 					callback(tests)
 				})
