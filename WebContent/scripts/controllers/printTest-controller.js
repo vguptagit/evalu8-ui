@@ -48,9 +48,6 @@ angular.module('e8MyTests')
 		     
 		     
 		     $scope.loadTestIframe =  function(){
-		    	 if($("iframe#testPrint").length > 0){
-		        		$("iframe#testPrint").remove();
-		         }
 		    	 setTimeout(function(){
 		    	 parentScope.tests[parentScope.currentIndex].isBtnClicked = false;
 		         var elementToPrint=$('.testPreviewContainer').clone();
