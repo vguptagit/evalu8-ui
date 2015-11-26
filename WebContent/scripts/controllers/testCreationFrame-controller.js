@@ -1777,10 +1777,15 @@ angular
 										return this.indexOf(str) === 0;
 									};
 								}
-
+								 
+								var openPTagLength = 3;
+								var closePTagLength = 4;
 								if(qstnMasterDataModel.Caption.startsWith('<p>')){
-									qstnMasterDataModel.Caption = qstnMasterDataModel.Caption.substring(3, qstnMasterDataModel.Caption.length-4);
-								}			
+									qstnMasterDataModel.Caption = qstnMasterDataModel.Caption.substring(openPTagLength, qstnMasterDataModel.Caption.length-closePTagLength);
+								}	
+								
+								var htmlText = qstnMasterDataModel.Caption.trim().replace(/&nbsp;/, " ");
+								qstnMasterDataModel.Caption = htmlText;
 
 								var questionMetadata = angular.copy(node.questionMetadata);
 								qstnMasterDataModel.questionMetadata = questionMetadata;										
@@ -1825,8 +1830,10 @@ angular
 									};
 								}
 
+								var openPTagLength = 3;
+								var closePTagLength = 4;
 								if(qstnModifiedData.Caption.startsWith('<p>')){
-									qstnModifiedData.Caption = qstnModifiedData.Caption.substring(3, qstnModifiedData.Caption.length-4);
+									qstnModifiedData.Caption = qstnModifiedData.Caption.substring(openPTagLength, qstnModifiedData.Caption.length-closePTagLength);
 								}			
 								qstnModifiedData.questionMetadata = node.questionMetadata;		
 
