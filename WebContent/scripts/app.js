@@ -182,7 +182,7 @@
 
 			piSession.on(piSession.LogoutEvent, AuthenticationService.onLogout);
 			
-			piSession.on(piSession.RefreshEvent, AuthenticationService.onRefresh);
+			//piSession.on(piSession.RefreshEvent, AuthenticationService.onRefresh);
 			
 			if(sessionStorage.getItem('globals') === null) {
 				$location.path("/signin");
