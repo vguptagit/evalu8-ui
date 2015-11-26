@@ -450,7 +450,17 @@ angular
 								var httpReqCount = 0,
                                     httpReqCompletedCount = 0;
 								for (var i = 0; i < $scope.selectedNodes.length; i++) {
-									currentNode = $scope.selectedNodes[i];
+								    currentNode = $scope.selectedNodes[i];
+								    if (currentNode.nodes) {
+								        var newCriteria = new SharedTabService.Criteria();
+								        newCriteria.totalQuestions = 0;
+								        newCriteria.folderId = currentNode.guid;
+								        newCriteria.treeNode = currentNode;
+								        $scope.expandedNodes.push(currentNode);
+								        SharedTabService.tests[SharedTabService.currentTabIndex].criterias.push(newCriteria);
+								        currentNode.showTestWizardIcon = false;
+								        continue;
+								    }
 									if (currentNode.showTestWizardIcon) {
 									    httpReqCount++;
 									    currentNode.showTestWizardIcon = false;
@@ -991,12 +1001,16 @@ angular
 									return;
 								}
 								if(node.isNodeSelected){								
-									node.nodes.forEach(function(node) {	
+								    node.nodes.forEach(function (node) {
+								        var test = SharedTabService.tests[SharedTabService.currentTabIndex];
+								        if ($scope.isNodeUsedForWizard(node, test)) {
+								            node.showTestWizardIcon = false;
+								        } else {
+								            node.showTestWizardIcon = true;
+								        }
 										node.isNodeSelected = true;
-										node.showTestWizardIcon = true; 	
 										if(!$scope.isNodeInTestFrame(node)){
 											node.showEditQuestionIcon = true;
-											node.showTestWizardIcon = true; 	
 											node.existInTestframe = false;
 											$scope.addingNodeInSelectedNodesArray(node);	
 											if(node.nodes){
