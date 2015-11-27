@@ -361,6 +361,18 @@ angular
                                                             $scope.selectedNodes[i] = item;
                                                         }
                                                     }
+                                                var test = SharedTabService.tests[SharedTabService.currentTabIndex];     
+                                                if(test.criterias.length > 0){
+                                                	for (var j = 0; j < test.criterias.length; j++) {
+                                                		if (test.criterias[j].treeNode.guid == item.guid) {
+                                                			item.isNodeSelected = true;
+                                                			item.showTestWizardIcon = false;
+                                                			item.showEditQuestionIcon = true;
+                                                			item.existInTestframe= true;
+                                                			$scope.selectedNodes.push(item);
+                                                		}
+                                                	}
+                                                }
                                                 item.nodeType = "chapter";
                                                 item.isCollapsed=true;
                                             })
@@ -544,6 +556,7 @@ angular
 							function ShowIconsForChildren(currentNode){
 								currentNode.nodes.forEach(function(node) {	
 									node.showTestWizardIcon = false;
+									node.showEditQuestionIcon = true;
 									node.existInTestframe = true;
 									if(node.nodes){
 										ShowIconsForChildren(node);
@@ -625,6 +638,16 @@ angular
 									setTestNodeStatus(item);												
 								}
 								
+								var test = SharedTabService.tests[SharedTabService.currentTabIndex]; 
+								//change the status of node, if node is present in wizard frame.
+								if($scope.isNodeUsedForWizard(item, test)){
+									item.isNodeSelected = true;
+									item.showEditQuestionIcon = true;
+									item.showTestWizardIcon = false;
+									
+								}
+								
+							
 								//add the node to $scope.selectedNodes array, if node is in selected status.
 								if(item.isNodeSelected){													
 									$scope.addingNodeInSelectedNodesArray(item);	
@@ -1967,7 +1990,7 @@ angular
 							
 							$scope.deselectWizarParentNode = function (node) {
 								for (var i = 0; i < $scope.selectedNodes.length; i++) {
-								if ($scope.selectedNodes[i].guid == node.parentId) {
+								if ($scope.selectedNodes[i].guid == node.treeNode.parentId) {
 									$scope.selectedNodes[i].isNodeSelected = false ;
 									$scope.selectedNodes[i].showEditQuestionIcon = false;
 									$scope.selectedNodes[i].showTestWizardIcon = false;
@@ -2062,8 +2085,23 @@ angular
 							
 							$scope.$on('handleBroadcast_deselectWizardNode',
 									function(handler, node) {
-										$scope.deselectWizarParentNode(node);
-									});
+								$scope.deselectWizarParentNode(node);
+								for (var i = 0; i < $scope.selectedNodes.length; i++) {
+									if ($scope.selectedNodes[i].guid == node.treeNode.guid) {
+										$scope.selectedNodes[i].isNodeSelected = false ;
+										$scope.selectedNodes[i].showEditQuestionIcon = false;
+										$scope.selectedNodes[i].showTestWizardIcon = false;
+										if($scope.selectedNodes[i].nodes){
+											$scope.selectedNodes[i].nodes.forEach(function(usedNode) {
+												usedNode.isNodeSelected= false;
+												usedNode.showTestWizardIcon = false;
+												usedNode.showEditQuestionIcon = false;
+											})
+										}
+									}
+								}
+
+							});
 							// evalu8-ui : to set Active Resources Tab , handled
 							// in ResourcesTabsController
 							$rootScope.$broadcast(

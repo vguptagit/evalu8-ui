@@ -1372,10 +1372,20 @@ angular
 											}
                                             */
 											var noOfQuestionsSelected = criteria.numberOfQuestionsEntered > 0 ? criteria.numberOfQuestionsEntered : criteria.numberOfQuestionsSelected;
-											if(noOfQuestionsSelected < criteria.metadata){
+											if(noOfQuestionsSelected < criteria.metadata.length){
 												criteria.treeNode.showEditQuestionIcon = true;
+												if(criteria.treeNode.nodes){
+													criteria.treeNode.nodes.forEach(function(childNode) {
+														childNode.showEditQuestionIcon = true;
+													})
+												}
 											}else{
 												criteria.treeNode.showEditQuestionIcon = false;
+												if(criteria.treeNode.nodes){
+													criteria.treeNode.nodes.forEach(function(childNode) {
+														childNode.showEditQuestionIcon = false;
+													})
+												}
 											}
                                             if (!noOfQuestionsSelected || noOfQuestionsSelected > criteria.totalQuestions || noOfQuestionsSelected > arr.length) {
 												criteria.isError = true;
@@ -1434,7 +1444,7 @@ angular
 								$rootScope.blockPage.start();
                                 TestService.getTests(test.folderGuid, function(tests){
                                 	if(tests==null){
-            							$rootScope.blockLeftPanel.stop();
+            							$rootScope.blockPage.stop();
             							CommonService.showErrorMessage(e8msg.error.cantFetchTests)
                             			return;
             						}
@@ -1459,6 +1469,14 @@ angular
                                     QTI.initialize();
                                     $scope.tests[$scope.sharedTabService.currentTabIndex].isTestWizard = false;
                                     $scope.sharedTabService.isTestWizardTabPresent = false;
+                                    for (var i = 0; i < test.criterias.length; i++) {
+                                    	test.criterias[i].treeNode.showTestWizardIcon = true;
+                                    	if (test.criterias[i].treeNode.nodes) {
+                                    		for (var j = 0; j < test.criterias[i].treeNode.nodes.length; j++) {
+                                    			test.criterias[i].treeNode.nodes[j].showTestWizardIcon = true;
+                                    		}
+                                    	}
+                                    }
                                     test.criterias=[];
                                     if (test.saveMode === EnumService.SAVE_MODE.SaveAs) {
                                         test.testId = null;
