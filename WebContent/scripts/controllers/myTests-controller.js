@@ -555,6 +555,7 @@ angular.module('e8MyTests')
                 $scope.$digest();
                 return; 
             } else {
+            	$scope.showAddFolderPanel = true;
                 $scope.IsConfirmation = true;
                 $scope.message = "Do you want to save this folder?"; 
         		$modal.open(confirmObject).result.then(function(ok) {
