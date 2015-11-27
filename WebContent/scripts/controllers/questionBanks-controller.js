@@ -1751,7 +1751,18 @@ angular
 								}
 									
 								$scope.updateParentNodeStatus(node);
-							};			
+							};	
+							
+							$scope.deselectWizarParentNode = function (node) {
+								for (var i = 0; i < $scope.selectedNodes.length; i++) {
+								if ($scope.selectedNodes[i].guid == node.parentId) {
+									$scope.selectedNodes[i].isNodeSelected = false ;
+									$scope.selectedNodes[i].showEditQuestionIcon = false;
+									$scope.selectedNodes[i].showTestWizardIcon = false;
+									break;
+								}
+							}
+							}
 							
 							//to set the status of the question node in question bank tab,if the question node deleted in test frame.
 							var setDeletedTestQuestionNodeStatus=function(node){										
@@ -1837,7 +1848,10 @@ angular
 										$scope.deselectQuestionNode(node);
 									});
 							
-							
+							$scope.$on('handleBroadcast_deselectWizardNode',
+									function(handler, node) {
+										$scope.deselectWizarParentNode(node);
+									});
 							// evalu8-ui : to set Active Resources Tab , handled
 							// in ResourcesTabsController
 							$rootScope.$broadcast(
