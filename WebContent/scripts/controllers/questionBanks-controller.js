@@ -2724,90 +2724,46 @@ angular
 							        }
 							    });
 							});
+	                        
+							$scope.userMetadata=[];
+                            
+                            $scope.getUserMetadata=function(){
+                                UserService.userQuestionMetadata(function(userQuestionMetadata){
+                                    $scope.metadataValues = {
+                                            "Difficulty":[]
+                                    };
+                                    userQuestionMetadata.forEach(function(metadata){
+                                        var userMetadataKeyValue={};
+                                        if(metadata==MetadataEnum.DIFFICULTY){
+                                            userMetadataKeyValue.key=ShortMetadataEnum.DIFFICULTY;
+                                            userMetadataKeyValue.name='Difficulty';
+                                            $scope.userMetadata.splice(0, 0, userMetadataKeyValue);
+                                        }else if(metadata==MetadataEnum.TOPIC){
+                                            userMetadataKeyValue.key=ShortMetadataEnum.TOPIC;
+                                            userMetadataKeyValue.name='Topic';
+                                            $scope.userMetadata.splice(1, 0, userMetadataKeyValue);
+                                        }else if(metadata==MetadataEnum.OBJECTIVE){
+                                            userMetadataKeyValue.key=ShortMetadataEnum.OBJECTIVE;
+                                            userMetadataKeyValue.name='Objective';
+                                            $scope.userMetadata.splice(2, 0, userMetadataKeyValue);
+                                        }else if(metadata==MetadataEnum.PAGEREFERENCE){
+                                            userMetadataKeyValue.key=ShortMetadataEnum.PAGEREFERENCE;
+                                            userMetadataKeyValue.name='Page Reference';
+                                            $scope.userMetadata.splice(3, 0, userMetadataKeyValue);
+                                        }else if(metadata==MetadataEnum.SKILL){
+                                            userMetadataKeyValue.key=ShortMetadataEnum.SKILL;
+                                            userMetadataKeyValue.name='Skill';
+                                            $scope.userMetadata.splice(4, 0, userMetadataKeyValue);
+                                        }else if(metadata==MetadataEnum.QUESTIONID){
+                                            userMetadataKeyValue.key=ShortMetadataEnum.QUESTIONID;
+                                            userMetadataKeyValue.name='Question ID';
+                                            $scope.userMetadata.splice(5, 0, userMetadataKeyValue);
+                                        }
+                                    });
+                                });
+                            }
 
-	                         var ShortMetadataEnum={
-	                                    'DIFFICULTY':'Diff',
-	                                    'TOPIC':'Topk',
-	                                    'OBJECTIVE':'Objt',
-	                                    'PAGEREFERENCE':'PRef',
-	                                    'SKILL':'Skil',
-	                                    'QUESTIONID':'QnId'
-	                            }
-	                            
-	                            var metadataArray = function(){
-	                                $scope.userMetadata=[];
-	                                $scope.userMetadata.push(new metadataKeyValue(ShortMetadataEnum.DIFFICULTY,'Difficulty'));
-	                                $scope.userMetadata.push(new metadataKeyValue(ShortMetadataEnum.TOPIC,'Topic'));
-	                                $scope.userMetadata.push(new metadataKeyValue(ShortMetadataEnum.OBJECTIVE,'Objective'));
-	                                $scope.userMetadata.push(new metadataKeyValue(ShortMetadataEnum.PAGEREFERENCE,'Page Reference'));
-	                                $scope.userMetadata.push(new metadataKeyValue(ShortMetadataEnum.SKILL,'Skill'));
-	                                $scope.userMetadata.push(new metadataKeyValue(ShortMetadataEnum.QUESTIONID,'Question ID'));
-	                            }
-	                            
-	                            function metadataKeyValue(keyValue,nameValue) {
-	                                this.key = keyValue;
-	                                this.name = nameValue;
-	                            }
-	                            
-	                            Array.prototype.removeValue = function(name, value){
-	                                   var array = $.map(this, function(v,i){
-	                                      return v[name] === value ? null : v;
-	                                   });
-	                                   this.length = 0;
-	                                   this.push.apply(this, array);
-	                            }
-	                            
-	                            $scope.getUserMetadata=function(){
-	                                metadataArray();
-	                                UserService.userQuestionMetadata(function(userQuestionMetadata){
-	                                    $scope.metadataValues = {
-	                                            "Difficulty":[]
-	                                    };
-	                                    var isDifficultyEnabled=false;
-	                                    var isTopicEnabled=false;
-	                                    var isObjectiveEnabled=false;
-	                                    var isPageReferenceEnabled=false;
-	                                    var isSkillEnabled=false;
-	                                    var isQuestionIDEnabled=false;
-	                                    userQuestionMetadata.forEach(function(metadata){
-	                                        var userMetadataKeyValue={};
-	                                        if(metadata==MetadataEnum.DIFFICULTY){
-	                                            isDifficultyEnabled=true;
-	                                        }else if(metadata==MetadataEnum.TOPIC){
-	                                            isTopicEnabled=true;
-	                                        }else if(metadata==MetadataEnum.OBJECTIVE){
-	                                            isObjectiveEnabled=true;
-	                                        }else if(metadata==MetadataEnum.PAGEREFERENCE){
-	                                            isPageReferenceEnabled=true;
-	                                        }else if(metadata==MetadataEnum.SKILL){
-	                                            isSkillEnabled=true
-	                                        }else if(metadata==MetadataEnum.QUESTIONID){
-	                                            isQuestionIDEnabled=true;
-	                                        }
-	                                    });
-	                                    
-	                                   if(!isDifficultyEnabled){
-	                                       $scope.userMetadata.removeValue('name','Difficulty')
-	                                   }
-	                                   if(!isTopicEnabled){
-	                                       $scope.userMetadata.removeValue('name','Topic')
-	                                   }
-	                                   if(!isObjectiveEnabled){
-	                                       $scope.userMetadata.removeValue('name','Objective')
-	                                   }
-	                                   if(!isPageReferenceEnabled){
-	                                       $scope.userMetadata.removeValue('name','Page Reference')
-	                                   }
-	                                   if(!isSkillEnabled){
-	                                       $scope.userMetadata.removeValue('name','Skill')
-	                                   }
-	                                   if(!isQuestionIDEnabled){
-	                                       $scope.userMetadata.removeValue('name','Question ID')
-	                                   }
-	                                    
-	                                });
-	                            }
-							
+                            
 							$scope.getUserMetadata();
 							
 							$scope.isAnyMetadataSelected=function(){
@@ -2888,5 +2844,15 @@ angular
 									'SKILL':'Skill',
 									'QUESTIONID':'QuestionId'
 							}
+							
+                            var ShortMetadataEnum={
+                                    'DIFFICULTY':'Diff',
+                                    'TOPIC':'Topk',
+                                    'OBJECTIVE':'Objt',
+                                    'PAGEREFERENCE':'PRef',
+                                    'SKILL':'Skil',
+                                    'QUESTIONID':'QnId'
+                            }
+
 							
 						} ]);
