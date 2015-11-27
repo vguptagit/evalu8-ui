@@ -1907,6 +1907,15 @@ angular
 																$scope.expandedNodes[i].showTestWizardIcon=false;
 																$scope.expandedNodes[i].showEditQuestionIcon=true;
 																$scope.selectedNodes.push($scope.expandedNodes[i]);
+																if (tab.criterias[k].treeNode.nodes) {
+																    var childNodes=tab.criterias[k].treeNode.nodes;
+																    for (var l = 0; l < childNodes.length; l++) {
+																        childNodes[l].isNodeSelected = true;
+																        childNodes[l].showTestWizardIcon = false;
+																        childNodes[l].showEditQuestionIcon = true;
+																        $scope.selectedNodes.push(childNodes[l]);
+																    }
+																}
 															}
 														}
 													}
