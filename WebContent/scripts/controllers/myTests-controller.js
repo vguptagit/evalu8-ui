@@ -1125,9 +1125,15 @@ angular.module('e8MyTests')
     		
     		$modal.open(confirmObject).result.then(function(ok) {
 	    		if(ok) {
-        			ArchiveService.deleteFolder(folder.node.guid, function(response) {
-        				if(response==null){
-        					CommonService.showErrorMessage(e8msg.error.cantDeleteFolder)
+        			ArchiveService.deleteFolder(folder.node.guid, function(response,status) {
+        				if(status!=200){
+	                		if(status==400){
+	                			$scope.IsConfirmation = false;
+        			            $scope.message = e8msg.error.cantDeleteFolderBecauseOfTest;
+        			            $modal.open(confirmObject);
+	                		}else{
+	                			CommonService.showErrorMessage(e8msg.error.cantDeleteFolder)	
+	                		}
                 			return;
         				}
         				folder.remove(); 

@@ -90,11 +90,11 @@ angular.module('evalu8Demo')
 			this.deleteFolder = function(folderId, callback) {								
 
 				HttpService.delete(evalu8config.apiUrl + '/my/delete/folders/' + folderId)
-				.success(function(response) {									
-					if(callback) callback(1);
+				.success(function(response,status) {									
+					if(callback) callback(response,status);
 				})
 				.error(function(error, status) {
-					if(callback) callback(null);
+					if(callback) callback(error, status);
 				})				
 			};
 			

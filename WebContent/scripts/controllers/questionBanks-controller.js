@@ -2584,7 +2584,7 @@ angular
                                 	}
                                 }else if(testTab.questionFolderNode.length > 0){
                                 	for (var j = 0; j < testTab.questionFolderNode.length; j++) {
-                                		if (testTab.questionFolderNode[j].treeNode.guid == container.guid) {
+                                		if (testTab.questionFolderNode[j].guid == container.guid) {
                                 			container.isNodeSelected = true;
                                 			container.showTestWizardIcon = true;
                                 			container.showEditQuestionIcon = false;

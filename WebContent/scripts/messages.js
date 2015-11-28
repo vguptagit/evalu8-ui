@@ -28,15 +28,15 @@
 		cantFetchBooks: "Unable to fetch books! Please try again.",
 		cantFetchSelectedQuestionType: "Unable to fetch selected question type for some/all books! Please try again.",
 		cantFetchQuestions: "Unable to fetch questions! Please try again.",
-		testIsInEditMode: "Test(s) in this folder is in edit mode, please close the Test(s) from edit mode to archive this folder",
+		testIsInEditMode: "Test(s) in this folder is in edit mode, please close the Test(s) from edit mode to archive this folder.",
 		cantUploadImage: "Unable to upload image! Please try again.",
 		cantFetchRootFolder: "Unable to fetch root folder! Please try again.",
 		cantSaveQuestionFolder: "Unable to save question folder! Please try again.",
 		cantMoveQuestion: "Unable to move question! Please try again.",
 		cantFetchPrintSettings: "Unable to fetch print settings! Please try again.",
 		cantSaveMetadata: "Unable to save metadata! Please try again.",
-		
-		invalidPackage: "Import unsuccessfull. Please check your Test package format and try again",
+		cantDeleteFolderBecauseOfTest:"Could not delete the folder because one/some of the test/s having versions cannot be deleted.",
+		invalidPackage: "Import unsuccessfull. Please check your Test package format and try again.",
 		cantImportTest: "Unable to import test! Please try again."
 		
 	};
