@@ -198,11 +198,15 @@ angular
 					        					           
 					        }
 					        $scope.closeTabWithConfirmation = function ($event,tab) {
-					        	checkTestQuestionsInEditModeWithChanges(tab);
-								SharedTabService.closeTabWithConfirmation(tab, $scope);
-								$scope.setTestType();
-								loadQuestionsToEmptyTab();
-								$event.stopPropagation();
+					        	$scope.setTestType();
+					        	if($scope.testType!=EnumService.TEST_TYPE.PublisherTest){
+					        		checkTestQuestionsInEditModeWithChanges(tab);
+									SharedTabService.closeTabWithConfirmation(tab, $scope);
+									loadQuestionsToEmptyTab();
+					        	}else{
+					        		SharedTabService.closeTab(tab,$scope);
+					        	}
+					        	$event.stopPropagation();
 					        }
 					        
 					        var checkTestQuestionsInEditModeWithChanges = function(tab){
