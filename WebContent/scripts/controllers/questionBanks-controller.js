@@ -140,6 +140,27 @@ angular
 								}						
 							}
 							
+							//To check all questions of topic are avialable in test frame.
+							var isAllTopicQuestionsInTestFrame = function(node) {
+								var isNodeUsed=false;
+								var activeTest = SharedTabService.tests[SharedTabService.currentTabIndex];
+								for (var i = 0; i < node.questionBindings.length; i++) {
+									isNodeUsed=false;
+									for (var j = 0; j < activeTest.questions.length; j++) {
+										if(activeTest.questions[j].guid == node.questionBindings[i]){
+											isNodeUsed=true;
+											break;
+										}
+									}
+									if(!isNodeUsed){
+										isNodeUsed=false;
+										break;																			
+									}	
+								}
+								
+								return isNodeUsed;	
+							}					
+							
 							
 							
 						    //no teb switch, restore selectedNodes items
@@ -622,8 +643,46 @@ angular
 								item.showTestWizardIcon = true;													
 							}
 							
-							//to change the status of the topic/chapter node, when we expand a chapter.
+							//to change the status of the topic/chapter question node, when we expand a chapter/topic.
 							var setNodeStatus=function(item,currentNode){								
+								
+								//change the status of node, if parent node is selected.
+								if(currentNode.node.isNodeSelected){
+									item.isNodeSelected = currentNode.node.isNodeSelected;
+									item.showEditQuestionIcon = currentNode.node.showEditQuestionIcon;
+									item.showTestWizardIcon = currentNode.node.showTestWizardIcon;
+									item.existInTestframe = currentNode.node.existInTestframe;
+								}
+								
+								item.parentId = currentNode.node.guid;
+								
+								//change the status of node, if node is present in test frame.
+								if($scope.isNodeInTestFrame(item)){
+									setTestNodeStatus(item);												
+								}else if(isAllTopicQuestionsInTestFrame(item)){
+									setTestNodeStatus(item);	
+								}
+								
+								var test = SharedTabService.tests[SharedTabService.currentTabIndex]; 
+								//change the status of node, if node is present in wizard frame.
+								if($scope.isNodeUsedForWizard(item, test)){
+									item.isNodeSelected = true;
+									item.showEditQuestionIcon = true;
+									item.showTestWizardIcon = false;
+									
+								}
+								
+							
+								//add the node to $scope.selectedNodes array, if node is in selected status.
+								if(item.isNodeSelected){													
+									$scope.addingNodeInSelectedNodesArray(item);
+									$scope.addingNodeInQuestionFolderNodeArray(item,test);
+									
+								}
+							}
+							
+							//to change the status of the topic/chapter node, when we expand a chapter.
+							var setFolderNodeStatus=function(item,currentNode){								
 								
 								//change the status of node, if parent node is selected.
 								if(currentNode.node.isNodeSelected){
@@ -722,7 +781,7 @@ angular
 										    currentNode.node.IsContainerReqCompleted = true;
 											if(response.length>0){
 												currentNode.node.nodes = currentNode.node.nodes.concat(response);
-												$scope.expandedNodes=$scope.expandedNodes.concat(currentNode.node.nodes);
+												$scope.expandedNodes=$scope.expandedNodes.concat(currentNode.node.nodes);											
 												var topicCount=0;
 												angular.forEach(currentNode.node.nodes, function(item) {
 													item.template = 'nodes_renderer.html';
@@ -1041,9 +1100,10 @@ angular
 								if(typeof(node.nodes) == 'undefined'){
 									return;
 								}
-								if(node.isNodeSelected){								
+								if(node.isNodeSelected){
+									  var test = SharedTabService.tests[SharedTabService.currentTabIndex];
 								    node.nodes.forEach(function (node) {
-								        var test = SharedTabService.tests[SharedTabService.currentTabIndex];
+								      
 								        if ($scope.isNodeUsedForWizard(node, test)) {
 								            node.showTestWizardIcon = false;
 								        } else {
@@ -1635,13 +1695,6 @@ angular
 								
 								var httpReqCount = 0,httpReqCompletedCount = 0,processedNodeCount = 0;
 								var isAllNodesNotAdded=false;
-
-								immediateChildren = [];
-								immediateChildren = getImmediateChildren(clickedFolder);
-								
-								processingNodes = [];		
-								processingNodes = getProcessingNodes(clickedFolder);
-								processingNodes = getFilteredProcessNodes(processingNodes);
 								
 								addProcessNodeToTestFrame(activeTest, destIndex,scope,eventType);
 									
@@ -1656,7 +1709,10 @@ angular
 								var emptyResponseNodes = [];		
 								
 								setAddedFolderNodeStatus(clickedFolder);
-								addingNodeToArray(activeTest.questionFolderNode,clickedFolder);								
+								addingNodeToArray(activeTest.questionFolderNode,clickedFolder);		
+								
+								processingNodes=[];
+								processingNodes.push(clickedFolder);								
 								
 								for (var i = 0; i < processingNodes.length; i++) {
 									processedNodeCount++;
@@ -1727,6 +1783,11 @@ angular
 								
 								if (processedNodeCount == processingNodes.length && httpReqCount == httpReqCompletedCount) {
 									
+									if(scope.node.nodes){
+										updateNodeHierarchyStatus(scope.node,activeTest);
+									}
+										
+									
 									if(isAllNodesNotAdded){
 										clickedFolder.showEditQuestionIcon = true;									
 										removeNodeByID(activeTest.questionFolderNode,clickedFolder.guid);	
@@ -1742,13 +1803,29 @@ angular
 										removeNodeByID(processingNodes,nodeId);								
 									});	
 									
-									updateAddedFolderNodeStatus(immediateChildren,processingNodes,activeTest);
-									updateFolderHierarchyNodesStatus(scope,activeTest);		
-									immediateChildren = [];
-									processingNodes = [];		
+								
+									updateFolderHierarchyNodesStatus(scope,activeTest);	
+								
+									
 								}
 								
 							}
+							
+							//To change the selection status of the parent node of a node.
+							var updateNodeHierarchyStatus = function(node,activeTest){														
+								node.nodes.forEach(function(node) {	
+									setAddedFolderNodeStatus(node);
+									if(node.nodeType != EnumService.NODE_TYPE.question){
+										addingNodeToArray(activeTest.questionFolderNode,node);													
+									}
+									addingNodeToArray($scope.selectedNodes,node);		
+									if(node.nodes){
+										updateNodeHierarchyStatus(node,activeTest);
+									}
+									
+								});	
+								
+							};	
 							
 							//To change the selection status of the parent node of a node.
 							var updateFolderHierarchyNodesStatus = function(scope,activeTest){														
@@ -2017,7 +2094,7 @@ angular
 							
 							
 							//to set the status of the hierarchical parent node in question bank tab,if the question node deleted in test frame.
-							var updateHigherParentNodesStatus=function(parentId){		
+							var updateHigherParentNodesStatusByID=function(parentId){		
 								var parentExistInSelectNodes=false;
 								var nodeIndex=0;
 								for (var j = 0; j < $scope.selectedNodes.length; j++) {
@@ -2040,9 +2117,32 @@ angular
 											
 							}
 							
+							//to set the status of the hierarchical parent node in question bank tab,if the question node deleted in test frame.
+							var updateHigherParentNodesStatus=function(deselectedNode){		
+								
+								deselectedNode.questionHierarchy.forEach(function(parentId) {	
+									for (var j = 0; j < $scope.selectedNodes.length; j++) {
+										if ($scope.selectedNodes[j].guid == parentId) {
+											$scope.selectedNodes[j].isNodeSelected = false ;
+											$scope.selectedNodes[j].showEditQuestionIcon = false;
+											$scope.selectedNodes[j].showTestWizardIcon = false;		
+											$scope.selectedNodes.splice(j, 1);
+											removeNodeByID(SharedTabService.tests[SharedTabService.currentTabIndex].questionFolderNode,parentId);										
+											break;
+										}
+									}										
+								});		
+								
+							}
+							
 							//#To check whether the any parent node of selected node is used for test creation(edit question/wizard)  
 							$scope.updateParentNodeStatus = function(deselectedNode){	
-								updateHigherParentNodesStatus(deselectedNode.parentId);
+								if(deselectedNode.questionHierarchy){
+									updateHigherParentNodesStatus(deselectedNode);
+								}else{
+									updateHigherParentNodesStatusByID(deselectedNode.parentId);
+								}
+								
 								var test = SharedTabService.tests[SharedTabService.currentTabIndex];
 								for (var j = 0; j < test.questionFolderNode.length; j++) {
 										if (test.questionFolderNode[j].guid == deselectedNode.parentId) {
