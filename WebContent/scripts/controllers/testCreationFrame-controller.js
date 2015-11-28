@@ -1303,6 +1303,7 @@ angular
 								var isError = false;
 							    var metadatas = [];
 								SharedTabService.errorMessages = [];
+								var test = SharedTabService.tests[SharedTabService.currentTabIndex];
 								$scope.sharedTabService.tests[$scope.sharedTabService.currentTabIndex].criterias
 										.forEach(function (criteria) {
 										    if (!criteria.totalQuestions) {
@@ -1314,6 +1315,7 @@ angular
 														.forEach(function(item) {
 															if (criteria.selectedQuestiontypes
 																	.indexOf(item.quizType) != -1) {
+																item.parentId = criteria.folderId;
 																arr.push(item);
 															}
 														});
@@ -1381,9 +1383,11 @@ angular
 												}
 											}else{
 												criteria.treeNode.showEditQuestionIcon = false;
+												test.questionFolderNode.push(criteria.treeNode);
 												if(criteria.treeNode.nodes){
 													criteria.treeNode.nodes.forEach(function(childNode) {
 														childNode.showEditQuestionIcon = false;
+														test.questionFolderNode.push(childNode);
 													})
 												}
 											}
@@ -1411,7 +1415,6 @@ angular
 									SharedTabService.TestWizardErrorPopup_Open(SharedTabService.errorMessages);
 									return false;
 								} else {
-									var test = SharedTabService.tests[SharedTabService.currentTabIndex];
 									if (isTestTitleEmpty(test)) {
 										$scope.IsConfirmation = false;
 										$scope.message = "Please enter test title to save the test.";
@@ -1625,6 +1628,7 @@ angular
 													var displayNode = {};
 
 													displayNode.guid = question.guid;
+													displayNode.parentId = question.parentId;
 													displayNode.textHTML = displayNodes.html();
 													
 													displayNode.IsEditView = false;

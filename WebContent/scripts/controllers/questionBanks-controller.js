@@ -554,10 +554,13 @@ angular
 							}
 							
 							function ShowIconsForChildren(currentNode){
-								currentNode.nodes.forEach(function(node) {	
+								currentNode.nodes.forEach(function(node) {
+									node.isNodeSelected = true;
 									node.showTestWizardIcon = false;
 									node.showEditQuestionIcon = true;
-									node.existInTestframe = true;
+									if(node.nodeType != "question"){
+										node.existInTestframe = true;
+									}
 									if(node.nodes){
 										ShowIconsForChildren(node);
 									}
@@ -1008,11 +1011,16 @@ angular
 							}
 							//To change the selection status of the parent node of a node.
 							$scope.checkSiblingSelection = function(scope){
+								var activeTest = SharedTabService.tests[SharedTabService.currentTabIndex];
 								if(scope.node.isNodeSelected){									
 									if($scope.isAllSiblingsSelected(scope.$parentNodeScope.node.nodes)) {
 										scope.$parentNodeScope.node.isNodeSelected = true;
 										scope.$parentNodeScope.node.showEditQuestionIcon = true;
-										scope.$parentNodeScope.node.showTestWizardIcon = true; 
+										if($scope.isNodeUsedForWizard(scope.$parentNodeScope.node, activeTest)){
+											scope.$parentNodeScope.node.showTestWizardIcon = false;
+										}else{
+											scope.$parentNodeScope.node.showTestWizardIcon = true; 
+										}
 										$scope.addingNodeInSelectedNodesArray(scope.$parentNodeScope.node);
 										if(scope.$parentNodeScope.node.nodeType!='book'){
 											$scope.checkSiblingSelection(scope.$parentNodeScope);
@@ -1027,7 +1035,8 @@ angular
 										$scope.checkSiblingSelection(scope.$parentNodeScope);
 									}									
 								}
-							};							
+							};	
+							
 							//To change the selection status of the children nodes when parent node has been selected/deselcted.
 							$scope.checkChildSelection = function(node){   
 								if(typeof(node.nodes) == 'undefined'){
@@ -2063,12 +2072,12 @@ angular
 							$scope.$on('handleBroadcast_questionDeselect', function() {
 								$scope.selectedNodes.forEach(function(node) {
 									if(node.nodes){
-										node.nodes.forEach(function(question) {
-											if($scope.isNodeInTestFrame(question)){
-												question.existInTestframe = true;
-												question.isNodeSelected = true;
-												question.showEditQuestionIcon = false;
-												question.showTestWizardIcon = false;
+										node.nodes.forEach(function(usedNode) {
+											if(usedNode.nodeType == "question" && $scope.isNodeInTestFrame(usedNode)){
+												usedNode.existInTestframe = true;
+												usedNode.isNodeSelected = true;
+												usedNode.showEditQuestionIcon = false;
+												usedNode.showTestWizardIcon = false;
 											}
 										})
 									}
