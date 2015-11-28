@@ -905,7 +905,8 @@ angular
     								testcreationdata.body.guid = $scope.testGuid;
 
     								if (test.testId != null) {
-    									testcreationdata.metadata = test.metadata;
+    								    testcreationdata.metadata = test.metadata;
+    								    testcreationdata.metadata.guid = test.testId;
     								}
 
     								testcreationdata.metadata.title = $scope.testTitle;

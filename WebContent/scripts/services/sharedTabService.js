@@ -622,7 +622,13 @@ angular.module('evalu8Demo')
                          if(currentNode.nodes){
                         	 ShowWizardIconsForChildren(currentNode);
                                 
-                        }
+                         }
+
+                         $.each(sharedTabService.tests[scope.currentIndex].criterias, function (j) {
+                             if (sharedTabService.tests[scope.currentIndex].criterias[j].folderId === criteria.treeNode.parentId) {
+                                 sharedTabService.tests[scope.currentIndex].criterias.splice(j, 1);
+                             }
+                         }); 
 
 		            	 //sharedTabService.tests[scope.currentIndex].criterias[i].treeNode.isNodeSelected=false;
 		            	//Dont delete below commented line, it may re-use in feature
