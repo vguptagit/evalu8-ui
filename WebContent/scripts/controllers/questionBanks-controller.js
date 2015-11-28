@@ -488,8 +488,8 @@ angular
 												currentNode,
 												function (response, currentNode) {
 												    try {
-												    	
 												        if (response.length) {
+												        	httpReqCompletedCount++;
 												            $rootScope.$broadcast(
 																	        "handleBroadcast_createTestWizardCriteria",
 																	        response,
@@ -497,14 +497,13 @@ angular
 												        } else {
 												            SharedTabService.addErrorMessage(currentNode.title, e8msg.warning.emptyFolder);
 												            currentNode.showTestWizardIcon = true;
-												            for (var j = 0; j < tab.questionFolderNode.length; j++) {
-												                if (tab.questionFolderNode[j].guid == currentNode.guid) {
-												                    tab.questionFolderNode.splice(j, 1);
+												            for (var j = 0; j < currentNode.nodes.length; j++) {
+												                if (currentNode.nodes[j].questionBindings == 0) {
+												                	currentNode.nodes[j].showTestWizardIcon = true;
 												                }
-												            }                                                        
+												            }                                                         
 												        }
 
-												        httpReqCompletedCount++;
 												        if (httpReqCount == httpReqCompletedCount && SharedTabService.errorMessages.length > 0) {
 												            SharedTabService.TestWizardErrorPopup_Open();
 												        }
@@ -554,10 +553,13 @@ angular
 							}
 							
 							function ShowIconsForChildren(currentNode){
-								currentNode.nodes.forEach(function(node) {	
+								currentNode.nodes.forEach(function(node) {
+									node.isNodeSelected = true;
 									node.showTestWizardIcon = false;
 									node.showEditQuestionIcon = true;
-									node.existInTestframe = true;
+									if(node.nodeType != "question"){
+										node.existInTestframe = true;
+									}
 									if(node.nodes){
 										ShowIconsForChildren(node);
 									}
@@ -583,6 +585,7 @@ angular
 										    try {
 										    	
 										        if (response.length) {
+										        	httpReqCompletedCount++;	
 										            $rootScope.$broadcast(
 															        "handleBroadcast_createTestWizardCriteria",
 															        response,
@@ -591,14 +594,13 @@ angular
 										        } else {
 										            SharedTabService.addErrorMessage(currentNode.title, e8msg.warning.emptyFolder);
 										            currentNode.showTestWizardIcon = true;
-										            for (var j = 0; j < tab.questionFolderNode.length; j++) {
-										                if (tab.questionFolderNode[j].guid == currentNode.guid) {
-										                    tab.questionFolderNode.splice(j, 1);
+										            for (var j = 0; j < currentNode.nodes.length; j++) {
+										                if (currentNode.nodes[j].questionBindings == 0) {
+										                	currentNode.nodes[j].showTestWizardIcon = true;
 										                }
 										            }                                                        
 										        }
 
-										        httpReqCompletedCount++;
 										        if (httpReqCount == httpReqCompletedCount && SharedTabService.errorMessages.length > 0) {
 										            SharedTabService.TestWizardErrorPopup_Open();
 										        }
@@ -1008,11 +1010,16 @@ angular
 							}
 							//To change the selection status of the parent node of a node.
 							$scope.checkSiblingSelection = function(scope){
+								var activeTest = SharedTabService.tests[SharedTabService.currentTabIndex];
 								if(scope.node.isNodeSelected){									
 									if($scope.isAllSiblingsSelected(scope.$parentNodeScope.node.nodes)) {
 										scope.$parentNodeScope.node.isNodeSelected = true;
 										scope.$parentNodeScope.node.showEditQuestionIcon = true;
-										scope.$parentNodeScope.node.showTestWizardIcon = true; 
+										if($scope.isNodeUsedForWizard(scope.$parentNodeScope.node, activeTest)){
+											scope.$parentNodeScope.node.showTestWizardIcon = false;
+										}else{
+											scope.$parentNodeScope.node.showTestWizardIcon = true; 
+										}
 										$scope.addingNodeInSelectedNodesArray(scope.$parentNodeScope.node);
 										if(scope.$parentNodeScope.node.nodeType!='book'){
 											$scope.checkSiblingSelection(scope.$parentNodeScope);
@@ -1027,7 +1034,8 @@ angular
 										$scope.checkSiblingSelection(scope.$parentNodeScope);
 									}									
 								}
-							};							
+							};	
+							
 							//To change the selection status of the children nodes when parent node has been selected/deselcted.
 							$scope.checkChildSelection = function(node){   
 								if(typeof(node.nodes) == 'undefined'){
@@ -2063,12 +2071,12 @@ angular
 							$scope.$on('handleBroadcast_questionDeselect', function() {
 								$scope.selectedNodes.forEach(function(node) {
 									if(node.nodes){
-										node.nodes.forEach(function(question) {
-											if($scope.isNodeInTestFrame(question)){
-												question.existInTestframe = true;
-												question.isNodeSelected = true;
-												question.showEditQuestionIcon = false;
-												question.showTestWizardIcon = false;
+										node.nodes.forEach(function(usedNode) {
+											if(usedNode.nodeType == "question" && $scope.isNodeInTestFrame(usedNode)){
+												usedNode.existInTestframe = true;
+												usedNode.isNodeSelected = true;
+												usedNode.showEditQuestionIcon = false;
+												usedNode.showTestWizardIcon = false;
 											}
 										})
 									}
