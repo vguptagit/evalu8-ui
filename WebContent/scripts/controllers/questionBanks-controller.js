@@ -638,7 +638,7 @@ angular
 							$scope.getNodesWithQuestion = function(currentNode) {
 							    currentNode.node.isCollapsed = !currentNode.node.isCollapsed;
 								$scope.bookID=currentNode.node.bookid;
-								
+								 
 								if (!currentNode.collapsed) {
 									currentNode.collapse();
 									$(currentNode.$element).find(".captiondiv").removeClass('iconsChapterVisible');

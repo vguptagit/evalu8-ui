@@ -1467,7 +1467,7 @@ angular
                                                 test.criterias[i].treeNode.nodes[j].showTestWizardIcon = true;
                                             }
                                         }
-                                    }
+                                    } 
                                     test.criterias=[];
                                     if (test.saveMode === EnumService.SAVE_MODE.SaveAs) {
                                         test.testId = null;
