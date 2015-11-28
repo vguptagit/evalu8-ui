@@ -2527,7 +2527,8 @@ angular
 									var count = 0;
 									var emptyBooks=0;
 									var isErrorExists=false;
-									
+									var testTab = SharedTabService.tests[SharedTabService.currentTabIndex];
+									$scope.selectedNodes=[];
 									$scope.selectedBooks.forEach(function(book){
 										ContainerService.getQuestionTypeContainers(book.guid,searchCriteria,function(containers){
 											if(containers==null){
@@ -2538,6 +2539,7 @@ angular
 												emptyBooks = emptyBooks+1;
 											}
 											containers.forEach(function(container){
+												checkIsContainerIsInTestFrame(container,testTab);
 												container.isCollapsed=true;
 												container.nodeType = "chapter";
 												container.bookid = book.guid;
@@ -2563,12 +2565,24 @@ angular
 												$scope.message = "No search results match your criteria, broaden your criteria, or select more question banks to search";
 												$modal.open(confirmObject);
 											}
-											$scope.selectedNodes=[];
 										});
 									});	
 								}
 							}
 							
+							var checkIsContainerIsInTestFrame=function(container,testTab){
+								if(testTab.criterias.length > 0){
+                                	for (var j = 0; j < testTab.criterias.length; j++) {
+                                		if (testTab.criterias[j].treeNode.guid == container.guid) {
+                                			container.isNodeSelected = true;
+                                			container.showTestWizardIcon = false;
+                                			container.showEditQuestionIcon = true;
+                                			container.existInTestframe= true;
+                                			$scope.selectedNodes.push(container);
+                                		}
+                                	}
+                                }
+							}
 							var getSearchCriteria=function(isFromAdvancedSearch){
 								
 								var searchCriteria="";
