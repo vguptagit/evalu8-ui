@@ -2581,6 +2581,16 @@ angular
                                 			$scope.selectedNodes.push(container);
                                 		}
                                 	}
+                                }else if(testTab.questionFolderNode.length > 0){
+                                	for (var j = 0; j < testTab.questionFolderNode.length; j++) {
+                                		if (testTab.questionFolderNode[j].treeNode.guid == container.guid) {
+                                			container.isNodeSelected = true;
+                                			container.showTestWizardIcon = true;
+                                			container.showEditQuestionIcon = false;
+                                			container.existInTestframe= true;
+                                			$scope.selectedNodes.push(container);
+                                		}
+                                	}
                                 }
 							}
 							var getSearchCriteria=function(isFromAdvancedSearch){
