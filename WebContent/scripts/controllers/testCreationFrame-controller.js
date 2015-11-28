@@ -697,6 +697,7 @@ angular
 															}														
 															var displayNode = {};
 															displayNode.guid = question.guid;	
+															displayNode.questionHierarchy = question.questionHierarchy;	
 															displayNode.parentId = question.parentId;
 															displayNode.quizType = questionMetadataResponse.quizType;
 															displayNode.IsUserMetdataAvailable = false;
