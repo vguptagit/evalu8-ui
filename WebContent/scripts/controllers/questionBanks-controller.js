@@ -2579,6 +2579,7 @@ angular
                                 			container.showEditQuestionIcon = true;
                                 			container.existInTestframe= true;
                                 			$scope.selectedNodes.push(container);
+                                			break;
                                 		}
                                 	}
                                 }else if(testTab.questionFolderNode.length > 0){
@@ -2589,6 +2590,7 @@ angular
                                 			container.showEditQuestionIcon = false;
                                 			container.existInTestframe= true;
                                 			$scope.selectedNodes.push(container);
+                                			break;
                                 		}
                                 	}
                                 }
