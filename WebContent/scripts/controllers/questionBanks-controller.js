@@ -449,9 +449,22 @@ angular
 								}else{
 								var httpReqCount = 0,
                                     httpReqCompletedCount = 0;
+
+								angular.forEach(currentNode.node.nodes, function (item) {
+								    item.showTestWizardIcon = false;
+								    item.showEditQuestionIcon = false;
+								    item.isNodeSelected = false;
+								    for (var i = 0; i < $scope.selectedNodes.length; i++) {
+								        if (item.guid === $scope.selectedNodes[i].guid) {
+								            $scope.selectedNodes.splice(i, 1);
+								            break;
+								        }
+								    }
+								})
+
 								for (var i = 0; i < $scope.selectedNodes.length; i++) {
 								    currentNode = $scope.selectedNodes[i];
-								    if (currentNode.nodes) {
+								    if (currentNode.nodes && !currentNode.isCollapsed) {
 								        var newCriteria = new SharedTabService.Criteria();
 								        newCriteria.totalQuestions = 0;
 								        newCriteria.folderId = currentNode.guid;
@@ -623,7 +636,7 @@ angular
 							
 
 							$scope.getNodesWithQuestion = function(currentNode) {
-								
+							    currentNode.node.isCollapsed = !currentNode.node.isCollapsed;
 								$scope.bookID=currentNode.node.bookid;
 								
 								if (!currentNode.collapsed) {
