@@ -488,8 +488,8 @@ angular
 												currentNode,
 												function (response, currentNode) {
 												    try {
-												    	
 												        if (response.length) {
+												        	httpReqCompletedCount++;
 												            $rootScope.$broadcast(
 																	        "handleBroadcast_createTestWizardCriteria",
 																	        response,
@@ -497,14 +497,13 @@ angular
 												        } else {
 												            SharedTabService.addErrorMessage(currentNode.title, e8msg.warning.emptyFolder);
 												            currentNode.showTestWizardIcon = true;
-												            for (var j = 0; j < tab.questionFolderNode.length; j++) {
-												                if (tab.questionFolderNode[j].guid == currentNode.guid) {
-												                    tab.questionFolderNode.splice(j, 1);
+												            for (var j = 0; j < currentNode.nodes.length; j++) {
+												                if (currentNode.nodes[j].questionBindings == 0) {
+												                	currentNode.nodes[j].showTestWizardIcon = true;
 												                }
-												            }                                                        
+												            }                                                         
 												        }
 
-												        httpReqCompletedCount++;
 												        if (httpReqCount == httpReqCompletedCount && SharedTabService.errorMessages.length > 0) {
 												            SharedTabService.TestWizardErrorPopup_Open();
 												        }
@@ -586,6 +585,7 @@ angular
 										    try {
 										    	
 										        if (response.length) {
+										        	httpReqCompletedCount++;	
 										            $rootScope.$broadcast(
 															        "handleBroadcast_createTestWizardCriteria",
 															        response,
@@ -594,14 +594,13 @@ angular
 										        } else {
 										            SharedTabService.addErrorMessage(currentNode.title, e8msg.warning.emptyFolder);
 										            currentNode.showTestWizardIcon = true;
-										            for (var j = 0; j < tab.questionFolderNode.length; j++) {
-										                if (tab.questionFolderNode[j].guid == currentNode.guid) {
-										                    tab.questionFolderNode.splice(j, 1);
+										            for (var j = 0; j < currentNode.nodes.length; j++) {
+										                if (currentNode.nodes[j].questionBindings == 0) {
+										                	currentNode.nodes[j].showTestWizardIcon = true;
 										                }
 										            }                                                        
 										        }
 
-										        httpReqCompletedCount++;
 										        if (httpReqCount == httpReqCompletedCount && SharedTabService.errorMessages.length > 0) {
 										            SharedTabService.TestWizardErrorPopup_Open();
 										        }
