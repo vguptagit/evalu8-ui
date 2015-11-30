@@ -489,18 +489,19 @@ angular
 								}else{
 								var httpReqCount = 0,
                                     httpReqCompletedCount = 0;
-
-								angular.forEach(currentNode.node.nodes, function (item) {
-								    item.showTestWizardIcon = false;
-								    item.showEditQuestionIcon = false;
-								    item.isNodeSelected = false;
-								    for (var i = 0; i < $scope.selectedNodes.length; i++) {
-								        if (item.guid === $scope.selectedNodes[i].guid) {
-								            $scope.selectedNodes.splice(i, 1);
-								            break;
+								if (currentNode.node.nodes && currentNode.node.isCollapsed) {
+								    angular.forEach(currentNode.node.nodes, function (item) {
+								        item.showTestWizardIcon = false;
+								        item.showEditQuestionIcon = false;
+								        item.isNodeSelected = false;
+								        for (var i = 0; i < $scope.selectedNodes.length; i++) {
+								            if (item.guid === $scope.selectedNodes[i].guid) {
+								                $scope.selectedNodes.splice(i, 1);
+								                break;
+								            }
 								        }
-								    }
-								})
+								    })
+								}
 
 								for (var i = 0; i < $scope.selectedNodes.length; i++) {
 								    currentNode = $scope.selectedNodes[i];
@@ -742,7 +743,15 @@ angular
 								} else {
 								    
 									currentNode.expand();
-									if(currentNode.node.nodes){
+									if (currentNode.node.nodes) {
+									    for (var i = 0; i < currentNode.node.nodes.length; i++) {
+									        if (!currentNode.node.nodes[i].isNodeSelected) {
+									            currentNode.node.nodes[i].isNodeSelected = true;
+									            currentNode.node.nodes[i].showTestWizardIcon = currentNode.node.showTestWizardIcon;
+									            currentNode.node.nodes[i].showEditQuestionIcon = currentNode.node.showEditQuestionIcon;
+									            $scope.selectedNodes.push(currentNode.node.nodes[i]);
+									        }
+									    }
 										return false;
 									}
 									currentNode.node.isHttpReqCompleted = false;
