@@ -56,5 +56,8 @@ jQuery.fn.print = function () {
         var objDoc = objFrame.document;
         objDoc.body.innerHTML=this.html();
     }
-   
+    
+    // Print the document.
+    objFrame.focus();
+    objFrame.print();	
 }
