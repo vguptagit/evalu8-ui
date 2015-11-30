@@ -1703,14 +1703,8 @@ angular
 							}
 							
 							
-							var addFoldersToTestTab = function (activeTest, destIndex,scope,eventType) {
-								var clickedFolder = typeof scope.node == "undefined" ? scope : scope.node;
-								
-								var httpReqCount = 0,httpReqCompletedCount = 0,processedNodeCount = 0;
-								var isAllNodesNotAdded=false;
-								
-								addProcessNodeToTestFrame(activeTest, destIndex,scope,eventType);
-									
+							var addFoldersToTestTab = function (activeTest, destIndex,scope,eventType) {									
+								addProcessNodeToTestFrame(activeTest, destIndex,scope,eventType);									
 							}							
 								
 							var addProcessNodeToTestFrame = function (activeTest, destIndex,scope,eventType) {	
@@ -1720,6 +1714,7 @@ angular
 								var isAllNodesNotAdded=false;
 							
 								var emptyResponseNodes = [];		
+								
 								
 								setAddedFolderNodeStatus(clickedFolder);
 								addingNodeToArray(activeTest.questionFolderNode,clickedFolder);		
@@ -1880,21 +1875,48 @@ angular
 								item.showTestWizardIcon = true;													
 							}
 							
+							//to get the parent of the dragged node.
+							var getParentDraggedNode = function(activeTest){								
+								var dragNodes = [];								
+								var parentExist=false;
+								for (var i = 0; i < $scope.selectedNodes.length; i++) {	
+									if($scope.selectedNodes[i].nodeType != EnumService.NODE_TYPE.question){
+										addingNodeToArray(activeTest.questionFolderNode,$scope.selectedNodes[i]);	
+									}
+									setAddedFolderNodeStatus($scope.selectedNodes[i]);
+									if($scope.selectedNodes[i].parentId != ""){
+										for (var j = 0; j < $scope.selectedNodes.length; j++) {		
+											parentExist=false;
+											if($scope.selectedNodes[i].parentId == $scope.selectedNodes[j].guid){
+												parentExist=true;
+												break;
+											}										
+										}
+										if(!parentExist){
+											dragNodes.push($scope.selectedNodes[i]);
+										}
+									}else{
+										dragNodes.push($scope.selectedNodes[i]);
+									}
+
+								}								
+								return dragNodes;
+							}
+
 							
 							
-							$scope.addQuestionsToTestTab = function (test, destIndex, eventType,nodeScope, isAnyNodeAlreadyAdded) {
+							$scope.addQuestionsToTestTab = function (activeTest, destIndex, eventType,nodeScope, isAnyNodeAlreadyAdded) {
 							    var httpReqCount = 0,
                                     httpReqCompletedCount = 0,
                                     uniqueNodeCount = 0;
-							    
-							    var dragNodes = getDragNodes($scope.selectedNodes,test);
-							    
-//							    if(scope.showEditQuestionIcon)
+							  
+							    var dragNodes = getParentDraggedNode(activeTest);
+							
 								for (var i = 0; i < dragNodes.length; i++) {
 									if(dragNodes[i].nodeType != EnumService.NODE_TYPE.question){
-										addingNodeToArray(test.questionFolderNode,dragNodes[i]);	
+										addingNodeToArray(activeTest.questionFolderNode,dragNodes[i]);	
 									}
-									$scope.getRemoveChildNodesFromQuestionFolderNodes(dragNodes[i], test);
+									$scope.getRemoveChildNodesFromQuestionFolderNodes(dragNodes[i], activeTest);
 									dragNodes[i].showEditQuestionIcon = true;
 									if (dragNodes[i].showEditQuestionIcon) {
 										uniqueNodeCount++;
@@ -1937,7 +1959,7 @@ angular
 														});
 														if(!isAnyNodeAlreadyAdded)
 														{
-															test.questions.forEach(function(testQuestion){
+															activeTest.questions.forEach(function(testQuestion){
 																response.forEach(function(selectedQuestion){
 																	if(testQuestion.guid == selectedQuestion.guid)
 																	{
@@ -1962,9 +1984,9 @@ angular
 														if (!response.length) {
 														    SharedTabService.addErrorMessage(questionFolder.title, e8msg.warning.emptyFolder);
 														    questionFolder.showEditQuestionIcon = true;
-														    for (var j = 0; j < test.questionFolderNode.length; j++) {
-														        if (test.questionFolderNode[j].guid == questionFolder.guid) {
-														            test.questionFolderNode.splice(j, 1);
+														    for (var j = 0; j < activeTest.questionFolderNode.length; j++) {
+														        if (activeTest.questionFolderNode[j].guid == questionFolder.guid) {
+														        	activeTest.questionFolderNode.splice(j, 1);
 														        }
 														    }
 														}
