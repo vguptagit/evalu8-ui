@@ -205,7 +205,7 @@ angular
 									loadQuestionsToEmptyTab();
 					        	}else{
 					        		SharedTabService.closeTab(tab,$scope);
-					        		$scope.testType = 'Test';
+					        		$scope.setTestType();
 					        	}
 					        	$event.stopPropagation();
 					        }
