@@ -81,7 +81,7 @@ angular.module('e8MyTests')
 							
 							$scope.questionNumber++;
 							yourQuestion.questnNumber = $scope.questionNumber;
-							//addToQuestionsArray(yourQuestion);
+							addToQuestionsArray(yourQuestion);
 
 							yourQuestion.data = userQuestion.qtixml;
 							yourQuestion.quizType = userQuestion.metadata.quizType;
@@ -1028,7 +1028,7 @@ angular.module('e8MyTests')
 							
 							questionNumber++;
 							yourQuestion.questnNumber = questionNumber;
-							//addToQuestionsArray(yourQuestion);
+							addToQuestionsArray(yourQuestion);
 
 							yourQuestion.data = userQuestion.qtixml;
 							yourQuestion.quizType = userQuestion.metadata.quizType;
@@ -1554,10 +1554,30 @@ angular.module('e8MyTests')
 								$scope.selectedNodes[i].showEditQuestionIcon = false;
 							}
 						}
-						//$scope.selectedNodes=[];
-					}					
+						$scope.selectedNodes=[];
+					}
+					
+					for (var i = 0; i < $scope.questions.length; i++) {
+						$scope.questions[i].isNodeSelected = false;
+						$scope.questions[i].showEditQuestionIcon = false;
+						$scope.questions[i].existInTestframe = false;
+						for (var j = 0; j < tab.questions.length; j++) {
+							if ($scope.questions[i].guid === tab.questions[j].guid) {
+								$scope.questions[i].isNodeSelected = true;
+								$scope.questions[i].existInTestframe = true;
+								$scope.selectedNodes.push($scope.questions[i]);
+								break;
+							}
+						}
+					}
 					
 				});
+		
+		$scope.questions = [];
+		var addToQuestionsArray = function(item) {
+			$scope.questions.push(item);
+		};
+		
 		$scope.$on('handleBroadcast_AddNewTest', function (handler, newTest, containerFolder, isEditMode, oldGuid, editedQuestions, editedMigratedQuestions, createdTab, testCreationFrameScope) {
 			
 			editedQuestions.forEach(function(editedQuestion) {
@@ -1575,7 +1595,7 @@ angular.module('e8MyTests')
                 
 				editedQuestion.showEditQuestionIcon = false;
 				editedQuestion.isNodeSelected = false;
-				//addToQuestionsArray(editedQuestion);
+				addToQuestionsArray(editedQuestion);
 				//editedQuestion.template = 'qb_questions_renderer.html';
 					
 				$scope.questionNumber++;
