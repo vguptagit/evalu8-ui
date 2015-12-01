@@ -500,6 +500,14 @@ span.glyphicon.glyphicon-info-sign {
   height:15px;
   margin-top: -1px;
 }
+
+.labelCaption{
+	overflow: hidden;
+    text-overflow: ellipsis;
+    width: 20em;
+    cursor: pointer;
+}
+
 .testCaptionLabel {
   white-space: nowrap;
   width: 18em;

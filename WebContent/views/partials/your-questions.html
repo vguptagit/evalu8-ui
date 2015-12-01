@@ -52,7 +52,10 @@
                             <input type="text" data-ng-model="node.title" id="txtFolderNameEdit" ng-show="node.isEditMode"
                                    class="form-control"
                                    placeholder="{{node.title}}" ng-enter="editFolder(this,node)" />
-                            <label ng-mousedown="selectNode(this);" class="captionLabel" title="{{node.title}}" ng-show="!node.isEditMode">{{node.title}}</label>
+                           
+							<div class="captionLabel" ng-show="!node.isEditMode" ng-mousedown="selectNode(this);">
+								<label class="labelCaption" title="{{node.title}}">{{node.title}}</label>
+							</div>
                         </div>
                          <div class="iconsQuestionFolder">
                             <div ng-show="node.isNodeSelected">
