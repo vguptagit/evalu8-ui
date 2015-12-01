@@ -669,15 +669,16 @@ angular
 								}
 								
 								item.parentId = currentNode.node.guid;
-								
+								var test = SharedTabService.tests[SharedTabService.currentTabIndex];
 								//change the status of node, if node is present in test frame.
 								if($scope.isNodeInTestFrame(item)){
 									setTestNodeStatus(item);												
 								}else if(isAllTopicQuestionsInTestFrame(item)){
 									setTestNodeStatus(item);	
+									$scope.addingNodeInQuestionFolderNodeArray(item,test);
 								}
 								
-								var test = SharedTabService.tests[SharedTabService.currentTabIndex]; 
+								 
 								//change the status of node, if node is present in wizard frame.
 								if($scope.isNodeUsedForWizard(item, test)){
 									item.isNodeSelected = true;
@@ -689,9 +690,7 @@ angular
 							
 								//add the node to $scope.selectedNodes array, if node is in selected status.
 								if(item.isNodeSelected){													
-									$scope.addingNodeInSelectedNodesArray(item);
-									$scope.addingNodeInQuestionFolderNodeArray(item,test);
-									
+									$scope.addingNodeInSelectedNodesArray(item);				
 								}
 							}
 							
