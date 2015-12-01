@@ -668,7 +668,7 @@ angular
 								}
 								
 								item.parentId = currentNode.node.guid;
-								
+								var test = SharedTabService.tests[SharedTabService.currentTabIndex];
 								//change the status of node, if node is present in test frame.
 								if($scope.isNodeInTestFrame(item)){
 									setTestNodeStatus(item);												
@@ -677,7 +677,7 @@ angular
 									$scope.addingNodeInQuestionFolderNodeArray(item,test);
 								}
 								
-								var test = SharedTabService.tests[SharedTabService.currentTabIndex]; 
+								 
 								//change the status of node, if node is present in wizard frame.
 								if($scope.isNodeUsedForWizard(item, test)){
 									item.isNodeSelected = true;
