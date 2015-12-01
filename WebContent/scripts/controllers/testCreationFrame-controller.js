@@ -801,7 +801,33 @@ angular
 							}
 							// Function is to save the Test details with the
 							// questions.
+							$scope.enableQstnEditIconForChildNodes = function(childNode){
+								childNode.nodes.forEach(function(node) {
+									node.showEditQuestionIcon = true;
+									if(node.nodes){
+										$scope.enableQstnEditIconForChildNodes(node);
+									}
+								})
+							}
 							
+							$scope.disableQstnEditIconForChildNodes = function(childNode, test){
+								childNode.nodes.forEach(function(node) {
+									node.showEditQuestionIcon = false;
+									test.questionFolderNode.push(node);
+									if(node.nodes){
+										$scope.enableQstnEditIconForChildNodes(node);
+									}
+								})
+							}
+							
+							$scope.enableWizardIconForChildNodes = function(childNode){
+								childNode.nodes.forEach(function(node) {
+									node.showTestWizardIcon = true;
+									if(node.nodes){
+										$scope.enableWizardIconForChildNodes(node);
+									}
+								})
+							}
 							$scope.showSaveErrorMessage = function(){
 								var msg = e8msg.error.save;
 								var messageTemplate ='<p class="alert-danger"><span class="glyphicon glyphicon-alert"></span><span class="warnMessage">' + msg  + '</p> ';
@@ -1308,6 +1334,7 @@ angular
 							var selectedQuestions= [];
 							$scope.previevTest = function() {
 								var isError = false;
+								var isTitleEmpty = false;
 							    var metadatas = [];
 								SharedTabService.errorMessages = [];
 								var test = SharedTabService.tests[SharedTabService.currentTabIndex];
@@ -1379,25 +1406,11 @@ angular
 											if (criteria.numberOfQuestionsEntered > 0 && isError == false && !isTestTitleEmpty()) {
 												criteria.numberOfQuestionsSelected = criteria.numberOfQuestionsEntered;
 											}
-                                            */
+                                            */if (isTestTitleEmpty(test)) {
+                                            	isTitleEmpty = true;
+        										return false;
+        									}
 											var noOfQuestionsSelected = criteria.numberOfQuestionsEntered > 0 ? criteria.numberOfQuestionsEntered : criteria.numberOfQuestionsSelected;
-											if(noOfQuestionsSelected < criteria.metadata.length){
-												criteria.treeNode.showEditQuestionIcon = true;
-												if(criteria.treeNode.nodes){
-													criteria.treeNode.nodes.forEach(function(childNode) {
-														childNode.showEditQuestionIcon = true;
-													})
-												}
-											}else{
-												criteria.treeNode.showEditQuestionIcon = false;
-												test.questionFolderNode.push(criteria.treeNode);
-												if(criteria.treeNode.nodes){
-													criteria.treeNode.nodes.forEach(function(childNode) {
-														childNode.showEditQuestionIcon = false;
-														test.questionFolderNode.push(childNode);
-													})
-												}
-											}
                                             if (!noOfQuestionsSelected || noOfQuestionsSelected > criteria.totalQuestions || noOfQuestionsSelected > arr.length) {
 												criteria.isError = true;
 												SharedTabService.addErrorMessage(criteria.treeNode.title, SharedTabService.errorMessageEnum.NotEnoughQuestionsAvailable);
@@ -1417,28 +1430,29 @@ angular
 											}
                                                 
 											}
+                                            if(noOfQuestionsSelected < criteria.metadata.length){
+												criteria.treeNode.showEditQuestionIcon = true;
+												if(criteria.treeNode.nodes){
+												$scope.enableQstnEditIconForChildNodes(criteria.treeNode);	
+												}
+											}else{
+												criteria.treeNode.showEditQuestionIcon = false;
+												test.questionFolderNode.push(criteria.treeNode);
+												if(criteria.treeNode.nodes){
+													$scope.disableQstnEditIconForChildNodes(criteria.treeNode, test);
+												}
+											}     
+                                            
+                                            
 										});
-								if (isError) {
+								if (isError){
 									SharedTabService.TestWizardErrorPopup_Open(SharedTabService.errorMessages);
 									return false;
-								} else {
-									if (isTestTitleEmpty(test)) {
-										$scope.IsConfirmation = false;
-										$scope.message = "Please enter test title to save the test.";
-
-										$modal.open(confirmObject);
-										return false;
-									}
-									// need to delete commented code
-									/*test.criterias
-											.forEach(function(criteria) {
-												if(metadatas < criteria.metadata){
-													criteria.treeNode.showEditQuestionIcon = true;
-												}else{
-													criteria.treeNode.showEditQuestionIcon = false;
-												}
-												criteria.treeNode.showTestWizardIcon = true;
-											})*/
+								}else if(isTitleEmpty){
+									$scope.IsConfirmation = false;
+									$scope.message = "Please enter test title to save the test.";
+									$modal.open(confirmObject);
+									return false;
 								}
 								$scope.tests[$scope.sharedTabService.currentTabIndex].tabTitle = "Untitled test";
 								$scope.saveWizardTest(test, metadatas);
@@ -1467,7 +1481,6 @@ angular
                                     });
                                     
                                     if (duplicateTitle ) {
-                                        
                                     	$scope.IsConfirmation = false;
                                         $scope.message = "A test already exists with this name. Please save with another name.";
                                         $modal.open(confirmObject);
@@ -1481,10 +1494,8 @@ angular
                                     $scope.sharedTabService.isTestWizardTabPresent = false;
                                     for (var i = 0; i < test.criterias.length; i++) {
                                     	test.criterias[i].treeNode.showTestWizardIcon = true;
-                                    	if (test.criterias[i].treeNode.nodes) {
-                                    		for (var j = 0; j < test.criterias[i].treeNode.nodes.length; j++) {
-                                    			test.criterias[i].treeNode.nodes[j].showTestWizardIcon = true;
-                                    		}
+                                    	if (test.criterias[i].treeNode.nodes){
+                                    	$scope.enableWizardIconForChildNodes(test.criterias[i].treeNode);
                                     	}
                                     }
                                     test.criterias=[];

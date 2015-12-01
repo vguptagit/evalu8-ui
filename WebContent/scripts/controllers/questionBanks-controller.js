@@ -658,7 +658,7 @@ angular
 							//to set the status of the empty chapter/topic node,if the chapter/topic node does't contains questions.
 							$scope.updateEmptyNodeStatus = function(node){
 								node.nodes.forEach(function(node) {
-									if (node.questionBindings == 0) {
+									if (node.questionBindings && node.questionBindings.length == 0) {
 										node.showTestWizardIcon = true;
 									}
 									if(node.nodes){
@@ -762,7 +762,7 @@ angular
 									currentNode.expand();
 									if (currentNode.node.nodes) {
 									    for (var i = 0; i < currentNode.node.nodes.length; i++) {
-									        if (!currentNode.node.nodes[i].isNodeSelected) {
+									        if (currentNode.node.isNodeSelected && !currentNode.node.nodes[i].isNodeSelected) {
 									            currentNode.node.nodes[i].isNodeSelected = true;
 									            currentNode.node.nodes[i].showTestWizardIcon = currentNode.node.showTestWizardIcon;
 									            currentNode.node.nodes[i].showEditQuestionIcon = currentNode.node.showEditQuestionIcon;
@@ -2079,8 +2079,8 @@ angular
 																$scope.expandedNodes[i].showTestWizardIcon=false;
 																$scope.expandedNodes[i].showEditQuestionIcon=true;
 																$scope.selectedNodes.push($scope.expandedNodes[i]);
-																if (tab.criterias[k].treeNode.nodes) {
-																$scope.updateStatusForWizardChildNodes(tab.criterias[k].treeNode.nodes);	
+																if($scope.expandedNodes[i].nodes) {
+																$scope.updateStatusForWizardChildNodes($scope.expandedNodes[i].nodes);	
 																}
 															}
 														}
