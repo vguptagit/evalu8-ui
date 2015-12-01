@@ -449,19 +449,28 @@ angular
 								}else{
 								var httpReqCount = 0,
                                     httpReqCompletedCount = 0;
-								if (currentNode.node.nodes && currentNode.node.isCollapsed) {
-								    angular.forEach(currentNode.node.nodes, function (item) {
+
+								var chapters = [];
+								for (var i = 0; i < $scope.selectedNodes.length; i++) {
+								    if ($scope.selectedNodes[i].nodes && $scope.selectedNodes[i].isCollapsed) {
+								        chapters.push($scope.selectedNodes[i]);
+								    }
+								}
+								for (var i = 0; i < chapters.length; i++) {
+								    angular.forEach(chapters[i].nodes, function (item) {
 								        item.showTestWizardIcon = false;
 								        item.showEditQuestionIcon = false;
 								        item.isNodeSelected = false;
-								        for (var i = 0; i < $scope.selectedNodes.length; i++) {
-								            if (item.guid === $scope.selectedNodes[i].guid) {
-								                $scope.selectedNodes.splice(i, 1);
+								        for (var j = 0; j < $scope.selectedNodes.length; j++) {
+								            if (item.guid === $scope.selectedNodes[j].guid) {
+								                $scope.selectedNodes.splice(j, 1);
 								                break;
 								            }
 								        }
 								    })
 								}
+
+								 
 
 								for (var i = 0; i < $scope.selectedNodes.length; i++) {
 								    currentNode = $scope.selectedNodes[i];
