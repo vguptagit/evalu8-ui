@@ -50,77 +50,69 @@
 				requireLogin: false
 			  }
 		})    
-			.state('login', {
-				url: '/login',
-				templateUrl: 'views/login.html',
-				controller: 'LoginController',
-				data: {
-					requireLogin: false
-				  }
-			})
-			.state('layout', {
-				url: '/layout',
-				templateUrl: 'views/layout.html',
-				data: {
-					requireLogin: false
-				}
-			})
-			.state('home', {
-				url: '/home',
-				templateUrl: 'views/home.html',
-				controller: 'HomeController',
-				data: {
-					requireLogin: true
-				  }
-			})
-			.state('home.yourtests', {
-				url: '/yourtests',
-				templateUrl: 'views/partials/your-tests.html',
-				controller: 'MyTestsController',
-				data: {
-					requireLogin: true
-				  }
-			})
-			.state('home.yourquestions', {
-				url: '/yourquestions',
-				templateUrl: 'views/partials/your-questions.html',
-				controller: 'MyQuestionsController',
-				data: {
-					requireLogin: true
-				  }
-			})			
-			.state('home.questionbanks', {
-				url: '/questionbanks',
-				templateUrl: 'views/partials/question-banks.html',
-				controller: 'QuestionBanksController',
-				data: {
-					requireLogin: true
-				  }
-			})
-			.state('home.customquestions', {
-				url: '/customquestions',
-				templateUrl: 'views/partials/custom-questions.html',
-				controller: 'CustomQuestionBanksController',
-				data: {
-					requireLogin: true
-				  }
-			})
-			 .state('welcome', {
-				 url: '/welcome',
-				 controller: 'WelcomeController',
-				 templateUrl: 'views/welcome.html',
-				 data: {
-					 requireLogin: true
-				   }
-			 })
-			.state('startup', {
-				url: '/startup',
-				controller: 'startupWizardController',
-				templateUrl: 'views/usersettings/startupWizard.html',
-				data: {
-					requireLogin: true
-				  }
-			});
+		.state('layout', {
+			url: '/layout',
+			templateUrl: 'views/layout.html',
+			data: {
+				requireLogin: false
+			}
+		})
+		.state('home', {
+			url: '/home',
+			templateUrl: 'views/home.html',
+			controller: 'HomeController',
+			data: {
+				requireLogin: true
+			  }
+		})
+		.state('home.yourtests', {
+			url: '/yourtests',
+			templateUrl: 'views/partials/your-tests.html',
+			controller: 'MyTestsController',
+			data: {
+				requireLogin: true
+			  }
+		})
+		.state('home.yourquestions', {
+			url: '/yourquestions',
+			templateUrl: 'views/partials/your-questions.html',
+			controller: 'MyQuestionsController',
+			data: {
+				requireLogin: true
+			  }
+		})			
+		.state('home.questionbanks', {
+			url: '/questionbanks',
+			templateUrl: 'views/partials/question-banks.html',
+			controller: 'QuestionBanksController',
+			data: {
+				requireLogin: true
+			  }
+		})
+		.state('home.customquestions', {
+			url: '/customquestions',
+			templateUrl: 'views/partials/custom-questions.html',
+			controller: 'CustomQuestionBanksController',
+			data: {
+				requireLogin: true
+			  }
+		})
+		.state('welcome', {
+			 url: '/welcome',
+			 controller: 'WelcomeController',
+			 templateUrl: 'views/welcome.html',
+			 data: {
+				 requireLogin: true
+			   }
+		 })
+		.state('startup', {
+			url: '/startup',
+			controller: 'startupWizardController',
+			templateUrl: 'views/usersettings/startupWizard.html',
+			data: {
+				requireLogin: true
+			  }
+		});
 
 	})
 	.config(function(blockUIConfig) {
@@ -137,32 +129,7 @@
 					$location.path("/signin");            	
 
 					return;
-				} else {
-	/*
-					var errorText;
-					if(response.config.method == "GET") {
-						errorText = "Unable to fetch data! Please try again.";
-					} else if(response.config.method == "POST") {
-						if(response.config.url.indexOf("/login") > 1){
-							errorText= "Unable to login! Please try again.";            			
-						}
-						else {
-							errorText = "Unable to save data! Please try again.";
-						}
-					}
-						
-					var divHtml = '<div class="errorMsgTip">';
-					divHtml += '<div><span class="glyphicon glyphicon-alert"></span>&nbsp;<strong>Error:</strong> ' + errorText + '</div>';
-					divHtml += '</div>';
-					
-					$('body').append(divHtml);
-					
-					$('.errorMsgTip').offset({'top': '40'});
-					window.setTimeout(function(){
-						$('.errorMsgTip').hide();	
-					}, 5000);
-					
-					return $q.reject(response);*/ 
+				} else { 
 					
 					return $q.reject(response);
 				}
@@ -182,7 +149,7 @@
 
 			piSession.on(piSession.LogoutEvent, AuthenticationService.onLogout);
 			
-			//piSession.on(piSession.RefreshEvent, AuthenticationService.onRefresh);
+			piSession.on(piSession.RefreshEvent, AuthenticationService.onRefresh);
 			
 			if(sessionStorage.getItem('globals') === null) {
 				$location.path("/signin");
