@@ -638,7 +638,7 @@ angular.module('evalu8Demo')
 		             }
 		         });
 		         
-		         $rootScope.$broadcast("handleBroadcast_deselectWizardNode", criteria.treeNode);
+		         $rootScope.$broadcast("handleBroadcast_deselectWizardNode", criteria.treeNode); 
 		     }
 		     
 		  

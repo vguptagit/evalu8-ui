@@ -699,6 +699,7 @@ angular
 								if(item.isNodeSelected){													
 									$scope.addingNodeInSelectedNodesArray(item);
 									$scope.addingNodeInQuestionFolderNodeArray(item,test);
+									
 								}
 							}
 							
