@@ -674,6 +674,7 @@ angular
 									setTestNodeStatus(item);												
 								}else if(isAllTopicQuestionsInTestFrame(item)){
 									setTestNodeStatus(item);	
+									$scope.addingNodeInQuestionFolderNodeArray(item,test);
 								}
 								
 								var test = SharedTabService.tests[SharedTabService.currentTabIndex]; 
@@ -688,9 +689,7 @@ angular
 							
 								//add the node to $scope.selectedNodes array, if node is in selected status.
 								if(item.isNodeSelected){													
-									$scope.addingNodeInSelectedNodesArray(item);
-									$scope.addingNodeInQuestionFolderNodeArray(item,test);
-									
+									$scope.addingNodeInSelectedNodesArray(item);				
 								}
 							}
 							
