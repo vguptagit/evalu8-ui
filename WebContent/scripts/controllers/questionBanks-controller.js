@@ -532,11 +532,9 @@ angular
 												        } else {
 												            SharedTabService.addErrorMessage(currentNode.title, e8msg.warning.emptyFolder);
 												            currentNode.showTestWizardIcon = true;
-												            for (var j = 0; j < currentNode.nodes.length; j++) {
-												                if (currentNode.nodes[j].questionBindings == 0) {
-												                	currentNode.nodes[j].showTestWizardIcon = true;
-												                }
-												            }                                                         
+												            if(currentNode.nodes){
+												            	$scope.updateEmptyNodeStatus(currentNode);
+												            }
 												        }
 
 												        if (httpReqCount == httpReqCompletedCount && SharedTabService.errorMessages.length > 0) {
@@ -629,11 +627,10 @@ angular
 										        } else {
 										            SharedTabService.addErrorMessage(currentNode.title, e8msg.warning.emptyFolder);
 										            currentNode.showTestWizardIcon = true;
-										            for (var j = 0; j < currentNode.nodes.length; j++) {
-										                if (currentNode.nodes[j].questionBindings == 0) {
-										                	currentNode.nodes[j].showTestWizardIcon = true;
-										                }
-										            }                                                        
+										            if(currentNode.nodes){
+										            	$scope.updateEmptyNodeStatus(currentNode);
+										            }
+										                                                                   
 										        }
 
 										        if (httpReqCount == httpReqCompletedCount && SharedTabService.errorMessages.length > 0) {
@@ -647,6 +644,18 @@ angular
                                             }
 										});
 								
+							}
+							
+							//to set the status of the empty chapter/topic node,if the chapter/topic node does't contains questions.
+							$scope.updateEmptyNodeStatus = function(node){
+								node.nodes.forEach(function(node) {
+									if (node.questionBindings == 0) {
+										node.showTestWizardIcon = true;
+									}
+									if(node.nodes){
+										$scope.updateEmptyNodeStatus(node);
+									}
+								})
 							}
 							
 							//to set the status of the chapter/topic node,if the chapter/topic node present in test frame.
@@ -1178,7 +1187,10 @@ angular
 								if(skipNodeSelection(node)){
 									return;
 								}
-
+								
+								if(node.nodeType == "question" && (scope.$parentNodeScope.node.isNodeSelected && scope.$parentNodeScope.node.showTestWizardIcon == false)){
+									return;
+								}
 								var test = SharedTabService.tests[SharedTabService.currentTabIndex];
 								if (node.isNodeSelected == false
 										&& $rootScope.globals.loginCount <= evalu8config.messageTipLoginCount 
@@ -1335,6 +1347,7 @@ angular
 									eventType = "clickEvnt";
 								}
 								if (SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
+									$scope.editQuestionMode=false;
 									$rootScope.$broadcast('handleBroadcast_AddNewTab');
 								}
 								var test = SharedTabService.tests[SharedTabService.currentTabIndex];
@@ -1479,8 +1492,7 @@ angular
 								}		
 							}
 
-
-
+							//To add a node to questionFolderNode array.
 							$scope.checkAllSibblingNodeInTestFrame = function(scope, activeTest) {								
 								scope.node.existInTestframe = true;								
 								if($scope.isAllSiblingsSelected(scope.$parentNodeScope.node.nodes)){
@@ -2059,17 +2071,12 @@ angular
 																$scope.expandedNodes[i].showEditQuestionIcon=true;
 																$scope.selectedNodes.push($scope.expandedNodes[i]);
 																if (tab.criterias[k].treeNode.nodes) {
-																    var childNodes=tab.criterias[k].treeNode.nodes;
-																    for (var l = 0; l < childNodes.length; l++) {
-																        childNodes[l].isNodeSelected = true;
-																        childNodes[l].showTestWizardIcon = false;
-																        childNodes[l].showEditQuestionIcon = true;
-																        $scope.selectedNodes.push(childNodes[l]);
-																    }
+																$scope.updateStatusForWizardChildNodes(tab.criterias[k].treeNode.nodes);	
 																}
 															}
 														}
 													}
+													
 												}else if (!$scope.createTestWizardMode && !$scope.editQuestionMode){
 													for (var i = 0; i < $scope.selectedNodes.length; i++) {
 														$scope.selectedNodes[i].isNodeSelected = false;
@@ -2115,16 +2122,53 @@ angular
 									
 								$scope.updateParentNodeStatus(node);
 							};	
+					
+							$scope.updateStatusForWizardChildNodes = function(childNodes){
+								for (var i = 0; i < childNodes.length; i++) {
+									childNodes[i].isNodeSelected = true;
+							        childNodes[i].showTestWizardIcon = false;
+							        childNodes[i].showEditQuestionIcon = true;
+							        $scope.selectedNodes.push(childNodes[i]);
+							        if(childNodes[i].nodes){
+							        	$scope.updateStatusForWizardChildNodes(childNodes[i].nodes);
+							        }
+								}
+								
+							}
+							$scope.deselectWizarChildNode = function (node) {
+								for (var i = 0; i < $scope.selectedNodes.length; i++) {
+									if ($scope.selectedNodes[i].guid == node.guid) {
+										$scope.selectedNodes[i].isNodeSelected = false ;
+										$scope.selectedNodes[i].showEditQuestionIcon = false;
+										$scope.selectedNodes[i].showTestWizardIcon = false;
+										if($scope.selectedNodes[i].nodes){
+											$scope.selectedNodes[i].nodes.forEach(function(usedNode) {
+												$scope.deselectWizarChildNode(usedNode);
+											})
+										}
+									}
+								}
+							}
+							
 							
 							$scope.deselectWizarParentNode = function (node) {
+								var parentExistInSelectNodes=false;
+								var nodeIndex=0;
 								for (var i = 0; i < $scope.selectedNodes.length; i++) {
-								if ($scope.selectedNodes[i].guid == node.treeNode.parentId) {
+								if ($scope.selectedNodes[i].guid == node.parentId) {
 									$scope.selectedNodes[i].isNodeSelected = false ;
 									$scope.selectedNodes[i].showEditQuestionIcon = false;
 									$scope.selectedNodes[i].showTestWizardIcon = false;
+									parentExistInSelectNodes = true;
 									break;
 								}
+								nodeIndex++;
 							}
+								if(parentExistInSelectNodes){
+									var parentNode = $scope.selectedNodes[nodeIndex];
+									$scope.selectedNodes.splice(nodeIndex, 1);
+									$scope.deselectWizarParentNode(parentNode);
+								}
 							}
 							
 							//to set the status of the question node in question bank tab,if the question node deleted in test frame.
@@ -2236,21 +2280,9 @@ angular
 							
 							$scope.$on('handleBroadcast_deselectWizardNode',
 									function(handler, node) {
+								
+								$scope.deselectWizarChildNode(node);
 								$scope.deselectWizarParentNode(node);
-								for (var i = 0; i < $scope.selectedNodes.length; i++) {
-									if ($scope.selectedNodes[i].guid == node.treeNode.guid) {
-										$scope.selectedNodes[i].isNodeSelected = false ;
-										$scope.selectedNodes[i].showEditQuestionIcon = false;
-										$scope.selectedNodes[i].showTestWizardIcon = false;
-										if($scope.selectedNodes[i].nodes){
-											$scope.selectedNodes[i].nodes.forEach(function(usedNode) {
-												usedNode.isNodeSelected= false;
-												usedNode.showTestWizardIcon = false;
-												usedNode.showEditQuestionIcon = false;
-											})
-										}
-									}
-								}
 
 							});
 							// evalu8-ui : to set Active Resources Tab , handled
