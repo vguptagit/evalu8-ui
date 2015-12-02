@@ -1435,7 +1435,7 @@ angular
 												if(criteria.treeNode.nodes){
 												$scope.enableQstnEditIconForChildNodes(criteria.treeNode);	
 												}
-											}else{
+											}else if(!isError){
 												criteria.treeNode.showEditQuestionIcon = false;
 												test.questionFolderNode.push(criteria.treeNode);
 												if(criteria.treeNode.nodes){
