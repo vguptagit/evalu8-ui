@@ -37,7 +37,10 @@ angular
 						function($scope, $rootScope, $location, $cookieStore, $timeout,
 								$http, $sce, DisciplineService, TestService,
 								SharedTabService, UserQuestionsService,
-								EnumService, $modal, blockUI, ContainerService, CommonService,BookService,HttpService,UserService,questionService) {
+								EnumService, $modal, blockUI, ContainerService, CommonService, BookService, HttpService, UserService, questionService) {
+
+						    
+
 						    SharedTabService.selectedMenu = SharedTabService.menu.questionBanks;
 						    $rootScope.blockPage = blockUI.instances.get('BlockPage');
 						    
@@ -296,7 +299,7 @@ angular
 								searchedMetadataValues={
 										"Difficulty":[]
 									};
-								$scope.getUserMetadata();
+								$scope.setUserMetadata();
 							})
 
 							$scope.testTitle = "New Test";							                           							
@@ -2835,17 +2838,17 @@ angular
 							
 							$scope.addMetadataTypesToShow = function(metadata)
 							{
-								if(metadata.indexOf(ShortMetadataEnum.DIFFICULTY)>-1){
+								if(metadata.indexOf(EnumService.ShortMetadataEnum.DIFFICULTY)>-1){
 									selectedMetadataTypesToShow.push(' Difficulty');
-								}else if(metadata.indexOf(ShortMetadataEnum.TOPIC)>-1){
+								}else if(metadata.indexOf(EnumService.ShortMetadataEnum.TOPIC)>-1){
 									selectedMetadataTypesToShow.push(' Topic');
-								}else if(metadata.indexOf(ShortMetadataEnum.OBJECTIVE)>-1){
+								}else if(metadata.indexOf(EnumService.ShortMetadataEnum.OBJECTIVE)>-1){
 									selectedMetadataTypesToShow.push(' Objective');
-								}else if(metadata.indexOf(ShortMetadataEnum.PAGEREFERENCE)>-1){
+								}else if(metadata.indexOf(EnumService.ShortMetadataEnum.PAGEREFERENCE)>-1){
 									selectedMetadataTypesToShow.push(' Page Reference');
-								}else if(metadata.indexOf(ShortMetadataEnum.SKILL)>-1){
+								}else if(metadata.indexOf(EnumService.ShortMetadataEnum.SKILL)>-1){
 									selectedMetadataTypesToShow.push(' Skill');
-								}else if(metadata.indexOf(ShortMetadataEnum.QUESTIONID)>-1){
+								}else if(metadata.indexOf(EnumService.ShortMetadataEnum.QUESTIONID)>-1){
 									selectedMetadataTypesToShow.push(' Question ID');
 								}
 							}
@@ -2991,25 +2994,18 @@ angular
 							    });
 							});
 	                        
-							var ShortMetadataEnum={
-									'DIFFICULTY':'Diff',
-									'TOPIC':'Topk',
-									'OBJECTIVE':'Objt',
-									'PAGEREFERENCE':'PRef',
-									'SKILL':'Skil',
-									'QUESTIONID':'QnId'
-							}
+							
 							 $scope.metadataValues = {
                                     "Difficulty":[]
                             };
 							$scope.userMetadata=[];
 							var metadataArray = function(){
-                                 $scope.userMetadata.push(new metadataKeyValue(ShortMetadataEnum.DIFFICULTY,'Difficulty'));
-                                 $scope.userMetadata.push(new metadataKeyValue(ShortMetadataEnum.TOPIC,'Topic'));
-                                 $scope.userMetadata.push(new metadataKeyValue(ShortMetadataEnum.OBJECTIVE,'Objective'));
-                                 $scope.userMetadata.push(new metadataKeyValue(ShortMetadataEnum.PAGEREFERENCE,'Page Reference'));
-                                 $scope.userMetadata.push(new metadataKeyValue(ShortMetadataEnum.SKILL,'Skill'));
-                                 $scope.userMetadata.push(new metadataKeyValue(ShortMetadataEnum.QUESTIONID,'Question ID'));
+                                 $scope.userMetadata.push(new metadataKeyValue(EnumService.ShortMetadataEnum.DIFFICULTY,'Difficulty'));
+                                 $scope.userMetadata.push(new metadataKeyValue(EnumService.ShortMetadataEnum.TOPIC,'Topic'));
+                                 $scope.userMetadata.push(new metadataKeyValue(EnumService.ShortMetadataEnum.OBJECTIVE,'Objective'));
+                                 $scope.userMetadata.push(new metadataKeyValue(EnumService.ShortMetadataEnum.PAGEREFERENCE,'Page Reference'));
+                                 $scope.userMetadata.push(new metadataKeyValue(EnumService.ShortMetadataEnum.SKILL,'Skill'));
+                                 $scope.userMetadata.push(new metadataKeyValue(EnumService.ShortMetadataEnum.QUESTIONID,'Question ID'));
                              }
                              
                              function metadataKeyValue(keyValue,nameValue) {
@@ -3017,53 +3013,14 @@ angular
                                  this.name = nameValue;
                              }
                              
-							$scope.getUserMetadata=function(){
-								metadataArray();
-                                UserService.userQuestionMetadata(function(userQuestionMetadata){
-                                    var isDifficultyEnabled=false;
-                                    var isTopicEnabled=false;
-                                    var isObjectiveEnabled=false;
-                                    var isPageReferenceEnabled=false;
-                                    var isSkillEnabled=false;
-                                    var isQuestionIDEnabled=false;
-                                    userQuestionMetadata.forEach(function(metadata){
-                                        userQuestionMetadata.forEach(function(metadata){
-                                            var userMetadataKeyValue={};
-                                            if(metadata==MetadataEnum.DIFFICULTY){
-                                                isDifficultyEnabled=true;
-                                            }else if(metadata==MetadataEnum.TOPIC){
-                                                isTopicEnabled=true;
-                                            }else if(metadata==MetadataEnum.OBJECTIVE){
-                                                isObjectiveEnabled=true;
-                                            }else if(metadata==MetadataEnum.PAGEREFERENCE){
-                                                isPageReferenceEnabled=true;
-                                            }else if(metadata==MetadataEnum.SKILL){
-                                                isSkillEnabled=true
-                                            }else if(metadata==MetadataEnum.QUESTIONID){
-                                                isQuestionIDEnabled=true;
-                                            }
-                                        });
-                                    });
-                                    if(!isDifficultyEnabled){
-                                    	removeUnselectedMetadata('Difficulty')
-                                    }
-                                    if(!isTopicEnabled){
-                                    	removeUnselectedMetadata('Topic')
-                                    }
-                                    if(!isObjectiveEnabled){
-                                    	removeUnselectedMetadata('Objective')
-                                    }
-                                    if(!isPageReferenceEnabled){
-                                    	removeUnselectedMetadata('Page Reference')
-                                    }
-                                    if(!isSkillEnabled){
-                                    	removeUnselectedMetadata('Skill')
-                                    }
-                                    if(!isQuestionIDEnabled){
-                                    	removeUnselectedMetadata('Question ID')
-                                    }
-                                });
-                            }
+                             $scope.$on('handleBroadcast_onGetUserQuestionMetadata', function (event, userQuestionMetadata) {
+                                 $scope.getUserMetadata(userQuestionMetadata);
+                             });
+                             $scope.setUserMetadata = function () {
+                                 
+                                 SharedTabService.userQuestionSettings = [];
+                                 SharedTabService.getUserQuestionMetadata();
+                             }
 							
 							var removeUnselectedMetadata=function(value){
 								$scope.userMetadata.forEach(function(metadata,index){
@@ -3073,8 +3030,53 @@ angular
 								});
 							}
                             
-							$scope.getUserMetadata();
-							
+							$scope.getUserMetadata = function (userQuestionMetadata) {
+							    metadataArray();
+							    var isDifficultyEnabled = false;
+							    var isTopicEnabled = false;
+							    var isObjectiveEnabled = false;
+							    var isPageReferenceEnabled = false;
+							    var isSkillEnabled = false;
+							    var isQuestionIDEnabled = false;
+							    
+							    userQuestionMetadata.forEach(function (metadata) {
+							        userQuestionMetadata.forEach(function (metadata) {
+							            var userMetadataKeyValue = {};
+							            if (metadata == EnumService.MetadataEnum.DIFFICULTY) {
+							                isDifficultyEnabled = true;
+							            } else if (metadata == EnumService.MetadataEnum.TOPIC) {
+							                isTopicEnabled = true;
+							            } else if (metadata == EnumService.MetadataEnum.OBJECTIVE) {
+							                isObjectiveEnabled = true;
+							            } else if (metadata == EnumService.MetadataEnum.PAGEREFERENCE) {
+							                isPageReferenceEnabled = true;
+							            } else if (metadata == EnumService.MetadataEnum.SKILL) {
+							                isSkillEnabled = true
+							            } else if (metadata == EnumService.MetadataEnum.QUESTIONID) {
+							                isQuestionIDEnabled = true;
+							            }
+							        });
+							    });
+							    if (!isDifficultyEnabled) {
+							        removeUnselectedMetadata('Difficulty')
+							    }
+							    if (!isTopicEnabled) {
+							        removeUnselectedMetadata('Topic')
+							    }
+							    if (!isObjectiveEnabled) {
+							        removeUnselectedMetadata('Objective')
+							    }
+							    if (!isPageReferenceEnabled) {
+							        removeUnselectedMetadata('Page Reference')
+							    }
+							    if (!isSkillEnabled) {
+							        removeUnselectedMetadata('Skill')
+							    }
+							    if (!isQuestionIDEnabled) {
+							        removeUnselectedMetadata('Question ID')
+							    }
+							}
+							$scope.getUserMetadata(SharedTabService.userQuestionSettings);
 							$scope.isAnyMetadataSelected=function(){
 								if($scope.userMetadata.length>0){
 									return true;
@@ -3091,22 +3093,22 @@ angular
 							$scope.getMetadataSearchCriteria=function(){
 								var metadataSearchCriteria=[];
 								if($scope.metadataValues.Difficulty.length>0){
-									appendMetadataSearchCriteria(metadataSearchCriteria,ShortMetadataEnum.DIFFICULTY,$scope.metadataValues.Difficulty.toString());
+									appendMetadataSearchCriteria(metadataSearchCriteria,EnumService.ShortMetadataEnum.DIFFICULTY,$scope.metadataValues.Difficulty.toString());
 								}
 								if($scope.metadataValues.Topk!=undefined && $scope.metadataValues.Topk!=""){
-									appendMetadataSearchCriteria(metadataSearchCriteria,ShortMetadataEnum.TOPIC,encodeURIComponent($scope.metadataValues.Topk));
+									appendMetadataSearchCriteria(metadataSearchCriteria,EnumService.ShortMetadataEnum.TOPIC,encodeURIComponent($scope.metadataValues.Topk));
 								}
 								if($scope.metadataValues.Objt!=undefined && $scope.metadataValues.Objt!=""){
-									appendMetadataSearchCriteria(metadataSearchCriteria,ShortMetadataEnum.OBJECTIVE,encodeURIComponent($scope.metadataValues.Objt));
+									appendMetadataSearchCriteria(metadataSearchCriteria,EnumService.ShortMetadataEnum.OBJECTIVE,encodeURIComponent($scope.metadataValues.Objt));
 								}
 								if($scope.metadataValues.PRef!=undefined && $scope.metadataValues.PRef!=""){
-									appendMetadataSearchCriteria(metadataSearchCriteria,ShortMetadataEnum.PAGEREFERENCE,encodeURIComponent($scope.metadataValues.PRef));
+									appendMetadataSearchCriteria(metadataSearchCriteria,EnumService.ShortMetadataEnum.PAGEREFERENCE,encodeURIComponent($scope.metadataValues.PRef));
 								}
 								if($scope.metadataValues.Skil!=undefined && $scope.metadataValues.Skil!=""){
-									appendMetadataSearchCriteria(metadataSearchCriteria,ShortMetadataEnum.SKILL,encodeURIComponent($scope.metadataValues.Skil));
+									appendMetadataSearchCriteria(metadataSearchCriteria,EnumService.ShortMetadataEnum.SKILL,encodeURIComponent($scope.metadataValues.Skil));
 								}
 								if($scope.metadataValues.QnId!=undefined && $scope.metadataValues.QnId!=""){
-									appendMetadataSearchCriteria(metadataSearchCriteria,ShortMetadataEnum.QUESTIONID,encodeURIComponent($scope.metadataValues.QnId));
+									appendMetadataSearchCriteria(metadataSearchCriteria,EnumService.ShortMetadataEnum.QUESTIONID,encodeURIComponent($scope.metadataValues.QnId));
 								}
 								
 								return metadataSearchCriteria;
@@ -3145,13 +3147,6 @@ angular
 								}
 							}
 							
-							var MetadataEnum={
-									'DIFFICULTY':'Difficulty',
-									'TOPIC':'Topic',
-									'OBJECTIVE':'Objective',
-									'PAGEREFERENCE':'PageReference',
-									'SKILL':'Skill',
-									'QUESTIONID':'QuestionId'
-							}
+							
                            
 						} ]);

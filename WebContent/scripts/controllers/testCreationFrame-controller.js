@@ -32,20 +32,6 @@ angular
 							$scope.criterias = SharedTabService.tests[SharedTabService.currentTabIndex].criterias;
 							$scope.captionFocus = true;
 							
-							if (SharedTabService.userQuestionSettings.length == 0){
-								UserService.userQuestionMetadata(function(userQuestionMetadata){
-									if(userQuestionMetadata==null){
-										CommonService.showErrorMessage(e8msg.error.cantFetchMetadata)
-				            			return;
-									}
-										$.each(userQuestionMetadata, function(index, item){	
-												SharedTabService.userQuestionSettings.push(item);						
-
-										});
-							
-								});
-						}
-
 							
 							// $scope.isTestWizardTabPresent = false;
 							$scope.sharedTabService = SharedTabService;
