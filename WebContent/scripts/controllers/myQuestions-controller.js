@@ -129,7 +129,7 @@ angular.module('e8MyTests')
             if($rootScope.dropTestOrQuestion && $rootScope.dropTestOrQuestion == "cancel") {
                 $rootScope.dropTestOrQuestion = null;
                 return false;
-            }
+            }            
   			
 			if (!source.node.isNodeSelected) {
 				$scope.selectNode(source);
@@ -141,7 +141,9 @@ angular.module('e8MyTests')
                     $scope.createTestWizardCriteria(source)
                 } else {
                     $scope.editQuestion(source.node, destIndex, "dragEvnt");
-                }             
+                }    
+                
+                return false;
             }
             
             $rootScope.blockLeftPanel.start();                        
