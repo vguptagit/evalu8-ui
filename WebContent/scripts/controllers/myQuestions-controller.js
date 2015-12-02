@@ -1612,7 +1612,8 @@ angular.module('e8MyTests')
                 editedQuestion.textHTML = displayNodes.html();
                 
 				editedQuestion.showEditQuestionIcon = false;
-				editedQuestion.isNodeSelected = false;
+				editedQuestion.isNodeSelected = true;
+				$scope.selectedNodes.push(editedQuestion);
 				addToQuestionsArray(editedQuestion);
 				//editedQuestion.template = 'qb_questions_renderer.html';
 					
@@ -1621,8 +1622,39 @@ angular.module('e8MyTests')
                 editedQuestion.questionType = "userCreatedQuestion";                                            
                 $scope.defaultFolders.push(editedQuestion);    
                 
-			})															
+			})			
+			
+			if(editedQuestions.length>0){
+				unselectEditedQuestions();	
+			}
 			
 		});
+		
+		var unselectEditedQuestions=function(){
+			var testQuestions=SharedTabService.tests[SharedTabService.currentTabIndex].questions;
+			var questionsNotInTest=[];
+			
+			$scope.selectedNodes.forEach(function(question){
+				var isThisQuestionInTest=false;
+				testQuestions.forEach(function(testQuestion){
+					if(testQuestion.guid==question.guid){
+						isThisQuestionInTest=true;
+					}
+				});
+				if(!isThisQuestionInTest){
+					questionsNotInTest.push(question)
+				}
+			});
+			
+			questionsNotInTest.forEach(function(questionNotinTest){
+				$scope.selectedNodes.forEach(function(question,index){
+					if(questionNotinTest.guid==question.guid){
+						question.isNodeSelected=false;
+						question.showEditQuestionIcon=false;
+						$scope.selectedNodes.splice(index,1);
+					}
+				});
+			});
+		}
 		
     }]);
