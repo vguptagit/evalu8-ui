@@ -46,7 +46,7 @@ angular
 							
 							//to set the status of the question node,if the question node present in test frame.
 							var setTestQuestionNodeStatus=function(item){
-								item.nodeType = "question";			
+								item.nodeType = EnumService.NODE_TYPE.question;			
 								item.existInTestframe=true;
 								item.isNodeSelected = true;
 								item.showEditQuestionIcon = false;
@@ -394,7 +394,7 @@ angular
                                                 		}
                                                 	}
                                                 }
-                                                item.nodeType = "chapter";
+                                                item.nodeType = EnumService.NODE_TYPE.chapter;
                                                 item.isCollapsed=true;
                                             })
                                             if(book.node.testBindings && book.node.testBindings.length) {
@@ -512,19 +512,21 @@ angular
 
 								 
 
+
 								for (var i = 0; i < $scope.selectedNodes.length; i++) {
-								    currentNode = $scope.selectedNodes[i];
-								    if (currentNode.nodes && !currentNode.isCollapsed) {
-								        var newCriteria = new SharedTabService.Criteria();
-								        newCriteria.totalQuestions = 0;
-								        newCriteria.folderId = currentNode.guid;
-								        newCriteria.treeNode = currentNode;
-								        $scope.expandedNodes.push(currentNode);
-								        SharedTabService.tests[SharedTabService.currentTabIndex].criterias.push(newCriteria);
-								        currentNode.showTestWizardIcon = false;
-								        continue;
-								    }
-									if (currentNode.showTestWizardIcon) {
+								   currentNode = $scope.selectedNodes[i];
+								   if (currentNode.nodes && !currentNode.isCollapsed) {
+								       for (var j = 0; j < currentNode.nodes.length; j++) {
+								           if (currentNode.nodes[j].nodeType === EnumService.NODE_TYPE.topic) {
+								               currentNode.showTestWizardIcon = false;
+								               continue;
+								           }
+								       }
+								   }
+								   if (currentNode.showTestWizardIcon) {
+								       if (currentNode.nodeType === EnumService.NODE_TYPE.question) {
+								           continue;
+								       }
 									    httpReqCount++;
 									    currentNode.showTestWizardIcon = false;
 									    $rootScope.blockPage.start();
@@ -599,7 +601,7 @@ angular
 									node.isNodeSelected = true;
 									node.showTestWizardIcon = false;
 									node.showEditQuestionIcon = true;
-									if(node.nodeType != "question"){
+									if(node.nodeType != EnumService.NODE_TYPE.question){
 										node.existInTestframe = true;
 									}
 									if(node.nodes){
@@ -828,7 +830,7 @@ angular
 													item.showEditQuestionIcon = false;
 													item.isNodeSelected = currentNode.node.isNodeSelected;
 													setNodeStatus(item,currentNode);													
-	                                                item.nodeType = "topic";
+	                                                item.nodeType = EnumService.NODE_TYPE.topic;
 	                                                item.isCollapsed = true;
 	                                                item.isHttpReqCompleted = true;
 	                                                item.parentId = currentNode.node.guid;
@@ -902,7 +904,7 @@ angular
 							
 							//to change the status of the topic's node, when we expand a topic.
 							var setQuestionNodeStatus=function(item,currentNode){
-								item.nodeType = "question";			
+								item.nodeType = EnumService.NODE_TYPE.question;			
 								
 								//change the status of node, if parent node is selected.
 								if(currentNode.node.isNodeSelected){
@@ -975,7 +977,7 @@ angular
 															responseQuestions,
 															function(
 																	item) {
-																item.nodeType = "question";
+																item.nodeType = EnumService.NODE_TYPE.question;
 																$scope
 																		.renderQuestion(item);
 															})
@@ -1197,7 +1199,7 @@ angular
 									return;
 								}
 								
-								if(node.nodeType == "question" && (scope.$parentNodeScope.node.isNodeSelected && scope.$parentNodeScope.node.showTestWizardIcon == false)){
+								if(node.nodeType == EnumService.NODE_TYPE.question && (scope.$parentNodeScope.node.isNodeSelected && scope.$parentNodeScope.node.showTestWizardIcon == false)){
 									return;
 								}
 								var test = SharedTabService.tests[SharedTabService.currentTabIndex];
@@ -1349,14 +1351,20 @@ angular
 
 							var isChildNodeUsed=false;
 							
-							$scope.editQuestion = function (scope, destIndex, eventType) {		
+							$scope.editQuestion = function (scope, destIndex, eventType) {
+								if (scope.node.nodeType == EnumService.NODE_TYPE.question && SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
+									$scope.IsConfirmation = false;
+									$scope.message = "A Question cannot be added to the TEST Wizard.";
+									$modal.open(confirmObject);
+									$scope.dragStarted = false;
+									return false;
+									} 
 								$scope.editQuestionMode=true;
 								
 								if(eventType ==null || eventType =='' || eventType == undefined){
 									eventType = "clickEvnt";
 								}
 								if (SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
-									$scope.editQuestionMode=false;
 									$rootScope.$broadcast('handleBroadcast_AddNewTab');
 								}
 								var test = SharedTabService.tests[SharedTabService.currentTabIndex];
@@ -2095,20 +2103,22 @@ angular
 													 $scope.selectedNodes=[];
 												}
 												
-												for (var i = 0; i < $scope.questions.length; i++) {
-													$scope.questions[i].isNodeSelected = false;
-													$scope.questions[i].showEditQuestionIcon = false;
-													$scope.questions[i].existInTestframe = false;
-													for (var j = 0; j < tab.questions.length; j++) {
-														if ($scope.questions[i].guid === tab.questions[j].guid) {
-															$scope.questions[i].isNodeSelected = true;
-															$scope.questions[i].existInTestframe = true;
-															$scope.selectedNodes.push($scope.questions[i]);
-															break;
+											//if the tab is Test Wizard, dont set the status for question nodes.
+												if(!tab.isTestWizard){		
+													for (var i = 0; i < $scope.questions.length; i++) {
+														$scope.questions[i].isNodeSelected = false;
+														$scope.questions[i].showEditQuestionIcon = false;
+														$scope.questions[i].existInTestframe = false;
+														for (var j = 0; j < tab.questions.length; j++) {
+															if ($scope.questions[i].guid === tab.questions[j].guid) {
+																$scope.questions[i].isNodeSelected = true;
+																$scope.questions[i].existInTestframe = true;
+																$scope.selectedNodes.push($scope.questions[i]);
+																break;
+															}
 														}
 													}
 												}
-												
 											});
 							$scope
 									.$on(
@@ -2268,7 +2278,7 @@ angular
 								$scope.selectedNodes.forEach(function(node) {
 									if(node.nodes){
 										node.nodes.forEach(function(usedNode) {
-											if(usedNode.nodeType == "question" && $scope.isNodeInTestFrame(usedNode)){
+											if(usedNode.nodeType == EnumService.NODE_TYPE.question && $scope.isNodeInTestFrame(usedNode)){
 												usedNode.existInTestframe = true;
 												usedNode.isNodeSelected = true;
 												usedNode.showEditQuestionIcon = false;
@@ -2523,7 +2533,7 @@ angular
 												container.template = "nodes_renderer.html";
 												container.showEditQuestionIcon=false;
 												container.showTestWizardIcon=false;
-												container.nodeType = "chapter";
+												container.nodeType = EnumService.NODE_TYPE.chapter;
 												container.isCollapsed=false;
 												container.isHttpReqCompleted = true;
 												containerNode["nodes"] = [jQuery.extend(true,
@@ -2553,7 +2563,7 @@ angular
 											searchedContainer.template = "nodes_renderer.html";
 											searchedContainer.showEditQuestionIcon=false;
 											searchedContainer.showTestWizardIcon=false;
-											searchedContainer.nodeType = "topic";
+											searchedContainer.nodeType = EnumService.NODE_TYPE.topic;
 											searchedContainer.isCollapsed=true;
 											searchedContainer.isHttpReqCompleted = true;
 											$scope.parentNode["nodes"] = [ jQuery.extend(true,
@@ -2573,7 +2583,7 @@ angular
 									searchedContainer.template = "nodes_renderer.html";
 									searchedContainer.showEditQuestionIcon=false;
 									searchedContainer.showTestWizardIcon=false;
-									searchedContainer.nodeType = "topic";
+									searchedContainer.nodeType = EnumService.NODE_TYPE.topic;
 									searchedContainer.isCollapsed=true;
 									searchedContainer.isHttpReqCompleted = true;
 									$scope.parentNode["nodes"] = [ jQuery.extend(true,
@@ -2733,7 +2743,7 @@ angular
 											containers.forEach(function(container){
 												checkIsContainerIsInTestFrame(container,testTab);
 												container.isCollapsed=true;
-												container.nodeType = "chapter";
+												container.nodeType = EnumService.NODE_TYPE.chapter;
 												container.bookid = book.guid;
 												container.isHttpReqCompleted = true;
 											});
