@@ -1646,6 +1646,7 @@ angular
 													var displayNode = {};
 
 													displayNode.guid = question.guid;
+                                                    displayNode.questionHierarchy = question.questionHierarchy;    
 													displayNode.parentId = question.parentId;
 													displayNode.textHTML = displayNodes.html();
 													
