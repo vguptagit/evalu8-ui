@@ -758,6 +758,19 @@ angular.module('evalu8Demo')
 				  text = el.innerHTML;
 				  return text;
 			}
+			
+			//decoding the encoded char to special char &quot; ==> '"'
+			//eg: html editor encoding the double qoute to encoded char (&quot;)
+			this.decodingEncodeChar = function(text){
+				var chars = ['"']; 
+				var codes = [/&quot;/g];
+
+				for(var x=0; x<codes.length; x++){				        	        	
+					text = text.replace(codes[x],chars[x]);				        
+				}
+				
+				return text;
+			}
 
 
 		});
