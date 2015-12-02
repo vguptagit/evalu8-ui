@@ -52,4 +52,22 @@ angular.module('evalu8Demo')
     	NOTFOUND: 404,
     	INTERNALEXCEPTION: 500
     };
+
+    this.MetadataEnum = {
+        'DIFFICULTY': 'Difficulty',
+        'TOPIC': 'Topic',
+        'OBJECTIVE': 'Objective',
+        'PAGEREFERENCE': 'PageReference',
+        'SKILL': 'Skill',
+        'QUESTIONID': 'QuestionId'
+    }
+
+    this.ShortMetadataEnum = {
+        'DIFFICULTY': 'Diff',
+        'TOPIC': 'Topk',
+        'OBJECTIVE': 'Objt',
+        'PAGEREFERENCE': 'PRef',
+        'SKILL': 'Skil',
+        'QUESTIONID': 'QnId'
+    }
 });
