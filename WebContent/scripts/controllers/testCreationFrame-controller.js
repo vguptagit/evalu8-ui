@@ -1759,7 +1759,8 @@ angular
 									if(option.startsWith('<p>')){
 										option = option.substring(3, option.length-4);
 									}			
-									Options.push(option);
+									var optionText = QtiService.decodingEncodeChar(option);
+									Options.push(optionText);
 								});
 								
 								return Options;
