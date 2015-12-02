@@ -1081,121 +1081,18 @@ angular.module('e8MyTests')
         		}
         	}
         	return false;
-        }
+        }        	
         
-        $scope.archiveFolder = function(folder) {
-        	
-            	if(isAnyTestInEditMode()){
-            		if(checkIfTestIsBeingEdited(folder)){
-            			$scope.IsConfirmation = false;
-        				$scope.message = e8msg.error.testIsInEditMode;
-        				$modal.open(confirmObject);
-        				return false;
-            		}else if (isAnyNodeCollapsed){
-            			$rootScope.blockLeftPanel.start();
-            			TestService.getAllTestsOfFolder(folder.node.guid, function (tests) {
-                            
-            				//"null"is expected only if there is an error
-            				if(tests == null) {
-                                $rootScope.blockLeftPanel.stop();
-                                CommonService.showErrorMessage(e8msg.error.cantFetchTests)
-                                return;
-                            }
-                            
-            				//Check if the tests returned from the service is part of the tests being edited
-                            if(checkIfTestIsInList(tests)){
-                            	$scope.IsConfirmation = false;
-                                $rootScope.blockLeftPanel.stop();
-                                $scope.message = e8msg.error.testIsInEditMode;
-                                $modal.open(confirmObject);
-                                return false;                            	
-                            }else{ // All good - go ahead and archive
-                            	doArchive(folder);
-                            }
-                            
-                            $rootScope.blockLeftPanel.stop();
-                        });
-            		}
-            	}else{
-            		doArchive(folder);
-            	}
-        	}	
-        
-        	function checkIfTestIsInList(tests){
-        		for(var i = 0; i < tests.length; i++){
-                    for(var j = 0; j < SharedTabService.tests.length; j++){
-                        if(tests[i].guid == SharedTabService.tests[j].testId){
-                        	return true;
-                        }
-                    }
-                }
-        		return false;
+        function checkIfTestIsInList(tests){
+        	for(var i = 0; i < tests.length; i++){
+        		for(var j = 0; j < SharedTabService.tests.length; j++){
+        			if(tests[i].guid == SharedTabService.tests[j].testId){
+        				return true;
+        			}
+        		}
         	}
-        
-        
-        	function doArchive(folder){
-        		$rootScope.blockLeftPanel.start();
-        		ArchiveService.archiveFolder(folder.node.guid, function(archivedFolder) {
-        			if(archivedFolder == null) {
-            			$rootScope.blockLeftPanel.stop();
-            			CommonService.showErrorMessage(e8msg.error.cantArchive)
-            			return;
-            		}
-            		folder.remove();        		
-            		
-            		if(folder.$parentNodeScope && folder.$parentNodeScope.node && folder.$parentNodeScope.node.nodes.length == 0) {
-            			folder.$parentNodeScope.node.nodes.push(CommonService.getEmptyFolder());
-            		}
-            		if(angular.element($('[id=' + archivedFolder.guid + ']')).scope()) {
-            			
-            			$rootScope.blockLeftPanel.stop();
-            			return; // return if archived node is already displayed in
-    							// Archive Section
-            		}
-            		        		
-            		archivedFolder.nodeType = EnumService.NODE_TYPE.archiveFolder;
-            		archivedFolder.draggable = "false";
-            		archivedFolder.droppable = "false";
-            		var archivedFolderParent;        		
-            		
-            		if(archivedFolder.parentId == null) {
-            			
-            			if($scope.archiveRoot && $scope.archiveRoot.node && $scope.archiveRoot.node.nodes && $scope.archiveRoot.node.nodes.length) {
-            				if($scope.archiveRoot.node.nodes[0].nodeType == EnumService.NODE_TYPE.emptyFolder) {
-            					$scope.archiveRoot.node.nodes.splice(0,1);
-            				}
-            				$scope.archiveRoot.node.nodes.unshift(archivedFolder)        				
-            			}	        				        				    
-            		} else {
-            			
-            			archivedFolderParent = angular.element($('[id=' + archivedFolder.parentId + ']')).scope()
-            			if(archivedFolderParent && archivedFolderParent.node) {
-            				if(archivedFolderParent.node.nodes[0] && archivedFolderParent.node.nodes[0].nodeType == EnumService.NODE_TYPE.emptyFolder) {
-            					archivedFolderParent.node.nodes.splice(0,1);
-            				}
-            				archivedFolderParent.node.nodes.unshift(archivedFolder);
-            			}else{
-           				 	ArchiveService.getArchiveFolders($scope.archiveRoot.node, function (archivedFolders) {
-    	    					$scope.archiveRoot.node.nodes=archivedFolders;
-    	    					TestService.getArchiveTests($scope.archiveRoot.node.guid, function (tests) {
-    	    						if(tests==null){
-    	                        		$rootScope.blockLeftPanel.stop();
-    	                        		 CommonService.showErrorMessage(e8msg.error.cantFetchArchiveTests);
-    	                        		return;
-    	                        	}
-    	    						 tests.forEach(function (test) {
-    	    	                            test.selectTestNode = false;
-    	    	                            $scope.archiveRoot.node.nodes.push(test);
-    	    	                     });
-    	    					 });
-    	       				});
-            			 }       			
-            		}        		        
-
-            		$rootScope.blockLeftPanel.stop();
-            	});
-        	}
-        		
+        	return false;
+        }                		
         	
         var confirmObject = {
                 templateUrl: 'views/partials/alert.html',
@@ -1375,14 +1272,9 @@ angular.module('e8MyTests')
     	            $modal.open(confirmObject);        		
             		return;
         		}
-            	// $scope.loadTree();
             	
             	userFolder.nodeType = "folder";
             	$scope.defaultFolders.unshift(userFolder);
-                
-            	if($scope.defaultFolders.length == 1) {
-            		$scope.defaultFolders.push(CommonService.getArchiveRoot());
-            	}
             	
                 $scope.folderName = "";
                
