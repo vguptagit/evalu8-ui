@@ -724,9 +724,7 @@ angular.module('e8MyTests')
 			if(eventType ==null || eventType =='' || eventType == undefined){
 				eventType = "clickEvnt";
 			}
-			if (SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
-				$rootScope.$broadcast('handleBroadcast_AddNewTab');
-			}
+
 			var test = SharedTabService.tests[SharedTabService.currentTabIndex];
 			isChildNodeUsed=false;
 											
@@ -760,6 +758,19 @@ angular.module('e8MyTests')
 		
 		$scope.addSelectedQuestionsToTestTab = function(test, destIndex, eventType,scope) {
         	var selectedScopeNode = typeof scope.node == "undefined" ? scope : scope.node;
+        	
+        	if(selectedScopeNode.nodeType == "question" && test.isTestWizard) {
+            	$scope.IsConfirmation = false;
+            	$scope.message = "A Question cannot be added to the TEST Wizard.";
+            	$modal.open(confirmObject);
+            	$scope.dragStarted = false;
+            	return false;        		
+        	}
+
+        	if (test.isTestWizard) {
+        		$rootScope.$broadcast('handleBroadcast_AddNewTab');
+        	}
+        	
         	if(!selectedScopeNode.showEditQuestionIcon)
     		{
         		$scope.isAnyNodeAlreadyAdded = true
@@ -922,6 +933,11 @@ angular.module('e8MyTests')
 			for (var i = 0; i < $scope.selectedNodes.length; i++) {
 				currentNode = $scope.selectedNodes[i];
 				if (currentNode.showTestWizardIcon) {
+					
+					if (currentNode.nodeType === EnumService.NODE_TYPE.question) {
+						continue;
+					}
+					 
 				    httpReqCount++;
 				    currentNode.showTestWizardIcon = false;
 				    $rootScope.blockPage.start();
