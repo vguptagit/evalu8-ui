@@ -303,7 +303,7 @@ div.resource {
 }
 */
 .createNewNode {
-	width: 100%;
+	width: 97%;
 	text-align: left;
 	font-family: Helvetica Neue Light;
 	font-weight: bold;
@@ -2465,7 +2465,7 @@ ul.a {
 }
 
 .createNewNode .form-control {
-	width: 98%;
+	width: 97%;
 	height: 26px;
 	position: relative;
 	top: 5px;
@@ -3403,4 +3403,9 @@ a#testwizard {
 }
 .addFolderActionsDiv{
     padding: 4px 4px 0px 0px; 
+    position: absolute;
+    right: 15px;
+}
+.addFolderActionsDiv button{
+    margin-right: 1px;
 }
