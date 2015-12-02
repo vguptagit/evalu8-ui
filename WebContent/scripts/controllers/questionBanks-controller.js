@@ -528,6 +528,7 @@ angular
 								   }
 								   if (currentNode.showTestWizardIcon) {
 								       if (currentNode.nodeType === EnumService.NODE_TYPE.question) {
+								    	   $scope.createTestWizardMode=false;
 								           continue;
 								       }
 									    httpReqCount++;
@@ -1379,24 +1380,12 @@ angular
 									i++;
 								});
 							}
-
+						
 							var isChildNodeUsed=false;
-							
 							$scope.editQuestion = function (scope, destIndex, eventType) {
-								if (scope.node.nodeType == EnumService.NODE_TYPE.question && SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
-									$scope.IsConfirmation = false;
-									$scope.message = "A Question cannot be added to the TEST Wizard.";
-									$modal.open(confirmObject);
-									$scope.dragStarted = false;
-									return false;
-									} 
 								$scope.editQuestionMode=true;
-								
 								if(eventType ==null || eventType =='' || eventType == undefined){
 									eventType = "clickEvnt";
-								}
-								if (SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
-									$rootScope.$broadcast('handleBroadcast_AddNewTab');
 								}
 								var test = SharedTabService.tests[SharedTabService.currentTabIndex];
 								isChildNodeUsed=false;
@@ -1449,6 +1438,17 @@ angular
 							
 							$scope.addSelectedQuestionsToTestTab = function(activeTest, destIndex, eventType,scope) {
                             	var selectedScopeNode = typeof scope.node == "undefined" ? scope : scope.node;
+                            	
+                            	if (selectedScopeNode.nodeType == EnumService.NODE_TYPE.question && activeTest.isTestWizard) {
+                            		$scope.IsConfirmation = false;
+									$scope.message = "A Question cannot be added to the TEST Wizard.";
+									$modal.open(confirmObject);
+									$scope.dragStarted = false;
+									return false;
+								}
+                            	if (activeTest.isTestWizard) {
+									$rootScope.$broadcast('handleBroadcast_AddNewTab');
+								}
                             	if(!selectedScopeNode.showEditQuestionIcon)
                         		{
                             		$scope.isAnyNodeAlreadyAdded = true
