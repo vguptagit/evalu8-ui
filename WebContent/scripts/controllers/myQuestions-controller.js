@@ -519,35 +519,7 @@ angular.module('e8MyTests')
 
             $rootScope.tree = { mouseOverNode: null };
             node.hover = false;
-        }     
-        
-		$scope.folderNameTextBoxBlur = function() {
-			
-			if($scope.enterKey == true) {
-                $scope.enterKey = false;
-                $scope.showAddFolderPanel = false;
-                $scope.$digest();
-                return;
-            }
-                
-            if(document.getElementById("txtFolderName").value.trim().length==0) {
-                $scope.showAddFolderPanel = false;
-                $scope.$digest();
-                return; 
-            } else {
-            	$scope.showAddFolderPanel = true;
-                $scope.IsConfirmation = true;
-                $scope.message = "Do you want to save this folder?"; 
-        		$modal.open(confirmObject).result.then(function(ok) {
-    	    		if(ok) {
-    	    			$scope.addNewFolder(false);
-    	    		} else {
-                        $scope.showAddFolderPanel = false;
-                        document.getElementById("txtFolderName").value = ""; 
-    	    		}
-        		});
-            }
-        }
+        }             
 		
 		var isParentNodeUsed=false;
 		$scope.selectNode = function (scope) {
