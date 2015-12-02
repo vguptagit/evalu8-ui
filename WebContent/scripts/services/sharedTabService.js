@@ -3,8 +3,8 @@
 angular.module('evalu8Demo')
 
 .service('SharedTabService',
-		['$rootScope', '$modal', 'blockUI', 'EnumService',
-		 function ($rootScope, $modal, blockUI, EnumService) {
+		['$rootScope', '$modal', 'blockUI', 'EnumService', 'UserService',
+		 function ($rootScope, $modal, blockUI, EnumService, UserService) {
 
 		     var sharedTabService = {};
 		     sharedTabService.tests = [];
@@ -724,5 +724,23 @@ angular.module('evalu8Demo')
                  { number: 10, text: '10 Versions' },
 		     ];
 		       
+		     sharedTabService.getUserQuestionMetadata = function () {
+		         if (sharedTabService.userQuestionSettings.length == 0) {
+		             UserService.userQuestionMetadata(function (userQuestionMetadata) {
+		                 if (userQuestionMetadata == null) {
+		                     CommonService.showErrorMessage(e8msg.error.cantFetchMetadata)
+		                     return;
+		                 }
+		                 $.each(userQuestionMetadata, function (index, item) {
+		                     sharedTabService.userQuestionSettings.push(item);
+
+		                 });
+		                 $rootScope.$broadcast("handleBroadcast_onGetUserQuestionMetadata", userQuestionMetadata);
+
+		             });
+		         }
+		     }
+		     sharedTabService.getUserQuestionMetadata();
+
 		     return sharedTabService;
 		 }]);

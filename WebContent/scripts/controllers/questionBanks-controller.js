@@ -296,7 +296,7 @@ angular
 								searchedMetadataValues={
 										"Difficulty":[]
 									};
-								$scope.getUserMetadata();
+								$scope.setUserMetadata();
 							})
 
 							$scope.testTitle = "New Test";							                           							
@@ -3017,53 +3017,55 @@ angular
                                  this.name = nameValue;
                              }
                              
-							$scope.getUserMetadata=function(){
-								metadataArray();
-                                UserService.userQuestionMetadata(function(userQuestionMetadata){
-                                    var isDifficultyEnabled=false;
-                                    var isTopicEnabled=false;
-                                    var isObjectiveEnabled=false;
-                                    var isPageReferenceEnabled=false;
-                                    var isSkillEnabled=false;
-                                    var isQuestionIDEnabled=false;
-                                    userQuestionMetadata.forEach(function(metadata){
-                                        userQuestionMetadata.forEach(function(metadata){
-                                            var userMetadataKeyValue={};
-                                            if(metadata==MetadataEnum.DIFFICULTY){
-                                                isDifficultyEnabled=true;
-                                            }else if(metadata==MetadataEnum.TOPIC){
-                                                isTopicEnabled=true;
-                                            }else if(metadata==MetadataEnum.OBJECTIVE){
-                                                isObjectiveEnabled=true;
-                                            }else if(metadata==MetadataEnum.PAGEREFERENCE){
-                                                isPageReferenceEnabled=true;
-                                            }else if(metadata==MetadataEnum.SKILL){
-                                                isSkillEnabled=true
-                                            }else if(metadata==MetadataEnum.QUESTIONID){
-                                                isQuestionIDEnabled=true;
-                                            }
-                                        });
-                                    });
-                                    if(!isDifficultyEnabled){
-                                    	removeUnselectedMetadata('Difficulty')
-                                    }
-                                    if(!isTopicEnabled){
-                                    	removeUnselectedMetadata('Topic')
-                                    }
-                                    if(!isObjectiveEnabled){
-                                    	removeUnselectedMetadata('Objective')
-                                    }
-                                    if(!isPageReferenceEnabled){
-                                    	removeUnselectedMetadata('Page Reference')
-                                    }
-                                    if(!isSkillEnabled){
-                                    	removeUnselectedMetadata('Skill')
-                                    }
-                                    if(!isQuestionIDEnabled){
-                                    	removeUnselectedMetadata('Question ID')
-                                    }
-                                });
-                            }
+                             $scope.$on('handleBroadcast_onGetUserQuestionMetadata', function (event, userQuestionMetadata) {
+                                 var isDifficultyEnabled = false;
+                                 var isTopicEnabled = false;
+                                 var isObjectiveEnabled = false;
+                                 var isPageReferenceEnabled = false;
+                                 var isSkillEnabled = false;
+                                 var isQuestionIDEnabled = false;
+                                 userQuestionMetadata.forEach(function (metadata) {
+                                     userQuestionMetadata.forEach(function (metadata) {
+                                         var userMetadataKeyValue = {};
+                                         if (metadata == MetadataEnum.DIFFICULTY) {
+                                             isDifficultyEnabled = true;
+                                         } else if (metadata == MetadataEnum.TOPIC) {
+                                             isTopicEnabled = true;
+                                         } else if (metadata == MetadataEnum.OBJECTIVE) {
+                                             isObjectiveEnabled = true;
+                                         } else if (metadata == MetadataEnum.PAGEREFERENCE) {
+                                             isPageReferenceEnabled = true;
+                                         } else if (metadata == MetadataEnum.SKILL) {
+                                             isSkillEnabled = true
+                                         } else if (metadata == MetadataEnum.QUESTIONID) {
+                                             isQuestionIDEnabled = true;
+                                         }
+                                     });
+                                 });
+                                 if (!isDifficultyEnabled) {
+                                     removeUnselectedMetadata('Difficulty')
+                                 }
+                                 if (!isTopicEnabled) {
+                                     removeUnselectedMetadata('Topic')
+                                 }
+                                 if (!isObjectiveEnabled) {
+                                     removeUnselectedMetadata('Objective')
+                                 }
+                                 if (!isPageReferenceEnabled) {
+                                     removeUnselectedMetadata('Page Reference')
+                                 }
+                                 if (!isSkillEnabled) {
+                                     removeUnselectedMetadata('Skill')
+                                 }
+                                 if (!isQuestionIDEnabled) {
+                                     removeUnselectedMetadata('Question ID')
+                                 }
+                             });
+                             $scope.setUserMetadata = function () {
+                                 metadataArray();
+                                 SharedTabService.userQuestionSettings = [];
+                                 SharedTabService.getUserQuestionMetadata();
+                             }
 							
 							var removeUnselectedMetadata=function(value){
 								$scope.userMetadata.forEach(function(metadata,index){
@@ -3073,7 +3075,7 @@ angular
 								});
 							}
                             
-							$scope.getUserMetadata();
+							//$scope.getUserMetadata();
 							
 							$scope.isAnyMetadataSelected=function(){
 								if($scope.userMetadata.length>0){
