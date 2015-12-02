@@ -751,6 +751,32 @@ angular
 								}
 							}
 							
+							//to change the status of the topic/chapter question node, when all childs are in test frame.
+							var setParentNodeStatus=function(currentNode){	
+
+								var isAllChildNodeInTestFrame=false;
+								for (var i = 0; i < currentNode.node.nodes.length; i++) {
+									isAllChildNodeInTestFrame=false;
+									if($scope.isNodeInTestFrame(currentNode.node.nodes[i])){
+										isAllChildNodeInTestFrame=true;
+									}
+									
+									if(!isAllChildNodeInTestFrame){										
+										break;
+									}
+								}
+
+								if(isAllChildNodeInTestFrame){
+									currentNode.node.isNodeSelected = true;
+									currentNode.node.showEditQuestionIcon = false;
+									currentNode.node.showTestWizardIcon = true;
+									currentNode.node.existInTestframe = true;										
+									$scope.addingNodeInSelectedNodesArray(currentNode.node);	
+									$scope.addingNodeInQuestionFolderNodeArray(currentNode.node,test);
+								}							
+							}
+							
+							
 
 							$scope.getNodesWithQuestion = function(currentNode) {
 							    currentNode.node.isCollapsed = !currentNode.node.isCollapsed;
@@ -843,7 +869,9 @@ angular
 														$scope.isTopicsLoaded=true;
 														stopIndicator(currentNode);
 													}
-												})
+												})		
+												
+												setParentNodeStatus(currentNode);
 												
 											} else if (!response.length && !currentNode.node.nodes.length) {
 											    var emptyNode = CommonService.getEmptyFolder()
@@ -2221,7 +2249,41 @@ angular
 									var parentNode = $scope.selectedNodes[nodeIndex];
 									$scope.selectedNodes.splice(nodeIndex, 1);
 									removeNodeByID(SharedTabService.tests[SharedTabService.currentTabIndex].questionFolderNode,parentId);
-									updateHigherParentNodesStatus(parentNode.parentId);	
+									updateHigherParentNodesStatusByID(parentNode.parentId);	
+								}
+											
+							}
+							
+							//to set the status of the hierarchical parent node in question bank tab,if the question node deleted in test frame and this est its in edit mode.
+							var updateParentNodeStatusBySelectedNodeArray=function(qstnID){		
+								var parentExistInSelectNodes=false;
+								var nodeIndex=0;
+								for (var i = 0; i < $scope.selectedNodes.length; i++) {
+									if ($scope.selectedNodes[i].questionBindings) {
+										for (var j = 0; j < $scope.selectedNodes[i].questionBindings.length; j++) {
+											if ($scope.selectedNodes[i].questionBindings[j] == qstnID) {
+												$scope.selectedNodes[i].isNodeSelected = false ;
+												$scope.selectedNodes[i].showEditQuestionIcon = false;
+												$scope.selectedNodes[i].showTestWizardIcon = false;		
+												$scope.selectedNodes[i].existInTestframe = false;		
+												parentExistInSelectNodes = true;
+												break;
+											}										
+										}
+									}
+									
+									if(parentExistInSelectNodes){
+										break;
+									}
+									
+									nodeIndex++;
+								}													
+								
+								if(parentExistInSelectNodes){
+									var parentNode = $scope.selectedNodes[nodeIndex];
+									$scope.selectedNodes.splice(nodeIndex, 1);
+									removeNodeByID(SharedTabService.tests[SharedTabService.currentTabIndex].questionFolderNode,parentNode.guid);
+									updateHigherParentNodesStatusByID(parentNode.parentId);	
 								}
 											
 							}
@@ -2248,8 +2310,10 @@ angular
 							$scope.updateParentNodeStatus = function(deselectedNode){	
 								if(deselectedNode.questionHierarchy){
 									updateHigherParentNodesStatus(deselectedNode);
-								}else{
+								}else if(deselectedNode.parentId){
 									updateHigherParentNodesStatusByID(deselectedNode.parentId);
+								}else{
+									updateParentNodeStatusBySelectedNodeArray(deselectedNode.guid);
 								}
 								
 								var test = SharedTabService.tests[SharedTabService.currentTabIndex];
