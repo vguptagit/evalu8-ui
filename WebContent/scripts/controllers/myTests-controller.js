@@ -83,6 +83,18 @@ angular.module('e8MyTests')
 	                    		}
 	                    	});                		
 	                	}
+	                	
+	                	if($scope.defaultFolders.length == 0) {
+	                		var emptyMyTestsHtml = "<br/><div style='background-color:#f8f8f8'><div style='padding:9px'>" 
+                			+ "<span class='glyphicon glyphicon-info-sign'></span>&nbsp;&nbsp;<b>No Saved Tests</b>" + "<br/><br/>"
+	                		+ "You haven’t saved any tests yet." + "<br/>"
+	                		+ "<br/>Tests are saved here when you import a test or after you create and save a test." + "<br/>"
+	                		+ "<br/><b>To create a test</b>, use the Question Banks or Custom Questions tabs or choose the Test Wizard button." 
+	                		+ "<br/></div></div>";	                		
+	                		
+	                		$("#MyTest-tree-root").html(emptyMyTestsHtml) ;
+	                	}
+	                	
 	                	$rootScope.blockLeftPanel.stop();
 	                });
 	                
