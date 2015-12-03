@@ -2987,8 +2987,7 @@ angular
 									 isExist = false;
 								    	for (var j = 0; j < activeTest.questionFolderNode[i].questionBindings.length; j++) {
 								    		if(activeTest.questionFolderNode[i].questionBindings[j] == qstnGuid){									    			
-								    			 updateHigherParentNodesStatus(activeTest.questionFolderNode[i].guid);									    			
-								    			 activeTest.questionFolderNode.splice(i, 1);
+								    			updateHigherParentNodesStatusByID(activeTest.questionFolderNode[i].guid);		
 								    			isExist = true;
 												break;
 								    		}									    	
@@ -2997,20 +2996,47 @@ angular
 								    	if(isExist)
 								    		break;
 								    	
-								    }	
+								    }							
 							}
+							
+						//to update the parent node on saving the test with edited question and these question are directly added from chapter without expanding.	
+						var updateTestEditedQuestionFolderNodeStatus = function(editedQuestions){
+							var qstnCopy;
+							for (var i = 0; i < editedQuestions.length; i++) {		
+								qstnCopy = angular.copy(editedQuestions[i]);
+								
+								if(qstnCopy.questionHierarchy){
+									updateHigherParentNodesStatus(qstnCopy);
+								}else if(qstnCopy.parentId){
+									updateHigherParentNodesStatusByID(qstnCopy.parentId);
+								}else{
+									updateParentNodeStatusBySelectedNodeArray(qstnCopy.guid);
+								}
+								
+								$scope.removeNodeFromSelectedNodes(qstnCopy);								        	
+								
+							}
+						}
+						
 							
 							$scope.$on('handleBroadcast_AddNewTest', function (handler, newTest, containerFolder, isEditMode, oldGuid, editedQuestions, editedMigratedQuestions, createdTab, testCreationFrameScope) {
 																	
 								//this loop is to deselect the edited existing question.
 								var existInQB;
 								var activeTest = SharedTabService.tests[SharedTabService.currentTabIndex];
+								  var qstnCopy ;
 								$.each( editedMigratedQuestions, function( key, value ) {	
 									existInQB=false;
 											 for (var i = 0; i < $scope.selectedNodes.length; i++) {												 
 											        if (value === $scope.selectedNodes[i].guid) {	                                                   
-                                                        var qstnCopy = angular.copy($scope.selectedNodes[i]);
-											        	removeNodeInquestionFolderNodeArray(qstnCopy);
+                                                         qstnCopy = angular.copy($scope.selectedNodes[i]);
+                                                        if(qstnCopy.questionHierarchy){
+                        									updateHigherParentNodesStatus(qstnCopy);
+                        								}else if(qstnCopy.parentId){
+                        									updateHigherParentNodesStatusByID(qstnCopy.parentId);
+                        								}else{
+                        									updateParentNodeStatusBySelectedNodeArray(qstnCopy.guid);
+                        								}
 											        	$scope.removeNodeFromSelectedNodes(qstnCopy);	
 											        	existInQB = true;
 											            return true;
@@ -3021,8 +3047,9 @@ angular
 												 updateTestquestionFolderNode(value,activeTest);
 											 }
 											
-								});						
+								});	
 								
+								updateTestEditedQuestionFolderNodeStatus(editedQuestions);	
 								
 								if (isEditMode) {
 								    if (createdTab.isSaveAndClose) {
