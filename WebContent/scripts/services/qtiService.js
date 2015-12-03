@@ -169,8 +169,9 @@ angular.module('evalu8Demo')
 
 			var getEssayRecommendedAnswer = function(xml) {	
 				var recommendedAnswer = "";
-				if($(xml).find('responseDeclaration').find('correctResponse value').length > 0)
-					recommendedAnswer =  getSerializedXML($(xml).find('responseDeclaration').find('correctResponse value'));
+				 $(xml).find('responseDeclaration').each(function(i, e){
+	                    recommendedAnswer = this.textContent;                
+	              });
 				var element = $('<div></div>');
 				$(element).append(recommendedAnswer);			
 				return $(element)[0].textContent;
@@ -616,7 +617,7 @@ angular.module('evalu8Demo')
 				case 'Essay':						
 
 					$(xml).find('itemBody').find("extendedTextInteraction").eq(0).attr("expectedLines",node.qtiModel.EssayPageSize);
-					$(xml).find('responseDeclaration').find('correctResponse').find('value').html("<![CDATA[" + node.qtiModel.RecommendedAnswer + "]]>");
+					QTI.appendNodes($(xml).find('responseDeclaration').find('correctResponse').find('value').eq(0),"<![CDATA[" + node.qtiModel.RecommendedAnswer + "]]>");
 					break;
 
 				case 'Matching':			
