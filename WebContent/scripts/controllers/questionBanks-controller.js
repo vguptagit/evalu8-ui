@@ -262,7 +262,9 @@ angular
 											}
 											userbooks.forEach(function(books) {
 												books.isCollapsed=true;
-												books.nodeType = "book";
+												if(books.nodeType!="empty"){
+													books.nodeType = "book";	
+												}
 											});
 											discipline["nodes"] = userbooks;
 											if(userDisciplineLength==userDisciplines.length){
