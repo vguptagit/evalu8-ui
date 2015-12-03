@@ -5,23 +5,7 @@ angular.module('e8Login')
 .factory('AuthenticationService',
 		['$http', '$rootScope', '$timeout',
 		 function ($http, $rootScope, $timeout) {
-			var service = {};
-
-			service.Login = function (username, password, callback) {
-				
-				var credentials = {'userName': username, 'password': password};
-				
-				$http.post(evalu8config.apiUrl + '/auth', credentials)
-				.success(function (response) {
-					
-					var response = { 'success': true, 'token' : response.token, 'loginCount': response.loginCount };
-					callback(response);
-				})
-				.error(function(data, status) {
-					var response = { 'success': false, 'message' : data };
-					callback(response);
-				})
-			};			
+			var service = {};			
 
 			service.SetCredentials = function (authToken, loginCount, givenName, familyName, emailAddress) {
 
