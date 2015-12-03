@@ -303,7 +303,7 @@ div.resource {
 }
 */
 .createNewNode {
-	width: 97%;
+	width: 100%;
 	text-align: left;
 	font-family: Helvetica Neue Light;
 	font-weight: bold;
@@ -315,6 +315,17 @@ div.resource {
 	height: 40px;
 	border-bottom: 1px solid #fff;
 	z-index: 1000;
+}
+.emptyYourTestsMsgDiv {
+	width: 100%;
+	text-align: left;
+	font-family: Helvetica Neue Light;
+	white-space: normal;
+	background-color: #F8f8f8;
+	font-size: 14px;
+	position: relative;
+	cursor: default;
+	z-index: 500;
 }
 
 .treeDiv {
@@ -3404,7 +3415,7 @@ a#testwizard {
 .addFolderActionsDiv{
     padding: 4px 4px 0px 0px; 
     position: absolute;
-    right: 15px;
+    right: 30px;
 }
 .addFolderActionsDiv button{
     margin-right: 1px;

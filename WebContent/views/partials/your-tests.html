@@ -13,14 +13,23 @@
 
                     <input type="text" data-ng-model="folderName" id="txtFolderName"  
                            ng-disabled=" isaddfolderclicked" class="form-control"
-                           placeholder="Untitled Folder " ng-enter="addNewFolder(true)" />
+                           placeholder="Untitled Folder " ng-enter="addNewFolder()" />
                 </div>
                 <div class="addFolderActionsDiv">
-                    <button class="folderArchiveIcon fa fa-check" data-ng-click="addNewFolder(true);  " ng-class="{disabledColor: !folderName || folderName.length == 0}" data-ng-disabled="!folderName || folderName.length == 0" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Save changes" />
+                    <button class="folderArchiveIcon fa fa-check" data-ng-click="addNewFolder();  " ng-class="{disabledColor: !folderName || folderName.length == 0}" data-ng-disabled="!folderName || folderName.length == 0" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Save changes" />
                     <button class="folderArchiveIcon fa fa-times" data-ng-click="showAddFolderPanel= !showAddFolderPanel; folderName=''" tooltip-placement="bottom" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Cancel" />
 
                 </div>
             </div>
+
+            <div class="emptyYourTestsMsgDiv" ng-show="defaultFolders.length == 0">
+       			<div style='padding:15px 15px 3px 15px'>
+   					<p><span class='glyphicon glyphicon-info-sign'></span>&nbsp;&nbsp;<b>No Saved Tests</b></p>
+       				<p>You haven't saved any tests yet.</p>
+       				<p>Tests are saved here when you import a test or after you create and save a test.</p>
+       				<p><b>To create a test</b>, use the Question Banks or Custom Questions tabs or choose the Test Wizard button.</p>         			
+       			</div>
+       		</div>
 
         </div>
         <div data-ui-tree id="MyTest-tree-root" class="myTest_scrollbar">
