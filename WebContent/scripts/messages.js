@@ -48,7 +48,8 @@
 	ns.validation = {
 		duplicateTestTitle : "A test already exists with this name.",
 		duplicateFolderTitle : "A folder already exists with this name. Please save with another name.",
-		duplicateTestPackage : "A test already exists with this name. Please move the existing test to folder."
+		duplicateTestPackage : "A test already exists with this name. Please move the existing test to folder.",
+		duplicateTestTitleRestoreFolder : "Test(s) already exists with the same name in the folder."
 	};
 	
 	ns.warning = {	

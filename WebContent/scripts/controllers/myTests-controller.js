@@ -963,7 +963,7 @@ angular.module('e8MyTests')
         			$rootScope.blockLeftPanel.stop();
         			
     	            $scope.IsConfirmation = false;
-    	            $scope.message = e8msg.validation.duplicateFolderTitle;
+    	            $scope.message = e8msg.validation.duplicateTestTitleRestoreFolder;
     	            $modal.open(confirmObject);        		
             		return;
         		}
