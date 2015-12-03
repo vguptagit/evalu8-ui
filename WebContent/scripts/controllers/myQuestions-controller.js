@@ -1218,9 +1218,7 @@ angular.module('e8MyTests')
             });
         }
 
-        $scope.addNewFolder = function (enterKey) {
-        	
-        	$scope.enterKey = enterKey;
+        $scope.addNewFolder = function () {        	
         	
         	if($scope.folderName == null || $scope.folderName.trim().length==0) { return; }
         	
@@ -1281,8 +1279,7 @@ angular.module('e8MyTests')
                 $scope.showAddFolderPanel = false;
             });
             
-            $("#MyTest-tree-root")[0].scrollTop = 0;
-            $("#txtFolderName").blur(); 
+            $("#MyTest-tree-root")[0].scrollTop = 0; 
 
         }                
 		

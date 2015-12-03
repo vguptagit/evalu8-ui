@@ -83,6 +83,7 @@ angular.module('e8MyTests')
 	                    		}
 	                    	});                		
 	                	}
+	                	
 	                	$rootScope.blockLeftPanel.stop();
 	                });
 	                
@@ -1218,9 +1219,7 @@ angular.module('e8MyTests')
             });
           }
         
-        $scope.addNewFolder = function (enterKey) {
-        	
-        	$scope.enterKey = enterKey;
+        $scope.addNewFolder = function () {        	
         	
         	if($scope.folderName == null || $scope.folderName.trim().length==0) { return; }
         	
@@ -1271,7 +1270,6 @@ angular.module('e8MyTests')
     	            $modal.open(confirmObject);        		
             		return;
         		}
-            	// $scope.loadTree();
             	
             	userFolder.nodeType = "folder";
             	$scope.defaultFolders.unshift(userFolder);
@@ -1285,10 +1283,10 @@ angular.module('e8MyTests')
                 $scope.showAddFolderPanel = false;
             });
             
-            $("#MyTest-tree-root")[0].scrollTop = 0;
-            $("#txtFolderName").blur(); 
+            $("#MyTest-tree-root")[0].scrollTop = 0; 
 
         }
+        
       // evalu8-ui : to set Active Resources Tab , handled in
 		// ResourcesTabsController
         $rootScope.$broadcast('handleBroadcast_setActiveResourcesTab', EnumService.RESOURCES_TABS.yourtests);
