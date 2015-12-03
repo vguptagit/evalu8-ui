@@ -1582,7 +1582,8 @@ angular
     										testResult.modified = (new Date()).toJSON();
     										
     										$scope.render(metadatas);
-    								        $scope.isApplySameCriteriaToAll = false;
+    										$scope.isApplySameCriteriaToAll = false;
+    										SharedTabService.addMasterTest(test);
     									});
     									
     									
