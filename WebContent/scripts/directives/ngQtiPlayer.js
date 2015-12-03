@@ -243,7 +243,7 @@ angular.module('e8MyTests')
 									CommonService.showErrorMessage(e8msg.error.cantUploadImage)
 									return;
 							}
-							var html = "<u contenteditable='false' url='"	+ data	+ "'><i>"+ file.name+ "</i></u>&nbsp;";
+							var html = "<u contenteditable='false' url='"	+ data	+ "'><i>"+ file.name+ "</i></u>&nbsp;&nbsp;";
 						
 							$scope.imagePanelLoaded = false;
 
@@ -310,7 +310,7 @@ angular.module('e8MyTests')
 
 						var hasImage = (editor.getData().indexOf('<u'));
 						if(hasImage!= -1){
-							var endIndex = (editor.getData().indexOf('</u>&nbsp;'));
+							var endIndex = (editor.getData().indexOf('</u>&nbsp;&nbsp;'));
 							var prevImg = '';
 							if(endIndex!= -1){
 								prevImg = editor.getData().substring((editor.getData().indexOf('<u')),((editor.getData().indexOf('</u>'))+10));	
