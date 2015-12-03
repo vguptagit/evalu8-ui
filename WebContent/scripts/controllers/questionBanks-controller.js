@@ -2987,7 +2987,7 @@ angular
 									 isExist = false;
 								    	for (var j = 0; j < activeTest.questionFolderNode[i].questionBindings.length; j++) {
 								    		if(activeTest.questionFolderNode[i].questionBindings[j] == qstnGuid){									    			
-								    			 updateHigherParentNodesStatus(activeTest.questionFolderNode[i].guid);									    			
+								    			updateHigherParentNodesStatusByID(activeTest.questionFolderNode[i].guid);									    			
 								    			 activeTest.questionFolderNode.splice(i, 1);
 								    			isExist = true;
 												break;
@@ -3005,12 +3005,19 @@ angular
 								//this loop is to deselect the edited existing question.
 								var existInQB;
 								var activeTest = SharedTabService.tests[SharedTabService.currentTabIndex];
+								  var qstnCopy ;
 								$.each( editedMigratedQuestions, function( key, value ) {	
 									existInQB=false;
 											 for (var i = 0; i < $scope.selectedNodes.length; i++) {												 
 											        if (value === $scope.selectedNodes[i].guid) {	                                                   
-                                                        var qstnCopy = angular.copy($scope.selectedNodes[i]);
-											        	removeNodeInquestionFolderNodeArray(qstnCopy);
+                                                         qstnCopy = angular.copy($scope.selectedNodes[i]);
+                                                        if(qstnCopy.questionHierarchy){
+                        									updateHigherParentNodesStatus(qstnCopy);
+                        								}else if(qstnCopy.parentId){
+                        									updateHigherParentNodesStatusByID(qstnCopy.parentId);
+                        								}else{
+                        									updateParentNodeStatusBySelectedNodeArray(qstnCopy.guid);
+                        								}
 											        	$scope.removeNodeFromSelectedNodes(qstnCopy);	
 											        	existInQB = true;
 											            return true;
