@@ -1816,7 +1816,8 @@ angular
 								}	
 								
 								var htmlText = qstnMasterDataModel.Caption.trim().replace(/&nbsp;/, " ");
-								qstnMasterDataModel.Caption = htmlText;
+								var optionText = QtiService.decodingEncodeChar(htmlText);
+								qstnMasterDataModel.Caption = optionText ;
 
 								var questionMetadata = angular.copy(node.questionMetadata);
 								qstnMasterDataModel.questionMetadata = questionMetadata;										
@@ -1865,7 +1866,10 @@ angular
 								var closePTagLength = 4;
 								if(qstnModifiedData.Caption.startsWith('<p>')){
 									qstnModifiedData.Caption = qstnModifiedData.Caption.substring(openPTagLength, qstnModifiedData.Caption.length-closePTagLength);
-								}			
+								}
+								var optionText = QtiService.decodingEncodeChar(qstnModifiedData.Caption);
+								qstnModifiedData.Caption = optionText;
+								
 								qstnModifiedData.questionMetadata = node.questionMetadata;		
 
 								switch (node.quizType) {
