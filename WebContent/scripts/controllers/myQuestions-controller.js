@@ -907,6 +907,7 @@ angular.module('e8MyTests')
 				if (currentNode.showTestWizardIcon) {
 					
 					if (currentNode.nodeType === EnumService.NODE_TYPE.question) {
+                        $scope.createTestWizardMode=false;
 						continue;
 					}
 					 
