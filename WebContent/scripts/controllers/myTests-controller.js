@@ -15,6 +15,7 @@ angular.module('e8MyTests')
         $scope.isTestDeleteClicked=false;
         $scope.isFolderDeleteClicked=false;
         $scope.dragStarted = false;
+        $scope.showEmptyYourTestsMsgDiv = false;
         
         $scope.loadTree = function() {        	
         	
@@ -78,6 +79,10 @@ angular.module('e8MyTests')
 	                            			
 	                                		$scope.defaultFolders.push(CommonService.getArchiveRoot());	                            			                    			
 	                            		}
+	                                	
+	                                	if($scope.defaultFolders.length == 0) {
+                                            $scope.showEmptyYourTestsMsgDiv = true;
+                                        }
 	                                });
 	                                
 	                    		}
