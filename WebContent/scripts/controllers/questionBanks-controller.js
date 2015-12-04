@@ -2328,8 +2328,15 @@ angular
 							}
 							
 							//to set the status of the hierarchical parent node in question bank tab,if the question node deleted in test frame.
-							var updateHigherParentNodesStatus=function(deselectedNode){		
-								
+							var updateHigherParentNodesStatus=function(deselectedNode){	
+								var topMostParentNodeId = deselectedNode.questionHierarchy[deselectedNode.questionHierarchy.length-1];
+								var topMostNodeParentId ="";
+								for (var i = 0; i < $scope.selectedNodes.length; i++) {
+									if ($scope.selectedNodes[i].guid == topMostParentNodeId) {
+										topMostNodeParentId = $scope.selectedNodes[i].parentId;
+										break;
+									}
+								}
 								deselectedNode.questionHierarchy.forEach(function(parentId) {	
 									for (var j = 0; j < $scope.selectedNodes.length; j++) {
 										if ($scope.selectedNodes[j].guid == parentId) {
@@ -2342,6 +2349,11 @@ angular
 										}
 									}										
 								});		
+								
+								if(topMostNodeParentId != undefined || topMostNodeParentId !=""){
+									updateHigherParentNodesStatusByID(topMostNodeParentId);
+								}
+								
 								
 							}
 							
