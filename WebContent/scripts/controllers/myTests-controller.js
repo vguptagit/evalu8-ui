@@ -15,7 +15,6 @@ angular.module('e8MyTests')
         $scope.isTestDeleteClicked=false;
         $scope.isFolderDeleteClicked=false;
         $scope.dragStarted = false;
-        $scope.showEmptyYourTestsMsgDiv = false;
         
         $scope.loadTree = function() {        	
         	
@@ -30,17 +29,17 @@ angular.module('e8MyTests')
             			CommonService.showErrorMessage(e8msg.error.cantFetchRootFolder)
             			return;
             		}
-            		$scope.myTestRoot = myTestRoot;
-            	            	
-	                $scope.defaultFolders = defaultFolders;
+            		$scope.myTestRoot = myTestRoot;            	            		                
 	                
 	                $rootScope.blockLeftPanel.start();
+	                
 	                TestService.getTests($scope.myTestRoot.guid, function(tests){
 	                	if(tests==null){
 	                		$rootScope.blockLeftPanel.stop();
 	                		CommonService.showErrorMessage(e8msg.error.cantFetchTests)
 	            			return;
 	                	}
+	                	var testNodes = [];
 	                	tests.forEach(function(test) {
 	                		
 	                    	if(SharedTabService.tests) {
@@ -53,9 +52,13 @@ angular.module('e8MyTests')
 	                        		}
 	                        	});
 	                    	}
-	                		$scope.defaultFolders.push(test);	
+	                		testNodes.push(test);	
 	                	});
 	                	
+	                	$scope.defaultFolders = defaultFolders;
+	                	if(testNodes.length) {
+	                		$scope.defaultFolders.push(testNodes);
+	                	}
 	                	if($scope.defaultFolders.length) {
 	                		$scope.defaultFolders.push(CommonService.getArchiveRoot());
 	                	} else {
@@ -80,9 +83,6 @@ angular.module('e8MyTests')
 	                                		$scope.defaultFolders.push(CommonService.getArchiveRoot());	                            			                    			
 	                            		}
 	                                	
-	                                	if($scope.defaultFolders.length == 0) {
-                                            $scope.showEmptyYourTestsMsgDiv = true;
-                                        }
 	                                });
 	                                
 	                    		}
@@ -1281,7 +1281,6 @@ angular.module('e8MyTests')
                 
             	if($scope.defaultFolders.length == 1) {
             		$scope.defaultFolders.push(CommonService.getArchiveRoot());
-            		$scope.showEmptyYourTestsMsgDiv=false;
             	}
             	
                 $scope.folderName = "";
@@ -1428,8 +1427,7 @@ angular.module('e8MyTests')
             	if($scope.defaultFolders.length == 1) {
             		$scope.defaultFolders.push(CommonService.getArchiveRoot());
             	}
-            });
-            $scope.showEmptyYourTestsMsgDiv=false;            
+            });            
         });
         // #endregion
         $scope.$on('handleBroadcast_CreateVersion', function (handler, test, newTest) {
