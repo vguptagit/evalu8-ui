@@ -1281,6 +1281,7 @@ angular.module('e8MyTests')
                 
             	if($scope.defaultFolders.length == 1) {
             		$scope.defaultFolders.push(CommonService.getArchiveRoot());
+            		$scope.showEmptyYourTestsMsgDiv=false;
             	}
             	
                 $scope.folderName = "";
@@ -1428,6 +1429,7 @@ angular.module('e8MyTests')
             		$scope.defaultFolders.push(CommonService.getArchiveRoot());
             	}
             });
+            $scope.showEmptyYourTestsMsgDiv=false;            
         });
         // #endregion
         $scope.$on('handleBroadcast_CreateVersion', function (handler, test, newTest) {
