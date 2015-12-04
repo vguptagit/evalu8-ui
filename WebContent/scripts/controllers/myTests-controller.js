@@ -18,11 +18,15 @@ angular.module('e8MyTests')
         
         $scope.loadTree = function() {        	
         	
+        	$scope.defaultFolders = null;
+        	
         	UserFolderService.defaultFolders(function (rootLevelFolders) {
         		if(rootLevelFolders==null){
         			CommonService.showErrorMessage(e8msg.error.cantFetchFolders)
         			return;
         		}
+        		
+        		var allNodes = rootLevelFolders;
         		
             	UserFolderService.testRootFolder(function(myTestRoot){
             		if(myTestRoot==null){
@@ -39,7 +43,7 @@ angular.module('e8MyTests')
 	                		CommonService.showErrorMessage(e8msg.error.cantFetchTests)
 	            			return;
 	                	}
-	                	var testNodes = [];
+
 	                	tests.forEach(function(test) {
 	                		
 	                    	if(SharedTabService.tests) {
@@ -52,15 +56,11 @@ angular.module('e8MyTests')
 	                        		}
 	                        	});
 	                    	}
-	                		testNodes.push(test);	
+	                    	allNodes.push(test);	
 	                	});
 	                	
-	                	$scope.defaultFolders = rootLevelFolders;
-	                	testNodes.forEach(function(test) {
-	                		$scope.defaultFolders.push(test);
-	                	});
-	                	
-	                	if($scope.defaultFolders.length) {
+	                	if(allNodes.length) {
+	                		$scope.defaultFolders = allNodes;
 	                		$scope.defaultFolders.push(CommonService.getArchiveRoot());
 	                	} else {
 	                    	ArchiveService.getArchiveFolders(null, function (userFolders) {
@@ -69,8 +69,9 @@ angular.module('e8MyTests')
 			                  		 CommonService.showErrorMessage(e8msg.error.cantFetchArchiveFolders);
 			                  		 return;
 			                  	}
-	                    		if(userFolders.length && !(userFolders.length==1 && userFolders[0].nodeType=='empty')) {
-	                				$scope.defaultFolders.push(CommonService.getArchiveRoot());	                    			                			
+	                    		if(userFolders.length) {
+	                    			$scope.defaultFolders = []
+	                    			$scope.defaultFolders.push(CommonService.getArchiveRoot());	                    			                			
 	                    		} else {
 	                    			
 	                                TestService.getArchiveTests(null, function (tests) {
@@ -79,13 +80,13 @@ angular.module('e8MyTests')
 	                                		 CommonService.showErrorMessage(e8msg.error.cantFetchArchiveTests);
 	                                		return;
 	                                	}
-	                                	if(tests.length) {
-	                            			
+	                                	if(tests.length) { 
+	                                		$scope.defaultFolders = []
 	                                		$scope.defaultFolders.push(CommonService.getArchiveRoot());	                            			                    			
-	                            		}
-	                                	
-	                                });
-	                                
+	                            		} else {
+	                            			$scope.defaultFolders = [];
+	                            		}	                                	
+	                                });	                                
 	                    		}
 	                    	});                		
 	                	}
