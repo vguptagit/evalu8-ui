@@ -18,8 +18,8 @@ angular.module('e8MyTests')
         
         $scope.loadTree = function() {        	
         	
-        	UserFolderService.defaultFolders(function (defaultFolders) {
-        		if(defaultFolders==null){
+        	UserFolderService.defaultFolders(function (rootLevelFolders) {
+        		if(rootLevelFolders==null){
         			CommonService.showErrorMessage(e8msg.error.cantFetchFolders)
         			return;
         		}
@@ -55,10 +55,11 @@ angular.module('e8MyTests')
 	                		testNodes.push(test);	
 	                	});
 	                	
-	                	$scope.defaultFolders = defaultFolders;
-	                	if(testNodes.length) {
-	                		$scope.defaultFolders.push(testNodes);
-	                	}
+	                	$scope.defaultFolders = rootLevelFolders;
+	                	testNodes.forEach(function(test) {
+	                		$scope.defaultFolders.push(test);
+	                	});
+	                	
 	                	if($scope.defaultFolders.length) {
 	                		$scope.defaultFolders.push(CommonService.getArchiveRoot());
 	                	} else {
