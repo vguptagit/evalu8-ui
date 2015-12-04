@@ -683,30 +683,67 @@ angular
 								item.showTestWizardIcon = true;													
 							}
 							
+							//to set the default status of a node,if the node is not in test frame.
+							var resetNodeStatus=function(item){								
+								item.existInTestframe=false;
+								item.isNodeSelected = false;
+								item.showEditQuestionIcon = false;
+								item.showTestWizardIcon = false;													
+							}
+							
+							//to update the parent node status to the child nodes.
+							var updateParentNodeStatusToChildNode=function(item,parentNode){								
+								item.isNodeSelected = parentNode.isNodeSelected;
+								item.showEditQuestionIcon = parentNode.showEditQuestionIcon;
+								item.showTestWizardIcon = parentNode.showTestWizardIcon;
+								item.existInTestframe = parentNode.existInTestframe;														
+							}
+							
+							
 							//to change the status of the topic/chapter question node, when we expand a chapter/topic.
 							var setNodeStatus=function(item,currentNode){								
+								var activeTest = SharedTabService.tests[SharedTabService.currentTabIndex];
 								
 								//change the status of node, if parent node is selected.
-								if(currentNode.node.isNodeSelected){
-									item.isNodeSelected = currentNode.node.isNodeSelected;
-									item.showEditQuestionIcon = currentNode.node.showEditQuestionIcon;
-									item.showTestWizardIcon = currentNode.node.showTestWizardIcon;
-									item.existInTestframe = currentNode.node.existInTestframe;
-								}
+								if(currentNode.node.isNodeSelected){								
+										//change the status of node, if node is present in test frame.
+										if($scope.isNodeInTestFrame(currentNode.node)){
+											var allchildNotInTestFrame=false;											
+											currentNode.node.nodes.forEach(function(node) {
+												if(!$scope.isNodeInTestFrame(node)){
+													allchildNotInTestFrame = true;
+													return;
+												}
+											});
+
+											if(allchildNotInTestFrame){
+												resetNodeStatus(currentNode.node);	
+												resetNodeStatus(item);	
+												removeNodeByID(activeTest.questionFolderNode,currentNode.node.guid);	
+											}else{												
+												updateParentNodeStatusToChildNode(item,currentNode.node);									
+											}																				
+										}else{
+											updateParentNodeStatusToChildNode(item,currentNode.node);
+										}
+
+									}
+								
+							
 								
 								item.parentId = currentNode.node.guid;
-								var test = SharedTabService.tests[SharedTabService.currentTabIndex];
+								
 								//change the status of node, if node is present in test frame.
 								if($scope.isNodeInTestFrame(item)){
 									setTestNodeStatus(item);												
 								}else if(isAllTopicQuestionsInTestFrame(item)){
 									setTestNodeStatus(item);	
-									$scope.addingNodeInQuestionFolderNodeArray(item,test);
+									$scope.addingNodeInQuestionFolderNodeArray(item,activeTest);
 								}
 								
 								 
 								//change the status of node, if node is present in wizard frame.
-								if($scope.isNodeUsedForWizard(item, test)){
+								if($scope.isNodeUsedForWizard(item, activeTest)){
 									item.isNodeSelected = true;
 									item.showEditQuestionIcon = true;
 									item.showTestWizardIcon = false;
@@ -736,7 +773,7 @@ angular
 								//change the status of node, if node is present in test frame.
 								if($scope.isNodeInTestFrame(item)){
 									setTestNodeStatus(item);												
-								}
+								}						
 								
 								var test = SharedTabService.tests[SharedTabService.currentTabIndex]; 
 								//change the status of node, if node is present in wizard frame.
