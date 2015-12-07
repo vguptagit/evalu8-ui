@@ -49,6 +49,7 @@ angular.module('e8MyTests')
 		     
 		     $scope.loadTestIframe =  function(){
 		    	 parentScope.tests[parentScope.currentIndex].isBtnClicked = false;
+		    	 setTimeout(function(){
 		         var elementToPrint=$('.testPreviewContainer').clone();
 		         $(elementToPrint).find(".printViewLinks").remove();
 		         $(elementToPrint).find("#Essay").empty();	
@@ -72,12 +73,11 @@ angular.module('e8MyTests')
 		         if(!$scope.isIncludeStudentName)
 		        	 $(elementToPrint).find("#includeStudentName").remove();
 		         $(elementToPrint).print();
+		    	 }, 200);
 		     }
 		     
 		     $scope.$watch('$viewContentLoaded', function(event) {
-		    	 setTimeout(function(){
 		    		 $scope.loadTestIframe();
-		    	 }, 1000);
 		     });
 		     
 		     $scope.answerAreaChange = function () {

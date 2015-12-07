@@ -302,6 +302,7 @@ angular
 										"Difficulty":[]
 									};
 								$scope.setUserMetadata();
+								$("#tree-root").removeClass("qb_top230")
 							})
 
 							$scope.testTitle = "New Test";							                           							
@@ -2755,6 +2756,7 @@ angular
 							
 							$scope.showHideSearchCriteria =function(){
 								if($scope.isAdvancedSearchMode == true || $scope.isSearchMode == true){
+									$("#tree-root").addClass("qb_top230");
 									return true;
 								} else{
 									false;
@@ -2980,6 +2982,7 @@ angular
 								$scope.metadataValues={
 									"Difficulty":[]
 								};
+								$("#tree-root").removeClass("qb_top230")
 							}							
 							
 							
@@ -3233,7 +3236,7 @@ angular
 							}
 							
 							$scope.enableDisableSearch = function(obj){
-								if(searchedQuestionTypes.length>0 || $scope.selectedQuestionTypes.length > 0 || $scope.getMetadataSearchCriteria().length > 0){
+								if($scope.selectedQuestionTypes.length > 0 || $scope.getMetadataSearchCriteria().length > 0){
 									$scope.isSaveDisabled=false;
 								}else{
 									$scope.isSaveDisabled=true;
