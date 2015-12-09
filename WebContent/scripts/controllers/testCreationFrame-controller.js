@@ -198,7 +198,7 @@ angular
 					        
 					        var checkTestQuestionsInEditModeWithChanges = function(tab){
 					        	angular.forEach(tab.questions,function(question,index){
-					        		if(question["IsEditView"] == true){
+					        		if(question["IsEditView"] == true && question["qstnTemplate"] != true){
 					        			question.IsEdited =  $scope.IsQuestionModified(question);
 					        			return;
 					        		}
@@ -1016,7 +1016,6 @@ angular
     										testResult.modified = (new Date()).toJSON();
     										$rootScope.$broadcast('handleBroadcast_AddNewTest', testResult, $scope.containerFolder, isEditMode, oldGuid, $scope.editedQuestions, $scope.editedMigratedQuestions, test, $scope);
     										$scope.containerFolder = null; //clear selected folder in save as dialog popup.
-                                             
     										
 
     										if (callback) {
