@@ -55,6 +55,9 @@ angular.module('e8Login')
 					})
 					.error(function(data, status) {
 
+						if(console) {
+							console.error("Failed on Access Token Refresh")
+						}
 					})						
                 }
 			};	
