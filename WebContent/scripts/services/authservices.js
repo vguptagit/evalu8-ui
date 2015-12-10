@@ -3,8 +3,8 @@
 angular.module('e8Login')
 
 .factory('AuthenticationService',
-		['$http', '$rootScope', '$timeout',
-		 function ($http, $rootScope, $timeout) {
+		['$http', '$rootScope', '$timeout', 'HttpService',
+		 function ($http, $rootScope, $timeout, HttpService) {
 			var service = {};			
 
 			service.SetCredentials = function (authToken, loginCount, givenName, familyName, emailAddress) {
@@ -39,8 +39,23 @@ angular.module('e8Login')
 
 			service.onRefresh = function(event) {
 				if($rootScope.globals) {
-                    $rootScope.globals.authToken = event.data;
-                    sessionStorage.setItem('globals', JSON.stringify($rootScope.globals));
+					
+					var piconfig = {
+							headers : {
+								'AccessToken' : event.data,
+								'Accept' : 'application/json;odata=verbose'
+							}
+						};
+					
+					HttpService.head(evalu8config.apiUrl + '/login', piconfig, true)
+					.success(function(data, status, headers) { 
+
+	                    $rootScope.globals.authToken = headers("x-authorization");
+	                    sessionStorage.setItem('globals', JSON.stringify($rootScope.globals));
+					})
+					.error(function(data, status) {
+
+					})						
                 }
 			};	
 			

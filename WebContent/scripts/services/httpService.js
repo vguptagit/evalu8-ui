@@ -24,8 +24,15 @@ angular.module('evalu8Demo')
 		return $http.get(url, config);
 	}
 	
-	this.head = function(url, methodConfig){
-		var config = $.extend({}, this.getConfig(), methodConfig);
+	this.head = function(url, methodConfig, skipAuth){
+		
+		var config;
+		if(skipAuth) {
+			config = $.extend({}, methodConfig);	
+		} else {
+			config = $.extend({}, this.getConfig(), methodConfig);
+		}
+		
 		return $http.head(url, config);
 	}
 	
