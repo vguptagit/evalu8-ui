@@ -1490,6 +1490,13 @@ angular.module('e8MyTests')
 				unselectEditedQuestions();	
 			}
 			
+			 if (createdTab.isSaveAndClose) {
+			        SharedTabService.closeTab(createdTab, testCreationFrameScope);
+			        SharedTabService.removeMasterTest(createdTab);
+			 } else {
+			        SharedTabService.removeMasterTest(createdTab);
+			        SharedTabService.addMasterTest(createdTab);
+			 }
 		});
 		
 		var unselectEditedQuestions=function(){
@@ -1519,16 +1526,4 @@ angular.module('e8MyTests')
 			});
 		}
 		
-     $scope.$on('handleBroadcast_AddNewTest', function (handler, newTest, containerFolder, isEditMode, oldGuid, editedQuestions, editedMigratedQuestions, createdTab, testCreationFrameScope) {
-			if (isEditMode) {
-			    if (createdTab.isSaveAndClose) {
-			        SharedTabService.closeTab(createdTab, testCreationFrameScope);
-			        SharedTabService.removeMasterTest(createdTab);
-			    } else {
-			        SharedTabService.removeMasterTest(createdTab);
-			        SharedTabService.addMasterTest(createdTab);
-			    }
-		        return false;
-		    }
-		});
     }]);
