@@ -2154,6 +2154,7 @@ angular
 														}
 														for (var k = 0; k < tab.criterias.length; k++) {
 															if($scope.expandedNodes[i].guid == tab.criterias[k].folderId){
+																var criteriaParentId = tab.criterias[k].treeNode.parentId
 																$scope.expandedNodes[i].isNodeSelected=true;
 																$scope.expandedNodes[i].showTestWizardIcon=false;
 																$scope.expandedNodes[i].showEditQuestionIcon=true;
@@ -2161,6 +2162,7 @@ angular
 																if($scope.expandedNodes[i].nodes) {
 																$scope.updateStatusForWizardChildNodes($scope.expandedNodes[i].nodes);	
 																}
+																$scope.updateStatusofCriteriaParent(criteriaParentId);
 															}
 														}
 													}
@@ -2200,6 +2202,31 @@ angular
 												}
 											});
 							
+							$scope.updateStatusofCriteriaParent = function(parentId){
+								var activeTest = SharedTabService.tests[SharedTabService.currentTabIndex];
+								for (var i = 0; i < $scope.expandedNodes.length; i++) {
+									if ($scope.expandedNodes[i].guid == parentId) {	
+										if($scope.isAllChildrenInWizardFrame($scope.expandedNodes[i] , activeTest)){
+											$scope.selectedNodes.push($scope.expandedNodes[i]);
+											$scope.expandedNodes[i].isNodeSelected = true;
+											$scope.expandedNodes[i].showEditQuestionIcon = true;
+											$scope.expandedNodes[i].showTestWizardIcon = false;
+										}
+									}
+								}
+							}
+							
+							$scope.isAllChildrenInWizardFrame = function(criteriaParentNode,test) {
+								var allChildrenNotExistInWizardFrame=false;
+								criteriaParentNode.nodes.forEach(function(node) {										
+									if(!$scope.isNodeUsedForWizard(node, test)){
+										allChildrenNotExistInWizardFrame = true;
+										return;
+									} 																	
+								});	
+
+								return !allChildrenNotExistInWizardFrame;																
+							}
 							$scope.deselectQuestionNode = function (node) {							 
 									for (var i = 0; i < $scope.selectedNodes.length; i++) {
 										if ($scope.selectedNodes[i].guid == node.guid) {	
@@ -2883,6 +2910,7 @@ angular
 											}
 											if(emptyBooks == $scope.selectedBooks.length){
 												$rootScope.blockPage.stop();
+												$scope.clearAdvancedSearch();
 												$scope.IsConfirmation = false;
 												$scope.message = "No search results match your criteria, broaden your criteria, or select more question banks to search";
 												$modal.open(confirmObject);

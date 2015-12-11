@@ -725,11 +725,6 @@ angular
 													
 															// $scope.tree2.push(displayNode);
 															SharedTabService.tests[currentIndex].questions.push(displayNode);
-															for (var i = 0; i < SharedTabService.masterTests.length; i++) {
-															    if (SharedTabService.masterTests[i].id === SharedTabService.tests[currentIndex].id) {
-															        SharedTabService.masterTests[i].masterQuestions.push(angular.copy(displayNode));// is to check for dirty.
-															    }
-															}
 															if (qBindings.length > 0) {
 																$scope.renderQuestions(
 																		qBindings,
