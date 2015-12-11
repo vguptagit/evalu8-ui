@@ -8,14 +8,16 @@
 
 <div >
 	<div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);" ng-class="{signInBorder:unauthorised}">
-		<h3 ng-show="!unauthorised">Signing in...</h3>
+		<h3 ng-show="!unauthorised">Signing in...</h3>		
 		
 		<div ng-show="unauthorised" style="font-size:16px">
-			<div>Your instructor credentials are being validated. Once you
-					receive an email from Pearson, please return to Test Builder and
-					log in again.</div>
+			<div>Your instructor credentials are created. 
+			<a href="http://qa02.us.ls.wcm.svvsbak.pearsontc.net/pearsonhigheredus/ircrequestaccess/irc_countries_selection.page?productCode=test_builder">Click here </a> to verify your Educator status as part of your new account creation. 
+			This may take up to 48 hours to complete.
+			Please return to Test Builder and log in again.</div>
 			<div><a href="" ng-click="logout()">Sign in using different account</a></div>
-			<div>Contact <a href="http://247pearsoned.custhelp.com/app/answers/detail/a_id/13366">helpdesk</a> if you feel something is wrong.</div>
+			<div>Contact <a href="http://247pearsoned.custhelp.com/app/answers/detail/a_id/13366">helpdesk</a>,
+			 For any questions or concerns, please contact Pearson Technical Support.</div>
 		</div>
 	</div>
 	</div>
