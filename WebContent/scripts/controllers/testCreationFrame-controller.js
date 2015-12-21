@@ -17,7 +17,7 @@ angular
 						'$modal',
 						'notify',
 						'EnumService', 'UserService', 'CommonService','blockUI','QtiService',
-						function($scope, $rootScope, $location, $cookieStore,
+						function($scope,$rootScope, $location, $cookieStore,
 								$http, $sce, TestService, SharedTabService,
 								$modal, notify, EnumService, UserService, CommonService,blockUI,QtiService) {
 
@@ -800,15 +800,6 @@ angular
 									}
 								})
 							}
-							
-							$scope.enableWizardIconForChildNodes = function(childNode){
-								childNode.nodes.forEach(function(node) {
-									node.showTestWizardIcon = true;
-									if(node.nodes){
-										$scope.enableWizardIconForChildNodes(node);
-									}
-								})
-							}
 							$scope.showSaveErrorMessage = function(){
 								var msg = e8msg.error.save;
 								var messageTemplate ='<p class="alert-danger"><span class="glyphicon glyphicon-alert"></span><span class="warnMessage">' + msg  + '</p> ';
@@ -1010,6 +1001,9 @@ angular
     										testResult.title = test.title;
     										testResult.modified = (new Date()).toJSON();
     										$rootScope.$broadcast('handleBroadcast_AddNewTest', testResult, $scope.containerFolder, isEditMode, oldGuid, $scope.editedQuestions, $scope.editedMigratedQuestions, test, $scope);
+    										if(test.isSaveAndClose){
+    											loadQuestionsToEmptyTab();
+    										}
     										$scope.containerFolder = null; //clear selected folder in save as dialog popup.
     										
 
@@ -1472,12 +1466,7 @@ angular
                                     QTI.initialize();
                                     $scope.tests[$scope.sharedTabService.currentTabIndex].isTestWizard = false;
                                     $scope.sharedTabService.isTestWizardTabPresent = false;
-                                    for (var i = 0; i < test.criterias.length; i++) {
-                                    	test.criterias[i].treeNode.showTestWizardIcon = true;
-                                    	if (test.criterias[i].treeNode.nodes){
-                                    	$scope.enableWizardIconForChildNodes(test.criterias[i].treeNode);
-                                    	}
-                                    }
+                                    $rootScope.$broadcast('handleBroadcast_previevTest', test.criterias);
                                     test.criterias=[];
                                     if (test.saveMode === EnumService.SAVE_MODE.SaveAs) {
                                         test.testId = null;
