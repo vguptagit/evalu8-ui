@@ -47,7 +47,6 @@
             <div ui-tree-handle class="tree-node tree-node-content">
 
                 <div class="treeDiv"
-                     ng-class="{treeNodeHover: hover, activeFolder: node.isNodeSelected}"
                      ng-mouseenter="treeNodeMouseEnter(this)"
                      ng-mouseleave="treeNodeMouseLeave(this)">
                     <div class="maindiv" ng-class="{folderHighlight: node.isNodeSelected}" id={{node.guid}}>

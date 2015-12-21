@@ -1488,7 +1488,9 @@ angular
 								}
                             	if (activeTest.isTestWizard) {
 									$rootScope.$broadcast('handleBroadcast_AddNewTab');
+									activeTest = SharedTabService.tests[SharedTabService.currentTabIndex];
 								}
+                            	
                             	if(!selectedScopeNode.showEditQuestionIcon)
                         		{
                             		$scope.isAnyNodeAlreadyAdded = true
@@ -2154,6 +2156,7 @@ angular
 														}
 														for (var k = 0; k < tab.criterias.length; k++) {
 															if($scope.expandedNodes[i].guid == tab.criterias[k].folderId){
+																var criteriaParentId = tab.criterias[k].treeNode.parentId
 																$scope.expandedNodes[i].isNodeSelected=true;
 																$scope.expandedNodes[i].showTestWizardIcon=false;
 																$scope.expandedNodes[i].showEditQuestionIcon=true;
@@ -2161,6 +2164,7 @@ angular
 																if($scope.expandedNodes[i].nodes) {
 																$scope.updateStatusForWizardChildNodes($scope.expandedNodes[i].nodes);	
 																}
+																$scope.updateStatusofCriteriaParent(criteriaParentId);
 															}
 														}
 													}
@@ -2200,6 +2204,31 @@ angular
 												}
 											});
 							
+							$scope.updateStatusofCriteriaParent = function(parentId){
+								var activeTest = SharedTabService.tests[SharedTabService.currentTabIndex];
+								for (var i = 0; i < $scope.expandedNodes.length; i++) {
+									if ($scope.expandedNodes[i].guid == parentId) {	
+										if($scope.isAllChildrenInWizardFrame($scope.expandedNodes[i] , activeTest)){
+											$scope.selectedNodes.push($scope.expandedNodes[i]);
+											$scope.expandedNodes[i].isNodeSelected = true;
+											$scope.expandedNodes[i].showEditQuestionIcon = true;
+											$scope.expandedNodes[i].showTestWizardIcon = false;
+										}
+									}
+								}
+							}
+							
+							$scope.isAllChildrenInWizardFrame = function(criteriaParentNode,test) {
+								var allChildrenNotExistInWizardFrame=false;
+								criteriaParentNode.nodes.forEach(function(node) {										
+									if(!$scope.isNodeUsedForWizard(node, test)){
+										allChildrenNotExistInWizardFrame = true;
+										return;
+									} 																	
+								});	
+
+								return !allChildrenNotExistInWizardFrame;																
+							}
 							$scope.deselectQuestionNode = function (node) {							 
 									for (var i = 0; i < $scope.selectedNodes.length; i++) {
 										if ($scope.selectedNodes[i].guid == node.guid) {	
@@ -2423,6 +2452,38 @@ angular
 								$scope.deselectWizarParentNode(node);
 
 							});
+							
+							$scope.enableWizardIconForChildNodes = function(childNode){
+								childNode.nodes.forEach(function(node) {
+									node.showTestWizardIcon = true;
+									if(node.nodes){
+										$scope.enableWizardIconForChildNodes(node);
+									}
+								})
+							}
+						//to change the status of wizard icon of nodes while creating a test from test wizard. 	
+							$scope.$on('handleBroadcast_previevTest',
+									function(handler, criterias) {
+								for (var i = 0; i < criterias.length; i++) {
+									criterias[i].treeNode.showTestWizardIcon = true;
+									$scope.checkForParentNodeWizardIconStatus(criterias[i].treeNode.parentId);
+									if (criterias[i].treeNode.nodes){
+										$scope.enableWizardIconForChildNodes(criterias[i].treeNode);
+									}
+								}
+							});
+							
+						//to enable wizard icon for parent node while creating a test from test wizard if all the children added to wizard frame. 	
+							$scope.checkForParentNodeWizardIconStatus = function(parentId){
+								var activeTest = SharedTabService.tests[SharedTabService.currentTabIndex];
+								for (var i = 0; i < $scope.selectedNodes.length; i++) {
+									if($scope.selectedNodes[i].guid == parentId){
+										if($scope.isAllChildrenInWizardFrame($scope.selectedNodes[i] , activeTest)){
+											$scope.selectedNodes[i].showTestWizardIcon = true;
+										}
+									}
+								}
+							}
 							// evalu8-ui : to set Active Resources Tab , handled
 							// in ResourcesTabsController
 							$rootScope.$broadcast(
@@ -2883,6 +2944,7 @@ angular
 											}
 											if(emptyBooks == $scope.selectedBooks.length){
 												$rootScope.blockPage.stop();
+												$scope.clearAdvancedSearch();
 												$scope.IsConfirmation = false;
 												$scope.message = "No search results match your criteria, broaden your criteria, or select more question banks to search";
 												$modal.open(confirmObject);

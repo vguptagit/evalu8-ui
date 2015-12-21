@@ -101,7 +101,7 @@
                                    class="form-control"
                                    placeholder="{{node.title}}" ng-enter="editFolder(this,node)" />
                            <div class="captionLabel" ng-show="!node.isEditMode" ng-mousedown="selectTestNode($event,this);">
-								<label class="labelCaption" title="{{node.title}}">{{node.title}}</label>
+								<span class="labelCaption" title="{{node.title}}">{{node.title}}</span>
 							</div>
 
                         </div>
@@ -173,7 +173,7 @@
                     </div>
                     <div class="captiondiv" ng-mousedown="selectTestNode($event,this);">                      
 						<div class="captionLabel" ng-class="{captionEmptyNode : node.nodeType == 'empty'}">
-								<label class="labelCaption" title="{{node.title}}">{{node.title}}</label>
+								<span class="labelCaption" title="{{node.title}}">{{node.title}}</span>
 						</div>
                     </div>
                     <div class="iconsCourseNode">

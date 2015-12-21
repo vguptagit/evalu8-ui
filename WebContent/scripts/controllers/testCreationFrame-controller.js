@@ -17,7 +17,7 @@ angular
 						'$modal',
 						'notify',
 						'EnumService', 'UserService', 'CommonService','blockUI','QtiService',
-						function($scope, $rootScope, $location, $cookieStore,
+						function($scope,$rootScope, $location, $cookieStore,
 								$http, $sce, TestService, SharedTabService,
 								$modal, notify, EnumService, UserService, CommonService,blockUI,QtiService) {
 
@@ -725,11 +725,6 @@ angular
 													
 															// $scope.tree2.push(displayNode);
 															SharedTabService.tests[currentIndex].questions.push(displayNode);
-															for (var i = 0; i < SharedTabService.masterTests.length; i++) {
-															    if (SharedTabService.masterTests[i].id === SharedTabService.tests[currentIndex].id) {
-															        SharedTabService.masterTests[i].masterQuestions.push(angular.copy(displayNode));// is to check for dirty.
-															    }
-															}
 															if (qBindings.length > 0) {
 																$scope.renderQuestions(
 																		qBindings,
@@ -802,15 +797,6 @@ angular
 									test.questionFolderNode.push(node);
 									if(node.nodes){
 										$scope.enableQstnEditIconForChildNodes(node);
-									}
-								})
-							}
-							
-							$scope.enableWizardIconForChildNodes = function(childNode){
-								childNode.nodes.forEach(function(node) {
-									node.showTestWizardIcon = true;
-									if(node.nodes){
-										$scope.enableWizardIconForChildNodes(node);
 									}
 								})
 							}
@@ -1015,6 +1001,9 @@ angular
     										testResult.title = test.title;
     										testResult.modified = (new Date()).toJSON();
     										$rootScope.$broadcast('handleBroadcast_AddNewTest', testResult, $scope.containerFolder, isEditMode, oldGuid, $scope.editedQuestions, $scope.editedMigratedQuestions, test, $scope);
+    										if(test.isSaveAndClose){
+    											loadQuestionsToEmptyTab();
+    										}
     										$scope.containerFolder = null; //clear selected folder in save as dialog popup.
     										
 
@@ -1477,12 +1466,7 @@ angular
                                     QTI.initialize();
                                     $scope.tests[$scope.sharedTabService.currentTabIndex].isTestWizard = false;
                                     $scope.sharedTabService.isTestWizardTabPresent = false;
-                                    for (var i = 0; i < test.criterias.length; i++) {
-                                    	test.criterias[i].treeNode.showTestWizardIcon = true;
-                                    	if (test.criterias[i].treeNode.nodes){
-                                    	$scope.enableWizardIconForChildNodes(test.criterias[i].treeNode);
-                                    	}
-                                    }
+                                    $rootScope.$broadcast('handleBroadcast_previevTest', test.criterias);
                                     test.criterias=[];
                                     if (test.saveMode === EnumService.SAVE_MODE.SaveAs) {
                                         test.testId = null;

@@ -425,7 +425,7 @@ a.newFolder:hover {
 .captiondiv {
 	width: 80%;
 	float: left;
-	margin-top: 2px;
+	margin-top: 3px;
 	margin-left: 5px;
 	cursor: pointer;
 	padding-bottom: 3px;
@@ -944,7 +944,7 @@ ol {
 }
 #MyTest-tree-root .captionLabel{
     width: 100%;
-    height: 38px;
+    height: 35px;
 }
 /*My Test tab test display*/
 .testInputbuttonClass {
@@ -1168,9 +1168,8 @@ button.folderArchiveIcon.fa.fa-check {
 }
 
 .activeFolder label {
-	color: white;
+	color: #4D4D4D;
 }
-
 .alertMsg {
 	padding: 20px 20px 20px 20px;
 	text-align: center;

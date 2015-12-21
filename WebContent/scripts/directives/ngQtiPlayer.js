@@ -75,6 +75,7 @@ angular.module('e8MyTests')
 			};
 			
 			function destroyEditorInstances() {
+               
 				for (var name in CKEDITOR.instances){
 					var instance = CKEDITOR.instances[name];
 					if (instance) {				     
@@ -87,6 +88,8 @@ angular.module('e8MyTests')
 			$scope.toggleEdit = function(node) {
 
 				if(node.IsEditView){
+					 $scope.showQstnEditIcon = false;
+		             $scope.closeQstnBtn = false;
 					destroyEditorInstances();			
 				}
 
