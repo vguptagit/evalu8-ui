@@ -1517,6 +1517,7 @@ angular.module('e8MyTests')
 					folder.nodes[i].showEditQuestionIcon = false;
 					folder.nodes[i].showTestWizardIcon = true;
 					folder.nodes[i].existInTestframe = true;	
+					addingNodeInSelectedNodesArray(folder.nodes[i]);		
 				}else{
 					isAllChildNodeNotInTestFrame=true;
 				}				
