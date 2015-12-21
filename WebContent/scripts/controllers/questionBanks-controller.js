@@ -1488,7 +1488,9 @@ angular
 								}
                             	if (activeTest.isTestWizard) {
 									$rootScope.$broadcast('handleBroadcast_AddNewTab');
+									activeTest = SharedTabService.tests[SharedTabService.currentTabIndex];
 								}
+                            	
                             	if(!selectedScopeNode.showEditQuestionIcon)
                         		{
                             		$scope.isAnyNodeAlreadyAdded = true
@@ -2450,6 +2452,38 @@ angular
 								$scope.deselectWizarParentNode(node);
 
 							});
+							
+							$scope.enableWizardIconForChildNodes = function(childNode){
+								childNode.nodes.forEach(function(node) {
+									node.showTestWizardIcon = true;
+									if(node.nodes){
+										$scope.enableWizardIconForChildNodes(node);
+									}
+								})
+							}
+						//to change the status of wizard icon of nodes while creating a test from test wizard. 	
+							$scope.$on('handleBroadcast_previevTest',
+									function(handler, criterias) {
+								for (var i = 0; i < criterias.length; i++) {
+									criterias[i].treeNode.showTestWizardIcon = true;
+									$scope.checkForParentNodeWizardIconStatus(criterias[i].treeNode.parentId);
+									if (criterias[i].treeNode.nodes){
+										$scope.enableWizardIconForChildNodes(criterias[i].treeNode);
+									}
+								}
+							});
+							
+						//to enable wizard icon for parent node while creating a test from test wizard if all the children added to wizard frame. 	
+							$scope.checkForParentNodeWizardIconStatus = function(parentId){
+								var activeTest = SharedTabService.tests[SharedTabService.currentTabIndex];
+								for (var i = 0; i < $scope.selectedNodes.length; i++) {
+									if($scope.selectedNodes[i].guid == parentId){
+										if($scope.isAllChildrenInWizardFrame($scope.selectedNodes[i] , activeTest)){
+											$scope.selectedNodes[i].showTestWizardIcon = true;
+										}
+									}
+								}
+							}
 							// evalu8-ui : to set Active Resources Tab , handled
 							// in ResourcesTabsController
 							$rootScope.$broadcast(
