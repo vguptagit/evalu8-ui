@@ -21,26 +21,25 @@
 
         </div>
         <div data-ui-tree id="MyTest-tree-root" class="myTest_scrollbar">
-            <ol data-ui-tree-nodes data-ng-model="defaultFolders" droppable="{{node.droppable}}">
+            <ol data-ui-tree-nodes data-ng-model="defaultFolders" >
 
                 <li data-ng-repeat="node in defaultFolders" data-ui-tree-node x-collapsed="true" draggable="{node.draggable}"
                     data-ng-include="'defaultfolder_renderer.html'" ng-if="node.nodeType!='question'" />
 
-                <li printmode="true" class="questIndex qbQuestions" ng-class="{questionSelected:node.isNodeSelected, questionNotSelected:!node.isNodeSelected}" 
+                <li printmode="true"  draggable="{{!node.existInTestframe}}"  class="questIndex qbQuestions" ng-class="{questionSelected:node.isNodeSelected,questionNotSelected:!node.isNodeSelected,questionInTestframe:node.isNodeSelected && node.existInTestframe===true}" 
                     ng-if="node.nodeType=='question'" ng-repeat="node in defaultFolders" collapsed="{{node.isCollapsed?'true':'false'}}" 
-                    ui-tree-node  
+                    ui-tree-node
                     ng-include="'qb_questions_renderer.html'" />
             </ol>
         </div>
     </div>
-    
+   
     <script type="text/ng-template" id="qb_questions_renderer.html">
-        <div class="questionListIndex" style="float: left;">{{(node.questnNumber) }})</div>
-        <div id="QBQuestion"  nodeSelected={{node.isNodeSelected}} ng-mousedown="selectNode(this);" ui-tree-handle class="printViewContainer tree-node tree-node-content questionList" ng-class="{questionTitleInTree: node.questionXML}">
-            <button id="QBPencil" type="button" ng-show="node.showEditQuestionIcon" class="newTest-close questionIcon action-icon-bg glyphicon glyphicon-plus" ng-mousedown="editQuestion(this);$event.stopPropagation();" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="bottom" tooltip="Move question to right for editing"></button>
-            <div class="printViewContainer" ng-if="node.textHTML" ng-bind-html="getHTML(this)">
-            </div>
-        </div>
+        	<div class="qtiQuestionContainer">			
+			<div>
+				<qti-Player></qti-Player>
+			</div>
+			</div>
     </script>
     
     <script type="text/ng-template" id="defaultfolder_renderer.html">
@@ -98,7 +97,7 @@
             </div>
         </div>
 
-        <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}" droppable="{{node.droppable}}">
+        <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}" droppable="{{!node.existInTestframe}}">
             <li class="tree-node tree-node-content" ng-repeat="node in node.nodes"
                 ui-tree-node draggable="false" node="{{node}}" data-ng-if="node.nodeType=='empty'">
                 <div ui-tree-handle class="tree-node tree-node-content">
@@ -107,8 +106,9 @@
             <li ng-repeat="node in node.nodes" ui-tree-node collapsed="true" draggable="{node.draggable}"
                 ng-include="'defaultfolder_renderer.html'" ng-show="{{node.nodeType=='folder'}}" />
             <li printmode="true" ng-repeat="node in node.nodes" collapsed="true" ui-tree-node 
-				ng-show="{{node.nodeType=='question'}}" ng-class="{questionSelected:node.isNodeSelected}"
-                ng-include="'qb_questions_renderer.html'" draggable="{{node.draggable}}" class="questIndex qbQuestions" />
+				ng-show="{{node.nodeType=='question'}}" 
+ng-class="{questionSelected:node.isNodeSelected,questionNotSelected:!node.isNodeSelected,questionInTestframe:node.isNodeSelected && node.existInTestframe===true}"
+                ng-include="'qb_questions_renderer.html'" draggable="{{!node.existInTestframe}}" class="questIndex qbQuestions" />
         </ol>
     </script>
 
