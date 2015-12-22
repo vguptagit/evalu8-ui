@@ -8,8 +8,7 @@
 			<a type="button" id="testwizard" class="btn btn-primary"
 				ng-disabled="sharedTabService.isTestWizardTabPresent"
 				ng-click="addTestWizard()" tooltip-placement="bottom"
-				tooltip-append-to-body="true" tooltip-trigger="mouseenter"
-				tooltip="Test Creation Wizard"> <span   class="{{wizardClass}}"></span>
+				data-toggle="tooltip" title="Test Creation Wizard" data-placement="bottom"> <span   class="{{wizardClass}}"></span>
 				Test Wizard
 			</a>
 
@@ -334,7 +333,7 @@
 			</ol>
 		</div>
 
-		<script type="text/ng-template" id="qti_player_question_renderer.html">			
+		<script type="text/ng-template" id="qti_player_question_renderer.html">	
 			<div class="qtiQuestionContainer">
 			<div>
 				<qti-Player></qti-Player>
@@ -353,8 +352,14 @@
                  
 
 		</div>
+					
         </script>
-        
+		<script>
+			$(document).ready(function() {
+				$('#testwizard').tooltip();
+			});
+		</script>
+
 	</div>
 
 

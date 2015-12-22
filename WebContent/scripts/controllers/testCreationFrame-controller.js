@@ -118,6 +118,7 @@ angular
 
 							$scope.addTestWizard = function() {
 								$scope.isApplySameCriteriaToAll = false;
+				                $('#testwizard').tooltip('hide');
 								SharedTabService.addTestWizard($scope);
 							}
 							$scope.addTestWizardCriteria = function(response,
@@ -263,33 +264,6 @@ angular
 							
 							$scope.testTitle = "New Test";
 
-							function buildQstnMasterDetails(qstnNode) {
-								
-								var qstnXML = jQuery.parseXML(qstnNode.data);
-							
-								var qstnMasterData ;
-								
-									switch(qstnNode.quizType) {		
-									
-										 case "MultipleResponse","MultipleChoice","Essay","FillInBlanks","TrueFalse":
-											 
-											 qstnMasterData = getMultipleChoiceQstn_MasterDetails(qstnXML,qstnNode.quizType);										 
-									         break;
-									         
-									      case "Matching":
-									    	  qstnMasterData = getMatchingQstn_Details(qstnXML);
-									         break;
-									     
-									      default:
-									    	  
-									    	  qstnMasterData = getMultipleChoiceQstn_MasterDetails(qstnXML);
-								      
-								     }
-									var questionMetadata = angular.copy(qstnNode.questionMetadata);
-									qstnMasterData.questionMetadata = questionMetadata;
-									return qstnMasterData;																
-							}
-							
 							function getMultipleChoiceQstn_MasterDetails(qstnXML,quizType) {								
 								var optionList = [];
 								var correctAnswerList = [];
@@ -1647,9 +1621,8 @@ angular
 													
 													displayNode.selectedLevel = displayNode.questionMetadata['Difficulty']==undefined?{name:'Select Level',value:'0'}:{name:displayNode.questionMetadata['Difficulty'],value:displayNode.questionMetadata['Difficulty']};
 													
-													displayNode.qstnMasterData = buildQstnMasterDetails(displayNode);
-													displayNode.optionsView = displayNode.qstnMasterData.optionsView;
-													displayNode.EssayPageSize = displayNode.qstnMasterData.EssayPageSize;
+													displayNode.qtiModel =  QtiService.getQtiModel(displayNode.data, displayNode.quizType);
+													displayNode.qstnModelMasterData = getQuestionMasterDataModel(displayNode);
 																							
 													// $scope.tree2.push(displayNode);
 													SharedTabService.tests[SharedTabService.currentTabIndex].questions
