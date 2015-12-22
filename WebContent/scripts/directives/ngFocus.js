@@ -19,7 +19,7 @@ angular.module('e8MyTests')
         $timeout(function () {
             if (element)
                 element.focus();
-        }, 100);
+        }, 500);
     };
 })
 .factory('focus', function ($timeout, $window) {
