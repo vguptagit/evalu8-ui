@@ -27,6 +27,10 @@ angular.module('e8MyTests')
 				}
 				window.CKEDITOR.tools.isCustomisedCallFunctionRegistered = true;
 			}
+			
+			$scope.getTrustedHTML = function(html_code) {
+			    return $sce.trustAsHtml(html_code);
+			}
 
 			$scope.imagePanelLoaded = false;
 

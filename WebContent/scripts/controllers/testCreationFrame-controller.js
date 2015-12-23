@@ -87,9 +87,7 @@ angular
 								
 							}
 							
-							$scope.getTrustedHTML = function(html_code) {
-							    return $sce.trustAsHtml(html_code);
-							}
+							
 							
 							/**************************** End of Html Editor Changes **********************************/
 
