@@ -16,7 +16,7 @@ angular.module('e8CustomQuestionBanks')
 		 $rootScope.blockPage.stop();
 	}
 	
-	$scope.treeOptions = {
+$scope.treeOptions = {
             
             beforeDrag: function (sourceNodeScope) {
                 if(sourceNodeScope.node.hasOwnProperty('draggable') && sourceNodeScope.node.draggable == false) {
@@ -120,12 +120,8 @@ angular.module('e8CustomQuestionBanks')
     });
     
     $scope.$on('beforeDrop', function (event) {
-    	if (SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode) {
-			$scope.IsConfirmation = false;
-			$scope.message = "A question is already in Edit mode, save it before adding or reordering questions.";
-			$modal.open(confirmObject);
-			$scope.dragStarted = false;
-		}  else if (SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
+
+    	if (SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
 			$scope.IsConfirmation = false;
 			$scope.message = "A Custom Question cannot be added to the TEST Wizard.";
 			$modal.open(confirmObject);

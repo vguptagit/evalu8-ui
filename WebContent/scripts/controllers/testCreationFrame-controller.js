@@ -23,6 +23,17 @@ angular
 
 							$scope.treeOptions = {
 
+					                beforeDrag: function (sourceNodeScope) {
+					                    if(sourceNodeScope.node.hasOwnProperty('draggable') && sourceNodeScope.node.draggable == false) {
+					                        sourceNodeScope.$$apply = false;
+					                        return false;
+					                    }    
+					                    if(sourceNodeScope.node.IsEditView) {
+					                    	sourceNodeScope.$$apply = false;
+					                        return false;
+					                    }
+					                    return true;
+					                },
 									beforeDrop: function(e) {
 
 										var source = e.source.nodeScope;										
@@ -34,6 +45,7 @@ angular
 											if(editModeQuestions.length > 0 ){
 												$scope.dragStarted = false;
 												e.source.nodeScope.$$apply = false;
+												$rootScope.$broadcast('beforeDrop');
 											}
 										}
 										
