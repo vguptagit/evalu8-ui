@@ -3,8 +3,8 @@
 angular.module('e8Login')
 
 .factory('AuthenticationService',
-		['$http', '$rootScope', '$timeout', 'HttpService',
-		 function ($http, $rootScope, $timeout, HttpService) {
+		['$http', '$rootScope', '$timeout', 'HttpService','UuidService',
+		 function ($http, $rootScope, $timeout, HttpService,UuidService) {
 			var service = {};			
 
 			service.SetCredentials = function (authToken, loginCount, givenName, familyName, emailAddress) {
@@ -43,7 +43,8 @@ angular.module('e8Login')
 					var piconfig = {
 							headers : {
 								'AccessToken' : event.data,
-								'Accept' : 'application/json;odata=verbose'
+								'Accept' : 'application/json;odata=verbose',
+								'Correlation-Id' : UuidService.newuuid()
 							}
 						};
 					

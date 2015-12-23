@@ -497,6 +497,11 @@ angular.module('e8MyTests')
 
 			}
 
+
+			$scope.getTrustedHTML = function(html_code) {
+			    return $sce.trustAsHtml(html_code);
+			}
+			
 			$scope.getPrintModeFbCaption = function (fbCaption) {
 			    try {
 				    var htmlText = fbCaption.trim().replace(/&nbsp;/, " ");

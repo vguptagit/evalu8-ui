@@ -1,7 +1,7 @@
 angular
 .module('e8MyTests')
-.controller('SigninController', ['$scope', '$rootScope', '$location', '$http', 'AuthenticationService', 'CommonService', 'HttpService',
-function($scope, $rootScope, $location, $http, AuthenticationService, CommonService, HttpService) {
+.controller('SigninController', ['$scope', '$rootScope', '$location', '$http', 'AuthenticationService', 'CommonService', 'HttpService','UuidService',
+function($scope, $rootScope, $location, $http, AuthenticationService, CommonService, HttpService,UuidService) {
 	
 	$scope.unauthorised = false;
 	
@@ -12,7 +12,8 @@ function($scope, $rootScope, $location, $http, AuthenticationService, CommonServ
 			var piconfig = {
 					headers : {
 						'AccessToken' : token,
-						'Accept' : 'application/json;odata=verbose'
+						'Accept' : 'application/json;odata=verbose',
+						'Correlation-Id' : UuidService.newuuid()
 					}
 				};
 			
