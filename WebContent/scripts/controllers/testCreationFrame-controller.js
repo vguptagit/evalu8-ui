@@ -21,8 +21,30 @@ angular
 								$http, $sce, TestService, SharedTabService,
 								$modal, notify, EnumService, UserService, CommonService,blockUI,QtiService) {
 
-							// $scope.tree2 =
-							// SharedTabService.tests[SharedTabService.currentTabIndex].questions;
+							$scope.treeOptions = {
+
+									beforeDrop: function(e) {
+
+										var source = e.source.nodeScope;										
+										var destination = e.dest.nodesScope;
+
+										var editModeQuestions=$(destination.$parent.$element).find("li[printmode=false]");
+
+										if( source.controller =="TestCreationFrameController"){
+											if(editModeQuestions.length > 0 ){
+												$scope.dragStarted = false;
+												e.source.nodeScope.$$apply = false;
+											}
+										}
+										
+					                    if(destination.$parent.controller !="TestCreationFrameController"){
+					                        $scope.dragStarted = false;
+					                        e.source.nodeScope.$$apply = false;
+					                    }
+
+									}
+							};
+
 							$scope.isDeleteAnswerClicked=false;
 							$scope.isBlockQuoteClicked=false;
 							$scope.controller = EnumService.CONTROLLERS.testCreationFrame;

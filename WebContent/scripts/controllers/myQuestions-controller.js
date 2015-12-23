@@ -382,20 +382,219 @@ angular.module('e8MyTests')
         $scope.$on('dragCancel', function () {
             $scope.dragStarted = false;
         });
+        
+        $scope.treeOptions = {
+                
+                beforeDrag: function (sourceNodeScope) {
+                    if(sourceNodeScope.node.hasOwnProperty('draggable') && sourceNodeScope.node.draggable == false) {
+                        sourceNodeScope.$$apply = false;
+                        return false;
+                    }    
+                    return true;
+                },
+                dragMove: function(e) {
+                    $scope.dragStarted = true;
+                },
+                beforeDrop: function(e) {
+                    
+                    var source = e.source.nodeScope;
+                    var sourceParent = e.source.nodeScope.$parentNodeScope;
 
-        $scope.$on('dragEnd', function (event, destParent, source, sourceParent,
+                    var mouseOverNode = null;
+                    if($rootScope.tree)
+                        mouseOverNode = $rootScope.tree.mouseOverNode;
+
+                    if (mouseOverNode) {
+                        $rootScope.tree = { mouseOverNode: null };
+                        mouseOverNode.hover = false;
+                    }
+
+                    if (mouseOverNode && (mouseOverNode != source)) {
+
+                        e.source.nodeScope.$$apply = false;
+                        $scope.dropIntoFolder(source, sourceParent, mouseOverNode);
+                        return;                        
+                    }                    
+
+                    var destIndex = e.dest.index;
+                    
+                    var prev;
+                    if(e.source.index < destIndex) {
+                    	prev = e.dest.nodesScope.childNodes()[destIndex];	
+                    } else {
+                    	prev = e.dest.nodesScope.childNodes()[destIndex-1];
+                    }
+                    
+                    var next;
+                    if(e.source.index < destIndex) {
+                    	next = e.dest.nodesScope.childNodes()[destIndex+1];	
+                    } else {
+                    	next = e.dest.nodesScope.childNodes()[destIndex];
+                    }                                            
+
+                    if(source.node.nodeType=="question") {
+                        if(next && next.node.nodeType == "folder") { 
+                            e.source.nodeScope.$$apply = false;
+                            return;
+                        }                    
+                    }     
+                    
+                    if(source.node.nodeType=="folder") {
+                        if(prev && prev.node.nodeType == "question") { 
+                            e.source.nodeScope.$$apply = false;
+                            return;
+                        }                    
+                    }  
+
+                    var destination = e.dest.nodesScope;
+
+                    var editModeQuestions=$(destination.$parent.$element).find("li[printmode=false]");
+
+                    if(editModeQuestions.length>0 && destination.$parent.controller =="TestCreationFrameController"){
+                        $scope.dragStarted = false;
+                        e.source.nodeScope.$$apply = false;
+                        $rootScope.$broadcast('beforeDrop');
+                    }
+
+                    var IsTargetAreaInScope=false;     
+                    if(angular.element(e.target).hasClass('angular-ui-tree')) {
+                        IsTargetAreaInScope = true;                  
+                    }                      
+
+                    if( !IsTargetAreaInScope && 
+                            (destination.$parent &&  
+                                    (
+                                            $(destination.$parent.$element).find("ol").attr('droppable') == 'false' ||
+                                            $(destination.$parent.$element).closest("ol").attr('droppable') == 'false'
+                                    )                              
+                            )
+                    ) {
+
+                        e.source.nodeScope.$$apply = false;
+                    }
+                    if(destination.node){
+                        if(destination.node.nodeType == "archiveRoot"){
+
+                            e.source.nodeScope.$$apply = false;
+                        }
+                    }
+ 
+                },
+                dropped: function(e) {
+                    
+                    var destParent = e.dest.nodesScope.$parent;
+                    var source = e.source.nodeScope;
+                    var sourceParent = e.source.nodeScope.$parentNodeScope;
+                    var sourceIndex = e.source.index;
+                    var destIndex = e.dest.index;
+                    var prev = e.dest.nodesScope.childNodes()[destIndex-1];
+                    var next = e.dest.nodesScope.childNodes()[destIndex+1];                                        
+                    
+                    $scope.dragEnd(e, destParent, source, sourceParent,
+                              sourceIndex, destIndex, prev, next);     
+                }
+              };
+
+        $scope.dropIntoFolder = function (source, sourceParent, mouseOverNode) {
+            var item = source.node;
+            
+            var duplicateTitle = false;
+            
+            UserFolderService.getUserFoldersByParentFolderId(mouseOverNode.node.guid, function (userFolders) {
+                if(userFolders==null){
+                    $rootScope.blockLeftPanel.stop();
+                     CommonService.showErrorMessage(e8msg.error.cantFetchFolders);
+                     return;
+                 }        
+                if(item.nodeType == EnumService.NODE_TYPE.folder) {
+                    userFolders.forEach(function(nodeItem) {                            
+                        if(nodeItem.nodeType == EnumService.NODE_TYPE.folder && nodeItem.title == item.title) {
+                            duplicateTitle = true;                             
+                        }                        
+                    })
+                    
+                    if(duplicateTitle) {
+                        $scope.IsConfirmation = false;
+                        $scope.message = "A folder already exists with this name.";
+                        $modal.open(confirmObject);
+                        
+                        $rootScope.blockLeftPanel.stop();
+                        return false;
+                    }                        
+                }
+                
+                TestService.getTests(mouseOverNode.node.guid, function (tests) {
+                    if(tests==null){
+                        $rootScope.blockLeftPanel.stop();
+                        CommonService.showErrorMessage(e8msg.error.cantFetchTests)
+                        return;
+                    }
+                    if(item.nodeType == EnumService.NODE_TYPE.test) {
+                        tests.forEach(function(nodeItem) {                        
+                            if(nodeItem.nodeType == EnumService.NODE_TYPE.test && nodeItem.title == item.title) {
+                                duplicateTitle = true;                             
+                            }                                                    
+                        })
+                        
+                        if(duplicateTitle) {
+                            $scope.IsConfirmation = false;
+                            $scope.message = "A test already exists with this name.";
+                            $modal.open(confirmObject);
+                            
+                            $rootScope.blockLeftPanel.stop();
+                            return false;
+                        }                        
+                    }
+                    
+                    source.remove();                                        
+                    
+                    if(item.nodeType == EnumService.NODE_TYPE.folder) {
+                        item.parentId = mouseOverNode.node.guid;
+                        UserFolderService.getFoldersMinSeq(mouseOverNode.node, function(minSeq) {
+                            item.sequence = minSeq==0.0 ? 1.0 : (0.0 + minSeq)/2;
+                            UserFolderService.saveUserFolder(item, function(userFolder) {
+                                if(userFolder==null){
+                                    $rootScope.blockLeftPanel.stop();
+                                     CommonService.showErrorMessage(e8msg.error.cantSave);
+                                     return;
+                                 }
+                                if(sourceParent && sourceParent.node && sourceParent.node.nodes.length==0) {
+                                    sourceParent.node.nodes.push(CommonService.getEmptyFolder());
+                                }
+                                
+                                $rootScope.blockLeftPanel.stop();
+                            });                    
+                        })                    
+                    } else {
+                        var sourceFolder = $scope.removeTestBindingFromSource(sourceParent, item.guid);
+                        UserFolderService.saveUserFolder(sourceFolder, function(userFolder) {
+                            if(userFolder==null){
+                                $rootScope.blockLeftPanel.stop();
+                                 CommonService.showErrorMessage(e8msg.error.cantSave);
+                                 return;
+                             }
+                            $scope.insertTestBindingToDest(mouseOverNode, item.guid, function() {
+                                
+                                if(sourceParent && sourceParent.node && sourceParent.node.nodes.length==0) {
+                                    sourceParent.node.nodes.push(CommonService.getEmptyFolder());
+                                }
+                                
+                                $rootScope.blockLeftPanel.stop();                                    
+                            });
+                        });
+                    }
+                });
+            });
+        };
+
+        $scope.dragEnd = function (event, destParent, source, sourceParent,
   			  sourceIndex, destIndex, prev, next) {
         	          
   			if(!$scope.dragStarted) {
                 return false;
             }
   			
-  			$scope.dragStarted = false;
-  			
-            if($rootScope.dropTestOrQuestion && $rootScope.dropTestOrQuestion == "cancel") {
-                $rootScope.dropTestOrQuestion = null;
-                return false;
-            }            
+  			$scope.dragStarted = false;  			            
   			
 			if (!source.node.isNodeSelected) {
 				$scope.selectNode(source);
@@ -418,246 +617,161 @@ angular.module('e8MyTests')
                 source.node.selectTestNode = false;
             }
 
+            var item = source.node;
 
-            var mouseOverNode = null;
-            if($rootScope.tree)
-            	mouseOverNode = $rootScope.tree.mouseOverNode;
+            var duplicateTitle = false;
 
-            if (mouseOverNode) {
-                $rootScope.tree = { mouseOverNode: null };
-                mouseOverNode.hover = false;
+            if(destParent == null || destParent.node == null) {
+            	if(item.nodeType == EnumService.NODE_TYPE.folder) {
+            		$scope.defaultFolders.forEach(function(nodeItem) {                        
+            			if(nodeItem.nodeType == EnumService.NODE_TYPE.folder && nodeItem.title == item.title && nodeItem.$$hashKey != item.$$hashKey) {
+            				duplicateTitle = true;                    			 
+            			}                        	                        
+            		})
+
+            		if(duplicateTitle) {
+            			$scope.IsConfirmation = false;
+            			$scope.message = "A folder already exists with this name.";
+            			$modal.open(confirmObject);
+
+            			if(sourceParent) {
+            				sourceParent.node.nodes.splice(sourceIndex, 0, source.node);	
+            			} else {
+            				$scope.defaultFolders.splice(sourceIndex, 0, source.node);
+            			}
+
+            			$scope.defaultFolders.splice(destIndex, 1);
+
+            			$rootScope.blockLeftPanel.stop();
+            			return false;
+            		}
+            	}
+            }
+            if(destParent && destParent.node && destParent.node.nodes) {                	
+
+            	if(item.nodeType == EnumService.NODE_TYPE.folder) {
+            		destParent.node.nodes.forEach(function(nodeItem) {                        
+            			if(nodeItem.nodeType == EnumService.NODE_TYPE.folder && nodeItem.title == item.title && nodeItem.$$hashKey != item.$$hashKey) {
+            				duplicateTitle = true;                    			 
+            			}                        	
+
+            		})
+
+            		if(duplicateTitle) {
+            			$scope.IsConfirmation = false;
+            			$scope.message = "A folder already exists with this name.";
+            			$modal.open(confirmObject);
+
+            			if(sourceParent) {
+            				sourceParent.node.nodes.splice(sourceIndex, 0, source.node);	
+            			} else {
+            				$scope.defaultFolders.splice(sourceIndex, 0, source.node);
+            			}
+
+            			destParent.node.nodes.splice(destIndex, 1);
+
+            			$rootScope.blockLeftPanel.stop();
+            			return false;
+            		}
+            	}                	
             }
 
-            if (mouseOverNode && (mouseOverNode != source)) {
+            var prevSeq = 0.0;
+            var nextSeq = 0.0;
+            $scope.itemSeq = 0.0;
 
-                var item = source.node;                                                                                            
-                    
-                if(item.nodeType == EnumService.NODE_TYPE.folder) {
-                    item.parentId = mouseOverNode.node.guid;
-                    QuestionFolderService.getFoldersMinSeq(mouseOverNode.node, function(minSeq) {
-                    	item.sequence = minSeq==0.0 ? 1.0 : (0.0 + minSeq)/2;
-                    	QuestionFolderService.saveQuestionFolder(item, function(userFolder) {
-                    		
-                            if (userFolder == null) {
-                            	$rootScope.blockLeftPanel.stop();
-                                CommonService.showErrorMessage(e8msg.error.cantSave);
-                                return;
-                            }else if(userFolder == EnumService.HttpStatus.CONFLICT) {
-                    			$rootScope.blockLeftPanel.stop();
-                	            $scope.IsConfirmation = false;
-                	            $scope.message = e8msg.validation.duplicateFolderTitle;
-                	            $modal.open(confirmObject);        		
-                        		return;
-                    		}
-                            
-                            source.remove();
-                            
-                			if(sourceParent && sourceParent.node && sourceParent.node.nodes.length==0) {
-                				sourceParent.node.nodes.push(CommonService.getEmptyFolder());
-                			}                    			
-                			
-                    		$rootScope.blockLeftPanel.stop();
-                    	});                	
-                    })                	
-                } else {
-                	
-                	source.remove();
-                	
-                	var sourceFolder = $scope.removeTestBindingFromSource(sourceParent, item.guid);
-                	QuestionFolderService.saveQuestionFolder(sourceFolder, function(userFolder) {
-                		if(userFolder==null){
-                    		$rootScope.blockLeftPanel.stop();
-                     		CommonService.showErrorMessage(e8msg.error.cantSave);
-                     		return;
-                     	}
-                		$scope.insertTestBindingToDest(mouseOverNode, item.guid, function() {
-                			
-                			if(sourceParent && sourceParent.node && sourceParent.node.nodes.length==0) {
-                				sourceParent.node.nodes.push(CommonService.getEmptyFolder());
-                			}
-                			
-                			if(sourceParent == null) {
-                				var questionIndex = 0;
-                				$scope.defaultFolders.forEach(function(node){
-                					if(node.nodeType == EnumService.NODE_TYPE.question) {
-                						node.questnNumber = ++questionIndex;
-                					}
-                				})
-                			}
-                			if(sourceParent && sourceParent.node) {
-                				var questionIndex = 0;
-                				sourceParent.node.nodes.forEach(function(node){
-                					if(node.nodeType == EnumService.NODE_TYPE.question) {
-                						node.questnNumber = ++questionIndex;
-                					}
-                				})
-                			}
-                    		$rootScope.blockLeftPanel.stop();                        			
-                		});
+            // delete empty previous and next node if any
+            $scope.deleteEmptyNode(prev, next, destParent);
 
-                	});            		              	               	
-                }
-            	                                        
-                
-            } else {
+            if(item.nodeType == EnumService.NODE_TYPE.question) {
 
-            	var item = source.node;
-            	
-            	var duplicateTitle = false;
-            	
-            	if(destParent == null || destParent.node == null) {
-                	if(item.nodeType == EnumService.NODE_TYPE.folder) {
-                		$scope.defaultFolders.forEach(function(nodeItem) {                        
-                    		if(nodeItem.nodeType == EnumService.NODE_TYPE.folder && nodeItem.title == item.title && nodeItem.$$hashKey != item.$$hashKey) {
-                    			duplicateTitle = true;                    			 
-                    		}                        	                        
-                		})
-                		
-                		if(duplicateTitle) {
-    			            $scope.IsConfirmation = false;
-    			            $scope.message = "A folder already exists with this name.";
-    			            $modal.open(confirmObject);
-    			            
-    			            if(sourceParent) {
-    			            	sourceParent.node.nodes.splice(sourceIndex, 0, source.node);	
-    			            } else {
-    			            	$scope.defaultFolders.splice(sourceIndex, 0, source.node);
-    			            }
-    			            
-    			            $scope.defaultFolders.splice(destIndex, 1);
-    			            
-    			            $rootScope.blockLeftPanel.stop();
-                    		return false;
-                    	}
-                	}
-            	}
-            	if(destParent && destParent.node && destParent.node.nodes) {                	
-                	
-                	if(item.nodeType == EnumService.NODE_TYPE.folder) {
-                		destParent.node.nodes.forEach(function(nodeItem) {                        
-                    		if(nodeItem.nodeType == EnumService.NODE_TYPE.folder && nodeItem.title == item.title && nodeItem.$$hashKey != item.$$hashKey) {
-                    			duplicateTitle = true;                    			 
-                    		}                        	
-                        
-                		})
-                		
-                		if(duplicateTitle) {
-    			            $scope.IsConfirmation = false;
-    			            $scope.message = "A folder already exists with this name.";
-    			            $modal.open(confirmObject);
-    			            
-    			            if(sourceParent) {
-    			            	sourceParent.node.nodes.splice(sourceIndex, 0, source.node);	
-    			            } else {
-    			            	$scope.defaultFolders.splice(sourceIndex, 0, source.node);
-    			            }
-    			            
-    			            destParent.node.nodes.splice(destIndex, 1);
-    			            
-    			            $rootScope.blockLeftPanel.stop();
-                    		return false;
-                    	}
-                	}                	
-            	}
-            	
-            	var prevSeq = 0.0;
-            	var nextSeq = 0.0;
-            	$scope.itemSeq = 0.0;
-            	
-            	// delete empty previous and next node if any
-            	$scope.deleteEmptyNode(prev, next, destParent);
-            	
-            	if(item.nodeType == EnumService.NODE_TYPE.question) {
-            		                    
-            		var sourceFolder = $scope.removeTestBindingFromSource(sourceParent, item.guid);   
-            		QuestionFolderService.updateQuestionFolder(sourceFolder, function(userFolder) {
-            			if(userFolder==null){
-                    		$rootScope.blockLeftPanel.stop();
-                     		CommonService.showErrorMessage(e8msg.error.cantSave);
-                     		return;
-                     	}
-            			$scope.addTestToDest(destParent, function() {
-            				
-                			if(sourceParent && sourceParent.node && sourceParent.node.nodes.length==0) {
-                				sourceParent.node.nodes.push(CommonService.getEmptyFolder());
-                			}
-                			
-                			if(sourceParent == null) {
-                				var questionIndex = 0;
-                				$scope.defaultFolders.forEach(function(node){
-                					if(node.nodeType == EnumService.NODE_TYPE.question) {
-                						node.questnNumber = ++questionIndex;
-                					}
-                				})
-                			}
-                			if(destParent.node) {
-                				var questionIndex = 0;
-                				destParent.node.nodes.forEach(function(node){
-                					if(node.nodeType == EnumService.NODE_TYPE.question) {
-                						node.questnNumber = ++questionIndex;
-                					}
-                				})
-                			}
-                			if(destParent == null || destParent.node == null) {
-                				var questionIndex = 0;
-                				$scope.defaultFolders.forEach(function(node){
-                					if(node.nodeType == EnumService.NODE_TYPE.question) {
-                						node.questnNumber = ++questionIndex;
-                					}
-                				})
-                			}
-                			if(sourceParent && sourceParent.node) {
-                				var questionIndex = 0;
-                				sourceParent.node.nodes.forEach(function(node){
-                					if(node.nodeType == EnumService.NODE_TYPE.question) {
-                						node.questnNumber = ++questionIndex;
-                					}
-                				})
-                			}
-                			
-            				$rootScope.blockLeftPanel.stop();
-            			});                        
-            		});            		            		
-            	}
-            	else if(item.nodeType == EnumService.NODE_TYPE.folder) {
-
-            		if(prev) {
-            			$scope.getFolderNodeSequence(prev.node);
-            			prevSeq = $scope.itemSeq;
+            	var sourceFolder = $scope.removeTestBindingFromSource(sourceParent, item.guid);   
+            	QuestionFolderService.updateQuestionFolder(sourceFolder, function(userFolder) {
+            		if(userFolder==null){
+            			$rootScope.blockLeftPanel.stop();
+            			CommonService.showErrorMessage(e8msg.error.cantSave);
+            			return;
             		}
-            		if(next) { 
-            			$scope.getFolderNodeSequence(next.node);
-            			nextSeq = $scope.itemSeq;
-            		}            		 
-            		
-            		if(destParent.node) {
-                        item.parentId = destParent.node.guid;            			
-            		} else {
-                        item.parentId = $scope.myTestRoot.guid;
-            		}
+            		$scope.addTestToDest(destParent, function() {
 
-            		if(prevSeq == 0.0 && nextSeq == 0.0) {
-            			item.sequence = 1.0;
-            		} else if(prevSeq > 0.0 && nextSeq == 0.0) {
-            			item.sequence = prevSeq + 1.0;
-            		} else {
-            			item.sequence = (parseFloat(prevSeq) + parseFloat(nextSeq)) / 2;	
-            		}
-            		QuestionFolderService.updateQuestionFolder(item, function(userFolder) {
-            			if(userFolder==null){
-                    		$rootScope.blockLeftPanel.stop();
-                     		CommonService.showErrorMessage(e8msg.error.cantSave);
-                     		return;
-                     	}
             			if(sourceParent && sourceParent.node && sourceParent.node.nodes.length==0) {
             				sourceParent.node.nodes.push(CommonService.getEmptyFolder());
             			}
-                        $rootScope.blockLeftPanel.stop();
-            		});
-            	}
-                
+
+            			if(sourceParent == null) {
+            				var questionIndex = 0;
+            				$scope.defaultFolders.forEach(function(node){
+            					if(node.nodeType == EnumService.NODE_TYPE.question) {
+            						node.questnNumber = ++questionIndex;
+            					}
+            				})
+            			}
+            			if(destParent.node) {
+            				var questionIndex = 0;
+            				destParent.node.nodes.forEach(function(node){
+            					if(node.nodeType == EnumService.NODE_TYPE.question) {
+            						node.questnNumber = ++questionIndex;
+            					}
+            				})
+            			}
+            			if(destParent == null || destParent.node == null) {
+            				var questionIndex = 0;
+            				$scope.defaultFolders.forEach(function(node){
+            					if(node.nodeType == EnumService.NODE_TYPE.question) {
+            						node.questnNumber = ++questionIndex;
+            					}
+            				})
+            			}
+            			if(sourceParent && sourceParent.node) {
+            				var questionIndex = 0;
+            				sourceParent.node.nodes.forEach(function(node){
+            					if(node.nodeType == EnumService.NODE_TYPE.question) {
+            						node.questnNumber = ++questionIndex;
+            					}
+            				})
+            			}
+
+            			$rootScope.blockLeftPanel.stop();
+            		});                        
+            	});            		            		
             }
-        });
+            else if(item.nodeType == EnumService.NODE_TYPE.folder) {
+
+            	if(prev) {
+            		$scope.getFolderNodeSequence(prev.node);
+            		prevSeq = $scope.itemSeq;
+            	}
+            	if(next) { 
+            		$scope.getFolderNodeSequence(next.node);
+            		nextSeq = $scope.itemSeq;
+            	}            		 
+
+            	if(destParent.node) {
+            		item.parentId = destParent.node.guid;            			
+            	} else {
+            		item.parentId = $scope.myTestRoot.guid;
+            	}
+
+            	if(prevSeq == 0.0 && nextSeq == 0.0) {
+            		item.sequence = 1.0;
+            	} else if(prevSeq > 0.0 && nextSeq == 0.0) {
+            		item.sequence = prevSeq + 1.0;
+            	} else {
+            		item.sequence = (parseFloat(prevSeq) + parseFloat(nextSeq)) / 2;	
+            	}
+            	QuestionFolderService.updateQuestionFolder(item, function(userFolder) {
+            		if(userFolder==null){
+            			$rootScope.blockLeftPanel.stop();
+            			CommonService.showErrorMessage(e8msg.error.cantSave);
+            			return;
+            		}
+            		if(sourceParent && sourceParent.node && sourceParent.node.nodes.length==0) {
+            			sourceParent.node.nodes.push(CommonService.getEmptyFolder());
+            		}
+            		$rootScope.blockLeftPanel.stop();
+            	});
+            }                            
+        };
         
         $scope.insertTestBindingToDest = function(destFolder, questionId, callback) {
         	var destNode = destFolder.node;

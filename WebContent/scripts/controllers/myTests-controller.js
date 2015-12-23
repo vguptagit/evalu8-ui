@@ -115,7 +115,218 @@ angular.module('e8MyTests')
             $scope.dragStarted = false;
         });
 
-        $scope.$on('dragEnd', function (event, destParent, source, sourceParent,
+        $scope.treeOptions = {
+                
+                beforeDrag: function (sourceNodeScope) {
+                    if(sourceNodeScope.node.hasOwnProperty('draggable') && sourceNodeScope.node.draggable == false) {
+                        sourceNodeScope.$$apply = false;
+                        return false;
+                    }    
+                    return true;
+                },
+                dragMove: function(e) {
+                    $scope.dragStarted = true;
+                },
+                beforeDrop: function(e) {
+                    
+                    var source = e.source.nodeScope;
+                    var sourceParent = e.source.nodeScope.$parentNodeScope;
+
+                    var mouseOverNode = null;
+                    if($rootScope.tree)
+                        mouseOverNode = $rootScope.tree.mouseOverNode;
+
+                    if (mouseOverNode) {
+                        $rootScope.tree = { mouseOverNode: null };
+                        mouseOverNode.hover = false;
+                    }
+
+                    if (mouseOverNode && (mouseOverNode != source)) {
+
+                        e.source.nodeScope.$$apply = false;
+                        $scope.dropIntoFolder(source, sourceParent, mouseOverNode);
+                        return;                        
+                    }                    
+
+                    var destIndex = e.dest.index;
+                    
+                    var prev;
+                    if(e.source.index < destIndex) {
+                    	prev = e.dest.nodesScope.childNodes()[destIndex];	
+                    } else {
+                    	prev = e.dest.nodesScope.childNodes()[destIndex-1];
+                    }
+                    
+                    var next;
+                    if(e.source.index < destIndex) {
+                    	next = e.dest.nodesScope.childNodes()[destIndex+1];	
+                    } else {
+                    	next = e.dest.nodesScope.childNodes()[destIndex];
+                    }                                                                
+
+                    if(source.node.nodeType=="test") {
+                        if(next && next.node.nodeType == "folder") { 
+                            e.source.nodeScope.$$apply = false;
+                            return;
+                        }                    
+                    }  
+                    
+                    if(source.node.nodeType=="test") {
+                    	if(prev && (prev.node.nodeType == "archiveRoot" || prev.node.nodeType == "archiveFolder" || prev.node.nodeType == "archiveTest")) { 
+                            e.source.nodeScope.$$apply = false;
+                            return;
+                        }                    
+                    }
+                    
+                    if(source.node.nodeType=="folder") {
+                        if(prev && (prev.node.nodeType == "test" || prev.node.nodeType == "archiveRoot" || prev.node.nodeType == "archiveFolder" || prev.node.nodeType == "archiveTest")) { 
+                            e.source.nodeScope.$$apply = false;
+                            return;
+                        }                    
+                    } 
+
+                    var destination = e.dest.nodesScope;
+
+                    var editModeQuestions=$(destination.$parent.$element).find("li[printmode=false]");
+
+                    if(editModeQuestions.length>0 && destination.$parent.controller =="TestCreationFrameController"){
+                        $scope.dragStarted = false;
+                        e.source.nodeScope.$$apply = false;
+                        $rootScope.$broadcast('beforeDrop');
+                    }
+
+                    var IsTargetAreaInScope=false;     
+                    if(angular.element(e.target).hasClass('angular-ui-tree')) {
+                        IsTargetAreaInScope = true;                  
+                    }                      
+
+                    if( !IsTargetAreaInScope && 
+                            (destination.$parent &&  
+                                    (
+                                            $(destination.$parent.$element).find("ol").attr('droppable') == 'false' ||
+                                            $(destination.$parent.$element).closest("ol").attr('droppable') == 'false'
+                                    )                              
+                            )
+                    ) {
+
+                        e.source.nodeScope.$$apply = false;
+                    }
+                    if(destination.node){
+                        if(destination.node.nodeType == "archiveRoot"){
+
+                            e.source.nodeScope.$$apply = false;
+                        }
+                    }
+ 
+                },
+                dropped: function(e) {
+                    
+                    var destParent = e.dest.nodesScope.$parent;
+                    var source = e.source.nodeScope;
+                    var sourceParent = e.source.nodeScope.$parentNodeScope;
+                    var sourceIndex = e.source.index;
+                    var destIndex = e.dest.index;
+                    var prev = e.dest.nodesScope.childNodes()[destIndex-1];
+                    var next = e.dest.nodesScope.childNodes()[destIndex+1];                                        
+                    
+                    $scope.dragEnd(e, destParent, source, sourceParent,
+                              sourceIndex, destIndex, prev, next);     
+                }
+              };
+
+        $scope.dropIntoFolder = function (source, sourceParent, mouseOverNode) {
+            var item = source.node;
+            
+            var duplicateTitle = false;
+            
+            UserFolderService.getUserFoldersByParentFolderId(mouseOverNode.node.guid, function (userFolders) {
+                if(userFolders==null){
+                    $rootScope.blockLeftPanel.stop();
+                     CommonService.showErrorMessage(e8msg.error.cantFetchFolders);
+                     return;
+                 }        
+                if(item.nodeType == EnumService.NODE_TYPE.folder) {
+                    userFolders.forEach(function(nodeItem) {                            
+                        if(nodeItem.nodeType == EnumService.NODE_TYPE.folder && nodeItem.title == item.title) {
+                            duplicateTitle = true;                             
+                        }                        
+                    })
+                    
+                    if(duplicateTitle) {
+                        $scope.IsConfirmation = false;
+                        $scope.message = "A folder already exists with this name.";
+                        $modal.open(confirmObject);
+                        
+                        $rootScope.blockLeftPanel.stop();
+                        return false;
+                    }                        
+                }
+                
+                TestService.getTests(mouseOverNode.node.guid, function (tests) {
+                    if(tests==null){
+                        $rootScope.blockLeftPanel.stop();
+                        CommonService.showErrorMessage(e8msg.error.cantFetchTests)
+                        return;
+                    }
+                    if(item.nodeType == EnumService.NODE_TYPE.test) {
+                        tests.forEach(function(nodeItem) {                        
+                            if(nodeItem.nodeType == EnumService.NODE_TYPE.test && nodeItem.title == item.title) {
+                                duplicateTitle = true;                             
+                            }                                                    
+                        })
+                        
+                        if(duplicateTitle) {
+                            $scope.IsConfirmation = false;
+                            $scope.message = "A test already exists with this name.";
+                            $modal.open(confirmObject);
+                            
+                            $rootScope.blockLeftPanel.stop();
+                            return false;
+                        }                        
+                    }
+                    
+                    source.remove();                                        
+                    
+                    if(item.nodeType == EnumService.NODE_TYPE.folder) {
+                        item.parentId = mouseOverNode.node.guid;
+                        UserFolderService.getFoldersMinSeq(mouseOverNode.node, function(minSeq) {
+                            item.sequence = minSeq==0.0 ? 1.0 : (0.0 + minSeq)/2;
+                            UserFolderService.saveUserFolder(item, function(userFolder) {
+                                if(userFolder==null){
+                                    $rootScope.blockLeftPanel.stop();
+                                     CommonService.showErrorMessage(e8msg.error.cantSave);
+                                     return;
+                                 }
+                                if(sourceParent && sourceParent.node && sourceParent.node.nodes.length==0) {
+                                    sourceParent.node.nodes.push(CommonService.getEmptyFolder());
+                                }
+                                
+                                $rootScope.blockLeftPanel.stop();
+                            });                    
+                        })                    
+                    } else {
+                        var sourceFolder = $scope.removeTestBindingFromSource(sourceParent, item.guid);
+                        UserFolderService.saveUserFolder(sourceFolder, function(userFolder) {
+                            if(userFolder==null){
+                                $rootScope.blockLeftPanel.stop();
+                                 CommonService.showErrorMessage(e8msg.error.cantSave);
+                                 return;
+                             }
+                            $scope.insertTestBindingToDest(mouseOverNode, item.guid, function() {
+                                
+                                if(sourceParent && sourceParent.node && sourceParent.node.nodes.length==0) {
+                                    sourceParent.node.nodes.push(CommonService.getEmptyFolder());
+                                }
+                                
+                                $rootScope.blockLeftPanel.stop();                                    
+                            });
+                        });
+                    }
+                });
+            });
+        };
+
+        $scope.dragEnd = function (event, destParent, source, sourceParent,
   			  sourceIndex, destIndex, prev, next) {
         	          
   			if(!$scope.dragStarted) {
@@ -129,12 +340,7 @@ angular.module('e8MyTests')
                 source.node.showArchiveIcon=false;
                 $rootScope.$broadcast("dropTest", source, destIndex);
                 return false;
-            }
-            
-            if($rootScope.dropTestOrQuestion && $rootScope.dropTestOrQuestion == "cancel") {
-            	$rootScope.dropTestOrQuestion = null;
-            	return false;
-            }
+            }            
             
             $rootScope.blockLeftPanel.start();                        
 
@@ -419,7 +625,7 @@ angular.module('e8MyTests')
             	}
                 
             }
-        });
+        };
         
         $scope.insertTestBindingToDest = function(destFolder, testId, callback) {
         	var destNode = destFolder.node;

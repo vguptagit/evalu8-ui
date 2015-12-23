@@ -189,7 +189,64 @@ angular
 								$scope.dragStarted = true;
 							});
 
-							$scope.$on('dragEnd', function(event, destParent,
+					        $scope.treeOptions = {
+					                
+					                beforeDrag: function (sourceNodeScope) {
+					                    if(sourceNodeScope.node.hasOwnProperty('draggable') && sourceNodeScope.node.draggable == false) {
+					                        sourceNodeScope.$$apply = false;
+					                        return false;
+					                    }    
+					                    return true;
+					                },
+					                dragMove: function(e) {
+					                    $scope.dragStarted = true;
+					                },
+					                beforeDrop: function(e) {
+                                                                         
+					                    var destination = e.dest.nodesScope;
+
+					                    var editModeQuestions=$(destination.$parent.$element).find("li[printmode=false]");
+
+					                    if(editModeQuestions.length>0 && destination.$parent.controller =="TestCreationFrameController"){
+					                        $scope.dragStarted = false;
+					                        e.source.nodeScope.$$apply = false;
+					                        $rootScope.$broadcast('beforeDrop');
+					                    }
+
+					                    var IsTargetAreaInScope=false;     
+					                    if(angular.element(e.target).hasClass('angular-ui-tree')) {
+					                        IsTargetAreaInScope = true;                  
+					                    }                      
+
+					                    if( !IsTargetAreaInScope && 
+					                            (destination.$parent &&  
+					                                    (
+					                                            $(destination.$parent.$element).find("ol").attr('droppable') == 'false' ||
+					                                            $(destination.$parent.$element).closest("ol").attr('droppable') == 'false'
+					                                    )                              
+					                            )
+					                    ) {
+
+					                        e.source.nodeScope.$$apply = false;
+					                    }
+					 
+					                },
+					                dropped: function(e) {
+					                    
+					                    var destParent = e.dest.nodesScope.$parent;
+					                    var source = e.source.nodeScope;
+					                    var sourceParent = e.source.nodeScope.$parentNodeScope;
+					                    var sourceIndex = e.source.index;
+					                    var destIndex = e.dest.index;
+					                    var prev = e.dest.nodesScope.childNodes()[destIndex-1];
+					                    var next = e.dest.nodesScope.childNodes()[destIndex+1];                                        
+					                    
+					                    $scope.dragEnd(e, destParent, source, sourceParent,
+					                              sourceIndex, destIndex, prev, next);     
+					                }
+					              };
+					        
+							$scope.dragEnd = function(event, destParent,
 									source, sourceParent, sourceIndex,
 									destIndex) {
 								
@@ -218,16 +275,7 @@ angular
 									}
 
 								}
-							});							
-
-							$scope.$on('beforeDrop', function(event) {
-								 if (SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode) {                                 
-                                     $scope.IsConfirmation = false;
-                                     $scope.message = "A question is already in Edit mode, save it before adding or reordering questions.";
-                                     $modal.open(confirmObject);
-                                     $scope.dragStarted = false;                                     
-                                 }
-							});
+							};							
 
 							$scope.isTestWizard = false;
 							// Broadcast from SharedTabService.onClickTab()
