@@ -201,6 +201,12 @@ angular
 					                dragMove: function(e) {
 					                    $scope.dragStarted = true;
 					                },
+					                dragStart: function(e) {
+					                	$('body *').css({'cursor':'url("images/grabbing.cur"), move'});
+					                },
+					                dragStop: function(e) {
+					                	$('body *').css({'cursor':''});
+					                },
 					                beforeDrop: function(e) {
                                                                          
 					                    var destination = e.dest.nodesScope;
