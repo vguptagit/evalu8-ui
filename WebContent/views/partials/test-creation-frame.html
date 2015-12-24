@@ -67,6 +67,7 @@
 				<li ng-click="addNewTest()">
 					<button type="button" event-focus="click"
 						event-focus-id="testCaption"
+						id="btnAddNewTab" 
 						class="btn btn-default glyphicon glyphicon-plus addNewTab"
 						tooltip-placement="bottom" tooltip-append-to-body="true"
 						tooltip-trigger="mouseenter" tooltip="New tab"></button>
@@ -82,10 +83,11 @@
 					title="{{test.tabTitle}}" data-toggle="tab">{{test.tabTitle}}</a>
 				</li>
 				<li class="dropdown" ng-show="tests.length > 5"><a
+					id="btnMore"
 					class="dropdown-toggle dot" data-toggle="dropdown"
 					tooltip-placement="bottom" tooltip-append-to-body="true"
 					tooltip-trigger="mouseenter" tooltip="More tabs">...</a>
-					<ul class="dropdown-menu">
+					<ul class="dropdown-menu" id="btnMoreUl">
 						<li ng-show="$index >= 5" ng-repeat="test in tests"
 							ng-class="{active: isActiveTab(test.id)}"
 							ng-click="onClickTab(test)" id="{{test.id}}" event-focus="click"
