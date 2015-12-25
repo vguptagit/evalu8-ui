@@ -235,6 +235,12 @@ angular.module('e8MyTests')
                     var prev = e.dest.nodesScope.childNodes()[destIndex-1];
                     var next = e.dest.nodesScope.childNodes()[destIndex+1];                                        
                     
+                	if(destParent.controller == "TestCreationFrameController" 
+                		&& SharedTabService.tests[SharedTabService.currentTabIndex].questions 
+                		&& SharedTabService.tests[SharedTabService.currentTabIndex].questions.length) {
+                		SharedTabService.tests[SharedTabService.currentTabIndex].questions.splice(destIndex, 1)
+                	}
+                	
                     $scope.dragEnd(e, destParent, source, sourceParent,
                               sourceIndex, destIndex, prev, next);     
                 }

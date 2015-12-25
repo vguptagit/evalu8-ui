@@ -74,6 +74,12 @@ $scope.treeOptions = {
                 var prev = e.dest.nodesScope.childNodes()[destIndex-1];
                 var next = e.dest.nodesScope.childNodes()[destIndex+1];                                        
                 
+            	if(destParent.controller == "TestCreationFrameController" 
+            		&& SharedTabService.tests[SharedTabService.currentTabIndex].questions 
+            		&& SharedTabService.tests[SharedTabService.currentTabIndex].questions.length) {
+            		SharedTabService.tests[SharedTabService.currentTabIndex].questions.splice(destIndex, 1)
+            	}
+            	
                 $scope.dragEnd(e, destParent, source, sourceParent,
                           sourceIndex, destIndex, prev, next);     
             }
@@ -136,14 +142,14 @@ $scope.treeOptions = {
    });
     
 	 //broad casting event when a question template is dropped to the test creation frame.
-     $scope.$on('dragEnd', function (event, destParent, source, sourceParent, sourceIndex, destIndex) {
+     $scope.dragEnd = function (event, destParent, source, sourceParent, sourceIndex, destIndex) {
     	 if(source.$treeScope.$element.attr("id")!="Custom-Qstn-tree-root")
     		   return;
      	if($scope.dragStarted) {
     		$scope.dragStarted = false;    		
     		$rootScope.$broadcast("dropQuestion", source.node,  destIndex, "CustomQuestions","dragEvnt");
      	}
-     });
+     };
 
    //to set Active Resources Tab , handled in ResourcesTabsController
      $rootScope.$broadcast('handleBroadcast_setActiveResourcesTab', EnumService.RESOURCES_TABS.customquestions);
