@@ -237,10 +237,18 @@ angular
 										"div:contains('" + disciplineName
 												+ "')");
 
-								if (scrollTo.offset().top > (container.offset().top + container.height())) {
+								if (scrollTo.offset().top+15>(container.offset().top +container.height())) {
 									container.scrollTop(scrollTo.offset().top
 										- container.offset().top
 										+ container.scrollTop());
+								}else if (scrollTo.offset().top-15<(container.height()-container.offset().top )){
+									container.scrollTop(
+										-container.offset().top
+										-container.scrollTop()-scrollTo.offset().top);
+								}else{
+									container.scrollTop(
+										-container.offset().top
+										+container.scrollTop()+scrollTo.offset().top);
 								}
 							}
 
