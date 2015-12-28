@@ -91,7 +91,9 @@ login-container .panel-footer {
 	right: 20px;
 	top: 156px;
 }
-
+.onCreateNewNodeShow{
+	top: 196px;
+}
 .save-dropdown a {
 	cursor: pointer;
 	outline: 0;

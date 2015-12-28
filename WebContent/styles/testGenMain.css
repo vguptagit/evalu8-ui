@@ -310,11 +310,11 @@ div.resource {
 	white-space: normal;
 	background-color: #F8f8f8;
 	font-size: 12px;
-	position: relative;
+	 
 	cursor: default;
 	height: 40px;
 	border-bottom: 1px solid #fff;
-	z-index: 1000;
+	 
 }
 .emptyYourTestsMsgDiv {
 	width: 100%;
