@@ -2954,6 +2954,52 @@ var CustomQuestionTemplate =
 
 						 }}	
 		,
+		"ShortAnswer":	
+						{"printCaption": "Short Answer Question" ,
+						  "editCaption": "Enter Short Answer Question",
+						 "printOption": "Recommended Answer" ,
+						 "editOption": "Enter Short  Recommended Answer",
+						 "editMainText":"Enter Short Answer Question",
+						 "DISPLAY": true,
+						 makeExtra : function(element,tag,xml){
+							 	switch(tag.TAG){
+							 	 case "p":
+									 var printElement = element.find("div.optionLabelView").eq(0);
+									 var textEntries = printElement.find("textEntryInteraction");
+									 textEntries.each(function(){
+										 printElement.html(printElement.html().replace($(this).get(0).outerHTML,"<span class='blank'> _____________________ </span>"));
+									 })
+									 
+									
+									 
+									 $("<div class='blankBtnDiv'><button class='editView blankButton' ng-mousedown='addBlank(this,$event)' ng-disabled='captionFocus'>Add Blank</button></div>").insertAfter(printElement.next());
+									
+									 $("<div class = 'editView EssayHeader' id='crtAns'>Correct Answer</div>").insertAfter(element.find("button.editView.blankButton").eq(0));
+														//$("<div id='crtAnsSpace'></div>").insertBefore(element.find("#crtAns").eq(0));
+										
+									var editElement = element.find("#qtiCaption").eq(0);
+									
+									editElement.attr("ng-focus","captionFocus = false").attr("ng-blur","captionFocus = true")
+									 
+									 editElement.attr("onkeydown","return QTI.getSpanId(this,event)");
+									 var crtAns = element.find("#crtAns").eq(0);
+									 var textEntries = editElement.find("textEntryInteraction");
+									 
+									 var responseDeclarations = element.parents("div[data-qti-tag='assessmentItem']").find("div.qti-responseDeclaration");
+									 for(var i=0;i<textEntries.length;i++){
+										 editElement.html(editElement.html().replace(textEntries[i].outerHTML,"<button id='"+textEntries[i].attributes.responseIdentifier.nodeValue+"' onkeydown='return QTI.getSpanId(this,event)' class='blankFIBButton '><span contenteditable='false' class='blankWidth editView'><b contenteditable='false'>" + String.fromCharCode(65 + i) + ".</b>Fill Blank</span></button>&nbsp;"));
+										 crtAns.append(responseDeclarations.eq(i).children(0));
+									 }
+									 
+								 case "responseDeclaration":
+									 tag.DISPLAY = true;
+								 
+								 case "mapping":
+									 tag.DISPLAY = true;
+							 	}
+
+						 }}	
+		,
 		"FillInBlanks":	
 			
 		{"printCaption": "Fill in the Blanks Question <br> _________________________" ,

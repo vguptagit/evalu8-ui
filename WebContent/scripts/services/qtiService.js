@@ -53,8 +53,16 @@ angular.module('evalu8Demo')
 					qtiModel.editOption_Column_B = QuestionPrefilledModal[quizType].editOption_Column_B;					
 
 					break;
+					
+				case 'ShortAnswer':
+					qtiModel.FbCaption = getFBQuestionCaption(xml);		
+					qtiModel.Caption = getEssayCaption(xml);							
+					qtiModel.Options = getSACorrectAnswersList(xml);	
+					qtiModel.EditOption = QuestionPrefilledModal[quizType].editOption;
+					qtiModel.PrintOption = QuestionPrefilledModal[quizType].printOption;	
+					break;
 
-				case 'FillInBlanks':		
+				case 'FillInBlanks':
 					qtiModel.FbCaption = getFBQuestionCaption(xml);		
 					qtiModel.Caption = getFbCaptionHTML(qtiModel.FbCaption);						
 					qtiModel.CorrectAnswerHtml = getFBCorrectAnswersHtml(xml);		
@@ -126,10 +134,22 @@ angular.module('evalu8Demo')
 				return correctAnswers;
 			}
 			
+			var getSACorrectAnswersList = function(qtiXML) {
+				var correctAnswerList = [];		
+				var correctAnswers = '';
+			
+				$(qtiXML).find('responseDeclaration').each(function(i, e) {
+					if($(this)[0].childNodes.length>0){	
+						correctAnswerList.push(decodeSpecialCharText($(this)[0].childNodes[0].childNodes[0].attributes['mapKey'].nodeValue));
+					}
+				});				
+				
+				return correctAnswerList;
+			}
+			
 			// to render Caption of Fill in the blank which contains html content
 			var getFbCaptionHTML = function(Caption) {
 				var FbCaption = "";
-
 				var textEntryInteraction = '<button data-ng-if="(caption.type==2)" id="RESPONSE_$index" onkeydown="return getSpanId(this,event)" class="blankFIBButton">'+
 				'<span contenteditable="false" class="blankWidth editView"><b contenteditable="false">$charIndex.</b>Fill Blank</span></button> &nbsp;';
 
@@ -204,6 +224,8 @@ angular.module('evalu8Demo')
 					optionList = getSimpleChoices(xml);
 					break;
 				case 'Essay':
+					break;
+				case 'ShortAnswer':
 					break;
 				case 'FillInBlanks':
 					break;
@@ -282,6 +304,8 @@ angular.module('evalu8Demo')
 					correctAnswerList = getMultipleResponseCorrectAnswer(qtiXML);
 					break;
 				case 'Essay':
+					break;
+				case 'ShortAnswer':
 					break;
 				case 'FillInBlanks':
 					break;
@@ -425,6 +449,15 @@ angular.module('evalu8Demo')
 						"editRecommendedAnswer" : "Enter Essay Recommended Answer",							
 						"DISPLAY" : true
 					},
+					
+					"ShortAnswer" : {
+						"qstnSectionTitle":"Short Answer Question",
+						"printCaption" : "Short Answer Question",
+						"editCaption" : "Enter Short Answer Question",
+						"printOption" : "Short Recommended Answer",
+						"editOption" : "Enter correct Answer",							
+						"DISPLAY" : false
+					},
 
 					"FillInBlanks" : {
 						"qstnSectionTitle":"Enter Question Text, Choose Add Blank",
@@ -485,6 +518,60 @@ angular.module('evalu8Demo')
 					optionTagAppend = optionTagAppend.replace('@val', "<![CDATA[" + optionText + "]]>");
 					var item = $.parseXML(optionTagAppend); 
 					$(xml).find('itemBody').find('choiceInteraction').append($(item).children(0));
+
+				});		
+
+
+			}
+			
+			var buildEssayShortAnswerTag = function(xml,node) {
+				
+				$(xml).find('itemBody').find('textEntryInteraction').remove();				
+				var optionText = '';
+				var optionTag = '<textEntryInteraction expectedLength="150" responseIdentifier="@RESPONSE" />';		
+			
+
+				$.each(node.qtiModel.Options,function(index,Option) {
+					optionText = replaceImageFromJsonContent(Option);					
+					node.qtiModel.Options[index] = optionText;
+					if(optionText.startsWith('<p>')){
+						optionText = optionText.substring(3, optionText.length-4);
+					}		
+					optionText = optionText==""?QuestionPrefilledModal[node.quizType].printOption:optionText;
+					var optionTagAppend = optionTag.replace('@RESPONSE', 'RESPONSE_' + (index + 1));
+					var item = $.parseXML(optionTagAppend); 
+					$(xml).find('itemBody').append($(item).children(0));
+
+				});		
+
+
+			}
+			
+			var buildResponseDeclarationTag = function(xml,node) {
+				
+				var responseDeclaration = $(xml).find('responseDeclaration');
+				responseDeclaration.remove();
+				
+				var optionText = '';
+			
+				var optionTag = ' <responseDeclaration identifier="@RESPONSE" cardinality="single" baseType="string">'
+					+'<mapping defaultValue="0"><mapEntry mapKey="@RESP" mappedValue="1" caseSensitive="false"/></mapping></responseDeclaration>';
+
+				$.each(node.qtiModel.Options,function(index,Option) {
+					optionText = replaceImageFromJsonContent(Option);					
+					node.qtiModel.Options[index] = optionText;
+					if(optionText.startsWith('<p>')){
+						optionText = optionText.substring(3, optionText.length-4);
+					}		
+					optionText = optionText==""?QuestionPrefilledModal[node.quizType].printOption:optionText;
+					var optionTagAppend = optionTag.replace('@RESPONSE', 'RESPONSE_' + (index + 1));
+					optionTagAppend = optionTagAppend.replace('@RESP', encodeSpecialCharText(optionText));
+					var item = $.parseXML(optionTagAppend); 
+					
+					if(index==0)
+						$(xml).find( "assessmentItem" ).prepend($(item).children(0));
+					else
+						$(xml).find( "responseDeclaration").eq(index-1).after($(item).children(0));
 
 				});		
 
@@ -618,6 +705,14 @@ angular.module('evalu8Demo')
 
 					$(xml).find('itemBody').find("extendedTextInteraction").eq(0).attr("expectedLines",node.qtiModel.EssayPageSize);
 					QTI.appendNodes($(xml).find('responseDeclaration').find('correctResponse').find('value').eq(0),"<![CDATA[" + node.qtiModel.RecommendedAnswer + "]]>");
+					break;
+					
+				case 'ShortAnswer':	
+					
+					buildEssayShortAnswerTag(xml,node);
+					
+					buildResponseDeclarationTag(xml,node);
+					
 					break;
 
 				case 'Matching':			

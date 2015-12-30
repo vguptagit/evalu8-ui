@@ -58,6 +58,9 @@ angular.module('e8MyTests')
 				case 'Essay':
 					return "views/editortmpl/es.html";
 					break;
+				case 'ShortAnswer':
+					return "views/editortmpl/sa.html";
+					break;
 				default:
 				}
 
@@ -496,7 +499,41 @@ angular.module('e8MyTests')
 			
 
 			}
+			
+			$scope.addCorrectEssayAnswer = function($index, node){
+				$scope.node.qtiModel.Options.splice($index + 1, 0, "");
+				$scope.focusEditorIndex = $index + 2;			
+			}
+			
+			$scope.removeCorrectAnswer = function($index){
+				if ($scope.node.qtiModel.Options.length >1){						
+					$scope.IsConfirmation = true;
+					$scope.message = "Are you sure you want to delete this answer?";
+					$modal.open(confirmObject).result
+					.then(function(ok) {
+						if (ok) {	
+						$scope.node.qtiModel.Options.splice($index,	1);	
 
+							$scope.onReady($index); 
+
+						}else{
+							$scope.onReady($index+1);
+						}
+					});
+				} else {
+					$scope.IsConfirmation = false;
+					$scope.message = "Minimum 1 answer is required ."
+					$modal.open(confirmObject).result
+					.then(function(ok) {
+						if (ok) {	
+							$scope.onReady($index+1); 
+						}
+					});
+				}
+
+			}
+			
+			
 
 			$scope.getTrustedHTML = function(html_code) {
 			    return $sce.trustAsHtml(html_code);
@@ -545,6 +582,8 @@ angular.module('e8MyTests')
 					$('#fbAnswerContainer').find('#'+blankId).remove();
 				});		
 			}
+			
+			
 
 			$scope.removeFIBblanks = function(spanElement, event){
 				var qtiCationElement;
