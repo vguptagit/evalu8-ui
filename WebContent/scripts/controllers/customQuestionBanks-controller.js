@@ -45,6 +45,14 @@ $scope.treeOptions = {
                     e.source.nodeScope.$$apply = false;
                     $rootScope.$broadcast('beforeDrop');
                 }
+                
+                if (SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
+                    $scope.IsConfirmation = false;
+                    $scope.message = "A Custom Question cannot be added to the TEST Wizard.";
+                    $modal.open(confirmObject);
+                    $scope.dragStarted = false;
+                    e.source.nodeScope.$$apply = false;
+                }
 
                 var IsTargetAreaInScope=false;     
                 if(angular.element(e.target).hasClass('angular-ui-tree')) {
