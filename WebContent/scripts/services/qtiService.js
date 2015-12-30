@@ -59,7 +59,8 @@ angular.module('evalu8Demo')
 					qtiModel.Caption = getEssayCaption(xml);							
 					qtiModel.Options = getSACorrectAnswersList(xml);	
 					qtiModel.EditOption = QuestionPrefilledModal[quizType].editOption;
-					qtiModel.PrintOption = QuestionPrefilledModal[quizType].printOption;	
+					qtiModel.PrintOption = QuestionPrefilledModal[quizType].printOption;
+					qtiModel.BlankSize = getFBQuestionBlankSize(xml);
 					break;
 
 				case 'FillInBlanks':
@@ -528,8 +529,8 @@ angular.module('evalu8Demo')
 				
 				$(xml).find('itemBody').find('textEntryInteraction').remove();				
 				var optionText = '';
-				var optionTag = '<textEntryInteraction expectedLength="150" responseIdentifier="@RESPONSE" />';		
-			
+				var optionTag = '<textEntryInteraction expectedLength="@RESP" responseIdentifier="@RESPONSE" />';		
+			    
 
 				$.each(node.qtiModel.Options,function(index,Option) {
 					optionText = replaceImageFromJsonContent(Option);					
@@ -539,12 +540,11 @@ angular.module('evalu8Demo')
 					}		
 					optionText = optionText==""?QuestionPrefilledModal[node.quizType].printOption:optionText;
 					var optionTagAppend = optionTag.replace('@RESPONSE', 'RESPONSE_' + (index + 1));
+					optionTagAppend = optionTagAppend.replace('@RESP', node.qtiModel.BlankSize);
 					var item = $.parseXML(optionTagAppend); 
 					$(xml).find('itemBody').append($(item).children(0));
 
-				});		
-
-
+				});	
 			}
 			
 			var buildResponseDeclarationTag = function(xml,node) {
