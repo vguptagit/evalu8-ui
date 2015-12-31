@@ -148,7 +148,7 @@ angular.module('e8MyTests')
                         mouseOverNode.hover = false;
                     }
 
-                    if (mouseOverNode && (mouseOverNode != source)) {
+                    if (mouseOverNode && (mouseOverNode.node != source.node)) {
 
                         e.source.nodeScope.$$apply = false;
                         $scope.dropIntoFolder(source, sourceParent, mouseOverNode);
