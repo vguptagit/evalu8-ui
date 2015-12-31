@@ -2,7 +2,7 @@
 
 angular.module('evalu8Demo')
 
-.service('HttpService',['$http', 'UuidService', function ($http, UuidService) {
+.service('HttpService',['$http', 'UuidService','$upload', function ($http, UuidService, $upload) {
 	
 	this.getConfig = function(){
 
@@ -55,5 +55,14 @@ angular.module('evalu8Demo')
 	this.delete = function(url, methodConfig){
 		var config = $.extend({}, this.getConfig(), methodConfig);
 		return $http.delete(url, config);
+	}
+	
+	this.upload = function(url,file,methodConfig){
+		var config = $.extend({}, this.getConfig(), methodConfig);
+		return $upload.upload({
+            url: url,
+            headers: config.headers,
+            file: file
+        });
 	}
 }]);

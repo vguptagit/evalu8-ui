@@ -3,7 +3,7 @@
 	<div data-ng-if="!node.IsEditView" class="qtiPrintView" 
 		ng-mousedown="controller=='TestCreationFrameController'?selectQuestion(node):selectNode(this);">
 		<div class="questionPrintContainer">
-			<div>{{controller=='TestCreationFrameController'?$index + 1:node.questnNumber}})</div>
+			<div class = "qstnPrintViewIndex" ng-class="{twoDigitIndex: $index + 1 > 9 ,threedigitIndex: $index + 1 > 99, fourDigitIndex: $index + 1 > 999}">{{controller=='TestCreationFrameController' || 'PrintTestController'?$index + 1:node.questnNumber}})</div>
             <div class="printQuestionCaption" ng-style="{{setEssayPageSize(node.qtiModel)}}" data-ng-bind-html="getTrustedHTML(node.qtiModel.Caption==''?node.qtiModel.PrintCaption:node.qtiModel.Caption)"></div>
             <button id="QBPencil" type="button" ng-show="node.showEditQuestionIcon" 
 				class="newTest-close questionIcon action-icon-bg glyphicon glyphicon-plus" 
@@ -16,7 +16,7 @@
 
 	<div data-ng-if="node.IsEditView">
 		<div class='questionSectionTitle'>{{node.qtiModel.QstnSectionTitle}}</div>
-        <div>{{$index + 1}})</div>
+        <div ng-class="{twoDigitIndex: $index + 1 > 9 ,threedigitIndex: $index + 1 > 99, fourDigitIndex: $index + 1 > 999}">{{$index + 1}})</div>
 		<div class="questionEditContainer">
 			<div class="captionContainer">
 				<div id="questionCaption" contenteditable="true"

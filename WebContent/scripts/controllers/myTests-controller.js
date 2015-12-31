@@ -106,16 +106,7 @@ angular.module('e8MyTests')
 			$scope.loadTree();								
 		})
 
-		
-        $scope.$on('dragStarted', function () {
-            $scope.dragStarted = true;
-        });
-
-        $scope.$on('dragCancel', function () {
-            $scope.dragStarted = false;
-        });
-
-        $scope.treeOptions = {
+	  $scope.treeOptions = {
                 
                 beforeDrag: function (sourceNodeScope) {
                     if(sourceNodeScope.node.hasOwnProperty('draggable') && sourceNodeScope.node.draggable == false) {
@@ -133,6 +124,7 @@ angular.module('e8MyTests')
                 },
                 dragStop: function(e) {
                 	$('body *').css({'cursor':''});
+                	$scope.dragStarted = false;
                 },
                 beforeDrop: function(e) {
                     
@@ -146,6 +138,7 @@ angular.module('e8MyTests')
                     if (mouseOverNode) {
                         $rootScope.tree = { mouseOverNode: null };
                         mouseOverNode.hover = false;
+                        $scope.dragStarted = false;
                     }
 
                     if (mouseOverNode && (mouseOverNode.node != source.node)) {
@@ -174,6 +167,7 @@ angular.module('e8MyTests')
                     if(source.node.nodeType=="test") {
                         if(next && next.node.nodeType == "folder") { 
                             e.source.nodeScope.$$apply = false;
+                            $scope.dragStarted = false;
                             return;
                         }                    
                     }  
@@ -181,6 +175,7 @@ angular.module('e8MyTests')
                     if(source.node.nodeType=="test") {
                     	if(prev && (prev.node.nodeType == "archiveRoot" || prev.node.nodeType == "archiveFolder" || prev.node.nodeType == "archiveTest")) { 
                             e.source.nodeScope.$$apply = false;
+                            $scope.dragStarted = false;
                             return;
                         }                    
                     }
@@ -188,6 +183,7 @@ angular.module('e8MyTests')
                     if(source.node.nodeType=="folder") {
                         if(prev && (prev.node.nodeType == "test" || prev.node.nodeType == "archiveRoot" || prev.node.nodeType == "archiveFolder" || prev.node.nodeType == "archiveTest")) { 
                             e.source.nodeScope.$$apply = false;
+                            $scope.dragStarted = false;
                             return;
                         }                    
                     } 
@@ -217,11 +213,13 @@ angular.module('e8MyTests')
                     ) {
 
                         e.source.nodeScope.$$apply = false;
+                        $scope.dragStarted = false;
                     }
                     if(destination.node){
                         if(destination.node.nodeType == "archiveRoot"){
 
                             e.source.nodeScope.$$apply = false;
+                            $scope.dragStarted = false;
                         }
                     }
  
@@ -236,11 +234,23 @@ angular.module('e8MyTests')
                     var prev = e.dest.nodesScope.childNodes()[destIndex-1];
                     var next = e.dest.nodesScope.childNodes()[destIndex+1];                                        
                     
-                	if(destParent.controller == "TestCreationFrameController" 
-                		&& SharedTabService.tests[SharedTabService.currentTabIndex].questions 
-                		&& SharedTabService.tests[SharedTabService.currentTabIndex].questions.length) {
-                		SharedTabService.tests[SharedTabService.currentTabIndex].questions.splice(destIndex, 1)
-                	}
+                    if(destParent.controller == "TestCreationFrameController" ){
+                    	if(SharedTabService.tests[SharedTabService.currentTabIndex].questions 
+                    			&& SharedTabService.tests[SharedTabService.currentTabIndex].questions.length){
+
+                    		SharedTabService.tests[SharedTabService.currentTabIndex].questions.splice(destIndex, 1);
+                    	}else if(SharedTabService.tests[SharedTabService.currentTabIndex].criterias){
+                    		
+                    		var index = 0, criteriaIndex = 0;
+                    		SharedTabService.tests[SharedTabService.currentTabIndex].criterias.forEach(function(criteria) {
+                    			if(criteria.nodeType) {
+                    				criteriaIndex = index;                    					
+                    			}
+                    			index++;
+                    		});
+                    		SharedTabService.tests[SharedTabService.currentTabIndex].criterias.splice(criteriaIndex, 1);
+                    	}
+                    }
                 	
                     $scope.dragEnd(e, destParent, source, sourceParent,
                               sourceIndex, destIndex, prev, next);     

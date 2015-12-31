@@ -218,7 +218,7 @@ angular
 					                        e.source.nodeScope.$$apply = false;
 					                        $rootScope.$broadcast('beforeDrop');
 					                    }
-
+					                    
 					                    var IsTargetAreaInScope=false;     
 					                    if(angular.element(e.target).hasClass('angular-ui-tree')) {
 					                        IsTargetAreaInScope = true;                  
@@ -247,11 +247,23 @@ angular
 					                    var prev = e.dest.nodesScope.childNodes()[destIndex-1];
 					                    var next = e.dest.nodesScope.childNodes()[destIndex+1];                                        
 					                    
-					                	if(destParent.controller == "TestCreationFrameController" 
-					                		&& SharedTabService.tests[SharedTabService.currentTabIndex].questions 
-					                		&& SharedTabService.tests[SharedTabService.currentTabIndex].questions.length) {
-					                		SharedTabService.tests[SharedTabService.currentTabIndex].questions.splice(destIndex, 1)
-					                	}
+					                    if(destParent.controller == "TestCreationFrameController" ){
+					                    	if(SharedTabService.tests[SharedTabService.currentTabIndex].questions 
+					                    			&& SharedTabService.tests[SharedTabService.currentTabIndex].questions.length){
+
+					                    		SharedTabService.tests[SharedTabService.currentTabIndex].questions.splice(destIndex, 1);
+					                    	}else if(SharedTabService.tests[SharedTabService.currentTabIndex].criterias){
+					                    		
+					                    		var index = 0, criteriaIndex = 0;
+					                    		SharedTabService.tests[SharedTabService.currentTabIndex].criterias.forEach(function(criteria) {
+					                    			if(criteria.nodeType) {
+					                    				criteriaIndex = index;                    					
+					                    			}
+					                    			index++;
+					                    		});
+					                    		SharedTabService.tests[SharedTabService.currentTabIndex].criterias.splice(criteriaIndex, 1);
+					                    	}
+					                    }
 					                	
 					                    $scope.dragEnd(e, destParent, source, sourceParent,
 					                              sourceIndex, destIndex, prev, next);     

@@ -203,14 +203,8 @@ angular.module('evalu8Demo')
 			};
 			
 			this.uploadImage = function(file,element,cursorPosition,callback){
-				$upload.upload({
-                    url: evalu8config.apiUrl + '/image/upload',
-                    headers: {
-						'x-authorization' : $rootScope.globals.authToken,
-						'Accept' : 'application/json;odata=verbose'
-					},
-                    file: file
-                }).progress(function (evt) {
+				 HttpService.upload( evalu8config.apiUrl + '/image/upload', file)
+				 .progress(function (evt) {
                     var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
                     console.log('progress: ' + progressPercentage + '% ' + evt.config.file.name);
                 }).success(function (data, status, headers, config) {

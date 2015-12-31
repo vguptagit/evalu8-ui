@@ -159,7 +159,7 @@
 				<div ui-tree-nodes ng-model="tests[currentIndex].criterias">
                     <div class="row repeatCriteria"
                          ng-repeat="criteria in tests[currentIndex].criterias" ui-tree-node
-                         draggable="false"
+                         data-nodrag
                          ng-show="tests[currentIndex].isTestWizard &&  tests[currentIndex].criterias.length != 0 && criteria.totalQuestions != 0">
                         <div>
                             <div ng-show="$first || !isApplySameCriteriaToAll">

@@ -3,7 +3,7 @@
     <div data-ng-if="!node.IsEditView" class="qtiPrintView"
         ng-mousedown="controller=='TestCreationFrameController'?selectQuestion(node):selectNode(this);">
         <div class="questionPrintContainer">
-          <div>{{controller=='TestCreationFrameController'?$index + 1:node.questnNumber}})</div>		
+          <div class="qstnPrintViewIndex" ng-class="{twoDigitIndex: $index + 1 > 9 ,threedigitIndex: $index + 1 > 99, fourDigitIndex: $index + 1 > 999}">{{controller=='TestCreationFrameController' || 'PrintTestController' ?$index + 1:node.questnNumber}})</div>		
             <div class="printQuestionCaption"
                 data-ng-bind-html="getPrintModeFbCaption(node.qtiModel.Caption==''?node.qtiModel.PrintCaption:node.qtiModel.Caption)"></div>
                 <button id="QBPencil" type="button" ng-show="node.showEditQuestionIcon" 

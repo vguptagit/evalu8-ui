@@ -146,8 +146,9 @@
                         <input type="text" data-ng-model="node.title" id="txtFolderNameEdit" ng-show="node.isEditMode"
                                class="form-control"
                                placeholder="{{node.title}}" ng-enter="editFolder(this,node)" />
-                        <label title={{node.title}} ng-show="!node.isEditMode" class="captionLabel" ng-class="{captionEmptyNode : node.nodeType == 'empty'}"
-                               ng-mousedown="selectTestNode($event,this);">{{node.title}}</label>
+                         <div class="captionLabel" ng-show="!node.isEditMode" ng-mousedown="selectTestNode($event,this);" ng-class="{captionEmptyNode : node.nodeType == 'empty'}">
+                                <span class="labelCaption" title="{{node.title}}">{{node.title}}</span>
+                            </div>
                     </div>
                     <div class="iconsCourseNode">
                         <div ng-show="node.selectTestNode">

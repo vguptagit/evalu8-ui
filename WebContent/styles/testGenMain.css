@@ -646,6 +646,10 @@ ol {
 .testContainer ol li .questionList {
 	padding-left: 15px;
 } */
+
+.qstnPrintViewIndex {
+    margin-left: 5px;
+}
 .twoDigitIndex .optionLabelView {
 	margin-left: 8px;
 }
@@ -656,6 +660,10 @@ ol {
 
 .twoDigitIndex .textBoxContainer {
 	margin-left: 5px;
+}
+
+.twoDigitIndex.qstnPrintViewIndex{
+	margin-left: 0px;
 }
 
 .threedigitIndex .optionLabelView {
@@ -669,6 +677,9 @@ ol {
 .threedigitIndex .textBoxContainer {
 	margin-left: 11px;
 }
+.threedigitIndex .qstnPrintViewIndex{
+	margin-left: -8px;
+}
 
 .fourDigitIndex .optionLabelView {
 	margin-left: 20px;
@@ -680,6 +691,10 @@ ol {
 
 .fourDigitIndex .textBoxContainer {
 	margin-left: 20px;
+}
+
+.fourDigitIndex.qstnPrintViewIndex{
+	margin-left: -15px;
 }
 
 .blank {
