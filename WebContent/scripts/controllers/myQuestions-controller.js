@@ -2061,7 +2061,7 @@ angular.module('e8MyTests')
 
 	var resetNodeStatus = function(node){	
 		node.isNodeSelected = false;
-		node.showTestWizardIcon = false;
+		node.showTestWizardIcon = true;
 		node.showEditQuestionIcon = false;
 		node.existInTestframe=false;
 	}
