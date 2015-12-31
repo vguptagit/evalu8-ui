@@ -116,7 +116,6 @@ angular.module('e8MyTests')
                     return true;
                 },
                 dragMove: function(e) {
-                    e.source.nodeScope.node.selectTestNode = false;
                     $scope.dragStarted = true;
                 },
                 dragStart: function(e) {
