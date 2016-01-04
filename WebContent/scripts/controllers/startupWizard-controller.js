@@ -230,6 +230,10 @@ angular
 									container.scrollTop(scrollTo.offset().top
 											- container.offset().top
 											+ container.scrollTop());
+								}else{
+									container.scrollTop(
+											-container.offset().top
+											+container.scrollTop()+scrollTo.offset().top);
 								}
 
 							}
