@@ -44,7 +44,13 @@ angular
 
 										var source = e.source.nodeScope;										
 										var destination = e.dest.nodesScope;
-
+										var sourceIndex = e.source.index;
+										var destIndex = e.dest.index;
+										if(sourceIndex == destIndex){
+											$scope.dragStarted = false;
+											e.source.nodeScope.$$apply = false;
+											return false;
+										}
 										var editModeQuestions=$(destination.$parent.$element).find("li[printmode=false]");
 
 										if( source.controller =="TestCreationFrameController"){
