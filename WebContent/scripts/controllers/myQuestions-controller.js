@@ -143,6 +143,15 @@ angular.module('e8MyTests')
 				$scope.selectedNodes.push(node);
 			}			
 		}
+		
+	     //remove a node from array by ID.
+        var removeNodeByID = function(nodes,nodeID) {
+            for (var j = 0; j < nodes.length; j++) {
+                if (nodes[j].guid == nodeID) {        
+                    removeNodeByIndex(nodes,j);
+                }
+            }
+        }
 
 		//remove a node from array by index.
 		var removeNodeByIndex = function(nodes,index) {
@@ -1541,7 +1550,15 @@ angular.module('e8MyTests')
         
         $scope.getUserFolders = function (defaultFolder, callback) {
 
-            defaultFolder.toggle();
+        	 if (!defaultFolder.collapsed) {
+                 defaultFolder.collapse();
+             } else {
+                 defaultFolder.expand();
+             }
+             
+             if(defaultFolder.node.nodes){
+                 return false;
+             }
 
             if (!defaultFolder.collapsed) {            	
 				
@@ -1550,7 +1567,8 @@ angular.module('e8MyTests')
 					userFolders.forEach(function(folder) {
 						folder.showEditQuestionIcon = defaultFolder.node.showEditQuestionIcon;
 						folder.showTestWizardIcon = defaultFolder.node.showTestWizardIcon;
-						folder.isNodeSelected = defaultFolder.node.isNodeSelected;						
+						folder.isNodeSelected = defaultFolder.node.isNodeSelected;		
+						if(defaultFolder.node.isNodeSelected)addingNodeInSelectedNodesArray(folder);    
 					});
 					
 					defaultFolder.node.nodes = userFolders;
@@ -1596,7 +1614,7 @@ angular.module('e8MyTests')
 							
 							questionNumber++;
 							yourQuestion.questnNumber = questionNumber;
-							addToQuestionsArray(yourQuestion);
+							addingNodeInSelectedNodesArray(yourQuestion);    
 
 							yourQuestion.data = userQuestion.qtixml;
 							yourQuestion.quizType = userQuestion.metadata.quizType;
