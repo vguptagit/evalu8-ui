@@ -235,7 +235,8 @@ angular.module('e8MyTests')
 					node.isNodeSelected = true;
 					if(!isNodeInTestFrame(node)){
 						node.showEditQuestionIcon = true;
-						node.existInTestframe = false;					
+						node.existInTestframe = false;		
+						addingNodeInSelectedNodesArray(node);
 						if(node.nodes){
 							checkChildSelection(node);
 						}					
@@ -251,6 +252,8 @@ angular.module('e8MyTests')
 						node.isNodeSelected = true;		
 						node.existInTestframe = true;		
 						node.showTestWizardIcon = true; 
+					}else{
+						removeNodeFromSelectedNodes(node);
 					}					
 					if(node.nodes){
 						checkChildSelection(node);
@@ -567,6 +570,16 @@ angular.module('e8MyTests')
                  		return;
                  	}
             		$scope.insertTestBindingToDest(mouseOverNode, item.guid, function() {
+            			
+            			if(mouseOverNode.node.nodes) {            				
+            				mouseOverNode.node.nodes.unshift(item);
+            				if(mouseOverNode.node.nodes[0].nodeType == EnumService.NODE_TYPE.emptyFolder) {
+            					mouseOverNode.node.nodes.splice(0, 1);
+            				}
+            			} else {
+            				mouseOverNode.node.nodes = [];
+            				mouseOverNode.node.nodes.unshift(item);
+            			}
             			
             			if(sourceParent && sourceParent.node && sourceParent.node.nodes.length==0) {
             				sourceParent.node.nodes.push(CommonService.getEmptyFolder());
