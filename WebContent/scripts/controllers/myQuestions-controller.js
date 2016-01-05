@@ -339,22 +339,21 @@ angular.module('e8MyTests')
 	                		CommonService.showErrorMessage(e8msg.error.cantFetchTests)
 	            			return;
 	                	}
-	                	$scope.questionNumber = 0;	                	
+	                	var questionNumber = 0;	                	
 	                	questions.forEach(function(userQuestion) {	               		
 	                		
 	                		var yourQuestion = {};						
 							yourQuestion.isQuestion = true;
 							yourQuestion.questionXML = true;
 
-							//yourQuestion.parentId = $scope.userQuestionsFolderRoot.guid;
 							yourQuestion.nodeType = "question";
 							yourQuestion.questionType = "userCreatedQuestion";
 							yourQuestion.guid = userQuestion.guid;
 							yourQuestion.showEditQuestionIcon = false;
 							yourQuestion.isNodeSelected = false;
 							
-							$scope.questionNumber++;
-							yourQuestion.questnNumber = $scope.questionNumber;
+							questionNumber++;
+							yourQuestion.questnNumber = questionNumber;
 							addToQuestionsArray(yourQuestion);
 
 							yourQuestion.data = userQuestion.qtixml;
@@ -2131,27 +2130,19 @@ angular.module('e8MyTests')
 			editedQuestions.forEach(function(editedQuestion) {
 				editedQuestion.isQuestion = true;
 				editedQuestion.questionXML = true;
-
 				editedQuestion.nodeType = "question";
-
 				editedQuestion.extendedMetadata = editedQuestion.extendedMetadata;
-				
-				var displayNodes = $("<div></div>");    
-                QTI.BLOCKQUOTE.id = 0;
-                QTI.play(editedQuestion.data,displayNodes, false,false,editedQuestion.quizType);                                
-                editedQuestion.textHTML = displayNodes.html();
-                
 				editedQuestion.showEditQuestionIcon = false;
 				editedQuestion.isNodeSelected = true;
-				$scope.selectedNodes.push(editedQuestion);
-				addToQuestionsArray(editedQuestion);
-				//editedQuestion.template = 'qb_questions_renderer.html';
-					
-				$scope.questionNumber++;
-                editedQuestion.questnNumber = $scope.questionNumber;
-                editedQuestion.questionType = "userCreatedQuestion";                                            
-                $scope.defaultFolders.push(editedQuestion);    
+				editedQuestion.existInTestframe=true;
+				$scope.selectedNodes.push(editedQuestion);				
+                editedQuestion.questionType = "userCreatedQuestion";     
+                editedQuestion.questnNumber = 1;
+                $scope.defaultFolders.forEach(function(question){                	
+                		editedQuestion.questnNumber = editedQuestion.questnNumber + ((question['nodeType']=="question")?1:0);
+                });                
                 
+                $scope.defaultFolders.push(editedQuestion);                    
 			})			
 			
 			if(editedQuestions.length>0){
