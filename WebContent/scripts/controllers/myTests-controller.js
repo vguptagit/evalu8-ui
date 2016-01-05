@@ -99,13 +99,12 @@ angular.module('e8MyTests')
                 
             });
         }
-        
         $scope.loadTree();
         
         $scope.$on('ImportUserBooks', function() {		
 			$scope.loadTree();								
 		})
-
+		
 	  $scope.treeOptions = {
                 
                 beforeDrag: function (sourceNodeScope) {
@@ -116,7 +115,14 @@ angular.module('e8MyTests')
                     return true;
                 },
                 dragMove: function(e) {
-                    $scope.dragStarted = true;
+                	$scope.dragStarted = true;
+                	if($rootScope.tree.mouseOverNode){
+                		var mouseOverNode = $rootScope.tree.mouseOverNode
+                		if(mouseOverNode.node.selectTestNode){
+                			$scope.selectedMouseOverNode = mouseOverNode.node;
+                			mouseOverNode.node.selectTestNode = false;
+                		}
+                	}
                 },
                 dragStart: function(e) {
                 	$('body *').css({'cursor':'url("images/grabbing.cur"), move'});
@@ -260,7 +266,7 @@ angular.module('e8MyTests')
             var item = source.node;
             
             var duplicateTitle = false;
-            
+            $rootScope.blockLeftPanel.start();
             UserFolderService.getUserFoldersByParentFolderId(mouseOverNode.node.guid, function (userFolders) {
                 if(userFolders==null){
                     $rootScope.blockLeftPanel.stop();
@@ -775,6 +781,11 @@ angular.module('e8MyTests')
 
             $rootScope.tree = { mouseOverNode: null };
             node.hover = false;
+            if($scope.selectedMouseOverNode){
+            	$scope.selectedMouseOverNode.selectTestNode = true;
+            	$scope.selectedMouseOverNode = null;
+            }
+            	
         }             
 		
         // To show the Edit icon,on click of test

@@ -393,7 +393,15 @@ angular.module('e8MyTests')
                     return true;
                 },
                 dragMove: function(e) {
-                    $scope.dragStarted = true;
+                	$scope.dragStarted = true;
+                	if($rootScope.tree.mouseOverNode){
+                		var mouseOverNode = $rootScope.tree.mouseOverNode
+                		if(mouseOverNode.node.isNodeSelected){
+                			$scope.selectedMouseOverNode = mouseOverNode.node;
+                			mouseOverNode.node.isNodeSelected = false;
+                		}
+                	}
+                    
                 },
                 dragStart: function(e) {
                 	$('body *').css({'cursor':'url("images/grabbing.cur"), move'});
@@ -530,6 +538,7 @@ angular.module('e8MyTests')
             
             if(item.nodeType == EnumService.NODE_TYPE.folder) {
                 item.parentId = mouseOverNode.node.guid;
+                $rootScope.blockLeftPanel.start();
                 QuestionFolderService.getFoldersMinSeq(mouseOverNode.node, function(minSeq) {
                 	item.sequence = minSeq==0.0 ? 1.0 : (0.0 + minSeq)/2;
                 	QuestionFolderService.saveQuestionFolder(item, function(userFolder) {
@@ -907,6 +916,10 @@ angular.module('e8MyTests')
 
             $rootScope.tree = { mouseOverNode: null };
             node.hover = false;
+            if($scope.selectedMouseOverNode){
+            	$scope.selectedMouseOverNode.isNodeSelected = true;
+            	$scope.selectedMouseOverNode = null;
+            }
         }      
      		
 		var isParentNodeUsed=false;		

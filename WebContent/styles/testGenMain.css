@@ -417,6 +417,10 @@ a.newFolder:hover {
 	border-left: 4px #C0C0C0 solid;
 }
 
+ .folderHighlight .imagediv {
+    margin-left: -4px;
+} 
+
 .imagediv {
 	margin-top: 15px;
 	float: left;
@@ -425,7 +429,7 @@ a.newFolder:hover {
 .captiondiv {
 	width: 80%;
 	float: left;
-	margin-top: 4px;
+	margin-top: 3px;
 	margin-left: 5px;
 	cursor: pointer;
 	padding-bottom: 3px;
