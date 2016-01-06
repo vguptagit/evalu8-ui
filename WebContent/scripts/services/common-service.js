@@ -27,6 +27,52 @@ angular.module('evalu8Demo')
         }
         return searchItem;
     }
+    
+    commonService.autoScrollRightFrame = function(rootDiv, e) {
+    	var leftElmPos = e.pos.nowX - e.pos.offsetX;
+    	var topElmPos = e.pos.nowY - e.pos.offsetY;
+
+    	var treeScrollTop = rootDiv.scrollTop();
+    	var dragElm = e.elements.dragging;
+
+    	var dragBottom = dragElm[0].offsetTop + dragElm[0].offsetHeight;
+    	var treeBottom = rootDiv[0].offsetTop + rootDiv[0].offsetHeight;
+
+    	if (treeScrollTop > 0
+    			&& leftElmPos > rootDiv[0].offsetWidth
+    			&& ((treeScrollTop > e.pos.nowY) || (rootDiv.offset().top < e.pos.nowY))) {
+    		if (topElmPos < (rootDiv.offset().top + 60)) {
+    			rootDiv.scrollTop(treeScrollTop - 15);
+    		}
+    	}
+
+    	if (leftElmPos > rootDiv[0].offsetWidth
+    			&& treeBottom + 120 < dragBottom) {
+    		rootDiv.scrollTop(treeScrollTop + 15);
+    	}
+    }
+    
+    commonService.autoScrollLeftFrame = function(rootDiv, e) {
+    	var leftElmPos = e.pos.nowX - e.pos.offsetX;
+    	var topElmPos = e.pos.nowY - e.pos.offsetY;
+
+    	var treeScrollTop = rootDiv.scrollTop();
+    	var dragElm = e.elements.dragging;
+
+    	var dragBottom = dragElm[0].offsetTop + dragElm[0].offsetHeight;
+    	var treeBottom = rootDiv[0].offsetTop + rootDiv[0].offsetHeight;
+
+    	if (treeScrollTop > 0
+    			&& ((treeScrollTop > e.pos.nowY) || (rootDiv.offset().top < e.pos.nowY))) {
+    		if (topElmPos < (rootDiv.offset().top + 60)) {
+    			rootDiv.scrollTop(treeScrollTop - 15);
+    		}
+    	}
+
+    	if (treeBottom + 20 < dragBottom) {
+    		rootDiv.scrollTop(treeScrollTop + 15);
+    	}
+    }
 
     //TODO : need to find the references and replace it with "SearchItem", later remove below function. because function name is not so generic.
     //search folder by giving guid or parentid;

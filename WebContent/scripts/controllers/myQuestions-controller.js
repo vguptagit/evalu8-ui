@@ -396,13 +396,19 @@ angular.module('e8MyTests')
                 },
                 dragMove: function(e) {
                 	$scope.dragStarted = true;
-                	if($rootScope.tree.mouseOverNode){
+                	if($rootScope.tree && $rootScope.tree.mouseOverNode){
                 		var mouseOverNode = $rootScope.tree.mouseOverNode
                 		if(mouseOverNode.node.isNodeSelected){
                 			$scope.selectedMouseOverNode = mouseOverNode.node;
                 			mouseOverNode.node.isNodeSelected = false;
                 		}
                 	}
+                	
+                	if(e.dest.nodesScope.$parent.controller =="TestCreationFrameController") {
+                		CommonService.autoScrollRightFrame($('div#qstnArea'), e);
+                	} else {
+                    	CommonService.autoScrollLeftFrame($('div#MyTest-tree-root'), e);	
+                	}                	
                     
                 },
                 dragStart: function(e) {

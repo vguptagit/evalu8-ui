@@ -116,13 +116,15 @@ angular.module('e8MyTests')
                 },
                 dragMove: function(e) {
                 	$scope.dragStarted = true;
-                	if($rootScope.tree.mouseOverNode){
+                	if($rootScope.tree && $rootScope.tree.mouseOverNode){
                 		var mouseOverNode = $rootScope.tree.mouseOverNode
                 		if(mouseOverNode.node.selectTestNode){
                 			$scope.selectedMouseOverNode = mouseOverNode.node;
                 			mouseOverNode.node.selectTestNode = false;
                 		}
                 	}
+                	
+                	CommonService.autoScrollLeftFrame($('div#MyTest-tree-root'), e);
                 },
                 dragStart: function(e) {
                 	$('body *').css({'cursor':'url("images/grabbing.cur"), move'});

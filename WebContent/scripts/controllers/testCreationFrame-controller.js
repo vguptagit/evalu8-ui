@@ -34,6 +34,10 @@ angular
 					                    }
 					                    return true;
 					                },
+					                dragMove: function(e) {
+
+					                	CommonService.autoScrollRightFrame($('div#qstnArea'), e);
+					                },
 					                dragStart: function(e) {
 					                	$('body *').css({'cursor':'url("images/grabbing.cur"), move'});
 					                },

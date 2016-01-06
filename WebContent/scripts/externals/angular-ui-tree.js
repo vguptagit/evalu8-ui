@@ -776,6 +776,12 @@
                   'top': topElmPos + 'px'
                 });
 
+                // The below block is moved from end of this if block to here to enable autoscroll
+                scope.$apply(function () {
+                	scope.$treeScope.$callbacks.dragMove(dragInfo.eventArgs(elements, pos));
+                });
+                //////////////////////////////////////////////////////////////////////////////////
+                
                 top_scroll = window.pageYOffset || $window.document.documentElement.scrollTop;
                 bottom_scroll = top_scroll + (window.innerHeight || $window.document.clientHeight || $window.document.clientHeight);
 
@@ -937,9 +943,10 @@
                   }
                 }
 
-                scope.$apply(function () {
+                // The below code is moved above for implementing auto scroll
+/*                scope.$apply(function () {
                   scope.$treeScope.$callbacks.dragMove(dragInfo.eventArgs(elements, pos));
-                });
+                });*/
               }
             };
 
