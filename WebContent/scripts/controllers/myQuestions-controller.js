@@ -588,7 +588,10 @@ angular.module('e8MyTests')
                  	}
             		$scope.insertTestBindingToDest(mouseOverNode, item.guid, function() {
             			
-            			if(mouseOverNode.node.nodes) {            				
+            			if(mouseOverNode.node.nodes) {          
+            				if(mouseOverNode.node.nodes[0].nodeType == EnumService.NODE_TYPE.emptyFolder) {
+            					mouseOverNode.node.nodes.splice(0, 1);
+            				}
             				mouseOverNode.node.nodes.unshift(item);
             				var questnNumber = 0;
             				mouseOverNode.node.nodes.forEach(function(item){          
@@ -596,9 +599,7 @@ angular.module('e8MyTests')
             					questnNumber++;
             				});                
 
-            				if(mouseOverNode.node.nodes[0].nodeType == EnumService.NODE_TYPE.emptyFolder) {
-            					mouseOverNode.node.nodes.splice(0, 1);
-            				}
+            				
             			} else {
             				mouseOverNode.node.nodes = [];
             				mouseOverNode.node.nodes.unshift(item);
