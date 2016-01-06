@@ -1368,6 +1368,7 @@ angular.module('e8MyTests')
 
 			for (var i = 0; i < $scope.selectedNodes.length; i++) {
 				if($scope.selectedNodes[i].nodeType != EnumService.NODE_TYPE.question){
+                    $scope.selectedNodes[i].existInTestframe = true;
 				test.questionFolderNode.push($scope.selectedNodes[i]);
 				}
 				$scope.getRemoveChildNodesFromQuestionFolderNodes($scope.selectedNodes[i], test);

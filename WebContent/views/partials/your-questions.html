@@ -23,10 +23,10 @@
         <div data-ui-tree="treeOptions" id="MyTest-tree-root" class="myTest_scrollbar"  ng-class="{onCreateNewNodeShow:showAddFolderPanel}" data-clone-enabled="true" data-drag-delay="50">
             <ol data-ui-tree-nodes data-ng-model="defaultFolders" >
 
-                <li data-ng-repeat="node in defaultFolders" data-ui-tree-node x-collapsed="true" draggable="{node.draggable}"
+                <li data-nodrag="{{node.existInTestframe===true}}"  data-ng-repeat="node in defaultFolders" data-ui-tree-node x-collapsed="true" draggable="{node.draggable}"
                     data-ng-include="'defaultfolder_renderer.html'" ng-if="node.nodeType!='question'" />
 
-                <li printmode="true"  draggable="{{!node.existInTestframe}}"  class="questIndex qbQuestions" ng-class="{questionSelected:node.isNodeSelected,questionNotSelected:!node.isNodeSelected,questionInTestframe:node.isNodeSelected && node.existInTestframe===true}" 
+                <li data-nodrag="{{node.existInTestframe===true}}"  printmode="true"  draggable="{{!node.existInTestframe}}"  class="questIndex qbQuestions" ng-class="{questionSelected:node.isNodeSelected,questionNotSelected:!node.isNodeSelected,questionInTestframe:node.isNodeSelected && node.existInTestframe===true}" 
                     ng-if="node.nodeType=='question'" ng-repeat="node in defaultFolders" collapsed="{{node.isCollapsed?'true':'false'}}" 
                     ui-tree-node
                     ng-include="'qb_questions_renderer.html'" />
@@ -103,9 +103,9 @@
                 <div ui-tree-handle class="tree-node tree-node-content">
                     <label title={{node.title}} class="captionEmptyNode">{{node.title}}</label>
             </li>
-            <li ng-repeat="node in node.nodes" ui-tree-node collapsed="true" draggable="{node.draggable}"
+            <li data-nodrag="{{node.existInTestframe===true}}" ng-repeat="node in node.nodes" ui-tree-node collapsed="true" draggable="{node.draggable}"
                 ng-include="'defaultfolder_renderer.html'" ng-show="{{node.nodeType=='folder'}}" />
-            <li printmode="true" ng-repeat="node in node.nodes" collapsed="true" ui-tree-node 
+            <li data-nodrag="{{node.existInTestframe===true}}" printmode="true" ng-repeat="node in node.nodes" collapsed="true" ui-tree-node 
 				ng-show="{{node.nodeType=='question'}}" 
 ng-class="{questionSelected:node.isNodeSelected,questionNotSelected:!node.isNodeSelected,questionInTestframe:node.isNodeSelected && node.existInTestframe===true}"
                 ng-include="'qb_questions_renderer.html'" draggable="{{!node.existInTestframe}}" class="questIndex qbQuestions" />
