@@ -162,8 +162,8 @@ angular
 
 							}
 
-							$scope.selectDiscipline = function(discipline) {
-								$scope.addToselectedDiscipline(
+							$scope.selectDiscipline = function(event, discipline) {
+								$scope.addToselectedDiscipline(event,
 										discipline.discipline, false)
 							}
 
@@ -174,7 +174,7 @@ angular
 									return false;
 
 								}
-								$scope.addToselectedDiscipline($scope.searchedDiscipline,
+								$scope.addToselectedDiscipline(event,$scope.searchedDiscipline,
 										true);
 							}
 
@@ -198,12 +198,12 @@ angular
 								}
 
 								if (event.keyCode === 13) {
-										$scope.addToselectedDiscipline(
+										$scope.addToselectedDiscipline(event,
 												$scope.searchedDiscipline, true);
 									}
 							}
 
-							$scope.addToselectedDiscipline = function(
+							$scope.addToselectedDiscipline = function(event,
 									disciplineName, isSearched) {
 								var index = $scope.disciplines.userSelected
 										.indexOf(disciplineName);
@@ -212,15 +212,19 @@ angular
 										$scope.disciplines.userSelected.splice(
 												index, 1);
 									}
-									$scope.setDisciplineScroll(disciplineName);
+									if(event.which != 1){
+										$scope.setDisciplineScroll(disciplineName);
+									}
+									
 								} else {
 
 									if ($scope
 											.validateDiscipline(disciplineName)) {
 										$scope.disciplines.userSelected
 												.push(disciplineName);
-										$scope
-												.setDisciplineScroll(disciplineName);
+										if(event.which != 1){
+											$scope.setDisciplineScroll(disciplineName);
+										}
 									}
 
 								}
@@ -561,6 +565,10 @@ angular
 											container.scrollTop(scrollTo.offset().top
 												- container.offset().top
 												+ container.scrollTop());
+										}else{
+											container.scrollTop(
+													-container.offset().top
+													+container.scrollTop()+scrollTo.offset().top);
 										}
 								}
 							}

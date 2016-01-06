@@ -1507,6 +1507,7 @@ angular.module('e8MyTests')
                 "sequence": sequence,
                 "title": $scope.folderName
             };
+            $scope.folderName=null;
             UserFolderService.saveUserFolder(userFolder, function (userFolder) {
 				if(userFolder==null){
              		CommonService.showErrorMessage(e8msg.error.cantSave);
