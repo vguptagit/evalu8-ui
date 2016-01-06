@@ -388,10 +388,13 @@ angular.module('e8MyTests')
         $scope.treeOptions = {
                 
                 beforeDrag: function (sourceNodeScope) {
-                    if(sourceNodeScope.node.hasOwnProperty('draggable') && sourceNodeScope.node.draggable == false) {
+                    if((sourceNodeScope.node.hasOwnProperty('existInTestframe') && sourceNodeScope.node.existInTestframe == true) || 
+                    (sourceNodeScope.node.hasOwnProperty('draggable') && sourceNodeScope.node.draggable == false) ){
                         sourceNodeScope.$$apply = false;
                         return false;
                     }    
+                   
+                   
                     return true;
                 },
                 dragMove: function(e) {
@@ -1318,6 +1321,7 @@ angular.module('e8MyTests')
 				scope.$parentNodeScope.node.isNodeSelected = true;	
 				if(isAllSiblingsInTestFrame(scope,activeTest)){					
 					scope.$parentNodeScope.node.showEditQuestionIcon = false;
+					scope.$parentNodeScope.node.existInTestframe = true;			
 					addingNodeInQuestionFolderNodeArray(scope.$parentNodeScope.node,activeTest);
 				}
 				addingNodeInSelectedNodesArray(scope.$parentNodeScope.node,activeTest);
