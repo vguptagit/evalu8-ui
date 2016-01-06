@@ -1936,7 +1936,10 @@ angular
 								qstn.IsEditView = false;								
 								
 								if(qstn.qstnTemplate){
-                                    qstn.qstnTemplate = false;
+                                   qstn.qstnTemplate = false;
+                                    if (typeof (qstn.qstnModelMasterData) == 'undefined'){
+                                        qstn.qstnModelMasterData = getQuestionMasterDataModel(qstn)
+                                    }
                                 }    								
 								
 								if (typeof (qstn.questionMetadata) == 'undefined') {
