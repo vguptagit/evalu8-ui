@@ -584,6 +584,12 @@ angular.module('e8MyTests')
             			
             			if(mouseOverNode.node.nodes) {            				
             				mouseOverNode.node.nodes.unshift(item);
+            				var questnNumber = 0;
+            				mouseOverNode.node.nodes.forEach(function(item){          
+            					item.questnNumber = questnNumber + ((item['nodeType']=="question")?1:0);
+            					questnNumber++;
+            				});                
+
             				if(mouseOverNode.node.nodes[0].nodeType == EnumService.NODE_TYPE.emptyFolder) {
             					mouseOverNode.node.nodes.splice(0, 1);
             				}
@@ -2069,8 +2075,19 @@ angular.module('e8MyTests')
 
 	}
 
-	var updateFolderNodeStatus = function(nodeHeirarchy,deletedNode,node,scope){		
-		if(node.nodes){
+	var updateFolderNodeStatus = function(nodeHeirarchy,deletedNode,node,scope){	
+		if(node.questionBindings){				
+			for (var i = 0; i < node.questionBindings.length; i++) {
+				if(node.questionBindings[i].questionId == deletedNode.guid){					
+					nodeHeirarchy.push(node);						
+					onDeselectNodeUpdateHeirarchyNodeStatus(nodeHeirarchy,deletedNode,scope);
+					isDeletedNodeFind=true;						
+					break;
+				}
+			}
+
+		}			
+		if(node.nodes && !isDeletedNodeFind){
 			nodeHeirarchy.push(node);			
 			for (var i = 0; i < node.nodes.length; i++) {
 				var childNode = node.nodes[i];
@@ -2085,19 +2102,6 @@ angular.module('e8MyTests')
 					updateFolderNodeStatus(nodeHeirarchy,deletedNode,childNode,scope);
 				}
 			}		
-
-		}else{
-			if(node.questionBindings){				
-				for (var i = 0; i < node.questionBindings.length; i++) {
-					if(node.questionBindings[i].questionId == deletedNode.guid){					
-						nodeHeirarchy.push(node);						
-						onDeselectNodeUpdateHeirarchyNodeStatus(nodeHeirarchy,node,scope);
-						isDeletedNodeFind=true;						
-						break;
-					}
-				}
-
-			}			
 
 		}
 
