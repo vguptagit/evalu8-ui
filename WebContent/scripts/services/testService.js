@@ -217,14 +217,8 @@ angular.module('evalu8Demo')
 			}
 			
 			this.uploadTestPackage=function(file,folderID,callback){
-				$upload.upload({
-                    url: evalu8config.apiUrl + '/my/folders/'+folderID+'/tests/import',
-                    headers: {
-						'x-authorization' : $rootScope.globals.authToken,
-						'Accept' : 'application/json;odata=verbose'
-					},
-                    file: file
-                }).success(function (data, status) {
+				HttpService.upload(evalu8config.apiUrl + '/my/folders/'+folderID+'/tests/import', file)
+                .success(function (data, status) {
                     callback(data, status);
                 }).error(function(data, status){
                 	callback(data, status);
