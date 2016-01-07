@@ -1657,8 +1657,7 @@ angular.module('e8MyTests')
 							
 							questionNumber++;
 							yourQuestion.questnNumber = questionNumber;
-							addingNodeInSelectedNodesArray(yourQuestion);    
-
+							
 							yourQuestion.data = userQuestion.qtixml;
 							yourQuestion.quizType = userQuestion.metadata.quizType;
 							yourQuestion.extendedMetadata = userQuestion.metadata.extendedMetadata;
@@ -1701,7 +1700,8 @@ angular.module('e8MyTests')
 				folder.isNodeSelected = true;
 				folder.showEditQuestionIcon = false;
 				folder.showTestWizardIcon = true;
-				folder.existInTestframe = true;										
+				folder.existInTestframe = true;						
+				addingNodeToArray(SharedTabService.tests[SharedTabService.currentTabIndex].questionFolderNode,folder);	
 				addingNodeInSelectedNodesArray(folder);					
 			}							
 		}
