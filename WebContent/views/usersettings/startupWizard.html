@@ -39,7 +39,7 @@
         </div>
         <div class="discplineheight">
             <div data-ng-repeat="discipline in disciplines.all.sort()"
-                 ng-click="selectDiscipline(this)"
+                 ng-click="selectDiscipline($event, this)"
                  ng-class="{selectedDisc: isSelectedDiscipline(this)}">
                 <div class="discplineText">{{discipline}}</div>
             </div>
