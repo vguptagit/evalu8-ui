@@ -88,12 +88,14 @@ angular.module('e8MyTests')
 			for (var i = 0; i < activeTest.questions.length; i++) {  	
 				isQuestionExist = false;
 				for (var j = 0; j < activeTest.questionFolderNode.length; j++) {
-					for (var k = 0; k < activeTest.questionFolderNode[j].questionBindings.length; k++) {
-						if(activeTest.questionFolderNode[j].questionBindings[k]==activeTest.questions[i].guid){
-							isQuestionExist=true;
-							break;
-						}  						
-					}
+					if(activeTest.questionFolderNode[j].questionBindings){
+						for (var k = 0; k < activeTest.questionFolderNode[j].questionBindings.length; k++) {
+							if(activeTest.questionFolderNode[j].questionBindings[k]==activeTest.questions[i].guid){
+								isQuestionExist=true;
+								break;
+							}  						
+						}
+					}					
 
 					if(isQuestionExist){
 						break;
@@ -1180,6 +1182,19 @@ angular.module('e8MyTests')
 				nodes.push(nodeID);
 			}
 		}
+		
+		var immediateChildren =[];
+		var getImmediateChildren = function (nodeScope) {	
+			if(nodeScope.nodes){
+				nodeScope.nodes.forEach(function(node) {
+					if(node.nodes){		
+						immediateChildren.push(node);
+						getImmediateChildren(node);
+					}
+				})
+			}								
+			return immediateChildren;
+		}
 			
 		var addFoldersToTestTab = function (activeTest, destIndex,scope,eventType) {	
 			var clickedFolder = typeof scope.node == "undefined" ? scope : scope.node;
@@ -1220,10 +1235,14 @@ angular.module('e8MyTests')
 						if (!response.length) {
 							SharedTabService.addErrorMessage(questionFolder.title, e8msg.warning.emptyFolder);
 							questionFolder.showEditQuestionIcon = true;
+							getImmediateChildren(questionFolder);
+							immediateChildren.forEach(function(node) {
+								addNodeIdToArray(emptyResponseNodes,node.guid);	
+							});
 							addNodeIdToArray(emptyResponseNodes,questionFolder.guid);	
 							addNodeIdToArray(emptyResponseNodes,questionFolder.parentId);	
 							isAllNodesNotAdded=true;
-							removeNodeByID(activeTest.questionFolderNode,questionFolder.guid);												
+							removeNodeByID(activeTest.questionFolderNode,questionFolder.guid);									
 						}
 						
 						processHierarchyNodeStatus(processedNodeCount,processingNodes,httpReqCount,
@@ -1240,34 +1259,28 @@ angular.module('e8MyTests')
 			
 		}
 		
+		
 		var processHierarchyNodeStatus = function(processedNodeCount,processingNodes,httpReqCount,
 				httpReqCompletedCount,isAllNodesNotAdded,clickedFolder,scope,activeTest,emptyResponseNodes){
 			
 			if (processedNodeCount == processingNodes.length && httpReqCount == httpReqCompletedCount) {
 				
-				if(scope.node.nodes){
+				if(scope.node.nodes && !emptyResponseNodes.length>0){
 					updateNodeHierarchyStatus(scope.node,activeTest);
 				}
 					
-				
 				if(isAllNodesNotAdded){
 					clickedFolder.showEditQuestionIcon = true;									
 					removeNodeByID(activeTest.questionFolderNode,clickedFolder.guid);	
 				}
 				if(SharedTabService.errorMessages.length > 0)
-					SharedTabService.TestWizardErrorPopup_Open();	
-				
-				emptyResponseNodes.forEach(function(nodeId) {	
-					removeNodeByID(immediateChildren,nodeId);								
-				});		
+					SharedTabService.TestWizardErrorPopup_Open();					
 				
 				emptyResponseNodes.forEach(function(nodeId) {	
 					removeNodeByID(processingNodes,nodeId);								
 				});	
-				
 			
 				updateFolderHierarchyNodesStatus(scope,activeTest);	
-			
 				
 			}
 			
