@@ -276,6 +276,19 @@ angular.module('e8MyTests')
 			return !allSiblingsNotSelected;																
 		}
 
+		var deselectNodesOnDrag = function(node){
+			node.isNodeSelected = false;
+			node.showEditQuestionIcon = false;
+			if(node.nodes){
+				node.nodes.forEach(function(childNode) {
+					childNode.isNodeSelected = false;
+					childNode.showEditQuestionIcon = false;
+					if(childNode.nodes){
+						deselectNodesOnDrag(childNode);
+					}
+				})
+			}
+		}
 		//To change the selection status of the parent node of a node.
 		var checkSiblingSelection = function(scope){
 			var activeTest = SharedTabService.tests[SharedTabService.currentTabIndex];
@@ -399,6 +412,7 @@ angular.module('e8MyTests')
                 },
                 dragMove: function(e) {
                 	$scope.dragStarted = true;
+                	deselectNodesOnDrag(e.source.nodeScope.node);
                 	if($rootScope.tree && $rootScope.tree.mouseOverNode){
                 		var mouseOverNode = $rootScope.tree.mouseOverNode
                 		if(mouseOverNode.node.isNodeSelected){
@@ -520,7 +534,11 @@ angular.module('e8MyTests')
                     var destIndex = e.dest.index;
                     var prev = e.dest.nodesScope.childNodes()[destIndex-1];
                     var next = e.dest.nodesScope.childNodes()[destIndex+1];                                        
-                    
+                    if(sourceIndex == destIndex){
+                        $scope.dragStarted = false;
+                        e.source.nodeScope.$$apply = false;
+                        return false;
+                    }
                     if(destParent.controller == "TestCreationFrameController" ){
                     	if(SharedTabService.tests[SharedTabService.currentTabIndex].questions 
                     			&& SharedTabService.tests[SharedTabService.currentTabIndex].questions.length){

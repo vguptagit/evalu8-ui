@@ -142,7 +142,21 @@ angular
 									}
 								}						
 							}
-							
+							var deselectNodesOnDrag = function(node){
+								node.isNodeSelected = false;
+								node.showEditQuestionIcon = false;
+								node.showTestWizardIcon = false;
+								if(node.nodes){
+									node.nodes.forEach(function(childNode) {
+										childNode.isNodeSelected = false;
+										childNode.showEditQuestionIcon = false;
+										childNode.showTestWizardIcon = false;
+										if(childNode.nodes){
+											deselectNodesOnDrag(childNode);
+										}
+									})
+								}
+							}
 							//To check all questions of topic are avialable in test frame.
 							var isAllTopicQuestionsInTestFrame = function(node) {
 								var isNodeUsed=false;
@@ -199,7 +213,8 @@ angular
 					                    return true;
 					                },
 					                dragMove: function(e) {
-					                    $scope.dragStarted = true;
+					                	$scope.dragStarted = true;
+					                	deselectNodesOnDrag(e.source.nodeScope.node);
 					                },
 					                dragStart: function(e) {
 					                	$('body *').css({'cursor':'url("images/grabbing.cur"), move'});
@@ -1357,8 +1372,10 @@ angular
 									}, evalu8config.messageTipTimeMilliSeconds);
 								}
 
-								if (!node.isNodeSelected) {									
+								if (!node.isNodeSelected) {	
+									if(!isNodeInArray($scope.selectedNodes,node.guid)){
 										$scope.selectedNodes.push(node);
+									}
 										node.isNodeSelected = true;
 										if($scope.isNodeUsedForEdit(node,test)){
 											node.showEditQuestionIcon = false;
