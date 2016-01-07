@@ -51,7 +51,7 @@
                 <div data-ng-if="node.nodeType == 'archiveRoot'" style="margin-bottom:2px">
                     <div class="sectionLineDiv"></div>
                 </div>
-                <div data-ng-if="node.nodeType == 'archiveRoot'" class="treeDiv">
+                <div data-ng-if="node.nodeType == 'archiveRoot'" class="treeDiv" id="archiveRoot">
                     <div class="newFolderDiv padding-lft-15">
                         <div class="imagediv">
                             <input type="image" ng-click="getFolders(this)" class="collapseImg" value=""
@@ -72,7 +72,7 @@
                         <div class="testCaptionDiv">
                             <div ng-mousedown="selectTestNode($event,this);" id="testButtonDiv"
                                  class=" testInputbuttonClass ">
-                                <span class="testCaptionLabel testInputbuttonClass" title="{{node.title}}"> {{node.title}}</span>&nbsp;&nbsp;&nbsp;&nbsp; {{node.modified | date:'MM/dd/yy'}}
+                                <span class="testCaptionLabel testInputbuttonClass" title="{{node.title}}"  nodeid="{{node.guid}}"> {{node.title}}</span>&nbsp;&nbsp;&nbsp;&nbsp; {{node.modified | date:'MM/dd/yy'}}
                             </div>
                         </div>
                         <div class="testimagesdiv" ng-class="{testHighlight: node.selectTestNode}">
@@ -210,7 +210,7 @@
                     <div class="testCaptionDiv">
                         <div ng-mousedown="selectTestNode($event,this);" id="testButtonDiv" 
                              ng-class="{testHighlight: node.selectTestNode}" class=" testInputbuttonClass">
-                            <span class="testCaptionLabel testInputbuttonClass"  title="{{node.title}}"> {{node.title}}</span> &nbsp;&nbsp;&nbsp;&nbsp; {{node.modified | date:'MM/dd/yy'}}
+                            <span class="testCaptionLabel testInputbuttonClass"  title="{{node.title}}" nodeid={{node.guid}} > {{node.title}}</span> &nbsp;&nbsp;&nbsp;&nbsp; {{node.modified | date:'MM/dd/yy'}}
                         </div>
                     </div>
                     <div class="testimagesdiv" ng-class="{testHighlight: node.selectTestNode}">
