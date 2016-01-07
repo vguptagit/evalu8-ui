@@ -116,6 +116,7 @@ angular.module('e8MyTests')
                 },
                 dragMove: function(e) {
                 	$scope.dragStarted = true;
+                	e.source.nodeScope.node.selectTestNode = false;
                 	if($rootScope.tree && $rootScope.tree.mouseOverNode){
                 		var mouseOverNode = $rootScope.tree.mouseOverNode
                 		if(mouseOverNode.node.selectTestNode){
@@ -233,14 +234,18 @@ angular.module('e8MyTests')
                 },
                 dropped: function(e) {
                     
-                    var destParent = e.dest.nodesScope.$parent;
-                    var source = e.source.nodeScope;
-                    var sourceParent = e.source.nodeScope.$parentNodeScope;
-                    var sourceIndex = e.source.index;
-                    var destIndex = e.dest.index;
-                    var prev = e.dest.nodesScope.childNodes()[destIndex-1];
-                    var next = e.dest.nodesScope.childNodes()[destIndex+1];                                        
-                    
+                	var destParent = e.dest.nodesScope.$parent;
+                	var source = e.source.nodeScope;
+                	var sourceParent = e.source.nodeScope.$parentNodeScope;
+                	var sourceIndex = e.source.index;
+                	var destIndex = e.dest.index;
+                	var prev = e.dest.nodesScope.childNodes()[destIndex-1];
+                	var next = e.dest.nodesScope.childNodes()[destIndex+1];                                        
+                	if(sourceIndex == destIndex){
+                		$scope.dragStarted = false;
+                		e.source.nodeScope.$$apply = false;
+                		return false;
+                	}
                     if(destParent.controller == "TestCreationFrameController" ){
                     	if(SharedTabService.tests[SharedTabService.currentTabIndex].questions 
                     			&& SharedTabService.tests[SharedTabService.currentTabIndex].questions.length){
@@ -343,6 +348,16 @@ angular.module('e8MyTests')
                                  return;
                              }
                             $scope.insertTestBindingToDest(mouseOverNode, item.guid, function() {
+                            	
+                            	if(mouseOverNode.node.nodes) {          
+                            		if(mouseOverNode.node.nodes[0].nodeType == EnumService.NODE_TYPE.emptyFolder) {
+                            			mouseOverNode.node.nodes.splice(0, 1);
+                            		}
+                            		mouseOverNode.node.nodes.push(item);
+                            	} else {
+                            		mouseOverNode.node.nodes = [];
+                            		mouseOverNode.node.nodes.push(item);
+                            	}
                                 
                                 if(sourceParent && sourceParent.node && sourceParent.node.nodes.length==0) {
                                     sourceParent.node.nodes.push(CommonService.getEmptyFolder());
@@ -369,6 +384,7 @@ angular.module('e8MyTests')
                 source.node.showEditIcon=false;
                 source.node.showArchiveIcon=false;
                 $rootScope.$broadcast("dropTest", source, destIndex);
+                source.node.selectTestNode = true;
                 return false;
             }            
             
@@ -845,8 +861,15 @@ angular.module('e8MyTests')
         
         $scope.getUserFolders = function (defaultFolder, callback) {
 
-            defaultFolder.toggle();
+        	if (!defaultFolder.collapsed) {
+        		defaultFolder.collapse();
+        	} else {
+        		defaultFolder.expand();
+        	}
 
+        	if(defaultFolder.node.nodes){
+        		return false;
+        	}
             if (!defaultFolder.collapsed) {            	
 				
 				UserFolderService.getUserFoldersByParentFolderId(defaultFolder.node.guid, function (userFolders) {
