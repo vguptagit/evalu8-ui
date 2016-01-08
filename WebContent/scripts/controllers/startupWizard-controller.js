@@ -219,13 +219,13 @@ angular
 									}
 
 								}
+								$scope.enableDisableNextButton($scope
+										.isDesciplineEmpty());
 							}
 
 							$scope.setDisciplineScroll = function(
 									disciplineName) {
 
-								$scope.enableDisableNextButton($scope
-										.isDesciplineEmpty());
 								var container = $('.discplineheight'), scrollTo = $(
 										".discplineheight").find(
 										"div:contains('" + disciplineName

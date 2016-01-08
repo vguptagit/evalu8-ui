@@ -690,16 +690,19 @@ angular
 								
 							}
 							
-							function ShowIconsForChildren(currentNode){
+							function ShowIconsForChildren(currentNode, activeTest){
 								currentNode.nodes.forEach(function(node) {
 									node.isNodeSelected = true;
 									node.showTestWizardIcon = false;
 									node.showEditQuestionIcon = true;
+									if(node.nodeType == EnumService.NODE_TYPE.question && activeTest.isTestWizard){
+										node.existInTestframe = false;
+									}
 									if(node.nodeType != EnumService.NODE_TYPE.question){
 										node.existInTestframe = true;
 									}
 									if(node.nodes){
-										ShowIconsForChildren(node);
+										ShowIconsForChildren(node, activeTest);
 									}
 								})
 							}
@@ -714,7 +717,7 @@ angular
 									currentNode.showEditQuestionIcon = true;
 								}
 								if(currentNode.nodes){
-									ShowIconsForChildren(currentNode);
+									ShowIconsForChildren(currentNode, test);
 							}
 							    $rootScope.blockPage.start();
 								getQuestions(
@@ -2232,6 +2235,9 @@ angular
 														$scope.selectedNodes[i].isNodeSelected = false;
 														$scope.selectedNodes[i].showTestWizardIcon = false;
 														$scope.selectedNodes[i].showEditQuestionIcon = false;
+														if($scope.selectedNodes[i].nodeType == EnumService.NODE_TYPE.question && tab.isTestWizard){
+															$scope.selectedNodes[i].existInTestframe = false;
+														}
 													}
 													$scope.selectedNodes=[];
 													for (var i = 0; i < $scope.expandedNodes.length; i++) {
