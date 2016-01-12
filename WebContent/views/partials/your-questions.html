@@ -77,7 +77,7 @@
 									tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="bottom" tooltip="Move question to right for editing" />
 
                                     <button type="button" class="wizardGray action-icon-bg pull-right"
-                                    ng-show="node.showTestWizardIcon" ng-mousedown="createTestWizardCriteria(this)"
+                                    ng-show="node.showTestWizardIcon" ng-mousedown="createTestWizardCriteria(this);$event.stopPropagation();"
                                     tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="bottom" tooltip="Auto create test with wizard" />
 
                                 </div>
