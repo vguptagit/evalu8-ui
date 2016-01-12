@@ -536,7 +536,7 @@ angular.module('e8MyTests')
                     var destIndex = e.dest.index;
                     var prev = e.dest.nodesScope.childNodes()[destIndex-1];
                     var next = e.dest.nodesScope.childNodes()[destIndex+1];                                        
-                    if(sourceIndex == destIndex){
+                    if(sourceIndex == destIndex && source.controller == destParent.controller){
                         $scope.dragStarted = false;
                         e.source.nodeScope.$$apply = false;
                         return false;
