@@ -414,6 +414,16 @@ angular.module('e8MyTests')
                 },
                 dragMove: function(e) {
                 	$scope.dragStarted = true;
+                	
+                	/*
+                	 * Saving placeholder and position to hide|show placeholder on enter|leave a folder node
+                	 */ 
+                	if(!isForeign(e)){
+	                	$scope.placeElm = e.elements.placeholder;
+	                	$scope.position = e.pos;
+	                	$scope.position.cancel = true;
+                	}
+                	
                 	deselectNodesOnDrag(e.source.nodeScope.node);
                 	if($rootScope.tree && $rootScope.tree.mouseOverNode){
                 		var mouseOverNode = $rootScope.tree.mouseOverNode
@@ -956,14 +966,31 @@ angular.module('e8MyTests')
             		&& node.node.nodeType != EnumService.NODE_TYPE.archiveFolder 
             		&& node.node.nodeType != EnumService.NODE_TYPE.emptyFolder) {
                 $rootScope.tree = { mouseOverNode: node };
-                node.hover = true;
+                
+                if($scope.position){
+                	/*
+                     * This block of code will hide placeholder and show selection on folder node.                     *
+                     */                	 
+                	$scope.placeElm.css('display', 'none');
+                	node.hover = true;                	
+                	$scope.position.cancel = true; //  This variable prevents the code for showing placeholder in dragMove event of uiTree
+                }
             }
         };
 
         $scope.treeNodeMouseLeave = function (node) {
 
             $rootScope.tree = { mouseOverNode: null };
-            node.hover = false;
+            
+            if($scope.position){            	
+            	/*
+                 * This block of code will show placeholder and hide selection on folder node.                     *
+                 */            		
+            	$scope.placeElm.css('display', '');
+            	node.hover = false;            	
+            	$scope.position.cancel = false;            
+            }
+            
             if($scope.selectedMouseOverNode){
             	$scope.selectedMouseOverNode.isNodeSelected = true;
             	$scope.selectedMouseOverNode = null;
@@ -2243,6 +2270,14 @@ angular.module('e8MyTests')
 					}
 				});
 			});
+		}
+		
+		/* 
+		 * Method for identify source and destination tree of the event are same or not
+		 * 
+		 */
+		var  isForeign = function(e){
+			return e.source.nodeScope.$treeScope != e.dest.nodesScope.$treeScope
 		}
 		
     }]);

@@ -87,9 +87,7 @@
                 </div>
 
                 <div data-ng-if="node.nodeType == 'folder'" class="treeDiv"
-                     ng-class="{treeNodeHover: hover}"
-                     ng-mouseenter="treeNodeMouseEnter(this)"
-                     ng-mouseleave="treeNodeMouseLeave(this)">
+                     ng-class="{treeNodeHover: hover}">
                     <div class="maindiv" ng-class="{folderHighlight: node.selectTestNode}" id={{node.guid}}>
                         <div class="imagediv" ng-show="!node.isEditMode">
                             <input type="image" ng-click="getFolders(this)" class="collapseImg" value=""
@@ -100,7 +98,8 @@
                             <input type="text" data-ng-model="node.title" id="txtFolderNameEdit" ng-show="node.isEditMode"
                                    class="form-control"
                                    placeholder="{{node.title}}" ng-enter="editFolder(this,node)" />
-                           <div class="captionLabel" ng-show="!node.isEditMode" ng-mousedown="selectTestNode($event,this);">
+                           <div class="captionLabel" ng-show="!node.isEditMode" ng-mousedown="selectTestNode($event,this);" ng-mouseenter="treeNodeMouseEnter(this)"
+                     			ng-mouseleave="treeNodeMouseLeave(this)">
 								<span class="labelCaption" title="{{node.title}}">{{node.title}}</span>
 							</div>
 
@@ -134,9 +133,7 @@
 
             <div data-ng-if="node.nodeType != 'test' && node.nodeType != 'archiveTest' && node.nodeType != 'archiveFolder'"
                  class="treeDiv"
-                 ng-class="{treeNodeHover: hover}"
-                 ng-mouseenter="treeNodeMouseEnter(this)"
-                 ng-mouseleave="treeNodeMouseLeave(this)">
+                 ng-class="{treeNodeHover: hover}">
                 <div class="maindiv"  ng-class="{folderHighlight: node.selectTestNode}" id={{node.guid}}>
                     <div class="imagediv" ng-show="!node.isEditMode">
                         <input type="image" data-ng-if="node.nodeType != 'empty'" ng-click="getFolders(this)" class="collapseImg" value=""
@@ -146,7 +143,8 @@
                         <input type="text" data-ng-model="node.title" id="txtFolderNameEdit" ng-show="node.isEditMode"
                                class="form-control"
                                placeholder="{{node.title}}" ng-enter="editFolder(this,node)" />
-                         <div class="captionLabel" ng-show="!node.isEditMode" ng-mousedown="selectTestNode($event,this);" ng-class="{captionEmptyNode : node.nodeType == 'empty'}">
+                         <div class="captionLabel" ng-show="!node.isEditMode" ng-mousedown="selectTestNode($event,this);" ng-class="{captionEmptyNode : node.nodeType == 'empty'}" ng-mouseenter="treeNodeMouseEnter(this)"
+                 				ng-mouseleave="treeNodeMouseLeave(this)">
                                 <span class="labelCaption" title="{{node.title}}">{{node.title}}</span>
                             </div>
                     </div>
