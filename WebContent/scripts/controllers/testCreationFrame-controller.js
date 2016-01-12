@@ -1839,7 +1839,12 @@ angular
 								case 'Essay':						
 									qstnMasterDataModel.EssayPageSize =node.qtiModel.EssayPageSize;			
 									qstnMasterDataModel.RecommendedAnswer = node.qtiModel.RecommendedAnswer;						
-									break;					
+									break;
+									
+								case 'ShortAnswer':
+									qstnMasterDataModel.BlankSize =node.qtiModel.BlankSize;
+									qstnMasterDataModel.RecommendedAnswer = filterEditorDefaultPtag(node.qtiModel.Options);
+									break;
 
 								case 'Matching':	
 									qstnMasterDataModel.leftOptions = leftOptions(node.qtiModel.Options);	
@@ -1891,6 +1896,11 @@ angular
 									qstnModifiedData.RecommendedAnswer = node.qtiModel.RecommendedAnswer;					
 									break;					
 
+								case 'ShortAnswer':
+									qstnModifiedData.BlankSize =node.qtiModel.BlankSize;
+									qstnModifiedData.RecommendedAnswer = filterEditorDefaultPtag(node.qtiModel.Options);
+									break;
+									
 								case 'Matching':	
 									qstnModifiedData.leftOptions = leftOptions(node.qtiModel.Options);	
 									qstnModifiedData.rightOptions = matchingOptions(node.qtiModel.Options);

@@ -55,12 +55,11 @@ angular.module('evalu8Demo')
 					break;
 					
 				case 'ShortAnswer':
-					qtiModel.FbCaption = getFBQuestionCaption(xml);		
 					qtiModel.Caption = getEssayCaption(xml);							
 					qtiModel.Options = getSACorrectAnswersList(xml);	
 					qtiModel.EditOption = QuestionPrefilledModal[quizType].editOption;
 					qtiModel.PrintOption = QuestionPrefilledModal[quizType].printOption;
-					qtiModel.BlankSize = getFBQuestionBlankSize(xml);
+					qtiModel.BlankSize = getEssayPageSize(xml);
 					break;
 
 				case 'FillInBlanks':
@@ -139,10 +138,8 @@ angular.module('evalu8Demo')
 				var correctAnswerList = [];		
 				var correctAnswers = '';
 			
-				$(qtiXML).find('responseDeclaration').each(function(i, e) {
-					if($(this)[0].childNodes.length>0){	
-						correctAnswerList.push(decodeSpecialCharText($(this)[0].childNodes[0].childNodes[0].attributes['mapKey'].nodeValue));
-					}
+				$(qtiXML).find('correctResponse').find('value').each(function(i, e) {
+					correctAnswerList.push(decodeSpecialCharText(this.textContent));
 				});				
 				
 				return correctAnswerList;
@@ -525,58 +522,32 @@ angular.module('evalu8Demo')
 
 			}
 			
-			var buildEssayShortAnswerTag = function(xml,node) {
-				
-				$(xml).find('itemBody').find('textEntryInteraction').remove();				
+			var buildEssayShortAnswerQTI = function(xml,node) {
+				$(xml).find('itemBody').find('extendedTextInteraction').remove();				
 				var optionText = '';
-				var optionTag = '<textEntryInteraction expectedLength="@RESP" responseIdentifier="@RESPONSE" />';		
+				var optionTag = '<extendedTextInteraction expectedLines="@RESP" responseIdentifier="@RESPONSE" />';		
 			    
-
+				var optionTagAppend = optionTag.replace('@RESPONSE', 'RESPONSE_1');
+				optionTagAppend = optionTagAppend.replace('@RESP', node.qtiModel.BlankSize);
+				var item = $.parseXML(optionTagAppend); 
+				$(xml).find('itemBody').append($(item).children(0));
+				
+				$(xml).find('correctResponse').find("value").remove()
+				
 				$.each(node.qtiModel.Options,function(index,Option) {
 					optionText = replaceImageFromJsonContent(Option);					
 					node.qtiModel.Options[index] = optionText;
 					if(optionText.startsWith('<p>')){
 						optionText = optionText.substring(3, optionText.length-4);
 					}		
-					optionText = optionText==""?QuestionPrefilledModal[node.quizType].printOption:optionText;
-					var optionTagAppend = optionTag.replace('@RESPONSE', 'RESPONSE_' + (index + 1));
-					optionTagAppend = optionTagAppend.replace('@RESP', node.qtiModel.BlankSize);
-					var item = $.parseXML(optionTagAppend); 
-					$(xml).find('itemBody').append($(item).children(0));
+//					optionText = optionText==""?QuestionPrefilledModal[node.quizType].editOption:optionText;
+					
+					var xmlOption = $.parseXML("<value>"+ optionText +"</value>");
+					$(xml).find('correctResponse').append($(xmlOption).children(0));
 
 				});	
 			}
-			
-			var buildResponseDeclarationTag = function(xml,node) {
-				
-				var responseDeclaration = $(xml).find('responseDeclaration');
-				responseDeclaration.remove();
-				
-				var optionText = '';
-			
-				var optionTag = ' <responseDeclaration identifier="@RESPONSE" cardinality="single" baseType="string">'
-					+'<mapping defaultValue="0"><mapEntry mapKey="@RESP" mappedValue="1" caseSensitive="false"/></mapping></responseDeclaration>';
 
-				$.each(node.qtiModel.Options,function(index,Option) {
-					optionText = replaceImageFromJsonContent(Option);					
-					node.qtiModel.Options[index] = optionText;
-					if(optionText.startsWith('<p>')){
-						optionText = optionText.substring(3, optionText.length-4);
-					}		
-					optionText = optionText==""?QuestionPrefilledModal[node.quizType].printOption:optionText;
-					var optionTagAppend = optionTag.replace('@RESPONSE', 'RESPONSE_' + (index + 1));
-					optionTagAppend = optionTagAppend.replace('@RESP', encodeSpecialCharText(optionText));
-					var item = $.parseXML(optionTagAppend); 
-					
-					if(index==0)
-						$(xml).find( "assessmentItem" ).prepend($(item).children(0));
-					else
-						$(xml).find( "responseDeclaration").eq(index-1).after($(item).children(0));
-
-				});		
-
-
-			}
 
 			var appendResponseProcessingTag = function(xml,
 					htmlOptionsCnt) {
@@ -709,10 +680,7 @@ angular.module('evalu8Demo')
 					
 				case 'ShortAnswer':	
 					
-					buildEssayShortAnswerTag(xml,node);
-					
-					buildResponseDeclarationTag(xml,node);
-					
+					buildEssayShortAnswerQTI(xml,node);
 					break;
 
 				case 'Matching':			
