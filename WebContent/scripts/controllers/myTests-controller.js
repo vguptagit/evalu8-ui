@@ -1101,9 +1101,11 @@ angular.module('e8MyTests')
             		if(folder.$parentNodeScope && folder.$parentNodeScope.node && folder.$parentNodeScope.node.nodes.length == 0) {
             			folder.$parentNodeScope.node.nodes.push(CommonService.getEmptyFolder());
             		}
-            		if(angular.element($('[id=' + archivedFolder.guid + ']')).scope() && !angular.element($('[id=' + archivedFolder.guid + ']')).scope().collapsed) {
-            			angular.element($('[id=' + archivedFolder.guid + ']')).scope().node.nodes = [];
-            			angular.element($('[id=' + archivedFolder.guid + ']')).scope().collapse();
+            		if(angular.element($('[id=' + archivedFolder.guid + ']')).scope()) {
+            			if(!angular.element($('[id=' + archivedFolder.guid + ']')).scope().collapsed){
+            				angular.element($('[id=' + archivedFolder.guid + ']')).scope().node.nodes = [];
+            				angular.element($('[id=' + archivedFolder.guid + ']')).scope().collapse();
+            			}
             			$rootScope.blockLeftPanel.stop();
             			return; // return if archived node is already displayed in
     							// Archive Section
@@ -1256,9 +1258,11 @@ angular.module('e8MyTests')
         			$scope.archiveRoot.node.nodes.push(CommonService.getEmptyFolder());
         		}
         		
-        		if(angular.element($('[id=' + restoredFolder.guid + ']')).scope() && !angular.element($('[id=' + restoredFolder.guid + ']')).scope().collapsed) {
-        			angular.element($('[id=' + restoredFolder.guid + ']')).scope().node.nodes = [];
-        			angular.element($('[id=' + restoredFolder.guid + ']')).scope().collapse();
+        		if(angular.element($('[id=' + restoredFolder.guid + ']')).scope()) {
+        			if(!angular.element($('[id=' + restoredFolder.guid + ']')).scope().collapsed){
+        				angular.element($('[id=' + restoredFolder.guid + ']')).scope().node.nodes = [];
+            			angular.element($('[id=' + restoredFolder.guid + ']')).scope().collapse();
+        			}
         			$rootScope.blockLeftPanel.stop();
         			return; // return if restored node is already displayed in
 							// User Section
