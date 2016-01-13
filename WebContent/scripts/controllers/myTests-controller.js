@@ -116,6 +116,16 @@ angular.module('e8MyTests')
                 },
                 dragMove: function(e) {
                 	$scope.dragStarted = true;
+                	
+                	/*
+                	 * Saving placeholder and position to hide|show placeholder on enter|leave a folder node
+                	 */ 
+                	if(!isForeign(e)){
+	                	$scope.placeElm = e.elements.placeholder;
+	                	$scope.position = e.pos;
+	                	$scope.position.cancel = true;
+                	}
+                	
                 	e.source.nodeScope.node.selectTestNode = false;
                 	if($rootScope.tree && $rootScope.tree.mouseOverNode){
                 		var mouseOverNode = $rootScope.tree.mouseOverNode
@@ -332,10 +342,16 @@ angular.module('e8MyTests')
                                      CommonService.showErrorMessage(e8msg.error.cantSave);
                                      return;
                                  }
-                                if(sourceParent && sourceParent.node && sourceParent.node.nodes.length==0) {
-                                    sourceParent.node.nodes.push(CommonService.getEmptyFolder());
+                                if(mouseOverNode.node.nodes) {          
+                                	if(mouseOverNode.node.nodes[0].nodeType == EnumService.NODE_TYPE.emptyFolder) {
+                    					mouseOverNode.node.nodes.splice(0, 1);
+                    				}
+                    				mouseOverNode.node.nodes.unshift(item);
                                 }
-                                
+                                if(sourceParent && sourceParent.node && sourceParent.node.nodes.length==0) {
+                                	sourceParent.node.nodes.push(CommonService.getEmptyFolder());
+                                }
+
                                 $rootScope.blockLeftPanel.stop();
                             });                    
                         })                    
@@ -791,14 +807,31 @@ angular.module('e8MyTests')
             		&& node.node.nodeType != EnumService.NODE_TYPE.archiveFolder 
             		&& node.node.nodeType != EnumService.NODE_TYPE.emptyFolder) {
                 $rootScope.tree = { mouseOverNode: node };
-                node.hover = true;
+                
+                if($scope.position){
+                	/*
+                     * This block of code will hide placeholder and show selection on folder node.                     *
+                     */                	 
+                	$scope.placeElm.css('display', 'none');
+                	node.hover = true;                	
+                	$scope.position.cancel = true; //  This variable prevents the code for showing placeholder in dragMove event of uiTree
+                }
             }
         };
 
         $scope.treeNodeMouseLeave = function (node) {
 
             $rootScope.tree = { mouseOverNode: null };
-            node.hover = false;
+            
+            if($scope.position){            	
+            	/*
+                 * This block of code will show placeholder and hide selection on folder node.                     *
+                 */            		
+            	$scope.placeElm.css('display', '');
+            	node.hover = false;            	
+            	$scope.position.cancel = false;            
+            }
+            
             if($scope.selectedMouseOverNode){
             	$scope.selectedMouseOverNode.selectTestNode = true;
             	$scope.selectedMouseOverNode = null;
@@ -867,7 +900,7 @@ angular.module('e8MyTests')
         		defaultFolder.expand();
         	}
 
-        	if(defaultFolder.node.nodes){
+        	if(defaultFolder.node.nodes && defaultFolder.node.nodes.length > 0 ){
         		return false;
         	}
             if (!defaultFolder.collapsed) {            	
@@ -1068,8 +1101,9 @@ angular.module('e8MyTests')
             		if(folder.$parentNodeScope && folder.$parentNodeScope.node && folder.$parentNodeScope.node.nodes.length == 0) {
             			folder.$parentNodeScope.node.nodes.push(CommonService.getEmptyFolder());
             		}
-            		if(angular.element($('[id=' + archivedFolder.guid + ']')).scope()) {
-            			
+            		if(angular.element($('[id=' + archivedFolder.guid + ']')).scope() && !angular.element($('[id=' + archivedFolder.guid + ']')).scope().collapsed) {
+            			angular.element($('[id=' + archivedFolder.guid + ']')).scope().node.nodes = [];
+            			angular.element($('[id=' + archivedFolder.guid + ']')).scope().collapse();
             			$rootScope.blockLeftPanel.stop();
             			return; // return if archived node is already displayed in
     							// Archive Section
@@ -1222,7 +1256,9 @@ angular.module('e8MyTests')
         			$scope.archiveRoot.node.nodes.push(CommonService.getEmptyFolder());
         		}
         		
-        		if(angular.element($('[id=' + restoredFolder.guid + ']')).scope()) {
+        		if(angular.element($('[id=' + restoredFolder.guid + ']')).scope() && !angular.element($('[id=' + restoredFolder.guid + ']')).scope().collapsed) {
+        			angular.element($('[id=' + restoredFolder.guid + ']')).scope().node.nodes = [];
+        			angular.element($('[id=' + restoredFolder.guid + ']')).scope().collapse();
         			$rootScope.blockLeftPanel.stop();
         			return; // return if restored node is already displayed in
 							// User Section
@@ -1749,7 +1785,7 @@ angular.module('e8MyTests')
 				keyboard : false
         	});
         }        
-       
+        
         var addVersionTest = function (testFolder, treeItems, test, newTest) {
             if (!treeItems) {
                 return;
@@ -1763,5 +1799,13 @@ angular.module('e8MyTests')
                     return false;
                 }
             });
-        }        
+        }
+        
+        /* 
+		 * Method for identify source and destination tree of the event are same or not
+		 * 
+		 */
+		var  isForeign = function(e){
+			return e.source.nodeScope.$treeScope != e.dest.nodesScope.$treeScope
+		}
     }]);

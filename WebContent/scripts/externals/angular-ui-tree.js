@@ -892,7 +892,13 @@
 
                   // Show the placeholder if it was hidden for nodrop-enabled and this is a new tree
                   if (targetNode.$treeScope && !targetNode.$parent.nodropEnabled && !targetNode.$treeScope.nodropEnabled) {
-                    placeElm.css('display', '');
+                		
+                	  /*
+                	   * Cancel flag added to prevent displaying placeholder at times.
+                	   */
+                    if(!pos.cancel){
+                	  placeElm.css('display', '');                	  
+                    }
                   }
 
                   if (targetNode.$type == 'uiTree' && targetNode.dragEnabled) {
