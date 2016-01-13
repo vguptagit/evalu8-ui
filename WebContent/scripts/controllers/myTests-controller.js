@@ -1102,13 +1102,10 @@ angular.module('e8MyTests')
             			folder.$parentNodeScope.node.nodes.push(CommonService.getEmptyFolder());
             		}
             		if(angular.element($('[id=' + archivedFolder.guid + ']')).scope()) {
-            			if(!angular.element($('[id=' + archivedFolder.guid + ']')).scope().collapsed){
-            				angular.element($('[id=' + archivedFolder.guid + ']')).scope().node.nodes = [];
-            				angular.element($('[id=' + archivedFolder.guid + ']')).scope().collapse();
-            			}
+            			angular.element($('[id=' + archivedFolder.guid + ']')).scope().node.nodes = [];
+            			angular.element($('[id=' + archivedFolder.guid + ']')).scope().collapse();
             			$rootScope.blockLeftPanel.stop();
-            			return; // return if archived node is already displayed in
-    							// Archive Section
+            			return; // return if archived node is already displayed in Archive Section
             		}
             		        		
             		archivedFolder.nodeType = EnumService.NODE_TYPE.archiveFolder;
@@ -1259,13 +1256,11 @@ angular.module('e8MyTests')
         		}
         		
         		if(angular.element($('[id=' + restoredFolder.guid + ']')).scope()) {
-        			if(!angular.element($('[id=' + restoredFolder.guid + ']')).scope().collapsed){
-        				angular.element($('[id=' + restoredFolder.guid + ']')).scope().node.nodes = [];
-            			angular.element($('[id=' + restoredFolder.guid + ']')).scope().collapse();
-        			}
+        			angular.element($('[id=' + restoredFolder.guid + ']')).scope().node.nodes = [];
+        			angular.element($('[id=' + restoredFolder.guid + ']')).scope().collapse();
         			$rootScope.blockLeftPanel.stop();
         			return; // return if restored node is already displayed in
-							// User Section
+        			// User Section
         		}
         		
         		restoredFolder.nodeType = "folder";
@@ -1287,6 +1282,8 @@ angular.module('e8MyTests')
         					restoredFolderParent.node.nodes.splice(0,1);
         				}
         				restoredFolderParent.node.nodes.unshift(restoredFolder);
+        			}else{
+        				$scope.showParentNodeOnChildrenRestore();
         			}         				
         		}
         		
@@ -1294,6 +1291,15 @@ angular.module('e8MyTests')
         	});        	
         }        
         
+        
+        var isPresentInRootLeveFolders = function(folder){
+        	for(var i = 0; i < $scope.defaultFolders.length; i++){
+        		if(folder.guid == $scope.defaultFolders[i].guid){
+        			return true;
+        		}
+        	}
+        	return false;
+        }
         $scope.restoreTest = function(test) {
         	
         	var duplicateTitle = false;
@@ -1383,6 +1389,8 @@ angular.module('e8MyTests')
                                 testParent.node.nodes.push(test);
                             })
                         });
+                    }else{
+                    	$scope.showParentNodeOnChildrenRestore();
                     }
         		}  
         		
@@ -1402,6 +1410,25 @@ angular.module('e8MyTests')
                 }
             };
         
+        
+        $scope.showParentNodeOnChildrenRestore = function(){
+        	UserFolderService.defaultFolders(function (rootLevelFolders) {
+
+        		for(var j = 0; j < rootLevelFolders.length; j++){
+        			if(!isPresentInRootLeveFolders(rootLevelFolders[j])){
+        				$scope.restoredFolderParent = rootLevelFolders[j];
+        				break;
+        			}
+        		}
+        		var restoredNodetIndex = 0;
+        		$scope.defaultFolders.forEach(function(item){
+        			if(item.sequence < $scope.restoredFolderParent.sequence) {
+        				restoredNodetIndex = restoredNodetIndex + 1;        					
+        			}
+        		}) 
+        		$scope.defaultFolders.splice(restoredNodetIndex, 0, $scope.restoredFolderParent);
+        	});
+        }
         $scope.deleteFolder = function(folder) {
         	$scope.isFolderDeleteClicked=true;
     		$scope.IsConfirmation = true;        		
