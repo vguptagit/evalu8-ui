@@ -166,7 +166,7 @@ angular
 
 							$scope.addTestWizard = function() {
 								$scope.isApplySameCriteriaToAll = false;
-				                $('#testwizard').tooltip('hide');
+				                $('.tooltip').remove();
 								SharedTabService.addTestWizard($scope);
 							}
 							$scope.addTestWizardCriteria = function(response,

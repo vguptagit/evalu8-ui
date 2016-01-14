@@ -507,7 +507,7 @@ angular.module('e8MyTests')
                 
                 beforeDrag: function (sourceNodeScope) {
                     if((sourceNodeScope.node.hasOwnProperty('existInTestframe') && sourceNodeScope.node.existInTestframe == true) || 
-                    (sourceNodeScope.node.hasOwnProperty('draggable') && sourceNodeScope.node.draggable == false) ){
+                    (sourceNodeScope.node.hasOwnProperty('draggable') && sourceNodeScope.node.draggable == false) || sourceNodeScope.node.isEditMode){
                         sourceNodeScope.$$apply = false;
                         return false;
                     }    
@@ -2115,7 +2115,7 @@ angular.module('e8MyTests')
         }
 
         $scope.addNewFolder = function () {        	
-        	
+        	$('.tooltip').remove();
         	if($scope.folderName == null || $scope.folderName.trim().length==0) { return; }
         	
             var sequence = 1;

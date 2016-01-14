@@ -341,6 +341,7 @@ angular
 									userDisciplines.forEach(function(discipline) {
 										discipline["isCollapsed"]=false;
 										discipline.isHttpReqCompleted = true;
+										discipline.draggable = false;
 										discipline.nodeType = "discipline";
 										BookService.userDisciplineBooks(discipline,function(userbooks){
 											if(userbooks==null){
@@ -349,6 +350,7 @@ angular
 											}
 											userbooks.forEach(function(books) {
 												books.isCollapsed=true;
+												books.draggable = false;
 												if(books.nodeType!="empty"){
 													books.nodeType = "book";	
 												}
