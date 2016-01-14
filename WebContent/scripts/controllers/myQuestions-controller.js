@@ -1150,7 +1150,7 @@ angular.module('e8MyTests')
 				return;
 			}
 			
-			if(node.nodeType == EnumService.NODE_TYPE.question && (scope.$parentNodeScope.node.isNodeSelected && scope.$parentNodeScope.node.showTestWizardIcon == false)){
+			if(node.nodeType == EnumService.NODE_TYPE.question && (scope.$parentNodeScope) && (scope.$parentNodeScope.node.isNodeSelected && scope.$parentNodeScope.node.showTestWizardIcon == false)){
 				return;
 			}
 			
@@ -2437,6 +2437,10 @@ angular.module('e8MyTests')
 						usedNode.isNodeSelected = true;
 						usedNode.showEditQuestionIcon = false;
 						usedNode.showTestWizardIcon = false;
+					}else if (usedNode.nodeType != EnumService.NODE_TYPE.question){
+						usedNode.existInTestframe = true;
+						usedNode.isNodeSelected = true;				
+						usedNode.showTestWizardIcon = true;
 					}
 				})
 				node.existInTestframe = true;
