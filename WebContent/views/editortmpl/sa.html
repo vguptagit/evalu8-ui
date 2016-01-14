@@ -74,3 +74,9 @@
 
 
 </div>
+<div ng-show="answerAreaOnLeftSide">
+	<div class="floatLeftImp margin-top-10 width12"></div>
+	<div class="floatLeftImp" ng-class="answerAreaOnLeftSide?'answerAreaForSAQ':'questionContainer'">
+	   <span ng-bind-html="getAnswerBlanksForSAQ(node.qtiModel)"></span>
+	</div>
+</div>

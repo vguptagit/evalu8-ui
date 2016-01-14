@@ -88,7 +88,7 @@
 							ng-repeat="node in test.masterQuestions">
 							<div class="floatLeftImp">{{$index+1}}.</div>
 							<div ng-attr-style="height:{{node.quizType=='Essay' && node.qtiModel!=undefined? node.qtiModel.EssayPageSize*20+'px' : 'auto'}}"
-								id="{{node.quizType}}" class="floatLeftImp margin-lft-10"><span ng-show="'{{node.quizType}}'!='Essay'">__________</span></div>
+								id="{{node.quizType}}" class="floatLeftImp margin-lft-10"><span ng-show="'{{node.quizType}}'!='Essay'" ng-bind-html="getAnswerBlanksForSAQ(node)"></span></div>
 							<br>
 						</div>
 					</div>
