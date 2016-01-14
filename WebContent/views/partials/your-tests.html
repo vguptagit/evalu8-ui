@@ -46,7 +46,7 @@
         </div>
     </div>
     <script type="text/ng-template" id="defaultfolder_renderer.html">
-        <div draggable="{{node.draggable && !node.isEditMode}}" data-ui-tree-node>
+        <div draggable="{{node.draggable && !node.isEditMode}}">
             <div ui-tree-handle class="tree-node tree-node-content">
                 <div data-ng-if="node.nodeType == 'archiveRoot'" style="margin-bottom:2px">
                     <div class="sectionLineDiv"></div>

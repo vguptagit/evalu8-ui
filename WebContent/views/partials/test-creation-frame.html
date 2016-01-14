@@ -8,7 +8,7 @@
 			<a type="button" id="testwizard" class="btn btn-primary"
 				ng-disabled="sharedTabService.isTestWizardTabPresent"
 				ng-click="addTestWizard()" tooltip-placement="bottom"
-				data-toggle="tooltip" title="Test Creation Wizard" data-placement="bottom"> <span   class="{{wizardClass}}"></span>
+				tooltip="Test Creation Wizard" tooltip-placement="bottom" tooltip-append-to-body="true"> <span   class="{{wizardClass}}"></span>
 				Test Wizard
 			</a>
 
@@ -356,11 +356,6 @@
 		</div>
 					
         </script>
-		<script>
-			$(document).ready(function() {
-				$('#testwizard').tooltip();
-			});
-		</script>
 
 	</div>
 
