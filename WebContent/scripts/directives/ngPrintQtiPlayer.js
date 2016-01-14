@@ -98,9 +98,9 @@ angular.module('e8MyTests')
 				}
 				for (var j = 0; j < qtiModel.Options.length; j++) {
 					if(j==qtiModel.Options.length-1){
-						AnswerBlanks=AnswerBlanks+singleAnswerBlank;	
+						AnswerBlanks=AnswerBlanks+String.fromCharCode(97 + j).toUpperCase()+") "+singleAnswerBlank;	
 					}else{
-						AnswerBlanks=AnswerBlanks+singleAnswerBlank+' <br/><br/> ';
+						AnswerBlanks=AnswerBlanks+String.fromCharCode(97 + j).toUpperCase()+") "+singleAnswerBlank+' <br/><br/> ';
 					}
 				}
 				return $sce.trustAsHtml(AnswerBlanks);
