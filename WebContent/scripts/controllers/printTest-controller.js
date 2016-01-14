@@ -1,7 +1,7 @@
 angular.module('e8MyTests')
 .controller('PrintTestController',
-		['$scope', '$rootScope', '$modalInstance', 'parentScope', 'UserService', 'TestService', '$modal',
-		 function ($scope, $rootScope, $modalInstance, parentScope, UserService, TestService, $modal) {
+		['$scope', '$rootScope', '$modalInstance', 'parentScope', 'UserService', 'TestService', '$modal','$sce',
+		 function ($scope, $rootScope, $modalInstance, parentScope, UserService, TestService, $modal, $sce) {
 
 		     /**
 		      * In parentScope.sharedTabService.masterTests[parentScope.currentIndex].criterias, there is a property called scope which being set
@@ -104,5 +104,27 @@ angular.module('e8MyTests')
 		     $scope.includeStudentNameChange = function(){
 		    	 $scope.loadTestIframe();
 		     }
+		     
+		     $scope.getAnswerBlanksForSAQ = function(node){
+		    	 var AnswerBlanks="";
+		    	 if(node.quizType=='ShortAnswer'){
+	    		 	var singleAnswerBlank="";
+					for(var i=0;i<node.qtiModel.BlankSize;i++){
+						singleAnswerBlank=singleAnswerBlank+"_"
+					}
+					for (var j = 0; j < node.qtiModel.Options.length; j++) {
+						if(j==node.qtiModel.Options.length-1){
+							AnswerBlanks=AnswerBlanks+singleAnswerBlank;	
+						}else{
+							AnswerBlanks=AnswerBlanks+singleAnswerBlank+' <br/><br/> ';
+						}
+					} 
+		    	 }else{
+		    		 AnswerBlanks="__________";
+		    	 }
+		    	 
+					
+					return $sce.trustAsHtml(AnswerBlanks);
+				}
 
 		 }]);

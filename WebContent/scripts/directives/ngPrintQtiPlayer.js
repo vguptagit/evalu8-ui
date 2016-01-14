@@ -39,6 +39,9 @@ angular.module('e8MyTests')
 				case 'Essay':
 					return "views/editortmpl/es.html";
 					break;
+				case 'ShortAnswer':
+					return "views/editortmpl/sa.html";
+					break;
 				default:
 				}
 
@@ -84,6 +87,23 @@ angular.module('e8MyTests')
 			$scope.setEssayPageSize = function (qtiModel) {
 			    var EssayPageSize = parseInt(qtiModel.EssayPageSize) * 20;
 			    return {"padding-bottom": EssayPageSize}
+			}
+			
+			
+			$scope.getAnswerBlanksForSAQ = function(qtiModel){
+				var singleAnswerBlank="";
+				var AnswerBlanks="";
+				for(var i=0;i<qtiModel.BlankSize;i++){
+					singleAnswerBlank=singleAnswerBlank+"_"
+				}
+				for (var j = 0; j < qtiModel.Options.length; j++) {
+					if(j==qtiModel.Options.length-1){
+						AnswerBlanks=AnswerBlanks+singleAnswerBlank;	
+					}else{
+						AnswerBlanks=AnswerBlanks+singleAnswerBlank+' <br/><br/> ';
+					}
+				}
+				return $sce.trustAsHtml(AnswerBlanks);
 			}
 		}
 

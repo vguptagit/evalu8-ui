@@ -772,4 +772,12 @@ body .cke_dialog_background_cover{
     font-weight: bold;
 }
 
+.answerAreaForSAQ{
+	font-size: 14px;
+	font-weight: normal;	
+	font-family: Helvetica Neue Light;
+	margin-left: 40px;
+	width: 80%;
+}
+
 /* ShortAnswer - Question End */
