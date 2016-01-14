@@ -27,10 +27,9 @@ angular.module('e8MyTests')
 		var updateWizardNodeStatus = function(node,isTabClicked){		
 			node.isNodeSelected = true;
 			node.showTestWizardIcon = !isTabClicked;
-			node.showEditQuestionIcon = isTabClicked;
-			node.existInTestframe=true;
+			node.showEditQuestionIcon = true;
+			node.existInTestframe = true;
 		}
-		
 
 /**********************************************************Start**************************************************/
 		//This block of code update the wizard node status on Test tab switching. 
@@ -41,7 +40,7 @@ angular.module('e8MyTests')
 			for (var i = 0; i < node.nodes.length; i++) {		
 				nodeExist=false;			
 				for (var j = 0; j < criterias.length; j++) {		
-					if (node.nodes[i].nodeType != "question") {
+					if (node.nodes[i].nodeType != EnumService.NODE_TYPE.question) {
 						if (criterias[j].folderId == node.nodes[i].guid) {
 							nodeExist = true;
 							break;
@@ -70,8 +69,14 @@ angular.module('e8MyTests')
 		
 		var updateWizardNodeHeirarchyStatus = function(nodes,isTabClicked){			
 			if(nodes){
-				nodes.forEach(function(node) {
-					updateWizardStatus(node,isTabClicked);
+				nodes.forEach(function(node) {			
+					if (node.nodeType == EnumService.NODE_TYPE.question) {
+						node.isNodeSelected = true;
+						node.showEditQuestionIcon = true;
+						addingNodeInSelectedNodesArray(node);
+					}else{
+						updateWizardStatus(node,isTabClicked);		
+					}													
 				});
 			}		
 
@@ -211,7 +216,7 @@ angular.module('e8MyTests')
 		var onTabLoadSetTreeNodesStatus = function(){  	
 			var activeTest = SharedTabService.tests[SharedTabService.currentTabIndex];            
 			if (!activeTest.isTestWizard && activeTest.questions.length) {						   
-				updateTestNodesStatus(test);
+				updateTestNodesStatus(activeTest);
 			}else if(activeTest.isTestWizard){
 				onTabLoadSetTestWizardNodesStatus(activeTest);
 			}
@@ -225,7 +230,7 @@ angular.module('e8MyTests')
 				for (var j = 0; j < scope.$nodesScope.$modelValue.length; j++) {
 					var node = scope.$nodesScope.$modelValue[j];
 					if (node.guid == activeTest.criterias[i].folderId) {
-						updateWizardNodeStatus(node);
+						updateWizardNodeStatus(node,true);
 						addingNodeInSelectedNodesArray(node);
 						break;
 					}
@@ -1131,9 +1136,24 @@ angular.module('e8MyTests')
 			checkSiblingSelection(scope);
 		}	
 		
+		//to skip the selection of a node if node is present in test frame.
+		var skipNodeSelection=function(node){
+			if(node.isNodeSelected && (node.showEditQuestionIcon == false || node.showTestWizardIcon == false) && node.existInTestframe == true ){
+				return true;
+			}								
+		}
 		
 		$scope.selectNode = function (scope) {
 			var node = scope.node;
+			
+			if(skipNodeSelection(node)){
+				return;
+			}
+			
+			if(node.nodeType == EnumService.NODE_TYPE.question && (scope.$parentNodeScope.node.isNodeSelected && scope.$parentNodeScope.node.showTestWizardIcon == false)){
+				return;
+			}
+			
 			if ($scope.showAddFolderPanel) {
 				$scope.showAddFolderPanel = false;
 			}
@@ -1252,6 +1272,7 @@ angular.module('e8MyTests')
 
         	if (activeTest.isTestWizard) {
         		$rootScope.$broadcast('handleBroadcast_AddNewTab');
+        		activeTest = SharedTabService.tests[SharedTabService.tests.length-1];
         	}
         	
         	if(!selectedScopeNode.showEditQuestionIcon){
@@ -1605,59 +1626,12 @@ angular.module('e8MyTests')
 	}
 		
         $scope.createTestWizardMode=false; 
-
-        var deselectWizarChildNode = function (node) {
-			for (var i = 0; i < $scope.selectedNodes.length; i++) {
-				if ($scope.selectedNodes[i].guid == node.guid) {
-					$scope.selectedNodes[i].isNodeSelected = false ;
-					$scope.selectedNodes[i].showEditQuestionIcon = false;
-					$scope.selectedNodes[i].showTestWizardIcon = false;
-					if($scope.selectedNodes[i].nodes){
-						$scope.selectedNodes[i].nodes.forEach(function(usedNode) {
-							deselectWizarChildNode(usedNode);
-						})
-					}
-				}
-			}
-		}
-		
-		
-		var deselectWizarParentNode = function (node) {
-			var parentExistInSelectNodes=false;
-			var nodeIndex=0;
-			for (var i = 0; i < $scope.selectedNodes.length; i++) {
-			if ($scope.selectedNodes[i].guid == node.parentId) {
-				$scope.selectedNodes[i].isNodeSelected = false ;
-				$scope.selectedNodes[i].showEditQuestionIcon = false;
-				$scope.selectedNodes[i].showTestWizardIcon = false;
-				parentExistInSelectNodes = true;
-				break;
-			}
-			nodeIndex++;
-		}
-			if(parentExistInSelectNodes){
-				var parentNode = $scope.selectedNodes[nodeIndex];
-				$scope.selectedNodes.splice(nodeIndex, 1);
-				deselectWizarParentNode(parentNode);
-			}
-		}
         
-        $scope.$on('handleBroadcast_deselectWizardNode',
-				function(handler, node) {
-			
-			deselectWizarChildNode(node);
-			deselectWizarParentNode(node);
+    	
+ /**********************************************************Start**************************************************/
+  //This block of code is to manage the adding/draging the folder to the wizard frame.        
 
-		});
-		
-      //to change the status of wizard icon of nodes while creating a test from test wizard. 	
-		$scope.$on('handleBroadcast_previevTest',
-				function(handler, criterias) {
-			var isTabClicked = false;
-			updateTabWizardNodeStatusInTree(criterias,isTabClicked);			
-		});
-		
-		var isAllSiblingsInWizardFrame = function(scope,test) {
+        var isAllSiblingsInWizardFrame = function(scope,test) {
 			var allSiblingsNotExistInWizardFrame=false;			
 				scope.$parentNodeScope.node.nodes.forEach(function(node) {	
 					if(!isNodeUsedForWizard(node, test)){
@@ -1669,16 +1643,38 @@ angular.module('e8MyTests')
 			return !allSiblingsNotExistInWizardFrame;																
 		}
 		
+		var updateSelectedWizardFolderNodeStatus = function(node){		
+			node.isNodeSelected = true;
+			node.showTestWizardIcon = false;
+			node.showEditQuestionIcon = true;
+			node.existInTestframe=true;
+		}
+		
+		var updateSelectedWizardFolderChildNodeStatus = function(node){			
+			if(node.nodes){
+				node.nodes.forEach(function(node) {	
+					if (node.nodeType != EnumService.NODE_TYPE.question) {
+						updateSelectedWizardFolderNodeStatus(node);
+						updateSelectedWizardFolderChildNodeStatus(node);		
+					}											
+				});
+			}		
+
+		}
+		
 		var checkSiblingTopicSelectionForWizard = function(scope,activeTest){
 			if(scope.$parentNodeScope && (isAllSiblingsInWizardFrame(scope,activeTest))){
 				scope.$parentNodeScope.node.showTestWizardIcon = false;
+				scope.$parentNodeScope.node.existInTestframe=true;
 				addingNodeInSelectedNodesArray(scope.$parentNodeScope.node);
 			}
-			if(scope.node.nodes)updateWizardNodeHeirarchyStatus(scope.node.nodes,true);		
+			if(scope.node.nodes)updateSelectedWizardFolderChildNodeStatus(scope.node);		
 		};
+		
+		
         
         var addWizardToTestFrameTab = function(scope, currentNode, test){
-        	updateWizardNodeStatus(currentNode,true);		
+        	updateSelectedWizardFolderNodeStatus(currentNode);		
         	$rootScope.blockPage.start();
         	getQuestions(
         			currentNode,
@@ -1716,6 +1712,9 @@ angular.module('e8MyTests')
         		for (var j = 0; j < $scope.selectedNodes.length; j++) {
         			if ($scope.selectedNodes[i].parentId == $scope.selectedNodes[j].guid ) {            			
         				parentNodeExist = true;
+        				if ($scope.selectedNodes[i].nodeType != EnumService.NODE_TYPE.question) {
+        					$scope.selectedNodes[i].existInTestframe = true;        					
+        				}
         				$scope.selectedNodes[i].showTestWizardIcon = false;
         				break;
         			}
@@ -1742,6 +1741,7 @@ angular.module('e8MyTests')
         			}
         			httpReqCount++;
         			currentNode.showTestWizardIcon = false;
+        			currentNode.existInTestframe = true;
         			$rootScope.blockPage.start();
         			getQuestions(
         					currentNode,
@@ -1791,6 +1791,12 @@ angular.module('e8MyTests')
         	}
 
         	var tab = SharedTabService.tests[SharedTabService.currentTabIndex];
+        	
+        	if(SharedTabService.isErrorExist(
+                    currentNode.node, $scope.selectedNodes)) {					
+                SharedTabService.TestWizardErrorPopup_Open();
+                return false;
+            }
 
         	if( eventType == "clickEvnt"){
         		addWizardToTestFrameTab(currentNode, currentNode.node, tab);				
@@ -1800,6 +1806,9 @@ angular.module('e8MyTests')
 
         }
 
+  /**********************************************************End**************************************************/
+        
+        
 		function getQuestions(currentNode, callBack) {
 			
 		    UserQuestionsService.allFolderQuestions(currentNode.guid, function (userQuestions) {
@@ -1820,6 +1829,49 @@ angular.module('e8MyTests')
         	}        	
         }
         
+        var isAllChildsInWizardFrame = function(folders) {
+        	var activeTest = SharedTabService.tests[SharedTabService.currentTabIndex];
+			var allSiblingsNotExistInWizardFrame=false;
+			folders.every(function(folder) {										
+				if(!isNodeUsedForWizard(folder, activeTest)){
+					allSiblingsNotExistInWizardFrame = true;
+					return false;
+				} 		
+				return true;
+			});	
+
+			return !allSiblingsNotExistInWizardFrame;																
+		}
+        
+        var onExpandFolderUpdateWizardStatus = function(expandedNode,childFolders) {
+        	var activeTest = SharedTabService.tests[SharedTabService.currentTabIndex];
+        	if(activeTest.isTestWizard){						
+        		childFolders.forEach(function(folder) {			
+        			if(isNodeUsedForWizard(folder, activeTest)){
+        				folder.isNodeSelected = true;
+        				folder.showEditQuestionIcon = true;
+        				folder.showTestWizardIcon = false;
+        				folder.existInTestframe = true;	
+        			}
+        			//add the node to $scope.selectedNodes array, if node is in selected status.
+        			if(folder.isNodeSelected){													
+        				addingNodeInSelectedNodesArray(folder);				
+        			}
+        		});	
+
+        		if(!expandedNode.questionBindings){
+        			if(isAllChildsInWizardFrame(childFolders)){
+        				expandedNode.showEditQuestionIcon = true;
+        				expandedNode.showTestWizardIcon = false;
+        				expandedNode.isNodeSelected = true;		
+        				expandedNode.existInTestframe = true;		
+        				if(expandedNode.isNodeSelected)addingNodeInSelectedNodesArray(expandedNode); 
+        			}
+        		};
+        	}											
+        }
+        
+        
         $scope.getUserFolders = function (defaultFolder, callback) {
 
         	 if (!defaultFolder.collapsed) {
@@ -1835,13 +1887,16 @@ angular.module('e8MyTests')
             if (!defaultFolder.collapsed) {            	
 				
 				QuestionFolderService.getFoldersByParentFolderId(defaultFolder.node.guid, function (userFolders) {
-
+					var activeTest = SharedTabService.tests[SharedTabService.currentTabIndex];
+					var allChildNotInWizardFrame=true;
 					userFolders.forEach(function(folder) {
 						folder.showEditQuestionIcon = defaultFolder.node.showEditQuestionIcon;
 						folder.showTestWizardIcon = defaultFolder.node.showTestWizardIcon;
 						folder.isNodeSelected = defaultFolder.node.isNodeSelected;		
-						if(defaultFolder.node.isNodeSelected)addingNodeInSelectedNodesArray(folder);    
+						if(defaultFolder.node.isNodeSelected)addingNodeInSelectedNodesArray(folder);   
 					});
+					
+					onExpandFolderUpdateWizardStatus(defaultFolder.node,userFolders);					
 					
 					defaultFolder.node.nodes = userFolders;
 					
@@ -2384,13 +2439,66 @@ angular.module('e8MyTests')
 						usedNode.showTestWizardIcon = false;
 					}
 				})
+				node.existInTestframe = true;
+				node.isNodeSelected = true;				
+				node.showTestWizardIcon = true;
 			}
 		})
 
 	});
 	
+	
+	 /**********************************************************Start**************************************************/
+	
+	 // To delete the wzard section from wizard Test frame..
+
+	 var deselectWizarChildNode = function (node) {
+			for (var i = 0; i < $scope.selectedNodes.length; i++) {
+				if ($scope.selectedNodes[i].guid == node.guid) {
+					$scope.selectedNodes[i].isNodeSelected = false ;
+					$scope.selectedNodes[i].showEditQuestionIcon = false;
+					$scope.selectedNodes[i].showTestWizardIcon = false;
+					if($scope.selectedNodes[i].nodes){
+						$scope.selectedNodes[i].nodes.forEach(function(usedNode) {
+							deselectWizarChildNode(usedNode);
+						})
+					}
+				}
+			}
+		}
+	
+		var deselectWizarParentNode = function (node) {
+			var parentExistInSelectNodes=false;
+			var nodeIndex=0;
+			for (var i = 0; i < $scope.selectedNodes.length; i++) {
+			if ($scope.selectedNodes[i].guid == node.parentId) {
+				$scope.selectedNodes[i].isNodeSelected = false ;
+				$scope.selectedNodes[i].showEditQuestionIcon = false;
+				$scope.selectedNodes[i].showTestWizardIcon = false;
+				parentExistInSelectNodes = true;
+				break;
+			}
+			nodeIndex++;
+		}
+			if(parentExistInSelectNodes){
+				var parentNode = $scope.selectedNodes[nodeIndex];
+				$scope.selectedNodes.splice(nodeIndex, 1);
+				deselectWizarParentNode(parentNode);
+			}
+		}
+     
+     $scope.$on('handleBroadcast_deselectWizardNode',
+				function(handler, node) {
+			
+			deselectWizarChildNode(node);
+			deselectWizarParentNode(node);
+
+		});
+     /*******************************************************End*************************************************************/     
+     
+	
 /**********************************************************Start**************************************************/
-//This block of code update the wizard node status on Test tab switching.
+//This block of code update the wizard node status and test node on Test tab switching.
 	
 	$scope.$on(
 			'handleBroadcast_onClickTab',
