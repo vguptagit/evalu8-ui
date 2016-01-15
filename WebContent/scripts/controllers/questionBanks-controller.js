@@ -215,12 +215,16 @@ angular
 					                dragMove: function(e) {
 					                	$scope.dragStarted = true;
 					                	deselectNodesOnDrag(e.source.nodeScope.node);
+					                	var element = e.source.nodeScope.$element;
+					                	$scope.questionCountPosition = "top:" + (element.offset().top - 20) + "px; left:" + (element.offset().left + element.width() - 20) + "px; position:fixed;z-index:2000";
 					                },
 					                dragStart: function(e) {
-					                	$('body *').css({'cursor':'url("images/grabbing.cur"), move'});
+					                    $('body *').css({ 'cursor': 'url("images/grabbing.cur"), move' });
+					                    DisplayQuestionCount(e.source.nodeScope.node);
 					                },
 					                dragStop: function(e) {
-					                	$('body *').css({'cursor':''});
+					                    $('body *').css({ 'cursor': '' });
+					                    $scope.questionCountPosition = '';
 					                },
 					                beforeDrop: function(e) {
                                                                          
@@ -429,6 +433,38 @@ angular
 									});									
 								}								
 							}
+						    /* start : convert book container array to JSON*/
+							$scope.bookJson = [];
+							var containerJson = [];
+							var bookContainers = [];
+							function convertToJson(bookcontainers) {
+							    bookContainers = bookcontainers;
+							    containerJson = getRootItems("");
+							    return containerJson
+							}
+							function getRootItems(parentid) {
+							    bookContainers.forEach(function (item) {
+							        if (item.parentId === parentid) {
+							            item.child = [];
+							            containerJson.push(item);
+							            getChildItems(item)
+							        }
+							    });
+							    console.log(containerJson);
+							    return containerJson
+							}
+							function getChildItems(parentItem) {
+							    bookContainers.forEach(function (item) {
+							        if (item.parentId === parentItem.guid) {
+							            if (!parentItem.child) {
+							                parentItem.child = [];
+							            }
+							            parentItem.child.push(item);
+							            getChildItems(item);
+							        }
+							    });
+							}
+						    /* ends */
 
 							// To get the Chapters for the given book
 							// This method will call the api
@@ -452,7 +488,18 @@ angular
 									if($scope.isSearchMode && $scope.searchedContainerId!=book.node.guid){
 										return;
 									}
-									
+									$scope.IsBookContainersRendered = false;
+									ContainerService.getAllContainers($scope.bookID,
+											function (response) {
+											    if (response == null) {
+											        CommonService.showErrorMessage(e8msg.error.cantFetchNodes)
+											        return;
+											    }
+											    $scope.IsBookContainersRendered = true;
+											    var responseJson = convertToJson(response);
+											    $scope.bookJson.push({ "guid": $scope.bookID, containers: responseJson });
+
+											});
 									 ContainerService.bookNodes(book.node.guid, getSearchCriteria(false),
                                     		function(bookNodes) {
                                     	if(bookNodes==null){
@@ -1069,7 +1116,8 @@ angular
 							//to change the status of the topic's node, when we expand a topic.
 							var setQuestionNodeStatus=function(item,currentNode){
 								item.nodeType = EnumService.NODE_TYPE.question;			
-								
+								item.bookid = $scope.bookID;
+
 								//change the status of node, if parent node is selected.
 								if(currentNode.node.isNodeSelected){
 									item.isNodeSelected = currentNode.node.isNodeSelected;
@@ -1427,6 +1475,104 @@ angular
 
 							};		
 							
+							function DisplayQuestionCount(currentnode) {
+							    var selectedNodesArray = [],
+                                    selectedNodesTemp = [];
+							    console.log($scope.selectedNodes);
+							    angular.copy($scope.selectedNodes, selectedNodesTemp);
+							    selectedNodesTemp.push(currentnode);
+							    selectedNodesTemp.forEach(function (selectedItem) {
+							        $scope.bookJson.forEach(function (bookItem) {
+							            if (selectedItem.bookid === bookItem.guid) {
+							                checkInBookContainer(bookItem, selectedItem);
+							            }
+							        })
+							    });
+
+							    function checkInBookContainer(bookItem, selectedItem) {
+							        bookItem.containers.forEach(function (item) {
+							            if (item.guid === selectedItem.guid) {
+							                console.log(item);
+							                selectedNodesArray.push(item);
+							            }
+							            else if (item.child) {
+							                checkInChildNode(item.child, selectedItem);
+							            }
+							        })
+
+
+							    }
+							    function checkInChildNode(containerItems, selectedItem) {
+							        containerItems.forEach(function (item) {
+							            if (item.guid === selectedItem.guid) {
+							                console.log(item);
+							                selectedNodesArray.push(item);
+							            }
+							            else if (item.guid === selectedItem.parentId) {
+							                selectedNodesArray.push(selectedItem);
+							            }
+							            else if (item.child) {
+							                checkInChildNode(item.child, selectedItem);
+							            }
+							        })
+							    }
+
+							    var questions = [];
+
+							    function rootNodes() {
+							        selectedNodesArray.forEach(function (rootItem) {
+							            if (rootItem.child) {
+							                childNodes(rootItem.child);
+							            } else if (rootItem.questionBindings) { //if folders
+							                questions = questions.concat(rootItem.questionBindings);
+							            } else {//if questions
+							                questions.push(rootItem.guid);
+							            }
+							        })
+							    }
+							    function childNodes(childItems) {
+							        childItems.forEach(function (item) {
+							            if (item.child) {
+							                childNodes(item)
+							            } else {
+							                var found = false;
+							                selectedNodesArray.forEach(function (rootItem) {
+							                    if (rootItem.guid === item.guid) {
+							                        found = true;
+							                    }
+							                })
+							                if (!found) {
+							                    //questions.push(item.questionBindings.length);
+							                    questions = questions.concat(item.questionBindings);
+							                }
+							            }
+							        })
+							    }
+							    rootNodes();
+							    var testQuestionGuids = [];
+
+							    //questions of current test.
+							    _.forEach(SharedTabService.tests[SharedTabService.currentTabIndex].questions, function (value, key) {
+							        testQuestionGuids.push(value.guid);
+							    });
+
+							    //console.log('questions');
+							    //remove the duplicate question guids. the questions may contains in the root of the $scope.selectedNodes.
+							    questions = _.uniq(questions);
+
+							    //left outer join on questions.
+							    var questionsPresentInTest = _.filter(testQuestionGuids, function (d) {
+							        return _.indexOf(questions, _.indexOf(testQuestionGuids, d));
+							    }).length;
+
+							    //console.log('questionsPresentInTest :' + questionsPresentInTest);
+							    //console.log('questions : ' + questions.length);
+
+							    //number of question going to drop on right side.
+							    //console.log(questions.length - questionsPresentInTest);
+							    $scope.questionCount = questions.length - questionsPresentInTest;
+							}
+
 							//#To check whether the any parent/child node of selected node is used for test creation(edit question/wizard)  
 							$scope.isParentNodeUsed = function(selectedNode, test){
 								for (var i = 0; i < $scope.expandedNodes.length; i++) {

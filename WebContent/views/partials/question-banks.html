@@ -90,13 +90,13 @@
             </div>
         </div>
 
-        <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}" droppable="false">
+        <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}" droppable="false" ng-show="IsBookContainersRendered">
             <li ng-if="!node.isQuestion" draggable="{{node.nodeType=='chapter' || node.nodeType=='topic'}}" ng-repeat="node in node.nodes" collapsed="{{node.isCollapsed?'true':'false'}}" ui-tree-node ng-include="'nodes_renderer.html'">
             </li>
-			<li printmode="true" class="questIndex qbQuestions" 
-			ng-class="{questionSelected:node.isNodeSelected ,  twoDigitIndex:({{$index + 1}}>9),threedigitIndex:({{$index + 1}}>99), fourDigitIndex:({{$index + 1}}>999)}" 
-			ng-if="node.isQuestion" ng-repeat="node in node.nodes" collapsed="{{node.isCollapsed?'true':'false'}}" ui-tree-node 
-			ng-include="'qb_questions_renderer.html'"></li>
+            <li printmode="true" class="questIndex qbQuestions"
+                ng-class="{questionSelected:node.isNodeSelected ,  twoDigitIndex:({{$index + 1}}>9),threedigitIndex:({{$index + 1}}>99), fourDigitIndex:({{$index + 1}}>999)}"
+                ng-if="node.isQuestion" ng-repeat="node in node.nodes" collapsed="{{node.isCollapsed?'true':'false'}}" ui-tree-node
+                ng-include="'qb_questions_renderer.html'"></li>
         </ol>
     </script>
 	<script type="text/ng-template" id="nodes_renderer.html">
@@ -177,7 +177,7 @@
         </div>
     </script>
 
-	<div data-ui-tree="treeOptions" id="tree-root" class="question_bank_scrollbar" data-clone-enabled="true" data-drag-delay="70">
+	<div data-ui-tree="treeOptions" id="tree-root" class="question_bank_scrollbar" data-clone-enabled="true">
 
 		<div class="testMessagetip" style="position: absolute; top: 0px">
 			<div class="newTest-close glyphicon glyphicon-remove"
@@ -207,3 +207,5 @@
 		</ol>
 	</div>
 </div>
+<!--questionCountPosition : {{questionCountPosition}}-->
+<span id="questionCountBadge" class="badge questionCountBadge" style="{{questionCountPosition}}"  >{{questionCount}}</span>

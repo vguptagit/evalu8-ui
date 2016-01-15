@@ -3438,3 +3438,6 @@ a#testwizard {
 .addFolderActionsDiv button{
     margin-right: 1px;
 }
+.questionCountBadge{
+	    background-color: #d9534f;
+}
