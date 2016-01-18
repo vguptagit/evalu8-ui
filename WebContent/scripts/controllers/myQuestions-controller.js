@@ -73,6 +73,7 @@ angular.module('e8MyTests')
 					if (node.nodeType == EnumService.NODE_TYPE.question) {
 						node.isNodeSelected = true;
 						node.showEditQuestionIcon = true;
+						node.existInTestframe = false;
 						addingNodeInSelectedNodesArray(node);
 					}else{
 						updateWizardStatus(node,isTabClicked);		
@@ -1747,8 +1748,8 @@ angular.module('e8MyTests')
         					currentNode,
         					function (response, currentNode) {
         						try {
-        							if (response.length) {
-        								httpReqCompletedCount++;
+        							httpReqCompletedCount++;
+        							if (response.length) {        								
         								$rootScope.$broadcast(
         										"handleBroadcast_createTestWizardCriteria",
         										response,
@@ -1757,7 +1758,7 @@ angular.module('e8MyTests')
         								SharedTabService.addErrorMessage(currentNode.title, e8msg.warning.emptyFolder);
         								currentNode.showTestWizardIcon = true;
         								if(currentNode.nodes){
-        									$scope.updateEmptyNodeStatus(currentNode);
+        									updateEmptyNodeStatus(currentNode);
         								}
         							}
 
@@ -1774,6 +1775,19 @@ angular.module('e8MyTests')
         		}
         	}
         }
+        
+        
+      //to set the status of the empty chapter/topic node,if the chapter/topic node does't contains questions.
+		var updateEmptyNodeStatus = function(node){
+			node.nodes.forEach(function(node) {
+				if (node.questionBindings && node.questionBindings.length == 0) {
+					node.showTestWizardIcon = true;
+				}
+				if(node.nodes){
+					updateEmptyNodeStatus(node);
+				}
+			})
+		}
 
 
         // TODO : need to move this to service.
@@ -1831,46 +1845,90 @@ angular.module('e8MyTests')
         
         var isAllChildsInWizardFrame = function(folders) {
         	var activeTest = SharedTabService.tests[SharedTabService.currentTabIndex];
-			var allSiblingsNotExistInWizardFrame=false;
-			folders.every(function(folder) {										
-				if(!isNodeUsedForWizard(folder, activeTest)){
-					allSiblingsNotExistInWizardFrame = true;
-					return false;
-				} 		
-				return true;
-			});	
+        	var allSiblingsNotExistInWizardFrame=false;
+        	folders.every(function(folder) {										
+        		if(!isNodeUsedForWizard(folder, activeTest)){
+        			allSiblingsNotExistInWizardFrame = true;
+        			return false;
+        		} 		
+        		return true;
+        	});	
 
-			return !allSiblingsNotExistInWizardFrame;																
-		}
-        
-        var onExpandFolderUpdateWizardStatus = function(expandedNode,childFolders) {
-        	var activeTest = SharedTabService.tests[SharedTabService.currentTabIndex];
-        	if(activeTest.isTestWizard){						
-        		childFolders.forEach(function(folder) {			
-        			if(isNodeUsedForWizard(folder, activeTest)){
-        				folder.isNodeSelected = true;
-        				folder.showEditQuestionIcon = true;
-        				folder.showTestWizardIcon = false;
-        				folder.existInTestframe = true;	
-        			}
-        			//add the node to $scope.selectedNodes array, if node is in selected status.
-        			if(folder.isNodeSelected){													
-        				addingNodeInSelectedNodesArray(folder);				
-        			}
-        		});	
-
-        		if(!expandedNode.questionBindings){
-        			if(isAllChildsInWizardFrame(childFolders)){
-        				expandedNode.showEditQuestionIcon = true;
-        				expandedNode.showTestWizardIcon = false;
-        				expandedNode.isNodeSelected = true;		
-        				expandedNode.existInTestframe = true;		
-        				if(expandedNode.isNodeSelected)addingNodeInSelectedNodesArray(expandedNode); 
-        			}
-        		};
-        	}											
+        	return !allSiblingsNotExistInWizardFrame;																
         }
-        
+
+        var allQuestionBindingsInTestFrame = function(folder,activeTest){
+        	var allQuestionNotInTestFrame = false;
+        	if(folder.questionBindings){				
+        		for (var i = 0; i < folder.questionBindings.length; i++) {	
+        			if(activeTest.questions.length>0){	
+        				for (var j = 0; j < activeTest.questions.length; j++) {
+        					if(folder.questionBindings[i].questionId!=activeTest.questions[j].guid){
+        						allQuestionNotInTestFrame = true;
+        						break;
+        					}
+        				}
+        			}else{
+        				allQuestionNotInTestFrame=true;
+        			}        			
+        			if(allQuestionNotInTestFrame){			
+        				break;
+        			}
+        		}
+        	}else{
+        		allQuestionNotInTestFrame = true;;
+        	}
+        	return !allQuestionNotInTestFrame;
+        }
+
+
+        //to change the status of the topic/chapter question node, when all childs are in test frame.
+        var onParentExpandUpdateChildFolderStatus = function(expandedNode,childFolders,activeTest){	        	   
+        	if(activeTest.isTestWizard){						
+        		updateChildFolderStatusByWizardFrame(expandedNode,childFolders,activeTest);
+        	}else{
+        		updateChildFolderStatusByTestFrame(childFolders,activeTest);
+        	}
+
+        }
+
+        var updateChildFolderStatusByTestFrame = function(childFolders,activeTest) {	        				
+        	childFolders.forEach(function(folder) {			
+        		if(allQuestionBindingsInTestFrame(folder, activeTest)){
+        			folder.isNodeSelected = true;
+        			folder.showEditQuestionIcon = false;
+        			folder.showTestWizardIcon = true;
+        			folder.existInTestframe = true;	
+        			addingNodeInSelectedNodesArray(folder);				
+        		}			
+        	});				
+        }											
+
+        var updateChildFolderStatusByWizardFrame = function(expandedNode,childFolders,activeTest) {        							
+        	childFolders.forEach(function(folder) {			
+        		if(isNodeUsedForWizard(folder, activeTest)){
+        			folder.isNodeSelected = true;
+        			folder.showEditQuestionIcon = true;
+        			folder.showTestWizardIcon = false;
+        			folder.existInTestframe = true;	
+        		}
+        		//add the node to $scope.selectedNodes array, if node is in selected status.
+        		if(folder.isNodeSelected){													
+        			addingNodeInSelectedNodesArray(folder);				
+        		}
+        	});	
+
+        	if(!expandedNode.questionBindings){
+        		if(isAllChildsInWizardFrame(childFolders)){
+        			expandedNode.showEditQuestionIcon = true;
+        			expandedNode.showTestWizardIcon = false;
+        			expandedNode.isNodeSelected = true;		
+        			expandedNode.existInTestframe = true;		
+        			if(expandedNode.isNodeSelected)addingNodeInSelectedNodesArray(expandedNode); 
+        		}
+        	};        							
+        }
+
         
         $scope.getUserFolders = function (defaultFolder, callback) {
 
@@ -1896,7 +1954,7 @@ angular.module('e8MyTests')
 						if(defaultFolder.node.isNodeSelected)addingNodeInSelectedNodesArray(folder);   
 					});
 					
-					onExpandFolderUpdateWizardStatus(defaultFolder.node,userFolders);					
+					onParentExpandUpdateChildFolderStatus(defaultFolder.node,userFolders,activeTest);					
 					
 					defaultFolder.node.nodes = userFolders;
 					
@@ -1948,8 +2006,7 @@ angular.module('e8MyTests')
 							yourQuestion.textHTML = displayNode.html();
 
 							defaultFolder.node.nodes.push(yourQuestion);	
-	                	});
-	                	
+	                	});	                	
 	                	setParentNodeAndChildNodeStatus(defaultFolder.node);
 	                	
                         if (defaultFolder.node.nodes.length > 1 && defaultFolder.node.nodes[0].sequence == 0) {
@@ -1962,7 +2019,9 @@ angular.module('e8MyTests')
                     if(callback) callback();
                 });                
             }
-        };        
+        };     
+        
+      
         
       //to change the status of the topic/chapter question node, when all childs are in test frame.
 		var setParentNodeAndChildNodeStatus=function(folder){	
