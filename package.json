@@ -74,7 +74,8 @@
     "time-grunt": "^1.2.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "cd node_modules/grunt-contrib-imagemin/node_modules/imagemin/node_modules && del /F /Q vinyl-fs && cd.. && npm install vinyl-fs@2.2.x"
   },
   "repository": {
     "type": "git",
