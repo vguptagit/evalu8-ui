@@ -272,14 +272,6 @@ div.resource {
 	background-repeat: no-repeat;
 }
 
-.midPanel {
-	background-color: #505050;
-	width: 13px;
-	background-image: url("../images/divider.png");
-	background-repeat-y: no-repeat;
-	background-position-y: 50%;
-}
-
 .questPanel {
 	margin-left: 40%;
 	margin-top: 100px;
@@ -714,23 +706,6 @@ ol {
 	background-position-y: 0px;
 }
 
-.settingsChapter {
-	background-image: url("../images/settings.png");
-	background-repeat: no-repeat;
-	padding-left: 20px;
-	background-position-y: 0px;
-	margin: 5px;
-}
-
-.printChapter {
-	background-image: url("../images/print.png");
-	background-repeat: no-repeat;
-	padding-left: 20px;
-	background-position-x: left, 98%;
-	background-position-y: 0px;
-	cursor: pointer;
-}
-
 .expandChapter {
 	color: #fff !important;
 	background-color: #A9A9A9 !important;
@@ -773,16 +748,6 @@ ol {
 	overflow: auto;
 }
 
-.upload {
-	width: 27px;
-	height: 22px;
-	background-image: url("../images/upload.png");
-	background-repeat: repeat;
-	margin-top: 0px;
-	margin: 5px;
-	float: right;
-}
-
 .saveicon {
 	width: 22px;
 	height: 22px;
@@ -792,16 +757,6 @@ ol {
 	margin: 5px;
 	float: right;
 	cursor: pointer;
-}
-
-.printicon {
-	width: 27px;
-	height: 22px;
-	background-image: url("../images/print_.png");
-	background-repeat: repeat;
-	margin-top: 0px;
-	margin: 5px;
-	float: right;
 }
 
 #icons {
