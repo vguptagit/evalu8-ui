@@ -78,7 +78,8 @@ angular.module('evalu8Demo')
 		                                       	{ key: "Matching", value: 'Matching'},
 		                                       	{ key: "MultipleChoice", value: 'Multiple Choice'},
                                      			{ key: "TrueFalse", value: 'True False'},
-                                     			{ key: "FillInBlanks", value: 'Fill in the Blanks' }   		        
+                                     			{ key: "FillInBlanks", value: 'Fill in the Blanks' },
+                                     			{ key: "ShortAnswer", value: 'Short Answer' }
 		     ];
 
 		     sharedTabService.createDefaultTest = function () {
