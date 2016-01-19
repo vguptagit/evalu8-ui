@@ -206,7 +206,7 @@ angular
 					        $scope.treeOptions = {
 					                
 					                beforeDrag: function (sourceNodeScope) {
-					                    if(sourceNodeScope.node.hasOwnProperty('draggable') && sourceNodeScope.node.draggable == false) {
+					                    if((sourceNodeScope.node.hasOwnProperty('draggable') && sourceNodeScope.node.draggable == false) || (sourceNodeScope.node.hasOwnProperty('existInTestframe') && sourceNodeScope.node.existInTestframe == true)) {
 					                        sourceNodeScope.$$apply = false;
 					                        return false;
 					                    }    
@@ -643,6 +643,7 @@ angular
 								        item.showTestWizardIcon = false;
 								        item.showEditQuestionIcon = false;
 								        item.isNodeSelected = false;
+								        item.existInTestframe = false;
 								        for (var j = 0; j < $scope.selectedNodes.length; j++) {
 								            if (item.guid === $scope.selectedNodes[j].guid) {
 								                $scope.selectedNodes.splice(j, 1);
@@ -672,6 +673,7 @@ angular
 								       }
 									    httpReqCount++;
 									    currentNode.showTestWizardIcon = false;
+									    currentNode.existInTestframe = true;
 									    $rootScope.blockPage.start();
 										getQuestions(
 												currentNode,
@@ -1341,6 +1343,7 @@ angular
 									scope.$parentNodeScope.node.showEditQuestionIcon = false;
 									scope.$parentNodeScope.node.showTestWizardIcon = false; 
 									scope.$parentNodeScope.node.isNodeSelected = false;
+									scope.$parentNodeScope.node.existInTestframe = false;
 									$scope.removeNodeFromSelectedNodes(scope.$parentNodeScope.node);
 									if(scope.$parentNodeScope.node.nodeType!='book'){
 										$scope.checkSiblingSelection(scope.$parentNodeScope);
@@ -1457,7 +1460,8 @@ angular
 											$scope.selectedNodes.splice(i, 1);
 											node.isNodeSelected = false;
 											node.showEditQuestionIcon = false;
-											node.showTestWizardIcon = false; 
+											node.showTestWizardIcon = false;
+											node.existInTestframe = false;
 											break;
 										}
 									}
@@ -1653,6 +1657,7 @@ angular
 										node.isNodeSelected = false;
 										node.showEditQuestionIcon = false;
 										node.showTestWizardIcon = false;
+										node.existInTestframe = false;
 									}
 									i++;
 								});
@@ -1916,6 +1921,7 @@ angular
 							$scope.checkSiblingTopicSelectionForWizard = function(scope,activeTest){
 								if($scope.isAllSiblingsInWizardFrame(scope,activeTest)){
 									scope.$parentNodeScope.node.showTestWizardIcon = false;
+									scope.$parentNodeScope.node.existInTestframe = true;
 								}
 							};
 							
@@ -2414,6 +2420,7 @@ angular
 														$scope.selectedNodes[i].isNodeSelected = false;
 														$scope.selectedNodes[i].showTestWizardIcon = false;
 														$scope.selectedNodes[i].showEditQuestionIcon = false;
+														$scope.selectedNodes[i].existInTestframe = false;
 													}
 													 $scope.selectedNodes=[];
 												}
@@ -2500,6 +2507,7 @@ angular
 										$scope.selectedNodes[i].isNodeSelected = false ;
 										$scope.selectedNodes[i].showEditQuestionIcon = false;
 										$scope.selectedNodes[i].showTestWizardIcon = false;
+										$scope.selectedNodes[i].existInTestframe = false;
 										if($scope.selectedNodes[i].nodes){
 											$scope.selectedNodes[i].nodes.forEach(function(usedNode) {
 												$scope.deselectWizarChildNode(usedNode);
@@ -2518,6 +2526,7 @@ angular
 									$scope.selectedNodes[i].isNodeSelected = false ;
 									$scope.selectedNodes[i].showEditQuestionIcon = false;
 									$scope.selectedNodes[i].showTestWizardIcon = false;
+									$scope.selectedNodes[i].existInTestframe = false;
 									parentExistInSelectNodes = true;
 									break;
 								}
@@ -2547,7 +2556,8 @@ angular
 									if ($scope.selectedNodes[j].guid == parentId) {
 										$scope.selectedNodes[j].isNodeSelected = false ;
 										$scope.selectedNodes[j].showEditQuestionIcon = false;
-										$scope.selectedNodes[j].showTestWizardIcon = false;		
+										$scope.selectedNodes[j].showTestWizardIcon = false;
+										$scope.selectedNodes[j].existInTestframe = false;
 										parentExistInSelectNodes = true;
 										break;
 									}
@@ -2612,7 +2622,8 @@ angular
 										if ($scope.selectedNodes[j].guid == parentId) {
 											$scope.selectedNodes[j].isNodeSelected = false ;
 											$scope.selectedNodes[j].showEditQuestionIcon = false;
-											$scope.selectedNodes[j].showTestWizardIcon = false;		
+											$scope.selectedNodes[j].showTestWizardIcon = false;	
+											$scope.selectedNodes[j].existInTestframe = false;
 											$scope.selectedNodes.splice(j, 1);
 											removeNodeByID(SharedTabService.tests[SharedTabService.currentTabIndex].questionFolderNode,parentId);										
 											break;
