@@ -1651,6 +1651,27 @@ angular.module('e8MyTests')
 			node.existInTestframe=true;
 		}
 		
+		var updateSelectedWizardFolderQuestionNodeStatus = function(node){		
+			node.isNodeSelected = true;
+			node.showTestWizardIcon = false;
+			node.showEditQuestionIcon = true;
+			node.existInTestframe=false;
+		}
+		
+		
+		var updateSelectedWizardFolderQuestionsNodeStatus = function(node){			
+			if(node.nodes){
+				node.nodes.forEach(function(node) {	
+					if (node.nodeType == EnumService.NODE_TYPE.question) {
+						updateSelectedWizardFolderQuestionNodeStatus(node);
+						addingNodeInSelectedNodesArray(node);
+						updateSelectedWizardFolderQuestionsNodeStatus(node);											
+					}											
+				});
+			}		
+
+		}
+		
 		var updateSelectedWizardFolderChildNodeStatus = function(node){			
 			if(node.nodes){
 				node.nodes.forEach(function(node) {	
@@ -1686,6 +1707,7 @@ angular.module('e8MyTests')
         								"handleBroadcast_createTestWizardCriteria",
         								response,currentNode);		        		
         						addingNodeInSelectedNodesArray(currentNode);
+        						updateSelectedWizardFolderQuestionsNodeStatus(currentNode);
         						checkSiblingTopicSelectionForWizard(scope,test);
         					} else {
         						SharedTabService.addErrorMessage(currentNode.title, e8msg.warning.emptyFolder);
@@ -1788,12 +1810,24 @@ angular.module('e8MyTests')
 				}
 			})
 		}
+		
+		var isWizardFrameAvailable = function(node){			
+			for (var j = 0; j < SharedTabService.tests.length; j++) {
+				if (SharedTabService.tests[j].isTestWizard) {										
+					return true;
+					break;
+				}
+			}
+			return false;
+		}
 
 
         // TODO : need to move this to service.
         $scope.createTestWizardCriteria = function(
         		currentNode,eventType) {
 
+        	if(isWizardFrameAvailable())return false;
+        	
         	$scope.createTestWizardMode=true;
 
         	if(eventType ==null || eventType =='' || eventType == undefined){
@@ -1859,7 +1893,7 @@ angular.module('e8MyTests')
 
         var allQuestionBindingsInTestFrame = function(folder,activeTest){
         	var allQuestionNotInTestFrame = false;
-        	if(folder.questionBindings){				
+        	if(folder.questionBindings.length>0){				
         		for (var i = 0; i < folder.questionBindings.length; i++) {	
         			if(activeTest.questions.length>0){	
         				for (var j = 0; j < activeTest.questions.length; j++) {
@@ -1976,16 +2010,8 @@ angular.module('e8MyTests')
 	                	var questionNumber = 0;
 	                	questions.forEach(function(userQuestion) {
 	                		
-							var yourQuestion = {};
-							var displayNode = $("<div></div>");
-							QTI.BLOCKQUOTE.id = 0;
-							QTI
-									.play(
-											userQuestion.qtixml,
-											displayNode,
-											false,
-											false,
-											userQuestion.metadata.quizType);
+							var yourQuestion = {};							
+							
 							yourQuestion.isQuestion = true;
 							yourQuestion.questionXML = true;
 
@@ -1996,15 +2022,16 @@ angular.module('e8MyTests')
 							yourQuestion.showEditQuestionIcon = defaultFolder.node.showEditQuestionIcon;
 							yourQuestion.isNodeSelected = defaultFolder.node.isNodeSelected;
 							yourQuestion.existInTestframe = !defaultFolder.node.showEditQuestionIcon;
+							if(yourQuestion.isNodeSelected){
+								addingNodeInSelectedNodesArray(yourQuestion);		
+							}
 							
 							questionNumber++;
 							yourQuestion.questnNumber = questionNumber;
 							
 							yourQuestion.data = userQuestion.qtixml;
 							yourQuestion.quizType = userQuestion.metadata.quizType;
-							yourQuestion.extendedMetadata = userQuestion.metadata.extendedMetadata;
-							yourQuestion.textHTML = displayNode.html();
-
+							yourQuestion.extendedMetadata = userQuestion.metadata.extendedMetadata;							
 							defaultFolder.node.nodes.push(yourQuestion);	
 	                	});	                	
 	                	setParentNodeAndChildNodeStatus(defaultFolder.node);
@@ -2505,6 +2532,10 @@ angular.module('e8MyTests')
 				node.existInTestframe = true;
 				node.isNodeSelected = true;				
 				node.showTestWizardIcon = true;
+			}else if(node.nodeType != EnumService.NODE_TYPE.question){
+				node.existInTestframe = true;
+				node.isNodeSelected = true;				
+				node.showTestWizardIcon = true;
 			}
 		})
 
@@ -2566,12 +2597,13 @@ angular.module('e8MyTests')
 	$scope.$on(
 			'handleBroadcast_onClickTab',
 			function(handler, tab) {			
-				
-				if (tab.isTestWizard) {
+				resetSelectedNodeStatus();
+				if (tab.isTestWizard) {					
 					var isTabClicked = true;
-					updateTabWizardNodeStatusInTree(tab.criterias,isTabClicked);
-				} else {						
-					resetSelectedNodeStatus();
+					if(tab.criterias.length>0){
+						updateTabWizardNodeStatusInTree(tab.criterias,isTabClicked);
+					}					
+				} else {											
 					updateTestNodesStatus(tab);
 				}
 
