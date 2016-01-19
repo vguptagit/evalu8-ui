@@ -1811,9 +1811,10 @@ angular.module('e8MyTests')
 			})
 		}
 		
-		var isWizardFrameAvailable = function(node){			
+		var isWizardFrameAvailable = function(node){		
+			var activeTest = SharedTabService.tests[SharedTabService.currentTabIndex];         
 			for (var j = 0; j < SharedTabService.tests.length; j++) {
-				if (SharedTabService.tests[j].isTestWizard) {										
+				if (activeTest.id != SharedTabService.tests[j].id && SharedTabService.tests[j].isTestWizard ) {										
 					return true;
 					break;
 				}
