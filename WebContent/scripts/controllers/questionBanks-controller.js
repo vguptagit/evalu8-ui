@@ -214,9 +214,9 @@ angular
 					                },
 					                dragMove: function(e) {
 					                	$scope.dragStarted = true;
-					                	deselectNodesOnDrag(e.source.nodeScope.node);
+					                	//deselectNodesOnDrag(e.source.nodeScope.node);
 					                	var element = e.source.nodeScope.$element;
-					                	$scope.questionCountPosition = "top:" + (element.offset().top - 20) + "px; left:" + (element.offset().left + element.width() - 20) + "px; position:fixed;z-index:2000";
+					                	$scope.questionCountPosition = "top:" + (element.offset().top - 20) + "px; left:" + (element.offset().left + element.width() - 70) + "px; position:fixed;z-index:2000";
 					                },
 					                dragStart: function(e) {
 					                    $('body *').css({ 'cursor': 'url("images/grabbing.cur"), move' });
@@ -450,7 +450,7 @@ angular
 							            getChildItems(item)
 							        }
 							    });
-							    console.log(containerJson);
+							    //console.log(containerJson);
 							    return containerJson
 							}
 							function getChildItems(parentItem) {
@@ -1478,7 +1478,6 @@ angular
 							function DisplayQuestionCount(currentnode) {
 							    var selectedNodesArray = [],
                                     selectedNodesTemp = [];
-							    console.log($scope.selectedNodes);
 							    angular.copy($scope.selectedNodes, selectedNodesTemp);
 							    selectedNodesTemp.push(currentnode);
 							    selectedNodesTemp.forEach(function (selectedItem) {
@@ -1492,7 +1491,6 @@ angular
 							    function checkInBookContainer(bookItem, selectedItem) {
 							        bookItem.containers.forEach(function (item) {
 							            if (item.guid === selectedItem.guid) {
-							                console.log(item);
 							                selectedNodesArray.push(item);
 							            }
 							            else if (item.child) {
@@ -1505,7 +1503,6 @@ angular
 							    function checkInChildNode(containerItems, selectedItem) {
 							        containerItems.forEach(function (item) {
 							            if (item.guid === selectedItem.guid) {
-							                console.log(item);
 							                selectedNodesArray.push(item);
 							            }
 							            else if (item.guid === selectedItem.parentId) {
@@ -1556,7 +1553,6 @@ angular
 							        testQuestionGuids.push(value.guid);
 							    });
 
-							    //console.log('questions');
 							    //remove the duplicate question guids. the questions may contains in the root of the $scope.selectedNodes.
 							    questions = _.uniq(questions);
 
@@ -1565,12 +1561,13 @@ angular
 							        return _.indexOf(questions, _.indexOf(testQuestionGuids, d));
 							    }).length;
 
-							    //console.log('questionsPresentInTest :' + questionsPresentInTest);
-							    //console.log('questions : ' + questions.length);
-
 							    //number of question going to drop on right side.
-							    //console.log(questions.length - questionsPresentInTest);
-							    $scope.questionCount = questions.length - questionsPresentInTest;
+							    var qnCount = Math.abs(questions.length - questionsPresentInTest);
+							    if (qnCount > 1) {
+							        $scope.questionCount = qnCount + ' Questions';
+							    } else {
+							        $scope.questionCount = qnCount + ' Question';;
+							    }
 							}
 
 							//#To check whether the any parent/child node of selected node is used for test creation(edit question/wizard)  
