@@ -214,9 +214,9 @@ angular
 					                },
 					                dragMove: function(e) {
 					                	$scope.dragStarted = true;
-					                	deselectNodesOnDrag(e.source.nodeScope.node);
+					                	//deselectNodesOnDrag(e.source.nodeScope.node);
 					                	var element = e.source.nodeScope.$element;
-					                	$scope.questionCountPosition = "top:" + (element.offset().top - 20) + "px; left:" + (element.offset().left + element.width() - 20) + "px; position:fixed;z-index:2000";
+					                	$scope.questionCountPosition = "top:" + (element.offset().top - 20) + "px; left:" + (element.offset().left + element.width() - 70) + "px; position:fixed;z-index:2000";
 					                },
 					                dragStart: function(e) {
 					                    $('body *').css({ 'cursor': 'url("images/grabbing.cur"), move' });
@@ -1570,7 +1570,12 @@ angular
 
 							    //number of question going to drop on right side.
 							    //console.log(questions.length - questionsPresentInTest);
-							    $scope.questionCount = questions.length - questionsPresentInTest;
+							    var qnCount = Math.abs(questions.length - questionsPresentInTest);
+							    if (qnCount > 1) {
+							        $scope.questionCount = qnCount + ' Questions';
+							    } else {
+							        $scope.questionCount = qnCount + ' Question';;
+							    }
 							}
 
 							//#To check whether the any parent/child node of selected node is used for test creation(edit question/wizard)  
