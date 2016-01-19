@@ -7,14 +7,14 @@
 			ng-keyup="showContainerOnEnter($event)"><i class="fa fa-spinner fa-pulse font-size-16 showWaitingForAutoComplete" ng-show="showWaitingForAutoComplete"></i> <span
 			class="glyphicon glyphicon-search bookSearchicon"
 			ng-click="showContainerOnClick()" tooltip-append-to-body="true"
-			tooltip-trigger="mouseenter" tooltip-placement="bottom"
+			tooltip-trigger="mouseenter" tooltip-placement="top"
 			tooltip="Search"></span>
 	</div>
 	<div class="col-lg-3">
 		<button href="" class="advancedSearchText" ng-disabled="isAdvancedSearchClicked" ng-click="openAdvancedSearch()">Advanced
 			Search</button>
 	</div>
-	<div class="col-lg-3 clearAdvancedSearch" ng-show="showHideSearchCriteria()" tooltip="Clear Search" tooltip-placement="bottom" ng-click="clearAdvancedSearch()">Clear Search
+	<div class="col-lg-3 clearAdvancedSearch" ng-show="showHideSearchCriteria()" tooltip="Clear Search" tooltip-placement="top" ng-click="clearAdvancedSearch()">Clear Search
 		</div>
 </div>
 <div ng-include="'views/partials/advanced-search.html'"></div>
@@ -83,7 +83,7 @@
                     </div>
                     <!--
                     <div  class="iconsChapter">
-                        <span class="wizardGray test-wizard-icon-white pull-right" ng-click="createTestWizardCriteria(this)" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="bottom" tooltip="Auto create test with wizard"></span>
+                        <span class="wizardGray test-wizard-icon-white pull-right" ng-click="createTestWizardCriteria(this)" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" tooltip="Auto create test with wizard"></span>
                     </div>
                     -->
                 </div>
@@ -114,10 +114,10 @@
                     <div class="iconsChapter">
                         <button type="button" class="action-icon-bg glyphicon glyphicon-plus" 
 							ng-show="node.showEditQuestionIcon && node.nodeType != 'publisherTests'"
-							ng-mousedown="editQuestion(this);$event.stopPropagation();" data-container="body" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="bottom" tooltip="Move question to right for editing"></button>
+							ng-mousedown="editQuestion(this);$event.stopPropagation();" data-container="body" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" tooltip="Move question to right for editing"></button>
                         <button type="button" class="wizardGray action-icon-bg pull-right" 
 							ng-show="node.showTestWizardIcon && node.nodeType != 'publisherTests'" 
-							ng-mousedown="createTestWizardCriteria(this);$event.stopPropagation();" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="bottom" tooltip="Auto create test with wizard"></button>
+							ng-mousedown="createTestWizardCriteria(this);$event.stopPropagation();" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" tooltip="Auto create test with wizard"></button>
                         <!--
                         <span class="settingsChapter"></span>
                         <span class="printChapter"></span>
@@ -157,7 +157,7 @@
                     <div class="testimagesdiv" ng-class="{testHighlight: node.selectTestNode}">
                         <span ng-show="node.selectTestNode">
                             <button ng-show="node.showEditIcon" id="editTestbtn" ng-click="editTest(this)" 
-                                    class="foldertestediticon glyphicon glyphicon-pencil" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="bottom" tooltip="Open in right edit panel"/>                            
+                                    class="foldertestediticon glyphicon glyphicon-pencil" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" tooltip="Open in right edit panel"/>                            
                         </span>
                     </div>
                 </div>
@@ -170,7 +170,7 @@
 	<script type="text/ng-template" id="qb_questions_renderer.html">
 	<div ng-if="node.questionType != 'userCreatedQuestion'" class="questionListIndex">{{$index + 1}})</div>
         <div id="QBQuestion"  nodeSelected={{node.isNodeSelected}} ng-mousedown="selectNode(this);" ui-tree-handle class="printViewContainer tree-node tree-node-content questionList" ng-class="{questionTitleInTree: node.questionXML}">
-            <button id="QBPencil" type="button" ng-show="node.showEditQuestionIcon" class="newTest-close questionIcon action-icon-bg glyphicon glyphicon-plus" ng-mousedown="editQuestion(this);$event.stopPropagation();" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="bottom" tooltip="Move question to right for editing"></button>
+            <button id="QBPencil" type="button" ng-show="node.showEditQuestionIcon" class="newTest-close questionIcon action-icon-bg glyphicon glyphicon-plus" ng-mousedown="editQuestion(this);$event.stopPropagation();" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" tooltip="Move question to right for editing"></button>
             <div class="printViewContainer" ng-if="node.textHTML" ng-bind-html="getHTML(this)">
             </div>
         </div>

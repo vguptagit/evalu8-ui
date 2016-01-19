@@ -2,6 +2,12 @@ body {
 	padding-top: 50px;
 }
 
+@media ( min-width : 768px) {
+    body {
+        overflow-y: hidden;
+    }
+}
+
 .divider {
 	background-color: #E8E8E8;
 	border-left: 1px solid #D0d0d0;
