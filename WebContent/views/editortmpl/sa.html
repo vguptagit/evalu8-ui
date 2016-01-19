@@ -26,8 +26,9 @@
 		<div class="questionEditContainer">
 			<div class="captionContainer">
 				<div class="qstnArea1" id="questionCaption" contenteditable="true"
+					 ready="focusCaption()" 
 					placeholder={{node.qtiModel.EditCaption}}
-					ckeditor="htmlEditorOptions" data-ng-model="node.qtiModel.Caption"></div>
+					ckeditor="htmlEditorOptions" data-ng-model="node.qtiModel.Caption" ></div>
 				<div class="captionImageContainer">
 					<button class="captionImageIcon glyphicon glyphicon-picture"
 						event-focus="click" event-focus-id="questionUploadBtn"
@@ -49,6 +50,7 @@
 					<input type="text" placeholder={{node.qtiModel.EditOption}}
 						focusEditorIndex="{{focusEditorIndex}}"
 						data-ng-model="node.qtiModel.Options[i]" class="crtAnsText"
+						id = "answer_{{$index}}"
 						ready="onReady({{focusEditorIndex}})" />
 
 					<div class="optionIconsContainer">
@@ -56,7 +58,8 @@
 						<button tooltip="Add answer" tooltip-placement="bottom"
 							id={{$index}} name="Add"
 							class="optionImageIcon glyphicon glyphicon-plus"
-							data-ng-click="addOption($index,node)"></button>
+							event-focus="click" event-focus-id="answer_{{$index +1}}"
+							data-ng-click="addOption($index,node)" ></button>
 						<button id={{$index}} name="Delete"
 							class="optionImageIcon glyphicon glyphicon-remove"
 							tooltip="Delete this answer" tooltip-placement="bottom"
