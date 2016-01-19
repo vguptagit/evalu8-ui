@@ -673,6 +673,7 @@ angular
 								       }
 									    httpReqCount++;
 									    currentNode.showTestWizardIcon = false;
+									    currentNode.existInTestframe = true;
 									    $rootScope.blockPage.start();
 										getQuestions(
 												currentNode,
