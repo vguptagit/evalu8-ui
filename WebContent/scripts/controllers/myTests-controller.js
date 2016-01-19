@@ -126,7 +126,6 @@ angular.module('e8MyTests')
 	                	$scope.position.cancel = true;
                 	}
                 	
-                	e.source.nodeScope.node.selectTestNode = false;
                 	if($rootScope.tree && $rootScope.tree.mouseOverNode){
                 		var mouseOverNode = $rootScope.tree.mouseOverNode
                 		if(mouseOverNode.node.selectTestNode){

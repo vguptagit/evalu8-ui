@@ -533,7 +533,7 @@ angular.module('e8MyTests')
 	                	$scope.position.cancel = true;
                 	}
                 	
-                	deselectNodesOnDrag(e.source.nodeScope.node);
+                	//deselectNodesOnDrag(e.source.nodeScope.node);
                 	if($rootScope.tree && $rootScope.tree.mouseOverNode){
                 		var mouseOverNode = $rootScope.tree.mouseOverNode
                 		if(mouseOverNode.node.isNodeSelected){

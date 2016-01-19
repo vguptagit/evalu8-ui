@@ -91,7 +91,7 @@
         </div>
 
         <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}" droppable="false" ng-show="IsBookContainersRendered">
-            <li ng-if="!node.isQuestion" draggable="{{node.nodeType=='chapter' || node.nodeType=='topic'}}" ng-repeat="node in node.nodes" collapsed="{{node.isCollapsed?'true':'false'}}" ui-tree-node ng-include="'nodes_renderer.html'">
+            <li ng-if="!node.isQuestion" data-nodrag="{{node.existInTestframe===true}}" draggable="{{node.nodeType=='chapter' || node.nodeType=='topic'}}" ng-repeat="node in node.nodes" collapsed="{{node.isCollapsed?'true':'false'}}" ui-tree-node ng-include="'nodes_renderer.html'">
             </li>
             <li printmode="true" class="questIndex qbQuestions"
                 ng-class="{questionSelected:node.isNodeSelected ,  twoDigitIndex:({{$index + 1}}>9),threedigitIndex:({{$index + 1}}>99), fourDigitIndex:({{$index + 1}}>999)}"
@@ -131,7 +131,7 @@
         <ol ui-tree-nodes="" type="1" ng-model="node.nodes" ng-class="{hidden: collapsed}" droppable="false">
            <li class="questIndex" printmode="true" ng-repeat="node in node.nodes" 
                ng-class="{questionInTestframe:node.isNodeSelected && node.nodeType=='question' && node.existInTestframe===true,questionSelected:node.isNodeSelected && node.nodeType=='question',qbQuestions:node.nodeType=='question', twoDigitIndex:({{$index + 1}}>9),threedigitIndex:({{$index + 1}}>99), fourDigitIndex:({{$index + 1}}>999)}" 
-               collapsed="{{node.isCollapsed?'true':'false'}}" ui-tree-node draggable="{{(node.nodeType!='question') || (node.nodeType=='question' && !node.existInTestframe)}}" ng-include="node.template"></li>
+               collapsed="{{node.isCollapsed?'true':'false'}}" ui-tree-node  data-nodrag="{{node.existInTestframe===true}}" draggable="{{(node.nodeType!='question') || (node.nodeType=='question' && !node.existInTestframe)}}" ng-include="node.template"></li>
             <li class="tree-node tree-node-content" ng-repeat="node in node.nodes"
                 ui-tree-node draggable="false" node="{{node}}" data-ng-if="node.nodeType=='empty'" ng-show="node.isHttpReqCompleted">
                 <div ui-tree-handle class="tree-node tree-node-content">
