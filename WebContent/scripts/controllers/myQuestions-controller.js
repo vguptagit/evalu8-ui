@@ -1970,7 +1970,7 @@ angular.module('e8MyTests')
 
         var updateChildFolderStatusByWizardFrame = function(expandedNode,childFolders,activeTest) {        							
         	childFolders.forEach(function(folder) {			
-        		if(isNodeUsedForWizard(folder, activeTest)){
+        		if(expandedNode.existInTestframe || isNodeUsedForWizard(folder, activeTest)){
         			folder.isNodeSelected = true;
         			folder.showEditQuestionIcon = true;
         			folder.showTestWizardIcon = false;
@@ -2761,9 +2761,10 @@ angular.module('e8MyTests')
 				}else{
 					
 					if (node.questionBindings && node.questionBindings.length > 0) {
-						for (var j = 0; j < node.questionBindings.length; j++) {							
+						for (var j = 0; j < node.questionBindings.length; j++) {		
+							isThisQuestionInTest = false;
 							testQuestions.forEach(function(testQuestion){
-								if(testQuestion.guid==node.questionBindings[j].guid){
+								if(testQuestion.guid==node.questionBindings[j].questionId){
 									isThisQuestionInTest=true;
 								}
 							});
