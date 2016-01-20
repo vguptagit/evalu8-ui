@@ -162,9 +162,35 @@ angular.module('e8MyTests')
 				}
 			}
 		}
+		
+
+		var isAllQuestionsInTestFrame = function(node,activeTest) {
+			var allQuestionsExistInTestFrame = false;
+			if (node.questionBindings && node.questionBindings.length>0) {
+				for (var i = 0; i < node.questionBindings.length; i++) {
+					allQuestionsExistInTestFrame = false;
+					for (var j = 0; j < activeTest.questions.length; j++) {
+						if (node.questionBindings[i].questionId == activeTest.questions[j].guid) {
+							allQuestionsExistInTestFrame = true;
+							break;
+						}
+					}
+					if (!allQuestionsExistInTestFrame) {
+						break;
+					}
+
+				}				
+			} else {
+				allQuestionsExistInTestFrame = false;
+			}
+			return allQuestionsExistInTestFrame;
+		}
 
 		var setChildNodeStatus = function(node,testNode,activeTest){
 			if(typeof(node.nodes) == 'undefined'){
+				if(isAllQuestionsInTestFrame(node,activeTest)){
+					updateTestNodeStatus(node,activeTest);  
+				}		
 				return;
 			}
 			for (var i = 0; i < node.nodes.length; i++) {						
@@ -2650,28 +2676,109 @@ angular.module('e8MyTests')
 			 }
 		});
 		
+		
+
+		var getHierarchyFromSelectedArray = function(
+				childNode, hierarchyNodes) {
+			var questionsExistInTestFrame = false;
+			if (childNode.nodeType == EnumService.NODE_TYPE.question) {
+				for (var i = 0; i < $scope.selectedNodes.length; i++) {
+					if ($scope.selectedNodes[i].questionBindings
+							&& $scope.selectedNodes[i].questionBindings.length > 0) {
+						for (var j = 0; j < $scope.selectedNodes[i].questionBindings.length; j++) {
+							if ($scope.selectedNodes[i].questionBindings[j].questionId == childNode.guid) {
+								hierarchyNodes
+								.push($scope.selectedNodes[i]);
+								getHierarchyFromSelectedArray(
+										$scope.selectedNodes[i],
+										hierarchyNodes);
+								questionsExistInTestFrame = true;
+								break;
+							}
+						}
+					}
+					if (questionsExistInTestFrame)
+						break;
+
+				}
+
+			} else {
+
+				for (var i = 0; i < $scope.selectedNodes.length; i++) {
+					if ($scope.selectedNodes[i].nodes) {
+						for (var j = 0; j < $scope.selectedNodes[i].nodes.length; j++) {
+							if ($scope.selectedNodes[i].nodes[j].guid == childNode.guid) {
+								hierarchyNodes
+								.push($scope.selectedNodes[i]);
+								getHierarchyFromSelectedArray(
+										$scope.selectedNodes[i],
+										hierarchyNodes);
+								questionsExistInTestFrame = true;
+								break;
+							}
+						}
+					}
+					if (questionsExistInTestFrame)
+						break;
+
+				}
+
+			}
+
+		}
+		
+		var removeHierarchyFromSelectedArray = function(childNode) {
+			var hierarchyNodes = [];
+			hierarchyNodes.push(childNode);
+			getHierarchyFromSelectedArray(childNode,hierarchyNodes);
+
+			hierarchyNodes.forEach(function(node){				
+				removeNodeFromTestQuestionFolders(node.guid);
+				removeNodeFromSelectedNodes(node);				
+			});
+
+		}
+		
 		var unselectEditedQuestions=function(){
 			var testQuestions=SharedTabService.tests[SharedTabService.currentTabIndex].questions;
 			var questionsNotInTest=[];
+			var isThisQuestionInTest=false;
 			
-			$scope.selectedNodes.forEach(function(question){
+			$scope.selectedNodes.forEach(function(node){
 				var isThisQuestionInTest=false;
-				testQuestions.forEach(function(testQuestion){
-					if(testQuestion.guid==question.guid){
-						isThisQuestionInTest=true;
+				if(node.nodeType == EnumService.NODE_TYPE.question){					
+					testQuestions.forEach(function(testQuestion){
+						if(testQuestion.guid==node.guid){
+							isThisQuestionInTest=true;
+						}
+					});
+					if(!isThisQuestionInTest){
+						questionsNotInTest.push(node)
 					}
-				});
-				if(!isThisQuestionInTest){
-					questionsNotInTest.push(question)
+				}else{
+					
+					if (node.questionBindings && node.questionBindings.length > 0) {
+						for (var j = 0; j < node.questionBindings.length; j++) {							
+							testQuestions.forEach(function(testQuestion){
+								if(testQuestion.guid==node.questionBindings[j].guid){
+									isThisQuestionInTest=true;
+								}
+							});
+							if(!isThisQuestionInTest){
+								questionsNotInTest.push(node)
+							}
+						}
+					}
+					
+					
 				}
+				
 			});
-			
+
 			questionsNotInTest.forEach(function(questionNotinTest){
 				$scope.selectedNodes.forEach(function(question,index){
-					if(questionNotinTest.guid==question.guid){
-						question.isNodeSelected=false;
-						question.showEditQuestionIcon=false;
-						$scope.selectedNodes.splice(index,1);
+					if(questionNotinTest.guid==question.guid){						
+						removeHierarchyFromSelectedArray(question);						
 					}
 				});
 			});
