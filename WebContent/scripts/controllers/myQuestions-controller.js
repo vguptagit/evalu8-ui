@@ -1692,10 +1692,13 @@ angular.module('e8MyTests')
 						updateSelectedWizardFolderQuestionNodeStatus(node);
 						addingNodeInSelectedNodesArray(node);
 						updateSelectedWizardFolderQuestionsNodeStatus(node);											
+					}else{						
+						updateSelectedWizardFolderNodeStatus(node);
+						addingNodeInSelectedNodesArray(node);
+						updateSelectedWizardFolderQuestionsNodeStatus(node);	
 					}											
 				});
 			}		
-
 		}
 		
 		var updateSelectedWizardFolderChildNodeStatus = function(node){			
