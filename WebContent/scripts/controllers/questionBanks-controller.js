@@ -216,7 +216,7 @@ angular
 					                	$scope.dragStarted = true;
 					                	//deselectNodesOnDrag(e.source.nodeScope.node);
 					                	var element = e.source.nodeScope.$element;
-					                	$scope.questionCountPosition = "top:" + (element.offset().top - 20) + "px; left:" + (element.offset().left + element.width() - 70) + "px; position:fixed;z-index:2000";
+					                	$scope.questionCountPosition = "top:" + (e.elements.dragging.offset().top - 20) + "px; left:" + (e.elements.dragging.offset().left + e.elements.dragging.width() - 70) + "px; position:fixed;z-index:2000";
 					                },
 					                dragStart: function(e) {
 					                    $('body *').css({ 'cursor': 'url("images/grabbing.cur"), move' });

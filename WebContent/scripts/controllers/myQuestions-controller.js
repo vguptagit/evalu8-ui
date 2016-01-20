@@ -517,8 +517,7 @@ angular.module('e8MyTests')
                         sourceNodeScope.$$apply = false;
                         return false;
                     }    
-                   
-                   
+                    sourceNodeScope.sourceOnly = true;
                     return true;
                 },
                 dragMove: function(e) {
@@ -527,14 +526,14 @@ angular.module('e8MyTests')
                 	/*
                 	 * Saving placeholder and position to hide|show placeholder on enter|leave a folder node
                 	 */ 
-                	if(!isForeign(e)){
-	                	$scope.placeElm = e.elements.placeholder;
-	                	$scope.position = e.pos;
-	                	$scope.position.cancel = true;
-                	}
                 	
+                	$scope.placeElm = e.elements.placeholder;
+                	$scope.position = e.pos;
                 	//deselectNodesOnDrag(e.source.nodeScope.node);
                 	if($rootScope.tree && $rootScope.tree.mouseOverNode){
+                		if(!isForeign(e)){
+    	                	$scope.position.cancel = true;
+                    	}
                 		var mouseOverNode = $rootScope.tree.mouseOverNode
                 		if(mouseOverNode.node.isNodeSelected){
                 			$scope.selectedMouseOverNode = mouseOverNode.node;
@@ -551,6 +550,7 @@ angular.module('e8MyTests')
                 },
                 dragStart: function(e) {
                 	$('body *').css({'cursor':'url("images/grabbing.cur"), move'});
+                	e.source.nodeScope.sourceOnly = false;
                 },
                 dragStop: function(e) {
                 	$('body *').css({'cursor':''});
