@@ -2954,14 +2954,31 @@ var CustomQuestionTemplate =
 
 						 }}	
 		,
+		
+		"Vocabulary":	
+						{
+							"printCaption": "Vocabulary Question" ,
+							makeExtra : function(element,tag,xml){
+								switch(tag.TAG){
+								case "value":
+									if(element.html() == ""){
+										element.attr("data-placeholder",this.editOption)
+									}
+									$("<div class = 'editView EssayHeader'>Recommended Answer</div>").insertBefore(element);
+									break;
+								case "responseDeclaration":
+									if(xml.find("correctResponse").length == 0)
+										xml.append("<correctResponse><value></value></correctResponse>");
+									tag.DISPLAY = true;
+								}
+				
+							}		 
+						}			
+		,
+		
 		"ShortAnswer":	
-						{"printCaption": "Short Answer Question" ,
-						  "editCaption": "Enter Short Answer Question",
-						 "printOption": "Recommended Answer" ,
-						 "editOption": "Enter Short  Recommended Answer",
-						 "editMainText":"Enter Short Answer Question",
-						 "DISPLAY": true,
-						 makeExtra : function(element,tag,xml){
+						{"printCaption": "Short Answer Question" ,						 
+						  makeExtra : function(element,tag,xml){
 							 	switch(tag.TAG){
 							 	 case "p":
 									 var printElement = element.find("div.optionLabelView").eq(0);

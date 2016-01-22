@@ -23,6 +23,7 @@ $scope.treeOptions = {
                     sourceNodeScope.$$apply = false;
                     return false;
                 }    
+                sourceNodeScope.sourceOnly = true;
                 return true;
             },
             dragMove: function(e) {
@@ -30,6 +31,7 @@ $scope.treeOptions = {
             },
             dragStart: function(e) {
             	$('body *').css({'cursor':'url("images/grabbing.cur"), move'});
+            	e.source.nodeScope.sourceOnly = false;
             },
             dragStop: function(e) {
             	$('body *').css({'cursor':''});

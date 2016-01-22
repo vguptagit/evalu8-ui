@@ -1,7 +1,7 @@
 ﻿'use strict';
 angular.module('e8MyTests')
-.directive("qtiPlayer",['$modal','QtiService','TestService','$sce','$rootScope','$timeout','CommonService',
-                        function($modal,QtiService,TestService,$sce,$rootScope,$timeout,CommonService) {	
+.directive("qtiPlayer",['$modal','QtiService','TestService','$sce','$rootScope','$timeout','CommonService','EnumService',
+                        function($modal,QtiService,TestService,$sce,$rootScope,$timeout,CommonService,EnumService) {	
 	return {
 		template : '<ng-include src="getQtiTemplate()"/>',
 		restrict : 'E',
@@ -40,26 +40,29 @@ angular.module('e8MyTests')
 				}  
 
 				switch ($scope.node.quizType) {
-				case 'MultipleChoice':
+				case EnumService.QuestionType.MultipleChoice :
 					return "views/editortmpl/mc.html";
 					break;
-				case 'MultipleResponse':
+				case EnumService.QuestionType.MultipleResponse :
 					return "views/editortmpl/mr.html";
 					break;
-				case 'TrueFalse':
+				case EnumService.QuestionType.TrueFalse:
 					return "views/editortmpl/tf.html";
 					break;
-				case 'Matching':
+				case EnumService.QuestionType.Matching:
 					return "views/editortmpl/mf.html";
 					break;
-				case 'FillInBlanks':
+				case EnumService.QuestionType.FillInBlanks:
 					return "views/editortmpl/fb.html";
 					break;
-				case 'Essay':
+				case EnumService.QuestionType.Essay:
 					return "views/editortmpl/es.html";
 					break;
-				case 'ShortAnswer':
+				case EnumService.QuestionType.ShortAnswer :
 					return "views/editortmpl/sa.html";
+					break;
+				case EnumService.QuestionType.Vocabulary:
+					return "views/editortmpl/vb.html";
 					break;
 				default:
 				}
@@ -135,15 +138,15 @@ angular.module('e8MyTests')
 
 			var convertImageToURL = function(node){
 				node.qtiModel.Caption = jsonReplaceUL(node.qtiModel.Caption);
-				if(node.quizType=='Essay'){
+				if(node.quizType == EnumService.QuestionType.Essay || node.quizType == EnumService.QuestionType.Vocabulary){
 					node.qtiModel.RecommendedAnswer = jsonReplaceUL(node.qtiModel.RecommendedAnswer);
-				}else if(node.quizType=='Matching'){
+				}else if(node.quizType == EnumService.QuestionType.Matching){
 					$.each(node.qtiModel.Options,
 							function(index,Option) {
 						node.qtiModel.Options[index].option = jsonReplaceUL(Option.option);
 						node.qtiModel.Options[index].matchingOption = jsonReplaceUL(Option.matchingOption);
 					});							
-				}else if(node.quizType=='FillInBlanks'){				
+				}else if(node.quizType == EnumService.QuestionType.FillInBlanks){				
 					//node.qtiModel.CorrectAnswerHtml = $('#fbAnswerContainer').html();
 				}else{
 					$.each(node.qtiModel.Options,
@@ -156,15 +159,15 @@ angular.module('e8MyTests')
 
 			var convertUrlToImage = function(node){
 				node.qtiModel.Caption = QtiService.replaceImage(node.qtiModel.Caption);
-				if(node.quizType=='Essay'){
+				if(node.quizType == EnumService.QuestionType.Essay || node.quizType == EnumService.QuestionType.Vocabulary){
 					node.qtiModel.RecommendedAnswer = QtiService.replaceImage(node.qtiModel.RecommendedAnswer);
-				}else if(node.quizType=='Matching'){
+				}else if(node.quizType == EnumService.QuestionType.Matching){
 					$.each(node.qtiModel.Options,
 							function(index,Option) {
 						node.qtiModel.Options[index].option = QtiService.replaceImage(Option.option);
 						node.qtiModel.Options[index].matchingOption = QtiService.replaceImage(Option.matchingOption);
 					});						
-				}else if(node.quizType=='FillInBlanks'){
+				}else if(node.quizType == EnumService.QuestionType.FillInBlanks){
 					node.qtiModel.Caption = QtiService.replaceImage($('#questionCaption').html());
 					node.qtiModel.CorrectAnswerHtml = $('#fbAnswerContainer').html();
 				}else{					
@@ -260,7 +263,7 @@ angular.module('e8MyTests')
 							var editorData = getEditorContent(html);
 
 							if ($scope.targetImageControl > 0) {							
-								if ($scope.node.quizType == "Matching") {
+								if ($scope.node.quizType == EnumService.QuestionType.Matching) {
 									if ($scope.targetControlInColumn == "ColumnA") {
 										$scope.node.qtiModel.Options[$scope.targetImageControl - 1].option = editorData;
 									} else if ($scope.targetControlInColumn == "ColumnB") {

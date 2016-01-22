@@ -70,4 +70,16 @@ angular.module('evalu8Demo')
         'SKILL': 'Skil',
         'QUESTIONID': 'QnId'
     }
+    
+    this.QuestionType = {
+            'Essay': 'Essay',
+            'MultipleResponse': 'MultipleResponse',
+            'Matching': 'Matching',
+            'MultipleChoice': 'MultipleChoice',
+            'TrueFalse': 'TrueFalse',
+            'FillInBlanks': 'FillInBlanks',
+            'ShortAnswer' : 'ShortAnswer',
+            'Vocabulary': 'Vocabulary'
+        }
+    
 });

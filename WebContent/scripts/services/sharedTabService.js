@@ -73,14 +73,15 @@ angular.module('evalu8Demo')
 		     }
 
 		     sharedTabService.QuestionTypes = [
-		                                       	{ key: "Essay", value: "Essay"},
-		                                       	{ key: "MultipleResponse", value: 'Multiple Response'},
-		                                       	{ key: "Matching", value: 'Matching'},
-		                                       	{ key: "MultipleChoice", value: 'Multiple Choice'},
-                                     			{ key: "TrueFalse", value: 'True False'},
-                                     			{ key: "FillInBlanks", value: 'Fill in the Blanks' },
-                                     			{ key: "ShortAnswer", value: 'Short Answer' }
-		     ];
+		                                       	{ key: EnumService.QuestionType.Essay, value: "Essay"},
+		                                       	{ key: EnumService.QuestionType.MultipleResponse, value: 'Multiple Response'},
+		                                       	{ key: EnumService.QuestionType.Matching, value: 'Matching'},
+		                                       	{ key: EnumService.QuestionType.MultipleChoice, value: 'Multiple Choice'},
+                                     			{ key: EnumService.QuestionType.TrueFalse, value: 'True False'},
+                                     			{ key: EnumService.QuestionType.FillInBlanks, value: 'Fill in the Blanks' },
+                                     			{ key: EnumService.QuestionType.ShortAnswer, value: 'Short Answer' },
+                                     			{ key: EnumService.QuestionType.Vocabulary, value: 'Vocabulary' }
+                                     		  ];
 
 		     sharedTabService.createDefaultTest = function () {
 		         var defaultTest = new sharedTabService.Test();

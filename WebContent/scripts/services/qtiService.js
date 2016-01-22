@@ -4,7 +4,8 @@ angular.module('evalu8Demo')
 
 .service(
 		'QtiService',
-		function() {
+		['EnumService',
+		 function(EnumService) {		
 
 			this.getQtiModel = function(qtiXML, quizType) {
 				var qtiModel = getQtiJsonModal(qtiXML, quizType);
@@ -23,9 +24,9 @@ angular.module('evalu8Demo')
 
 
 				switch (quizType) {
-				case 'MultipleChoice':
-				case 'MultipleResponse':
-				case 'TrueFalse':					
+				case EnumService.QuestionType.MultipleChoice :
+				case EnumService.QuestionType.MultipleResponse :
+				case EnumService.QuestionType.TrueFalse:					
 					qtiModel.Options = getQuestionOptions(xml, quizType);
 					qtiModel.PrintOption = QuestionPrefilledModal[quizType].printOption;
 					qtiModel.EditOption = QuestionPrefilledModal[quizType].editOption;
@@ -33,17 +34,8 @@ angular.module('evalu8Demo')
 					qtiModel.Orientation = getQuestionOrientation(xml)=="horizontal"?false:true;			
 
 					break;
-
-				case 'Essay':	
-					qtiModel.Caption = getEssayCaption(xml);										
-					qtiModel.PrintRecommendedAnswer = QuestionPrefilledModal[quizType].printRecommendedAnswer;
-					qtiModel.EditRecommendedAnswer = QuestionPrefilledModal[quizType].editRecommendedAnswer;
-					qtiModel.RecommendedAnswer = getEssayRecommendedAnswer(xml);		
-					qtiModel.EssayPageSize = getEssayPageSize(xml);
-
-					break;
-
-				case 'Matching':	
+					
+				case EnumService.QuestionType.Matching :	
 
 					qtiModel.Options = getQuestionOptions(xml, quizType);
 					qtiModel.PrintOption = QuestionPrefilledModal[quizType].printOption;
@@ -53,25 +45,42 @@ angular.module('evalu8Demo')
 					qtiModel.editOption_Column_B = QuestionPrefilledModal[quizType].editOption_Column_B;					
 
 					break;
+
+				case EnumService.QuestionType.FillInBlanks :
+					qtiModel.FbCaption = getFBQuestionCaption(xml);		
+					qtiModel.Caption = getFbCaptionHTML(qtiModel.FbCaption);						
+					qtiModel.CorrectAnswerHtml = getFBCorrectAnswersHtml(xml);		
+					qtiModel.PrintOption = QuestionPrefilledModal[quizType].printOption;									
+					//qtiModel.CorrectAnswer = getFBCorrectAnswers(xml);	
+					qtiModel.BlankSize = getFBQuestionBlankSize(xml);	
 					
-				case 'ShortAnswer':
+				case EnumService.QuestionType.Essay :	case EnumService.QuestionType.Vocabulary:
+					qtiModel.Caption = getEssayCaption(xml);										
+					qtiModel.PrintRecommendedAnswer = QuestionPrefilledModal[quizType].printRecommendedAnswer;
+					qtiModel.EditRecommendedAnswer = QuestionPrefilledModal[quizType].editRecommendedAnswer;
+					qtiModel.RecommendedAnswer = getEssayRecommendedAnswer(xml);		
+					qtiModel.EssayPageSize = getEssayPageSize(xml);
+
+					break;
+					
+				case EnumService.QuestionType.ShortAnswer:
 					qtiModel.Caption = getEssayCaption(xml);							
 					qtiModel.Options = getSACorrectAnswersList(xml);	
 					qtiModel.EditOption = QuestionPrefilledModal[quizType].editOption;
 					qtiModel.PrintOption = QuestionPrefilledModal[quizType].printOption;
 					qtiModel.BlankSize = getEssayPageSize(xml);
 					break;
-
-				case 'FillInBlanks':
-					qtiModel.FbCaption = getFBQuestionCaption(xml);		
-					qtiModel.Caption = getFbCaptionHTML(qtiModel.FbCaption);						
-					qtiModel.CorrectAnswerHtml = getFBCorrectAnswersHtml(xml);		
-					qtiModel.PrintOption = QuestionPrefilledModal[quizType].printOption;									
-					//qtiModel.CorrectAnswer = getFBCorrectAnswers(xml);	
-					qtiModel.BlankSize = getFBQuestionBlankSize(xml);		
+				
+				case EnumService.QuestionType.Vocabulary:
+					qtiModel.Caption = getEssayCaption(xml);										
+					qtiModel.PrintRecommendedAnswer = QuestionPrefilledModal[quizType].printRecommendedAnswer;
+					qtiModel.EditRecommendedAnswer = QuestionPrefilledModal[quizType].editRecommendedAnswer;
+					qtiModel.RecommendedAnswer = getVocabularyRecommendedAnswer(xml);		
+					qtiModel.PageSize = 10;
 
 					break;
 				}			
+				
 				return qtiModel;		
 
 			}			
@@ -194,6 +203,17 @@ angular.module('evalu8Demo')
 				$(element).append(recommendedAnswer);			
 				return $(element)[0].textContent;
 			}
+			
+			var getVocabularyRecommendedAnswer = function(xml) {					
+				var correctAnswerList = [];		
+				var correctAnswers = '';
+			
+				$(qtiXML).find('correctResponse').find('value').each(function(i, e) {
+					correctAnswerList.push(decodeSpecialCharText(this.textContent));
+				});				
+				
+				return correctAnswerList;
+			}
 
 			var jsonReplaceUL = function(content) {
 				var htmlText = content.trim().replace(/&nbsp;/, " ");
@@ -216,18 +236,18 @@ angular.module('evalu8Demo')
 			var getQuestionOptions = function(xml, quizType) {
 				var optionList = [];
 				switch (quizType) {
-				case 'MultipleChoice':
-				case 'MultipleResponse':
-				case 'TrueFalse':
+				case EnumService.QuestionType.MultipleChoice :
+				case EnumService.QuestionType.MultipleResponse:
+				case EnumService.QuestionType.TrueFalse:
 					optionList = getSimpleChoices(xml);
 					break;
-				case 'Essay':
+				case EnumService.QuestionType.Essay:
 					break;
-				case 'ShortAnswer':
+				case EnumService.QuestionType.ShortAnswer:
 					break;
-				case 'FillInBlanks':
+				case EnumService.QuestionType.FillInBlanks:
 					break;
-				case 'Matching':
+				case EnumService.QuestionType.Matching:
 					optionList = getMacthingOptions(xml);
 					break;
 				}
@@ -294,20 +314,20 @@ angular.module('evalu8Demo')
 			var getQuestionCorrectAnswers = function(qtiXML, quizType) {
 				var correctAnswerList = [];
 				switch (quizType) {
-				case 'MultipleChoice':
-				case 'TrueFalse':
+				case EnumService.QuestionType.MultipleChoice :
+				case EnumService.QuestionType.TrueFalse:
 					correctAnswerList = getMultipleChoiceCorrectAnswer(qtiXML);
 					break;
-				case 'MultipleResponse':
+				case EnumService.QuestionType.MultipleResponse:
 					correctAnswerList = getMultipleResponseCorrectAnswer(qtiXML);
 					break;
-				case 'Essay':
+				case EnumService.QuestionType.Essay:
 					break;
-				case 'ShortAnswer':
+				case EnumService.QuestionType.ShortAnswer:
 					break;
-				case 'FillInBlanks':
+				case EnumService.QuestionType.FillInBlanks:
 					break;
-				case 'Matching':
+				case EnumService.QuestionType.Matching:
 					break;
 				}
 				return correctAnswerList;
@@ -464,6 +484,14 @@ angular.module('evalu8Demo')
 						"printOption" : "Answer Choice",
 						"editOption" : "Enter Answer for Blank A",							
 						"DISPLAY" : false
+					},
+					
+					"Vocabulary" : {
+						"qstnSectionTitle":"Enter Vocabulary Question",
+						"printCaption" : "Vocabulary Question",
+						"editCaption" : "Enter Vocabulary Question",
+						"printRecommendedAnswer" : "Recommended Answer",
+						"editRecommendedAnswer" : "Enter Vocabulary Recommended Answer"
 					}
 
 			}
@@ -647,7 +675,7 @@ angular.module('evalu8Demo')
 
 				switch (quizType) {				
 
-				case 'MultipleChoice':
+				case EnumService.QuestionType.MultipleChoice :
 
 					buildQuestionOptionTag(xml,node);
 
@@ -657,7 +685,7 @@ angular.module('evalu8Demo')
 
 					break;
 
-				case 'MultipleResponse':
+				case EnumService.QuestionType.MultipleResponse:
 
 					buildQuestionOptionTag(xml,node);
 
@@ -667,23 +695,29 @@ angular.module('evalu8Demo')
 
 					break;
 
-				case 'TrueFalse':	
+				case EnumService.QuestionType.TrueFalse:	
 
 					setIdentifierScore(xml, node);
 					break;
 
-				case 'Essay':						
+				case EnumService.QuestionType.Essay:						
 
 					$(xml).find('itemBody').find("extendedTextInteraction").eq(0).attr("expectedLines",node.qtiModel.EssayPageSize);
 					QTI.appendNodes($(xml).find('responseDeclaration').find('correctResponse').find('value').eq(0),"<![CDATA[" + node.qtiModel.RecommendedAnswer + "]]>");
 					break;
 					
-				case 'ShortAnswer':	
+				case EnumService.QuestionType.Vocabulary:						
+
+					$(xml).find('itemBody').find("extendedTextInteraction").eq(0).attr("expectedLines",node.qtiModel.PageSize);
+					QTI.appendNodes($(xml).find('responseDeclaration').find('correctResponse').find('value').eq(0),"<![CDATA[" + node.qtiModel.RecommendedAnswer + "]]>");
+					break;
+					
+				case EnumService.QuestionType.ShortAnswer:	
 					
 					buildEssayShortAnswerQTI(xml,node);
 					break;
 
-				case 'Matching':			
+				case EnumService.QuestionType.Matching:			
 
 					var responseDeclaration = $(xml).find('responseDeclaration');					
 					var responseTag = ' <responseDeclaration identifier="@RESPONSE" cardinality="single" baseType="identifier">'
@@ -743,7 +777,7 @@ angular.module('evalu8Demo')
 
 
 					break;
-				case 'FillInBlanks':		
+				case EnumService.QuestionType.FillInBlanks:		
 					
 					if($(node.qtiModel.Caption).find("button").length > 0){
 						qstnCaption = replaceFIBblank($(node.qtiModel.Caption),qstnCaption);					
@@ -837,4 +871,4 @@ angular.module('evalu8Demo')
 			}
 
 
-		});
+		}]);
