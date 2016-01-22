@@ -108,7 +108,7 @@
                         <input ng-mousedown="getNodesWithQuestion(this)" type="image" value="" class="collapseImg" ng-show="node.isHttpReqCompleted" ng-src="{{collapsed?'images/right_arrow2.png':'images/right_arrow.png'}}"></input>
                         <!--<input ng-mousedown="getNodesWithQuestion(this)" type="image" class="collapseImg" ng-src="{{collapsed?'images/right_arrow2.png':'images/right_arrow.png'}}"></input>-->
                     </div>
-                    <div class="captiondiv" ng-mousedown="selectNode(this)">
+                    <div class="captiondiv" ng-mousedown="selectNode($event,this)">
                         <label class="captionLabel" title="{{node.title}}">{{node.title}}</label>
                     </div>
                     <div class="iconsChapter">
@@ -169,7 +169,7 @@
 
 	<script type="text/ng-template" id="qb_questions_renderer.html">
 	<div ng-if="node.questionType != 'userCreatedQuestion'" class="questionListIndex">{{$index + 1}})</div>
-        <div id="QBQuestion"  nodeSelected={{node.isNodeSelected}} ng-mousedown="selectNode(this);" ui-tree-handle class="printViewContainer tree-node tree-node-content questionList" ng-class="{questionTitleInTree: node.questionXML}">
+        <div id="QBQuestion"  nodeSelected={{node.isNodeSelected}} ng-mousedown="selectNode($event,this);" ui-tree-handle class="printViewContainer tree-node tree-node-content questionList" ng-class="{questionTitleInTree: node.questionXML}">
             <button id="QBPencil" type="button" ng-show="node.showEditQuestionIcon" class="newTest-close questionIcon action-icon-bg glyphicon glyphicon-plus" ng-mousedown="editQuestion(this);$event.stopPropagation();" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" tooltip="Move question to right for editing"></button>
             <div class="printViewContainer" ng-if="node.textHTML" ng-bind-html="getHTML(this)">
             </div>
