@@ -1,7 +1,7 @@
 (function(ns) {
 	
 	ns.domain = window.location.protocol + "//" + window.location.host;	
-    ns.uiUrl = ns.domain + "/testbuilder";    
+    ns.uiUrl = ns.domain;    
     ns.apiUrl = ns.domain + "/api";    
 	
 	ns.viaPILogin = true;

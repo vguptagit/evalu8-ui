@@ -583,7 +583,14 @@ angular
                             }
 							
                             $scope.createTestWizardMode=false;
-                            
+                          //to enable the folder plus icon in the next tab on clicking wizard icon if all the questions of the selected nodes is already added to the test creation frame.
+                          var  enablePlusIconForSelectedNodesOnWizardClick = function(){
+                        	  for (var i = 0; i < $scope.selectedNodes.length; i++) {
+                          		if (!$scope.selectedNodes[i].showEditQuestionIcon) {
+                          			$scope.selectedNodes[i].showEditQuestionIcon = true;
+                          		}
+                          	}
+                          }
 							// TODO : need to move this to service.
 							$scope.createTestWizardCriteria = function(
 									currentNode, eventType) {
@@ -595,6 +602,7 @@ angular
 								if (!SharedTabService.isTestWizardTabPresent) {
 									$rootScope
 											.$broadcast('handleBroadcast_AddTestWizard');
+									enablePlusIconForSelectedNodesOnWizardClick();
 								}
 								var tab = SharedTabService.tests[SharedTabService.currentTabIndex];
 								if (!tab.isTestWizard) {
@@ -763,10 +771,6 @@ angular
                                 httpReqCompletedCount = 0;
 								currentNode.showTestWizardIcon = false;
 								currentNode.existInTestframe = true;
-							//to enable the question edit icon in the next tab on clicking wizard icon if all the questions of the current node is already added to the test creation frame.	
-								if(!currentNode.showEditQuestionIcon){
-									currentNode.showEditQuestionIcon = true;
-								}
 								if(currentNode.nodes){
 									ShowIconsForChildren(currentNode, test);
 							}
@@ -1731,6 +1735,7 @@ angular
                             	if (activeTest.isTestWizard) {
 									$rootScope.$broadcast('handleBroadcast_AddNewTab');
 									activeTest = SharedTabService.tests[SharedTabService.currentTabIndex];
+									enableWizardIconForSelectedNodesOnPlusClick();
 								}
                             	
                             	if(!selectedScopeNode.showEditQuestionIcon)
@@ -1749,7 +1754,14 @@ angular
 								}        
 
 							}
-							
+							//to enable the folder wizard icon in the next tab on clicking plus icon if the wizard section of the selected nodes already added to the wizard frame. 
+							var enableWizardIconForSelectedNodesOnPlusClick = function(){
+	                        	  for (var i = 0; i < $scope.selectedNodes.length; i++) {
+	                          		if (!$scope.selectedNodes[i].showTestWizardIcon) {
+	                          			$scope.selectedNodes[i].showTestWizardIcon = true;
+	                          		}
+	                          	}
+	                          }
 							$scope.addQuestionToTestFrameTab = function (test,destIndex,eventType,nodeScope) {							 
 								if (nodeScope.node.showEditQuestionIcon) {					
 										if (SharedTabService.tests[SharedTabService.currentTabIndex].IsAnyQstnEditMode) {

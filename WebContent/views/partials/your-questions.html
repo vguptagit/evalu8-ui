@@ -54,8 +54,8 @@
                                    ng-src="{{collapsed && 'images/right_arrow2.png' || 'images/right_arrow.png'}}" ng-show="!node.isEditMode" />
                         </div>
                         <div class="captiondiv" >
-                            <input type="text" data-ng-model="node.title" id="txtFolderNameEdit" ng-show="node.isEditMode"
-                                   class="form-control"
+                            <input type="text" data-ng-model="node.title" id="txtFolderNameEdit_{{node.guid}}" ng-show="node.isEditMode"
+                                   class="form-control txtFolderNameEdit"
                                    placeholder="{{node.title}}" ng-enter="editFolder(this,node)" />
                            
 							<div class="captionLabel" ng-show="!node.isEditMode" ng-mousedown="selectNode(this);" ng-mouseenter="treeNodeMouseEnter(this)"
@@ -66,7 +66,7 @@
                          <div class="iconsQuestionFolder">
                             <div ng-show="node.isNodeSelected">
                                 <div ng-show="!node.isEditMode">
-                                    <button class="action-icon-bg fa fa-pencil" event-focus="click" event-focus-id="txtFolderNameEdit" 
+                                    <button class="action-icon-bg fa fa-pencil" event-focus="click" event-focus-id="txtFolderNameEdit_{{node.guid}}" 
 									ng-click="node.isEditMode= !node.isEditMode" 
 									tooltip-placement="top" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Edit folder" />
 

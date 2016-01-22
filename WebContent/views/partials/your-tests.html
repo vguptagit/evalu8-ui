@@ -95,8 +95,8 @@
                         </div>
 
                         <div class="captiondiv">
-                            <input type="text" data-ng-model="node.title" id="txtFolderNameEdit" ng-show="node.isEditMode"
-                                   class="form-control"
+                            <input type="text" data-ng-model="node.title" id="txtFolderNameEdit_{{node.guid}}" ng-show="node.isEditMode"
+                                   class="form-control txtFolderNameEdit"
                                    placeholder="{{node.title}}" ng-enter="editFolder(this,node)" />
                            <div class="captionLabel" ng-show="!node.isEditMode" ng-mousedown="selectTestNode($event,this);" ng-mouseenter="treeNodeMouseEnter(this)"
                      			ng-mouseleave="treeNodeMouseLeave(this)">
@@ -107,7 +107,7 @@
                         <div class="iconsCourseNode">
                             <div ng-show="node.selectTestNode">
                                 <div ng-show="!node.isEditMode">
-                                    <button class="folderArchiveIcon fa fa-pencil" event-focus="click" event-focus-id="txtFolderNameEdit" ng-click="node.isEditMode= !node.isEditMode" tooltip-placement="top" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Edit folder" />
+                                    <button class="folderArchiveIcon fa fa-pencil" event-focus="click" event-focus-id="txtFolderNameEdit_{{node.guid}}" ng-click="node.isEditMode= !node.isEditMode" tooltip-placement="top" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Edit folder" />
                                     <button data-ng-if="node.nodeType == 'folder'" data-ng-click="archiveFolder(this)" class="folderArchiveIcon fa fa-archive" tooltip-placement="top" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Move to Archive folder at bottom of screen" />
                                 </div>
                                 <div ng-show="node.isEditMode">
@@ -140,8 +140,8 @@
                                ng-src="{{collapsed && 'images/right_arrow2.png' || 'images/right_arrow.png'}}" />
                     </div>
                     <div class="captiondiv" >
-                        <input type="text" data-ng-model="node.title" id="txtFolderNameEdit" ng-show="node.isEditMode"
-                               class="form-control"
+                        <input type="text" data-ng-model="node.title" id="txtFolderNameEdit_{{node.guid}}" ng-show="node.isEditMode"
+                               class="form-control txtFolderNameEdit"
                                placeholder="{{node.title}}" ng-enter="editFolder(this,node)" />
                          <div class="captionLabel" ng-show="!node.isEditMode" ng-mousedown="selectTestNode($event,this);" ng-class="{captionEmptyNode : node.nodeType == 'empty'}" ng-mouseenter="treeNodeMouseEnter(this)"
                  				ng-mouseleave="treeNodeMouseLeave(this)">
@@ -151,7 +151,7 @@
                     <div class="iconsCourseNode">
                         <div ng-show="node.selectTestNode">
                             <div ng-show="!node.isEditMode">
-                                <button class="folderArchiveIcon fa fa-pencil" event-focus="click" event-focus-id="txtFolderNameEdit" ng-click="node.isEditMode= !node.isEditMode" tooltip-placement="top" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Edit folder" />
+                                <button class="folderArchiveIcon fa fa-pencil" event-focus="click" event-focus-id="txtFolderNameEdit_{{node.guid}}" ng-click="node.isEditMode= !node.isEditMode" tooltip-placement="top" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Edit folder" />
                                 <!--<button data-ng-if="node.nodeType == 'folder'" ng-click="archiveFolder(this)" class="folderArchiveIcon fa fa-archive" tooltip-placement="top" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Move to Archive folder at bottom of screen" />-->
                                 <button data-ng-if="node.nodeType == 'folder'" ng-click="archiveFolder(this)" tooltip-placement="top" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip="Move to Archive folder at bottom of screen" class="folderArchiveIcon fa fa-archive" />
                             </div>

@@ -372,9 +372,6 @@ angular.module('e8MyTests')
                             			mouseOverNode.node.nodes.splice(0, 1);
                             		}
                             		mouseOverNode.node.nodes.push(item);
-                            	} else {
-                            		mouseOverNode.node.nodes = [];
-                            		mouseOverNode.node.nodes.push(item);
                             	}
                                 
                                 if(sourceParent && sourceParent.node && sourceParent.node.nodes.length==0) {
@@ -1521,7 +1518,7 @@ angular.module('e8MyTests')
 
                             $modal.open(confirmObject).result.then(function (ok) {
                                 if (ok) {
-                                    $("#txtFolderNameEdit").focus();
+                                    $("#txtFolderNameEdit_"+node.guid).focus();
                                 }
                             });
                         }
