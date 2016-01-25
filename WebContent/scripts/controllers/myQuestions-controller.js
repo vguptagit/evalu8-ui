@@ -469,7 +469,7 @@ angular.module('e8MyTests')
         		if(defaultFolders==null){
         			CommonService.showErrorMessage(e8msg.error.cantFetchFolders)
         			return;
-        		}
+        		}       		
         		
             	QuestionFolderService.questionRootFolder(function(myTestRoot){
             		if(myTestRoot==null){
@@ -490,7 +490,7 @@ angular.module('e8MyTests')
 	            			return;
 	                	}
 	                	var questionNumber = 0;	                	
-	                	questions.forEach(function(userQuestion) {	               		
+	                	questions.forEach(function(userQuestion) {	              		
 	                		
 	                		var yourQuestion = {};						
 							yourQuestion.isQuestion = true;
@@ -1723,7 +1723,7 @@ angular.module('e8MyTests')
 		
 		
         
-        var addWizardToTestFrameTab = function(scope, currentNode, test){
+        var addWizardToTestFrameTab = function(scope, currentNode, test){       
         	updateSelectedWizardFolderNodeStatus(currentNode);		
         	$rootScope.blockPage.start();
         	getQuestions(
@@ -2039,6 +2039,9 @@ angular.module('e8MyTests')
 	                	var questionNumber = 0;
 	                	questions.forEach(function(userQuestion) {
 	                		
+
+	                		if(questionNumber>4)return false;
+
 							var yourQuestion = {};							
 							
 							yourQuestion.isQuestion = true;
@@ -2621,22 +2624,49 @@ angular.module('e8MyTests')
      
 	
 /**********************************************************Start**************************************************/
+     
+     var enableSelectedNodeStatus = function(node){
+    	 node.isNodeSelected = true;
+		 node.showTestWizardIcon = true;
+		 node.showEditQuestionIcon = true;
+		 node.existInTestframe=false;
+     }
 //This block of code update the wizard node status and test node on Test tab switching.
 	
-	$scope.$on(
-			'handleBroadcast_onClickTab',
-			function(handler, tab) {			
-				resetSelectedNodeStatus();
-				if (tab.isTestWizard) {					
-					var isTabClicked = true;
-					if(tab.criterias.length>0){
-						updateTabWizardNodeStatusInTree(tab.criterias,isTabClicked);
-					}					
-				} else {											
-					updateTestNodesStatus(tab);
-				}
+     $scope.$on(
+    		 'handleBroadcast_onClickTab',
+    		 function(handler, tab) {			
 
-			});
+    			 if (tab.isTestWizard) {					
+    				 var isTabClicked = true;
+    				 if(tab.criterias.length>0){
+    					 resetSelectedNodeStatus();
+    					 updateTabWizardNodeStatusInTree(tab.criterias,isTabClicked);
+    				 }else if (tab.isNewFrameRequest){
+    					 $scope.selectedNodes.forEach(function(node) {	
+    						 enableSelectedNodeStatus(node);
+    					 });
+    				 }					
+    			 } else {					
+
+    				 if(tab.questions.length>0){
+    					 resetSelectedNodeStatus();		
+    					 updateTestNodesStatus(tab);    				 
+    				 }else if (SharedTabService.tests.length == 1) { 		            
+    					 resetSelectedNodeStatus();		
+    				 }else if (tab.isNewFrameRequest){
+    					 $scope.selectedNodes.forEach(function(node) {	
+    						 enableSelectedNodeStatus(node);
+    					 });
+    				 }else{
+    					 resetSelectedNodeStatus();		
+    				 }
+
+    			 }
+    			 
+    			 tab.isNewFrameRequest = false;
+
+    		 });
 
 /*******************************************************End*************************************************************/
 		
