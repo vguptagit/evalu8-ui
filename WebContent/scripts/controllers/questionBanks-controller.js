@@ -1410,8 +1410,10 @@ angular
 
 
 							var isParentNodeUsed=false;
-							$scope.selectNode = function (scope) {
-
+							$scope.selectNode = function (event,scope) {
+								
+								event.preventDefault(); //Avoids event conflict
+								
 								var node = scope.node;
 
 								if(skipNodeSelection(node)){

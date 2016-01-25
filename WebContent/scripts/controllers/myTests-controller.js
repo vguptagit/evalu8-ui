@@ -845,8 +845,10 @@ angular.module('e8MyTests')
         }
         $('.testMessagetip').offset({'top':($(window).height()/2)-$('.testMessagetip').height()});
         $('.testMessagetip').hide();
-        $scope.selectTestNode = function ($event,test) {
-
+        $scope.selectTestNode = function (event,test) {
+        	
+        	event.preventDefault(); //Avoids event conflict
+        	
         	if(test.node.nodeType == EnumService.NODE_TYPE.emptyFolder) {
         		return;
         	}

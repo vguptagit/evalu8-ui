@@ -58,7 +58,7 @@
                                    class="form-control txtFolderNameEdit"
                                    placeholder="{{node.title}}" ng-enter="editFolder(this,node)" />
                            
-							<div class="captionLabel" ng-show="!node.isEditMode" ng-mousedown="selectNode(this);" ng-mouseenter="treeNodeMouseEnter(this)"
+							<div class="captionLabel" ng-show="!node.isEditMode" ng-mousedown="selectNode($event,this);" ng-mouseenter="treeNodeMouseEnter(this)"
                      			ng-mouseleave="treeNodeMouseLeave(this)">
 								<label class="labelCaption" title="{{node.title}}">{{node.title}}</label>
 							</div>
