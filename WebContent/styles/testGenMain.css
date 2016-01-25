@@ -3085,6 +3085,7 @@ li[printmode='false'][optionsview='true'] .blankBtnDiv {
 	text-decoration: none !important;
 	margin-top: 10px;
 	margin-right: 4px;
+    height: 20px;
 }
 
 .clearAdvancedSearch {

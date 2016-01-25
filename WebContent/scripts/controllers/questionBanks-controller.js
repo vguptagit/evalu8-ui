@@ -1488,15 +1488,70 @@ angular
 							function DisplayQuestionCount(currentnode) {
 							    var selectedNodesArray = [],
                                     selectedNodesTemp = [];
-							    angular.copy($scope.selectedNodes, selectedNodesTemp);
-							    selectedNodesTemp.push(currentnode);
-							    selectedNodesTemp.forEach(function (selectedItem) {
-							        $scope.bookJson.forEach(function (bookItem) {
-							            if (selectedItem.bookid === bookItem.guid) {
-							                checkInBookContainer(bookItem, selectedItem);
+
+							    if ($scope.isSearchMode) {
+							        getCount_SimpleSearch();
+							    } else {
+							        getCount_BeforeSearch();
+							    }
+
+							    function getCount_BeforeSearch() {
+							        angular.copy($scope.selectedNodes, selectedNodesTemp);
+							        selectedNodesTemp.push(currentnode);
+							        selectedNodesTemp.forEach(function (selectedItem) {
+							            $scope.bookJson.forEach(function (bookItem) {
+							                if (selectedItem.bookid === bookItem.guid) {
+							                    checkInBookContainer(bookItem, selectedItem);
+							                }
+							            })
+							        });
+							    }
+
+							    function getCount_SimpleSearch() {
+							        angular.copy($scope.selectedNodes, selectedNodesTemp);
+							        selectedNodesTemp.push(currentnode); //if current node is not selected , push current node to array.
+							        selectedNodesTemp.forEach(function (selectedItem) {
+							            $scope.bookJson.forEach(function (bookItem) {
+							                if (selectedItem.bookid === bookItem.guid) {
+							                    checkInBookContainer_SimpleSearch(bookItem, selectedItem);
+							                }
+							            })
+							        });
+							    }
+
+							    // simple search
+							    // show the count of selected/current node or its chield nodes.
+							    // if current node is parent node need to show the searched node count. 
+							    function checkInBookContainer_SimpleSearch(bookItem, selectedItem) {
+							        bookItem.containers.forEach(function (item) {
+							            if (item.guid === selectedItem.guid && item.guid === $scope.selectedContainer.guid) {
+							                selectedNodesArray.push(item);
+							            }
+							            else if (item.guid === currentnode.guid) {
+							                selectedNodesArray.push($scope.selectedContainer);
+							            }
+							            else if (item.child) {
+							                checkInChildNode(item.child, selectedItem);
+							            }
+							        });
+							    }
+							    function checkInChildNode_SimpleSearch(containerItems, selectedItem) {
+							        containerItems.forEach(function (item) {
+							            if (item.guid === selectedItem.guid) {
+							                selectedNodesArray.push(item);
+							            }
+							            else if (item.guid === selectedItem.parentId) {
+							                selectedNodesArray.push(selectedItem);
+							            }
+							            else if (item.guid === $scope.selectedContainer.guid) {
+							                selectedNodesArray.push(selectedItem);
+							            }
+							            else if (item.child) {
+							                checkInChildNode(item.child, selectedItem);
 							            }
 							        })
-							    });
+							    }
+
 
 							    function checkInBookContainer(bookItem, selectedItem) {
 							        bookItem.containers.forEach(function (item) {
