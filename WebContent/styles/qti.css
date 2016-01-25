@@ -506,6 +506,14 @@
 	resize: none;
 }
 
+textarea.recommendedAnswer:focus::-webkit-input-placeholder  { 
+	color:transparent; 
+}
+
+textarea.recommendedAnswer:focus::-moz-placeholder { 
+	color:transparent; 
+}
+
 /* Matching - question - EDIT  END */
 
 /* Updload image begin */
@@ -741,6 +749,14 @@ input.crtAnsText {
 	border: 0px;
 	border-left: 1px solid #D0D0D0;
 	height: 28px;
+}
+
+input.crtAnsText:focus::-webkit-input-placeholder  { 
+	color:transparent; 
+}
+
+input.crtAnsText:focus::-moz-placeholder { 
+	color:transparent; 
 }
 
 .saCrtAnsIndex {
