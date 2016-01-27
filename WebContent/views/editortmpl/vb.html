@@ -1,7 +1,7 @@
 <div ng-show="answerAreaOnLeftSide" class="floatLeftImp margin-top-10 width12"></div>
 <div class="floatLeftImp" ng-class="answerAreaOnLeftSide?'questionContainerWithAnswerArea':'questionContainer'">
 	<div data-ng-if="!node.IsEditView" class="qtiPrintView" 
-		ng-mousedown="controller=='TestCreationFrameController'?selectQuestion(node):selectNode(this);">
+		ng-mousedown="controller=='TestCreationFrameController'?selectQuestion($event,node):selectNode($event,this);">
 		<div class="questionPrintContainer">
 			<div class = "qstnPrintViewIndex" ng-class="{twoDigitIndex: $index + 1 > 9 ,threedigitIndex: $index + 1 > 99, fourDigitIndex: $index + 1 > 999}">{{controller=='MyQuestionsController'?node.questnNumber:$index + 1}})</div>
             <div class="printQuestionCaption" ng-style="{{setEssayPageSize(node.qtiModel)}}" data-ng-bind-html="getTrustedHTML(node.qtiModel.Caption==''?node.qtiModel.PrintCaption:node.qtiModel.Caption)"></div>

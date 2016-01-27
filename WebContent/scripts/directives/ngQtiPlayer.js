@@ -125,7 +125,10 @@ angular.module('e8MyTests')
 						
 
 			$scope.selectQuestion = function (event,questionNode) {
-				event.preventDefault(); //Avoids event conflict
+				
+				if(event != null){
+					event.preventDefault(); //Avoids event conflict
+				}
 				questionNode.isNodeSelected = typeof(questionNode.isNodeSelected)=='undefined'?true:!questionNode.isNodeSelected;
 			};
 
