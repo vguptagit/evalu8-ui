@@ -847,7 +847,9 @@ angular.module('e8MyTests')
         $('.testMessagetip').hide();
         $scope.selectTestNode = function (event,test) {
         	
-        	event.preventDefault(); //Avoids event conflict
+        	if(event != null){
+        		event.preventDefault(); //Avoids event conflict
+        	}
         	
         	if(test.node.nodeType == EnumService.NODE_TYPE.emptyFolder) {
         		return;

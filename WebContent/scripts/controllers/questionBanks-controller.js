@@ -308,7 +308,7 @@ angular
 						            we need to cross check this use case,because of this call multi queston node drag and drop is working.
 						            */
 									if (!source.node.isNodeSelected) {
-										$scope.selectNode(source);
+										$scope.selectNode(null,source);
 									}
 									
 									if (SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
@@ -1411,9 +1411,9 @@ angular
 
 							var isParentNodeUsed=false;
 							$scope.selectNode = function (event,scope) {
-								
-								event.preventDefault(); //Avoids event conflict
-								
+								if(event != null){
+									event.preventDefault(); //Avoids event conflict
+								}
 								var node = scope.node;
 
 								if(skipNodeSelection(node)){

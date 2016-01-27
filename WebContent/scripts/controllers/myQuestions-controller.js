@@ -811,7 +811,7 @@ angular.module('e8MyTests')
   			$scope.dragStarted = false;  			            
   			
 			if (!source.node.isNodeSelected) {
-				$scope.selectNode(event,source);
+				$scope.selectNode(null,source);
 			}
 
             if(!(destParent.controller === EnumService.CONTROLLERS.myQuestion)){        
@@ -1168,7 +1168,9 @@ angular.module('e8MyTests')
 		
 		$scope.selectNode = function (event,scope) {
 			
-			event.preventDefault(); //Avoids event conflict
+			if(event != null){
+				event.preventDefault(); //Avoids event conflict
+			}
 			
 			var node = scope.node;
 			

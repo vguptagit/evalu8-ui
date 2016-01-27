@@ -240,13 +240,13 @@
 	box-shadow: 0px -3px 0px #006A8D;
 }
 
-@-moz-document url-prefix () { 
-    .optionImageIcon: focus, .captionImageIcon:focus,
+@-moz-document url-prefix(){
+.optionImageIcon:focus, .captionImageIcon:focus,
 	.metdataInput:focus, .questionUploadBtn:focus {
 	outline-width: 1px;
 	outline-style: dotted;
+	/*outline: 0 !important;*/	
 }
-
 }
 
 /* MC-Edit End*/
