@@ -106,7 +106,7 @@ angular.module('e8MyTests')
 		var findAndUpdateWizardNodeStatus = function(nodes,folderId,isTabClicked){	
 			for (var i = 0; i < nodes.length; i++) {	
 				var node = nodes[i];
-				if (node.nodeType != "question") {
+				if (node.nodeType != EnumService.NODE_TYPE.question) {
 					if (folderId == node.guid) {
 						updateWizardStatus(node,isTabClicked);
 						break;
@@ -120,14 +120,26 @@ angular.module('e8MyTests')
 /*******************************************************End*************************************************************/
 
 		var updateTestNodeStatus = function(node,activeTest){	
-			setTestNodeStatus(node);
-			addingNodeInSelectedNodesArray(node,activeTest);
+
 			if(typeof(node.nodes) == 'undefined'){
+				if (node.nodeType != EnumService.NODE_TYPE.question) {
+					if(isAllQuestionsInTestFrame(node,activeTest)){
+						setTestNodeStatus(node);
+						addingNodeInSelectedNodesArray(node,activeTest);
+					}else return false;
+				}else{
+					setTestNodeStatus(node);
+					addingNodeInSelectedNodesArray(node,activeTest);
+				}				
 				return;
 			}
+
 			node.nodes.forEach(function(node) {
-				setTestNodeStatus(node);
-				addingNodeInSelectedNodesArray(node,activeTest);
+				if(isNodeInTestFrame(node)){
+					setTestNodeStatus(node);
+					addingNodeInSelectedNodesArray(node,activeTest);
+				}
+
 			});		
 		}
 
@@ -470,6 +482,7 @@ angular.module('e8MyTests')
         			CommonService.showErrorMessage(e8msg.error.cantFetchFolders)
         			return;
         		}       		
+        		       		
         		
             	QuestionFolderService.questionRootFolder(function(myTestRoot){
             		if(myTestRoot==null){
@@ -490,7 +503,7 @@ angular.module('e8MyTests')
 	            			return;
 	                	}
 	                	var questionNumber = 0;	                	
-	                	questions.forEach(function(userQuestion) {	              		
+	                	questions.forEach(function(userQuestion) {	             		
 	                		
 	                		var yourQuestion = {};						
 							yourQuestion.isQuestion = true;
@@ -527,9 +540,14 @@ angular.module('e8MyTests')
         	
         }
         
-        $scope.loadTree();
+        $scope.loadTree();        
         
-       
+        var onDragAndDropSetNodeStatus  = function(nodeScope,isSelected){
+        	nodeScope.node.showEditQuestionIcon = isSelected;
+        	nodeScope.node.isNodeSelected = isSelected;
+        	nodeScope.node.showTestWizardIcon = isSelected;
+        	checkSiblingSelection(nodeScope);
+        }
         
         $scope.$on('ImportUserBooks', function() {		
 			$scope.loadTree();								
@@ -800,6 +818,7 @@ angular.module('e8MyTests')
             	});            		              	               	
             }
         };
+        
 
         $scope.dragEnd = function (event, destParent, source, sourceParent,
   			  sourceIndex, destIndex, prev, next) {
@@ -910,6 +929,7 @@ angular.module('e8MyTests')
 
             			if(sourceParent && sourceParent.node && sourceParent.node.nodes.length==0) {
             				sourceParent.node.nodes.push(CommonService.getEmptyFolder());
+            				onDragAndDropSetNodeStatus(sourceParent,false);
             			}
 
             			if(sourceParent == null) {
@@ -981,6 +1001,7 @@ angular.module('e8MyTests')
             		}
             		if(sourceParent && sourceParent.node && sourceParent.node.nodes.length==0) {
             			sourceParent.node.nodes.push(CommonService.getEmptyFolder());
+            			onDragAndDropSetNodeStatus(sourceParent,false);
             		}
             		$rootScope.blockLeftPanel.stop();
             	});
@@ -1076,10 +1097,16 @@ angular.module('e8MyTests')
     	}
         
         $scope.deleteEmptyNode = function(prev, next, destParent) {
-        	if(prev && prev.node && "sequence" in prev.node && prev.node.sequence == 0)
+        	if(prev && prev.node && "sequence" in prev.node && prev.node.sequence == 0){
         		destParent.node.nodes.splice(0,1);
-        	if(next && next.node && "sequence" in next.node && next.node.sequence == 0)
+        		onDragAndDropSetNodeStatus(destParent, true);
+        	}
+        		
+        	if(next && next.node && "sequence" in next.node && next.node.sequence == 0){
         		destParent.node.nodes.splice(1,1);
+        		onDragAndDropSetNodeStatus(destParent, true);
+        	}
+        	
         }
         
         $scope.getFolderNodeSequence = function(node) {
@@ -2039,9 +2066,6 @@ angular.module('e8MyTests')
 	                	var questionNumber = 0;
 	                	questions.forEach(function(userQuestion) {
 	                		
-
-	                		if(questionNumber>4)return false;
-
 							var yourQuestion = {};							
 							
 							yourQuestion.isQuestion = true;
