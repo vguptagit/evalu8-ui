@@ -61,7 +61,7 @@ angular
 		
 		this.getQuestionTypeContainers = function(bookid,searchCriteria, callback) {
 			var nodes=[];
-			var url = evalu8config.apiUrl + "/books/"+bookid+"/nodes?"+searchCriteria;
+			var url = evalu8config.apiUrl + "/books/"+bookid+"/nodes?flat=1&"+searchCriteria;
 			HttpService.get(url).success(
 					function(response) {
 						callback(response);

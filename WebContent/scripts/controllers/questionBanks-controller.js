@@ -3233,24 +3233,30 @@ angular
 									var testTab = SharedTabService.tests[SharedTabService.currentTabIndex];
 									$scope.selectedNodes=[];
 									$scope.selectedBooks.forEach(function(book){
+										var rootContainers=[];
 										ContainerService.getQuestionTypeContainers(book.guid,searchCriteria,function(containers){
 											if(containers==null){
 												isErrorExists=true;
 											}
 											
-											if(containers.length==0){
+											containers.forEach(function(container){
+												if(container.parentId==""){
+													checkIsContainerIsInTestFrame(container,testTab);
+													container.isCollapsed=true;
+													container.nodeType = EnumService.NODE_TYPE.chapter;
+													container.bookid = book.guid;
+													container.isHttpReqCompleted = true;
+													rootContainers.push(container)
+												}
+											});
+											
+											if(rootContainers.length==0){
 												emptyBooks = emptyBooks+1;
 											}
-											containers.forEach(function(container){
-												checkIsContainerIsInTestFrame(container,testTab);
-												container.isCollapsed=true;
-												container.nodeType = EnumService.NODE_TYPE.chapter;
-												container.bookid = book.guid;
-												container.isHttpReqCompleted = true;
-											});
-											$scope.expandedNodes=$scope.expandedNodes.concat(containers);
+											
+											$scope.expandedNodes=$scope.expandedNodes.concat(rootContainers);
 											book.isCollapsed=false;
-											book.nodes=containers;
+											book.nodes=rootContainers;
 											if(count == 0){
 												$scope.disciplines=[];
 											}
