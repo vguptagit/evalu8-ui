@@ -1351,11 +1351,16 @@ angular.module('e8MyTests')
         		test.node.draggable = true;
                 test.node.selectTestNode = false;// to show the edit icon
                 
-        		if(restoredFolder == null || restoredFolder == "") {
-        			
-                    test.node.showEditIcon = true;
-                    test.node.showArchiveIcon = true;
+        		if(restoredFolder == null || restoredFolder == "") {        			
 
+        			
+        			for(var tesstItemIndex=$scope.defaultFolders.length-1; tesstItemIndex>=0; tesstItemIndex--) {
+        				if($scope.defaultFolders[tesstItemIndex].nodeType == EnumService.NODE_TYPE.test 
+        						|| $scope.defaultFolders[tesstItemIndex].nodeType == EnumService.NODE_TYPE.emptyFolder) {
+        					$scope.defaultFolders.splice(tesstItemIndex, 1);
+        				}
+        			}        				        			            			
+        			
         			var index = 0, restoreIndex = 0;
         			$scope.defaultFolders.forEach(function(item){
 
@@ -1363,8 +1368,22 @@ angular.module('e8MyTests')
         					restoreIndex = index;        					
         				}
         				index = index + 1;
-        			})
-        			$scope.defaultFolders.splice(restoreIndex, 0, test.node);	    
+        			})        			       			
+        				
+        			
+        			TestService.getTests(null, function (tests) {
+        				if(tests==null){
+        					$rootScope.blockLeftPanel.stop();
+        					CommonService.showErrorMessage(e8msg.error.cantFetchTests)
+        					return;
+        				}
+        				tests.forEach(function (test) {
+        					test.selectTestNode = false;// to show the edit icon
+
+        					$scope.defaultFolders.splice(restoreIndex++, 0, test);
+        				})
+        			});                    
+                    
         		} else {
         			
         			var testParent = angular.element($('[id=' + restoredFolder.guid + ']')).scope();
