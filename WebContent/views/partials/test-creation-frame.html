@@ -117,7 +117,7 @@
 				New Version</button>
 		</div>
 	</div>
-
+	<div data-ui-tree droppable="true">
 	<div class="TestcreationInfo"
 		ng-show=" tests[currentIndex].isTestWizard">
 
@@ -154,8 +154,7 @@
 	</div>
 	<div id="toolbarPlaceholder"></div>
 	<div class="row" ng-show="tests[currentIndex].isTestWizard">
-		<div ui-tree droppable="true">
-			<div class="test-wizard-container">
+		<div ng-class="tests[currentIndex].criterias.length == 0 ? 'qstnArea' : 'test-wizard-container'" >
 				<div ui-tree-nodes ng-model="tests[currentIndex].criterias">
                     <div class="row repeatCriteria"
                          ng-repeat="criteria in tests[currentIndex].criterias" ui-tree-node
@@ -293,10 +292,9 @@
 							ng-click="closeTab(tests[currentIndex])">Cancel</button>
 					</div>
 				</div>
-			</div>
+			</div>		
 		</div>
 	</div>
-
 	<script type="text/ng-template" id="questions_renderer.html">
             <div ui-tree-handle class="printViewContainer tree-node tree-node-content questionList" ng-class="{questionTitleInTree: node.questionXML}">
 	            <div ng-if="node.textHTML" ng-bind-html="getHTML(this)">
@@ -304,8 +302,7 @@
         </div>
     </script>
 
-	<div id="qstnArea" ng-class="tests[currentIndex].IsAnyQstnEditMode? 'qstnArea' : 'qstnAreaPrint'" data-ui-tree="treeOptions" data-drag-delay="90"
-		ng-show="!tests[currentIndex].isTestWizard">
+	    <div id="qstnArea" ng-class="tests[currentIndex].IsAnyQstnEditMode? 'qstnArea' : 'qstnAreaPrint'" data-ui-tree="treeOptions" ng-show="!tests[currentIndex].isTestWizard">
 		<div  id="tree2-root">
 			<!-- <div class="row"> -->
 			<div class="TestcreationInfo"
