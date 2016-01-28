@@ -1785,11 +1785,7 @@ angular.module('e8MyTests')
         }
         
         var dragNodesToWizardFrameTab = function(){        	
-        	var httpReqCount = 0,
-        	httpReqCompletedCount = 0;
-
         	var chapters = [];
-
         	for (var i = 0; i < $scope.selectedNodes.length; i++) {
         		var parentNodeExist=false;
         		for (var j = 0; j < $scope.selectedNodes.length; j++) {
@@ -1809,53 +1805,85 @@ angular.module('e8MyTests')
 
         	for (var i = 0; i < chapters.length; i++) {
         		var currentNode = chapters[i];
-        		if (currentNode.nodes && !currentNode.isCollapsed) {
-        			for (var j = 0; j < currentNode.nodes.length; j++) {
-        				if (currentNode.nodes[j].nodeType === EnumService.NODE_TYPE.topic) {
-        					currentNode.showTestWizardIcon = false;
-        					continue;
-        				}
-        			}
-        		}
         		if (currentNode.showTestWizardIcon) {
         			if (currentNode.nodeType === EnumService.NODE_TYPE.question) {
         				$scope.createTestWizardMode=false;
         				continue;
         			}
-        			httpReqCount++;
-        			currentNode.showTestWizardIcon = false;
-        			currentNode.existInTestframe = true;
-        			$rootScope.blockPage.start();
-        			getQuestions(
-        					currentNode,
-        					function (response, currentNode) {
-        						try {
-        							httpReqCompletedCount++;
-        							if (response.length) {        								
-        								$rootScope.$broadcast(
-        										"handleBroadcast_createTestWizardCriteria",
-        										response,
-        										currentNode);
-        							} else {
-        								SharedTabService.addErrorMessage(currentNode.title, e8msg.warning.emptyFolder);
-        								currentNode.showTestWizardIcon = true;
-        								if(currentNode.nodes){
-        									updateEmptyNodeStatus(currentNode);
-        								}
-        							}
+        		}
+        		if (currentNode.nodes && !currentNode.isCollapsed) {
+        			separateDraggedFoldersAndQuestions(currentNode ,currentNode.nodes);
+        		}else{
+        			addDraggedFoldersToWizardFrame(currentNode);
+        		}
 
-        							if (httpReqCount == httpReqCompletedCount && SharedTabService.errorMessages.length > 0) {
-        								SharedTabService.TestWizardErrorPopup_Open();
-        							}
-        						} catch (e) {
-        							console.log(e);
-        						} finally {
-        							$scope.createTestWizardMode=false;
-        							$rootScope.blockPage.stop();
-        						}
-        					});
+        	}
+        }
+        	
+        var	separateDraggedFoldersAndQuestions = function(parentNode, children){
+        	var questionsTobeAddedToWizard = [];
+        	parentNode.showTestWizardIcon = false;
+        	for (var i = 0; i < children.length; i++) {
+        		if(children[i].nodeType != "question"){
+        			if(children[i].nodes  && !children[i].isCollapsed){
+        				separateDraggedFoldersAndQuestions(children[i], children[i].nodes);
+        			}else{
+        				addDraggedFoldersToWizardFrame(children[i]);
+        			}
+        		}else{
+        			questionsTobeAddedToWizard.push(children[i]);
         		}
         	}
+        	if(questionsTobeAddedToWizard.length > 0){
+        		addQuestionNodesToWizardFrame(questionsTobeAddedToWizard ,parentNode);
+        	}
+        }
+        
+        
+        var addQuestionNodesToWizardFrame = function(questionNodes, currentNode){
+			$rootScope.$broadcast(
+					"handleBroadcast_createTestWizardCriteria",
+					questionNodes,currentNode);
+			updateSelectedWizardFolderNodeStatus(currentNode);	
+			//checkSiblingTopicSelectionForWizard(scope,test);
+			//updateSelectedWizardFolderQuestionsNodeStatus(currentNode);
+			
+		}
+        var addDraggedFoldersToWizardFrame = function(currentNode){
+        	var httpReqCount = 0,
+        	httpReqCompletedCount = 0;
+        	httpReqCount++;
+        	currentNode.showTestWizardIcon = false;
+        	currentNode.existInTestframe = true;
+        	$rootScope.blockPage.start();
+        	getQuestions(
+        			currentNode,
+        			function (response, currentNode) {
+        				try {
+        					httpReqCompletedCount++;
+        					if (response.length) {        								
+        						$rootScope.$broadcast(
+        								"handleBroadcast_createTestWizardCriteria",
+        								response,
+        								currentNode);
+        					} else {
+        						SharedTabService.addErrorMessage(currentNode.title, e8msg.warning.emptyFolder);
+        						currentNode.showTestWizardIcon = true;
+        						if(currentNode.nodes){
+        							updateEmptyNodeStatus(currentNode);
+        						}
+        					}
+
+        					if (httpReqCount == httpReqCompletedCount && SharedTabService.errorMessages.length > 0) {
+        						SharedTabService.TestWizardErrorPopup_Open();
+        					}
+        				} catch (e) {
+        					console.log(e);
+        				} finally {
+        					$scope.createTestWizardMode=false;
+        					$rootScope.blockPage.stop();
+        				}
+        			});
         }
         
         
@@ -2027,11 +2055,13 @@ angular.module('e8MyTests')
         
         $scope.getUserFolders = function (defaultFolder, callback) {
 
-        	 if (!defaultFolder.collapsed) {
-                 defaultFolder.collapse();
-             } else {
-                 defaultFolder.expand();
-             }
+        	if (!defaultFolder.collapsed) {
+                defaultFolder.collapse();
+                defaultFolder.node.isCollapsed = true;
+            } else {
+                defaultFolder.expand();
+                defaultFolder.node.isCollapsed = false;
+            }
              
              if(defaultFolder.node.nodes){
                  return false;
@@ -2631,7 +2661,7 @@ angular.module('e8MyTests')
 				$scope.selectedNodes[i].showTestWizardIcon = false;
 				parentExistInSelectNodes = true;
 				break;
-			}
+		}
 			nodeIndex++;
 		}
 			if(parentExistInSelectNodes){
