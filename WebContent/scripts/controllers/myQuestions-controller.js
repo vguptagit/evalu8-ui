@@ -134,6 +134,9 @@ angular.module('e8MyTests')
 				return;
 			}
 
+			setTestNodeStatus(node);
+			addingNodeInSelectedNodesArray(node,activeTest);
+			
 			node.nodes.forEach(function(node) {
 				if(isNodeInTestFrame(node)){
 					setTestNodeStatus(node);
@@ -222,7 +225,7 @@ angular.module('e8MyTests')
 				for (var j = 0; j < activeTest.questionFolderNode.length; j++) {
 					if(activeTest.questionFolderNode[j].questionBindings){
 						for (var k = 0; k < activeTest.questionFolderNode[j].questionBindings.length; k++) {
-							if(activeTest.questionFolderNode[j].questionBindings[k]==activeTest.questions[i].guid){
+							if(activeTest.questionFolderNode[j].questionBindings[k].questionId == activeTest.questions[i].guid){
 								isQuestionExist=true;
 								break;
 							}  						
@@ -482,7 +485,7 @@ angular.module('e8MyTests')
         			CommonService.showErrorMessage(e8msg.error.cantFetchFolders)
         			return;
         		}       		
-        		       		
+        		
         		
             	QuestionFolderService.questionRootFolder(function(myTestRoot){
             		if(myTestRoot==null){
