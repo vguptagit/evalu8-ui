@@ -214,9 +214,10 @@ angular
 					                },
 					                dragMove: function(e) {
 					                	$scope.dragStarted = true;
-					                	//deselectNodesOnDrag(e.source.nodeScope.node);
-					                	var element = e.source.nodeScope.$element;
-					                	$scope.questionCountPosition = "top:" + (e.elements.dragging.offset().top - 20) + "px; left:" + (e.elements.dragging.offset().left + e.elements.dragging.width() - 70) + "px; position:fixed;z-index:2000";
+					                	var node = e.source.nodeScope.node;
+					                	if(node.nodeType != EnumService.NODE_TYPE.test){
+					                		$scope.questionCountPosition = "top:" + (e.elements.dragging.offset().top - 20) + "px; left:" + (e.elements.dragging.offset().left + e.elements.dragging.width() - 70) + "px; position:fixed;z-index:2000";
+					                	}
 					                },
 					                dragStart: function(e) {
 					                    $('body *').css({ 'cursor': 'url("images/grabbing.cur"), move' });
@@ -567,7 +568,8 @@ angular
                                             })
                                             if(book.node.testBindings && book.node.testBindings.length) {
                                                 var publisherTestsNode = {};
-                                                publisherTestsNode.title = "Publisher Tests for this Book"
+                                                publisherTestsNode.title = "Publisher Tests for this Book";
+                                                publisherTestsNode.draggable = false;
                                                 publisherTestsNode.nodeType = EnumService.NODE_TYPE.publisherTests;
                                                 book.node.nodes.push(publisherTestsNode);    
                                                 publisherTestsNode.isCollapsed=true;
@@ -587,7 +589,7 @@ angular
 					        $('.testMessagetip').hide();
 							
 							$scope.selectTestNode = function ($event,test) {                                
-
+									$event.preventDefault();
                                     test.node.selectTestNode = !test.node.selectTestNode;
                                     if(test.node.selectTestNode && $rootScope.globals.loginCount <= evalu8config.messageTipLoginCount 
                                     		&& test.node.nodeType != EnumService.NODE_TYPE.archiveTest){
