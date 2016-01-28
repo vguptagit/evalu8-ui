@@ -53,8 +53,8 @@ angular.module('evalu8Demo')
 					qtiModel.PrintOption = QuestionPrefilledModal[quizType].printOption;									
 					//qtiModel.CorrectAnswer = getFBCorrectAnswers(xml);	
 					qtiModel.BlankSize = getFBQuestionBlankSize(xml);	
-					
-				case EnumService.QuestionType.Essay :	case EnumService.QuestionType.Vocabulary:
+					break;
+				case EnumService.QuestionType.Essay :
 					qtiModel.Caption = getEssayCaption(xml);										
 					qtiModel.PrintRecommendedAnswer = QuestionPrefilledModal[quizType].printRecommendedAnswer;
 					qtiModel.EditRecommendedAnswer = QuestionPrefilledModal[quizType].editRecommendedAnswer;
@@ -346,7 +346,7 @@ angular.module('evalu8Demo')
 				var correctAnswerIndex ;
 				$(qtiXML).find('setOutcomeValue[identifier="SCORE"] baseValue')
 				.each(function(i, e) {
-					if ($(this).text() == "1") {
+					if (parseInt($(this).text()) > 0) {
 						correctAnswerIndex=i;
 					}
 				});
