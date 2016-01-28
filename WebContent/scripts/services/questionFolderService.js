@@ -18,6 +18,7 @@ angular.module('evalu8Demo')
 										item.nodeType = "folder";
 										item.draggable = true;
 										item.isNodeSelected = false;
+										item.isCollapsed = true;
 										item.titleTemp = angular.copy(item.title);
 										defaultFolders.push(item);																								    							    							
 									});
