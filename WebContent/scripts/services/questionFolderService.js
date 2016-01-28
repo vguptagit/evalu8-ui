@@ -33,17 +33,22 @@ angular.module('evalu8Demo')
 			};
 			
 			this.questionRootFolder = function(callback) {
-				var myTestRoot = null;
-				HttpService.get(
-						evalu8config.apiUrl + "/my/questionfoldersroot")
-						.success(
-								function(response) {									    							    							
-									myTestRoot = response
-									callback (myTestRoot);
-								})
-						.error(function(error, status) {
-									callback(null)
-						});
+				
+				if($rootScope.myQuestionRoot) {
+					callback ($rootScope.myQuestionRoot);
+				} else {
+					HttpService.get(
+							evalu8config.apiUrl + "/my/questionfoldersroot")
+							.success(
+									function(response) {									    							    							
+
+										$rootScope.myQuestionRoot = response;
+										callback (response);
+									})
+							.error(function(error, status) {
+										callback(null)
+							});
+				}
 			}
 			
 			this.userFoldersCount = function(folder, callback) {				

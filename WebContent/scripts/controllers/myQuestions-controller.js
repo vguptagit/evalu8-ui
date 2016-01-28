@@ -487,12 +487,12 @@ angular.module('e8MyTests')
         		}       		
         		
         		
-            	QuestionFolderService.questionRootFolder(function(myTestRoot){
-            		if(myTestRoot==null){
+            	QuestionFolderService.questionRootFolder(function(myQuestionRoot){
+            		if(myQuestionRoot==null){
             			CommonService.showErrorMessage(e8msg.error.cantFetchRootFolder)
             			return;
             		}
-            		$scope.myTestRoot = myTestRoot;
+            		$scope.myQuestionRoot = myQuestionRoot;
             	            	
 	                $scope.defaultFolders = defaultFolders;
 	                
@@ -986,7 +986,7 @@ angular.module('e8MyTests')
             	if(destParent.node) {
             		item.parentId = destParent.node.guid;            			
             	} else {
-            		item.parentId = $scope.myTestRoot.guid;
+            		item.parentId = $scope.myQuestionRoot.guid;
             	}
 
             	if(prevSeq == 0.0 && nextSeq == 0.0) {
@@ -1060,7 +1060,7 @@ angular.module('e8MyTests')
         	
         	var destNode;
         	if(destFolder == null || destFolder.node == null) {
-        		var destNode = $scope.myTestRoot;    			
+        		var destNode = $scope.myQuestionRoot;    			
     		} else {
     			destNode = destFolder.node;
     		}
@@ -1078,7 +1078,7 @@ angular.module('e8MyTests')
         $scope.removeTestBindingFromSource = function (sourceFolder, questionId) {
         	var sourceNode;
     		if(sourceFolder == null || sourceFolder.node == null) {
-    			sourceNode = $scope.myTestRoot;
+    			sourceNode = $scope.myQuestionRoot;
     		} else {
     			sourceNode = sourceFolder.node;
     		}    		
@@ -2076,7 +2076,6 @@ angular.module('e8MyTests')
 							yourQuestion.isQuestion = true;
 							yourQuestion.questionXML = true;
 
-							//yourQuestion.parentId = $scope.userQuestionsFolderRoot.guid;
 							yourQuestion.nodeType = "question";
 							yourQuestion.questionType = "userCreatedQuestion";
 							yourQuestion.guid = userQuestion.guid;
@@ -2352,7 +2351,7 @@ angular.module('e8MyTests')
             }
             
             var userFolder = {
-                "parentId": $scope.myTestRoot.guid,                
+                "parentId": $scope.myQuestionRoot.guid,                
                 "sequence": sequence,
                 "title": $scope.folderName
             };
