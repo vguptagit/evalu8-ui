@@ -42,6 +42,9 @@ angular.module('e8MyTests')
 				case 'ShortAnswer':
 					return "views/editortmpl/sa.html";
 					break;
+				case 'Vocabulary':
+					return "views/editortmpl/vb.html";
+					break;
 				default:
 				}
 

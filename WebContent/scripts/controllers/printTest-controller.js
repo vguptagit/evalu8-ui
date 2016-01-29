@@ -113,7 +113,7 @@ angular.module('e8MyTests')
 		    	 if(node.quizType=='ShortAnswer'){
 	    		 	var singleAnswerBlank="";
 					for(var i=0;i<node.qtiModel.BlankSize;i++){
-						singleAnswerBlank=singleAnswerBlank+"_"
+						singleAnswerBlank=singleAnswerBlank+"_";
 					}
 					for (var j = 0; j < node.qtiModel.Options.length; j++) {
 						if(j==node.qtiModel.Options.length-1){
@@ -122,12 +122,13 @@ angular.module('e8MyTests')
 							AnswerBlanks=AnswerBlanks+String.fromCharCode(97 + j).toUpperCase()+") "+singleAnswerBlank+' <br/><br/> ';
 						}
 					} 
-		    	 }else{
+		    	 }else if(node.quizType=='Vocabulary'){
+		    		 AnswerBlanks="<br/><br/><br/><br/>";
+		    	 }
+		    	 else{
 		    		 AnswerBlanks="__________";
 		    	 }
-		    	 
-					
-					return $sce.trustAsHtml(AnswerBlanks);
+		    	 return $sce.trustAsHtml(AnswerBlanks);
 				}
 
 		 }]);

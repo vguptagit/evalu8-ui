@@ -785,4 +785,12 @@ input.crtAnsText:focus::-moz-placeholder {
 	width: 80%;
 }
 
+.ansAreaForSA {
+    font-size: 14px;
+    font-weight: normal;
+    font-family: Helvetica Neue Light;
+    margin-left: 35px;
+    width: 90%;
+}
+
 /* ShortAnswer - Question End */
