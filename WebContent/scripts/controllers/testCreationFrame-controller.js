@@ -1828,31 +1828,36 @@ angular
 								qstnMasterDataModel.questionMetadata = questionMetadata;										
 
 								switch (node.quizType) {
-								case 'MultipleChoice':
-								case 'MultipleResponse':
-								case 'TrueFalse':					
+								case EnumService.QuestionType.MultipleChoice:
+								case EnumService.QuestionType.MultipleResponse:
+								case EnumService.QuestionType.TrueFalse:					
 									qstnMasterDataModel.Options = filterEditorDefaultPtag(node.qtiModel.Options);											
 									qstnMasterDataModel.CorrectAnswer =  node.qtiModel.CorrectAnswer;
 									qstnMasterDataModel.Orientation = node.qtiModel.Orientation;						
 									break;
 
-								case 'Essay':						
+								case EnumService.QuestionType.Essay:						
 									qstnMasterDataModel.EssayPageSize =node.qtiModel.EssayPageSize;			
 									qstnMasterDataModel.RecommendedAnswer = node.qtiModel.RecommendedAnswer;						
 									break;
 									
-								case 'ShortAnswer':
+								case EnumService.QuestionType.ShortAnswer:
 									qstnMasterDataModel.BlankSize =node.qtiModel.BlankSize;
 									qstnMasterDataModel.RecommendedAnswer = filterEditorDefaultPtag(node.qtiModel.Options);
 									break;
 
-								case 'Matching':	
+								case EnumService.QuestionType.Matching:	
 									qstnMasterDataModel.leftOptions = leftOptions(node.qtiModel.Options);	
 									qstnMasterDataModel.rightOptions = matchingOptions(node.qtiModel.Options);
 									break;
 
-								case 'FillInBlanks':		
+								case EnumService.QuestionType.FillInBlanks:		
 									qstnMasterDataModel.CorrectAnswerHtml = node.CorrectAnswerHtml;		
+									break;
+									
+								case EnumService.QuestionType.Vocabulary:									
+									qstnMasterDataModel.RecommendedAnswer = node.qtiModel.RecommendedAnswer;				
+									qstnMasterDataModel.PageSize = node.qtiModel.PageSize;		
 									break;
 								}			
 
@@ -1883,31 +1888,36 @@ angular
 								qstnModifiedData.questionMetadata = node.questionMetadata;		
 
 								switch (node.quizType) {
-								case 'MultipleChoice':
-								case 'MultipleResponse':
-								case 'TrueFalse':		
+								case EnumService.QuestionType.MultipleChoice:
+								case EnumService.QuestionType.MultipleResponse:
+								case EnumService.QuestionType.TrueFalse:		
 									qstnModifiedData.Options = filterEditorDefaultPtag(node.qtiModel.Options);											
 									qstnModifiedData.CorrectAnswer =  node.qtiModel.CorrectAnswer;
 									qstnModifiedData.Orientation = node.qtiModel.Orientation;						
 									break;
 
-								case 'Essay':						
+								case EnumService.QuestionType.Essay:						
 									qstnModifiedData.EssayPageSize =node.qtiModel.EssayPageSize;			
 									qstnModifiedData.RecommendedAnswer = node.qtiModel.RecommendedAnswer;					
 									break;					
 
-								case 'ShortAnswer':
+								case EnumService.QuestionType.ShortAnswer:
 									qstnModifiedData.BlankSize =node.qtiModel.BlankSize;
 									qstnModifiedData.RecommendedAnswer = filterEditorDefaultPtag(node.qtiModel.Options);
 									break;
 									
-								case 'Matching':	
+								case EnumService.QuestionType.Matching:	
 									qstnModifiedData.leftOptions = leftOptions(node.qtiModel.Options);	
 									qstnModifiedData.rightOptions = matchingOptions(node.qtiModel.Options);
 									break;
 
-								case 'FillInBlanks':										
+								case EnumService.QuestionType.FillInBlanks:										
 									qstnModifiedData.CorrectAnswerHtml = node.CorrectAnswerHtml;	
+									break;
+									
+								case EnumService.QuestionType.Vocabulary:									
+									qstnModifiedData.RecommendedAnswer = node.qtiModel.RecommendedAnswer;				
+									qstnModifiedData.PageSize = node.qtiModel.PageSize;		
 									break;
 								}			
 
