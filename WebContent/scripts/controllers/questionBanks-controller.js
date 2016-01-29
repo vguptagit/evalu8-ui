@@ -3313,7 +3313,7 @@ angular
 											if(containers==null){
 												isErrorExists=true;
 											}
-											
+											$scope.IsBookContainersRendered = true;
 											containers.forEach(function(container){
 												if(container.parentId==""){
 													checkIsContainerIsInTestFrame(container,testTab);
