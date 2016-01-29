@@ -851,7 +851,7 @@ angular.module('e8MyTests')
         		event.preventDefault(); //Avoids event conflict
         	}
         	
-        	if(test.node.nodeType == EnumService.NODE_TYPE.emptyFolder) {
+        	if(test.node.nodeType == EnumService.NODE_TYPE.emptyFolder || test.node.isEditMode) {
         		return;
         	}
             test.node.selectTestNode = !test.node.selectTestNode;
