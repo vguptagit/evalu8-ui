@@ -125,22 +125,25 @@ angular.module('e8MyTests')
 				if (node.nodeType != EnumService.NODE_TYPE.question) {
 					if(isAllQuestionsInTestFrame(node,activeTest)){
 						setTestNodeStatus(node);
-						addingNodeInSelectedNodesArray(node,activeTest);
+						addingNodeInSelectedNodesArray(node);
 					}else return false;
 				}else{
 					setTestNodeStatus(node);
-					addingNodeInSelectedNodesArray(node,activeTest);
+					addingNodeInSelectedNodesArray(node);
 				}				
 				return;
 			}
 
-			setTestNodeStatus(node);
-			addingNodeInSelectedNodesArray(node,activeTest);
+			if(isAllQuestionsInTestFrame(node,activeTest)){
+				setTestNodeStatus(node);
+				addingNodeInSelectedNodesArray(node);
+			}
 			
+		
 			node.nodes.forEach(function(node) {
 				if(isNodeInTestFrame(node)){
 					setTestNodeStatus(node);
-					addingNodeInSelectedNodesArray(node,activeTest);
+					addingNodeInSelectedNodesArray(node);
 				}
 
 			});		
@@ -211,7 +214,11 @@ angular.module('e8MyTests')
 			for (var i = 0; i < node.nodes.length; i++) {						
 				var childNode = node.nodes[i];				
 				if(childNode.guid==testNode){  							
-					updateTestNodeStatus(childNode,activeTest);  						
+					updateTestNodeStatus(childNode,activeTest);  	
+					if(node.nodes.length == 1){
+						setTestNodeStatus(node);
+						addingNodeInSelectedNodesArray(node);
+					}					
 					break;
 				}					
 				setChildNodeStatus(childNode,testNode,activeTest);
@@ -485,8 +492,7 @@ angular.module('e8MyTests')
         			CommonService.showErrorMessage(e8msg.error.cantFetchFolders)
         			return;
         		}       		
-        		
-        		
+        		        		
             	QuestionFolderService.questionRootFolder(function(myQuestionRoot){
             		if(myQuestionRoot==null){
             			CommonService.showErrorMessage(e8msg.error.cantFetchRootFolder)
