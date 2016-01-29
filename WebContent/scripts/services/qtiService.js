@@ -208,7 +208,7 @@ angular.module('evalu8Demo')
 				var correctAnswerList = [];		
 				var correctAnswers = '';
 			
-				$(qtiXML).find('correctResponse').find('value').each(function(i, e) {
+				$(xml).find('correctResponse').find('value').each(function(i, e) {
 					correctAnswerList.push(decodeSpecialCharText(this.textContent));
 				});				
 				
