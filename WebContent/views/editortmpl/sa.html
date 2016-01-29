@@ -83,17 +83,10 @@
 
 
 </div>
-<div ng-show="answerAreaOnLeftSide">
+<div ng-show="answerAreaOnLeftSide || answerAreaBetweenQuestions">
 	<div class="floatLeftImp margin-top-10 width12"></div>
 	<div class="floatLeftImp"
-		ng-class="answerAreaOnLeftSide?'answerAreaForSAQ':'questionContainer'">
-		<span ng-bind-html="getAnswerBlanksForSAQ(node.qtiModel)"></span>
-	</div>
-</div>
-<div ng-show="answerAreaBetweenQuestions">
-	<div class="floatLeftImp margin-top-10 width12"></div>
-	<div class="floatLeftImp"
-		ng-class="answerAreaOnLeftSide?'answerAreaForSAQ':'questionContainer'">
+		ng-class="answerAreaOnLeftSide?'answerAreaForSAQ':'ansAreaForSA'">
 		<span ng-bind-html="getAnswerBlanksForSAQ(node.qtiModel)"></span>
 	</div>
 </div>

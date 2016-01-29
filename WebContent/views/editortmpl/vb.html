@@ -46,3 +46,9 @@
 
 		</div>
 	</div>
+	<div ng-show="answerAreaOnLeftSide || answerAreaBetweenQuestions">
+        <div class="floatLeftImp margin-top-10 width12"></div>
+        <div class="floatLeftImp" ng-class="answerAreaOnLeftSide?'answerAreaForSAQ':'questionContainer'">
+            <span><br/><br/><br/></span>
+        </div>
+    </div>
