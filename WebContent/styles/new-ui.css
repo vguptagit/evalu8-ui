@@ -507,7 +507,8 @@ span.glyphicon.glyphicon-info-sign {
     text-overflow: ellipsis;
     width: 20em;
     cursor: pointer;
-    line-height: 1.1em;
+    line-height: 1em;
+    padding-bottom: 1px;
 }
 
 .testCaptionLabel {

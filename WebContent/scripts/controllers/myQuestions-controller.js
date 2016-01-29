@@ -1203,6 +1203,9 @@ angular.module('e8MyTests')
 			}
 			
 			var node = scope.node;
+			if(node.isEditMode){
+				return;
+			}
 			
 			if(skipNodeSelection(node)){
 				return;
