@@ -1110,19 +1110,22 @@ angular.module('e8MyTests')
             			$rootScope.blockLeftPanel.stop();
             			return; // return if archived node is already displayed in Archive Section
             		}
-            		        		
+            		
             		archivedFolder.nodeType = EnumService.NODE_TYPE.archiveFolder;
             		archivedFolder.draggable = "false";
             		archivedFolder.droppable = "false";
             		var archivedFolderParent;        		
             		
-            		if(archivedFolder.parentId == null) {
+           			if(archivedFolder.parentId == null) {
             			
             			if($scope.archiveRoot && $scope.archiveRoot.node && $scope.archiveRoot.node.nodes && $scope.archiveRoot.node.nodes.length) {
             				if($scope.archiveRoot.node.nodes[0].nodeType == EnumService.NODE_TYPE.emptyFolder) {
             					$scope.archiveRoot.node.nodes.splice(0,1);
             				}
-            				$scope.archiveRoot.node.nodes.unshift(archivedFolder)        				
+            				
+            				$scope.insertArchivedFolder($scope.archiveRoot, archivedFolder);
+            				
+            				/*$scope.archiveRoot.node.nodes.unshift(archivedFolder)*/        				
             			}	        				        				    
             		} else {
             			
@@ -1131,23 +1134,13 @@ angular.module('e8MyTests')
             				if(archivedFolderParent.node.nodes[0] && archivedFolderParent.node.nodes[0].nodeType == EnumService.NODE_TYPE.emptyFolder) {
             					archivedFolderParent.node.nodes.splice(0,1);
             				}
-            				archivedFolderParent.node.nodes.unshift(archivedFolder);
+            				
+            				$scope.insertArchivedFolder(archivedFolderParent, archivedFolder);
+            				
+            				/*archivedFolderParent.node.nodes.unshift(archivedFolder);*/
             			}else{
-           				 	ArchiveService.getArchiveFolders($scope.archiveRoot.node, function (archivedFolders) {
-    	    					$scope.archiveRoot.node.nodes=archivedFolders;
-    	    					TestService.getArchiveTests($scope.archiveRoot.node.guid, function (tests) {
-    	    						if(tests==null){
-    	                        		$rootScope.blockLeftPanel.stop();
-    	                        		 CommonService.showErrorMessage(e8msg.error.cantFetchArchiveTests);
-    	                        		return;
-    	                        	}
-    	    						 tests.forEach(function (test) {
-    	    	                            test.selectTestNode = false;
-    	    	                            $scope.archiveRoot.node.nodes.push(test);
-    	    	                     });
-    	    					 });
-    	       				});
-            			 }       			
+            				$scope.loadAllArchiveItems();
+            			}       			
             		}        		        
 
             		$rootScope.blockLeftPanel.stop();
@@ -1156,8 +1149,48 @@ angular.module('e8MyTests')
         		
         	
       //}
-        
-        
+        /*
+         * Method to insert an archived folder in to the archived section
+         */
+    	$scope.insertArchivedFolder = function(archivedFolderParent, archivedFolder){
+    		
+    		var pos = 0;
+			
+			for(var i=0; i< archivedFolderParent.node.nodes.length; i++){
+				
+				var currentNode = archivedFolderParent.node.nodes[i]; // Save current node.
+				
+				if(currentNode.nodeType == EnumService.NODE_TYPE.archiveTest){
+					break; // No need to continue if archiveTest starts.
+				}if(currentNode.nodeType == EnumService.NODE_TYPE.archiveFolder && archivedFolderParent.node.nodes[i].sequence <= archivedFolder.sequence){
+					pos = i+1; // Update the position next to the greater sequence node.             						
+				}else{
+					continue;
+				}            						
+			}            				
+			
+			archivedFolderParent.node.nodes.splice(pos,0,archivedFolder);
+    	}
+    	
+    	$scope.loadAllArchiveItems = function(){
+        	
+        	ArchiveService.getArchiveFolders($scope.archiveRoot.node, function (archivedFolders) {
+				$scope.archiveRoot.node.nodes=archivedFolders;
+				TestService.getArchiveTests($scope.archiveRoot.node.guid, function (tests) {
+					if(tests==null){
+                		$rootScope.blockLeftPanel.stop();
+                		 CommonService.showErrorMessage(e8msg.error.cantFetchArchiveTests);
+                		return;
+                	}
+					 tests.forEach(function (test) {
+                            test.selectTestNode = false;
+                            $scope.archiveRoot.node.nodes.push(test);
+                     });
+				 });
+				});
+        }
+    	
+        	
         $scope.archiveTest = function(test) {
         	
         	$rootScope.blockLeftPanel.start();
@@ -1267,16 +1300,11 @@ angular.module('e8MyTests')
         		}
         		
         		restoredFolder.nodeType = "folder";
+        		
         		var restoredFolderParent;
         		
         		if(restoredFolder.parentId == null) {
-        			var restoreIndex = 0;
-        			$scope.defaultFolders.forEach(function(item){
-        				if(item.sequence < restoredFolder.sequence) {
-        					restoreIndex = restoreIndex + 1;        					
-        				}
-        			}) 
-        			$scope.defaultFolders.splice(restoreIndex, 0, restoredFolder);        			       				    
+        			$scope.insertUserFolder($scope.defaultFolders, restoredFolder);        			  			       				    
         		} else {
 
         			restoredFolderParent = angular.element($('[id=' + restoredFolder.parentId + ']')).scope()
@@ -1284,7 +1312,8 @@ angular.module('e8MyTests')
         				if(restoredFolderParent.node.nodes[0] && restoredFolderParent.node.nodes[0].nodeType == EnumService.NODE_TYPE.emptyFolder) {
         					restoredFolderParent.node.nodes.splice(0,1);
         				}
-        				restoredFolderParent.node.nodes.unshift(restoredFolder);
+        				$scope.insertUserFolder(restoredFolderParent.node.nodes, restoredFolder);
+        				//restoredFolderParent.node.nodes.unshift(restoredFolder);
         			}else{
         				$scope.showParentNodeOnChildrenRestore();
         			}         				
@@ -1292,7 +1321,38 @@ angular.module('e8MyTests')
         		
         		$rootScope.blockLeftPanel.stop();
         	});        	
-        }        
+        }
+        
+        /*
+         * This method inserts a user folder in to the parent folder using sequence.
+         */
+        $scope.insertUserFolder = function(parentFolder,folder){
+        	
+        	var restoreIndex = 0;
+        	parentFolder.forEach(function(item){
+	        	if(item.nodeType == EnumService.NODE_TYPE.folder){
+					if(item.sequence <= folder.sequence) {
+						restoreIndex = restoreIndex + 1;
+						
+	    				 if(item.sequence == folder.sequence){ // if sequence are equal, update it with unique one.
+	    					
+	    					if(parentFolder[restoreIndex] && parentFolder[restoreIndex].nodeType == EnumService.NODE_TYPE.folder){
+	    						folder.sequence = (parseFloat(item.sequence) + parseFloat(parentFolder[restoreIndex].sequence))/2;
+	        					
+	    					}else{
+	    						folder.sequence = folder.sequence + 1.0;
+	    					}
+	    					
+	    					UserFolderService.updateUserFolder(folder, function(userFolder) {
+	    	        			//console.log(" folder sequence updated : " + userFolder.sequence);
+	    	        		});
+	    				}
+					}
+				}
+        	});
+        	
+        	parentFolder.splice(restoreIndex, 0, folder);
+        }
         
         
         var isPresentInRootLeveFolders = function(folder){
@@ -1859,6 +1919,7 @@ angular.module('e8MyTests')
 		 * 
 		 */
 		var  isForeign = function(e){
-			return e.source.nodeScope.$treeScope != e.dest.nodesScope.$treeScope
+			return e.source.nodeScope.$treeScope != e.dest.nodesScope.$treeScope;
 		}
+        
     }]);
