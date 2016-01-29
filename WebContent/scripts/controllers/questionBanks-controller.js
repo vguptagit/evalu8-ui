@@ -1654,7 +1654,7 @@ angular
 							    function childNodes(childItems) {
 							        childItems.forEach(function (item) {
 							            if (item.nodes) {
-							                childNodes(item)
+							                childNodes(item.nodes)
 							            } else {
 							                var found = false;
 							                selectedNodesArray.forEach(function (rootItem) {
@@ -1674,7 +1674,9 @@ angular
 
 							    //questions of current test.
 							    _.forEach(SharedTabService.tests[SharedTabService.currentTabIndex].questions, function (value, key) {
-							        testQuestionGuids.push(value.guid);
+							        if (value.guid) {
+							            testQuestionGuids.push(value.guid);
+							        }
 							    });
 
 							    //remove the duplicate question guids. the questions may contains in the root of the $scope.selectedNodes.
