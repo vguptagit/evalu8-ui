@@ -23,8 +23,8 @@
         <div data-ui-tree="treeOptions" id="MyTest-tree-root" class="myTest_scrollbar"  ng-class="{onCreateNewNodeShow:showAddFolderPanel}" data-clone-enabled="true">
             <ol data-ui-tree-nodes data-ng-model="defaultFolders" >
 
-                <li data-nodrag="{{node.existInTestframe===true}}"  data-ng-repeat="node in defaultFolders" data-ui-tree-node x-collapsed="true" draggable="{node.draggable}"
-                    data-ng-include="'defaultfolder_renderer.html'" ng-if="node.nodeType!='question'" />
+                <li droppable="{{!node.existInTestframe}}"  data-nodrag="{{node.existInTestframe===true}}"  data-ng-repeat="node in defaultFolders" data-ui-tree-node x-collapsed="true" draggable="{node.draggable}"
+                   data-ng-include="'defaultfolder_renderer.html'" ng-if="node.nodeType!='question'" />
 
                 <li data-nodrag="{{node.existInTestframe===true}}"  printmode="true"  draggable="{{!node.existInTestframe}}"  class="questIndex qbQuestions" ng-class="{questionSelected:node.isNodeSelected,questionNotSelected:!node.isNodeSelected,questionInTestframe:node.isNodeSelected && node.existInTestframe===true}" 
                     ng-if="node.nodeType=='question'" ng-repeat="node in defaultFolders" collapsed="{{node.isCollapsed?'true':'false'}}" 

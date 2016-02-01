@@ -499,8 +499,8 @@ angular.module('e8MyTests')
             			return;
             		}
             		$scope.myQuestionRoot = myQuestionRoot;
-            	            	
-	                $scope.defaultFolders = defaultFolders;
+            	   
+            		$scope.defaultFolders = defaultFolders;
 	                
 	                QTI.initialize();
 	                
@@ -614,21 +614,39 @@ angular.module('e8MyTests')
                 	if(SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard)
                 		return false;
                 	
+                	var destination = e.dest.nodesScope;
+                	
+                	if(destination.$parent &&  
+                                    (  $(destination.$parent.$element).find("ol").attr('droppable') == 'false' ||
+                                    	$(destination.$parent.$element).closest("ol").attr('droppable') == 'false'
+                                    )                              
+                      ){
+
+                        e.source.nodeScope.$$apply = false;
+                        $scope.dragStarted = false;
+                    }
+                	
                     var source = e.source.nodeScope;
                     var sourceParent = e.source.nodeScope.$parentNodeScope;
 
                     var mouseOverNode = null;
                     if($rootScope.tree)
                         mouseOverNode = $rootScope.tree.mouseOverNode;
+                    
+                    if (mouseOverNode && $(mouseOverNode.$parent) && ($(mouseOverNode.$parent.$element).attr("droppable")=="false")) {
+
+                    	 e.source.nodeScope.$$apply = false;
+                         $scope.dragStarted = false;
+                        return;                        
+                    }    
 
                     if (mouseOverNode) {
                         $rootScope.tree = { mouseOverNode: null };
                         mouseOverNode.hover = false;
                         $scope.dragStarted = false;
-                    }
-
+                    }                    
+                 
                     if (mouseOverNode && (mouseOverNode.node != source.node)) {
-
                         e.source.nodeScope.$$apply = false;
                         $scope.dropIntoFolder(source, sourceParent, mouseOverNode);
                         return;                        
@@ -665,8 +683,6 @@ angular.module('e8MyTests')
                             return;
                         }                    
                     }  
-
-                    var destination = e.dest.nodesScope;
 
                     var editModeQuestions=$(destination.$parent.$element).find("li[printmode=false]");
 
@@ -1549,12 +1565,11 @@ angular.module('e8MyTests')
 		};
 		
 		//To add a node to questionFolderNode array.
-		var checkAllSibblingNodeInTestFrame = function(scope, activeTest) {								
-			scope.node.existInTestframe = true;								
+		var checkAllSibblingNodeInTestFrame = function(scope, activeTest) {	
 			if(isAllSiblingsSelected(scope.$parentNodeScope.node.nodes)){
 				scope.$parentNodeScope.node.showEditQuestionIcon = true;
 				scope.$parentNodeScope.node.showTestWizardIcon = true; 
-				scope.$parentNodeScope.node.isNodeSelected = true;	
+				scope.$parentNodeScope.node.isNodeSelected = true;					
 				if(isAllSiblingsInTestFrame(scope,activeTest)){					
 					scope.$parentNodeScope.node.showEditQuestionIcon = false;
 					scope.$parentNodeScope.node.existInTestframe = true;			
@@ -1987,54 +2002,71 @@ angular.module('e8MyTests')
         	});	
 
         	return !allSiblingsNotExistInWizardFrame;																
-        }
-
+        }        
+        
         var allQuestionBindingsInTestFrame = function(folder,activeTest){
-        	var allQuestionNotInTestFrame = false;
-        	if(folder.questionBindings.length>0){				
+        	var allQuestionInTestFrame = false;
+        	var isExist = false;
+        	if(folder.questionBindings.length>0 && activeTest.questions.length>0){				
         		for (var i = 0; i < folder.questionBindings.length; i++) {	
-        			if(activeTest.questions.length>0){	
-        				for (var j = 0; j < activeTest.questions.length; j++) {
-        					if(folder.questionBindings[i].questionId!=activeTest.questions[j].guid){
-        						allQuestionNotInTestFrame = true;
-        						break;
-        					}
+        			isExist = false;        		
+        			for (var j = 0; j < activeTest.questions.length; j++) {
+        				if(folder.questionBindings[i].questionId == activeTest.questions[j].guid){
+        					isExist = true;
+        					break;
         				}
-        			}else{
-        				allQuestionNotInTestFrame=true;
-        			}        			
-        			if(allQuestionNotInTestFrame){			
+        			}        			   			
+        			if(!isExist){			
+        				allQuestionInTestFrame = false;
         				break;
+        			}else{
+        				allQuestionInTestFrame = true;
         			}
         		}
-        	}else{
-        		allQuestionNotInTestFrame = true;;
         	}
-        	return !allQuestionNotInTestFrame;
+        	
+        	return allQuestionInTestFrame;
         }
 
 
         //to change the status of the topic/chapter question node, when all childs are in test frame.
-        var onParentExpandUpdateChildFolderStatus = function(expandedNode,childFolders,activeTest){	        	   
-        	if(activeTest.isTestWizard){						
-        		updateChildFolderStatusByWizardFrame(expandedNode,childFolders,activeTest);
+        var onParentExpandUpdateChildFolderStatus = function(folderScope,childFolders,activeTest){	        
+        	if(activeTest.isTestWizard){		
+        		updateChildFolderStatusByWizardFrame(folderScope.node,childFolders,activeTest);
         	}else{
-        		updateChildFolderStatusByTestFrame(childFolders,activeTest);
+        		updateChildFolderStatusByTestFrame(folderScope,childFolders,activeTest);
         	}
 
         }
 
-        var updateChildFolderStatusByTestFrame = function(childFolders,activeTest) {	        				
+        var updateChildFolderStatusByTestFrame = function(folderScope,childFolders,activeTest) {	        				
         	childFolders.forEach(function(folder) {			
         		if(allQuestionBindingsInTestFrame(folder, activeTest)){
         			folder.isNodeSelected = true;
         			folder.showEditQuestionIcon = false;
         			folder.showTestWizardIcon = true;
         			folder.existInTestframe = true;	
-        			addingNodeInSelectedNodesArray(folder);				
+        			addingNodeInSelectedNodesArray(folder);		
+        			updateHierachyFoldersStatus(folderScope,childFolders);
         		}			
         	});				
-        }											
+        }	
+        
+        var updateHierachyFoldersStatus = function(folderScope,childFolders) {   
+        	if(folderScope.node){
+        		if(childFolders.length == 1){
+        			folderScope.node.isNodeSelected = true;
+        			folderScope.node.showEditQuestionIcon = false;
+        			folderScope.node.showTestWizardIcon = true;
+        			folderScope.node.existInTestframe = true;	
+        			addingNodeInSelectedNodesArray(folderScope.node);
+        			if(folderScope.$parentNodesScope.node){
+        				updateHierachyFoldersStatus(folderScope.$parentNodesScope,folderScope.$parentNodesScope.node.nodes);
+        			}            		
+        		}
+
+        	}        
+        }
 
         var updateChildFolderStatusByWizardFrame = function(expandedNode,childFolders,activeTest) {        							
         	childFolders.forEach(function(folder) {			
@@ -2088,7 +2120,7 @@ angular.module('e8MyTests')
 						if(defaultFolder.node.isNodeSelected)addingNodeInSelectedNodesArray(folder);   
 					});
 					
-					onParentExpandUpdateChildFolderStatus(defaultFolder.node,userFolders,activeTest);					
+					onParentExpandUpdateChildFolderStatus(defaultFolder,userFolders,activeTest);					
 					
 					defaultFolder.node.nodes = userFolders;
 					
