@@ -422,6 +422,7 @@ angular
 										response.forEach(function(book) {
 											book["isCollapsed"]=true;
 											book.nodeType = "book";
+											book.isHttpReqCompleted = true;
 										});
 														
                                         if(response.length == 0) {
@@ -1664,8 +1665,9 @@ angular
 							                        found = true;
 							                    }
 							                })
-							                if (!found) {
-							                    //questions.push(item.questionBindings.length);
+							                if (!item.questionBindings) {
+							                    questions.push(item.guid);
+							                } else {
 							                    questions = questions.concat(item.questionBindings);
 							                }
 							            }
@@ -1683,14 +1685,9 @@ angular
 
 							    //remove the duplicate question guids. the questions may contains in the root of the $scope.selectedNodes.
 							    questions = _.uniq(questions);
-
-							    //left outer join on questions.
-							    var questionsPresentInTest = _.filter(testQuestionGuids, function (d) {
-							        return _.indexOf(questions, _.indexOf(testQuestionGuids, d));
-							    }).length;
-
+                                							    
 							    //number of question going to drop on right side.
-							    var qnCount = Math.abs(questions.length - questionsPresentInTest);
+							    var qnCount = Math.abs(_.difference(questions, testQuestionGuids).length);
 							    if (qnCount > 1) {
 							        $scope.questionCount = qnCount + ' Questions';
 							    } else {
@@ -3062,7 +3059,8 @@ angular
 								var hasParent = false;
 								var searchedDiscipline = {};
 								$scope.allContainers
-										.forEach(function(container) {
+										.forEach(function (container) {
+										    $scope.IsBookContainersRendered = true;
 											if (container.guid == $scope.selectedContainer.guid) {
 												searchedContainer = container;
 												$scope.searchedContainerId=container.guid;
