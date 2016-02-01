@@ -1834,13 +1834,13 @@ angular.module('e8MyTests')
         				$scope.createTestWizardMode=false;
         				continue;
         			}
-        		}
-        		if (currentNode.nodes && !currentNode.isCollapsed) {
-        			separateDraggedFoldersAndQuestions(currentNode ,currentNode.nodes);
-        		}else{
-        			addDraggedFoldersToWizardFrame(currentNode);
-        		}
 
+        			if (currentNode.nodes && !currentNode.isCollapsed) {
+        				separateDraggedFoldersAndQuestions(currentNode ,currentNode.nodes);
+        			}else{
+        				addDraggedFoldersToWizardFrame(currentNode);
+        			}
+        		}
         	}
         }
         	
@@ -1873,9 +1873,9 @@ angular.module('e8MyTests')
 			//updateSelectedWizardFolderQuestionsNodeStatus(currentNode);
 			
 		}
+        var httpReqCount = 0,
+    	httpReqCompletedCount = 0;
         var addDraggedFoldersToWizardFrame = function(currentNode){
-        	var httpReqCount = 0,
-        	httpReqCompletedCount = 0;
         	httpReqCount++;
         	currentNode.showTestWizardIcon = false;
         	currentNode.existInTestframe = true;
@@ -1899,6 +1899,8 @@ angular.module('e8MyTests')
         					}
 
         					if (httpReqCount == httpReqCompletedCount && SharedTabService.errorMessages.length > 0) {
+        						httpReqCount = 0;
+        						httpReqCompletedCount = 0;
         						SharedTabService.TestWizardErrorPopup_Open();
         					}
         				} catch (e) {
