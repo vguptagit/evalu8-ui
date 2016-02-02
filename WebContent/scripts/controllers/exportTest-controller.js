@@ -189,6 +189,9 @@ angular.module('e8MyTests')
 			        				if(this.contentDocument.body.innerHTML.indexOf("No versions are there for this test") >= 0){
 			        					$scope.message="There are no versions for this test.Please uncheck 'Include randomized test' option to export test."
 			        						$scope.alert();
+			        				}else if(this.contentDocument.body.innerHTML.indexOf("VOCABULARY_SHORTANS_NOT_AVAILABLE") >= 0){
+			        					$scope.message="Sorry ! Blackboard doesn't support Short answer or Vocabulary questions to export."
+			        						$scope.alert();
 			        				}
 			        			});
 			        	frm.attr("id","dnloadFrame");
