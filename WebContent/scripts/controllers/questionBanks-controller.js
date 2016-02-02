@@ -3126,7 +3126,7 @@ angular
 							$scope.addSearchedContainer = function(searchedContainer) {
 								if($scope.isAdvancedSearchMode){
 									$rootScope.blockPage.start();
-									ContainerService.containerNodes($scope.bookID,searchedContainer.guid,getSearchCriteria(false), true, function(response){
+									ContainerService.containerNodes($scope.bookID,searchedContainer.guid,getSearchCriteria(false), true, true,function(response){
 										if(response == null){
 											CommonService.showErrorMessage(e8msg.error.cantFetchNodes)
 					            			return;

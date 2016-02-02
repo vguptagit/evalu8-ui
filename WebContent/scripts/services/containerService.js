@@ -28,7 +28,7 @@ angular
 			});
 		};
 		
-		this.containerNodes = function(bookId,containerId, searchCriteria , includeSelf ,callback) {
+		this.containerNodes = function(bookId,containerId, searchCriteria , includeSelf, isFlat ,callback) {
 			var url="";
 			var queryStrings = "";
 			if(searchCriteria!=""){
@@ -39,6 +39,13 @@ angular
 					queryStrings=queryStrings+"&";
 				}
 				queryStrings=queryStrings+"includeSelf="+includeSelf;
+			}
+			
+			if(isFlat!=""){
+				if(queryStrings!=""){
+					queryStrings=queryStrings+"&";
+				}
+				queryStrings=queryStrings+"flat="+isFlat;
 			}
 				
 			if(queryStrings==""){
