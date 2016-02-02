@@ -1815,14 +1815,10 @@ angular.module('e8MyTests')
         		for (var j = 0; j < $scope.selectedNodes.length; j++) {
         			if ($scope.selectedNodes[i].parentId == $scope.selectedNodes[j].guid ) {            			
         				parentNodeExist = true;
-        				if ($scope.selectedNodes[i].nodeType != EnumService.NODE_TYPE.question) {
-        					$scope.selectedNodes[i].existInTestframe = true;        					
-        				}
-        				$scope.selectedNodes[i].showTestWizardIcon = false;
         				break;
         			}
         		}        	
-        		if(!parentNodeExist){
+        		if(!parentNodeExist && $scope.selectedNodes[i].nodeType != EnumService.NODE_TYPE.question){
         			chapters.push($scope.selectedNodes[i]);
         		}
         	}
@@ -1851,7 +1847,7 @@ angular.module('e8MyTests')
         		if(children[i].nodeType != "question"){
         			if(children[i].nodes  && !children[i].isCollapsed){
         				separateDraggedFoldersAndQuestions(children[i], children[i].nodes);
-        			}else{
+        			}else if(children[i].showTestWizardIcon){
         				addDraggedFoldersToWizardFrame(children[i]);
         			}
         		}else{
@@ -2672,6 +2668,19 @@ angular.module('e8MyTests')
 			}
 		})
 
+	});
+	
+	
+	$scope.$on('handleBroadcast_folderDeselect', function() {
+		var activeTest = SharedTabService.tests[SharedTabService.currentTabIndex];
+		$scope.selectedNodes.forEach(function(node) {
+				if(node.nodeType != EnumService.NODE_TYPE.question && allQuestionBindingsInTestFrame(node, activeTest)){
+					node.existInTestframe = true;
+					node.isNodeSelected = true;
+					node.showEditQuestionIcon = false;
+					activeTest.questionFolderNode.push(node);
+				}
+		});
 	});
 	
 	

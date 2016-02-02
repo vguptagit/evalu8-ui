@@ -1496,10 +1496,6 @@ angular
 												node.showEditQuestionIcon = false;
 											}
 										}
-										if($scope.selectedNodes.length > 0){
-											$scope.deselectParentNode(node);
-											$scope.deselectChildNode(node);	
-										}								
 								} else {
 									for (var i = 0; i < $scope.selectedNodes.length; i++) {
 										if ($scope.selectedNodes[i].guid == node.guid
@@ -2816,6 +2812,19 @@ angular
 									}
 								})
 
+							});
+							
+							
+							$scope.$on('handleBroadcast_folderDeselect', function() {
+								var test = SharedTabService.tests[SharedTabService.currentTabIndex];
+								$scope.selectedNodes.forEach(function(node) {
+										if(isAllTopicQuestionsInTestFrame(node)){
+											node.existInTestframe = true;
+											node.isNodeSelected = true;
+											node.showEditQuestionIcon = false;
+											test.questionFolderNode.push(node);
+										}
+								});
 							});
 						
 							//Handling the Broadcast event when selected question is removed from the Test creation frame.

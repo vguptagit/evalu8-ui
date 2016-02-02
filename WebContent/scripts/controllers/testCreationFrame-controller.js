@@ -1686,11 +1686,16 @@ angular
 																.render(
 																		metadatas,
 																		SharedTabService.currentTabIndex);
+														
+														$rootScope.$broadcast(
+														'handleBroadcast_questionDeselect');
+														
 													} else {
+														
+														$rootScope.$broadcast('handleBroadcast_folderDeselect');
+	        									
 													     $scope.blockPage.stop();
 													}
-													$rootScope.$broadcast(
-															'handleBroadcast_questionDeselect');
 												});
 								
 							};
