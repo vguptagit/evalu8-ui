@@ -1411,15 +1411,7 @@ angular.module('e8MyTests')
         		test.node.draggable = true;
                 test.node.selectTestNode = false;// to show the edit icon
                 
-        		if(restoredFolder == null || restoredFolder == "") {        			
-
-        			
-        			for(var tesstItemIndex=$scope.defaultFolders.length-1; tesstItemIndex>=0; tesstItemIndex--) {
-        				if($scope.defaultFolders[tesstItemIndex].nodeType == EnumService.NODE_TYPE.test 
-        						|| $scope.defaultFolders[tesstItemIndex].nodeType == EnumService.NODE_TYPE.emptyFolder) {
-        					$scope.defaultFolders.splice(tesstItemIndex, 1);
-        				}
-        			}        				        			            			
+                if(restoredFolder == null || restoredFolder == "") { 
         			
         			var index = 0, restoreIndex = 0;
         			$scope.defaultFolders.forEach(function(item){
@@ -1437,12 +1429,18 @@ angular.module('e8MyTests')
         					CommonService.showErrorMessage(e8msg.error.cantFetchTests)
         					return;
         				}
-        				tests.forEach(function (test) {
-        					test.selectTestNode = false;// to show the edit icon
-
-        					$scope.defaultFolders.splice(restoreIndex++, 0, test);
-        				})
-        			});                    
+        				
+        				for(var index=0; index<tests.length;index++){
+        					if(tests[index].guid == test.node.guid){        						
+        						restoreIndex = restoreIndex - tests.length + index + 1;
+        						break;
+        					}
+        				}  
+        				
+        				$scope.defaultFolders.splice(restoreIndex, 0, test.node);
+        			});
+        			
+        			
                     
         		} else {
         			
