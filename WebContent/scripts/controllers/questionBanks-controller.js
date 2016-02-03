@@ -1062,7 +1062,7 @@ angular
 									    }
 									    currentNode.node.IsContainerReqCompleted = true;
 									    if (response.length > 0) {
-									        if (!$scope.isAdvancedSearchMode) {
+									        if (!$scope.isAdvancedSearchMode || $scope.isSearchMode) {
 									            currentNode.node.nodes = currentNode.node.nodes.concat(response);
 									        }
 									        $scope.expandedNodes = $scope.expandedNodes.concat(currentNode.node.nodes);
@@ -1544,18 +1544,21 @@ angular
 							    }
 
 							    function getCount_inTestWizard() {
+							        angular.copy($scope.selectedNodes, selectedNodesTemp);
+							        selectedNodesTemp.push(currentnode);
 							        // pick all test criteria folder guids
 							        var testFrameCriteriaGuids = _.pluck(SharedTabService.tests[SharedTabService.currentTabIndex].criterias, 'folderId');
 							        //pick all the selected folder guids
-							        var selectedNodeGuids = _.pluck($scope.selectedNodes, 'guid');
+							        var selectedNodeGuids = _.pluck(selectedNodesTemp, 'guid');
 							        //filter selected folder guids with respect to test criteria sections.
-							        var filteredSelectedNodeGuidsGuids = _.difference(_.pluck($scope.selectedNodes, 'guid'), _.pluck(SharedTabService.tests[SharedTabService.currentTabIndex].criterias, 'folderId'));
+							        var filteredSelectedNodeGuidsGuids = _.difference(_.pluck(selectedNodesTemp, 'guid'), _.pluck(SharedTabService.tests[SharedTabService.currentTabIndex].criterias, 'folderId'));
 							        //pick all the question bindings from filtered selected folders
 							        _(filteredSelectedNodeGuidsGuids).forEach(function (id) {
-							            var item = _.find($scope.selectedNodes, function (o) {
+							            var item = _.find(selectedNodesTemp, function (o) {
 							                return o.guid === id;
 							            });
 							            questions = questions.concat(item.questionBindings);
+							            questions = _.uniq(questions);
 							        });
 							    }
 
@@ -3147,6 +3150,7 @@ angular
 											CommonService.showErrorMessage(e8msg.error.cantFetchNodes)
 					            			return;
 										}
+										$scope.searchedBookContainers.push({ "guid": $scope.bookID, containers: response });
 										if(response.length > 0){
 											searchedContainer.template = "nodes_renderer.html";
 											searchedContainer.showEditQuestionIcon=false;
