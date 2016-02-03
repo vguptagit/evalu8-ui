@@ -499,7 +499,7 @@ angular
 									//var bookJsonItem = _.find($scope.bookJson, function (o) { return o.guid === book.node.guid; });
 									if (!bookContainerItem ) {
 									    
-									    $scope.IsBookContainersRendered = false;
+									    book.node.IsBookContainersRendered = false;
 									    book.node.isHttpReqCompleted = false;
 									    //$scope.bookJson.push({ "guid": $scope.bookID, containers: null });
 									    $scope.bookContainers.push({ "guid": $scope.bookID, containers: null });
@@ -510,7 +510,7 @@ angular
                                                         CommonService.showErrorMessage(e8msg.error.cantFetchNodes)
                                                         return;
                                                     }
-                                                    $scope.IsBookContainersRendered = true;
+                                                    book.node.IsBookContainersRendered = true;
 
                                                     var bookContainerItem = _.find($scope.bookContainers, function (o) { return o.guid === response[0].bookid; });
                                                     bookContainerItem.containers = response;
@@ -523,10 +523,10 @@ angular
                                                     book.node.isHttpReqCompleted = true;
                                                 });
 									} else {
-									    $scope.IsBookContainersRendered = true;
+									    book.node.IsBookContainersRendered = true;
 									}
 
-									
+								     //TODO: need to remove this service call, to optimize the unwanted api call. 
 									 ContainerService.bookNodes(book.node.guid, getSearchCriteria(false),
                                     		function(bookNodes) {
                                     	if(bookNodes==null){
@@ -1526,15 +1526,37 @@ angular
 							
 							function DisplayQuestionCount(currentnode) {
 							    var selectedNodesArray = [],
-                                    selectedNodesTemp = [];
+                                    selectedNodesTemp = [],
+                                    questions = [];
 
-							    if ($scope.isSearchMode) {
+							    if (SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
+							        getCount_inTestWizard();
+							        //number of question going to drop on right side.
+							        $scope.questionCount = questions.length > 1 ? (questions.length + ' ' + e8msg.questionCount.questions) : (questions.length + ' ' + e8msg.questionCount.question);
+							        return;
+							    } else if ($scope.isSearchMode) {
 							        getCount_SimpleSearch();
 							    } else if ($scope.isAdvancedSearchMode) {
 							        getCount_AdvanceSearch();
 							    }
 							    else {
 							        getCount_BeforeSearch();
+							    }
+
+							    function getCount_inTestWizard() {
+							        // pick all test criteria folder guids
+							        var testFrameCriteriaGuids = _.pluck(SharedTabService.tests[SharedTabService.currentTabIndex].criterias, 'folderId');
+							        //pick all the selected folder guids
+							        var selectedNodeGuids = _.pluck($scope.selectedNodes, 'guid');
+							        //filter selected folder guids with respect to test criteria sections.
+							        var filteredSelectedNodeGuidsGuids = _.difference(_.pluck($scope.selectedNodes, 'guid'), _.pluck(SharedTabService.tests[SharedTabService.currentTabIndex].criterias, 'folderId'));
+							        //pick all the question bindings from filtered selected folders
+							        _(filteredSelectedNodeGuidsGuids).forEach(function (id) {
+							            var item = _.find($scope.selectedNodes, function (o) {
+							                return o.guid === id;
+							            });
+							            questions = questions.concat(item.questionBindings);
+							        });
 							    }
 
 							    function getCount_BeforeSearch() {
@@ -1686,11 +1708,7 @@ angular
                                 							    
 							    //number of question going to drop on right side.
 							    var qnCount = Math.abs(_.difference(questions, testQuestionGuids).length);
-							    if (qnCount > 1) {
-							        $scope.questionCount = qnCount + ' Questions';
-							    } else {
-							        $scope.questionCount = qnCount + ' Question';;
-							    }
+							    $scope.questionCount = qnCount > 1 ? (qnCount + ' ' + e8msg.questionCount.questions) : (qnCount + ' ' + e8msg.questionCount.question);
 							}
 
 							//#To check whether the any parent/child node of selected node is used for test creation(edit question/wizard)  
@@ -3058,7 +3076,6 @@ angular
 								var searchedDiscipline = {};
 								$scope.allContainers
 										.forEach(function (container) {
-										    $scope.IsBookContainersRendered = true;
 											if (container.guid == $scope.selectedContainer.guid) {
 												searchedContainer = container;
 												$scope.searchedContainerId=container.guid;
@@ -3071,7 +3088,8 @@ angular
 												$scope.selectedBooks
 														.forEach(function(
 																book) {
-															if (container.bookid == book.guid) {
+														    if (container.bookid == book.guid) {
+														        book.IsBookContainersRendered = true;
 																searchedDiscipline["item"] = book.discipline;
 																searchedDiscipline["isCollapsed"]=false;
 																searchedDiscipline["isHttpReqCompleted"]=true;
@@ -3311,7 +3329,7 @@ angular
 											if(containers==null){
 												isErrorExists=true;
 											}
-											$scope.IsBookContainersRendered = true;
+											book.IsBookContainersRendered = true;
 											containers.forEach(function(container){
 												if(container.parentId==""){
 													checkIsContainerIsInTestFrame(container,testTab);

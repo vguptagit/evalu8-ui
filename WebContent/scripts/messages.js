@@ -56,4 +56,9 @@
 		emptyFolder : "This folder is empty."
 	};
 
+	ns.questionCount = {
+	    question: 'Question',
+	    questions: 'Questions',
+	}
+
 })(window.e8msg = window.e8msg || {});
