@@ -782,6 +782,7 @@ angular.module('e8MyTests')
             				if(mouseOverNode.node.nodes[0].nodeType == EnumService.NODE_TYPE.emptyFolder) {
             					mouseOverNode.node.nodes.splice(0, 1);            					
             				} 
+            				item.isNodeSelected = mouseOverNode.node.isNodeSelected;
             				mouseOverNode.node.nodes.unshift(item);
                     	}
             			if(sourceParent && sourceParent.node && sourceParent.node.nodes.length==0) {
@@ -808,6 +809,8 @@ angular.module('e8MyTests')
             				if(mouseOverNode.node.nodes[0].nodeType == EnumService.NODE_TYPE.emptyFolder) {
             					mouseOverNode.node.nodes.splice(0, 1);
             				}
+            				
+            			    item.isNodeSelected = mouseOverNode.node.isNodeSelected;
             				mouseOverNode.node.nodes.unshift(item);
             				var questnNumber = 0;
             				mouseOverNode.node.nodes.forEach(function(item){          
