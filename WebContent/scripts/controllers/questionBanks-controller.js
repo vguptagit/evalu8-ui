@@ -409,7 +409,7 @@ angular
 								} else {
 									discipline.expand();
 									
-									if($scope.isSearchMode){
+									if($scope.isSearchMode || $scope.isAdvancedSearchMode){
 										return;
 									}
 
@@ -3370,6 +3370,9 @@ angular
 											$scope.bookAddToDiscipline(book);
 											count=count+1;
 											if(count == $scope.selectedBooks.length){
+												$scope.disciplines.sort(function(a, b) {
+													return a.item.localeCompare(b.item)
+												});
 												$rootScope.blockPage.stop();
 												if(isErrorExists){
 													CommonService.showErrorMessage(e8msg.error.cantFetchSelectedQuestionType)
@@ -3475,6 +3478,7 @@ angular
 									searchedDiscipline["isCollapsed"]=false;
 									searchedDiscipline["nodes"] = [book];
 									searchedDiscipline["isHttpReqCompleted"] = true;
+									searchedDiscipline["draggable"] = false;
 									$scope.disciplines.push(searchedDiscipline);
 								}else{
 									$scope.disciplines.forEach(function(discipline) {
@@ -3488,6 +3492,7 @@ angular
 										searchedDiscipline["isCollapsed"]=false;
 										searchedDiscipline["nodes"] = [book];
 										searchedDiscipline["isHttpReqCompleted"] = true;
+										searchedDiscipline["draggable"] = false;
 										$scope.disciplines.push(searchedDiscipline);
 									}
 								}
