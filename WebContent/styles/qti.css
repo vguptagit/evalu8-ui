@@ -793,4 +793,8 @@ input.crtAnsText:focus::-moz-placeholder {
     width: 90%;
 }
 
+.questionPrintContainer p {
+    margin: 0 0 10px;
+}
+
 /* ShortAnswer - Question End */
