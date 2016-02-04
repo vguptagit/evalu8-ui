@@ -379,12 +379,12 @@ angular.module('e8MyTests')
 		}						
 
 		//To change the selection status of the children nodes when parent node has been selected/deselcted.
-		var checkChildSelection = function(node){   			
+		var checkChildSelection = function(node){  
+			var test = SharedTabService.tests[SharedTabService.currentTabIndex];
 			if(typeof(node.nodes) == 'undefined'){
 				return;
 			}
 			if(node.isNodeSelected){
-				var test = SharedTabService.tests[SharedTabService.currentTabIndex];
 				node.nodes.forEach(function (node) {			      
 					if (isNodeUsedForWizard(node, test)) {
 						node.showTestWizardIcon = false;
@@ -411,6 +411,10 @@ angular.module('e8MyTests')
 						node.isNodeSelected = true;		
 						node.existInTestframe = true;		
 						node.showTestWizardIcon = true; 
+					}else if(isNodeUsedForWizard(node,test)){										
+						node.isNodeSelected = true;		
+						node.existInTestframe = true;		
+						node.showEditQuestionIcon = true;											
 					}else{
 						removeNodeFromSelectedNodes(node);
 					}					

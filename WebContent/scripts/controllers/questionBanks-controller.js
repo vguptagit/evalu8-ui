@@ -1397,12 +1397,12 @@ angular
 							};	
 							
 							//To change the selection status of the children nodes when parent node has been selected/deselcted.
-							$scope.checkChildSelection = function(node){   
+							$scope.checkChildSelection = function(node){ 
+								var test = SharedTabService.tests[SharedTabService.currentTabIndex];
 								if(typeof(node.nodes) == 'undefined'){
 									return;
 								}
 								if(node.isNodeSelected){
-									  var test = SharedTabService.tests[SharedTabService.currentTabIndex];
 								    node.nodes.forEach(function (node) {
 								      
 								        if ($scope.isNodeUsedForWizard(node, test)) {
@@ -1430,10 +1430,14 @@ angular
 											node.isNodeSelected = true;		
 											node.existInTestframe = true;		
 											node.showTestWizardIcon = true; 
-										}else{										
-											$scope.removeNodeFromSelectedNodes(node);											
-										} 
-										
+										}else if($scope.isNodeUsedForWizard(node,test)){										
+											node.isNodeSelected = true;		
+											node.existInTestframe = true;		
+											node.showEditQuestionIcon = true;											
+										} else{
+											$scope.removeNodeFromSelectedNodes(node);
+										}
+
 										if(node.nodes){
 											$scope.checkChildSelection(node);
 										}										
@@ -3363,33 +3367,34 @@ angular
 									    $scope.searchedBookContainers.push({ "guid": book.guid, containers: null });
 
 										ContainerService.getQuestionTypeContainers(book.guid,searchCriteria,function(containers){
+											book.IsBookContainersRendered = true;
 											if(containers==null){
 												isErrorExists=true;
-											}
-											book.IsBookContainersRendered = true;
-											containers.forEach(function(container){
-												if(container.parentId==""){
-													checkIsContainerIsInTestFrame(container,testTab);
-													container.isCollapsed=true;
-													container.nodeType = EnumService.NODE_TYPE.chapter;
-													container.bookid = book.guid;
-													container.isHttpReqCompleted = true;
-													rootContainers.push(container)
+											}else{
+												containers.forEach(function(container){
+													if(container.parentId==""){
+														checkIsContainerIsInTestFrame(container,testTab);
+														container.isCollapsed=true;
+														container.nodeType = EnumService.NODE_TYPE.chapter;
+														container.bookid = book.guid;
+														container.isHttpReqCompleted = true;
+														rootContainers.push(container)
+													}
+												});
+												var bookContainerItem = _.find($scope.searchedBookContainers, function (o) { return o.guid === book.guid; });
+												bookContainerItem.containers = containers;
+												if(rootContainers.length==0){
+													emptyBooks = emptyBooks+1;
 												}
-											});
-											var bookContainerItem = _.find($scope.searchedBookContainers, function (o) { return o.guid === book.guid; });
-											bookContainerItem.containers = containers;
-											if(rootContainers.length==0){
-												emptyBooks = emptyBooks+1;
+												
+												$scope.expandedNodes=$scope.expandedNodes.concat(rootContainers);
+												book.isCollapsed=false;
+												book.nodes=rootContainers;
+												if(count == 0){
+													$scope.disciplines=[];
+												}
+												$scope.bookAddToDiscipline(book);
 											}
-											
-											$scope.expandedNodes=$scope.expandedNodes.concat(rootContainers);
-											book.isCollapsed=false;
-											book.nodes=rootContainers;
-											if(count == 0){
-												$scope.disciplines=[];
-											}
-											$scope.bookAddToDiscipline(book);
 											count=count+1;
 											if(count == $scope.selectedBooks.length){
 												$scope.disciplines.sort(function(a, b) {
