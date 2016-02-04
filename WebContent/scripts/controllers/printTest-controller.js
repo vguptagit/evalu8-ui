@@ -59,18 +59,17 @@ angular.module('e8MyTests')
 		        	 $(elementToPrint).find("#answerSpace").remove();
 		        	 $(elementToPrint).find("#answerSpaceLastPage" ).remove();
 		             $(elementToPrint).find("[ng-show='answerAreaOnLeftSide']").remove();
-		             $(elementToPrint).find("[ng-show='answerAreaBetweenQuestions']").remove();
+		             $(elementToPrint).find("#inlineAnswerBlank").remove();
 		         }else if($scope.selectedAnswerArea.value == $scope.answerAreas[1].value){
 			         $(elementToPrint).find("[ng-show='answerAreaOnLeftSide']").remove();
 			         $(elementToPrint).find("#answerSpaceLastPage" ).remove();
 		         }else if($scope.selectedAnswerArea.value == $scope.answerAreas[2].value){
 		        	 $(elementToPrint).find("#answerSpace").remove();
 		        	 $(elementToPrint).find("#answerSpaceLastPage" ).remove();
-		        	 $(elementToPrint).find("[ng-show='answerAreaBetweenQuestions']").remove();
 		         }else if($scope.selectedAnswerArea.value == $scope.answerAreas[3].value){
 		        	 $(elementToPrint).find("#answerSpace").remove();
 		             $(elementToPrint).find("[ng-show='answerAreaOnLeftSide']").remove();
-		             $(elementToPrint).find("[ng-show='answerAreaBetweenQuestions']").remove();
+		             $(elementToPrint).find("#inlineAnswerBlank").remove();
 		         }
 		         
 		         if(!$scope.isIncludeStudentName)
