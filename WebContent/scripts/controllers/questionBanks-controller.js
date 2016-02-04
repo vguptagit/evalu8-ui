@@ -3051,13 +3051,23 @@ angular
 								.addClass("autocompleteList");								
 								
 				                if(event.which === 40){
-				                    $('ul.dropdown-menu').scrollTop ( ($('ul.dropdown-menu li.active').index() ) * 25);				                    										
+				            		var activeMenuTopPos= $('ul.dropdown-menu li.active').offset().top;
+				            		var activeMenuHeight=$('ul.dropdown-menu li.active').height();
+				            		var containerBottom = $('.resources-tabs-content .autocompleteList').offset().top+$('.resources-tabs-content .autocompleteList').height()+9;
+				                	if(activeMenuTopPos>=containerBottom){
+				                		$('ul.dropdown-menu')[1].scrollTop=$('ul.dropdown-menu')[1].scrollTop + activeMenuHeight;
+				                	}
 				                }
 				                if(event.which === 38){
-				                    $('ul.dropdown-menu').scrollTop ( ($('ul.dropdown-menu li.active').index() ) * 25);
-				                    										
+				                	var activeMenuTopPos= $('ul.dropdown-menu li.active').offset().top;
+				                	var activeMenuHeight=$('ul.dropdown-menu li.active').height();
+				                	var containerTop = $('.resources-tabs-content .autocompleteList').offset().top+6;
+				                	if(activeMenuTopPos<containerTop){
+				                		$('ul.dropdown-menu')[1].scrollTop=$('ul.dropdown-menu')[1].scrollTop-activeMenuHeight;
+				                	}
 				                }
-								if (event.keyCode != 13 ){
+				                
+				                if (event.keyCode != 13 ){
 									var isContainersLoaded=false;
 									bookContainersArray.forEach(function(book){
 										if(book.bookid == $scope.selectedBookid){
