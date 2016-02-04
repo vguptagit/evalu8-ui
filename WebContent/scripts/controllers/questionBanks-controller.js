@@ -1546,6 +1546,10 @@ angular
 							    function getCount_inTestWizard() {
 							        angular.copy($scope.selectedNodes, selectedNodesTemp);
 							        selectedNodesTemp.push(currentnode);
+							        //if current node is chapter and if it contains nodes then push those also.
+							        if (currentnode.nodes && currentnode.nodes.length) {
+							            selectedNodesTemp = selectedNodesTemp.concat(currentnode.nodes);
+							        }
 							        // pick all test criteria folder guids
 							        var testFrameCriteriaGuids = _.pluck(SharedTabService.tests[SharedTabService.currentTabIndex].criterias, 'folderId');
 							        //pick all the selected folder guids
@@ -1568,7 +1572,9 @@ angular
 							        selectedNodesTemp.forEach(function (selectedItem) {
 							            $scope.bookContainers.forEach(function (bookItem) {
 							                if (selectedItem.bookid === bookItem.guid) {
-							                    checkInBookContainer(bookItem, selectedItem);
+							                    var containerJson = convertToJson(bookItem.containers);
+							                    checkInBookContainer(containerJson, selectedItem);
+
 							                }
 							            })
 							        });
@@ -1627,7 +1633,8 @@ angular
 							        selectedNodesTemp.forEach(function (selectedItem) {
 							            $scope.searchedBookContainers.forEach(function (bookItem) {
 							                if (selectedItem.bookid === bookItem.guid) {
-							                    checkInBookContainer(bookItem, selectedItem);
+							                    var containerJson = convertToJson(bookItem.containers);
+							                    checkInBookContainer(containerJson, selectedItem);
 							                }
 							            })
 							        });
@@ -1637,14 +1644,17 @@ angular
 							     
                                 //ends
 
-							    function checkInBookContainer(bookContainers, selectedItem) {
-							        var containerJson = convertToJson(bookContainers.containers);
+							    function checkInBookContainer(containerJson, selectedItem) {
+							        //var containerJson = convertToJson(bookContainers.containers);
 							        containerJson.forEach(function (item) {
 							            if (item.guid === selectedItem.guid) {
 							                selectedNodesArray.push(item);
 							            }
+							            else if (item.guid === selectedItem.parentId) {
+							                selectedNodesArray.push(selectedItem);
+							            }
 							            else if (item.nodes) {
-							                checkInChildNode(item.nodes, selectedItem);
+							                checkInBookContainer(item.nodes, selectedItem);
 							            }
 							        })
 
@@ -1668,7 +1678,7 @@ angular
 
 							    function rootNodes() {
 							        selectedNodesArray.forEach(function (rootItem) {
-							            if (rootItem.nodes) {
+							            if (rootItem.nodes && rootItem.nodes.length) {
 							                childNodes(rootItem.nodes);
 							            } else if (rootItem.questionBindings) { //if folders
 							                questions = questions.concat(rootItem.questionBindings);
