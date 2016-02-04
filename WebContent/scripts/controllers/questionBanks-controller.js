@@ -2841,22 +2841,23 @@ angular
 											}
 										})
 									}
-								})
+								});
+								
+								handleBroadcast_folderDeselect();
 
 							});
 							
-							
-							$scope.$on('handleBroadcast_folderDeselect', function() {
+							var handleBroadcast_folderDeselect = function() {
 								var test = SharedTabService.tests[SharedTabService.currentTabIndex];
 								$scope.selectedNodes.forEach(function(node) {
-										if(isAllTopicQuestionsInTestFrame(node)){
+										if(node.nodeType != EnumService.NODE_TYPE.question && isAllTopicQuestionsInTestFrame(node)){
 											node.existInTestframe = true;
 											node.isNodeSelected = true;
 											node.showEditQuestionIcon = false;
 											test.questionFolderNode.push(node);
 										}
 								});
-							});
+							}
 						
 							//Handling the Broadcast event when selected question is removed from the Test creation frame.
 							// here need to remove the question node from selected list and need to chnage his state. 
@@ -3127,6 +3128,7 @@ angular
 																searchedDiscipline["item"] = book.discipline;
 																searchedDiscipline["isCollapsed"]=false;
 																searchedDiscipline["isHttpReqCompleted"]=true;
+																searchedDiscipline["draggable"] = false;
 																book["isCollapsed"]=false;
 																searchedDiscipline["nodes"] = [ jQuery.extend(true,
 																		{}, book) ];

@@ -656,8 +656,6 @@ angular.module('e8MyTests')
                     
                     var prev;
                     if(e.source.index < destIndex) {
-                    	prev = e.dest.nodesScope.childNodes()[destIndex];	
-                    } else {
                     	prev = e.dest.nodesScope.childNodes()[destIndex-1];
                     }
                     
@@ -726,12 +724,14 @@ angular.module('e8MyTests')
                     var sourceIndex = e.source.index;
                     var destIndex = e.dest.index;
                     var prev = e.dest.nodesScope.childNodes()[destIndex-1];
-                    var next = e.dest.nodesScope.childNodes()[destIndex+1];                                        
-                    if(sourceIndex == destIndex && source.controller == destParent.controller){
-                        $scope.dragStarted = false;
-                        e.source.nodeScope.$$apply = false;
-                        return false;
+                    var next = e.dest.nodesScope.childNodes()[destIndex+1];
+                    
+                    if( sourceIndex == destIndex && e.dest.nodesScope === e.source.nodesScope){
+                    	$scope.dragStarted = false;
+                    	e.source.nodeScope.$$apply = false;
+                    	return false; 
                     }
+                    
                     if(destParent.controller == "TestCreationFrameController" ){
                     	if(SharedTabService.tests[SharedTabService.currentTabIndex].questions 
                     			&& SharedTabService.tests[SharedTabService.currentTabIndex].questions.length){
@@ -2670,22 +2670,39 @@ angular.module('e8MyTests')
 				node.showTestWizardIcon = true;
 			}
 		})
+		handleBroadcast_folderDeselect();
 
 	});
 	
 	
-	$scope.$on('handleBroadcast_folderDeselect', function() {
+	
+	var handleBroadcast_folderDeselect = function() {
 		var activeTest = SharedTabService.tests[SharedTabService.currentTabIndex];
+		var subFolders = [];
 		$scope.selectedNodes.forEach(function(node) {
 				if(node.nodeType != EnumService.NODE_TYPE.question && allQuestionBindingsInTestFrame(node, activeTest)){
 					node.existInTestframe = true;
 					node.isNodeSelected = true;
 					node.showEditQuestionIcon = false;
 					activeTest.questionFolderNode.push(node);
+				}else if (node.nodeType != EnumService.NODE_TYPE.question){
+					subFolders.push(node);
 				}
 		});
-	});
-	
+		
+		for (var i = 0; i < subFolders.length; i++) {
+			for (var j = 0; j < $scope.selectedNodes.length; j++) {
+				if(subFolders[i].parentId == $scope.selectedNodes[j].guid){
+					$scope.selectedNodes[j].isNodeSelected = true;
+					$scope.selectedNodes[j].showEditQuestionIcon = true;
+					$scope.selectedNodes[j].existInTestframe = false;
+					break;
+				}
+			}
+
+		}
+		
+	}
 	
 	 /**********************************************************Start**************************************************/
 	

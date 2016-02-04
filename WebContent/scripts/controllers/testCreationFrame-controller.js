@@ -1682,19 +1682,17 @@ angular
 																				// for
 																				// dirty.
 													if (metadatas.length > 0) {
+
 														$scope
-																.render(
-																		metadatas,
-																		SharedTabService.currentTabIndex);
-														
+														.render(
+																metadatas,
+																SharedTabService.currentTabIndex);
+
+													} else {
 														$rootScope.$broadcast(
 														'handleBroadcast_questionDeselect');
 														
-													} else {
-														
-														$rootScope.$broadcast('handleBroadcast_folderDeselect');
-	        									
-													     $scope.blockPage.stop();
+														$scope.blockPage.stop();
 													}
 												});
 								

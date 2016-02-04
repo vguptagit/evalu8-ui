@@ -253,11 +253,11 @@ angular.module('e8MyTests')
                 	var destIndex = e.dest.index;
                 	var prev = e.dest.nodesScope.childNodes()[destIndex-1];
                 	var next = e.dest.nodesScope.childNodes()[destIndex+1];                                        
-                	if(sourceIndex == destIndex && source.controller == destParent.controller){
-                		$scope.dragStarted = false;
-                		e.source.nodeScope.$$apply = false;
-                		return false;
-                	}
+                	if( sourceIndex == destIndex && e.dest.nodesScope === e.source.nodesScope){
+                    	$scope.dragStarted = false;
+                    	e.source.nodeScope.$$apply = false;
+                    	return false; 
+                    }
                     if(destParent.controller == "TestCreationFrameController" ){
                     	if(SharedTabService.tests[SharedTabService.currentTabIndex].questions 
                     			&& SharedTabService.tests[SharedTabService.currentTabIndex].questions.length){
