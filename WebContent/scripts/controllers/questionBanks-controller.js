@@ -1563,8 +1563,10 @@ angular
 							            var item = _.find(selectedNodesTemp, function (o) {
 							                return o.guid === id;
 							            });
-							            questions = questions.concat(item.questionBindings);
-							            questions = _.uniq(questions);
+							            if (item.questionBindings) {
+							                questions = questions.concat(item.questionBindings);
+							                questions = _.uniq(questions);
+							            }
 							        });
 							    }
 
