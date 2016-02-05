@@ -1986,7 +1986,10 @@ angular.module('e8MyTests')
 		    })			
 		}
 		
-        $scope.getFolders = function(defaultFolder) {
+        $scope.getFolders = function(e, defaultFolder) {
+        	
+        	e.target.blur(); //Leave the focus to avoid scroll back to this element
+        	
         	if($scope.showAddFolderPanel){
         		$scope.showAddFolderPanel = false;
         	}

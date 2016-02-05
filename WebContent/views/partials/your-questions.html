@@ -50,7 +50,7 @@
  					ng-class="{treeNodeHover: hover}">
                     <div class="maindiv" ng-class="{folderHighlight: node.isNodeSelected}" id={{node.guid}}>
                         <div class="imagediv">
-                            <input type="image" ng-click="getFolders(this)" class="collapseImg" value=""
+                            <input type="image" ng-click="getFolders($event,this)" class="collapseImg" value=""
                                    ng-src="{{collapsed && 'images/right_arrow2.png' || 'images/right_arrow.png'}}" ng-show="!node.isEditMode" />
                         </div>
                         <div class="captiondiv" ng-mousedown="selectNode($event,this);">
