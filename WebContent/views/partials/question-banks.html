@@ -127,8 +127,6 @@
                         -->
                     </div>
                 </div>
-
-
             </div>
         </div>
         <ol ui-tree-nodes="" type="1" ng-model="node.nodes" ng-class="{hidden: collapsed}" droppable="false">
@@ -147,7 +145,6 @@
 
 	<script type="text/ng-template" id="tests_renderer.html">
         <div ui-tree-handle class="tree-node tree-node-content">
-
             <div data-ng-if="node.nodeType=='test'" class="treeDiv" ng-class="{testHighlightSelected: isActiveSelectedTest(node.guid)}">
                 <div class="maindivTest" id={{node.guid}} ng-class="{testHighlight: node.selectTestNode}">
                     <div class="imagediv"></div>
@@ -165,19 +162,16 @@
                     </div>
                 </div>
             </div>
-
-        </div>
-
-    </script>
-
-	<script type="text/ng-template" id="qb_questions_renderer.html">
-	<div ng-if="node.questionType != 'userCreatedQuestion'" class="questionListIndex">{{$index + 1}})</div>
-        <div id="QBQuestion"  nodeSelected={{node.isNodeSelected}} ng-mousedown="selectNode($event,this);" ui-tree-handle class="printViewContainer tree-node tree-node-content questionList" ng-class="{questionTitleInTree: node.questionXML}">
-            <button id="QBPencil" type="button" ng-show="node.showEditQuestionIcon" class="newTest-close questionIcon action-icon-bg glyphicon glyphicon-plus" ng-mousedown="editQuestion(this);$event.stopPropagation();" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" tooltip="Move question to right for editing"></button>
-            <div class="printViewContainer" ng-if="node.textHTML" ng-bind-html="getHTML(this)">
-            </div>
         </div>
     </script>
+    
+    <script type="text/ng-template" id="qb_questions_renderer.html">
+	<div id="qtiQuestionContainer" class="qtiQuestionContainer">
+		<div>
+			<qti-Player></qti-Player>
+		</div>
+	</div>
+	</script>
 
 	<div data-ui-tree="treeOptions" id="tree-root" class="question_bank_scrollbar" data-clone-enabled="true" data-nodrop-enabled = "true">
 

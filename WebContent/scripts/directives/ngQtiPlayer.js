@@ -337,12 +337,21 @@ angular.module('e8MyTests')
 							}
 						}
 
-						editor.insertHtml(html);
-
-						if(prevImg.length > 0){
-							var remContent = editor.getData().replace(prevImg,'');					
-							editor.setData(remContent);
+						var selection = editor.getSelection();
+						var range = selection.getRanges()[0];						  
+						if(range && range.startOffset > 0 && prevImg == undefined){
+							editor.insertHtml(html);
+						}else{
+							if(prevImg && prevImg.length > 0){
+								editor.insertHtml(html);
+								var remContent = editor.getData().replace(prevImg,'');					
+								editor.setData(remContent);
+							}else{
+								var remContent = editor.getData();		
+								editor.setData(remContent + html);
+							}
 						}
+					
 					}
 			
 					var range = new CKEDITOR.dom.range(editor.document);				

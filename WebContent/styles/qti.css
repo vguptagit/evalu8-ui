@@ -397,6 +397,7 @@
 	width: 97%;
 	float: left;
 	margin-left: 20px;
+	margin-bottom: 10px;
 }
 
 .testPreviewContainer .matchingOptionContainer {
@@ -406,13 +407,11 @@
 .columnA {
 	word-wrap: break-word;
 	display: table;
-	width: 48%;
 }
 
 .columnB {
 	word-wrap: break-word;
-	display: table;
-	width: 48%;
+	display: table;	
 }
 
 /* Matching - question - PRINT  END */
