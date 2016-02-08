@@ -102,7 +102,7 @@
                 <div ui-tree-handle class="tree-node tree-node-content">
                     <label title={{node.title}} class="captionEmptyNode">{{node.title}}</label>
             </li>
-            <li data-nodrag="{{node.existInTestframe===true}}" ng-repeat="node in node.nodes" ui-tree-node collapsed="true" draggable="{node.draggable}"
+            <li droppable="{{!node.existInTestframe}}" data-nodrag="{{node.existInTestframe===true}}" ng-repeat="node in node.nodes" ui-tree-node collapsed="true" draggable="{node.draggable}"
                 ng-include="'defaultfolder_renderer.html'" ng-show="{{node.nodeType=='folder'}}" />
             <li data-nodrag="{{node.existInTestframe===true}}" printmode="true" ng-repeat="node in node.nodes" collapsed="true" ui-tree-node 
 				ng-show="{{node.nodeType=='question'}}" 

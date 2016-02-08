@@ -336,11 +336,17 @@ angular.module('e8MyTests')
 		var removeNodeFromSelectedNodes = function(node) {
 			for (var j = 0; j < $scope.selectedNodes.length; j++) {
 				if (node.guid === $scope.selectedNodes[j].guid) {
-					$scope.selectedNodes[j].showEditQuestionIcon = false;
-					$scope.selectedNodes[j].showTestWizardIcon = false; 
-					$scope.selectedNodes[j].isNodeSelected = false;													          
-					$scope.selectedNodes[j].existInTestframe = false;
-					removeNodeByIndex($scope.selectedNodes,j);										
+					if($scope.selectedNodes[j].isEditMode){
+						$scope.selectedNodes[j].isNodeSelected = true;
+						$scope.selectedNodes[j].showTestWizardIcon = true;
+						$scope.selectedNodes[j].showEditQuestionIcon = true;
+					}else{
+						$scope.selectedNodes[j].showEditQuestionIcon = false;
+						$scope.selectedNodes[j].showTestWizardIcon = false; 
+						$scope.selectedNodes[j].isNodeSelected = false;													          
+						$scope.selectedNodes[j].existInTestframe = false;
+						removeNodeByIndex($scope.selectedNodes,j);										
+					}
 					break;
 				}
 			}						
@@ -439,19 +445,6 @@ angular.module('e8MyTests')
 			return !allSiblingsNotSelected;																
 		}
 
-		var deselectNodesOnDrag = function(node){
-			node.isNodeSelected = false;
-			node.showEditQuestionIcon = false;
-			if(node.nodes){
-				node.nodes.forEach(function(childNode) {
-					childNode.isNodeSelected = false;
-					childNode.showEditQuestionIcon = false;
-					if(childNode.nodes){
-						deselectNodesOnDrag(childNode);
-					}
-				})
-			}
-		}
 		//To change the selection status of the parent node of a node.
 		var checkSiblingSelection = function(scope){
 			var activeTest = SharedTabService.tests[SharedTabService.currentTabIndex];
@@ -562,6 +555,12 @@ angular.module('e8MyTests')
         	checkSiblingSelection(nodeScope);
         }
         
+        var updateDroppedItemStatus  = function(node,isSelected){
+        	node.isNodeSelected = isSelected;
+        	node.showEditQuestionIcon = isSelected;        	
+        	node.showTestWizardIcon = isSelected;        	
+        }
+        
         $scope.$on('ImportUserBooks', function() {		
 			$scope.loadTree();								
 		})
@@ -586,7 +585,6 @@ angular.module('e8MyTests')
                 	
                 	$scope.placeElm = e.elements.placeholder;
                 	$scope.position = e.pos;
-                	//deselectNodesOnDrag(e.source.nodeScope.node);
                 	if($rootScope.tree && $rootScope.tree.mouseOverNode){
                 		if(!isForeign(e)){
     	                	$scope.position.cancel = true;
@@ -615,9 +613,6 @@ angular.module('e8MyTests')
                 },
                 beforeDrop: function(e) {
                     
-                	if(SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard)
-                		return false;
-                	
                 	var destination = e.dest.nodesScope;
                 	
                 	if(destination.$parent &&  
@@ -786,7 +781,7 @@ angular.module('e8MyTests')
             				if(mouseOverNode.node.nodes[0].nodeType == EnumService.NODE_TYPE.emptyFolder) {
             					mouseOverNode.node.nodes.splice(0, 1);            					
             				} 
-            				item.isNodeSelected = mouseOverNode.node.isNodeSelected;
+            				updateDroppedItemStatus(item, mouseOverNode.node.isNodeSelected);
             				mouseOverNode.node.nodes.unshift(item);
                     	}
             			if(sourceParent && sourceParent.node && sourceParent.node.nodes.length==0) {
@@ -814,7 +809,7 @@ angular.module('e8MyTests')
             					mouseOverNode.node.nodes.splice(0, 1);
             				}
             				
-            			    item.isNodeSelected = mouseOverNode.node.isNodeSelected;
+            				updateDroppedItemStatus(item, mouseOverNode.node.isNodeSelected);
             				mouseOverNode.node.nodes.unshift(item);
             				var questnNumber = 0;
             				mouseOverNode.node.nodes.forEach(function(item){          
@@ -1438,6 +1433,7 @@ angular.module('e8MyTests')
 			
 			
 			setAddedFolderNodeStatus(clickedFolder);
+			addingNodeToArray($scope.selectedNodes,clickedFolder);		
 			addingNodeToArray(activeTest.questionFolderNode,clickedFolder);		
 			
 			var processingNodes=[];
@@ -2637,10 +2633,16 @@ angular.module('e8MyTests')
 	}
 
 	var resetNodeStatus = function(node){	
-		node.isNodeSelected = false;
-		node.showTestWizardIcon = true;
-		node.showEditQuestionIcon = false;
-		node.existInTestframe=false;
+		if(node.isEditMode){
+			node.isNodeSelected = true;
+			node.showTestWizardIcon = true;
+			node.showEditQuestionIcon = true;
+		}else{
+			node.isNodeSelected = false;
+			node.showTestWizardIcon = true;
+			node.showEditQuestionIcon = false;
+			node.existInTestframe=false;
+		}
 	}
 
 	//Handling the Broadcast event when selected question is removed from the Test creation frame.
@@ -2718,9 +2720,15 @@ angular.module('e8MyTests')
 	 var deselectWizarChildNode = function (node) {
 			for (var i = 0; i < $scope.selectedNodes.length; i++) {
 				if ($scope.selectedNodes[i].guid == node.guid) {
-					$scope.selectedNodes[i].isNodeSelected = false ;
-					$scope.selectedNodes[i].showEditQuestionIcon = false;
-					$scope.selectedNodes[i].showTestWizardIcon = false;
+					if($scope.selectedNodes[i].isEditMode){
+						$scope.selectedNodes[i].isNodeSelected = true;
+						$scope.selectedNodes[i].showEditQuestionIcon = true;
+						$scope.selectedNodes[i].showTestWizardIcon = true;
+					}else{
+						$scope.selectedNodes[i].isNodeSelected = false ;
+						$scope.selectedNodes[i].showEditQuestionIcon = false;
+						$scope.selectedNodes[i].showTestWizardIcon = false;
+					}
 					if($scope.selectedNodes[i].nodes){
 						$scope.selectedNodes[i].nodes.forEach(function(usedNode) {
 							deselectWizarChildNode(usedNode);
@@ -2735,10 +2743,16 @@ angular.module('e8MyTests')
 			var nodeIndex=0;
 			for (var i = 0; i < $scope.selectedNodes.length; i++) {
 			if ($scope.selectedNodes[i].guid == node.parentId) {
-				$scope.selectedNodes[i].isNodeSelected = false ;
-				$scope.selectedNodes[i].showEditQuestionIcon = false;
-				$scope.selectedNodes[i].showTestWizardIcon = false;
-				parentExistInSelectNodes = true;
+				if($scope.selectedNodes[i].isEditMode){
+					$scope.selectedNodes[i].isNodeSelected = true;
+					$scope.selectedNodes[i].showEditQuestionIcon = true;
+					$scope.selectedNodes[i].showTestWizardIcon = true;
+				}else{
+					$scope.selectedNodes[i].isNodeSelected = false ;
+					$scope.selectedNodes[i].showEditQuestionIcon = false;
+					$scope.selectedNodes[i].showTestWizardIcon = false;
+					parentExistInSelectNodes = true;
+				}
 				break;
 		}
 			nodeIndex++;
@@ -2791,10 +2805,6 @@ angular.module('e8MyTests')
     					 updateTestNodesStatus(tab);    				 
     				 }else if (SharedTabService.tests.length == 1) { 		            
     					 resetSelectedNodeStatus();		
-    				 }else if (tab.isNewFrameRequest){
-    					 $scope.selectedNodes.forEach(function(node) {	
-    						 enableSelectedNodeStatus(node);
-    					 });
     				 }else{
     					 resetSelectedNodeStatus();		
     				 }

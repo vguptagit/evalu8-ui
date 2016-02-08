@@ -142,21 +142,7 @@ angular
 									}
 								}						
 							}
-							var deselectNodesOnDrag = function(node){
-								node.isNodeSelected = false;
-								node.showEditQuestionIcon = false;
-								node.showTestWizardIcon = false;
-								if(node.nodes){
-									node.nodes.forEach(function(childNode) {
-										childNode.isNodeSelected = false;
-										childNode.showEditQuestionIcon = false;
-										childNode.showTestWizardIcon = false;
-										if(childNode.nodes){
-											deselectNodesOnDrag(childNode);
-										}
-									})
-								}
-							}
+							
 							//To check all questions of topic are avialable in test frame.
 							var isAllTopicQuestionsInTestFrame = function(node) {
 								var isNodeUsed=false;
@@ -2568,6 +2554,7 @@ angular
 																$scope.expandedNodes[i].isNodeSelected=true;
 																$scope.expandedNodes[i].showTestWizardIcon=false;
 																$scope.expandedNodes[i].showEditQuestionIcon=true;
+																$scope.expandedNodes[i].existInTestframe=true;
 																$scope.selectedNodes.push($scope.expandedNodes[i]);
 																if($scope.expandedNodes[i].nodes) {
 																$scope.updateStatusForWizardChildNodes($scope.expandedNodes[i].nodes);	
@@ -2622,6 +2609,8 @@ angular
 											$scope.expandedNodes[i].isNodeSelected = true;
 											$scope.expandedNodes[i].showEditQuestionIcon = true;
 											$scope.expandedNodes[i].showTestWizardIcon = false;
+											$scope.expandedNodes[i].existInTestframe = true;
+											
 										}
 									}
 								}
@@ -2656,6 +2645,7 @@ angular
 									childNodes[i].isNodeSelected = true;
 							        childNodes[i].showTestWizardIcon = false;
 							        childNodes[i].showEditQuestionIcon = true;
+							        childNodes[i].existInTestframe = true;
 							        $scope.selectedNodes.push(childNodes[i]);
 							        if(childNodes[i].nodes){
 							        	$scope.updateStatusForWizardChildNodes(childNodes[i].nodes);
