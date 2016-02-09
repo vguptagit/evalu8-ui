@@ -40,6 +40,17 @@
                         ng-click='toggleQuestiontypeSelection("FIB")'>Fill
 						in the Blanks</div>
 				</div>
+				<div>
+                    <div class="col-md-4"
+                        ng-class="isThisQuizTypeSelected('SA')?'ck-buttonSelected':'ck-button'"
+                        ng-click='toggleQuestiontypeSelection("SA")'>
+                        Short Answer</div>
+                    <div class="col-md-4"
+                         ng-class="isThisQuizTypeSelected('VB')?'ck-buttonSelected':'ck-button'"
+                        ng-click='toggleQuestiontypeSelection("VB")'>Vocabulary</div>
+                    <div class="col-md-4">
+                    </div>
+                </div>
 			</div>
 		</div>
 		<div class="row" ng-show="isAnyMetadataSelected()">

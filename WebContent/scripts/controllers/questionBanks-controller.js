@@ -3467,7 +3467,11 @@ angular
 									selectedQuestionTypesToShow.push(" True False")
 								}else if(quizTypes=='FIB'){
 									selectedQuestionTypesToShow.push(" Fill in the Blanks")
-								}
+								}else if(quizTypes=='SA'){
+                                    selectedQuestionTypesToShow.push(" Short Answer")
+                                }else if(quizTypes=='VB'){
+                                    selectedQuestionTypesToShow.push(" Vocabulary")
+                                }
 							}
 							
 							$scope.addMetadataTypesToShow = function(metadata)
