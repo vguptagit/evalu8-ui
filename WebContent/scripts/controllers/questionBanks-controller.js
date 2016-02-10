@@ -1553,8 +1553,11 @@ angular
 							        var book = _.find($scope.bookContainers, function (o) { return o.guid === currentnode.bookid; });
 							        var containerNodes = CommonService.SearchItem(convertToJson(book.containers), currentnode.guid);
 							        //if current node is chapter and if it contains nodes then push those also.
-							        if (containerNodes.nodes && containerNodes.nodes.length) {
+							        if (containerNodes && containerNodes.nodes && containerNodes.nodes.length) {
 							            selectedNodesTemp = selectedNodesTemp.concat(containerNodes.nodes);
+							        } else if (currentnode.nodeType === EnumService.NODE_TYPE.question) {
+							            containerNodes = CommonService.SearchItem(convertToJson(book.containers), currentnode.parentId);
+							            selectedNodesTemp = selectedNodesTemp.concat(containerNodes);
 							        }
 							        // pick all test criteria folder guids
 							        var testFrameCriteriaGuids = _.pluck(SharedTabService.tests[SharedTabService.currentTabIndex].criterias, 'folderId');
