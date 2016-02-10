@@ -484,7 +484,7 @@ angular.module('e8MyTests')
 		
         $scope.loadTree = function() {        	
         	
-        	QuestionFolderService.defaultFolders(function (defaultFolders) {
+        	QuestionFolderService.defaultFolders(true,function (defaultFolders) {
         		if(defaultFolders==null){
         			CommonService.showErrorMessage(e8msg.error.cantFetchFolders)
         			return;
@@ -497,7 +497,13 @@ angular.module('e8MyTests')
             		}
             		$scope.myQuestionRoot = myQuestionRoot;
             	   
-            		$scope.defaultFolders = defaultFolders;
+            		var rootFolders=[];
+                    defaultFolders.forEach(function(folder) {
+                        if(folder.parentId==myQuestionRoot.guid){
+                            rootFolders.push(folder);
+                        }
+                    });
+                    $scope.defaultFolders = rootFolders;
 	                
 	                QTI.initialize();
 	                

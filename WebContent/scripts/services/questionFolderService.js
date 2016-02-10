@@ -6,11 +6,11 @@ angular.module('evalu8Demo')
 		['$http', '$rootScope', '$location', '$cookieStore', '$cacheFactory', 'CommonService', 'HttpService','EnumService',
 		 function($http, $rootScope, $location, $cookieStore, $cacheFactory, CommonService, HttpService, EnumService) {			
 					
-			this.defaultFolders = function(callback) {				
+			this.defaultFolders = function(flat,callback) {				
 
 				var defaultFolders = [];
 				HttpService.get(
-						evalu8config.apiUrl + "/my/questionfolders")
+						evalu8config.apiUrl + "/my/questionfolders?flat="+flat)
 						.success(
 								function(response) {
 									
