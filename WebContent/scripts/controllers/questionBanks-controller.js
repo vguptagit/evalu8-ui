@@ -1,4 +1,4 @@
-//New comment from second system
+﻿//New comment from second system
 
 'use strict';
 
@@ -426,13 +426,22 @@ angular
 							//$scope.bookJson = [];
 							$scope.bookContainers = [];
 							$scope.searchedBookContainers = [];
-							var containerJson = [];
-							var bookContainers = [];
+							var containerJson = [],
+							    bookContainers = [],
+						        bookContainersJson = [];
+
 							function convertToJson(bookcontainers) {
 							    containerJson = [];
 							    bookContainers = [];
-							    bookContainers = bookcontainers;
-							    containerJson = getRootItems("");
+							    if (bookcontainers) {
+							        var book = _.find(bookContainersJson, function (o) { return o.guid === bookcontainers[0].bookid; });
+							        if (book) {
+							            return book.containers;
+							        }
+							        bookContainers = bookcontainers;
+							        containerJson = getRootItems("");
+							        bookContainersJson.push({ "guid": bookcontainers[0].bookid, containers: containerJson });
+							    }
 							    return containerJson
 							}
 							function getRootItems(parentid) {
@@ -1534,9 +1543,11 @@ angular
 							    function getCount_inTestWizard() {
 							        angular.copy($scope.selectedNodes, selectedNodesTemp);
 							        selectedNodesTemp.push(currentnode);
+							        var book = _.find($scope.bookContainers, function (o) { return o.guid === currentnode.bookid; });
+							        var containerNodes = CommonService.SearchItem(convertToJson(book.containers), currentnode.guid);
 							        //if current node is chapter and if it contains nodes then push those also.
-							        if (currentnode.nodes && currentnode.nodes.length) {
-							            selectedNodesTemp = selectedNodesTemp.concat(currentnode.nodes);
+							        if (containerNodes.nodes && containerNodes.nodes.length) {
+							            selectedNodesTemp = selectedNodesTemp.concat(containerNodes.nodes);
 							        }
 							        // pick all test criteria folder guids
 							        var testFrameCriteriaGuids = _.pluck(SharedTabService.tests[SharedTabService.currentTabIndex].criterias, 'folderId');
@@ -1559,12 +1570,11 @@ angular
 							    function getCount_BeforeSearch() {
 							        angular.copy($scope.selectedNodes, selectedNodesTemp);
 							        selectedNodesTemp.push(currentnode);
-							        selectedNodesTemp.forEach(function (selectedItem) {
-							            $scope.bookContainers.forEach(function (bookItem) {
-							                if (selectedItem.bookid === bookItem.guid) {
-							                    var containerJson = convertToJson(bookItem.containers);
-							                    checkInBookContainer(containerJson, selectedItem);
-
+							        $scope.bookContainers.forEach(function (bookItem) {
+							            selectedNodesTemp.forEach(function (selectedItem) {
+							                var containerNodes = CommonService.SearchItem(convertToJson(bookItem.containers), selectedItem.guid);
+							                if (containerNodes) {
+							                    selectedNodesArray.push(containerNodes);
 							                }
 							            })
 							        });
@@ -1573,10 +1583,11 @@ angular
 							    function getCount_SimpleSearch() {
 							        angular.copy($scope.selectedNodes, selectedNodesTemp);
 							        selectedNodesTemp.push(currentnode); //if current node is not selected , push current node to array.
-							        selectedNodesTemp.forEach(function (selectedItem) {
-							            $scope.bookContainers.forEach(function (bookItem) {
-							                if (selectedItem.bookid === bookItem.guid) {
-							                    checkInBookContainer_SimpleSearch(bookItem, selectedItem);
+							        $scope.bookContainers.forEach(function (bookItem) {
+							            selectedNodesTemp.forEach(function (selectedItem) {
+							                var containerNodes = CommonService.SearchItem(convertToJson(bookItem.containers), selectedItem.guid);
+							                if (containerNodes) {
+							                    selectedNodesArray.push(containerNodes);
 							                }
 							            })
 							        });
@@ -1620,12 +1631,12 @@ angular
 							    function getCount_AdvanceSearch() {
 							        angular.copy($scope.selectedNodes, selectedNodesTemp);
 							        selectedNodesTemp.push(currentnode); //if current node is not selected , push current node to array.
-							        selectedNodesTemp.forEach(function (selectedItem) {
-							            $scope.searchedBookContainers.forEach(function (bookItem) {
-							                if (selectedItem.bookid === bookItem.guid) {
-							                    var containerJson = convertToJson(bookItem.containers);
-							                    checkInBookContainer(containerJson, selectedItem);
-							                }
+							        $scope.searchedBookContainers.forEach(function (bookItem) {
+							            selectedNodesTemp.forEach(function (selectedItem) {
+							                var containerNodes = CommonService.SearchItem(convertToJson(bookItem.containers), selectedItem.guid);
+							                if (containerNodes) {
+							                    selectedNodesArray.push(containerNodes);
+							                } 
 							            })
 							        });
 							    }
@@ -1682,12 +1693,12 @@ angular
 							            if (item.nodes) {
 							                childNodes(item.nodes)
 							            } else {
-							                var found = false;
-							                selectedNodesArray.forEach(function (rootItem) {
-							                    if (rootItem.guid === item.guid) {
-							                        found = true;
-							                    }
-							                })
+							                //var found = false;
+							                //selectedNodesArray.forEach(function (rootItem) {
+							                //    if (rootItem.guid === item.guid) {
+							                //        found = true;
+							                //    }
+							                //})
 							                if (!item.questionBindings) {
 							                    questions.push(item.guid);
 							                } else {
