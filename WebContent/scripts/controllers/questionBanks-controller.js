@@ -3030,7 +3030,18 @@ angular
 								})
 								fillBookContainers();
 							}
-
+							
+							/*
+							 * This is a callback executed when a match is selected. 
+							 */
+							$scope.onSelect = function ($item, $model, $label) {
+								
+								if($('ul.dropdown-menu')[1] != undefined){
+									$('ul.dropdown-menu')[1].scrollTop = 0; // We are clearing the scroll top here. 
+								}
+																
+							};
+							
 							$scope.validateSearch = function(){
 
 								if($scope.selectedBooks.length == 0){
