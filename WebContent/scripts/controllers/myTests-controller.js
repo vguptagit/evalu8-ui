@@ -172,10 +172,8 @@ angular.module('e8MyTests')
                     
                     var prev;
                     if(e.source.index < destIndex) {
-                    	prev = e.dest.nodesScope.childNodes()[destIndex];	
-                    } else {
-                    	prev = e.dest.nodesScope.childNodes()[destIndex-1];
-                    }
+                    	prev = e.dest.nodesScope.childNodes()[destIndex-1];	
+                    } 
                     
                     var next;
                     if(e.source.index < destIndex) {
@@ -224,20 +222,26 @@ angular.module('e8MyTests')
                     }                      
 
                     if( !IsTargetAreaInScope && 
-                            (destination.$parent &&  
-                                    (
-                                            $(destination.$parent.$element).find("ol").attr('droppable') == 'false' ||
-                                            $(destination.$parent.$element).closest("ol").attr('droppable') == 'false'
-                                    )                              
-                            )
+                    		(destination.$parent &&  
+                    				(
+                    						$(destination.$parent.$element).find("ol").attr('droppable') == 'false' ||
+                    						$(destination.$parent.$element).closest("ol").attr('droppable') == 'false'
+                    				)                              
+                    		)
                     ) {
 
-                        e.source.nodeScope.$$apply = false;
-                        $scope.dragStarted = false;
+                    	e.source.nodeScope.$$apply = false;
+                    	$scope.dragStarted = false;
                     }
+
+                    if(source.node && destination.node &&(source.node === destination.node)){
+                    	e.source.nodeScope.$$apply = false;
+                    	$scope.dragStarted = false;
+                    	return;
+                    }
+                    
                     if(destination.node){
                         if(destination.node.nodeType == "archiveRoot"){
-
                             e.source.nodeScope.$$apply = false;
                             $scope.dragStarted = false;
                         }

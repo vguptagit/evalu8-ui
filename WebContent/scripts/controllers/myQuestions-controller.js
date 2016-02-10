@@ -640,11 +640,16 @@ angular.module('e8MyTests')
                     }    
 
                     if (mouseOverNode) {
-                        $rootScope.tree = { mouseOverNode: null };
-                        mouseOverNode.hover = false;
-                        $scope.dragStarted = false;
-                    }                    
-                 
+                    	$rootScope.tree = { mouseOverNode: null };
+                    	mouseOverNode.hover = false;
+                    	$scope.dragStarted = false;
+                    }  
+                    
+                    if(source.node && destination.node &&(source.node === destination.node)){
+                    	e.source.nodeScope.$$apply = false;
+                    	$scope.dragStarted = false;
+                    	return;
+                    }
                     if (mouseOverNode && (mouseOverNode.node != source.node)) {
                         e.source.nodeScope.$$apply = false;
                         $scope.dropIntoFolder(source, sourceParent, mouseOverNode);
@@ -695,23 +700,23 @@ angular.module('e8MyTests')
                     }                      
 
                     if( !IsTargetAreaInScope && 
-                            (destination.$parent &&  
-                                    (
-                                            $(destination.$parent.$element).find("ol").attr('droppable') == 'false' ||
-                                            $(destination.$parent.$element).closest("ol").attr('droppable') == 'false'
-                                    )                              
-                            )
+                    		(destination.$parent &&  
+                    				(
+                    						$(destination.$parent.$element).find("ol").attr('droppable') == 'false' ||
+                    						$(destination.$parent.$element).closest("ol").attr('droppable') == 'false'
+                    				)                              
+                    		)
                     ) {
 
-                        e.source.nodeScope.$$apply = false;
-                        $scope.dragStarted = false;
+                    	e.source.nodeScope.$$apply = false;
+                    	$scope.dragStarted = false;
                     }
                     if(destination.node){
-                        if(destination.node.nodeType == "archiveRoot"){
+                    	if(destination.node.nodeType == "archiveRoot"){
 
-                            e.source.nodeScope.$$apply = false;
-                            $scope.dragStarted = false;
-                        }
+                    		e.source.nodeScope.$$apply = false;
+                    		$scope.dragStarted = false;
+                    	}
                     }
  
                 },
