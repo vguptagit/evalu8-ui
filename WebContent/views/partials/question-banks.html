@@ -2,7 +2,8 @@
 	<div class="col-lg-6">
 		<input type="text" placeHolder="Search selected banks"
 			class="bookSearch form-control" ng-model="selectedContainer" typeahead-watch-changes ng-disabled="isSimpleSearchClicked"
-			ng-focus="validateSearch()"
+			ng-focus="validateSearch()"	
+			typeahead-on-select="onSelect($item, $model, $label)"		
 			typeahead="container as container.title for container in allContainers | filter:{title:$viewValue}"
 			ng-keyup="showContainerOnEnter($event)"><i class="fa fa-spinner fa-pulse font-size-16 showWaitingForAutoComplete" ng-show="showWaitingForAutoComplete"></i> <span
 			class="glyphicon glyphicon-search bookSearchicon"
