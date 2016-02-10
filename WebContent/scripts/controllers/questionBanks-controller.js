@@ -446,14 +446,21 @@ angular
 							function convertToJson(bookcontainers) {
 							    containerJson = [];
 							    bookContainers = [];
+							    var _bookContainersJson = null;
+							    if (!$scope.isAdvancedSearchMode) {
+							        _bookContainersJson = bookContainersJson;
+							    }
+
 							    if (bookcontainers) {
-							        var book = _.find(bookContainersJson, function (o) { return o.guid === bookcontainers[0].bookid; });
+							        var book = _.find(_bookContainersJson, function (o) { return o.guid === bookcontainers[0].bookid; });
 							        if (book) {
 							            return book.containers;
 							        }
 							        bookContainers = bookcontainers;
 							        containerJson = getRootItems("");
-							        bookContainersJson.push({ "guid": bookcontainers[0].bookid, containers: containerJson });
+							        if (!$scope.isAdvancedSearchMode) {
+							            _bookContainersJson.push({ "guid": bookcontainers[0].bookid, containers: containerJson });
+							        }
 							    }
 							    return containerJson
 							}
@@ -1587,6 +1594,8 @@ angular
 							                var containerNodes = CommonService.SearchItem(convertToJson(bookItem.containers), selectedItem.guid);
 							                if (containerNodes) {
 							                    selectedNodesArray.push(containerNodes);
+							                } else if (selectedItem.nodeType === EnumService.NODE_TYPE.question) {
+							                    selectedNodesArray.push(selectedItem);
 							                }
 							            })
 							        });
@@ -1597,9 +1606,8 @@ angular
 							        selectedNodesTemp.push(currentnode); //if current node is not selected , push current node to array.
 							        $scope.bookContainers.forEach(function (bookItem) {
 							            selectedNodesTemp.forEach(function (selectedItem) {
-							                var containerNodes = CommonService.SearchItem(convertToJson(bookItem.containers), selectedItem.guid);
-							                if (containerNodes) {
-							                    selectedNodesArray.push(containerNodes);
+							                if (selectedItem.bookid === bookItem.guid) {
+							                    checkInBookContainer_SimpleSearch(bookItem, selectedItem);
 							                }
 							            })
 							        });
@@ -1648,7 +1656,9 @@ angular
 							                var containerNodes = CommonService.SearchItem(convertToJson(bookItem.containers), selectedItem.guid);
 							                if (containerNodes) {
 							                    selectedNodesArray.push(containerNodes);
-							                } 
+							                } else if (selectedItem.nodeType === EnumService.NODE_TYPE.question) {
+							                    selectedNodesArray.push(selectedItem);
+							                }
 							            })
 							        });
 							    }
