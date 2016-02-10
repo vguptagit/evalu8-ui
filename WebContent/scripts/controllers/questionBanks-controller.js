@@ -3036,8 +3036,8 @@ angular
 							 */
 							$scope.onSelect = function ($item, $model, $label) {
 								
-								if($('ul.dropdown-menu')[1] != undefined){
-									$('ul.dropdown-menu')[1].scrollTop = 0; // We are clearing the scroll top here. 
+								if($('ul.dropdown-menu') != undefined && $('ul.dropdown-menu').length > 1){
+									$('ul.dropdown-menu').eq(1).scrollTop(0); // We are clearing the scroll top here. 
 								}
 																
 							};
@@ -3067,7 +3067,7 @@ angular
 							$scope.showContainerOnEnter = function(event) {
 								$(".dropdown-menu")
 								.addClass("autocompleteList");								
-								
+							
 				                if(event.which === 40){
 				            		var activeMenuTopPos= $('ul.dropdown-menu li.active').offset().top;
 				            		var activeMenuHeight=$('ul.dropdown-menu li.active').height();
