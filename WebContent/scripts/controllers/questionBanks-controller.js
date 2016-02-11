@@ -1372,12 +1372,6 @@ angular
 									  var test = SharedTabService.tests[SharedTabService.currentTabIndex];
 								    node.nodes.forEach(function (node) {
 								      
-								        if ($scope.isNodeUsedForWizard(node, test)) {
-								            node.showTestWizardIcon = false;
-								        } else {
-								            node.showTestWizardIcon = true;
-								        }
-										node.isNodeSelected = true;
 										if(!$scope.isNodeInTestFrame(node)){
 											node.showEditQuestionIcon = true;
 											node.existInTestframe = false;
@@ -1386,6 +1380,13 @@ angular
 												$scope.checkChildSelection(node);
 											}					
 										}
+										if (test.isTestWizard && $scope.isNodeUsedForWizard(node, test)) {
+										    node.showTestWizardIcon = false;
+										    node.existInTestframe = true;
+										} else {
+										    node.showTestWizardIcon = true;
+										}
+										node.isNodeSelected = true;
 									});								
 								}else{									
 									node.nodes.forEach(function(node) {	
@@ -1515,13 +1516,13 @@ angular
 							    function getCount_inTestWizard() {
 							        angular.copy($scope.selectedNodes, selectedNodesTemp);
 							        selectedNodesTemp.push(currentnode);
-							        var book = _.find($scope.bookContainers, function (o) { return o.guid === currentnode.bookid; });
-							        var containerNodes = CommonService.SearchItem(convertToJson(book.containers), currentnode.guid);
+							        var book = _.find($scope.bookContainersJson, function (o) { return o.guid === currentnode.bookid; });
+							        var containerNodes = CommonService.SearchItem(book.containers, currentnode.guid);
 							        //if current node is chapter and if it contains nodes then push those also.
 							        if (containerNodes && containerNodes.nodes && containerNodes.nodes.length) {
 							            selectedNodesTemp = selectedNodesTemp.concat(containerNodes.nodes);
 							        } else if (currentnode.nodeType === EnumService.NODE_TYPE.question) {
-							            containerNodes = CommonService.SearchItem(convertToJson(book.containers), currentnode.parentId);
+							            containerNodes = CommonService.SearchItem(book.containers, currentnode.parentId);
 							            selectedNodesTemp = selectedNodesTemp.concat(containerNodes);
 							        }
 							        // pick all test criteria folder guids
@@ -3257,8 +3258,8 @@ angular
 													rootContainers.push(container)
 												}
 											});
-											var bookContainerItem = _.find($scope.searchedBookContainers, function (o) { return o.guid === book.guid; });
-											bookContainerItem.containers = containers;
+											var bookContainerItem = _.find($scope.searchedBookContainersJson, function (o) { return o.guid === book.guid; });
+											bookContainerItem.containers = angular.copy(CommonService.ConvertToJson(containers, ""));
 											if(rootContainers.length==0){
 												emptyBooks = emptyBooks+1;
 											}
