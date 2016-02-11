@@ -481,14 +481,17 @@ angular.module('e8MyTests')
 				$scope.selectedNodes.push(SharedTabService.tests[i].treeNode);
 			}
 		}
-		
+		var  userFoldersJson = [];
+
         $scope.loadTree = function() {        	
         	
-        	QuestionFolderService.defaultFolders(true,function (defaultFolders) {
+            QuestionFolderService.defaultFolders(true, function (defaultFolders) {
         		if(defaultFolders==null){
         			CommonService.showErrorMessage(e8msg.error.cantFetchFolders)
         			return;
-        		}       		
+        		}
+
+                userFoldersJson = CommonService.ConvertToJson(defaultFolders, defaultFolders[0].userID)
         		        		
             	QuestionFolderService.questionRootFolder(function(myQuestionRoot){
             		if(myQuestionRoot==null){
@@ -584,7 +587,8 @@ angular.module('e8MyTests')
                 },
                 dragMove: function(e) {
                 	$scope.dragStarted = true;
-                	
+                	$scope.questionCountPosition = "top:" + (e.elements.dragging.offset().top - 20) + "px; left:" + (e.elements.dragging.offset().left + e.elements.dragging.width() - 70) + "px; position:fixed;z-index:2000";
+
                 	/*
                 	 * Saving placeholder and position to hide|show placeholder on enter|leave a folder node
                 	 */ 
@@ -612,10 +616,12 @@ angular.module('e8MyTests')
                 dragStart: function(e) {
                 	$('body *').css({'cursor':'url("images/grabbing.cur"), move'});
                 	e.source.nodeScope.sourceOnly = false;
+                	DisplayQuestionCount(e.source.nodeScope.node);
                 },
                 dragStop: function(e) {
                 	$('body *').css({'cursor':''});
                 	$scope.dragStarted = false;
+                	$scope.questionCountPosition = '';
                 },
                 beforeDrop: function(e) {
                     
@@ -1004,7 +1010,10 @@ angular.module('e8MyTests')
             			}
 
             			$rootScope.blockLeftPanel.stop();
-            		});                        
+            		});
+            		QuestionFolderService.defaultFolders(true, function (defaultFolders) {
+            		    userFoldersJson = CommonService.ConvertToJson(defaultFolders, defaultFolders[0].userID)
+            		});
             	});            		            		
             }
             else if(item.nodeType == EnumService.NODE_TYPE.folder) {
@@ -1041,6 +1050,9 @@ angular.module('e8MyTests')
             			sourceParent.node.nodes.push(CommonService.getEmptyFolder());
             			onDragAndDropSetNodeStatus(sourceParent,false);
             		}
+            		QuestionFolderService.defaultFolders(true, function (defaultFolders) {
+            		    userFoldersJson = CommonService.ConvertToJson(defaultFolders, defaultFolders[0].userID)
+            		});
             		$rootScope.blockLeftPanel.stop();
             	});
             }                            
@@ -2850,7 +2862,9 @@ angular.module('e8MyTests')
                 		editedQuestion.questnNumber = editedQuestion.questnNumber + ((question['nodeType']=="question")?1:0);
                 });                
                 
-                $scope.defaultFolders.push(editedQuestion);                    
+                $scope.defaultFolders.push(editedQuestion);
+                userFoldersJson[0].questionBindings.push({ 'questionId': editedQuestion.guid });
+
 			})			
 			
 			if(editedQuestions.length>0){
@@ -2982,5 +2996,115 @@ angular.module('e8MyTests')
 		var  isForeign = function(e){
 			return e.source.nodeScope.$treeScope != e.dest.nodesScope.$treeScope
 		}
-		
+
+		function DisplayQuestionCount(currentnode) {
+		    var selectedNodesArray = [],
+                selectedNodesTemp = [],
+                questions = [],
+                testQuestionGuids = [];
+
+		    $scope.questionCount = null;
+
+		    setTimeout(function () {
+		        CalculateQuestionCount();
+		        Display();
+		    }, 100);
+
+		    var CalculateQuestionCount = function () {
+		        if (SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
+		            getCount_inTestWizard();
+		            //number of question going to drop on right side.
+		            $scope.questionCount = questions.length > 1 ? (questions.length + ' ' + e8msg.questionCount.questions) : (questions.length + ' ' + e8msg.questionCount.question);
+		            return;
+		        } else {
+		            getCount_BeforeSearch();
+		        }
+
+		        function getCount_inTestWizard() {
+		            angular.copy($scope.selectedNodes, selectedNodesTemp);
+		            selectedNodesTemp.push(currentnode);
+		            var book = _.find($scope.bookContainers, function (o) { return o.guid === currentnode.bookid; });
+		            var containerNodes = CommonService.SearchItem(userFoldersJson, currentnode.guid);
+		            //if current node is chapter and if it contains nodes then push those also.
+		            if (containerNodes && containerNodes.nodes && containerNodes.nodes.length) {
+		                selectedNodesTemp = selectedNodesTemp.concat(containerNodes.nodes);
+		            }
+		            // pick all test criteria folder guids
+		            var testFrameCriteriaGuids = _.pluck(SharedTabService.tests[SharedTabService.currentTabIndex].criterias, 'folderId');
+		            //pick all the selected folder guids
+		            var selectedNodeGuids = _.pluck(selectedNodesTemp, 'guid');
+		            //filter selected folder guids with respect to test criteria sections.
+		            var filteredSelectedNodeGuidsGuids = _.difference(_.pluck(selectedNodesTemp, 'guid'), _.pluck(SharedTabService.tests[SharedTabService.currentTabIndex].criterias, 'folderId'));
+		            //pick all the question bindings from filtered selected folders
+		            _(filteredSelectedNodeGuidsGuids).forEach(function (id) {
+		                var item = _.find(selectedNodesTemp, function (o) {
+		                    return o.guid === id;
+		                });
+		                if (item.questionBindings) {
+		                    questions = questions.concat(_.pluck(item.questionBindings, 'questionId'));
+		                    questions = _.uniq(questions);
+		                }
+		            });
+		        }
+
+		        function getCount_BeforeSearch() {
+		            angular.copy($scope.selectedNodes, selectedNodesTemp);
+		            selectedNodesTemp.push(currentnode);
+
+		            selectedNodesTemp.forEach(function (selectedItem) {
+		                var containerNodes = CommonService.SearchItem(userFoldersJson, selectedItem.guid);
+		                if (containerNodes) {
+		                    selectedNodesArray.push(containerNodes);
+		                } else if (selectedItem.nodeType === EnumService.NODE_TYPE.question) {
+		                    selectedNodesArray.push(selectedItem);
+		                }
+		            })
+
+		        }
+
+
+
+		        function rootNodes() {
+		            selectedNodesArray.forEach(function (rootItem) {
+		                if (rootItem.nodes && rootItem.nodes.length) {
+		                    childNodes(rootItem.nodes);
+		                }
+		                if (rootItem.questionBindings) { //if folders
+		                    questions = questions.concat(_.pluck(rootItem.questionBindings, 'questionId'));
+		                } else if (rootItem.nodeType === EnumService.NODE_TYPE.question) {//if questions
+		                    questions.push(rootItem.guid);
+		                }
+		            })
+		        }
+		        function childNodes(childItems) {
+		            childItems.forEach(function (item) {
+		                if (item.nodes) {
+		                    childNodes(item.nodes)
+		                } else {
+		                    if (!item.questionBindings && item.guid) {
+		                        questions.push(item.guid);
+		                    } else if (item.questionBindings) {
+		                        questions = questions.concat(_.pluck(item.questionBindings, 'questionId'));
+		                    }
+		                }
+		            })
+		        }
+		        rootNodes();		         
+
+		        //questions of current test.
+		        _.forEach(SharedTabService.tests[SharedTabService.currentTabIndex].questions, function (value, key) {
+		            if (value.guid) {
+		                testQuestionGuids.push(value.guid);
+		            }
+		        });
+		    }
+		    var Display = function () {
+		        //remove the duplicate question guids. the questions may contains in the root of the $scope.selectedNodes.
+		        questions = _.uniq(questions);
+
+		        //number of question going to drop on right side.
+		        var qnCount = Math.abs(_.difference(questions, testQuestionGuids).length);
+		        $scope.questionCount = qnCount > 1 ? (qnCount + ' ' + e8msg.questionCount.questions) : (qnCount + ' ' + e8msg.questionCount.question);
+		    }
+		}
     }]);
