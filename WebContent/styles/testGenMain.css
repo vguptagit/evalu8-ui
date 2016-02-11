@@ -381,7 +381,7 @@ a.newFolder:hover {
 }
 
 .maindiv {
-	min-height: 30px;
+	min-height: 41px;
 	width: 100%;
 	display: table;
 	padding-left: 10px;
@@ -430,8 +430,13 @@ a.newFolder:hover {
 }
  
 #MyTest-tree-root .txtFolderNameEdit{
-    margin-top: 4px;
+    margin-top: 5px;
     height: 30px;
+    width: 80%;
+    float: left;
+	margin-left: 5px;
+	padding-bottom: 3px;
+	margin-bottom: 6px;
 }
 
 .captionTestNode {

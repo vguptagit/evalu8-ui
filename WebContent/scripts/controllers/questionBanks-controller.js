@@ -3060,7 +3060,7 @@ angular
 							 */
 							$scope.onSelect = function ($item, $model, $label) {
 								
-								if($('ul.dropdown-menu') != undefined && $('ul.dropdown-menu').length > 1){
+								if($('ul.dropdown-menu').length > 1){
 									$('ul.dropdown-menu').eq(1).scrollTop(0); // We are clearing the scroll top here. 
 								}
 																
