@@ -153,5 +153,36 @@ angular.module('evalu8Demo')
         });
     };
 
+    /******** ConvertToJson Starts ***********/
+    var containerJson = [];
+    commonService.ConvertToJson = function convertToJson(itemArray, parentid) {
+        containerJson = [];
+        if (itemArray) {
+            containerJson = getRootItems(itemArray, parentid);
+        }
+        return containerJson
+    }
+    function getRootItems(itemArray, parentid) {
+        itemArray.forEach(function (item) {
+            if (item.parentId === parentid) {
+                item.nodes = [];
+                containerJson.push(item);
+                getChildItems(itemArray, item)
+            }
+        });
+        return containerJson
+    }
+    function getChildItems(itemArray, parentItem) {
+        itemArray.forEach(function (item) {
+            if (item.parentId === parentItem.guid) {
+                if (!parentItem.nodes) {
+                    parentItem.nodes = [];
+                }
+                parentItem.nodes.push(item);
+                getChildItems(itemArray, item);
+            }
+        });
+    }
+    /******** ConvertToJson Ends ***********/
     return commonService;
 }]);
