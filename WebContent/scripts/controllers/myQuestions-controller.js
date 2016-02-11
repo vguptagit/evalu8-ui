@@ -3081,12 +3081,6 @@ angular.module('e8MyTests')
 		                if (item.nodes) {
 		                    childNodes(item.nodes)
 		                } else {
-		                    //var found = false;
-		                    //selectedNodesArray.forEach(function (rootItem) {
-		                    //    if (rootItem.guid === item.guid) {
-		                    //        found = true;
-		                    //    }
-		                    //})
 		                    if (!item.questionBindings && item.guid) {
 		                        questions.push(item.guid);
 		                    } else if (item.questionBindings) {
