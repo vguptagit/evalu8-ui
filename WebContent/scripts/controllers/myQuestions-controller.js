@@ -2996,52 +2996,61 @@ angular.module('e8MyTests')
 		var  isForeign = function(e){
 			return e.source.nodeScope.$treeScope != e.dest.nodesScope.$treeScope
 		}
-		
+
 		function DisplayQuestionCount(currentnode) {
 		    var selectedNodesArray = [],
                 selectedNodesTemp = [],
-                questions = [];
+                questions = [],
+                testQuestionGuids = [];
 
-		    if (SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
-		        getCount_inTestWizard();
-		        //number of question going to drop on right side.
-		        $scope.questionCount = questions.length > 1 ? (questions.length + ' ' + e8msg.questionCount.questions) : (questions.length + ' ' + e8msg.questionCount.question);
-		        return;
-		    } else {
-		        getCount_BeforeSearch();
-		    }
+		    $scope.questionCount = null;
 
-		    function getCount_inTestWizard() {
-		        angular.copy($scope.selectedNodes, selectedNodesTemp);
-		        selectedNodesTemp.push(currentnode);
-		        var book = _.find($scope.bookContainers, function (o) { return o.guid === currentnode.bookid; });
-		        var containerNodes = CommonService.SearchItem(userFoldersJson, currentnode.guid);
-		        //if current node is chapter and if it contains nodes then push those also.
-		        if (containerNodes && containerNodes.nodes && containerNodes.nodes.length) {
-		            selectedNodesTemp = selectedNodesTemp.concat(containerNodes.nodes);
+		    setTimeout(function () {
+		        CalculateQuestionCount();
+		        Display();
+		    }, 100);
+
+		    var CalculateQuestionCount = function () {
+		        if (SharedTabService.tests[SharedTabService.currentTabIndex].isTestWizard) {
+		            getCount_inTestWizard();
+		            //number of question going to drop on right side.
+		            $scope.questionCount = questions.length > 1 ? (questions.length + ' ' + e8msg.questionCount.questions) : (questions.length + ' ' + e8msg.questionCount.question);
+		            return;
+		        } else {
+		            getCount_BeforeSearch();
 		        }
-		        // pick all test criteria folder guids
-		        var testFrameCriteriaGuids = _.pluck(SharedTabService.tests[SharedTabService.currentTabIndex].criterias, 'folderId');
-		        //pick all the selected folder guids
-		        var selectedNodeGuids = _.pluck(selectedNodesTemp, 'guid');
-		        //filter selected folder guids with respect to test criteria sections.
-		        var filteredSelectedNodeGuidsGuids = _.difference(_.pluck(selectedNodesTemp, 'guid'), _.pluck(SharedTabService.tests[SharedTabService.currentTabIndex].criterias, 'folderId'));
-		        //pick all the question bindings from filtered selected folders
-		        _(filteredSelectedNodeGuidsGuids).forEach(function (id) {
-		            var item = _.find(selectedNodesTemp, function (o) {
-		                return o.guid === id;
-		            });
-		            if (item.questionBindings) {
-		                questions = questions.concat(_.pluck(item.questionBindings, 'questionId'));
-		                questions = _.uniq(questions);
-		            }
-		        });
-		    }
 
-		    function getCount_BeforeSearch() {
-		        angular.copy($scope.selectedNodes, selectedNodesTemp);
-		        selectedNodesTemp.push(currentnode);
-		         
+		        function getCount_inTestWizard() {
+		            angular.copy($scope.selectedNodes, selectedNodesTemp);
+		            selectedNodesTemp.push(currentnode);
+		            var book = _.find($scope.bookContainers, function (o) { return o.guid === currentnode.bookid; });
+		            var containerNodes = CommonService.SearchItem(userFoldersJson, currentnode.guid);
+		            //if current node is chapter and if it contains nodes then push those also.
+		            if (containerNodes && containerNodes.nodes && containerNodes.nodes.length) {
+		                selectedNodesTemp = selectedNodesTemp.concat(containerNodes.nodes);
+		            }
+		            // pick all test criteria folder guids
+		            var testFrameCriteriaGuids = _.pluck(SharedTabService.tests[SharedTabService.currentTabIndex].criterias, 'folderId');
+		            //pick all the selected folder guids
+		            var selectedNodeGuids = _.pluck(selectedNodesTemp, 'guid');
+		            //filter selected folder guids with respect to test criteria sections.
+		            var filteredSelectedNodeGuidsGuids = _.difference(_.pluck(selectedNodesTemp, 'guid'), _.pluck(SharedTabService.tests[SharedTabService.currentTabIndex].criterias, 'folderId'));
+		            //pick all the question bindings from filtered selected folders
+		            _(filteredSelectedNodeGuidsGuids).forEach(function (id) {
+		                var item = _.find(selectedNodesTemp, function (o) {
+		                    return o.guid === id;
+		                });
+		                if (item.questionBindings) {
+		                    questions = questions.concat(_.pluck(item.questionBindings, 'questionId'));
+		                    questions = _.uniq(questions);
+		                }
+		            });
+		        }
+
+		        function getCount_BeforeSearch() {
+		            angular.copy($scope.selectedNodes, selectedNodesTemp);
+		            selectedNodesTemp.push(currentnode);
+
 		            selectedNodesTemp.forEach(function (selectedItem) {
 		                var containerNodes = CommonService.SearchItem(userFoldersJson, selectedItem.guid);
 		                if (containerNodes) {
@@ -3050,57 +3059,58 @@ angular.module('e8MyTests')
 		                    selectedNodesArray.push(selectedItem);
 		                }
 		            })
-		        
-		    }
-             
-		    var questions = [];
 
-		    function rootNodes() {
-		        selectedNodesArray.forEach(function (rootItem) {
-		            if (rootItem.nodes && rootItem.nodes.length) {
-		                childNodes(rootItem.nodes);
-		            }
-		            if (rootItem.questionBindings) { //if folders
-		                questions = questions.concat(_.pluck(rootItem.questionBindings, 'questionId'));
-		            } else if (rootItem.nodeType === EnumService.NODE_TYPE.question) {//if questions
-		                questions.push(rootItem.guid);
-		            }
-		        })
-		    }
-		    function childNodes(childItems) {
-		        childItems.forEach(function (item) {
-		            if (item.nodes) {
-		                childNodes(item.nodes)
-		            } else {
-		                //var found = false;
-		                //selectedNodesArray.forEach(function (rootItem) {
-		                //    if (rootItem.guid === item.guid) {
-		                //        found = true;
-		                //    }
-		                //})
-		                if (!item.questionBindings && item.guid) {
-		                    questions.push(item.guid);
-		                } else if (item.questionBindings) {
-		                    questions = questions.concat(_.pluck(item.questionBindings, 'questionId'));
-		                }
-		            }
-		        })
-		    }
-		    rootNodes();
-		    var testQuestionGuids = [];
-
-		    //questions of current test.
-		    _.forEach(SharedTabService.tests[SharedTabService.currentTabIndex].questions, function (value, key) {
-		        if (value.guid) {
-		            testQuestionGuids.push(value.guid);
 		        }
-		    });
 
-		    //remove the duplicate question guids. the questions may contains in the root of the $scope.selectedNodes.
-		    questions = _.uniq(questions);
 
-		    //number of question going to drop on right side.
-		    var qnCount = Math.abs(_.difference(questions, testQuestionGuids).length);
-		    $scope.questionCount = qnCount > 1 ? (qnCount + ' ' + e8msg.questionCount.questions) : (qnCount + ' ' + e8msg.questionCount.question);
+
+		        function rootNodes() {
+		            selectedNodesArray.forEach(function (rootItem) {
+		                if (rootItem.nodes && rootItem.nodes.length) {
+		                    childNodes(rootItem.nodes);
+		                }
+		                if (rootItem.questionBindings) { //if folders
+		                    questions = questions.concat(_.pluck(rootItem.questionBindings, 'questionId'));
+		                } else if (rootItem.nodeType === EnumService.NODE_TYPE.question) {//if questions
+		                    questions.push(rootItem.guid);
+		                }
+		            })
+		        }
+		        function childNodes(childItems) {
+		            childItems.forEach(function (item) {
+		                if (item.nodes) {
+		                    childNodes(item.nodes)
+		                } else {
+		                    //var found = false;
+		                    //selectedNodesArray.forEach(function (rootItem) {
+		                    //    if (rootItem.guid === item.guid) {
+		                    //        found = true;
+		                    //    }
+		                    //})
+		                    if (!item.questionBindings && item.guid) {
+		                        questions.push(item.guid);
+		                    } else if (item.questionBindings) {
+		                        questions = questions.concat(_.pluck(item.questionBindings, 'questionId'));
+		                    }
+		                }
+		            })
+		        }
+		        rootNodes();		         
+
+		        //questions of current test.
+		        _.forEach(SharedTabService.tests[SharedTabService.currentTabIndex].questions, function (value, key) {
+		            if (value.guid) {
+		                testQuestionGuids.push(value.guid);
+		            }
+		        });
+		    }
+		    var Display = function () {
+		        //remove the duplicate question guids. the questions may contains in the root of the $scope.selectedNodes.
+		        questions = _.uniq(questions);
+
+		        //number of question going to drop on right side.
+		        var qnCount = Math.abs(_.difference(questions, testQuestionGuids).length);
+		        $scope.questionCount = qnCount > 1 ? (qnCount + ' ' + e8msg.questionCount.questions) : (qnCount + ' ' + e8msg.questionCount.question);
+		    }
 		}
     }]);
