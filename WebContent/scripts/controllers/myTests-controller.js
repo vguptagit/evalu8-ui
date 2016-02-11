@@ -148,6 +148,7 @@ angular.module('e8MyTests')
                 },
                 beforeDrop: function(e) {
                     
+                	var destination = e.dest.nodesScope;
                     var source = e.source.nodeScope;
                     var sourceParent = e.source.nodeScope.$parentNodeScope;
 
@@ -161,8 +162,13 @@ angular.module('e8MyTests')
                         $scope.dragStarted = false;
                     }
 
+                    if(source.node && destination.node &&(source.node === destination.node)){
+                    	e.source.nodeScope.$$apply = false;
+                    	$scope.dragStarted = false;
+                    	return;
+                    }
+                    
                     if (mouseOverNode && (mouseOverNode.node != source.node)) {
-
                         e.source.nodeScope.$$apply = false;
                         $scope.dropIntoFolder(source, sourceParent, mouseOverNode);
                         return;                        
@@ -172,14 +178,14 @@ angular.module('e8MyTests')
                     
                     var prev;
                     if(e.source.index < destIndex) {
-                    	prev = e.dest.nodesScope.childNodes()[destIndex-1];	
+                    	prev = destination.childNodes()[destIndex-1];	
                     } 
                     
                     var next;
                     if(e.source.index < destIndex) {
-                    	next = e.dest.nodesScope.childNodes()[destIndex+1];	
+                    	next = destination.childNodes()[destIndex+1];	
                     } else {
-                    	next = e.dest.nodesScope.childNodes()[destIndex];
+                    	next = destination.childNodes()[destIndex];
                     }                                                                
 
                     if(source.node.nodeType=="test") {
@@ -206,7 +212,6 @@ angular.module('e8MyTests')
                         }                    
                     } 
 
-                    var destination = e.dest.nodesScope;
 
                     var editModeQuestions=$(destination.$parent.$element).find("li[printmode=false]");
 
@@ -234,11 +239,6 @@ angular.module('e8MyTests')
                     	$scope.dragStarted = false;
                     }
 
-                    if(source.node && destination.node &&(source.node === destination.node)){
-                    	e.source.nodeScope.$$apply = false;
-                    	$scope.dragStarted = false;
-                    	return;
-                    }
                     
                     if(destination.node){
                         if(destination.node.nodeType == "archiveRoot"){

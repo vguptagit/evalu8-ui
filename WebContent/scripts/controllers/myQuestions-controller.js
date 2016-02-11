@@ -642,7 +642,7 @@ angular.module('e8MyTests')
 
                     	 e.source.nodeScope.$$apply = false;
                          $scope.dragStarted = false;
-                        return;                        
+                         return;                        
                     }    
 
                     if (mouseOverNode) {
@@ -666,14 +666,14 @@ angular.module('e8MyTests')
                     
                     var prev;
                     if(e.source.index < destIndex) {
-                    	prev = e.dest.nodesScope.childNodes()[destIndex-1];
+                    	prev = destination.childNodes()[destIndex-1];
                     }
                     
                     var next;
                     if(e.source.index < destIndex) {
-                    	next = e.dest.nodesScope.childNodes()[destIndex+1];	
+                    	next = destination.childNodes()[destIndex+1];	
                     } else {
-                    	next = e.dest.nodesScope.childNodes()[destIndex];
+                    	next = destination.childNodes()[destIndex];
                     }                                            
 
                     if(source.node.nodeType=="question") {
