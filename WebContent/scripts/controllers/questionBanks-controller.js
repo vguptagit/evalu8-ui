@@ -3257,8 +3257,8 @@ angular
 													rootContainers.push(container)
 												}
 											});
-											var bookContainerItem = _.find($scope.searchedBookContainersJson, function (o) { return o.guid === book.guid; });
-											bookContainerItem.containers = angular.copy(CommonService.ConvertToJson(containers, ""));
+											var bookContainerItem = _.find($scope.searchedBookContainers, function (o) { return o.guid === book.guid; });
+											bookContainerItem.containers = containers;
 											if(rootContainers.length==0){
 												emptyBooks = emptyBooks+1;
 											}
