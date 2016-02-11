@@ -39,7 +39,10 @@ angular
 								SharedTabService, UserQuestionsService,
 								EnumService, $modal, blockUI, ContainerService, CommonService, BookService, HttpService, UserService, questionService) {
 
-						    
+						    $scope.bookContainers = []; // Book container array
+						    $scope.bookContainersJson = []; // Book container JSON
+						    $scope.searchedBookContainersJson = [];// Advance searched Book container JSON
+
 
 						    SharedTabService.selectedMenu = SharedTabService.menu.questionBanks;
 						    $rootScope.blockPage = blockUI.instances.get('BlockPage');
@@ -435,58 +438,6 @@ angular
 									});									
 								}								
 							}
-						    /* start : convert book container array to JSON*/
-							//$scope.bookJson = [];
-							$scope.bookContainers = [];
-							$scope.searchedBookContainers = [];
-							var containerJson = [],
-							    bookContainers = [],
-						        bookContainersJson = [];
-
-							function convertToJson(bookcontainers) {
-							    containerJson = [];
-							    bookContainers = [];
-							    var _bookContainersJson = null;
-							    if (!$scope.isAdvancedSearchMode) {
-							        _bookContainersJson = bookContainersJson;
-							    }
-
-							    if (bookcontainers) {
-							        var book = _.find(_bookContainersJson, function (o) { return o.guid === bookcontainers[0].bookid; });
-							        if (book) {
-							            return book.containers;
-							        }
-							        bookContainers = bookcontainers;
-							        containerJson = getRootItems("");
-							        if (!$scope.isAdvancedSearchMode) {
-							            _bookContainersJson.push({ "guid": bookcontainers[0].bookid, containers: containerJson });
-							        }
-							    }
-							    return containerJson
-							}
-							function getRootItems(parentid) {
-							    bookContainers.forEach(function (item) {
-							        if (item.parentId === parentid) {
-							            item.nodes = [];
-							            containerJson.push(item);
-							            getChildItems(item)
-							        }
-							    });
-							    //console.log(containerJson);
-							    return containerJson
-							}
-							function getChildItems(parentItem) {
-							    bookContainers.forEach(function (item) {
-							        if (item.parentId === parentItem.guid) {
-							            if (!parentItem.nodes) {
-							                parentItem.nodes = [];
-							            }
-							            parentItem.nodes.push(item);
-							            getChildItems(item);
-							        }
-							    });
-							}
-						    /* ends */
 
 							// To get the Chapters for the given book
 							// This method will call the api
@@ -512,29 +463,31 @@ angular
 									}
 
 									var bookContainerItem = _.find($scope.bookContainers, function (o) { return o.guid === book.node.guid; });
-									//var bookJsonItem = _.find($scope.bookJson, function (o) { return o.guid === book.node.guid; });
 									if (!bookContainerItem ) {
 									    
 									    book.node.IsBookContainersRendered = false;
 									    book.node.isHttpReqCompleted = false;
-									    //$scope.bookJson.push({ "guid": $scope.bookID, containers: null });
+									    
 									    $scope.bookContainers.push({ "guid": $scope.bookID, containers: null });
+									    $scope.bookContainersJson.push({ "guid": $scope.bookID, containers: null });
 
 									    ContainerService.getAllContainers($scope.bookID,
                                                 function (response) {
                                                     if (response == null) {
                                                         CommonService.showErrorMessage(e8msg.error.cantFetchNodes)
                                                         return;
+                                                    } else if (!response.length) {
+                                                        book.node.isHttpReqCompleted = true;
+                                                        return
                                                     }
+
                                                     book.node.IsBookContainersRendered = true;
 
                                                     var bookContainerItem = _.find($scope.bookContainers, function (o) { return o.guid === response[0].bookid; });
                                                     bookContainerItem.containers = response;
 
-                                                    //var responseJson = convertToJson(response);
-                                                    //var bookItem = _.find($scope.bookJson, function (o) { return o.guid === response[0].bookid; });
-                                                    //bookItem.containers = responseJson;
-
+                                                    var bookContainerJsonItem = _.find($scope.bookContainersJson, function (o) { return o.guid === response[0].bookid; });
+                                                    bookContainerJsonItem.containers = CommonService.ConvertToJson(response, "");
 
                                                     book.node.isHttpReqCompleted = true;
                                                 });
@@ -1078,9 +1031,9 @@ angular
 									    }
 									    currentNode.node.IsContainerReqCompleted = true;
 									    if (response.length > 0) {
-									        if (!$scope.isAdvancedSearchMode || $scope.isSearchMode) {
+									        //if (!$scope.isAdvancedSearchMode || $scope.isSearchMode) {
 									            currentNode.node.nodes = currentNode.node.nodes.concat(response);
-									        }
+									        //}
 									        $scope.expandedNodes = $scope.expandedNodes.concat(currentNode.node.nodes);
 									        var topicCount = 0;
 									        angular.forEach(currentNode.node.nodes, function (item) {
@@ -1116,12 +1069,12 @@ angular
 									};
 									var bookcontainers =null;
 									if ($scope.isAdvancedSearchMode) {
-									    var bookcontainers = $scope.searchedBookContainers;
+									    bookcontainers = $scope.searchedBookContainersJson;									    
 									} else {
-									    bookcontainers = $scope.bookContainers;
+									    bookcontainers = $scope.bookContainersJson;									    
 									}
 									var book = _.find(bookcontainers, function (o) { return o.guid === currentNode.node.bookid; });
-									var containerNodes = CommonService.SearchItem(convertToJson(book.containers), currentNode.node.guid);
+									var containerNodes = CommonService.SearchItem(book.containers, currentNode.node.guid);
 									if (containerNodes && containerNodes.nodes) {
 									    renderContainerNodes(angular.copy(containerNodes.nodes));
 									}
@@ -1592,13 +1545,11 @@ angular
 							    function getCount_BeforeSearch() {
 							        angular.copy($scope.selectedNodes, selectedNodesTemp);
 							        selectedNodesTemp.push(currentnode);
-							        $scope.bookContainers.forEach(function (bookItem) {
+							        $scope.bookContainersJson.forEach(function (bookItem) {
 							            selectedNodesTemp.forEach(function (selectedItem) {
-							                var containerNodes = CommonService.SearchItem(convertToJson(bookItem.containers), selectedItem.guid);
+							                var containerNodes = CommonService.SearchItem(bookItem.containers, selectedItem.guid);
 							                if (containerNodes) {
 							                    selectedNodesArray.push(containerNodes);
-							                } else if (selectedItem.nodeType === EnumService.NODE_TYPE.question) {
-							                    selectedNodesArray.push(selectedItem);
 							                }
 							            })
 							        });
@@ -1607,100 +1558,27 @@ angular
 							    function getCount_SimpleSearch() {
 							        angular.copy($scope.selectedNodes, selectedNodesTemp);
 							        selectedNodesTemp.push(currentnode); //if current node is not selected , push current node to array.
-							        $scope.bookContainers.forEach(function (bookItem) {
+							        $scope.bookContainersJson.forEach(function (bookItem) {
 							            selectedNodesTemp.forEach(function (selectedItem) {
-							                if (selectedItem.bookid === bookItem.guid) {
-							                    checkInBookContainer_SimpleSearch(bookItem, selectedItem);
+							                var containerNodes = CommonService.SearchItem(bookItem.containers, selectedItem.guid);
+							                if (containerNodes) {
+							                    selectedNodesArray.push(containerNodes);
 							                }
 							            })
 							        });
 							    }
-
-							    // simple search
-							    // show the count of selected/current node or its chield nodes.
-							    // if current node is parent node need to show the searched node count. 
-							    function checkInBookContainer_SimpleSearch(bookContainers, selectedItem) {
-							        var containerJson = convertToJson(bookContainers.containers);
-							        containerJson.forEach(function (item) {
-							            if (item.guid === selectedItem.guid && item.guid === $scope.selectedContainer.guid) {
-							                selectedNodesArray.push(item);
-							            }
-							            else if (item.guid === currentnode.guid) {
-							                selectedNodesArray.push($scope.selectedContainer);
-							            }
-							            else if (item.nodes) {
-							                checkInChildNode(item.nodes, selectedItem);
-							            }
-							        });
-							    }
-							    function checkInChildNode_SimpleSearch(containerItems, selectedItem) {
-							        containerItems.forEach(function (item) {
-							            if (item.guid === selectedItem.guid) {
-							                selectedNodesArray.push(item);
-							            }
-							            else if (item.guid === selectedItem.parentId) {
-							                selectedNodesArray.push(selectedItem);
-							            }
-							            else if (item.guid === $scope.selectedContainer.guid) {
-							                selectedNodesArray.push(selectedItem);
-							            }
-							            else if (item.nodes) {
-							                checkInChildNode(item.nodes, selectedItem);
-							            }
-							        })
-							    }
-
-							    //Advanced search start
 							    function getCount_AdvanceSearch() {
 							        angular.copy($scope.selectedNodes, selectedNodesTemp);
 							        selectedNodesTemp.push(currentnode); //if current node is not selected , push current node to array.
-							        $scope.searchedBookContainers.forEach(function (bookItem) {
+							        $scope.searchedBookContainersJson.forEach(function (bookItem) {
 							            selectedNodesTemp.forEach(function (selectedItem) {
-							                var containerNodes = CommonService.SearchItem(convertToJson(bookItem.containers), selectedItem.guid);
+							                var containerNodes = CommonService.SearchItem(bookItem.containers, selectedItem.guid);
 							                if (containerNodes) {
 							                    selectedNodesArray.push(containerNodes);
-							                } else if (selectedItem.nodeType === EnumService.NODE_TYPE.question) {
-							                    selectedNodesArray.push(selectedItem);
 							                }
 							            })
 							        });
 							    }
-
-							     
-							     
-                                //ends
-
-							    function checkInBookContainer(containerJson, selectedItem) {
-							        //var containerJson = convertToJson(bookContainers.containers);
-							        containerJson.forEach(function (item) {
-							            if (item.guid === selectedItem.guid) {
-							                selectedNodesArray.push(item);
-							            }
-							            else if (item.guid === selectedItem.parentId) {
-							                selectedNodesArray.push(selectedItem);
-							            }
-							            else if (item.nodes) {
-							                checkInBookContainer(item.nodes, selectedItem);
-							            }
-							        })
-
-
-							    }
-							    function checkInChildNode(containerItems, selectedItem) {
-							        containerItems.forEach(function (item) {
-							            if (item.guid === selectedItem.guid) {
-							                selectedNodesArray.push(item);
-							            }
-							            else if (item.guid === selectedItem.parentId) {
-							                selectedNodesArray.push(selectedItem);
-							            }
-							            else if (item.nodes) {
-							                checkInChildNode(item.nodes, selectedItem);
-							            }
-							        })
-							    }
-
-							    var questions = [];
 
 							    function rootNodes() {
 							        selectedNodesArray.forEach(function (rootItem) {
@@ -1718,12 +1596,6 @@ angular
 							            if (item.nodes) {
 							                childNodes(item.nodes)
 							            } else {
-							                //var found = false;
-							                //selectedNodesArray.forEach(function (rootItem) {
-							                //    if (rootItem.guid === item.guid) {
-							                //        found = true;
-							                //    }
-							                //})
 							                if (!item.questionBindings) {
 							                    questions.push(item.guid);
 							                } else {
@@ -3001,14 +2873,19 @@ angular
 									    pushBookContainer(node, bookContainerItem.containers)
 									} else {
 									    $scope.bookContainers.push({ "guid": node.guid, containers: null });
+									    $scope.bookContainersJson.push({ "guid": node.guid, containers: null });
 									    ContainerService.getAllContainers(node.guid,
 											function (response) {
 											    if (response == null) {
 											        CommonService.showErrorMessage(e8msg.error.cantFetchNodes)
 											        return;
+											    } else if (!response.length) {
+											        return
 											    }
 											    var bookContainerItem = _.find($scope.bookContainers, function (o) { return o.guid === node.guid; });
 											    bookContainerItem.containers = response;
+											    var bookContainerJsonItem = _.find($scope.bookContainersJson, function (o) { return o.guid === response[0].bookid; });
+											    bookContainerJsonItem.containers = CommonService.ConvertToJson(response, "");
 											    pushBookContainer(node, response)
 											});
 									}									
@@ -3186,7 +3063,7 @@ angular
 											CommonService.showErrorMessage(e8msg.error.cantFetchNodes)
 					            			return;
 										}
-										$scope.searchedBookContainers.push({ "guid": $scope.bookID, containers: response });
+										$scope.searchedBookContainersJson.push({ "guid": $scope.bookID, containers: CommonService.ConvertToJson(response, "") });
 										if(response.length > 0){
 											searchedContainer.template = "nodes_renderer.html";
 											searchedContainer.showEditQuestionIcon=false;
@@ -3360,10 +3237,10 @@ angular
 									var isErrorExists=false;
 									var testTab = SharedTabService.tests[SharedTabService.currentTabIndex];
 									$scope.selectedNodes=[];
-									$scope.searchedBookContainers = [];
+									$scope.searchedBookContainersJson = [];
 									$scope.selectedBooks.forEach(function(book){
 									    var rootContainers = [];
-									    $scope.searchedBookContainers.push({ "guid": book.guid, containers: null });
+									    $scope.searchedBookContainersJson.push({ "guid": book.guid, containers: null });
 
 										ContainerService.getQuestionTypeContainers(book.guid,searchCriteria,function(containers){
 											if(containers==null){
@@ -3380,8 +3257,8 @@ angular
 													rootContainers.push(container)
 												}
 											});
-											var bookContainerItem = _.find($scope.searchedBookContainers, function (o) { return o.guid === book.guid; });
-											bookContainerItem.containers = containers;
+											var bookContainerItem = _.find($scope.searchedBookContainersJson, function (o) { return o.guid === book.guid; });
+											bookContainerItem.containers = angular.copy(CommonService.ConvertToJson(containers, ""));
 											if(rootContainers.length==0){
 												emptyBooks = emptyBooks+1;
 											}
