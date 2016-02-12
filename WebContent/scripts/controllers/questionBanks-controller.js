@@ -1098,11 +1098,12 @@ angular
 											currentNode.node.nodes = currentNode.node.nodes.concat(sortedNodes);
 											var questionCount=0;
 											angular.forEach(responseQuestions, function(item) {
+												questionCount=questionCount+1;
 												setQuestionNodeStatus(item,currentNode);												
 												updateTreeNode(item);
 												addToQuestionsArray(item);
-												$scope.renderQuestion(item);
-												questionCount=questionCount+1;
+                                                item.questnNumber = questionCount;
+												$scope.renderQuestion(item);												
 												if(questionCount == responseQuestions.length){
 													$scope.isQuestionsLoaded=true;
 													stopIndicator(currentNode);

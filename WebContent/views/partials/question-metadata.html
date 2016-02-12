@@ -84,19 +84,19 @@
 					data-ng-show="node.quizType == 'ShortAnswer'">
 					<span class="viewOptionDiv normalText">Answer Size:</span>
 					<div class="viewOptionDiv viewOptionHV">
-						<input class="radioView" name="radioView_{{$index}}_BS"
+						<input class="radioView" name="radioView_{{$index}}_BS_Sa"
 							data-ng-checked="node.qtiModel.BlankSize == '20'"
 							data-ng-click="qstnBlankSize(this,'20')" blanksize='20'
 							type="radio"></input> <span class='radioText'>Small</span>
 					</div>
 					<div class="viewOptionDiv viewOptionHV">
-						<input class="radioView" name="radioView_{{$index}}_BS"
+						<input class="radioView" name="radioView_{{$index}}_BS_Sa"
 							data-ng-checked="node.qtiModel.BlankSize == '40'"
 							data-ng-click="qstnBlankSize(this,'40')" blanksize='40'
 							type="radio"></input> <span class='radioText'>Medium</span>
 					</div>
 					<div class="viewOptionDiv viewOptionHV">
-						<input class="radioView" name="radioView_{{$index}}_BS"
+						<input class="radioView" name="radioView_{{$index}}_BS_Sa"
 							data-ng-checked="node.qtiModel.BlankSize == '58'"
 							data-ng-click="qstnBlankSize(this,'58')" blanksize='58'
 							type="radio"></input> <span class='radioText'>Large</span>
