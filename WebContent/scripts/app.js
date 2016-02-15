@@ -115,6 +115,16 @@
 		});
 
 	})
+	.run(function ($templateCache, $http) {      
+         $http.get('views/editortmpl/mc.html', { cache: $templateCache });
+		 $http.get('views/editortmpl/mr.html', { cache: $templateCache });
+		 $http.get('views/editortmpl/mf.html', { cache: $templateCache });
+		 $http.get('views/editortmpl/es.html', { cache: $templateCache });
+		 $http.get('views/editortmpl/fb.html', { cache: $templateCache });
+		 $http.get('views/editortmpl/sa.html', { cache: $templateCache });
+		 $http.get('views/editortmpl/tf.html', { cache: $templateCache });
+		 $http.get('views/editortmpl/vb.html', { cache: $templateCache });
+    })
 	.config(function(blockUIConfig) {
 
 		blockUIConfig.autoInjectBodyBlock = false;
@@ -140,6 +150,7 @@
 	.config(function ($httpProvider) {
 		$httpProvider.interceptors.push('myHttpInterceptor');
 	})
+	
 	.run(['$rootScope', '$location', '$cookieStore', '$http', '$modal', 'blockUI', 'AuthenticationService',
 		function ($rootScope, $location, $cookieStore, $http, $modal, blockUI, AuthenticationService) {        				
 		
