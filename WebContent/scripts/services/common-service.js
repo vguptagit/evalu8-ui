@@ -105,6 +105,23 @@ angular.module('evalu8Demo')
             rootDiv.scrollTop(treeScrollTop + 15);
         }
     }
+    
+    /*
+	 * This method will validate, if the destination node or any of it's parent node is equal to the source node or not.
+	 */
+    commonService.isDestInScope = function(source, dest){
+    	
+    	if(dest == null || dest == undefined){
+    		return true;
+    	}else if(source == null || source == undefined){
+    		return true;
+    	}else if(source.node == dest.node){
+    		return false;
+    	}else{
+    		dest = dest.$parentNodeScope;
+    		return (true & commonService.isDestInScope(source,dest));
+    	}
+    }
 
     //TODO : need to find the references and replace it with "SearchItem", later remove below function. because function name is not so generic.
     //search folder by giving guid or parentid;

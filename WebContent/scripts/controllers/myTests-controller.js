@@ -162,7 +162,7 @@ angular.module('e8MyTests')
                         $scope.dragStarted = false;
                     }
 
-                    if(source.node && destination.node &&(source.node === destination.node)){
+                    if(source.node && destination.node && !CommonService.isDestInScope(source, destination)){
                     	e.source.nodeScope.$$apply = false;
                     	$scope.dragStarted = false;
                     	return;
