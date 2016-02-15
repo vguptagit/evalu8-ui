@@ -586,8 +586,9 @@ angular.module('e8MyTests')
                     return true;
                 },
                 dragMove: function(e) {
-                	$scope.dragStarted = true;
-                	$scope.questionCountPosition = "top:" + (e.elements.dragging.offset().top - 20) + "px; left:" + (e.elements.dragging.offset().left + e.elements.dragging.width() - 70) + "px; position:fixed;z-index:2000";
+                    $scope.dragStarted = true;
+                    //TODO : To display question count (Do not remove below commented code).
+                	//$scope.questionCountPosition = "top:" + (e.elements.dragging.offset().top - 20) + "px; left:" + (e.elements.dragging.offset().left + e.elements.dragging.width() - 70) + "px; position:fixed;z-index:2000";
 
                 	/*
                 	 * Saving placeholder and position to hide|show placeholder on enter|leave a folder node
@@ -616,12 +617,14 @@ angular.module('e8MyTests')
                 dragStart: function(e) {
                 	$('body *').css({'cursor':'url("images/grabbing.cur"), move'});
                 	e.source.nodeScope.sourceOnly = false;
-                	DisplayQuestionCount(e.source.nodeScope.node);
+                    //TODO : To display question count (Do not remove below commented code).
+                	//DisplayQuestionCount(e.source.nodeScope.node);
                 },
                 dragStop: function(e) {
                 	$('body *').css({'cursor':''});
                 	$scope.dragStarted = false;
-                	$scope.questionCountPosition = '';
+                    //TODO : To display question count (Do not remove below commented code).
+                	//$scope.questionCountPosition = '';
                 },
                 beforeDrop: function(e) {
                     

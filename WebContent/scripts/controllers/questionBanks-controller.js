@@ -204,17 +204,20 @@ angular
 					                dragMove: function(e) {
 					                	$scope.dragStarted = true;
 					                	var node = e.source.nodeScope.node;
-					                	if(node.nodeType != EnumService.NODE_TYPE.test){
-					                		$scope.questionCountPosition = "top:" + (e.elements.dragging.offset().top - 20) + "px; left:" + (e.elements.dragging.offset().left + e.elements.dragging.width() - 70) + "px; position:fixed;z-index:2000";
-					                	}
+					                    //TODO : To display question count (Do not remove below commented code).
+					                	//if(node.nodeType != EnumService.NODE_TYPE.test){
+					                	//	$scope.questionCountPosition = "top:" + (e.elements.dragging.offset().top - 20) + "px; left:" + (e.elements.dragging.offset().left + e.elements.dragging.width() - 70) + "px; position:fixed;z-index:2000";
+					                	//}
 					                },
 					                dragStart: function(e) {
 					                    $('body *').css({ 'cursor': 'url("images/grabbing.cur"), move' });
-					                    DisplayQuestionCount(e.source.nodeScope.node);
+					                    //TODO : To display question count (Do not remove below commented code).
+					                    //DisplayQuestionCount(e.source.nodeScope.node);
 					                },
 					                dragStop: function(e) {
 					                    $('body *').css({ 'cursor': '' });
-					                    $scope.questionCountPosition = '';
+					                    //TODO : To display question count (Do not remove below commented code).
+					                    //$scope.questionCountPosition = '';
 					                },
 					                beforeDrop: function(e) {
                                                                          
@@ -1540,6 +1543,8 @@ angular
 							                var containerNodes = CommonService.SearchItem(bookItem.containers, selectedItem.guid);
 							                if (containerNodes) {
 							                    selectedNodesArray.push(containerNodes);
+							                } else if (selectedItem.nodeType === EnumService.NODE_TYPE.question) {
+							                    selectedNodesArray.push(selectedItem);
 							                }
 							            })
 							        });
@@ -1553,6 +1558,8 @@ angular
 							                var containerNodes = CommonService.SearchItem(bookItem.containers, selectedItem.guid);
 							                if (containerNodes) {
 							                    selectedNodesArray.push(containerNodes);
+							                } else if (selectedItem.nodeType === EnumService.NODE_TYPE.question) {
+							                    selectedNodesArray.push(selectedItem);
 							                }
 							            })
 							        });
@@ -1565,6 +1572,8 @@ angular
 							                var containerNodes = CommonService.SearchItem(bookItem.containers, selectedItem.guid);
 							                if (containerNodes) {
 							                    selectedNodesArray.push(containerNodes);
+							                } else if (selectedItem.nodeType === EnumService.NODE_TYPE.question) {
+							                    selectedNodesArray.push(selectedItem);
 							                }
 							            })
 							        });
@@ -3093,7 +3102,12 @@ angular
 											CommonService.showErrorMessage(e8msg.error.cantFetchNodes)
 					            			return;
 										}
-										$scope.searchedBookContainersJson.push({ "guid": $scope.bookID, containers: CommonService.ConvertToJson(response, "") });
+										var bookContainerItem = _.find($scope.searchedBookContainersJson, function (o) { return o.guid === $scope.bookID; });
+										if (bookContainerItem) {
+										    bookContainerItem.containers = angular.copy(CommonService.ConvertToJson(response, ""));
+										} else {
+										    $scope.searchedBookContainersJson.push({ "guid": $scope.bookID, containers: CommonService.ConvertToJson(response, "") });
+										}
 										if(response.length > 0){
 											searchedContainer.template = "nodes_renderer.html";
 											searchedContainer.showEditQuestionIcon=false;
