@@ -2967,26 +2967,45 @@ angular
 								$scope.showContainer();
 							}
 							
-							$scope.showContainerOnEnter = function(event) {
+							$scope.moveScrollBar = function(event){
+								
 								$(".dropdown-menu")
 								.addClass("autocompleteList");								
+								
+								if(event.which === 40){
+				                	
+				                	if($('ul.dropdown-menu li.active').index() == 0){
+			                			$('ul.dropdown-menu')[1].scrollTop= 0;
+			                		}else{
+					            		var activeMenuTopPos= $('ul.dropdown-menu li.active').offset().top;
+					            		var activeMenuHeight=$('ul.dropdown-menu li.active').height();
+					            		var containerBottom = $('.resources-tabs-content .autocompleteList').offset().top+$('.resources-tabs-content .autocompleteList').height()+9;
+					                	if(activeMenuTopPos>=containerBottom){
+					                		
+					                			$('ul.dropdown-menu')[1].scrollTop=$('ul.dropdown-menu')[1].scrollTop + activeMenuHeight;
+					                		
+					                	}
+			                		}
+				                }
+				                if(event.which === 38){	
+				                	
+				                	if($('ul.dropdown-menu li.active').index() == $scope.allContainers.length -1){
+				                		var maxScrollBottom = $('ul.dropdown-menu')[1].scrollHeight - $('ul.dropdown-menu')[1].offsetHeight + 2
+				                		$('ul.dropdown-menu')[1].scrollTop= maxScrollBottom;
+				                	}else{
+					                	var activeMenuTopPos= $('ul.dropdown-menu li.active').offset().top;
+					                	var activeMenuHeight=$('ul.dropdown-menu li.active').height();
+					                	var containerTop = $('.resources-tabs-content .autocompleteList').offset().top+6;
+					                	if(activeMenuTopPos<containerTop){
+					                		
+					                			$('ul.dropdown-menu')[1].scrollTop=$('ul.dropdown-menu')[1].scrollTop-activeMenuHeight;
+					                		
+					                	}
+				                	}
+				                }
+							}
 							
-				                if(event.which === 40){
-				            		var activeMenuTopPos= $('ul.dropdown-menu li.active').offset().top;
-				            		var activeMenuHeight=$('ul.dropdown-menu li.active').height();
-				            		var containerBottom = $('.resources-tabs-content .autocompleteList').offset().top+$('.resources-tabs-content .autocompleteList').height()+9;
-				                	if(activeMenuTopPos>=containerBottom){
-				                		$('ul.dropdown-menu')[1].scrollTop=$('ul.dropdown-menu')[1].scrollTop + activeMenuHeight;
-				                	}
-				                }
-				                if(event.which === 38){
-				                	var activeMenuTopPos= $('ul.dropdown-menu li.active').offset().top;
-				                	var activeMenuHeight=$('ul.dropdown-menu li.active').height();
-				                	var containerTop = $('.resources-tabs-content .autocompleteList').offset().top+6;
-				                	if(activeMenuTopPos<containerTop){
-				                		$('ul.dropdown-menu')[1].scrollTop=$('ul.dropdown-menu')[1].scrollTop-activeMenuHeight;
-				                	}
-				                }
+							$scope.showContainerOnEnter = function(event) {
 				                
 				                if (event.keyCode != 13 ){
 									var isContainersLoaded=false;
