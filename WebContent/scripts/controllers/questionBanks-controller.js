@@ -1223,17 +1223,8 @@ angular
 														+ item.guid)
 										.success(
 												function(response) {
-													item.data = response;
-													QTI.BLOCKQUOTE.id = 0;
-													var displayNode = $("<div></div>")
-													QTI.play(response,
-															displayNode, false,
-															false,item.quizType);
-
-													item.textHTML = displayNode
-															.html();
+													item.data = response;													
 													item.template = 'qb_questions_renderer.html';
-
 												})
 
 							};

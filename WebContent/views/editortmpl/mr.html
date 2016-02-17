@@ -2,7 +2,7 @@
 <div class="floatLeftImp" ng-class="answerAreaOnLeftSide?'questionContainerWithAnswerArea':'questionContainer'">
 	<div data-ng-if="!node.IsEditView" class="qtiPrintView" ng-mousedown="controller=='TestCreationFrameController'?selectQuestion($event,node):selectNode($event,this);">
 		 <div class="questionPrintContainer">
- 			<div class="qstnPrintViewIndex" ng-class="{twoDigitIndex: $index + 1 > 9 ,threedigitIndex: $index + 1 > 99, fourDigitIndex: $index + 1 > 999}">{{((controller=='QuestionBanksController') || (controller=='MyQuestionsController'))?node.questnNumber:$index + 1}})</div>
+ 			<div class="qstnPrintViewIndex" ng-class="{twoDigitIndex: $index + 1 > 9 ,threedigitIndex: $index + 1 > 99, fourDigitIndex: $index + 1 > 999}">{{(controller=='MyQuestionsController')?node.questnNumber:$index + 1}})</div>
 			<div class="printQuestionCaption"
 				data-ng-bind-html="getTrustedHTML(node.qtiModel.Caption==''?node.qtiModel.PrintCaption:node.qtiModel.Caption)"></div>
 				<button id="QBPencil" type="button" ng-show="node.showEditQuestionIcon" 
