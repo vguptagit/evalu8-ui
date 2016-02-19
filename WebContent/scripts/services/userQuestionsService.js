@@ -71,32 +71,5 @@ angular.module('evalu8Demo')
 				})
 		};
 		
-        this.saveQuestionFolder = function(userQuestionsFolders, callback) {    
-
-            var folder = {
-                    parentId: userQuestionsFolders.parentId,
-                    sequence: userQuestionsFolders.sequence,
-                    title: userQuestionsFolders.title    
-            };            
-            
-            HttpService.post(evalu8config.apiUrl + '/my/questionfolders', folder)
-            .success(function(response) {                                    
-                if (callback) callback(response);
-            })
-            .error(function(error, status) {
-            	callback(null);
-            })
-        };
-        
-        this.moveQuestion = function(questionFolder, callback) {
-            HttpService.post(evalu8config.apiUrl + '/my/movequestion', questionFolder)
-            .success(function(response) {                                    
-                if (callback) callback(true);
-            })
-            .error(function(error, status) {
-            	if (callback) callback(false);
-            })
-        }        
-
 	}
 ])		

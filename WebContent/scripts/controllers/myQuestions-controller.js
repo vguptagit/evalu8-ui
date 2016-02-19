@@ -782,7 +782,7 @@ angular.module('e8MyTests')
                 $rootScope.blockLeftPanel.start();
                 QuestionFolderService.getFoldersMinSeq(mouseOverNode.node, function(minSeq) {
                 	item.sequence = minSeq==0.0 ? 1.0 : (0.0 + minSeq)/2;
-                	QuestionFolderService.saveQuestionFolder(item, function(userFolder) {
+                	QuestionFolderService.updateQuestionFolder(item, function(userFolder) {
                 		
                         if (userFolder == null) {
                         	$rootScope.blockLeftPanel.stop();
@@ -816,7 +816,7 @@ angular.module('e8MyTests')
             	source.remove();
             	
             	var sourceFolder = $scope.removeTestBindingFromSource(sourceParent, item.guid);
-            	QuestionFolderService.saveQuestionFolder(sourceFolder, function(userFolder) {
+            	QuestionFolderService.updateQuestionFolder(sourceFolder, function(userFolder) {
             		if(userFolder==null){
                 		$rootScope.blockLeftPanel.stop();
                  		CommonService.showErrorMessage(e8msg.error.cantSave);
@@ -2392,7 +2392,7 @@ angular.module('e8MyTests')
 
             }
              
-            QuestionFolderService.saveQuestionFolder(userFolder, function (userFolder) {
+            QuestionFolderService.updateQuestionFolder(userFolder, function (userFolder) {
                 if (userFolder == null) {
                     CommonService.showErrorMessage(e8msg.error.cantSave);
                     return;

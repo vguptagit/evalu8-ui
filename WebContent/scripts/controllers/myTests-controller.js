@@ -342,7 +342,7 @@ angular.module('e8MyTests')
                         item.parentId = mouseOverNode.node.guid;
                         UserFolderService.getFoldersMinSeq(mouseOverNode.node, function(minSeq) {
                             item.sequence = minSeq==0.0 ? 1.0 : (0.0 + minSeq)/2;
-                            UserFolderService.saveUserFolder(item, function(userFolder) {
+                            UserFolderService.updateUserFolder(item, function(userFolder) {
                                 if(userFolder==null){
                                     $rootScope.blockLeftPanel.stop();
                                      CommonService.showErrorMessage(e8msg.error.cantSave);
@@ -363,7 +363,7 @@ angular.module('e8MyTests')
                         })                    
                     } else {
                         var sourceFolder = $scope.removeTestBindingFromSource(sourceParent, item.guid);
-                        UserFolderService.saveUserFolder(sourceFolder, function(userFolder) {
+                        UserFolderService.updateUserFolder(sourceFolder, function(userFolder) {
                             if(userFolder==null){
                                 $rootScope.blockLeftPanel.stop();
                                  CommonService.showErrorMessage(e8msg.error.cantSave);
@@ -481,7 +481,7 @@ angular.module('e8MyTests')
                             item.parentId = mouseOverNode.node.guid;
                             UserFolderService.getFoldersMinSeq(mouseOverNode.node, function(minSeq) {
                             	item.sequence = minSeq==0.0 ? 1.0 : (0.0 + minSeq)/2;
-                            	UserFolderService.saveUserFolder(item, function(userFolder) {
+                            	UserFolderService.updateUserFolder(item, function(userFolder) {
                             		if(userFolder==null){
                                 		$rootScope.blockLeftPanel.stop();
                                  		CommonService.showErrorMessage(e8msg.error.cantSave);
@@ -496,7 +496,7 @@ angular.module('e8MyTests')
                             })                	
                         } else {
                         	var sourceFolder = $scope.removeTestBindingFromSource(sourceParent, item.guid);
-                        	UserFolderService.saveUserFolder(sourceFolder, function(userFolder) {
+                        	UserFolderService.updateUserFolder(sourceFolder, function(userFolder) {
                         		if(userFolder==null){
                             		$rootScope.blockLeftPanel.stop();
                              		CommonService.showErrorMessage(e8msg.error.cantSave);
@@ -1613,7 +1613,7 @@ angular.module('e8MyTests')
 
                 }
            
-            UserFolderService.saveUserFolder(userFolder, function (userFolder) {
+            UserFolderService.updateUserFolder(userFolder, function (userFolder) {
                 if (userFolder == null) {
                     CommonService.showErrorMessage(e8msg.error.cantSave);
                     return;

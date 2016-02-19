@@ -396,12 +396,12 @@ angular.module('evalu8Demo')
 						var textContent = $("<span>"+xmlChildren[i].textContent+"</span>");
 						var images = textContent.find("img");
 						if(images.length > 0){
-							for(var i = 0; i < images.length; i ++){
-								if(textContent.find("img").eq(i).attr("class") == null || textContent.find("img").eq(i).attr("class") != "qtiQuestionImage")
+							for(var j = 0; j < images.length; j ++){
+								if(textContent.find("img").eq(j).attr("class") == null || textContent.find("img").eq(j).attr("class") != "qtiQuestionImage")
 								{
-									textContent.find("img").eq(i).attr("class","qtiQuestionImage");
-									textContent.find("img").eq(i).removeAttr("height");
-									textContent.find("img").eq(i).removeAttr("width");
+									textContent.find("img").eq(j).attr("class","qtiQuestionImage");
+									textContent.find("img").eq(j).removeAttr("height");
+									textContent.find("img").eq(j).removeAttr("width");
 								}
 							}
 							serializedQtiNode = textContent.html();
